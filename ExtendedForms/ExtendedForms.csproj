@@ -101,15 +101,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BaseUtilities\Audio\Audio.csproj">
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\Audio\Audio.csproj">
       <Project>{59f99a05-ce16-4fb8-be99-f1a24f019cb8}</Project>
       <Name>Audio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\BaseUtilities\BaseUtilities\BaseUtils.csproj">
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj">
       <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
       <Name>BaseUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ExtendedControls\ExtendedControls.csproj">
+    <ProjectReference Include="$(SolutionDir)\ExtendedControls\ExtendedControls.csproj">
       <Project>{2049403f-f4c7-45e6-b777-6390c78e4d2b}</Project>
       <Name>ExtendedControls</Name>
     </ProjectReference>
