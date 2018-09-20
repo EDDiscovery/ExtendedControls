@@ -54,6 +54,12 @@
     <Compile Include="AudioForms\SoundEffectDialog.Designer.cs">
       <DependentUpon>SoundEffectDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="AudioForms\SpeechConfigure.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AudioForms\SpeechConfigure.designer.cs">
+      <DependentUpon>SpeechConfigure.cs</DependentUpon>
+    </Compile>
     <Compile Include="AudioForms\WaveConfigureDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AudioForms\SoundEffectDialog.resx">
       <DependentUpon>SoundEffectDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AudioForms\SpeechConfigure.resx">
+      <DependentUpon>SpeechConfigure.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AudioForms\WaveConfigureDialog.resx">
       <DependentUpon>WaveConfigureDialog.cs</DependentUpon>
