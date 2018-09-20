@@ -284,7 +284,7 @@
     <None Include="Resources\panels.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BaseUtilities\BaseUtilities\BaseUtils.csproj">
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj">
       <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
       <Name>BaseUtils</Name>
     </ProjectReference>
