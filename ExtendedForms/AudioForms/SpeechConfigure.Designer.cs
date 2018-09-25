@@ -13,7 +13,7 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-namespace AudioExtensions
+namespace ExtendedAudioForms
 {
     partial class SpeechConfigure
     {
