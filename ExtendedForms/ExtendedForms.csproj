@@ -57,7 +57,7 @@
     <Compile Include="AudioForms\SpeechConfigure.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AudioForms\SpeechConfigure.designer.cs">
+    <Compile Include="AudioForms\SpeechConfigure.Designer.cs">
       <DependentUpon>SpeechConfigure.cs</DependentUpon>
     </Compile>
     <Compile Include="AudioForms\WaveConfigureDialog.cs">
