@@ -28,19 +28,27 @@ namespace ExtendedControls
     {
         public bool EnableClose { get { return buttonOK.Enabled; } set { buttonOK.Enabled = panel_close.Enabled = value; } }
 
+        private Action<Object> ackaction = null;
+        Object ackdata= null;
+
         public InfoForm()
         {
             InitializeComponent();
         }
 
-        public void Info(string title, Icon ic, string info , int[] array = null)    
+        public void Info(string title, Icon ic, string info , int[] array = null, float pointsize= -1, 
+                            Action<Object> acknowledgeaction = null, Object acknowledgedata = null)    
         {
             Icon = ic;
             Text = title;
+
             textBoxInfo.SetTabs(array ?? new int[] { 0, 100, 200, 300, 400, 500, 600, 800,900,1000,1100,1200 });
             textBoxInfo.ReadOnly = true;
             textBoxInfo.Text = info;
             textBoxInfo.Select(0, 0);
+
+            ackaction = acknowledgeaction;
+            ackdata = acknowledgedata;
 
             labelCaption.Text = title;
 
@@ -50,14 +58,18 @@ namespace ExtendedControls
 
             if (theme != null)
             {
-                bool winborder = theme.ApplyToForm(this);
+                bool winborder = theme.ApplyToFormStandardFontSize(this);
                 if (winborder)
                     panelTop.Visible = false;
+                if (pointsize != -1)
+                    textBoxInfo.Font = new Font(theme.FontName, pointsize);
             }
             else
             {
                 panelTop.Visible = false;
             }
+
+            buttonAcknowledge.Visible = ackaction != null;
 
             BaseUtils.Translator.Instance.Translate(this);
         }
@@ -72,6 +84,12 @@ namespace ExtendedControls
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
+            Close();
+        }
+
+        private void buttonAcknowledge_Click(object sender, EventArgs e)
+        {
+            ackaction?.Invoke(ackdata);
             Close();
         }
 
@@ -122,5 +140,6 @@ namespace ExtendedControls
                 MessageBox.Show(this, "Copying text to clipboard failed".Tx(), "Clipboard error".Tx());
             }
         }
+
     }
 }

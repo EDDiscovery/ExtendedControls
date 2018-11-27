@@ -54,6 +54,7 @@ namespace ExtendedControls
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelBottom = new System.Windows.Forms.Panel();
             this.statusStripBottom = new ExtendedControls.StatusStripCustom();
+            this.buttonAcknowledge = new ExtendedControls.ButtonExt();
             this.contextMenuStrip.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelBottom.SuspendLayout();
@@ -62,9 +63,9 @@ namespace ExtendedControls
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(746, 5);
+            this.buttonOK.Location = new System.Drawing.Point(697, 5);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(100, 23);
             this.buttonOK.TabIndex = 1;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -163,6 +164,7 @@ namespace ExtendedControls
             // 
             // panelBottom
             // 
+            this.panelBottom.Controls.Add(this.buttonAcknowledge);
             this.panelBottom.Controls.Add(this.buttonOK);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.Location = new System.Drawing.Point(0, 538);
@@ -177,6 +179,17 @@ namespace ExtendedControls
             this.statusStripBottom.Size = new System.Drawing.Size(824, 22);
             this.statusStripBottom.TabIndex = 27;
             this.statusStripBottom.Text = "statusStripCustom1";
+            // 
+            // buttonAcknowledge
+            // 
+            this.buttonAcknowledge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAcknowledge.Location = new System.Drawing.Point(529, 5);
+            this.buttonAcknowledge.Name = "buttonAcknowledge";
+            this.buttonAcknowledge.Size = new System.Drawing.Size(140, 23);
+            this.buttonAcknowledge.TabIndex = 1;
+            this.buttonAcknowledge.Text = "Acknowledge";
+            this.buttonAcknowledge.UseVisualStyleBackColor = true;
+            this.buttonAcknowledge.Click += new System.EventHandler(this.buttonAcknowledge_Click);
             // 
             // InfoForm
             // 
@@ -212,5 +225,6 @@ namespace ExtendedControls
         private StatusStripCustom statusStripBottom;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopy;
+        private ButtonExt buttonAcknowledge;
     }
 }
