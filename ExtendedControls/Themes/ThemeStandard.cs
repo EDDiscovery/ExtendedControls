@@ -269,22 +269,22 @@ namespace ExtendedControls
             if (IsFontAvailable("Calisto MT"))
                 themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Calisto", "Calisto MT", 12F));
 
-            themelist.Add(new Settings("Ubuntu Dark", Color.FromArgb(255, 65, 65, 65), // form
+            themelist.Add(new Settings("Easy Dark", Color.FromArgb(255, 65, 65, 65), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 245, 120, 30), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
                 Color.FromArgb(255, 62, 68, 77), Color.FromArgb(255, 255, 120, 30), // grid borderback, bordertext
-                Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 50, 50, 50), // grid cellbackground, text, borderlines
+                Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 50, 50, 50), // grid cellbackground, text, borderlines
                 Color.FromArgb(255, 80, 75, 70), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 75, 75, 75), // grid sliderback, arrow, scrollbutton
-                Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 90, 196, 222), // travelgrid_nonvisited, visited
+                Color.FromArgb(255, 192, 192, 192), Color.FromArgb(255, 202, 202, 255), // travelgrid_nonvisited, visited
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), textboxborderstyle_color, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 235, 110, 20), Color.FromArgb(255, 75, 75, 75), // text sliderback, scrollarrow, scrollbutton
                 Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 235, 116, 20), // checkbox, checkboxtick
-                Color.FromArgb(255, 60, 55, 50), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 60, 55, 50), Color.FromArgb(255, 245, 245, 245),  // menuback, fore, dropdownback, dropdownfore
+                Color.FromArgb(255, 60, 55, 50), Color.FromArgb(255, 233, 227, 238), Color.FromArgb(255, 60, 55, 50), Color.FromArgb(255, 245, 245, 245),  // menuback, fore, dropdownback, dropdownfore
                 Color.FromArgb(255, 240, 240, 240),  // label
                 Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 235, 110, 20), Color.FromArgb(255, 60, 55, 50), // group back, text, border
                 Color.FromArgb(255, 40, 45, 50), // tab control borderlines
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
-                Color.FromArgb(255, 255, 0, 0), // spanel
-                false, 100, "Arial", 10.25F));
+                Color.FromArgb(255, 250, 150, 8), // spanel
+                false, 100, "Arial", 9.75F));
 
             themelist.Add(new Settings("EDSM", Color.FromArgb(255, 39, 43, 48), // form
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
