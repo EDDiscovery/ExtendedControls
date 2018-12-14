@@ -113,14 +113,14 @@ namespace ExtendedControls
 
         public DialogResult ShowDialog(Form p, Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
         {
-            Show(icon, size, pos, caption, lname, callertag );
+            Init(icon, size, pos, caption, lname, callertag );
             callback?.Invoke();
             return ShowDialog(p);
         }
 
         public void Show(Form p, Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
         {
-            Show(icon, size, pos, caption, lname, callertag);
+            Init(icon, size, pos, caption, lname, callertag);
             callback?.Invoke();
             Show(p);
         }
@@ -129,6 +129,15 @@ namespace ExtendedControls
         {
             ProgClose = true;
             base.Close();
+        }
+
+        public T GetControl<T>(string controlname) where T:Control      // return value of dialog control
+        {
+            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t != null)
+                return (T)t.control;
+            else
+                return null;
         }
 
         public string Get(string controlname)      // return value of dialog control
@@ -359,7 +368,7 @@ namespace ExtendedControls
             return null;
         }
 
-        private void Show(Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname, Object callertag)
+        public void Init(Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname, Object callertag)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
