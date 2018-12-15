@@ -62,7 +62,10 @@ namespace ExtendedControls
         public Color ScrollBarForeColor { get { return ScrollBar.ForeColor; } set { ScrollBar.ForeColor = value; } }
 
         public override string Text { get { return TextBox.Text; } set { TextBox.Text = value; UpdateScrollBar(); } }                // return only textbox text
+        public string Rtf { get { return TextBox.Rtf; } set { TextBox.Rtf = value; } }
         public int LineCount { get { return TextBox.GetLineFromCharIndex(TextBox.Text.Length) + 1; } }
+
+        public int ScrollBarLineTweak { get; set; } = 0;            // cause or before layout
 
         public delegate void OnTextBoxChanged(object sender, EventArgs e);
         public event OnTextBoxChanged TextBoxChanged;
@@ -197,7 +200,7 @@ namespace ExtendedControls
             TextBox.Location = new Point(bordersize, bordersize);
             TextBox.Size = new Size(ClientRectangle.Width - (visibleonlayout ? ScrollBarWidth : 0) - bordersize * 2, textboxclienth);
 
-            //System.Diagnostics.Debug.WriteLine("text box size " + textboxclienth + " Lines " + linesinbox );
+            System.Diagnostics.Debug.WriteLine(this.Name + " text box size " + textboxclienth + " Lines " + linesinbox );
 
             ScrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
             ScrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
@@ -231,8 +234,8 @@ namespace ExtendedControls
 
         public int EstimateLinesInBox(int height)
         {
-            int lines = (int)(height/ GetRealFontHeight());
-            //System.Diagnostics.Debug.WriteLine("Est Lines " + lines + " on " + height + " on " + FontHeight);
+            int lines = (int)(height/ GetRealFontHeight()) + ScrollBarLineTweak;
+            System.Diagnostics.Debug.WriteLine(this.Name + " Est Lines " + lines + " on " + height + " on " + GetRealFontHeight() + " Font " + Font.Name + " " + Font.Size + " "  + FontHeight);
             return lines;
         }
 
