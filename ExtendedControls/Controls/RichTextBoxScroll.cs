@@ -200,7 +200,7 @@ namespace ExtendedControls
             TextBox.Location = new Point(bordersize, bordersize);
             TextBox.Size = new Size(ClientRectangle.Width - (visibleonlayout ? ScrollBarWidth : 0) - bordersize * 2, textboxclienth);
 
-            System.Diagnostics.Debug.WriteLine(this.Name + " text box size " + textboxclienth + " Lines " + linesinbox );
+            //System.Diagnostics.Debug.WriteLine(this.Name + " text box size " + textboxclienth + " Lines " + linesinbox );
 
             ScrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
             ScrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
@@ -235,7 +235,7 @@ namespace ExtendedControls
         public int EstimateLinesInBox(int height)
         {
             int lines = (int)(height/ GetRealFontHeight()) + ScrollBarLineTweak;
-            System.Diagnostics.Debug.WriteLine(this.Name + " Est Lines " + lines + " on " + height + " on " + GetRealFontHeight() + " Font " + Font.Name + " " + Font.Size + " "  + FontHeight);
+            //System.Diagnostics.Debug.WriteLine(this.Name + " Est Lines " + lines + " on " + height + " on " + GetRealFontHeight() + " Font " + Font.Name + " " + Font.Size + " "  + FontHeight);
             return lines;
         }
 
