@@ -192,7 +192,7 @@ namespace ExtendedControls
         {
             using (FontDialog fd = new FontDialog())
             {
-                fd.Font = new Font(theme.FontName, theme.FontSize);
+                fd.Font = BaseUtils.FontLoader.GetFont(theme.FontName, theme.FontSize);
                 fd.MinSize = 4;
                 fd.MaxSize = 12;
                 DialogResult result;

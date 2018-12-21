@@ -116,7 +116,7 @@ namespace ExtendedControls
 
                 using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
                 using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(0.5F)))
-                using (Font ft = new Font(this.Font.Name, this.Font.Size - FontNerfReduction)) // font 0.5 points smaller, seems to work, otherwise it just won't fit
+                using (Font ft = BaseUtils.FontLoader.GetFont(this.Font.Name, this.Font.Size - FontNerfReduction)) // font 0.5 points smaller, seems to work, otherwise it just won't fit
                 {
                     e.Graphics.DrawString(this.Text, ft, textb, textarea, fmt);
                 }

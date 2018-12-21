@@ -156,7 +156,7 @@ namespace ExtendedControls
             }
             else
             {
-                this.Font = new Font("MS Sans Serif", 12.0F);
+                this.Font = BaseUtils.FontLoader.GetFont("MS Sans Serif", 12.0F);
                 this.ForeColor = Color.Black;
             }
 

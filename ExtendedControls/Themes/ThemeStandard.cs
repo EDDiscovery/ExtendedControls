@@ -194,7 +194,7 @@ namespace ExtendedControls
                     currentsettings.fontsize = 8.25F;
                 }
 
-                Font fnt = new Font(currentsettings.fontname, currentsettings.fontsize);        // if it does not know the font, it will substitute Sans serif
+                Font fnt = BaseUtils.FontLoader.GetFont(currentsettings.fontname, currentsettings.fontsize);        // if it does not know the font, it will substitute Sans serif
                 currentsettings.fontname = fnt.Name;    // save back what we are using, in case we had a bad name
                 return fnt;
             }
@@ -202,9 +202,9 @@ namespace ExtendedControls
 
         private const int StandardFontSize = 10;
 
-        public Font GetFontMaxSized(float size) { return new Font(currentsettings.fontname, Math.Min(currentsettings.fontsize, size)); }
-        public Font GetFontAtSize(float size) { return new Font(currentsettings.fontname, size); }
-        public Font GetFontStandardFontSize() { return new Font(currentsettings.fontname, StandardFontSize); }
+        public Font GetFontMaxSized(float size) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, Math.Min(currentsettings.fontsize, size)); }
+        public Font GetFontAtSize(float size) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, size); }
+        public Font GetFontStandardFontSize() { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, StandardFontSize); }
 
         public Settings currentsettings;           // if name = custom, then its not a standard theme..
         protected List<Settings> themelist;
@@ -480,7 +480,7 @@ namespace ExtendedControls
 
                 if (myControl.Font.Name.Contains("Courier"))                  // okay if we ordered a fixed font, don't override
                 {
-                    Font fntf = new Font(myControl.Font.Name, currentsettings.fontsize); // make one of the selected size
+                    Font fntf = BaseUtils.FontLoader.GetFont(myControl.Font.Name, currentsettings.fontsize); // make one of the selected size
                     myControl.Font = fntf;
                 }
                 else
@@ -830,7 +830,7 @@ namespace ExtendedControls
                 }
 
                 if (myControl.Name.Contains("dataGridViewTravel") && fnt.Size > 10F)
-                    fnt2 = new Font(currentsettings.fontname, 10F);
+                    fnt2 = BaseUtils.FontLoader.GetFont(currentsettings.fontname, 10F);
                 else
                     fnt2 = fnt;
 
@@ -1054,7 +1054,7 @@ namespace ExtendedControls
                 if (size < 1)
                     size = 9;
 
-                using (Font fntnew = new Font(fontwanted, size))
+                using (Font fntnew = BaseUtils.FontLoader.GetFont(fontwanted, size))
                 {
                     return string.Compare(fntnew.Name, fontwanted, true) == 0;
                 }
@@ -1067,7 +1067,7 @@ namespace ExtendedControls
         {
             try
             {           // user reports instance of it excepting over "Arial Narrow".. Mine does not
-                using (Font fntnew = new Font(fontwanted, 12))
+                using (Font fntnew = BaseUtils.FontLoader.GetFont(fontwanted, 12))
                 {
                     return string.Compare(fntnew.Name, fontwanted, true) == 0;
                 }
