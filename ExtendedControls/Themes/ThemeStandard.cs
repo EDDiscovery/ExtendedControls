@@ -103,7 +103,7 @@ namespace ExtendedControls
                 name = n;
                 colors = new Dictionary<CI, Color>();
                 colors.Add(CI.form, SystemColors.Menu);
-                colors.Add(CI.button_back, SystemColors.Control); colors.Add(CI.button_text, SystemColors.ControlText); colors.Add(CI.button_border, SystemColors.ActiveBorder);
+                colors.Add(CI.button_back, Color.FromArgb(255,225,225,225)); colors.Add(CI.button_text, SystemColors.ControlText); colors.Add(CI.button_border, SystemColors.ActiveBorder);
                 colors.Add(CI.grid_borderback, SystemColors.Menu); colors.Add(CI.grid_bordertext, SystemColors.MenuText);
                 colors.Add(CI.grid_cellbackground, SystemColors.ControlLightLight); colors.Add(CI.grid_celltext, SystemColors.MenuText); colors.Add(CI.grid_borderlines, SystemColors.ControlDark);
                 colors.Add(CI.grid_sliderback, SystemColors.ControlLight); colors.Add(CI.grid_scrollarrow, SystemColors.MenuText); colors.Add(CI.grid_scrollbutton, SystemColors.Control);
@@ -945,6 +945,7 @@ namespace ExtendedControls
                 ts.DropDownMouseOverBackgroundColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
                 ts.DropDownItemSeperatorColor = currentsettings.colors[Settings.CI.button_border];
                 ts.EmptyColor = currentsettings.colors[Settings.CI.button_back];
+                ts.SelectedBackColor = currentsettings.colors[Settings.CI.button_back];
             }
             else if ( myControl is CompositeButton )
             {
