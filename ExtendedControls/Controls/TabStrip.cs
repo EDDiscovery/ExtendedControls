@@ -233,7 +233,6 @@ namespace ExtendedControls
         private void TabStrip_Resize(object sender, EventArgs e)
         {
             tabdisplaystart = 0;        // because we will display a different set next time
-            //TBD
         }
 
         private void panelPopOut_Click(object sender, EventArgs e)
@@ -502,6 +501,10 @@ namespace ExtendedControls
 
         private void drawnPanelListSelection_Click(object sender, EventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine("List click Mode " + tdm);
+
+            autofadeinouttimer.Stop();      // in case we are in an autofade
+
             dropdown = new DropDownCustom("", true);
 
             dropdown.SelectionBackColor = this.DropDownBackgroundColor;
@@ -534,6 +537,7 @@ namespace ExtendedControls
             {
                 tdm = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
                 MouseLeavePanelObjects(sender, e);          // same as a mouse leave on one of the controls
+                System.Diagnostics.Debug.WriteLine("Deactivated " + tdm);
             };
 
             dropdown.Size = new Size(DropDownWidth, DropDownHeight);

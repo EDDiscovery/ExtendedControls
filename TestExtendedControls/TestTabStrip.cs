@@ -101,6 +101,7 @@ namespace DialogTest
             tabStrip4.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("4 Command pop out" + t + " " + i);
             tabStrip4.OnCreateTab += OnCreateTab;
             tabStrip4.ActiveColour = Color.Green;
+            tabStrip4.EmptyColor = Color.Pink;
 
 
             ListViewItem item1 = new ListViewItem("item1", 0);
