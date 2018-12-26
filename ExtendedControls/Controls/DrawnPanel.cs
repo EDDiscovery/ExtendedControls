@@ -85,17 +85,21 @@ namespace ExtendedControls
         [Category("Behavior"), DefaultValue(false),
             Description("Enables the automatic handling of text that extends beyond the width of the DrawnPanel.")]
         public bool AutoEllipsis { get; set; } = false;
+
+        
         /// <summary>
         /// This property is unsupported and should not be utilized. Use <see cref="Image"/> instead.
         /// </summary>
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
         public new Image BackgroundImage { get { return base.BackgroundImage; } set { base.BackgroundImage = value; } }
+        
         /// <summary>
         /// Gets or sets the background <see cref="Image"/> layout displayed on the <see cref="DrawnPanel"/>. The
         /// default value is <see cref="ImageLayout.Zoom"/>.
         /// </summary>
         [DefaultValue(typeof(ImageLayout), nameof(ImageLayout.Zoom))]
         public override ImageLayout BackgroundImageLayout { get { return base.BackgroundImageLayout; } set { base.BackgroundImageLayout = value; } }
+        
         /// <summary>
         /// Gets or sets a value representing the background image that this <see cref="DrawnPanel"/> will display. The
         /// default value is <c>null</c>.
@@ -103,12 +107,12 @@ namespace ExtendedControls
         [Category("Appearance"), DefaultValue(null), Description("The background image displayed on the control.")]
         public Image Image
         {
-            get { return _Image; }
+            get { return image; }
             set
             {
-                if (_Image != value)
+                if (image != value)
                 {
-                    _Image = value;
+                    image = value;
                     Invalidate();
                 }
             }
@@ -120,12 +124,12 @@ namespace ExtendedControls
         [Category("Appearance"), DefaultValue(ImageType.Close), Description("The foreground ImageType displayed on the control.")]
         public ImageType ImageSelected
         {
-            get { return _ImageSelected; }
+            get { return imageselected; }
             set
             {
-                if (_ImageSelected != value)
+                if (imageselected != value)
                 {
-                    _ImageSelected = value;
+                    imageselected = value;
                     OnImageSelectedChanged(EventArgs.Empty);
                 }
             }
@@ -173,14 +177,14 @@ namespace ExtendedControls
         [Category("Behavior"), DefaultValue(true), Description("Whether or not the control can receive focus."), RefreshProperties(RefreshProperties.All)]
         public bool Selectable
         {
-            get { return _Selectable; }
+            get { return selectable; }
             set
             {
-                if (_Selectable != value)
+                if (selectable != value)
                 {
                     if (!value)
                         this.TabStop = false;
-                    _Selectable = value;
+                    selectable = value;
                     SetStyle(ControlStyles.Selectable, value);
                 }
             }
@@ -194,13 +198,13 @@ namespace ExtendedControls
             Description("The alignment of the text that will be displayed on the control when ImageSelected is set to one of the text options.")]
         public ContentAlignment TextAlign
         {
-            get { return _TextAlign; }
+            get { return textalign; }
             set
             {
-                if (_TextAlign != value)
+                if (textalign != value)
                 {
-                    _TextAlign = value;
-                    if (_ImageSelected == ImageType.Text || _ImageSelected == ImageType.InverseText)
+                    textalign = value;
+                    if (imageselected == ImageType.Text || imageselected == ImageType.InverseText)
                         Invalidate();
                 }
             }
@@ -320,7 +324,7 @@ namespace ExtendedControls
         public virtual void PerformClick()
         {
             // CanSelect uses (ControlStyles.Selectable && Enabled && Visible) for control and all parents. Negate only the Selectable check when (!_Selectable).
-            if ((_Selectable && this.CanSelect) || (!_Selectable && this.Enabled && this.Visible && Parent.CanSelect))
+            if ((selectable && this.CanSelect) || (!selectable && this.Enabled && this.Visible && Parent.CanSelect))
                 OnClick(EventArgs.Empty);
         }
 
@@ -339,7 +343,7 @@ namespace ExtendedControls
 
             ControlHelpersStaticFunc.ComputeDrawnPanel(out drawnImageAttributesEnabled, out drawnImageAttributesDisabled, PanelDisabledScaling, remap, colormatrix);
 
-            if (_Image != null)
+            if (image != null)
                 Invalidate();
         }
 
@@ -353,13 +357,13 @@ namespace ExtendedControls
         private DrawState drawState = DrawState.Normal;                     // The current state of our control.
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]                   // Visible via Image
-        private Image _Image = null;
+        private Image image = null;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]                   // Visible via ImageSelected
-        private ImageType _ImageSelected = ImageType.Close;
+        private ImageType imageselected = ImageType.Close;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]                   // Visible via Selectable
-        private bool _Selectable = true;
+        private bool selectable = true;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]                   // Visible via TextAlign
-        private ContentAlignment _TextAlign = ContentAlignment.MiddleCenter;
+        private ContentAlignment textalign = ContentAlignment.MiddleCenter;
 
 
         /// <summary>
@@ -390,7 +394,7 @@ namespace ExtendedControls
             }
             ImageSelectedChanged = null;
 
-            _Image = null;
+            image = null;
             drawnImageAttributesDisabled = null;
             drawnImageAttributesEnabled = null;
 
@@ -579,7 +583,7 @@ namespace ExtendedControls
                     break;
             }
 
-            if (_ImageSelected != ImageType.None)
+            if (imageselected != ImageType.None)
             {
                 var rcClip = new Rectangle(this.ClientRectangle.Left + this.Padding.Left, this.ClientRectangle.Top + this.Padding.Top,
                     this.ClientRectangle.Width - this.Padding.Horizontal, this.ClientRectangle.Height - this.Padding.Vertical);
@@ -591,7 +595,7 @@ namespace ExtendedControls
 
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
-                switch (_ImageSelected)
+                switch (imageselected)
                 {
                     case ImageType.Close:
                         {
@@ -664,7 +668,7 @@ namespace ExtendedControls
                             // Draw a 'T', with an optional square outline
                             using (var p2 = new Pen(cFore, 2.0F))
                             {
-                                if (_ImageSelected == ImageType.Transparent)
+                                if (imageselected == ImageType.Transparent)
                                     e.Graphics.DrawRectangle(p2, sqClip);
 
                                 e.Graphics.DrawLine(p2, new Point(sqClip.Left + 2, sqClip.Top + 3), new Point(sqClip.Right - 2, sqClip.Top + 3));
@@ -679,7 +683,7 @@ namespace ExtendedControls
                             using (var p2 = new Pen(cFore, 2.0F))
                             {
                                 int off = Math.Max(2, (int)(sqClip.Width * 0.1));
-                                if (_ImageSelected == ImageType.Captioned)
+                                if (imageselected == ImageType.Captioned)
                                     e.Graphics.DrawRectangle(p2, sqClip);
 
                                 e.Graphics.DrawLine(p2, new Point(sqClip.Left + off, sqClip.Top + off), new Point(sqClip.Right - off, sqClip.Top + off));
@@ -795,7 +799,7 @@ namespace ExtendedControls
                             using (var p1 = new Pen(cFore, 1.0F))
                                 e.Graphics.DrawRectangle(p1, new Rectangle(rcClip.Left, top, rcClip.Width, mDim));
 
-                            if (_ImageSelected == ImageType.WindowInTaskBar)
+                            if (imageselected == ImageType.WindowInTaskBar)
                             {
                                 var off = (mDim <= 8) ? 1 : 3;      // whether or not a space exists between top and rcSq.
                                 var rcSq = new Rectangle(rcClip.Left + off, top + off, 1 + mDim - (off * 2), 1 + mDim - (off * 2));
@@ -852,7 +856,7 @@ namespace ExtendedControls
                         }
 
                     default:
-                        throw new NotImplementedException($"ImageType ({_ImageSelected}) painting is apparantly not implemented; please add support for it.");
+                        throw new NotImplementedException($"ImageType ({imageselected}) painting is apparantly not implemented; please add support for it.");
                 }
 
                 e.Graphics.SmoothingMode = SmoothingMode.Default;
@@ -882,7 +886,7 @@ namespace ExtendedControls
         /// <param name="e">A <see cref="PaintEventArgs"/> that contains the event data.</param>
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            switch (_ImageSelected)
+            switch (imageselected)
             {
                 // Manually paint the background for types with inverted colors. Hope that you didn't want BackgroundImage.
                 case ImageType.EDDB:
@@ -919,7 +923,7 @@ namespace ExtendedControls
                     }
             }
 
-            if (_Image != null)
+            if (image != null)
             {
                 ImageAttributes iattrib = this.Enabled ? drawnImageAttributesEnabled : drawnImageAttributesDisabled;
 
@@ -929,80 +933,80 @@ namespace ExtendedControls
                         {
                             // TODO: honour RightToLeft; Image {1,0} = ClientRect {1,0}
                             var dstRc = this.ClientRectangle;
-                            dstRc.Intersect(new Rectangle(Point.Empty, _Image.Size));
+                            dstRc.Intersect(new Rectangle(Point.Empty, image.Size));
                             if (iattrib != null)
-                                e.Graphics.DrawImage(_Image, dstRc, 0, 0, dstRc.Width, dstRc.Height, GraphicsUnit.Pixel, iattrib);
+                                e.Graphics.DrawImage(image, dstRc, 0, 0, dstRc.Width, dstRc.Height, GraphicsUnit.Pixel, iattrib);
                             else
-                                e.Graphics.DrawImage(_Image, dstRc, 0, 0, dstRc.Width, dstRc.Height, GraphicsUnit.Pixel);
+                                e.Graphics.DrawImage(image, dstRc, 0, 0, dstRc.Width, dstRc.Height, GraphicsUnit.Pixel);
                             break;
                         }
                     case ImageLayout.Tile:      // Image {0,0} = ClientRectangle {0,0} with no scaling, and repeated to fill
                         {
                             // TODO: Honour iattrib here? Doesn't seem fully possible?
-                            using (var tb = new TextureBrush(_Image, WrapMode.Tile))
+                            using (var tb = new TextureBrush(image, WrapMode.Tile))
                                 e.Graphics.FillRectangle(tb, this.ClientRectangle);
                             break;
                         }
                     case ImageLayout.Center:    // Image center = ClientRectangle center with no scaling
                         {
-                            var imgRc = new Rectangle(Point.Empty, _Image.Size);
+                            var imgRc = new Rectangle(Point.Empty, image.Size);
                             var dstRc = this.ClientRectangle;
 
-                            if (_Image.Width > this.ClientSize.Width)
+                            if (image.Width > this.ClientSize.Width)
                             {
-                                imgRc.X = (_Image.Width - this.ClientSize.Width) / 2;
+                                imgRc.X = (image.Width - this.ClientSize.Width) / 2;
                                 imgRc.Width = dstRc.Width;
                             }
                             else
                             {
-                                dstRc.X = (this.ClientSize.Width - _Image.Width) / 2;
+                                dstRc.X = (this.ClientSize.Width - image.Width) / 2;
                                 dstRc.Width = imgRc.Width;
                             }
-                            if (_Image.Height > this.ClientSize.Height)
+                            if (image.Height > this.ClientSize.Height)
                             {
-                                imgRc.Y = (_Image.Height - this.ClientSize.Height) / 2;
+                                imgRc.Y = (image.Height - this.ClientSize.Height) / 2;
                                 imgRc.Height = dstRc.Height;
                             }
                             else
                             {
-                                dstRc.Y = (this.ClientSize.Height - _Image.Height) / 2;
+                                dstRc.Y = (this.ClientSize.Height - image.Height) / 2;
                                 dstRc.Height = imgRc.Height;
                             }
                             if (iattrib != null)
-                                e.Graphics.DrawImage(_Image, dstRc, imgRc.X, imgRc.Y, imgRc.Width, imgRc.Height, GraphicsUnit.Pixel, iattrib);
+                                e.Graphics.DrawImage(image, dstRc, imgRc.X, imgRc.Y, imgRc.Width, imgRc.Height, GraphicsUnit.Pixel, iattrib);
                             else
-                                e.Graphics.DrawImage(_Image, dstRc, imgRc.X, imgRc.Y, imgRc.Width, imgRc.Height, GraphicsUnit.Pixel);
+                                e.Graphics.DrawImage(image, dstRc, imgRc.X, imgRc.Y, imgRc.Width, imgRc.Height, GraphicsUnit.Pixel);
                             break;
                         }
                     case ImageLayout.Stretch:   // Pin the image corners to our corners without any concerns for aspect ratio
                         {
                             if (iattrib != null)
-                                e.Graphics.DrawImage(_Image, this.ClientRectangle, 0, 0, _Image.Width, _Image.Height, GraphicsUnit.Pixel, iattrib);
+                                e.Graphics.DrawImage(image, this.ClientRectangle, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, iattrib);
                             else
-                                e.Graphics.DrawImage(_Image, this.ClientRectangle, 0, 0, _Image.Width, _Image.Height, GraphicsUnit.Pixel);
+                                e.Graphics.DrawImage(image, this.ClientRectangle, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
                             break;
                         }
                     case ImageLayout.Zoom:      // Like Stretch, but centered and mindful of the image aspect ratio
                     default:
                         {
                             var dstRc = this.ClientRectangle;
-                            var wRatio = (float)dstRc.Width / (float)_Image.Width;
-                            var hRatio = (float)dstRc.Height / (float)_Image.Height;
+                            var wRatio = (float)dstRc.Width / (float)image.Width;
+                            var hRatio = (float)dstRc.Height / (float)image.Height;
                             if (wRatio < hRatio)
                             {
-                                dstRc.Height = (int)((_Image.Height * wRatio) + 0.5);
+                                dstRc.Height = (int)((image.Height * wRatio) + 0.5);
                                 dstRc.Y = (this.ClientSize.Height - dstRc.Height) / 2;
                             }
                             else
                             {
-                                dstRc.Width = (int)((_Image.Width * hRatio) + 0.5);
+                                dstRc.Width = (int)((image.Width * hRatio) + 0.5);
                                 dstRc.X = (this.ClientSize.Width - dstRc.Width) / 2;
                             }
 
                             if (iattrib != null)
-                                e.Graphics.DrawImage(_Image, dstRc, 0, 0, _Image.Width, _Image.Height, GraphicsUnit.Pixel, iattrib);
+                                e.Graphics.DrawImage(image, dstRc, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, iattrib);
                             else
-                                e.Graphics.DrawImage(_Image, dstRc, 0, 0, _Image.Width, _Image.Height, GraphicsUnit.Pixel);
+                                e.Graphics.DrawImage(image, dstRc, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
                             break;
                         }
                 }
@@ -1017,7 +1021,7 @@ namespace ExtendedControls
         {
             base.OnTextChanged(e);
 
-            if (_ImageSelected == ImageType.Text || _ImageSelected == ImageType.InverseText)
+            if (imageselected == ImageType.Text || imageselected == ImageType.InverseText)
             {
                 // TODO: AutoSize. Ugh.
                 Invalidate();

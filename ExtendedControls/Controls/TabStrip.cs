@@ -92,7 +92,7 @@ namespace ExtendedControls
 
         private Color emptypanelcolor = Color.Empty;         // default empty means use base back color.. ambient property
 
-        private Panel[] imagepanels;
+        private DrawnPanel[] imagepanels;
 
         public TabStrip()
         {
@@ -304,28 +304,27 @@ namespace ExtendedControls
 
             if (StripMode != StripModeType.ListSelection && imagepanels == null && ImageList != null)  // on first entry..
             {
-                imagepanels = new Panel[ImageList.Length];
+                imagepanels = new DrawnPanel[ImageList.Length];
 
                 for (int inp = 0; inp < imagepanels.Length; inp++)
                 {
-                    imagepanels[inp] = new Panel()
+                    imagepanels[inp] = new DrawnPanel()
                     {
-                        BackgroundImage = ImageList[inp],
+                        ImageSelected = DrawnPanel.ImageType.None,
+                        Image = ImageList[inp],
                         Tag = inp,
                         BackgroundImageLayout = ImageLayout.Stretch,
-                        Visible = false
+                        Visible = false,
+                        Size = new Size(ImageList[inp].Width, ImageList[inp].Height),
+                        
                     };
 
-                    imagepanels[inp].Size = new Size(ImageList[inp].Width, ImageList[inp].Height);
                     imagepanels[inp].Click += TabIconClicked;
                     imagepanels[inp].MouseEnter += MouseEnterPanelObjects;
                     imagepanels[inp].MouseLeave += MouseLeavePanelObjects;
 
                     if (ShowPopOut)
-                    {
                         imagepanels[inp].ContextMenuStrip = contextMenuStrip1;
-                        imagepanels[inp].Tag = inp;     // remember by index
-                    }
 
                     if (TextList != null)
                     {
@@ -449,7 +448,7 @@ namespace ExtendedControls
 
         public void TabIconClicked(object sender, EventArgs e)
         {
-            int i = (int)(((Panel)sender).Tag);
+            int i = (int)(((Control)sender).Tag);
             ChangePanel(i);
         }
 
