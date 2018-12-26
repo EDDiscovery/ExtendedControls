@@ -41,6 +41,13 @@ namespace DialogTest
                 "icon 18", "icon 19",
             };
 
+            tabStrip1.EmptyColor = Color.Red;
+            tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
+            tabStrip1.SetControlText("Ctext1");
+            tabStrip1.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("Command pop out" + t + " " + i);
+            tabStrip1.OnCreateTab += OnCreateTab;
+            tabStrip1.SelectedBackColor = Color.Green;
+
             tabStrip2.ImageList = new Bitmap[] {
                 DialogTest.Properties.Resources.galaxy_red,
                 DialogTest.Properties.Resources.galaxy_gray,
@@ -54,15 +61,49 @@ namespace DialogTest
                 "icon 4", "icon 5",
             };
 
-            bool mode = false;
-            ExtendedControls.TabStrip.StripModeType mt = mode ? ExtendedControls.TabStrip.StripModeType.StripTop : ExtendedControls.TabStrip.StripModeType.ListSelection;
+            tabStrip2.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
+            tabStrip2.SetControlText("Ctext2");
+            tabStrip2.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("2 Command pop out" + t + " " + i);
+            tabStrip2.OnCreateTab += OnCreateTab;
 
-            tabStrip1.EmptyColor = Color.Red;
-            tabStrip1.StripMode = mt; //.ListSelection;
-            tabStrip2.StripMode = mt;
+            tabStrip3.ImageList = new Bitmap[] {
+                DialogTest.Properties.Resources.galaxy_red,
+                DialogTest.Properties.Resources.galaxy_gray,
+                DialogTest.Properties.Resources.galaxy_gray,
+                DialogTest.Properties.Resources.galaxy_white,
+                DialogTest.Properties.Resources.galaxy_gray,
+                DialogTest.Properties.Resources.galaxy_white,
+                                            };
+            tabStrip3.TextList = new string[] { "3icon 0", "3icon 1",
+                "3icon 2", "3icon 3",
+                "3icon 4", "3icon 5",
+            };
 
-            tabStrip1.OnCreateTab += TabStrip1_OnCreateTab;
-            tabStrip2.OnCreateTab += TabStrip1_OnCreateTab;
+            tabStrip3.StripMode = ExtendedControls.TabStrip.StripModeType.ListSelection;
+            tabStrip3.SetControlText("Ctext3");
+            tabStrip3.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("3 Command pop out" + t + " " + i);
+            tabStrip3.OnCreateTab += OnCreateTab;
+
+            tabStrip4.ImageList = new Bitmap[] {
+                DialogTest.Properties.Resources.galaxy_red,
+                DialogTest.Properties.Resources.galaxy_gray,
+                DialogTest.Properties.Resources.galaxy_gray,
+                DialogTest.Properties.Resources.galaxy_white,
+                DialogTest.Properties.Resources.galaxy_gray,
+                DialogTest.Properties.Resources.galaxy_white,
+                                            };
+            tabStrip4.TextList = new string[] { "4icon 0", "4icon 1",
+                "4icon 2", "4icon 3",
+                "4icon 4", "4icon 5",
+            };
+
+            tabStrip4.StripMode = ExtendedControls.TabStrip.StripModeType.StripTopOpen;
+            tabStrip4.SetControlText("Ctext3");
+            tabStrip4.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("4 Command pop out" + t + " " + i);
+            tabStrip4.OnCreateTab += OnCreateTab;
+            tabStrip4.SelectedBackColor = Color.Green;
+            tabStrip4.EmptyColor = Color.Pink;
+
 
             ListViewItem item1 = new ListViewItem("item1", 0);
             // Place a check mark next to the item.
@@ -124,19 +165,21 @@ namespace DialogTest
 
 
             listBox1.Items.AddRange(lv.ToArray());
+
         }
 
-        private Control TabStrip1_OnCreateTab(ExtendedControls.TabStrip t, int no)
+        private Control OnCreateTab(ExtendedControls.TabStrip t, int no)
         {
             UserControl uc = new UserControl();
             uc.BackColor = Color.Cyan;
             Label lb = new Label();
             lb.Location = new Point(10, 10);
-            lb.Text = "User Control " + (no+0);
+            lb.Size = new Size(200, 20);
+            lb.Text = t.Name + " User Control " + (no+0);
             uc.Name = "UC " + no;
             uc.Dock = DockStyle.Fill;
             uc.Controls.Add(lb);
-            tabStrip1.SetControlText("CT<" + uc.Name + ">");
+            t.SetControlText("CT<" + uc.Name + ">");
             return uc;
         }
 

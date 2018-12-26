@@ -46,8 +46,8 @@ namespace ExtendedControls
             this.components = new System.ComponentModel.Container();
             this.panelStrip = new System.Windows.Forms.Panel();
             this.labelControlText = new System.Windows.Forms.Label();
-            this.drawnPanelListSelection = new ExtendedControls.DrawnPanel();
-            this.drawnPanelPopOut = new ExtendedControls.DrawnPanel();
+            this.panelListSelection = new ExtendedControls.DrawnPanel();
+            this.panelPopOutIcon = new ExtendedControls.DrawnPanel();
             this.panelArrowRight = new System.Windows.Forms.Panel();
             this.panelArrowLeft = new System.Windows.Forms.Panel();
             this.panelSelectedIcon = new System.Windows.Forms.Panel();
@@ -62,8 +62,8 @@ namespace ExtendedControls
             // panelStrip
             // 
             this.panelStrip.Controls.Add(this.labelControlText);
-            this.panelStrip.Controls.Add(this.drawnPanelListSelection);
-            this.panelStrip.Controls.Add(this.drawnPanelPopOut);
+            this.panelStrip.Controls.Add(this.panelListSelection);
+            this.panelStrip.Controls.Add(this.panelPopOutIcon);
             this.panelStrip.Controls.Add(this.panelArrowRight);
             this.panelStrip.Controls.Add(this.panelArrowLeft);
             this.panelStrip.Controls.Add(this.panelSelectedIcon);
@@ -81,36 +81,36 @@ namespace ExtendedControls
             this.labelControlText.AutoSize = true;
             this.labelControlText.Location = new System.Drawing.Point(440, 8);
             this.labelControlText.Name = "labelControlText";
-            this.labelControlText.Size = new System.Drawing.Size(98, 13);
+            this.labelControlText.Size = new System.Drawing.Size(43, 13);
             this.labelControlText.TabIndex = 4;
-            this.labelControlText.Text = "Control text defined";
+            this.labelControlText.Text = "<code>";
             this.labelControlText.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.labelControlText.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
-            // drawnPanelListSelection
+            // panelListSelection
             // 
-            this.drawnPanelListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
-            this.drawnPanelListSelection.ImageSelected = ExtendedControls.DrawnPanel.ImageType.None;
-            this.drawnPanelListSelection.Location = new System.Drawing.Point(210, 3);
-            this.drawnPanelListSelection.Name = "drawnPanelListSelection";
-            this.drawnPanelListSelection.Size = new System.Drawing.Size(24, 24);
-            this.drawnPanelListSelection.TabIndex = 3;
-            this.drawnPanelListSelection.Click += new System.EventHandler(this.drawnPanelListSelection_Click);
-            this.drawnPanelListSelection.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.drawnPanelListSelection.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            this.panelListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
+            this.panelListSelection.ImageSelected = ExtendedControls.DrawnPanel.ImageType.None;
+            this.panelListSelection.Location = new System.Drawing.Point(210, 3);
+            this.panelListSelection.Name = "panelListSelection";
+            this.panelListSelection.Size = new System.Drawing.Size(24, 24);
+            this.panelListSelection.TabIndex = 3;
+            this.panelListSelection.Click += new System.EventHandler(this.drawnPanelListSelection_Click);
+            this.panelListSelection.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.panelListSelection.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
-            // drawnPanelPopOut
+            // panelPopOutIcon
             // 
-            this.drawnPanelPopOut.Image = global::ExtendedControls.Properties.Resources.popout;
-            this.drawnPanelPopOut.ImageSelected = ExtendedControls.DrawnPanel.ImageType.None;
-            this.drawnPanelPopOut.Location = new System.Drawing.Point(161, 3);
-            this.drawnPanelPopOut.Name = "drawnPanelPopOut";
-            this.drawnPanelPopOut.Size = new System.Drawing.Size(24, 24);
-            this.drawnPanelPopOut.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.drawnPanelPopOut, "Click to pop out the current panel into another window");
-            this.drawnPanelPopOut.Click += new System.EventHandler(this.panelPopOut_Click);
-            this.drawnPanelPopOut.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.drawnPanelPopOut.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            this.panelPopOutIcon.Image = global::ExtendedControls.Properties.Resources.popout;
+            this.panelPopOutIcon.ImageSelected = ExtendedControls.DrawnPanel.ImageType.None;
+            this.panelPopOutIcon.Location = new System.Drawing.Point(161, 3);
+            this.panelPopOutIcon.Name = "panelPopOutIcon";
+            this.panelPopOutIcon.Size = new System.Drawing.Size(24, 24);
+            this.panelPopOutIcon.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.panelPopOutIcon, "Click to pop out the current panel into another window");
+            this.panelPopOutIcon.Click += new System.EventHandler(this.panelPopOut_Click);
+            this.panelPopOutIcon.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.panelPopOutIcon.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
             // panelArrowRight
             // 
@@ -157,9 +157,9 @@ namespace ExtendedControls
             this.labelTitle.AutoSize = true;
             this.labelTitle.Location = new System.Drawing.Point(33, 8);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(92, 13);
+            this.labelTitle.Size = new System.Drawing.Size(43, 13);
             this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "Tab Strip Control..";
+            this.labelTitle.Text = "<code>";
             this.labelTitle.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.labelTitle.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
@@ -205,10 +205,10 @@ namespace ExtendedControls
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel panelArrowRight;
         private System.Windows.Forms.Panel panelArrowLeft;
-        private ExtendedControls.DrawnPanel drawnPanelPopOut;
+        private ExtendedControls.DrawnPanel panelPopOutIcon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemPopOut;
         private System.Windows.Forms.Label labelControlText;
-        private DrawnPanel drawnPanelListSelection;
+        private DrawnPanel panelListSelection;
     }
 }
