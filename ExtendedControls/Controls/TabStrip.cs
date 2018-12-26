@@ -300,7 +300,7 @@ namespace ExtendedControls
             if (ImageList == null)
                 return;
 
-            System.Diagnostics.Debug.WriteLine("Mode " + tdm);
+            //System.Diagnostics.Debug.WriteLine("Mode " + tdm);
 
             if (StripMode != StripModeType.ListSelection && imagepanels == null && ImageList != null)  // on first entry..
             {
@@ -430,7 +430,7 @@ namespace ExtendedControls
                     imagepanels[tabno].Visible = false;
             }
 
-            System.Diagnostics.Debug.WriteLine(this.Name + " seli" + showselectionicon + " showp " + showpopouticon + " text" + showtext + " lists " + showlistselection);
+            //System.Diagnostics.Debug.WriteLine(this.Name + " seli" + showselectionicon + " showp " + showpopouticon + " text" + showtext + " lists " + showlistselection);
             panelArrowRight.Visible = panelArrowLeft.Visible = arrowson;
             panelSelectedIcon.Visible = showselectionicon;
             panelPopOutIcon.Visible = showpopouticon;
@@ -499,8 +499,6 @@ namespace ExtendedControls
 
         private void drawnPanelListSelection_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("List click Mode " + tdm);
-
             autofadeinouttimer.Stop();      // in case we are in an autofade
 
             dropdown = new DropDownCustom("", true);
@@ -535,7 +533,6 @@ namespace ExtendedControls
             {
                 tdm = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
                 MouseLeavePanelObjects(sender, e);          // same as a mouse leave on one of the controls
-                System.Diagnostics.Debug.WriteLine("Deactivated " + tdm);
             };
 
             dropdown.Size = new Size(DropDownWidth, DropDownHeight);
