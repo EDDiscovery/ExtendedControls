@@ -28,14 +28,15 @@ namespace ExtendedControls
 {
     public partial class TabStrip : UserControl
     {
-        public enum StripModeType { StripTop, StripBottom, ListSelection };
-        public StripModeType StripMode { get; set; } = StripModeType.StripTop;
+        public enum StripModeType { StripTop, StripBottom, ListSelection, StripTopOpen };
+        public StripModeType StripMode { get { return stripmode; } set { ChangeStripMode(value); } }
         public Image EmptyPanelIcon { get; set; } = Properties.Resources.Stop;
         public Image[] ImageList;     // images
         public int[] ListSelectionItemSeparators;   // any separators for ListSelection
         public string[] TextList;       // text associated - tooltips or text on list selection
         public object[] TagList;      // tags for them..
         public bool ShowPopOut { get; set; }= true; // Pop out icon show
+        public Color ActiveColour { get; set; } = Color.Transparent;
 
         // if you set this, when empty, a panel will appear with the color selected
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
@@ -54,7 +55,7 @@ namespace ExtendedControls
         public Color DropDownItemSeperatorColor { get; set; } = Color.Purple;
 
         // Selected
-        public int SelectedIndex { get { return si; } set { ChangePanel(value); } }
+        public int SelectedIndex { get { return selectedindex; } set { ChangePanel(value); } }
         public Control CurrentControl;
 
         // events
@@ -64,14 +65,34 @@ namespace ExtendedControls
         public Action<TabStrip, int> OnPopOut;
 
         // internals
-        private Panel[] imagepanels;
+
+        private StripModeType stripmode = StripModeType.StripTop;
+        private int selectedindex = -1;
+
+        private enum TabDisplayMode
+        {
+            Compressed,     // strip/list mode compressed
+            Expanded,       // strip/list mode expanded during hover over, will go compressed after mouse exit
+            ExpandedFixed,  // open all the time (StripTopOpen)
+            ExpandedInList,   // List drop down open, expanded..
+            ExpandedContextMenu, // List is expanded, in a context menu
+        }
+
+        private TabDisplayMode tdm = TabDisplayMode.Compressed;
+        private int tabdisplaystart = 0;    // first tab number displayed
+        private int tabsvisibleonscreen = 0;       // number of tabs displayed
+
         private Timer autofadeinouttimer = new Timer();
-        private int si = -1;
+        private TabDisplayMode autofadetabmode;
+
+        const int Spacing = 4;      // spacing distance
 
         private Timer autorepeat = new Timer();
         private int autorepeatdir = 0;
 
         private Color emptypanelcolor = Color.Empty;         // default empty means use base back color.. ambient property
+
+        private Panel[] imagepanels;
 
         public TabStrip()
         {
@@ -82,16 +103,14 @@ namespace ExtendedControls
             autorepeat.Interval = 200;
             autorepeat.Tick += Autorepeat_Tick;
             panelSelectedIcon.BackgroundImage = EmptyPanelIcon;
-            SetIconVisibility();
         }
-
 
         #region Public interface
 
         public void Toggle()
         {
-            if (si != -1)
-                ChangePanel((si + 1) % ImageList.Length);
+            if (selectedindex != -1)
+                ChangePanel((selectedindex + 1) % ImageList.Length);
         }
 
         public bool ChangePanel(int i)     // with bounds checking
@@ -117,7 +136,7 @@ namespace ExtendedControls
                 this.Controls.Remove(CurrentControl);
                 CurrentControl.Dispose();
                 CurrentControl = null;
-                si = -1;
+                selectedindex = -1;
                 labelControlText.Text = "";
                 labelTitle.Text = "Select";
                 panelSelectedIcon.BackgroundImage = EmptyPanelIcon;
@@ -133,7 +152,7 @@ namespace ExtendedControls
 
                 if (CurrentControl != null)
                 {
-                    si = i;
+                    selectedindex = i;
 
                     CurrentControl.Dock = DockStyle.Fill;
 
@@ -148,21 +167,21 @@ namespace ExtendedControls
                 }
             }
 
-            SetIconVisibility();
+            Display();
         }
 
         public void PostCreate()        // ask for post create phase
         {
             if (CurrentControl != null && OnPostCreateTab != null )
             {
-                OnPostCreateTab(this, CurrentControl, si);       // now tab is in control set, give it a chance to configure itself and set its name
+                OnPostCreateTab(this, CurrentControl, selectedindex);       // now tab is in control set, give it a chance to configure itself and set its name
             }
         }
 
         public void SetControlText(string t)
         {
             labelControlText.Text = t;
-            SetIconVisibility();
+            Display();
         }
 
         #endregion
@@ -205,7 +224,7 @@ namespace ExtendedControls
 
         private void TabStrip_Layout(object sender, LayoutEventArgs e)
         {
-            if (StripMode == StripModeType.StripTop && panelStrip.Dock != DockStyle.Top)
+            if ((StripMode == StripModeType.StripTop || StripMode == StripModeType.StripTopOpen) && panelStrip.Dock != DockStyle.Top)
             {
                 panelStrip.Dock = DockStyle.Top;
             }
@@ -214,92 +233,33 @@ namespace ExtendedControls
         private void TabStrip_Resize(object sender, EventArgs e)
         {
             tabdisplaystart = 0;        // because we will display a different set next time
+            //TBD
         }
 
         private void panelPopOut_Click(object sender, EventArgs e)
         {
             if (OnPopOut != null)
-                OnPopOut(this, si);
+                OnPopOut(this, selectedindex);
+        }
+
+        private void ChangeStripMode(StripModeType mt)
+        {
+            stripmode = mt;
+            tdm = stripmode == StripModeType.StripTopOpen ? TabDisplayMode.ExpandedFixed : TabDisplayMode.Compressed;
+            Display();
         }
 
         #endregion
 
         #region Show hide info control
 
-        bool tobevisible = false;   // records if going to be shown during pausing
-        bool tabstripvisible = false; // is shown
-        bool selectioniconvisible = true; // Only used for tab icon strips, turns off first icon
-
-        void SetIconVisibility()
-        {
-            bool showpopout = ShowPopOut && tabstripvisible && si != -1;
-
-            drawnPanelPopOut.Visible = showpopout && selectioniconvisible;
-            panelSelectedIcon.Visible = !showpopout && selectioniconvisible;
-
-            drawnPanelPopOut.Location = panelSelectedIcon.Location;     // same position, mutually exclusive
-
-            if (StripMode == StripModeType.ListSelection)
-            {
-                drawnPanelListSelection.Location = new Point(panelSelectedIcon.Right + TabFieldSpacing, panelSelectedIcon.Top);
-                labelTitle.Location = new Point(tabstripvisible ? drawnPanelListSelection.Right+ TabFieldSpacing : drawnPanelListSelection.Left, labelTitle.Top);
-                labelControlText.Location = new Point(labelTitle.Right + TabFieldSpacing, labelControlText.Top);
-                labelTitle.Visible = true;
-                labelControlText.Visible = labelControlText.Text.Length > 0;
-                drawnPanelListSelection.Visible = tabstripvisible;
-            }
-            else
-            {
-                labelTitle.Location = new Point(33, 8);
-                labelTitle.Visible = !tabstripvisible;
-                labelControlText.Location = new Point(labelTitle.Right + TabFieldSpacing, labelControlText.Top);
-                labelControlText.Visible = !tabstripvisible && labelControlText.Text.Length > 0;
-                drawnPanelListSelection.Visible = false;
-            }
-        }
-
         private void MouseEnterPanelObjects(object sender, EventArgs e)
         {
-            if (StripMode != StripModeType.ListSelection && imagepanels == null && ImageList != null)  // on first entry..
-            {
-                imagepanels = new Panel[ImageList.Length];
-
-                for (int i = 0; i < imagepanels.Length; i++)
-                {
-                    imagepanels[i] = new Panel()
-                    {
-                        BackgroundImage = ImageList[i],
-                        Tag = i,
-                        BackgroundImageLayout = ImageLayout.Stretch,
-                        Visible = false
-                    };
-
-                    imagepanels[i].Size = new Size(ImageList[i].Width, ImageList[i].Height);
-                    imagepanels[i].Click += TabIconClicked;
-                    imagepanels[i].MouseEnter += MouseEnterPanelObjects;
-                    imagepanels[i].MouseLeave += MouseLeavePanelObjects;
-
-                    if (ShowPopOut)
-                    {
-                        imagepanels[i].ContextMenuStrip = contextMenuStrip1;
-                        imagepanels[i].Tag = i;     // remember by index
-                    }
-
-                    if (TextList != null)
-                    {
-                        toolTip1.SetToolTip(imagepanels[i], TextList[i]);
-                        toolTip1.ShowAlways = true;      // if not, it never appears
-                    }
-
-                    panelStrip.Controls.Add(imagepanels[i]);
-                }
-            }
-
             autofadeinouttimer.Stop();
 
-            if (!tabstripvisible)
+            if (tdm == TabDisplayMode.Compressed )      // if in compressed..
             {
-                tobevisible = true;
+                autofadetabmode = TabDisplayMode.Expanded;
                 autofadeinouttimer.Interval = 350;
                 autofadeinouttimer.Start();
                 //System.Diagnostics.Debug.WriteLine("{0} {1} Fade in", Environment.TickCount, Name);
@@ -310,15 +270,14 @@ namespace ExtendedControls
         {
             autofadeinouttimer.Stop();
 
-            if (tabstripvisible && !keepstripopen)      // if going visible, but not due to strip opening
+            if (tdm == TabDisplayMode.Expanded )      // if in expanded
             {
-                tobevisible = false;            // go invisible.. after interval
+                autofadetabmode = TabDisplayMode.Compressed;
                 autofadeinouttimer.Interval = 750;
                 autofadeinouttimer.Start();
                 //System.Diagnostics.Debug.WriteLine("{0} {1} Fade out", Environment.TickCount, Name);
             }
         }
-
 
         void AutoFadeInOutTick(object sender, EventArgs e)            // hiding
         {
@@ -326,12 +285,10 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("{0} {1} Fade {2}" , Environment.TickCount, Name, tobevisible);
 
-            if (tabstripvisible != tobevisible)
+            if (tdm != autofadetabmode )
             {
-                if (StripMode == StripModeType.ListSelection)
-                    DisplayListIcon(tobevisible);
-                else
-                    DisplayTabs(tobevisible);
+                tdm = autofadetabmode;
+                Display();
             }
         }
 
@@ -339,44 +296,97 @@ namespace ExtendedControls
 
         #region Implementation - As Tab strip
 
-        int tabdisplaystart = 0;    // first tab
-        int tabdisplayed = 0;       // number of tabs
-        const int Spacing = 4;      // spacing distance
-
-        void DisplayTabs( bool setvisible )
+        void Display()
         {
-            int i = 0;
-            for (; i < tabdisplaystart; i++)
-                imagepanels[i].Visible = false;
+            if (ImageList == null)
+                return;
 
+            System.Diagnostics.Debug.WriteLine("Mode " + tdm);
+
+            if (StripMode != StripModeType.ListSelection && imagepanels == null && ImageList != null)  // on first entry..
+            {
+                imagepanels = new Panel[ImageList.Length];
+
+                for (int inp = 0; inp < imagepanels.Length; inp++)
+                {
+                    imagepanels[inp] = new Panel()
+                    {
+                        BackgroundImage = ImageList[inp],
+                        Tag = inp,
+                        BackgroundImageLayout = ImageLayout.Stretch,
+                        Visible = false
+                    };
+
+                    imagepanels[inp].Size = new Size(ImageList[inp].Width, ImageList[inp].Height);
+                    imagepanels[inp].Click += TabIconClicked;
+                    imagepanels[inp].MouseEnter += MouseEnterPanelObjects;
+                    imagepanels[inp].MouseLeave += MouseLeavePanelObjects;
+
+                    if (ShowPopOut)
+                    {
+                        imagepanels[inp].ContextMenuStrip = contextMenuStrip1;
+                        imagepanels[inp].Tag = inp;     // remember by index
+                    }
+
+                    if (TextList != null)
+                    {
+                        toolTip1.SetToolTip(imagepanels[inp], TextList[inp]);
+                        toolTip1.ShowAlways = true;      // if not, it never appears
+                    }
+
+                    panelStrip.Controls.Add(imagepanels[inp]);
+                }
+            }
+
+            int tabno = 0;
+
+            bool showselectionicon = true;      // set up for compressed mode..
+            bool showtext = true;
+            bool showpopouticon = false;
+            bool showlistselection = false;
+
+            int xpos = panelSelectedIcon.Width + TabFieldSpacing;       // start here
             bool arrowson = false;
 
-            selectioniconvisible = true;        // presume we can show it
-            tabstripvisible = setvisible;       // also setting selectioniconvisible..
-
-            if (setvisible)
+            if (StripMode == StripModeType.ListSelection)               // in list mode
             {
-                int xpos = panelSelectedIcon.Width + Spacing*4;       // start here
+                if (tdm != TabDisplayMode.Compressed)                   // values are Compressed.. Expanded.. ExpandedInList
+                {
+                    if (ShowPopOut)
+                    {
+                        showselectionicon = false;                      // swap what is shown..
+                        showpopouticon = true;
+                    }
+
+                    showlistselection = true;
+                    xpos += panelListSelection.Width + TabFieldSpacing; // space on for allowing panel selector
+                }
+            }
+            else if (tdm != TabDisplayMode.Compressed)      // show icons..
+            {
+                for (; tabno < tabdisplaystart; tabno++)
+                    imagepanels[tabno].Visible = false;
+
                 int stoppoint = DisplayRectangle.Width - Spacing; // stop here
 
                 int spaceforarrowsandoneicon = panelArrowLeft.Width + Spacing + imagepanels[0].Width + Spacing + panelArrowRight.Width;
 
-                if ( xpos + spaceforarrowsandoneicon > stoppoint)   // no space at all !
+                if (xpos + spaceforarrowsandoneicon > stoppoint || tdm == TabDisplayMode.ExpandedFixed)   // no space at all or fixed open
                 {
                     xpos = 0;                                       // turn off titles, use all the space
-                    selectioniconvisible = false;
+                    showselectionicon = false;
                 }
 
                 int tabtotalwidth = 0;
                 for (int ip = 0; ip < imagepanels.Length; ip++)
                 {
                     tabtotalwidth += imagepanels[ip].Width + Spacing * 2;       // do it now due to the internal scaling due to fonts
-                   // System.Diagnostics.Debug.WriteLine("Image panel size " + ip + " w " + imagepanels[ip].Width + " width " + Images[ip].Width);
+                                                                                // System.Diagnostics.Debug.WriteLine("Image panel size " + ip + " w " + imagepanels[ip].Width + " width " + Images[ip].Width);
                 }
 
                 tabtotalwidth -= Spacing * 2;           // don't count last spacing.
 
-                if ( xpos + tabtotalwidth > stoppoint )     // if total tab width (icon space icon..) too big
+                if (xpos + tabtotalwidth > stoppoint)     // if total tab width (icon space icon..) too big
                 {
                     panelArrowLeft.Location = new Point(xpos, 4);
                     xpos += panelArrowLeft.Width + Spacing; // move over allowing space for left and spacing
@@ -384,27 +394,58 @@ namespace ExtendedControls
                     arrowson = true;
                 }
 
-                
-                tabdisplayed = 0;
-                for (; i < imagepanels.Length && xpos < stoppoint - ImageList[i].Width; i++)
+                tabsvisibleonscreen = 0;
+                for (; tabno < imagepanels.Length && xpos < stoppoint - ImageList[tabno].Width; tabno++)
                 {                                           // if its soo tight, may display nothing, thats okay
-                    imagepanels[i].Location = new Point(xpos, 3);
-                    xpos += imagepanels[i].Width + Spacing * 2;
-                    imagepanels[i].Visible = true;
-                    tabdisplayed++;
+                    imagepanels[tabno].Location = new Point(xpos, 3);
+                    xpos += imagepanels[tabno].Width + Spacing * 2;
+                    imagepanels[tabno].Visible = true;
+                    tabsvisibleonscreen++;
+
+                    if (ActiveColour != Color.Transparent)
+                        imagepanels[tabno].BackColor = (tabno == selectedindex) ? ActiveColour : Color.Transparent;
+
+                    //System.Diagnostics.Debug.WriteLine("Tab " + tabno + " Col " + imagepanels[tabno].BackColor);
                 }
 
-                
-                if ( arrowson )
+                if (arrowson)
                     panelArrowRight.Location = new Point(xpos, 4);
+
+                if (tdm == TabDisplayMode.ExpandedFixed)
+                {
+                    showtext = true;
+                }
+                else
+                {
+                    if (ShowPopOut && showselectionicon )
+                    {
+                        showselectionicon = false;
+                        showpopouticon = true;
+                    }
+
+                    showtext = false;
+                }
             }
 
-            for (; i < imagepanels.Length;i++)
-                imagepanels[i].Visible = false;
+            if (imagepanels != null)
+            {
+                for (; tabno < imagepanels.Length; tabno++)
+                    imagepanels[tabno].Visible = false;
+            }
 
-            
+            System.Diagnostics.Debug.WriteLine(this.Name + " seli" + showselectionicon + " showp " + showpopouticon + " text" + showtext + " lists " + showlistselection);
             panelArrowRight.Visible = panelArrowLeft.Visible = arrowson;
-            SetIconVisibility();
+            panelSelectedIcon.Visible = showselectionicon;
+            panelPopOutIcon.Visible = showpopouticon;
+            panelListSelection.Visible = showlistselection;
+            labelTitle.Visible = showtext;
+            labelControlText.Visible = showtext;
+
+            panelPopOutIcon.Location = panelSelectedIcon.Location;     // same position, mutually exclusive
+            panelListSelection.Location = new Point(panelSelectedIcon.Right + TabFieldSpacing, panelSelectedIcon.Top);
+            labelTitle.Location = new Point(xpos + TabFieldSpacing, labelTitle.Top);
+            labelControlText.Location = new Point(labelTitle.Right + TabFieldSpacing, labelControlText.Top);
+
         }
 
         public void TabIconClicked(object sender, EventArgs e)
@@ -440,10 +481,10 @@ namespace ExtendedControls
             autorepeat.Stop();
 
             int newpos = tabdisplaystart + autorepeatdir;
-            if ( newpos >= 0 && newpos <= imagepanels.Length - tabdisplayed)
+            if ( newpos >= 0 && newpos <= imagepanels.Length - tabsvisibleonscreen)
             {
                 tabdisplaystart = newpos;
-                DisplayTabs(true);
+                Display();
                 autorepeat.Start();
             }
         }
@@ -479,30 +520,25 @@ namespace ExtendedControls
             dropdown.FlatStyle = FlatStyle.Popup;
             dropdown.Activated += (s,ea) => 
             {
-                Point location = drawnPanelListSelection.PointToScreen(new Point(0, 0));
-                dropdown.Location = dropdown.PositionWithinScreen(location.X + drawnPanelListSelection.Width, location.Y);
+                Point location = panelListSelection.PointToScreen(new Point(0, 0));
+                dropdown.Location = dropdown.PositionWithinScreen(location.X + panelListSelection.Width, location.Y);
                 this.Invalidate(true);
             };
             dropdown.SelectedIndexChanged += (s, ea) =>
             {
+                tdm = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
                 ChangePanel(dropdown.SelectedIndex);
             };
 
             dropdown.Deactivate += (s, ea) =>               // will also be called on selected index because we have auto close on (in constructor)
             {
-                keepstripopen = false;
-                MouseLeavePanelObjects(sender, e);      // same as a mouse leave on one of the controls
+                tdm = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
+                MouseLeavePanelObjects(sender, e);          // same as a mouse leave on one of the controls
             };
 
             dropdown.Size = new Size(DropDownWidth, DropDownHeight);
             dropdown.Show(this.FindForm());
-            keepstripopen = true;
-        }
-
-        private void DisplayListIcon( bool setvisible )
-        {
-            tabstripvisible = setvisible;
-            SetIconVisibility();
+            tdm = TabDisplayMode.ExpandedInList;            // hold display in here during list presentation
         }
 
         #endregion
@@ -519,17 +555,18 @@ namespace ExtendedControls
                 OnPopOut(this, (int)p.Tag);
         }
 
-        bool keepstripopen = false;
-
         private void contextMenuStrip1_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
-            keepstripopen = false;
+            if (tdm == TabDisplayMode.ExpandedContextMenu) // if in context menu, go back to expanded
+                tdm = TabDisplayMode.Expanded;
+
             MouseLeavePanelObjects(sender, e);      // same as a mouse leave on one of the controls
         }
 
         private void contextMenuStrip1_Opened(object sender, EventArgs e)
         {
-            keepstripopen = true;
+            if ( tdm == TabDisplayMode.Expanded )       // if in expanded, go to context menu to hold.. if in a mode such as ExpandedFixed, don't change
+                tdm = TabDisplayMode.ExpandedContextMenu;
         }
 
         #endregion
