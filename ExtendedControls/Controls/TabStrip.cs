@@ -36,7 +36,7 @@ namespace ExtendedControls
         public string[] TextList;       // text associated - tooltips or text on list selection
         public object[] TagList;      // tags for them..
         public bool ShowPopOut { get; set; }= true; // Pop out icon show
-        public Color ActiveColour { get; set; } = Color.Transparent;
+        public Color SelectedBackColor { get; set; } = Color.Transparent;   // if set, show selected with a back colour
 
         // if you set this, when empty, a panel will appear with the color selected
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
@@ -92,7 +92,7 @@ namespace ExtendedControls
 
         private Color emptypanelcolor = Color.Empty;         // default empty means use base back color.. ambient property
 
-        private DrawnPanel[] imagepanels;
+        private PanelNoTheme[] imagepanels;
 
         public TabStrip()
         {
@@ -304,14 +304,13 @@ namespace ExtendedControls
 
             if (StripMode != StripModeType.ListSelection && imagepanels == null && ImageList != null)  // on first entry..
             {
-                imagepanels = new DrawnPanel[ImageList.Length];
+                imagepanels = new PanelNoTheme[ImageList.Length];
 
                 for (int inp = 0; inp < imagepanels.Length; inp++)
                 {
-                    imagepanels[inp] = new DrawnPanel()
+                    imagepanels[inp] = new PanelNoTheme()
                     {
-                        ImageSelected = DrawnPanel.ImageType.None,
-                        Image = ImageList[inp],
+                        BackgroundImage = ImageList[inp],
                         Tag = inp,
                         BackgroundImageLayout = ImageLayout.Stretch,
                         Visible = false,
@@ -400,8 +399,8 @@ namespace ExtendedControls
                     imagepanels[tabno].Visible = true;
                     tabsvisibleonscreen++;
 
-                    if (ActiveColour != Color.Transparent)
-                        imagepanels[tabno].BackColor = (tabno == selectedindex) ? ActiveColour : Color.Transparent;
+                    if (SelectedBackColor != Color.Transparent)
+                        imagepanels[tabno].BackColor = (tabno == selectedindex) ? SelectedBackColor : Color.Transparent;
 
                     //System.Diagnostics.Debug.WriteLine("Tab " + tabno + " Col " + imagepanels[tabno].BackColor);
                 }

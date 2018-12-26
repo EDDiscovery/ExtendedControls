@@ -46,7 +46,7 @@ namespace DialogTest
             tabStrip1.SetControlText("Ctext1");
             tabStrip1.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("Command pop out" + t + " " + i);
             tabStrip1.OnCreateTab += OnCreateTab;
-            tabStrip1.ActiveColour = Color.Green;
+            tabStrip1.SelectedBackColor = Color.Green;
 
             tabStrip2.ImageList = new Bitmap[] {
                 DialogTest.Properties.Resources.galaxy_red,
@@ -101,7 +101,7 @@ namespace DialogTest
             tabStrip4.SetControlText("Ctext3");
             tabStrip4.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("4 Command pop out" + t + " " + i);
             tabStrip4.OnCreateTab += OnCreateTab;
-            tabStrip4.ActiveColour = Color.Green;
+            tabStrip4.SelectedBackColor = Color.Green;
             tabStrip4.EmptyColor = Color.Pink;
 
 
