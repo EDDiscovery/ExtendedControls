@@ -17,13 +17,13 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using AudioExtensions;
-using Conditions;
+using BaseUtils;
 
 namespace ExtendedAudioForms
 {
     public partial class SoundEffectsDialog : Form
     {
-        public delegate void TestSettings(SoundEffectsDialog sender, ConditionVariables effect);
+        public delegate void TestSettings(SoundEffectsDialog sender, Variables effect);
         public event TestSettings TestSettingEvent;
         public delegate void StopTestSettings(SoundEffectsDialog sender);
         public event StopTestSettings StopTestSettingEvent;
@@ -34,7 +34,7 @@ namespace ExtendedAudioForms
             comboBoxCustomVoices.Items.AddRange(defaulteffects);
         }
 
-        public void Init(Icon ic, ConditionVariables cv, bool shownone)
+        public void Init(Icon ic, Variables cv, bool shownone)
         {
             this.Icon = ic;
 
@@ -44,7 +44,7 @@ namespace ExtendedAudioForms
             Set(cv);
         }
 
-        void Set(ConditionVariables cv)
+        void Set(Variables cv)
         { 
             SoundEffectSettings ap = new SoundEffectSettings(cv);
 
@@ -103,7 +103,7 @@ namespace ExtendedAudioForms
             ExtendedControls.ThemeableFormsInstance.Instance.ApplyToForm(this, System.Drawing.SystemFonts.DefaultFont);
         }
 
-        public ConditionVariables GetEffects()
+        public Variables GetEffects()
         {
             SoundEffectSettings ap = new SoundEffectSettings();
 
@@ -230,7 +230,7 @@ namespace ExtendedAudioForms
             }
             else
             {
-                ConditionVariables c = GetEffects();
+                Variables c = GetEffects();
                 toolTip1.SetToolTip(buttonExtTest, c.ToString(separ: Environment.NewLine));
                 if (TestSettingEvent != null)
                 {
@@ -259,7 +259,7 @@ namespace ExtendedAudioForms
 
         private void comboBoxCustomDefaults_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ConditionVariables vs = new ConditionVariables(defaulteffectsconfig[comboBoxCustomVoices.SelectedIndex],ConditionVariables.FromMode.MultiEntryComma);
+            Variables vs = new Variables(defaulteffectsconfig[comboBoxCustomVoices.SelectedIndex],Variables.FromMode.MultiEntryComma);
             Set(vs);
         }
 

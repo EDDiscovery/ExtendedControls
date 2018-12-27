@@ -15,7 +15,7 @@
  */
 namespace ExtendedConditionsForms
 {
-    partial class ConditionVariablesForm
+    partial class VariablesForm
     {
         /// <summary>
         /// Required designer variable.

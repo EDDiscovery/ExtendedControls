@@ -17,13 +17,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Conditions;
+using BaseUtils;
 
 namespace ExtendedConditionsForms
 { 
     public partial class ConditionVariablesForm : ExtendedControls.DraggableForm
     {
-        public ConditionVariables result;      // only on OK
+        public Variables result;      // only on OK
         public Dictionary<string, string> result_altops;
         public bool result_refresh;
 
@@ -53,7 +53,7 @@ namespace ExtendedConditionsForms
 
         // altops, if given, describes the operator of each variable.
 
-        public void Init(string t, Icon ic, ConditionVariables vbs , Dictionary<string, string> altops = null,
+        public void Init(string t, Icon ic, Variables vbs , Dictionary<string, string> altops = null,
                                                                 bool showone = false ,
                                                                 bool showrefresh = false , bool showrefreshstate = false,
                                                                 bool allowadd = false, bool allownoexpand = false, 
@@ -208,7 +208,7 @@ namespace ExtendedConditionsForms
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            result = new ConditionVariables();
+            result = new Variables();
             result_altops = new Dictionary<string, string>();
 
             foreach ( Group g in groups)

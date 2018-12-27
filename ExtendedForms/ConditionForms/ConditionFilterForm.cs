@@ -17,7 +17,7 @@ using BaseUtils.Win32Constants;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Conditions;
+using BaseUtils;
 
 using System.Windows.Forms;
 
