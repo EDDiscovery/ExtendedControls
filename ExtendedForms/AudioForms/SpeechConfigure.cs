@@ -17,7 +17,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using AudioExtensions;
-using Conditions;
+using BaseUtils;
 
 namespace ExtendedAudioForms
 {
@@ -32,11 +32,11 @@ namespace ExtendedAudioForms
         public string VoiceName { get { return comboBoxCustomVoice.Text; } }
         public string Volume { get { return (checkBoxCustomV.Checked) ? trackBarVolume.Value.ToString() : "Default"; } }
         public string Rate { get { return (checkBoxCustomR.Checked) ? trackBarRate.Value.ToString() : "Default"; } }
-        public ConditionVariables Effects { get { return effects;  } }
+        public Variables Effects { get { return effects;  } }
 
         AudioQueue queue;
         SpeechSynthesizer synth;
-        ConditionVariables effects;
+        Variables effects;
 
         public SpeechConfigure()
         {
@@ -52,7 +52,7 @@ namespace ExtendedAudioForms
                             string voicename,
                             string volume,
                             string rate,
-                            ConditionVariables ef)     // effects can also contain other vars, it will ignore
+                            Variables ef)     // effects can also contain other vars, it will ignore
         {
             comboBoxCustomPriority.Items.AddRange(Enum.GetNames(typeof(AudioQueue.Priority)));
 
@@ -147,7 +147,7 @@ namespace ExtendedAudioForms
             }
         }
 
-        private void Sfe_TestSettingEvent(SoundEffectsDialog sfe, ConditionVariables effects)
+        private void Sfe_TestSettingEvent(SoundEffectsDialog sfe, Variables effects)
         {
             System.IO.MemoryStream ms = synth.Speak(textBoxBorderTest.Text, "Default", comboBoxCustomVoice.Text, trackBarRate.Value);
             if (ms != null)

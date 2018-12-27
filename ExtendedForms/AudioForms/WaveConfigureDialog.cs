@@ -16,7 +16,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Conditions;
+using BaseUtils;
 using AudioExtensions;
 
 namespace ExtendedAudioForms
@@ -29,9 +29,9 @@ namespace ExtendedAudioForms
         public string StartEvent { get { return textBoxBorderStartTrigger.Text; } }
         public string FinishEvent { get { return textBoxBorderEndTrigger.Text; } }
         public string Volume { get { return (checkBoxCustomV.Checked) ? trackBarVolume.Value.ToString() : "Default"; } }
-        public ConditionVariables Effects { get { return effects; } }
+        public Variables Effects { get { return effects; } }
 
-        ConditionVariables effects;
+        Variables effects;
         AudioQueue queue;
 
         public WaveConfigureDialog()
@@ -47,7 +47,7 @@ namespace ExtendedAudioForms
                           AudioQueue.Priority prio,
                           string startname, string endname,
                           string volume,
-                          ConditionVariables ef)
+                          Variables ef)
         {
             comboBoxCustomPriority.Items.AddRange(Enum.GetNames(typeof(AudioQueue.Priority)));
 
@@ -135,7 +135,7 @@ namespace ExtendedAudioForms
             }
         }
 
-        private void Sfe_TestSettingEvent(SoundEffectsDialog sfe, ConditionVariables effects)
+        private void Sfe_TestSettingEvent(SoundEffectsDialog sfe, Variables effects)
         {
             try
             {
