@@ -32,6 +32,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.buttonExt1 = new ExtendedControls.ButtonExt();
             this.buttonExt2 = new ExtendedControls.ButtonExt();
+            this.buttonExt3 = new ExtendedControls.ButtonExt();
             this.SuspendLayout();
             // 
             // buttonExt1
@@ -54,11 +55,22 @@
             this.buttonExt2.UseVisualStyleBackColor = true;
             this.buttonExt2.Click += new System.EventHandler(this.buttonCondition);
             // 
+            // buttonExt3
+            // 
+            this.buttonExt3.Location = new System.Drawing.Point(210, 1);
+            this.buttonExt3.Name = "buttonExt3";
+            this.buttonExt3.Size = new System.Drawing.Size(75, 23);
+            this.buttonExt3.TabIndex = 1;
+            this.buttonExt3.Text = "ConditionL";
+            this.buttonExt3.UseVisualStyleBackColor = true;
+            this.buttonExt3.Click += new System.EventHandler(this.buttonExt3_Click);
+            // 
             // TestConditionUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(521, 334);
+            this.Controls.Add(this.buttonExt3);
             this.Controls.Add(this.buttonExt2);
             this.Controls.Add(this.buttonExt1);
             this.Name = "TestConditionUC";
@@ -71,5 +83,6 @@
         private System.Windows.Forms.Timer timer1;
         private ExtendedControls.ButtonExt buttonExt1;
         private ExtendedControls.ButtonExt buttonExt2;
+        private ExtendedControls.ButtonExt buttonExt3;
     }
 }

@@ -47,17 +47,12 @@ namespace ExtendedConditionsForms
             this.panel_close = new ExtendedControls.DrawnPanel();
             this.panel_minimize = new ExtendedControls.DrawnPanel();
             this.label_index = new System.Windows.Forms.Label();
-            this.panelOuter = new System.Windows.Forms.Panel();
-            this.panelVScroll = new ExtendedControls.PanelVScroll();
-            this.vScrollBarCustom1 = new ExtendedControls.VScrollBarCustom();
-            this.buttonMore = new ExtendedControls.ButtonExt();
             this.panelOK = new System.Windows.Forms.Panel();
             this.buttonCancel = new ExtendedControls.ButtonExt();
             this.buttonOK = new ExtendedControls.ButtonExt();
             this.statusStripCustom = new ExtendedControls.StatusStripCustom();
+            this.conditionFilterUC = new ExtendedConditionsForms.ConditionFilterUC();
             this.panelTop.SuspendLayout();
-            this.panelOuter.SuspendLayout();
-            this.panelVScroll.SuspendLayout();
             this.panelOK.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -110,69 +105,6 @@ namespace ExtendedConditionsForms
             this.label_index.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_index_MouseDown);
             this.label_index.MouseUp += new System.Windows.Forms.MouseEventHandler(this.label_index_MouseUp);
             // 
-            // panelOuter
-            // 
-            this.panelOuter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelOuter.Controls.Add(this.panelVScroll);
-            this.panelOuter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelOuter.Location = new System.Drawing.Point(3, 24);
-            this.panelOuter.Name = "panelOuter";
-            this.panelOuter.Size = new System.Drawing.Size(1098, 492);
-            this.panelOuter.TabIndex = 8;
-            // 
-            // panelVScroll
-            // 
-            this.panelVScroll.Controls.Add(this.vScrollBarCustom1);
-            this.panelVScroll.Controls.Add(this.buttonMore);
-            this.panelVScroll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelVScroll.InternalMargin = new System.Windows.Forms.Padding(0);
-            this.panelVScroll.Location = new System.Drawing.Point(0, 0);
-            this.panelVScroll.Name = "panelVScroll";
-            this.panelVScroll.ScrollBarWidth = 20;
-            this.panelVScroll.Size = new System.Drawing.Size(1096, 490);
-            this.panelVScroll.TabIndex = 8;
-            this.panelVScroll.VerticalScrollBarDockRight = true;
-            this.panelVScroll.Resize += new System.EventHandler(this.panelVScroll_Resize);
-            // 
-            // vScrollBarCustom1
-            // 
-            this.vScrollBarCustom1.ArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.vScrollBarCustom1.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.vScrollBarCustom1.ArrowColorScaling = 0.5F;
-            this.vScrollBarCustom1.ArrowDownDrawAngle = 270F;
-            this.vScrollBarCustom1.ArrowUpDrawAngle = 90F;
-            this.vScrollBarCustom1.BorderColor = System.Drawing.Color.White;
-            this.vScrollBarCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.vScrollBarCustom1.HideScrollBar = false;
-            this.vScrollBarCustom1.LargeChange = 32;
-            this.vScrollBarCustom1.Location = new System.Drawing.Point(1076, 0);
-            this.vScrollBarCustom1.Maximum = -424;
-            this.vScrollBarCustom1.Minimum = 0;
-            this.vScrollBarCustom1.MouseOverButtonColor = System.Drawing.Color.Green;
-            this.vScrollBarCustom1.MousePressedButtonColor = System.Drawing.Color.Red;
-            this.vScrollBarCustom1.Name = "vScrollBarCustom1";
-            this.vScrollBarCustom1.Size = new System.Drawing.Size(20, 490);
-            this.vScrollBarCustom1.SliderColor = System.Drawing.Color.DarkGray;
-            this.vScrollBarCustom1.SmallChange = 1;
-            this.vScrollBarCustom1.TabIndex = 0;
-            this.vScrollBarCustom1.Text = "vScrollBarCustom1";
-            this.vScrollBarCustom1.ThumbBorderColor = System.Drawing.Color.Yellow;
-            this.vScrollBarCustom1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.vScrollBarCustom1.ThumbColorScaling = 0.5F;
-            this.vScrollBarCustom1.ThumbDrawAngle = 0F;
-            this.vScrollBarCustom1.Value = -424;
-            this.vScrollBarCustom1.ValueLimited = -424;
-            // 
-            // buttonMore
-            // 
-            this.buttonMore.Location = new System.Drawing.Point(6, 6);
-            this.buttonMore.Name = "buttonMore";
-            this.buttonMore.Size = new System.Drawing.Size(24, 24);
-            this.buttonMore.TabIndex = 5;
-            this.buttonMore.Text = "+";
-            this.buttonMore.UseVisualStyleBackColor = true;
-            this.buttonMore.Click += new System.EventHandler(this.buttonMore_Click);
-            // 
             // panelOK
             // 
             this.panelOK.Controls.Add(this.buttonCancel);
@@ -213,23 +145,30 @@ namespace ExtendedConditionsForms
             this.statusStripCustom.TabIndex = 27;
             this.statusStripCustom.Text = "statusStripCustom1";
             // 
-            // ConditionFilterForm
+            // conditionFilterUC
+            // 
+            this.conditionFilterUC.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.conditionFilterUC.Location = new System.Drawing.Point(3, 24);
+            this.conditionFilterUC.Name = "conditionFilterUC";
+            this.conditionFilterUC.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
+            this.conditionFilterUC.Size = new System.Drawing.Size(1098, 492);
+            this.conditionFilterUC.TabIndex = 6;
+            // 
+            // ConditionFilterFormUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1104, 568);
-            this.Controls.Add(this.panelOuter);
+            this.Controls.Add(this.conditionFilterUC);
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.panelOK);
             this.Controls.Add(this.statusStripCustom);
-            this.Name = "ConditionFilterForm";
+            this.Name = "ConditionFilterFormUC";
             this.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Filter Form";
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
-            this.panelOuter.ResumeLayout(false);
-            this.panelVScroll.ResumeLayout(false);
             this.panelOK.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -242,13 +181,10 @@ namespace ExtendedConditionsForms
         private System.Windows.Forms.Label label_index;
         private ExtendedControls.ButtonExt buttonOK;
         private ExtendedControls.ButtonExt buttonCancel;
-        private ExtendedControls.ButtonExt buttonMore;
         private ExtendedControls.DrawnPanel panel_minimize;
         private ExtendedControls.DrawnPanel panel_close;
-        private ExtendedControls.VScrollBarCustom vScrollBarCustom1;
-        private ExtendedControls.PanelVScroll panelVScroll;
         private ExtendedControls.StatusStripCustom statusStripCustom;
-        private System.Windows.Forms.Panel panelOuter;
         private System.Windows.Forms.Panel panelOK;
+        private ConditionFilterUC conditionFilterUC;
     }
 }
