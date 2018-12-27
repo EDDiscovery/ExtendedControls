@@ -119,12 +119,12 @@ namespace ExtendedConditionsForms
             // sizes are the sizes of the controls and gaps
             condxoffset = ((eventlist != null) ? (150 + 8) : 0) +  panelxmargin + 8;
 
-            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyToForm(this, SystemFonts.DefaultFont);
+            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToForm(this, SystemFonts.DefaultFont) ?? false;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
 
             this.Text = t;
 
-            BaseUtils.Translator.Instance.Translate(this, new Control[] { label_index, buttonMore});
+            BaseUtils.Translator.Instance?.Translate(this, new Control[] { label_index, buttonMore});
 
             initialtitle = label_index.Text = this.Text;
         }
@@ -149,7 +149,7 @@ namespace ExtendedConditionsForms
                     foreach (ConditionEntry f in fe.fields)
                         CreateConditionInt(g, f.itemname, ConditionEntry.MatchNames[(int)f.matchtype], f.matchstring);
 
-                    ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+                    ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToControls(g.panel, SystemFonts.DefaultFont);
 
                     groups.Add(g);
                 }
@@ -192,7 +192,7 @@ namespace ExtendedConditionsForms
             if (eventlist == null)      // if we don't have any event list, auto create a condition
                 CreateConditionInt(g, null, null, null);
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToControls(g.panel, SystemFonts.DefaultFont);
 
             groups.Add(g);
             panelVScroll.Controls.Add(g.panel);
@@ -299,7 +299,7 @@ namespace ExtendedConditionsForms
         void CreateCondition(Group g, string initialfname = null, string initialcond = null, string initialvalue = null )
         {
             CreateConditionInt(g, initialfname, initialcond, initialvalue);
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToControls(g.panel, SystemFonts.DefaultFont);
             FixUpGroups();
         }
 

@@ -86,7 +86,7 @@ namespace ExtendedAudioForms
 
             effects = ef;
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToForm(this, System.Drawing.SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToForm(this, System.Drawing.SystemFonts.DefaultFont);
         }
 
 

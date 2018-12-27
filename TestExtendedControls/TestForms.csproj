@@ -218,6 +218,10 @@
       <Project>{2049403f-f4c7-45e6-b777-6390c78e4d2b}</Project>
       <Name>ExtendedControls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ExtendedForms\ExtendedForms.csproj">
+      <Project>{298C11C9-B58F-415C-8458-1CAE3C6CAB62}</Project>
+      <Name>ExtendedForms</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
