@@ -72,11 +72,11 @@
     <Compile Include="ConditionForms\ConditionFilterForm.Designer.cs">
       <DependentUpon>ConditionFilterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConditionForms\ConditionVariablesForm.cs">
+    <Compile Include="ConditionForms\VariablesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConditionForms\ConditionVariablesForm.Designer.cs">
-      <DependentUpon>ConditionVariablesForm.cs</DependentUpon>
+    <Compile Include="ConditionForms\VariablesForm.Designer.cs">
+      <DependentUpon>VariablesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -96,8 +96,8 @@
     <EmbeddedResource Include="ConditionForms\ConditionFilterForm.resx">
       <DependentUpon>ConditionFilterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConditionForms\ConditionVariablesForm.resx">
-      <DependentUpon>ConditionVariablesForm.cs</DependentUpon>
+    <EmbeddedResource Include="ConditionForms\VariablesForm.resx">
+      <DependentUpon>VariablesForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

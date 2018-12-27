@@ -21,7 +21,7 @@ using BaseUtils;
 
 namespace ExtendedConditionsForms
 { 
-    public partial class ConditionVariablesForm : ExtendedControls.DraggableForm
+    public partial class VariablesForm : ExtendedControls.DraggableForm
     {
         public Variables result;      // only on OK
         public Dictionary<string, string> result_altops;
@@ -44,7 +44,7 @@ namespace ExtendedConditionsForms
         bool showadd, shownoexpand;
         bool allowmultiple;
 
-        public ConditionVariablesForm()
+        public VariablesForm()
         {
             groups = new List<Group>();
             InitializeComponent();
