@@ -86,7 +86,7 @@ namespace ExtendedControls
 
                 if (ptForm.Y >= 0 && ptForm.Y < this.CaptionHeight)
                 {
-                    var lParam = (IntPtr)((ushort)ptScreen.X | (ptScreen.Y << 16));
+                    var lParam = unchecked((IntPtr)((ushort)ptScreen.X | ((ushort)ptScreen.Y << 16)));
 
                     switch (e.Button)
                     {
@@ -107,7 +107,7 @@ namespace ExtendedControls
 
                 if (ptForm.Y >= 0 && ptForm.Y < this.CaptionHeight)
                 {
-                    var lParam = (IntPtr)((ushort)ptScreen.X | (ptScreen.Y << 16));
+                    var lParam = unchecked((IntPtr)((ushort)ptScreen.X | ((ushort)ptScreen.Y << 16)));
 
                     switch (e.Button)
                     {
@@ -187,7 +187,7 @@ namespace ExtendedControls
                             if (WindowState == FormWindowState.Minimized)
                                 return;
 
-                            var p = PointToClient(new Point((int)m.LParam));
+                            var p = PointToClient(new Point(unchecked((int)m.LParam)));
                             const int CaptionHeight = 32;
                             const int edgesz = 5;   // 5 is generous.. really only a few pixels gets thru before the subwindows grabs them
 
@@ -229,7 +229,7 @@ namespace ExtendedControls
                     {
                         if (!windowsborder && m.WParam == (IntPtr)HT.CAPTION)
                         {
-                            var p = new Point((int)m.LParam);
+                            var p = new Point(unchecked((int)m.LParam));
                             if (_dblClickTimer.Enabled && ((Rectangle)_dblClickTimer.Tag).Contains(p))
                             {
                                 _dblClickTimer.Enabled = false;
