@@ -36,7 +36,7 @@ namespace ExtendedConditionsForms
         public Action<int> onCalcMinsize;                           // called with the y size of the windows, allows the caller if implemented to resize to suit
 
         private List<string> eventlist;
-        private List<string> additionalfieldnames;          // must be set
+        private List<string> additionalfieldnames;          
         private bool allowoutercond;
 
         private class Group 
@@ -89,7 +89,7 @@ namespace ExtendedConditionsForms
 
         // used to start when inside a condition of an IF of a program action (does not need additional names, already resolved)
 
-        public void InitCondition(List<string> varfields, ConditionLists j = null)
+        public void InitConditionList(List<string> varfields, ConditionLists j = null)
         {
             Init(null, varfields, true);
             LoadConditions(j);
@@ -148,6 +148,20 @@ namespace ExtendedConditionsForms
             }
 
             onChangeInGroups?.Invoke(groups.Count);
+        }
+
+        public void Clear()
+        {
+            List<Group.Conditions> cd = new List<Group.Conditions>();
+
+            foreach (Group g in groups)                         // FURTHER investigation.. when VScroll has been used after the swap, this and fix groups takes ages
+                foreach (var c in g.condlist)
+                    cd.Add(c);
+
+            foreach( var c in cd )
+            {
+                Delete(c);
+            }
         }
 
         #endregion
@@ -355,7 +369,6 @@ namespace ExtendedConditionsForms
             g.panel.ResumeLayout();
         }
 
-
         private void Cond_SelectedIndexChanged(object sender, EventArgs e)          // on condition changing, see if value is needed 
         {
             FixUpGroups();
@@ -365,6 +378,11 @@ namespace ExtendedConditionsForms
         {
             ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
             Group.Conditions c = (Group.Conditions)b.Tag;
+            Delete(c);
+        }
+
+        private void Delete(Group.Conditions c)
+        { 
             Group g = c.group;
 
             g.panel.Controls.Remove(c.fname);
@@ -616,7 +634,8 @@ namespace ExtendedConditionsForms
                             cachedevents[evtype].AddRange(classnames);
                     }
 
-                    cachedevents[evtype].AddRange(additionalfieldnames);
+                    if (additionalfieldnames != null)
+                        cachedevents[evtype].AddRange(additionalfieldnames);
                 }
 
                 list = cachedevents[evtype];
@@ -624,7 +643,8 @@ namespace ExtendedConditionsForms
             else 
             {  // no event name can only give additional field names
                 list = new List<string>();
-                list.AddRange(additionalfieldnames);
+                if (additionalfieldnames != null)
+                    list.AddRange(additionalfieldnames);
             }
 
             List<string> ret = new List<string>();

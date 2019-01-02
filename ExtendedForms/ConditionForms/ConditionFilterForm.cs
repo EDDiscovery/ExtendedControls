@@ -47,7 +47,7 @@ namespace ExtendedConditionsForms
         public void InitCondition(string t, Icon ic, List<string> varfields, ConditionLists j = null)
         {
             InitThis(t, ic);
-            conditionFilterUC.InitCondition(varfields,j);
+            conditionFilterUC.InitConditionList(varfields,j);
         }
 
         // used to start for a condition on an action form (does not need additional names, already resolved)
