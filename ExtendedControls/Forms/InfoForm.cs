@@ -62,7 +62,7 @@ namespace ExtendedControls
                 if (winborder)
                     panelTop.Visible = false;
                 if (pointsize != -1)
-                    textBoxInfo.Font = new Font(theme.FontName, pointsize);
+                    textBoxInfo.Font = BaseUtils.FontLoader.GetFont(theme.FontName, pointsize);
             }
             else
             {
