@@ -46,18 +46,20 @@ namespace ExtendedControls
             }
 
             // centred, autosized
-            public void TextCentreAutosize(Point poscentrehorz, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F, Object t = null, string tt = null)
+            public void TextCentreAutosize(Point poscentrehorz, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F, 
+                                            Object t = null, string tt = null, StringFormat frmt = null)
             {
-                img = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale);
+                img = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
                 pos = new Rectangle(poscentrehorz.X - img.Width / 2, poscentrehorz.Y, img.Width, img.Height);
                 tag = t;
                 tooltip = tt;
             }
 
             // top left, autosized
-            public void TextAutosize(Point topleft, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F, Object t = null, string tt = null)
+            public void TextAutosize(Point topleft, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F, 
+                                        Object t = null, string tt = null, StringFormat frmt = null)
             {
-                img = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale);
+                img = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
                 pos = new Rectangle(topleft.X, topleft.Y, img.Width, img.Height);
                 tag = t;
                 tooltip = tt;
@@ -66,9 +68,9 @@ namespace ExtendedControls
             // top left, sized
             public void TextFixedSizeC(Point topleft, Size size, string text, Font dp, Color c, Color backcolour, 
                                     float backscale = 1.0F, bool centertext = false,
-                                    Object t = null, string tt = null)
+                                    Object t = null, string tt = null, StringFormat frmt = null)
             {
-                img = BaseUtils.BitMapHelpers.DrawTextIntoFixedSizeBitmapC(text, size, dp, c, backcolour, backscale, centertext );
+                img = BaseUtils.BitMapHelpers.DrawTextIntoFixedSizeBitmapC(text, size, dp, c, backcolour, backscale, centertext, frmt );
                 pos = new Rectangle(topleft.X, topleft.Y, img.Width, img.Height);
                 tag = t;
                 tooltip = tt;
@@ -177,28 +179,28 @@ namespace ExtendedControls
         }
 
         // topleft, autosized
-        public ImageElement AddTextAutoSize(Point topleft, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null)
+        public ImageElement AddTextAutoSize(Point topleft, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
             ImageElement lab = new ImageElement();
-            lab.TextAutosize(topleft, max, label, fnt, c, backcolour, backscale, tag, tiptext);
+            lab.TextAutosize(topleft, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt);
             elements.Add(lab);
             return lab;
         }
 
         // topleft, sized
-        public ImageElement AddTextFixedSizeC(Point topleft, Size size, string label, Font fnt, Color c, Color backcolour, float backscale, bool centered , Object tag = null, string tiptext = null)
+        public ImageElement AddTextFixedSizeC(Point topleft, Size size, string label, Font fnt, Color c, Color backcolour, float backscale, bool centered , Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
             ImageElement lab = new ImageElement();
-            lab.TextFixedSizeC(topleft, size, label, fnt, c, backcolour, backscale, centered, tag, tiptext);
+            lab.TextFixedSizeC(topleft, size, label, fnt, c, backcolour, backscale, centered, tag, tiptext, frmt);
             elements.Add(lab);
             return lab;
         }
 
         // centre pos, autosized
-        public ImageElement AddTextCentred(Point poscentrehorz, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null)
+        public ImageElement AddTextCentred(Point poscentrehorz, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
             ImageElement lab = new ImageElement();
-            lab.TextCentreAutosize(poscentrehorz, max, label, fnt, c, backcolour, backscale, tag, tiptext);
+            lab.TextCentreAutosize(poscentrehorz, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt);
             elements.Add(lab);
             return lab;
         }
