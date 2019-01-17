@@ -429,8 +429,11 @@ namespace ExtendedControls
                     ExtendedControls.ButtonExt b = c as ExtendedControls.ButtonExt;
                     b.Click += (sender, ev) =>
                     {
-                        Entry en = (Entry)(((Control)sender).Tag);
-                        Trigger?.Invoke(logicalname, en.controlname, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(((Control)sender).Tag);
+                            Trigger?.Invoke(logicalname, en.controlname, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
                     };
                 }
                 else if (c is ExtendedControls.NumberBoxDouble)
@@ -444,8 +447,11 @@ namespace ExtendedControls
                         cb.Format = ent.numberboxformat;
                     cb.ReturnPressed += (box) =>
                     {
-                        Entry en = (Entry)(box.Tag);
-                        Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
                     };
                 }
                 else if (c is ExtendedControls.NumberBoxLong)
@@ -459,8 +465,11 @@ namespace ExtendedControls
                         cb.Format = ent.numberboxformat;
                     cb.ReturnPressed += (box) =>
                     {
-                        Entry en = (Entry)(box.Tag);
-                        Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
                     };
                 }
                 else if (c is ExtendedControls.TextBoxBorder)
@@ -470,8 +479,11 @@ namespace ExtendedControls
                     tb.ClearOnFirstChar = ent.clearonfirstchar;
                     tb.ReturnPressed += (box) =>
                     {
-                        Entry en = (Entry)(box.Tag);
-                        Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
                     };
                 }
                 else if (c is ExtendedControls.CheckBoxCustom)
@@ -480,8 +492,11 @@ namespace ExtendedControls
                     cb.Checked = ent.checkboxchecked;
                     cb.Click += (sender, ev) =>
                     {
-                        Entry en = (Entry)(((Control)sender).Tag);
-                        Trigger?.Invoke(logicalname, en.controlname, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(((Control)sender).Tag);
+                            Trigger?.Invoke(logicalname, en.controlname, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
                     };
                 }
 
@@ -525,7 +540,7 @@ namespace ExtendedControls
                     cb.SelectedIndexChanged += (sender, ev) =>
                     {
                         Control ctr = (Control)sender;
-                        if (ctr.Enabled)
+                        if (ctr.Enabled && !ProgClose)
                         {
                             Entry en = (Entry)(ctr.Tag);
                             Trigger?.Invoke(logicalname, en.controlname, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
