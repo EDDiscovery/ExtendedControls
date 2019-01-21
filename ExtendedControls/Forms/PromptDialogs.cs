@@ -25,10 +25,10 @@ namespace ExtendedControls
     public static class PromptSingleLine
     {
         public static string ShowDialog(Form p,
-                            string lab1, string defaultValue1, string caption, Icon ic, bool multiline = false, string tooltip = null)
+                            string lab1, string defaultValue1, string caption, Icon ic, bool multiline = false, string tooltip = null, int width = 600, int vspacing  = -1)
         {
             List<string> r = PromptMultiLine.ShowDialog(p, caption, ic, new string[] { lab1 }, 
-                    new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null);
+                    new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null , width, vspacing);
 
             return r?[0];
         }
@@ -37,19 +37,20 @@ namespace ExtendedControls
     public static class PromptMultiLine
     {
         // lab sets the items, def can be less or null
-        public static List<string> ShowDialog(Form p, string caption, Icon ic, string[] lab, string[] def, bool multiline = false, string[] tooltips = null)
+        public static List<string> ShowDialog(Form p, string caption, Icon ic, string[] lab, string[] def, bool multiline = false, string[] tooltips = null, int width = 600, int vspacing = -1)
         {
             ITheme theme = ThemeableFormsInstance.Instance;
 
             int vstart = theme.WindowsFrame ? 20 : 40;
-            int vspacing = multiline ? 80 : 40;
+            if ( vspacing == -1 )
+                vspacing = multiline ? 80 : 40;
             int lw = 100;
             int lx = 10;
             int tx = 10 + lw + 8;
 
-            Form prompt = new Form()
+            DraggableForm prompt = new DraggableForm()
             {
-                Width = 600,
+                Width = width,
                 Height = 90 + vspacing * lab.Length + (theme.WindowsFrame ? 20 : 0),
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 Text = caption,
@@ -59,8 +60,12 @@ namespace ExtendedControls
 
             Panel outer = new Panel() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle };
             prompt.Controls.Add(outer);
+            outer.MouseDown += (s, e) => { prompt.OnCaptionMouseDown(s as Control, e); };
+            outer.MouseUp += (s, e) => { prompt.OnCaptionMouseUp(s as Control, e); };
 
             Label textLabel = new Label() { Left = lx, Top = 8, Width = prompt.Width - 50, Text = caption };
+            textLabel.MouseDown += (s, e) => { prompt.OnCaptionMouseDown(s as Control, e); };
+            textLabel.MouseUp += (s, e) => { prompt.OnCaptionMouseUp(s as Control, e); };
 
             if (!theme.WindowsFrame)
                 outer.Controls.Add(textLabel);

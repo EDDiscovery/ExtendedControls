@@ -76,7 +76,7 @@ namespace ExtendedControls
             base.Dispose(disposing);
         }
 
-        protected void OnCaptionMouseDown(Control sender, MouseEventArgs e)
+        public void OnCaptionMouseDown(Control sender, MouseEventArgs e)
         {
             sender.Capture = false;
             if (FormBorderStyle == FormBorderStyle.None)
@@ -98,7 +98,7 @@ namespace ExtendedControls
             }
         }
 
-        protected void OnCaptionMouseUp(Control sender, MouseEventArgs e)
+        public void OnCaptionMouseUp(Control sender, MouseEventArgs e)
         {
             if (FormBorderStyle == FormBorderStyle.None)
             {
