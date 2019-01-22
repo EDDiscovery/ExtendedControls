@@ -48,6 +48,7 @@ namespace ExtendedControls
         // in non standard styles
 
         public bool FitToItemsHeight { get; set; } = true;                    // if set, move the border to integer of item height.
+        public bool FitImagesToItemHeight { get; set; } = false;                    // if set images scaled to fit within item height
         public int ScrollBarWidth { get; set; } = 16;
         public Color SelectionBackColor { get; set; } = Color.Gray;     // the area actually used (Not system)
         public Color BorderColor { get; set; } = Color.Red;             // not system
@@ -217,18 +218,26 @@ namespace ExtendedControls
                 totalarea.Height = itemheight;
                 Rectangle textarea = totalarea;     // where we draw text
                 Rectangle imagearea = totalarea;
+
                 if ( imageitems != null )           // if we have images, allocate space between the 
                 {
-                    int width = imageitems.Max(x => x.Width);
-                    textarea.X += width;
-                    imagearea.Width = width;
+                    if (FitImagesToItemHeight)
+                    {
+                        imagearea = new Rectangle(imagearea.X, imagearea.Y, itemheight - 1, itemheight - 1);
+                        textarea.X += imagearea.Width + 1;
+                    }
+                    else
+                    {
+                        int maxwidth = imageitems.Max(x => x.Width);
+                        textarea.X += maxwidth;
+                        imagearea.Width = maxwidth;
+                    }
                 }
 
                 int offset = 0;
 
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                // Console.WriteLine("Paint {0} {1}", focusindex, firstindex);
                 using (StringFormat f = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.NoWrap })
                 using (Brush textb = new SolidBrush(this.ForeColor))
                 using (Brush highlight = new SolidBrush(MouseOverBackgroundColor))
@@ -245,6 +254,7 @@ namespace ExtendedControls
                             if (imageitems != null && offset < imageitems.Count)
                             {
                                 e.Graphics.DrawImage(imageitems[offset], imagearea);
+                                //System.Diagnostics.Debug.WriteLine(offset + " Image is " + imagearea);
                             }
 
                             e.Graphics.DrawString(s, this.Font, textb, textarea, f);
@@ -277,16 +287,26 @@ namespace ExtendedControls
             using (Brush textb = new SolidBrush(this.ForeColor))
             {
                 Rectangle textarea = e.Bounds;
+                Rectangle imagearea = e.Bounds;
 
                 if (imageitems != null)
                 {
-                    int width = imageitems.Max(x => x.Width);
-                    textarea.X += width;
-                    Rectangle bitmaparea = e.Bounds;
-                    bitmaparea.Width = width;
+                    if (FitImagesToItemHeight)
+                    {
+                        imagearea = new Rectangle(imagearea.X, imagearea.Y, itemheight - 1,itemheight - 1);
+                        textarea.X += imagearea.Width + 1;
+                    }
+                    else
+                    {
+                        int maxwidth = imageitems.Max(x => x.Width);
+                        textarea.X += maxwidth;
+                        imagearea.Width = maxwidth;
+                    }
 
                     if (e.Index < imageitems.Count)
-                        e.Graphics.DrawImage(imageitems[e.Index], bitmaparea);
+                    {
+                        e.Graphics.DrawImage(imageitems[e.Index], imagearea);
+                    }
                 }
 
                 using (StringFormat f = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.NoWrap })

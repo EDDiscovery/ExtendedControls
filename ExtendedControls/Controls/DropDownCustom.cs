@@ -31,6 +31,7 @@ namespace ExtendedControls
         public int ScrollBarWidth { get { return listcontrol.ScrollBarWidth; } set { listcontrol.ScrollBarWidth = value; } }
         public float GradientColorScaling { get { return listcontrol.GradientColorScaling; } set { listcontrol.GradientColorScaling = value; } }
         public int ItemHeight { get { return listcontrol.ItemHeight; } set { listcontrol.ItemHeight = value; } }
+        public bool FitImagesToItemHeight { get { return listcontrol.FitImagesToItemHeight; } set { listcontrol.FitImagesToItemHeight = value; } }                    // if set images need to fit within item height
         public Color ItemSeperatorColor { get { return listcontrol.ItemSeperatorColor; } set { listcontrol.ItemSeperatorColor = value; } }
 
         private bool closeondeactivateselected;
