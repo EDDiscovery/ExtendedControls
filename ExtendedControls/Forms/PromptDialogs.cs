@@ -25,10 +25,15 @@ namespace ExtendedControls
     public static class PromptSingleLine
     {
         public static string ShowDialog(Form p,
-                            string lab1, string defaultValue1, string caption, Icon ic, bool multiline = false, string tooltip = null, int width = 600, int vspacing  = -1)
+                            string lab1, string defaultValue1, string caption, Icon ic, 
+                            bool multiline = false, 
+                            string tooltip = null, 
+                            int width = 600, 
+                            int vspacing  = -1,
+                            bool cursoratend = false)
         {
             List<string> r = PromptMultiLine.ShowDialog(p, caption, ic, new string[] { lab1 }, 
-                    new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null , width, vspacing);
+                    new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null , width, vspacing , cursoratend);
 
             return r?[0];
         }
@@ -37,7 +42,12 @@ namespace ExtendedControls
     public static class PromptMultiLine
     {
         // lab sets the items, def can be less or null
-        public static List<string> ShowDialog(Form p, string caption, Icon ic, string[] lab, string[] def, bool multiline = false, string[] tooltips = null, int width = 600, int vspacing = -1)
+        public static List<string> ShowDialog(Form p, string caption, Icon ic, string[] lab, string[] def, 
+                            bool multiline = false, 
+                            string[] tooltips = null, 
+                            int width = 600, 
+                            int vspacing = -1,
+                            bool cursoratend = false)
         {
             ITheme theme = ThemeableFormsInstance.Instance;
 
@@ -92,6 +102,10 @@ namespace ExtendedControls
                     ScrollBars = (multiline) ? ScrollBars.Vertical : ScrollBars.None,
                     WordWrap = multiline
                 };
+
+                if (cursoratend)
+                    tbs[i].Select(tbs[i].Text.Length, tbs[i].Text.Length);
+
                 outer.Controls.Add(lbs[i]);
                 outer.Controls.Add(tbs[i]);
 
