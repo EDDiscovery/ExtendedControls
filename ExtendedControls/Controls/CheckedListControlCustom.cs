@@ -76,14 +76,26 @@ namespace ExtendedControls
             clb.Font = fnt;
         }
 
-        public void SetChecked(string value, int ignore = 0 )
+        public void SetChecked(string value, int ignore = 0)        // using ; as the separator
+        {
+            SetChecked(value.SplitNoEmptyStrings(';'));
+        }
+
+        public void SetChecked(List<string> list, int ignore = 0)   // null allowed
+        {
+            if ( list != null )
+                SetChecked(list.ToArray(), ignore);
+        }
+
+        public void SetChecked(string[] list, int ignore = 0)       // empty array allowed
         {
             ignorechangeevent = true;
-            string[] list = value.Split(';');
+
+            bool all = list.Length == 1 && list[0].Equals("All");
 
             for (int i = ignore; i < clb.Items.Count; i++)
             {
-                if (list.Contains(clb.Items[i]) || value.Equals("All"))
+                if (list.Contains(clb.Items[i]) || all)
                     clb.SetItemChecked(i, true);
             }
             ignorechangeevent = false;
@@ -100,7 +112,7 @@ namespace ExtendedControls
             ignorechangeevent = false;
         }
 
-        public string GetChecked(int ignore = 0)
+        public string GetChecked(int ignore = 0, bool allornone = true)            // semicolon list of options with trailing ;, or All, or None if selected
         {
             string ret = "";
 
@@ -114,12 +126,25 @@ namespace ExtendedControls
                 }
             }
 
-            if (total == clb.Items.Count - ignore)
-                ret = "All";
-            if (ret.Length == 0)
-                ret = "None";
+            if (allornone)
+            {
+                if (total == clb.Items.Count - ignore)
+                    ret = "All";
+                if (ret.Length == 0)
+                    ret = "None";
+            }
 
             return ret;
+        }
+
+        public List<string> GetCheckedList(int ignore = 0, bool allornone = true)
+        {
+            return GetChecked(ignore,allornone).SplitNoEmptyStartFinish(';').ToList();
+        }
+
+        public string[] GetCheckedArray(int ignore = 0, bool allornone = true)
+        {
+            return GetChecked(ignore,allornone).SplitNoEmptyStartFinish(';');
         }
 
         protected void ItemCheck(Object sender , ItemCheckEventArgs e )

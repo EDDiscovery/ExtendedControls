@@ -476,6 +476,7 @@ namespace ExtendedControls
                 {
                     ExtendedControls.TextBoxBorder tb = c as ExtendedControls.TextBoxBorder;
                     tb.Multiline = tb.WordWrap = ent.textboxmultiline;
+                    tb.Size = ent.size;     // restate size in case multiline is on
                     tb.ClearOnFirstChar = ent.clearonfirstchar;
                     tb.ReturnPressed += (box) =>
                     {
