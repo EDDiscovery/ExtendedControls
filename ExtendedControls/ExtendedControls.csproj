@@ -49,11 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\AutoCompleteDGV.cs" />
-    <Compile Include="Controls\AutoCompleteTextBox.cs">
+    <Compile Include="Controls\DGVColumnAutoComplete.cs" />
+    <Compile Include="Controls\TextBoxAutoComplete.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ButtonExt.cs">
+    <Compile Include="Controls\Button.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\CompassControl.cs">
@@ -65,19 +65,16 @@
     <Compile Include="Controls\NumberBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\CheckBoxCustom.cs">
+    <Compile Include="Controls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\CheckedListControlCustom.cs">
+    <Compile Include="Forms\CheckedListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\ComboBoxCustom.cs">
+    <Compile Include="Controls\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\Design\DrawnPanelDesigner.cs" />
-    <Compile Include="Controls\DrawnPanelNoTheme.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\ImageViewer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -87,11 +84,11 @@
     <Compile Include="Controls\PanelNoTheme.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TreeViewCustom.cs">
+    <Compile Include="Controls\TreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TreeViewCustom.Designer.cs">
-      <DependentUpon>TreeViewCustom.cs</DependentUpon>
+    <Compile Include="Controls\TreeView.Designer.cs">
+      <DependentUpon>TreeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ConfigurableForm.cs">
       <SubType>Form</SubType>
@@ -109,11 +106,11 @@
     <Compile Include="Forms\KeyForm.Designer.cs">
       <DependentUpon>KeyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PanelSelectionList.cs">
+    <Compile Include="Controls\PanelDropDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelSelectionList.Designer.cs">
-      <DependentUpon>PanelSelectionList.cs</DependentUpon>
+    <Compile Include="Controls\PanelDropDown.Designer.cs">
+      <DependentUpon>PanelDropDown.cs</DependentUpon>
     </Compile>
     <Compile Include="Themes\ITheme.cs" />
     <Compile Include="Themes\ThemeStandardEditor.cs">
@@ -123,20 +120,20 @@
       <DependentUpon>ThemeStandardEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="ToolStrips\ThemeToolStrip.cs" />
-    <Compile Include="Controls\CustomDateTimePicker.cs">
+    <Compile Include="Controls\DateTimePicker.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\DropDownCustom.cs">
+    <Compile Include="Forms\ListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\DataGridViewExtensions.cs" />
-    <Compile Include="Controls\DataViewScrollerPanel.cs">
+    <Compile Include="Controls\PanelDataGridViewScroll.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\DrawnPanel.cs">
+    <Compile Include="Controls\PanelDrawn.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GroupBoxCustom.cs">
+    <Compile Include="Controls\GroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\InfoForm.cs">
@@ -145,10 +142,10 @@
     <Compile Include="Forms\InfoForm.Designer.cs">
       <DependentUpon>InfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\LabelExt.cs">
+    <Compile Include="Controls\Label.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ListControlCustom.cs">
+    <Compile Include="Controls\ListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\MessageBoxTheme.cs">
@@ -157,13 +154,13 @@
     <Compile Include="Forms\MessageBoxTheme.Designer.cs">
       <DependentUpon>MessageBoxTheme.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\NumericUpDownCustom.cs">
+    <Compile Include="Controls\NumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelVScroll.cs">
+    <Compile Include="Controls\PanelScroll.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PictureBoxHotspot.cs">
+    <Compile Include="Controls\PictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\PromptDialogs.cs" />
@@ -173,22 +170,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\RadioButtonCustom.cs">
+    <Compile Include="Controls\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\RichTextBoxScroll.cs">
+    <Compile Include="Controls\RichTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\RollUpPanel.cs">
+    <Compile Include="Controls\PanelRollUp.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\SplitContainerCustom.cs">
+    <Compile Include="Controls\SplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\StatusStripCustom.cs">
+    <Compile Include="Controls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TabControlCustom.cs">
+    <Compile Include="Controls\TabControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\TabStrip.cs">
@@ -198,7 +195,7 @@
       <DependentUpon>TabStrip.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TabStyleCustom.cs" />
-    <Compile Include="Controls\TextBoxBorder.cs">
+    <Compile Include="Controls\TextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Themes\Theme.cs" />
@@ -207,13 +204,13 @@
     <Compile Include="Controls\UpDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\VScrollCustom.cs">
+    <Compile Include="Controls\ScrollBar.cs">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\AutoCompleteTextBox.resx">
-      <DependentUpon>AutoCompleteTextBox.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
+      <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageViewer.resx">
       <DependentUpon>ImageViewer.cs</DependentUpon>
@@ -231,8 +228,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RichTextBoxScroll.resx">
-      <DependentUpon>RichTextBoxScroll.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\RichTextBox.resx">
+      <DependentUpon>RichTextBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TabStrip.resx">
       <DependentUpon>TabStrip.cs</DependentUpon>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright © 2017-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -22,7 +22,7 @@ namespace ExtendedControls
     /// <summary>
     /// A string-backed <see cref="DataGridViewColumn"/> capable of autocompletion inside of a <see cref="DataGridView"/> control.
     /// </summary>
-    public class AutoCompleteDGVColumn : DataGridViewColumn
+    public class ExtDataGridViewColumnAutoComplete : DataGridViewColumn
     {
         #region AutoCompleteDGVColumn
 
@@ -32,12 +32,12 @@ namespace ExtendedControls
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public AutoCompleteTextBox.PerformAutoComplete AutoCompleteGenerator { get; set; }
+        public ExtTextBoxAutoComplete.PerformAutoComplete AutoCompleteGenerator { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AutoCompleteDGVColumn"/> class to the default state.
+        /// Initializes a new instance of the <see cref="ExtDataGridViewColumnAutoComplete"/> class to the default state.
         /// </summary>
-        public AutoCompleteDGVColumn() : base(new CellDisplayControl()) { }
+        public ExtDataGridViewColumnAutoComplete() : base(new CellDisplayControl()) { }
 
         /// <summary>
         /// Gets or sets the template used to create new cells.
@@ -58,7 +58,7 @@ namespace ExtendedControls
 
         public override object Clone()
         {
-            var c = base.Clone() as AutoCompleteDGVColumn;
+            var c = base.Clone() as ExtDataGridViewColumnAutoComplete;
             c.AutoCompleteGenerator = AutoCompleteGenerator;
             return c;
         }
@@ -114,8 +114,8 @@ namespace ExtendedControls
                 {
                     _ctl = DataGridView.EditingControl as CellEditControl;
                     _ctl.Text = (string)(Value ?? DefaultNewRowValue);
-                    if (OwningColumn != null && ((AutoCompleteDGVColumn)OwningColumn).AutoCompleteGenerator != null)
-                        _ctl.SetAutoCompletor((OwningColumn as AutoCompleteDGVColumn).AutoCompleteGenerator);
+                    if (OwningColumn != null && ((ExtDataGridViewColumnAutoComplete)OwningColumn).AutoCompleteGenerator != null)
+                        _ctl.SetAutoCompletor((OwningColumn as ExtDataGridViewColumnAutoComplete).AutoCompleteGenerator);
                 }
             }
 
@@ -140,9 +140,9 @@ namespace ExtendedControls
         #region CellEditControl
 
         /// <summary>
-        /// Provides for autocompletion capabilities when editing data in an <see cref="AutoCompleteDGVColumn"/>.
+        /// Provides for autocompletion capabilities when editing data in an <see cref="ExtDataGridViewColumnAutoComplete"/>.
         /// </summary>
-        public class CellEditControl : AutoCompleteTextBox, IDataGridViewEditingControl
+        public class CellEditControl : ExtTextBoxAutoComplete, IDataGridViewEditingControl
         {
             /// <summary>
             /// Initializes a new instance of the <see cref="CellEditControl"/> class.

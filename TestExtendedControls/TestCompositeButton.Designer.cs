@@ -31,10 +31,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.buttonExt3 = new ExtendedControls.ButtonExt();
+            this.buttonExt3 = new ExtendedControls.ExtButton();
             this.compositeButton1 = new ExtendedControls.CompositeButton();
-            this.buttonExt1 = new ExtendedControls.ButtonExt();
-            this.buttonExt2 = new ExtendedControls.ButtonExt();
+            this.buttonExt1 = new ExtendedControls.ExtButton();
+            this.buttonExt2 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // button1
@@ -87,7 +87,7 @@
             this.compositeButton1.BackColor = System.Drawing.Color.Azure;
             this.compositeButton1.BackgroundImage = global::DialogTest.Properties.Resources.edlogo24;
             this.compositeButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.compositeButton1.Buttons = new ExtendedControls.ButtonExt[] {
+            this.compositeButton1.Buttons = new ExtendedControls.ExtButton[] {
         this.buttonExt1,
         this.buttonExt2};
             this.compositeButton1.ButtonSpacing = 8;
@@ -150,11 +150,11 @@
 
         #endregion
         private ExtendedControls.CompositeButton compositeButton1;
-        private ExtendedControls.ButtonExt buttonExt1;
-        private ExtendedControls.ButtonExt buttonExt2;
+        private ExtendedControls.ExtButton buttonExt1;
+        private ExtendedControls.ExtButton buttonExt2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private ExtendedControls.ButtonExt buttonExt3;
+        private ExtendedControls.ExtButton buttonExt3;
         private System.Windows.Forms.Panel panel1;
     }
 }

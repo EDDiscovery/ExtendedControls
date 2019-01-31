@@ -30,10 +30,10 @@ namespace ExtendedConditionsForms
         public class Group
         {
             public Panel panel;
-            public ExtendedControls.TextBoxBorder var;
-            public ExtendedControls.ComboBoxCustom op;
-            public ExtendedControls.TextBoxBorder value;
-            public ExtendedControls.ButtonExt del;
+            public ExtendedControls.ExtTextBox var;
+            public ExtendedControls.ExtComboBox op;
+            public ExtendedControls.ExtTextBox value;
+            public ExtendedControls.ExtButton del;
         }
 
         List<Group> groups;
@@ -102,7 +102,7 @@ namespace ExtendedConditionsForms
             g.panel = new Panel();
             g.panel.BorderStyle = BorderStyle.FixedSingle;
 
-            g.var = new ExtendedControls.TextBoxBorder();
+            g.var = new ExtendedControls.ExtTextBox();
             g.var.Size = new Size(120, 24);
             g.var.Location = new Point(panelmargin, panelmargin);
             g.var.Text = var;
@@ -113,7 +113,7 @@ namespace ExtendedConditionsForms
 
             if (shownoexpand || showadd)
             {
-                g.op = new ExtendedControls.ComboBoxCustom();
+                g.op = new ExtendedControls.ExtComboBox();
                 g.op.Size = new Size(50, 24);
                 g.op.Location = new Point(g.var.Right + 4, panelmargin);
 
@@ -146,7 +146,7 @@ namespace ExtendedConditionsForms
             }
 
 
-            g.value = new ExtendedControls.TextBoxBorder();
+            g.value = new ExtendedControls.ExtTextBox();
             g.value.Location = new Point(nextpos + 4, panelmargin);
             g.value.Text = value.ReplaceEscapeControlChars();
             g.value.Multiline = true;
@@ -155,7 +155,7 @@ namespace ExtendedConditionsForms
             toolTip1.SetToolTip(g.value, "Variable value");
             g.panel.Controls.Add(g.value);
 
-            g.del = new ExtendedControls.ButtonExt();
+            g.del = new ExtendedControls.ExtButton();
             g.del.Size = new Size(24, 24);
             g.del.Text = "X";
             g.del.Tag = g;
@@ -230,7 +230,7 @@ namespace ExtendedConditionsForms
 
         private void Del_Clicked(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group g = (Group)b.Tag;
 
             g.panel.Controls.Clear();

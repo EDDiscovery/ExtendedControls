@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,18 +13,14 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using System;
-using System.Collections.Generic;
+
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class GroupBoxCustom : GroupBox
+    public class ExtGroupBox : GroupBox
     {
         // call Invalidate if changed
 
@@ -38,7 +34,7 @@ namespace ExtendedControls
         public bool FillClientAreaWithAlternateColor { get; set; } = false;  // Fill client area with alternate colour..
         public Color AlternateClientBackColor { get; set; } = Color.Blue;        // area of client.. only used if FillOnlyClientArea is true.  
 
-        public GroupBoxCustom() : base()
+        public ExtGroupBox() : base()
         {
         }
 

@@ -28,32 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkBoxShift = new ExtendedControls.CheckBoxCustom();
-            this.checkBoxCtrl = new ExtendedControls.CheckBoxCustom();
-            this.checkBoxAlt = new ExtendedControls.CheckBoxCustom();
-            this.checkBoxKey = new ExtendedControls.CheckBoxCustom();
-            this.buttonReset = new ExtendedControls.ButtonExt();
-            this.buttonNext = new ExtendedControls.ButtonExt();
-            this.textBoxKeys = new ExtendedControls.TextBoxBorder();
+            this.checkBoxShift = new ExtendedControls.ExtCheckBox();
+            this.checkBoxCtrl = new ExtendedControls.ExtCheckBox();
+            this.checkBoxAlt = new ExtendedControls.ExtCheckBox();
+            this.checkBoxKey = new ExtendedControls.ExtCheckBox();
+            this.buttonReset = new ExtendedControls.ExtButton();
+            this.buttonNext = new ExtendedControls.ExtButton();
+            this.textBoxKeys = new ExtendedControls.ExtTextBox();
             this.labelKeys = new System.Windows.Forms.Label();
-            this.buttonTest = new ExtendedControls.ButtonExt();
-            this.textBoxSendTo = new ExtendedControls.AutoCompleteTextBox();
+            this.buttonTest = new ExtendedControls.ExtButton();
+            this.textBoxSendTo = new ExtendedControls.ExtTextBoxAutoComplete();
             this.labelSendTo = new System.Windows.Forms.Label();
-            this.buttonOK = new ExtendedControls.ButtonExt();
-            this.buttonCancel = new ExtendedControls.ButtonExt();
+            this.buttonOK = new ExtendedControls.ExtButton();
+            this.buttonCancel = new ExtendedControls.ExtButton();
             this.labelCaption = new System.Windows.Forms.Label();
             this.panelOuter = new System.Windows.Forms.Panel();
-            this.comboBoxKeySelector = new ExtendedControls.ComboBoxCustom();
+            this.comboBoxKeySelector = new ExtendedControls.ExtComboBox();
             this.panelRadio = new System.Windows.Forms.Panel();
-            this.radioButtonUp = new ExtendedControls.RadioButtonCustom();
-            this.radioButtonDown = new ExtendedControls.RadioButtonCustom();
-            this.radioButtonPress = new ExtendedControls.RadioButtonCustom();
-            this.textBoxNextDelay = new ExtendedControls.TextBoxBorder();
-            this.textBoxDelay = new ExtendedControls.TextBoxBorder();
+            this.radioButtonUp = new ExtendedControls.ExtRadioButton();
+            this.radioButtonDown = new ExtendedControls.ExtRadioButton();
+            this.radioButtonPress = new ExtendedControls.ExtRadioButton();
+            this.textBoxNextDelay = new ExtendedControls.ExtTextBox();
+            this.textBoxDelay = new ExtendedControls.ExtTextBox();
             this.labelNextDelay = new System.Windows.Forms.Label();
             this.labelSelKeys = new System.Windows.Forms.Label();
             this.labelDelay = new System.Windows.Forms.Label();
-            this.buttonDelete = new ExtendedControls.ButtonExt();
+            this.buttonDelete = new ExtendedControls.ExtButton();
             this.panelOuter.SuspendLayout();
             this.panelRadio.SuspendLayout();
             this.SuspendLayout();
@@ -513,31 +513,31 @@
 
         #endregion
 
-        private ExtendedControls.CheckBoxCustom checkBoxShift;
-        private CheckBoxCustom checkBoxCtrl;
-        private CheckBoxCustom checkBoxAlt;
-        private CheckBoxCustom checkBoxKey;
-        private ButtonExt buttonReset;
-        private ButtonExt buttonNext;
-        private TextBoxBorder textBoxKeys;
+        private ExtendedControls.ExtCheckBox checkBoxShift;
+        private ExtCheckBox checkBoxCtrl;
+        private ExtCheckBox checkBoxAlt;
+        private ExtCheckBox checkBoxKey;
+        private ExtButton buttonReset;
+        private ExtButton buttonNext;
+        private ExtTextBox textBoxKeys;
         private System.Windows.Forms.Label labelKeys;
-        private ButtonExt buttonTest;
-        private AutoCompleteTextBox textBoxSendTo;
+        private ExtButton buttonTest;
+        private ExtTextBoxAutoComplete textBoxSendTo;
         private System.Windows.Forms.Label labelSendTo;
-        private ButtonExt buttonOK;
-        private ButtonExt buttonCancel;
+        private ExtButton buttonOK;
+        private ExtButton buttonCancel;
         private System.Windows.Forms.Label labelCaption;
         private System.Windows.Forms.Panel panelOuter;
-        private ButtonExt buttonDelete;
-        private TextBoxBorder textBoxDelay;
+        private ExtButton buttonDelete;
+        private ExtTextBox textBoxDelay;
         private System.Windows.Forms.Label labelDelay;
-        private TextBoxBorder textBoxNextDelay;
+        private ExtTextBox textBoxNextDelay;
         private System.Windows.Forms.Label labelNextDelay;
         private System.Windows.Forms.Panel panelRadio;
-        private RadioButtonCustom radioButtonUp;
-        private RadioButtonCustom radioButtonDown;
-        private RadioButtonCustom radioButtonPress;
-        private ComboBoxCustom comboBoxKeySelector;
+        private ExtRadioButton radioButtonUp;
+        private ExtRadioButton radioButtonDown;
+        private ExtRadioButton radioButtonPress;
+        private ExtComboBox comboBoxKeySelector;
         private System.Windows.Forms.Label labelSelKeys;
     }
 }

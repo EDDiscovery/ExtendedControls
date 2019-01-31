@@ -448,9 +448,9 @@ namespace ExtendedControls
             {
                 Debug.Assert(false, myControl.Name + " of " + controltype.Name + " from " + parent.Name + " !!! Use the new controls in Controls folder - not the non visual themed ones!");
             }
-            else if (myControl is RichTextBoxScroll)
+            else if (myControl is ExtRichTextBox)
             {
-                RichTextBoxScroll ctrl = (RichTextBoxScroll)myControl;
+                ExtRichTextBox ctrl = (ExtRichTextBox)myControl;
                 ctrl.BorderColor = Color.Transparent;
                 ctrl.BorderStyle = BorderStyle.None;
 
@@ -489,9 +489,9 @@ namespace ExtendedControls
                 ctrl.Invalidate();
                 ctrl.PerformLayout();
             }
-            else if (myControl is TextBoxBorder)
+            else if (myControl is ExtTextBox)
             {
-                TextBoxBorder ctrl = (TextBoxBorder)myControl;
+                ExtTextBox ctrl = (ExtTextBox)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
                 ctrl.BackColor = currentsettings.colors[Settings.CI.textbox_back];
                 ctrl.BackErrorColor = currentsettings.colors[Settings.CI.textbox_highlight];
@@ -511,9 +511,9 @@ namespace ExtendedControls
 
                 myControl.Font = fnt;
 
-                if (myControl is AutoCompleteTextBox || myControl is AutoCompleteDGVColumn.CellEditControl) // derived from text box
+                if (myControl is ExtTextBoxAutoComplete || myControl is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
                 {
-                    AutoCompleteTextBox actb = myControl as AutoCompleteTextBox;
+                    ExtTextBoxAutoComplete actb = myControl as ExtTextBoxAutoComplete;
                     actb.DropDownBackgroundColor = currentsettings.colors[Settings.CI.button_back];
                     actb.DropDownBorderColor = currentsettings.colors[Settings.CI.textbox_border];
                     actb.DropDownScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
@@ -531,9 +531,9 @@ namespace ExtendedControls
 
                 ctrl.Invalidate();
             }
-            else if (myControl is ButtonExt)
+            else if (myControl is ExtButton)
             {
-                ButtonExt ctrl = (ButtonExt)myControl;
+                ExtButton ctrl = (ExtButton)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
@@ -582,9 +582,9 @@ namespace ExtendedControls
 
                 myControl.Font = fnt;
             }
-            else if (myControl is TabControlCustom)
+            else if (myControl is ExtTabControl)
             {
-                TabControlCustom ctrl = (TabControlCustom)myControl;
+                ExtTabControl ctrl = (ExtTabControl)myControl;
 
                 if (!currentsettings.buttonstyle.Equals(ButtonStyles[0])) // not system
                 {
@@ -604,9 +604,9 @@ namespace ExtendedControls
 
                 ctrl.Font = fnt;
             }
-            else if (myControl is ListControlCustom)
+            else if (myControl is ExtListBox)
             {
-                ListControlCustom ctrl = (ListControlCustom)myControl;
+                ExtListBox ctrl = (ExtListBox)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
                 ctrl.ItemSeperatorColor = currentsettings.colors[Settings.CI.button_border];
 
@@ -633,9 +633,9 @@ namespace ExtendedControls
                 myControl.Font = fnt;
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
             }
-            else if (myControl is PanelSelectionList)
+            else if (myControl is ExtPanelDropDown)
             {
-                PanelSelectionList ctrl = (PanelSelectionList)myControl;
+                ExtPanelDropDown ctrl = (ExtPanelDropDown)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
                 ctrl.SelectionMarkColor = ctrl.ForeColor;
                 ctrl.ItemHeight = ItemHeightForFont();
@@ -648,9 +648,9 @@ namespace ExtendedControls
 
                 myControl.Font = fnt;
             }
-            else if (myControl is ComboBoxCustom)
+            else if (myControl is ExtComboBox)
             {
-                ComboBoxCustom ctrl = (ComboBoxCustom)myControl;
+                ExtComboBox ctrl = (ExtComboBox)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
@@ -681,12 +681,12 @@ namespace ExtendedControls
                 myControl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
                 myControl.Font = fnt;
             }
-            else if (myControl is DrawnPanelNoTheme)        // ignore these..
+            else if (myControl is ExtDrawnPanelNoTheme)        // ignore these..
             {
             }
-            else if (myControl is DrawnPanel)
+            else if (myControl is ExtPanelDrawn)
             {
-                DrawnPanel ctrl = (DrawnPanel)myControl;
+                ExtPanelDrawn ctrl = (ExtPanelDrawn)myControl;
                 ctrl.BackColor = currentsettings.colors[Settings.CI.form];
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.label];
                 ctrl.MouseOverColor = currentsettings.colors[Settings.CI.label].Multiply(mouseoverscaling);
@@ -711,21 +711,21 @@ namespace ExtendedControls
                 myControl.ForeColor = currentsettings.colors[Settings.CI.label];
                 myControl.Font = fnt;
 
-                if ( myControl is LabelExt )
-                    (myControl as LabelExt).TextBackColor = currentsettings.colors[Settings.CI.form];
+                if ( myControl is ExtLabel )
+                    (myControl as ExtLabel).TextBackColor = currentsettings.colors[Settings.CI.form];
             }
-            else if (myControl is GroupBoxCustom)
+            else if (myControl is ExtGroupBox)
             {
-                GroupBoxCustom ctrl = (GroupBoxCustom)myControl;
+                ExtGroupBox ctrl = (ExtGroupBox)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.group_text];
                 ctrl.BackColor = currentsettings.colors[Settings.CI.group_back];
                 ctrl.BorderColor = currentsettings.colors[Settings.CI.group_borderlines];
                 ctrl.FlatStyle = FlatStyle.Flat;           // always in Flat, always apply our border.
                 ctrl.Font = fnt;
             }
-            else if (myControl is CheckBoxCustom)
+            else if (myControl is ExtCheckBox)
             {
-                CheckBoxCustom ctrl = (CheckBoxCustom)myControl;
+                ExtCheckBox ctrl = (ExtCheckBox)myControl;
 
                 if (ctrl.Appearance != Appearance.Button)          // NOT Button
                 {
@@ -769,9 +769,9 @@ namespace ExtendedControls
                     ctrl.FlatAppearance.BorderColor = currentsettings.colors[Settings.CI.button_border];
                 }
             }
-            else if (myControl is RadioButtonCustom)
+            else if (myControl is ExtRadioButton)
             {
-                RadioButtonCustom ctrl = (RadioButtonCustom)myControl;
+                ExtRadioButton ctrl = (ExtRadioButton)myControl;
 
                 ctrl.FlatStyle = FlatStyle.System;
                 ctrl.Font = fnt;
@@ -838,9 +838,9 @@ namespace ExtendedControls
                 ctrl.RowHeadersDefaultCellStyle.Font = fnt2;
                 ctrl.Columns[0].DefaultCellStyle.Font = fnt2;
             }
-            else if (myControl is VScrollBarCustom && !(parent is ListControlCustom || parent is RichTextBoxScroll))
+            else if (myControl is ExtScrollBar && !(parent is ExtListBox || parent is ExtRichTextBox))
             {                   // selected items need VScroll controlled here. Others control it themselves
-                VScrollBarCustom ctrl = (VScrollBarCustom)myControl;
+                ExtScrollBar ctrl = (ExtScrollBar)myControl;
 
                 //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
                 if (currentsettings.textboxborderstyle.Equals(TextboxBorderStyles[3]))
@@ -860,9 +860,9 @@ namespace ExtendedControls
                 else
                     ctrl.FlatStyle = FlatStyle.System;
             }
-            else if (myControl is NumericUpDownCustom)
+            else if (myControl is ExtNumericUpDown)
             {
-                NumericUpDownCustom ctrl = (NumericUpDownCustom)myControl;
+                ExtNumericUpDown ctrl = (ExtNumericUpDown)myControl;
 
                 ctrl.TextBoxForeColor = currentsettings.colors[Settings.CI.textbox_fore];
                 ctrl.TextBoxBackColor = currentsettings.colors[Settings.CI.textbox_back];
@@ -880,9 +880,9 @@ namespace ExtendedControls
                 Chart ctrl = (Chart)myControl;
                 ctrl.BackColor = Color.Transparent;
             }
-            else if (myControl is CustomDateTimePicker)
+            else if (myControl is ExtDateTimePicker)
             {
-                CustomDateTimePicker ctrl = (CustomDateTimePicker)myControl;
+                ExtDateTimePicker ctrl = (ExtDateTimePicker)myControl;
                 ctrl.BorderColor = currentsettings.colors[Settings.CI.grid_borderlines];
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
                 ctrl.TextBackColor = currentsettings.colors[Settings.CI.textbox_back];

@@ -13,19 +13,16 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
 namespace ExtendedControls
 {
-    public class VScrollBarCustom : Control
+    public class ExtScrollBar : Control
     {
         // BackColor = control back colour
         // ForeColor = button arrow color
@@ -78,7 +75,7 @@ namespace ExtendedControls
 
         #region Implementation
 
-        public VScrollBarCustom() : base()
+        public ExtScrollBar() : base()
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer,true);
             repeatclick = new Timer();

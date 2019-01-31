@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,11 +13,8 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using System;
-using System.Collections.Generic;
+
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -26,14 +23,14 @@ namespace ExtendedControls
     // draws label using a bitmap - solves problems with aliasing over transparent backgrounds
     // but it does not antialias properly if the background is not drawn..
 
-    public class LabelExt : Label
+    public class ExtLabel : Label
     {
         private new Color BackColor {get;set;}          // DONT - has no meaning for this label
 
         public Color TextBackColor { get { return textbackcolor; } set { textbackcolor = value; Invalidate(); } }      // area of text box only
         private Color textbackcolor = Color.Transparent;
 
-        public LabelExt()
+        public ExtLabel()
         {
         }
 

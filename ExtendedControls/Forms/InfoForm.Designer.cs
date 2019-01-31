@@ -44,17 +44,17 @@ namespace ExtendedControls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.buttonOK = new ExtendedControls.ButtonExt();
-            this.textBoxInfo = new ExtendedControls.RichTextBoxScroll();
+            this.buttonOK = new ExtendedControls.ExtButton();
+            this.textBoxInfo = new ExtendedControls.ExtRichTextBox();
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.labelCaption = new System.Windows.Forms.Label();
-            this.panel_close = new ExtendedControls.DrawnPanel();
-            this.panel_minimize = new ExtendedControls.DrawnPanel();
+            this.panel_close = new ExtendedControls.ExtPanelDrawn();
+            this.panel_minimize = new ExtendedControls.ExtPanelDrawn();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelBottom = new System.Windows.Forms.Panel();
-            this.statusStripBottom = new ExtendedControls.StatusStripCustom();
-            this.buttonAcknowledge = new ExtendedControls.ButtonExt();
+            this.statusStripBottom = new ExtendedControls.ExtStatusStrip();
+            this.buttonAcknowledge = new ExtendedControls.ExtButton();
             this.contextMenuStrip.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelBottom.SuspendLayout();
@@ -139,7 +139,7 @@ namespace ExtendedControls
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_minimize.ImageSelected = ExtendedControls.DrawnPanel.ImageType.Minimize;
+            this.panel_minimize.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(766, 3);
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
@@ -215,16 +215,16 @@ namespace ExtendedControls
         }
 
         #endregion
-        private ExtendedControls.ButtonExt buttonOK;
-        private ExtendedControls.RichTextBoxScroll textBoxInfo;
+        private ExtendedControls.ExtButton buttonOK;
+        private ExtendedControls.ExtRichTextBox textBoxInfo;
         private System.Windows.Forms.Label labelCaption;
-        private DrawnPanel panel_close;
-        private DrawnPanel panel_minimize;
+        private ExtPanelDrawn panel_close;
+        private ExtPanelDrawn panel_minimize;
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Panel panelBottom;
-        private StatusStripCustom statusStripBottom;
+        private ExtStatusStrip statusStripBottom;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemCopy;
-        private ButtonExt buttonAcknowledge;
+        private ExtButton buttonAcknowledge;
     }
 }

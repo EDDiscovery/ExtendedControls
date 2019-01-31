@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright © 2017-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -14,12 +14,8 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
- using System;
-using System.Collections.Generic;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 public static class DataGridViewDialogs
@@ -36,8 +32,8 @@ public static class DataGridViewDialogs
         f.Add(new ExtendedControls.ConfigurableForm.Entry("L", typeof(Label), "Jump to:".Tx(t), new Point(10, 40), new Size(140, 24), ""));
         f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to".Tx(t,"EN")) { numberboxdoubleminimum = 0, numberboxformat = "0" });
 
-        f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ButtonExt), "OK".Tx(), new Point(width - 100, 70), new Size(80, 24), "Press to Accept".Tx(t)));
-        f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ButtonExt), "Cancel".Tx(), new Point(width - 200, 70), new Size(80, 24), "Press to Cancel".Tx(t)));
+        f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), new Point(width - 100, 70), new Size(80, 24), "Press to Accept".Tx(t)));
+        f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), new Point(width - 200, 70), new Size(80, 24), "Press to Cancel".Tx(t)));
 
         f.Trigger += (dialogname, controlname, tag) =>
         {

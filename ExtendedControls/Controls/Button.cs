@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 - 2017 EDDiscovery development team
+ * Copyright © 2016 - 2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -27,15 +27,15 @@ namespace ExtendedControls
     /// <summary>
     /// Represents a customizable Windows <see cref="Button"/> <see cref="Control"/>.
     /// </summary>
-    public class ButtonExt : Button
+    public class ExtButton : Button
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ButtonExt"/> class.
+        /// Initializes a new instance of the <see cref="ExtButton"/> class.
         /// </summary>
         /// <remarks>For best results, utilize the <see cref="Control.Click"/> event, or
         /// <see cref="Control.OnClick(EventArgs)"/> for your processing. This event will occur for certain keyboard
         /// inputs (space, enter, or mnemonic), as well as left mouse clicks, but not right mouse clicks.</remarks>
-        public ButtonExt() : base() { }
+        public ExtButton() : base() { }
 
         /// <summary>
         /// This property is unsupported and should not be utilized.
@@ -160,7 +160,7 @@ namespace ExtendedControls
         private ImageLayout imagelayout = ImageLayout.Center;               // new! image layout
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="ButtonExt"/> and optionally releases the managed
+        /// Releases the unmanaged resources used by the <see cref="ExtButton"/> and optionally releases the managed
         /// resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to
@@ -179,7 +179,7 @@ namespace ExtendedControls
         }
 
         /// <summary>
-        /// Raises the <see cref="ButtonExt.Paint"/> event with custom painting logic.
+        /// Raises the <see cref="ExtButton.Paint"/> event with custom painting logic.
         /// </summary>
         /// <param name="pe">A <see cref="PaintEventArgs"/> that contains the event data.</param>
         protected virtual void OnCustomPaint(PaintEventArgs pe)
@@ -277,7 +277,7 @@ namespace ExtendedControls
         }
 
         /// <summary>
-        /// Raises the <see cref="ButtonExt.Paint"/> event.
+        /// Raises the <see cref="ExtButton.Paint"/> event.
         /// </summary>
         /// <param name="pe">A <see cref="PaintEventArgs"/> that contains the event data.</param>
         protected override void OnPaint(PaintEventArgs pe)

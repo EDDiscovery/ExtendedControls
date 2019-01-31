@@ -423,7 +423,7 @@ namespace DialogTest
 
         }
 
-        public static List<string> AutoList(string input, AutoCompleteTextBox t)
+        public static List<string> AutoList(string input, ExtTextBoxAutoComplete t)
         {
             List<string> f = new List<string>();
             f.Add("one");
@@ -439,14 +439,14 @@ namespace DialogTest
             return f;
         }
 
-        CheckedListControlCustom cc;
+        CheckedListBoxForm cc;
 
         private void button17_Click(object sender, EventArgs e)
         {
             if (cc == null)
             {
                 Button b = sender as Button;
-                cc = new CheckedListControlCustom();
+                cc = new CheckedListBoxForm();
                 cc.Items.Add("One");
                 cc.Items.Add("Two");
                 cc.Items.Add("Three four five six seven eight nine ten");

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -17,15 +17,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
 namespace ExtendedControls
 {
-    public class ListControlCustom : Control
+    public class ExtListBox : Control
     {
         // BackColor paints the whole control - set Transparent if you don't want this. (but its a fake transparent note).
 
@@ -81,11 +77,11 @@ namespace ExtendedControls
 
         #region Implementation
 
-        public ListControlCustom() : base()
+        public ExtListBox() : base()
         {
             items = new List<string>();
             SetStyle(ControlStyles.SupportsTransparentBackColor | ControlStyles.OptimizedDoubleBuffer, true);
-            vScrollBar = new VScrollBarCustom();
+            vScrollBar = new ExtScrollBar();
             vScrollBar.SmallChange = 1;
             vScrollBar.LargeChange = 1;
             Controls.Add(vScrollBar);
@@ -477,7 +473,7 @@ namespace ExtendedControls
 
         #endregion
 
-        private VScrollBarCustom vScrollBar;
+        private ExtScrollBar vScrollBar;
         private Rectangle borderrect, mainarea;
         private int bordersize;
         private int itemslayoutestimatedon = -1;

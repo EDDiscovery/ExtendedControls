@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             ExtendedControls.TabStyleSquare tabStyleSquare1 = new ExtendedControls.TabStyleSquare();
-            this.tabControlCustom1 = new ExtendedControls.TabControlCustom();
+            this.tabControlCustom1 = new ExtendedControls.ExtTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -170,7 +170,7 @@
 
         #endregion
 
-        private ExtendedControls.TabControlCustom tabControlCustom1;
+        private ExtendedControls.ExtTabControl tabControlCustom1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;

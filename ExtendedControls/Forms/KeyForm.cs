@@ -154,7 +154,7 @@ namespace ExtendedControls
             RemoveMF();
         }
 
-        public static List<string> AutoList(string input, AutoCompleteTextBox t)
+        public static List<string> AutoList(string input, ExtTextBoxAutoComplete t)
         {
             Process[] pa = Process.GetProcesses();
 
@@ -164,7 +164,7 @@ namespace ExtendedControls
         }
 
 
-        private void SetToggle(CheckBoxCustom c, bool ch , bool right)
+        private void SetToggle(ExtCheckBox c, bool ch , bool right)
         { 
             c.Checked = ch; 
             string last = c.Text.Split(' ').Last();
@@ -261,7 +261,7 @@ namespace ExtendedControls
 
         private void checkBoxsac_MouseDown(object sender, MouseEventArgs e)
         {
-            CheckBoxCustom c = sender as CheckBoxCustom;
+            ExtCheckBox c = sender as ExtCheckBox;
             SetToggle(c, !c.Checked, e.Button == MouseButtons.Right);
             DisplayKeyString();
         }

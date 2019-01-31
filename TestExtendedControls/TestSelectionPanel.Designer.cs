@@ -31,11 +31,11 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestSelectionPanel));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.panelSelectionList1 = new ExtendedControls.PanelSelectionList();
-            this.autoCompleteTextBox1 = new ExtendedControls.AutoCompleteTextBox();
-            this.comboBoxCustom1 = new ExtendedControls.ComboBoxCustom();
-            this.buttonExt1 = new ExtendedControls.ButtonExt();
-            this.checkBoxCustom1 = new ExtendedControls.CheckBoxCustom();
+            this.panelSelectionList1 = new ExtendedControls.ExtPanelDropDown();
+            this.autoCompleteTextBox1 = new ExtendedControls.ExtTextBoxAutoComplete();
+            this.comboBoxCustom1 = new ExtendedControls.ExtComboBox();
+            this.buttonExt1 = new ExtendedControls.ExtButton();
+            this.checkBoxCustom1 = new ExtendedControls.ExtCheckBox();
             this.SuspendLayout();
             // 
             // panelSelectionList1
@@ -166,10 +166,10 @@
 
         #endregion
         private System.Windows.Forms.Timer timer1;
-        private ExtendedControls.PanelSelectionList panelSelectionList1;
-        private ExtendedControls.AutoCompleteTextBox autoCompleteTextBox1;
-        private ExtendedControls.ComboBoxCustom comboBoxCustom1;
-        private ExtendedControls.ButtonExt buttonExt1;
-        private ExtendedControls.CheckBoxCustom checkBoxCustom1;
+        private ExtendedControls.ExtPanelDropDown panelSelectionList1;
+        private ExtendedControls.ExtTextBoxAutoComplete autoCompleteTextBox1;
+        private ExtendedControls.ExtComboBox comboBoxCustom1;
+        private ExtendedControls.ExtButton buttonExt1;
+        private ExtendedControls.ExtCheckBox checkBoxCustom1;
     }
 }

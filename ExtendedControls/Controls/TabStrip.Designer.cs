@@ -46,8 +46,8 @@ namespace ExtendedControls
             this.components = new System.ComponentModel.Container();
             this.panelStrip = new System.Windows.Forms.Panel();
             this.labelControlText = new System.Windows.Forms.Label();
-            this.panelListSelection = new ExtendedControls.DrawnPanel();
-            this.panelPopOutIcon = new ExtendedControls.DrawnPanel();
+            this.panelListSelection = new ExtendedControls.ExtPanelDrawn();
+            this.panelPopOutIcon = new ExtendedControls.ExtPanelDrawn();
             this.panelArrowRight = new System.Windows.Forms.Panel();
             this.panelArrowLeft = new System.Windows.Forms.Panel();
             this.panelSelectedIcon = new System.Windows.Forms.Panel();
@@ -90,7 +90,7 @@ namespace ExtendedControls
             // panelListSelection
             // 
             this.panelListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
-            this.panelListSelection.ImageSelected = ExtendedControls.DrawnPanel.ImageType.None;
+            this.panelListSelection.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.None;
             this.panelListSelection.Location = new System.Drawing.Point(210, 3);
             this.panelListSelection.Name = "panelListSelection";
             this.panelListSelection.Size = new System.Drawing.Size(24, 24);
@@ -102,7 +102,7 @@ namespace ExtendedControls
             // panelPopOutIcon
             // 
             this.panelPopOutIcon.Image = global::ExtendedControls.Properties.Resources.popout;
-            this.panelPopOutIcon.ImageSelected = ExtendedControls.DrawnPanel.ImageType.None;
+            this.panelPopOutIcon.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.None;
             this.panelPopOutIcon.Location = new System.Drawing.Point(161, 3);
             this.panelPopOutIcon.Name = "panelPopOutIcon";
             this.panelPopOutIcon.Size = new System.Drawing.Size(24, 24);
@@ -205,10 +205,10 @@ namespace ExtendedControls
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel panelArrowRight;
         private System.Windows.Forms.Panel panelArrowLeft;
-        private ExtendedControls.DrawnPanel panelPopOutIcon;
+        private ExtendedControls.ExtPanelDrawn panelPopOutIcon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemPopOut;
         private System.Windows.Forms.Label labelControlText;
-        private DrawnPanel panelListSelection;
+        private ExtPanelDrawn panelListSelection;
     }
 }

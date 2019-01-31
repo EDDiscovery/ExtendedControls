@@ -32,10 +32,10 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabStrip1 = new ExtendedControls.TabStrip();
             this.listView1 = new System.Windows.Forms.ListView();
-            this.listControlCustom1 = new ExtendedControls.ListControlCustom();
-            this.listControlCustom2 = new ExtendedControls.ListControlCustom();
+            this.listControlCustom1 = new ExtendedControls.ExtListBox();
+            this.listControlCustom2 = new ExtendedControls.ExtListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listControlCustom3 = new ExtendedControls.ListControlCustom();
+            this.listControlCustom3 = new ExtendedControls.ExtListBox();
             this.tabStrip2 = new ExtendedControls.TabStrip();
             this.button1 = new System.Windows.Forms.Button();
             this.tabStrip3 = new ExtendedControls.TabStrip();
@@ -272,10 +272,10 @@
         private System.Windows.Forms.Panel panel1;
         private ExtendedControls.TabStrip tabStrip1;
         private System.Windows.Forms.ListView listView1;
-        private ExtendedControls.ListControlCustom listControlCustom1;
-        private ExtendedControls.ListControlCustom listControlCustom2;
+        private ExtendedControls.ExtListBox listControlCustom1;
+        private ExtendedControls.ExtListBox listControlCustom2;
         private System.Windows.Forms.ListBox listBox1;
-        private ExtendedControls.ListControlCustom listControlCustom3;
+        private ExtendedControls.ExtListBox listControlCustom3;
         private ExtendedControls.TabStrip tabStrip2;
         private System.Windows.Forms.Button button1;
         private ExtendedControls.TabStrip tabStrip3;

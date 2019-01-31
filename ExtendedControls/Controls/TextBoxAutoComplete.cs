@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -16,14 +16,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Drawing.Drawing2D;
 
 namespace ExtendedControls
 {
-    public class AutoCompleteTextBox : TextBoxBorder
+    public class ExtTextBoxAutoComplete : ExtTextBox
     {
         // programtic change of text does not make autocomplete execute.
         public override string Text { get { return base.Text; } set { disableauto = true; base.Text = value; disableauto = false; } }
@@ -46,13 +44,13 @@ namespace ExtendedControls
         private System.Threading.Thread ThreadAutoComplete;
         private PerformAutoComplete func = null;
         private List<string> autocompletestrings = null;
-        DropDownCustom _cbdropdown;
+        ExtListBoxForm _cbdropdown;
         int autocompletelastcount = 0;
         private bool disableauto = false;
 
-        public delegate List<string> PerformAutoComplete(string input , AutoCompleteTextBox t);
+        public delegate List<string> PerformAutoComplete(string input , ExtTextBoxAutoComplete t);
 
-        public AutoCompleteTextBox() : base()
+        public ExtTextBoxAutoComplete() : base()
         {
             TextChanged += TextChangeEventHandler;
             waitforautotimer = new System.Windows.Forms.Timer();
@@ -161,7 +159,7 @@ namespace ExtendedControls
 
                 if (_cbdropdown == null)
                 {
-                    _cbdropdown = new DropDownCustom("", false);
+                    _cbdropdown = new ExtListBoxForm("", false);
 
                     int fittableitems = this.DropDownHeight / this.DropDownItemHeight;
 

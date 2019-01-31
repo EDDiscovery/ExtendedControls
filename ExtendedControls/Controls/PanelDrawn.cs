@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 - 2017 EDDiscovery development team
+ * Copyright © 2016 - 2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,17 +13,15 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using ExtendedControls.Controls.Design;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -33,13 +31,13 @@ namespace ExtendedControls
     /// (see <see cref="ImageSelected"/>) or <see cref="Control.Text"/>.
     /// </summary>
     [DefaultEvent(nameof(Click)), DefaultProperty(nameof(ImageSelected)), Designer(typeof(DrawnPanelDesigner))]
-    public class DrawnPanel : Control, IButtonControl
+    public class ExtPanelDrawn : Control, IButtonControl
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DrawnPanel"/> class.
+        /// Initializes a new instance of the <see cref="ExtPanelDrawn"/> class.
         /// </summary>
-        /// <seealso cref="DrawnPanelNoTheme"/>
-        public DrawnPanel() : base()
+        /// <seealso cref="ExtDrawnPanelNoTheme"/>
+        public ExtPanelDrawn() : base()
         {
             base.BackgroundImageLayout = ImageLayout.Zoom;
 
@@ -94,14 +92,14 @@ namespace ExtendedControls
         public new Image BackgroundImage { get { return base.BackgroundImage; } set { base.BackgroundImage = value; } }
         
         /// <summary>
-        /// Gets or sets the background <see cref="Image"/> layout displayed on the <see cref="DrawnPanel"/>. The
+        /// Gets or sets the background <see cref="Image"/> layout displayed on the <see cref="ExtPanelDrawn"/>. The
         /// default value is <see cref="ImageLayout.Zoom"/>.
         /// </summary>
         [DefaultValue(typeof(ImageLayout), nameof(ImageLayout.Zoom))]
         public override ImageLayout BackgroundImageLayout { get { return base.BackgroundImageLayout; } set { base.BackgroundImageLayout = value; } }
         
         /// <summary>
-        /// Gets or sets a value representing the background image that this <see cref="DrawnPanel"/> will display. The
+        /// Gets or sets a value representing the background image that this <see cref="ExtPanelDrawn"/> will display. The
         /// default value is <c>null</c>.
         /// </summary>
         [Category("Appearance"), DefaultValue(null), Description("The background image displayed on the control.")]
@@ -118,7 +116,7 @@ namespace ExtendedControls
             }
         }
         /// <summary>
-        /// Gets or sets a value indicating which <see cref="ImageType"/> this <see cref="DrawnPanel"/> will display.
+        /// Gets or sets a value indicating which <see cref="ImageType"/> this <see cref="ExtPanelDrawn"/> will display.
         /// The default value is <see cref="ImageType.Close"/>.
         /// </summary>
         [Category("Appearance"), DefaultValue(ImageType.Close), Description("The foreground ImageType displayed on the control.")]
@@ -136,7 +134,7 @@ namespace ExtendedControls
         }
         /// <summary>
         /// Gets or sets a value that represents the <see cref="Control.ForeColor"/> used when the mouse hovers this
-        /// <see cref="DrawnPanel"/>. The default value is <see cref="Color.White"/>.
+        /// <see cref="ExtPanelDrawn"/>. The default value is <see cref="Color.White"/>.
         /// </summary>
         /// <seealso cref="MouseSelectedColor"/>
         /// <seealso cref="MouseSelectedColorEnable"/>
@@ -145,7 +143,7 @@ namespace ExtendedControls
         public Color MouseOverColor { get; set; } = Color.White;
         /// <summary>
         /// Gets or sets a value that represents the <see cref="Control.ForeColor"/> when the left mouse button is
-        /// depressed on this <see cref="DrawnPanel"/>. The default value is <see cref="Color.Green"/>.
+        /// depressed on this <see cref="ExtPanelDrawn"/>. The default value is <see cref="Color.Green"/>.
         /// </summary>
         /// <seealso cref="MouseOverColor"/>
         /// <seealso cref="MouseSelectedColorEnable"/>
@@ -169,7 +167,7 @@ namespace ExtendedControls
             Description("This multiplication factor will be used for the foreground color when the control is disabled.")]
         public float PanelDisabledScaling { get; set; } = 0.25F;
         /// <summary>
-        /// Gets or sets a value that indicates whether or not the <see cref="DrawnPanel"/> can be focused. The default
+        /// Gets or sets a value that indicates whether or not the <see cref="ExtPanelDrawn"/> can be focused. The default
         /// value is <c>true</c>. Set this to <c>false</c> for instances that are simulating caption controls, provided
         /// that a keyboard-accessible method is available to simulate the click action (alt-space system menu, etc).
         /// When set to <c>false</c>, the <see cref="Control.TabStop"/> property will also be set to <c>false</c>.
@@ -190,7 +188,7 @@ namespace ExtendedControls
             }
         }
         /// <summary>
-        /// Gets or sets the alignment of the <see cref="Control.Text"/> displayed on the <see cref="DrawnPanel"/> when
+        /// Gets or sets the alignment of the <see cref="Control.Text"/> displayed on the <see cref="ExtPanelDrawn"/> when
         /// <see cref="ImageSelected"/> is set to one of the text options. The default value is
         /// <see cref="ContentAlignment.MiddleCenter"/>.
         /// </summary>
@@ -220,78 +218,78 @@ namespace ExtendedControls
 
 
         /// <summary>
-        /// Specifies the available image types to be displayed on a <see cref="DrawnPanel"/>.
+        /// Specifies the available image types to be displayed on a <see cref="ExtPanelDrawn"/>.
         /// </summary>
-        /// <seealso cref="DrawnPanel.ImageSelected"/>
+        /// <seealso cref="ExtPanelDrawn.ImageSelected"/>
         public enum ImageType
         {
-            /// <summary>Draws an 'X' on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws an 'X' on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws an 'X' on the control.")]
             Close,
-            /// <summary>Draws an '_' on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws an '_' on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws an '_' on the control.")]
             Minimize,
-            /// <summary>Draws a filled square on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws a filled square on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws a filled square on the control.")]
             OnTop,
-            /// <summary>Draws a square outline on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws a square outline on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws a square outline.")]
             Floating,
             /// <summary>Draws 3 thin parallel diagonal lines from the bottom edge to the right edge.</summary>
             [Description("Draws 3 thin parallel lines from the bottom edge to the right edge.")]
             Gripper,
-            /// <summary>Draws an EDDB logo on the <see cref="DrawnPanel"/> with inverted colors.</summary>
+            /// <summary>Draws an EDDB logo on the <see cref="ExtPanelDrawn"/> with inverted colors.</summary>
             [Description("Draws an EDDB logo with inverted colors.")]
             EDDB,
-            /// <summary>Draws an EDSM logo on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws an EDSM logo on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws an EDSM logo.")]
             EDSM,
-            /// <summary>Draws a Ross logo on the <see cref="DrawnPanel"/> with inverted colors.</summary>
+            /// <summary>Draws a Ross logo on the <see cref="ExtPanelDrawn"/> with inverted colors.</summary>
             [Description("Draws a Ross logo with inverted colors.")]
             Ross,
-            /// <summary>Draws the current <see cref="Control.Text"/> on the <see cref="DrawnPanel"/> with inverted colors.</summary>
+            /// <summary>Draws the current <see cref="Control.Text"/> on the <see cref="ExtPanelDrawn"/> with inverted colors.</summary>
             [Description("Draws the control Text on the control with inverted colors.")]
             InverseText,
             /// <summary>Draws two perpendicular double-ended arrows that cross in the center.</summary>
             [Description("Draws two perpendicular double-ended arrows that cross in the center.")]
             Move,
-            /// <summary>Draws the current <see cref="Control.Text"/> on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws the current <see cref="Control.Text"/> on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws the current control Text on the control.")]
             Text,
-            /// <summary>Draws an empty <see cref="DrawnPanel"/>, honoring <see cref="Image"/>.</summary>
+            /// <summary>Draws an empty <see cref="ExtPanelDrawn"/>, honoring <see cref="Image"/>.</summary>
             [Description("Draws an empty control, honoring DrawnImage.")]
             None,
-            /// <summary>Draws a 'T' on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws a 'T' on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws a 'T' on the control.")]
             NotTransparent,
-            /// <summary>Draws a 'T' on the <see cref="DrawnPanel"/> with a square outline.</summary>
+            /// <summary>Draws a 'T' on the <see cref="ExtPanelDrawn"/> with a square outline.</summary>
             [Description("Draws a 'T' on the control with a square outline.")]
             Transparent,
-            /// <summary>Draws 'Tc' on the <see cref="DrawnPanel"/> with a square outline.</summary>
+            /// <summary>Draws 'Tc' on the <see cref="ExtPanelDrawn"/> with a square outline.</summary>
             [Description("Draws 'Tc' on the control with a square outline.")]
             TransparentClickThru,
-            /// <summary>Draws 'Tf' on the <see cref="DrawnPanel"/> with a square outline.</summary>
+            /// <summary>Draws 'Tf' on the <see cref="ExtPanelDrawn"/> with a square outline.</summary>
             [Description("Draws 'Tf' on the control with a square outline.")]
             FullyTransparent,
             /// <summary>Draws a thin horizontal rectangle outline with two filled squares on the left.</summary>
             [Description("Draws a thin horizontal rectangle outline with two filled squares on the left.")]
             WindowInTaskBar,
-            /// <summary>Draws a thin horizontal rectangle outline on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws a thin horizontal rectangle outline on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws a thin horizontal rectangle outline on the control.")]
             WindowNotInTaskBar,
-            /// <summary>Draws a 'C' on the <see cref="DrawnPanel"/> with a square outline.</summary>
+            /// <summary>Draws a 'C' on the <see cref="ExtPanelDrawn"/> with a square outline.</summary>
             [Description("Draws a C on the DrawnPanel with a square outline.")]
             Captioned,
-            /// <summary>Draws a 'C' on the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws a 'C' on the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws a C on the DrawnPanel.")]
             NotCaptioned,
-            /// <summary>Draws two thin horizontal bars along the top edge of the <see cref="DrawnPanel"/>.</summary>
+            /// <summary>Draws two thin horizontal bars along the top edge of the <see cref="ExtPanelDrawn"/>.</summary>
             [Description("Draws two thin horizontal bars along the top edge of the control")]
             Bars,
-            /// <summary>Draws a single simple window panel on the <see cref="DrawnPanel"/>.</summary><seealso cref="Restore"/><seealso cref="Minimize"/>
+            /// <summary>Draws a single simple window panel on the <see cref="ExtPanelDrawn"/>.</summary><seealso cref="Restore"/><seealso cref="Minimize"/>
             [Description("Draws a single simple window panel on the control.")]
             Maximize,
-            /// <summary>Draws two simple overlapping window panels on the <see cref="DrawnPanel"/>.</summary><seealso cref="Maximize"/><seealso cref="Minimize"/>
+            /// <summary>Draws two simple overlapping window panels on the <see cref="ExtPanelDrawn"/>.</summary><seealso cref="Maximize"/><seealso cref="Minimize"/>
             [Description("Draws two simple overlapping window panels on the control.")]
             Restore
         };
@@ -300,7 +298,7 @@ namespace ExtendedControls
         #region IButtonControl support
 
         /// <summary>
-        /// Gets or sets a value that is returned to the parent <see cref="Form"/> when the <see cref="DrawnPanel"/> is
+        /// Gets or sets a value that is returned to the parent <see cref="Form"/> when the <see cref="ExtPanelDrawn"/> is
         /// clicked.
         /// </summary>
         [Category("Behavior"), DefaultValue(typeof(DialogResult), nameof(DialogResult.None)),
@@ -308,10 +306,10 @@ namespace ExtendedControls
         public DialogResult DialogResult { get; set; } = DialogResult.None;
 
         /// <summary>
-        /// Receive notifications when the <see cref="DrawnPanel"/> is the default button such that the appearance can
+        /// Receive notifications when the <see cref="ExtPanelDrawn"/> is the default button such that the appearance can
         /// be adjusted.
         /// </summary>
-        /// <param name="value"><c>true</c> if the <see cref="DrawnPanel"/> is the default button; <c>false</c>
+        /// <param name="value"><c>true</c> if the <see cref="ExtPanelDrawn"/> is the default button; <c>false</c>
         /// otherwise.</param>
         public virtual void NotifyDefault(bool value)
         {
@@ -319,7 +317,7 @@ namespace ExtendedControls
         }
 
         /// <summary>
-        /// Generates a <see cref="Control.Click"/> event for the <see cref="DrawnPanel"/>.
+        /// Generates a <see cref="Control.Click"/> event for the <see cref="ExtPanelDrawn"/>.
         /// </summary>
         public virtual void PerformClick()
         {
@@ -334,7 +332,7 @@ namespace ExtendedControls
         public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)
         {
             if (IsDisposed)
-                throw new ObjectDisposedException(this.Name ?? nameof(DrawnPanel));
+                throw new ObjectDisposedException(this.Name ?? nameof(ExtPanelDrawn));
 
             drawnImageAttributesDisabled?.Dispose();
             drawnImageAttributesDisabled = null;
@@ -379,7 +377,7 @@ namespace ExtendedControls
 
 
         /// <summary>
-        /// Releases the unmanaged resources used by the <see cref="DrawnPanel"/> and optionally releases the managed
+        /// Releases the unmanaged resources used by the <see cref="ExtPanelDrawn"/> and optionally releases the managed
         /// resources.
         /// </summary>
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to
@@ -881,7 +879,7 @@ namespace ExtendedControls
         }
 
         /// <summary>
-        /// Paints the background of the <see cref="DrawnPanel"/>.
+        /// Paints the background of the <see cref="ExtPanelDrawn"/>.
         /// </summary>
         /// <param name="e">A <see cref="PaintEventArgs"/> that contains the event data.</param>
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -1059,5 +1057,13 @@ namespace ExtendedControls
         }
 
         #endregion
+    }
+
+    public class ExtDrawnPanelNoTheme : ExtPanelDrawn       // indicates don't theme
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtDrawnPanelNoTheme"/> class.
+        /// </summary>
+        public ExtDrawnPanelNoTheme() : base() { }
     }
 }
