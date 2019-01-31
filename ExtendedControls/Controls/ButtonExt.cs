@@ -320,13 +320,22 @@ namespace ExtendedControls
 
                 }
 
-                using (var b = new LinearGradientBrush(buttonarea, colBack, colBack.Multiply(buttonColorScaling), 90))
-                    pe.Graphics.FillRectangle(b, buttonarea);       // linear grad brushes do not respect smoothing mode, btw
+                if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
+                {
+                    using (var b = new LinearGradientBrush(buttonarea, colBack, colBack.Multiply(buttonColorScaling), 90))
+                        pe.Graphics.FillRectangle(b, buttonarea);       // linear grad brushes do not respect smoothing mode, btw
+                }
 
                 pe.Graphics.SmoothingMode = SmoothingMode.None;
 
-                using (var p = new Pen(colBorder))
-                     pe.Graphics.DrawRectangle(p, border);
+                if (border.Width >= 1 && border.Height >= 1)        // ensure it does not except
+                {
+                    using (var p = new Pen(colBorder))
+                        pe.Graphics.DrawRectangle(p, border);
+                }
+
+                if (buttonarea.Width < 1 || buttonarea.Height < 1)  // and no point drawing any more in the button area if its too small, it will except
+                    return;
 
                 if (Image != null)
                 {
