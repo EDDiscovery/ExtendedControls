@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,31 +13,28 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using ExtendedControls;
+
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class PanelVScroll : Panel               // Written because I could not get the manual autoscroll to work when controls dynamically added
+    public partial class ExtPanelScroll : Panel               // Written because I could not get the manual autoscroll to work when controls dynamically added
     {
         public int ScrollBarWidth { get; set; } = 20;
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
-        public VScrollBarCustom vsc;
+        public ExtScrollBar vsc;
         public int ScrollOffset { get {return -scrollpos; } }
 
         private int scrollpos = 0;
 
-        public PanelVScroll()
+        public ExtPanelScroll()
         {
         }
 
@@ -46,9 +43,9 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine((Environment.TickCount % 10000).ToString("00000") + " VS start");
 
-            if (e.Control is VScrollBarCustom)
+            if (e.Control is ExtScrollBar)
             {
-                vsc = e.Control as VScrollBarCustom;
+                vsc = e.Control as ExtScrollBar;
                 vsc.Width = ScrollBarWidth;
                 vsc.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
                 vsc.Name = "VScrollPanel";
@@ -102,7 +99,7 @@ namespace ExtendedControls
         {
             foreach (Control c in Controls)
             {
-                if (!(c is VScrollBarCustom))
+                if (!(c is ExtScrollBar))
                 {
                     c.Location = new Point(c.Left, c.Top - scrollpos); 
                 }
@@ -125,7 +122,7 @@ namespace ExtendedControls
             int maxy = 0;
             foreach (Control c in Controls)
             {
-                if (!(c is VScrollBarCustom) && c.Visible)
+                if (!(c is ExtScrollBar) && c.Visible)
                 {
                     int ynoscroll = c.Location.Y + scrollpos;
                     maxy = Math.Max(maxy, ynoscroll + c.Height + 4);
@@ -147,7 +144,7 @@ namespace ExtendedControls
                 SuspendLayout();
                 foreach (Control c in Controls)
                 {
-                    if (!(c is VScrollBarCustom))
+                    if (!(c is ExtScrollBar))
                     {
                         // System.Diagnostics.Debug.WriteLine("Move {0}", c.Name);
 
@@ -177,10 +174,10 @@ namespace ExtendedControls
         public void RemoveAllControls( List<Control> excluded = null)
         {
             SuspendLayout();
-            List<Control> listtoremove = (from Control s in Controls where (!(s is VScrollBarCustom) && (excluded==null || !excluded.Contains(s))) select s).ToList();
+            List<Control> listtoremove = (from Control s in Controls where (!(s is ExtScrollBar) && (excluded==null || !excluded.Contains(s))) select s).ToList();
             foreach (Control c in listtoremove)
             {
-                Debug.Assert(!(c is VScrollBarCustom));
+                Debug.Assert(!(c is ExtScrollBar));
 
                 c.Hide();
                 c.Dispose();

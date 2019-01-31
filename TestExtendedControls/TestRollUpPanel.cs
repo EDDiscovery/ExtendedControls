@@ -33,10 +33,10 @@ namespace DialogTest
             colormap2.NewColor = Color.Orange.Multiply(0.8F);
             foreach ( Control c in rolluppanel.Controls )
             {
-                if (c is ExtendedControls.CheckBoxCustom)
-                    (c as ExtendedControls.CheckBoxCustom).SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
-                else if (c is ExtendedControls.ButtonExt)
-                    (c as ExtendedControls.ButtonExt).SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
+                if (c is ExtendedControls.ExtCheckBox)
+                    (c as ExtendedControls.ExtCheckBox).SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
+                else if (c is ExtendedControls.ExtButton)
+                    (c as ExtendedControls.ExtButton).SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
             }
 
             KeyObjectExtensions.VerifyKeyOE();

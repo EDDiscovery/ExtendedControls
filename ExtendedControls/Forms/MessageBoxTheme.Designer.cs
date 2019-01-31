@@ -30,9 +30,9 @@
         {
             this.labelCaption = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.buttonExt3 = new ExtendedControls.ButtonExt();
-            this.buttonExt1 = new ExtendedControls.ButtonExt();
-            this.buttonExt2 = new ExtendedControls.ButtonExt();
+            this.buttonExt3 = new ExtendedControls.ExtButton();
+            this.buttonExt1 = new ExtendedControls.ExtButton();
+            this.buttonExt2 = new ExtendedControls.ExtButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -117,9 +117,9 @@
         #endregion
 
         private System.Windows.Forms.Label labelCaption;
-        private ExtendedControls.ButtonExt buttonExt1;
-        private ExtendedControls.ButtonExt buttonExt2;
-        private ExtendedControls.ButtonExt buttonExt3;
+        private ExtendedControls.ExtButton buttonExt1;
+        private ExtendedControls.ExtButton buttonExt2;
+        private ExtendedControls.ExtButton buttonExt3;
         private System.Windows.Forms.Panel panel1;
     }
 }

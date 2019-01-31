@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,17 +13,14 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class RollUpPanel : Panel
+    public class ExtPanelRollUp : Panel
     {
         public int RollUpDelay { get; set; } = 1000;            // before rolling
         public int UnrollHoverDelay { get; set; } = 1000;       // set to large value and forces click to open functionality
@@ -42,14 +39,14 @@ namespace ExtendedControls
         public event EventHandler RetractStarting;
         public event EventHandler RetractCompleted;
 
-        private CheckBoxCustom pinbutton;        // public so you can theme them with colour/IAs
-        private DrawnPanel hiddenmarker1;
-        private DrawnPanel hiddenmarker2;
+        private ExtCheckBox pinbutton;        // public so you can theme them with colour/IAs
+        private ExtPanelDrawn hiddenmarker1;
+        private ExtPanelDrawn hiddenmarker2;
 
         long targetrolltickstart;     // when the roll is supposed to be in time
         const int rolltimerinterval = 25;
 
-        Action<RollUpPanel, CheckBoxCustom> PinStateChanged = null;
+        Action<ExtPanelRollUp, ExtCheckBox> PinStateChanged = null;
 
         enum Mode { None, PauseBeforeRollDown, PauseBeforeRollUp, RollUp, RollDown };
         Mode mode;
@@ -57,13 +54,13 @@ namespace ExtendedControls
         bool hiddenmarkershow = true;           // if to show it at all.
         bool hiddenmarkershouldbeshown = false; // if to show it now
 
-        public RollUpPanel()
+        public ExtPanelRollUp()
         {
             SuspendLayout();
 
             this.Height = UnrolledHeight;
 
-            pinbutton = new CheckBoxCustom();
+            pinbutton = new ExtCheckBox();
             pinbutton.Appearance = Appearance.Normal;
             pinbutton.FlatStyle = FlatStyle.Popup;
             pinbutton.Size = new Size(24, 24);
@@ -73,16 +70,16 @@ namespace ExtendedControls
             pinbutton.CheckedChanged += Pinbutton_CheckedChanged;
             pinbutton.Name = "RUP Pinbutton";
 
-            hiddenmarker1 = new DrawnPanelNoTheme();
+            hiddenmarker1 = new ExtDrawnPanelNoTheme();
             hiddenmarker1.Name = "Hidden marker";
-            hiddenmarker1.ImageSelected = DrawnPanel.ImageType.Bars;
+            hiddenmarker1.ImageSelected = ExtPanelDrawn.ImageType.Bars;
             hiddenmarker1.Visible = false;
             hiddenmarker1.Padding = new Padding(0);
             hiddenmarker1.Click += Hiddenmarker_Click;
 
-            hiddenmarker2 = new DrawnPanelNoTheme();
+            hiddenmarker2 = new ExtDrawnPanelNoTheme();
             hiddenmarker2.Name = "Hidden marker";
-            hiddenmarker2.ImageSelected = DrawnPanel.ImageType.Bars;
+            hiddenmarker2.ImageSelected = ExtPanelDrawn.ImageType.Bars;
             hiddenmarker2.Visible = false;
             hiddenmarker2.Padding = new Padding(0);
             hiddenmarker2.Click += Hiddenmarker_Click;

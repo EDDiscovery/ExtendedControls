@@ -43,22 +43,22 @@ namespace ExtendedAudioForms
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxBorderText = new ExtendedControls.TextBoxBorder();
-            this.buttonExtBrowse = new ExtendedControls.ButtonExt();
+            this.textBoxBorderText = new ExtendedControls.ExtTextBox();
+            this.buttonExtBrowse = new ExtendedControls.ExtButton();
             this.trackBarVolume = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBoxCustomV = new ExtendedControls.CheckBoxCustom();
-            this.checkBoxCustomComplete = new ExtendedControls.CheckBoxCustom();
-            this.buttonExtTest = new ExtendedControls.ButtonExt();
-            this.buttonExtOK = new ExtendedControls.ButtonExt();
-            this.buttonExtCancel = new ExtendedControls.ButtonExt();
-            this.buttonExtEffects = new ExtendedControls.ButtonExt();
+            this.checkBoxCustomV = new ExtendedControls.ExtCheckBox();
+            this.checkBoxCustomComplete = new ExtendedControls.ExtCheckBox();
+            this.buttonExtTest = new ExtendedControls.ExtButton();
+            this.buttonExtOK = new ExtendedControls.ExtButton();
+            this.buttonExtCancel = new ExtendedControls.ExtButton();
+            this.buttonExtEffects = new ExtendedControls.ExtButton();
             this.panelOuter = new System.Windows.Forms.Panel();
-            this.buttonExtDevice = new ExtendedControls.ButtonExt();
-            this.textBoxBorderStartTrigger = new ExtendedControls.TextBoxBorder();
+            this.buttonExtDevice = new ExtendedControls.ExtButton();
+            this.textBoxBorderStartTrigger = new ExtendedControls.ExtTextBox();
             this.labelStartTrigger = new System.Windows.Forms.Label();
-            this.textBoxBorderEndTrigger = new ExtendedControls.TextBoxBorder();
-            this.comboBoxCustomPriority = new ExtendedControls.ComboBoxCustom();
+            this.textBoxBorderEndTrigger = new ExtendedControls.ExtTextBox();
+            this.comboBoxCustomPriority = new ExtendedControls.ExtComboBox();
             this.labelEndTrigger = new System.Windows.Forms.Label();
             this.labelTitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarVolume)).BeginInit();
@@ -323,23 +323,23 @@ namespace ExtendedAudioForms
 
         #endregion
 
-        private ExtendedControls.TextBoxBorder textBoxBorderText;
-        private ExtendedControls.ButtonExt buttonExtBrowse;
+        private ExtendedControls.ExtTextBox textBoxBorderText;
+        private ExtendedControls.ExtButton buttonExtBrowse;
         private System.Windows.Forms.TrackBar trackBarVolume;
         private System.Windows.Forms.Label label1;
-        private ExtendedControls.CheckBoxCustom checkBoxCustomV;
-        private ExtendedControls.CheckBoxCustom checkBoxCustomComplete;
-        private ExtendedControls.ButtonExt buttonExtTest;
-        private ExtendedControls.ButtonExt buttonExtOK;
-        private ExtendedControls.ButtonExt buttonExtCancel;
-        private ExtendedControls.ButtonExt buttonExtEffects;
+        private ExtendedControls.ExtCheckBox checkBoxCustomV;
+        private ExtendedControls.ExtCheckBox checkBoxCustomComplete;
+        private ExtendedControls.ExtButton buttonExtTest;
+        private ExtendedControls.ExtButton buttonExtOK;
+        private ExtendedControls.ExtButton buttonExtCancel;
+        private ExtendedControls.ExtButton buttonExtEffects;
         private System.Windows.Forms.Panel panelOuter;
         private System.Windows.Forms.Label labelTitle;
-        private ExtendedControls.TextBoxBorder textBoxBorderEndTrigger;
-        private ExtendedControls.ComboBoxCustom comboBoxCustomPriority;
+        private ExtendedControls.ExtTextBox textBoxBorderEndTrigger;
+        private ExtendedControls.ExtComboBox comboBoxCustomPriority;
         private System.Windows.Forms.Label labelEndTrigger;
-        private ExtendedControls.TextBoxBorder textBoxBorderStartTrigger;
+        private ExtendedControls.ExtTextBox textBoxBorderStartTrigger;
         private System.Windows.Forms.Label labelStartTrigger;
-        private ExtendedControls.ButtonExt buttonExtDevice;
+        private ExtendedControls.ExtButton buttonExtDevice;
     }
 }

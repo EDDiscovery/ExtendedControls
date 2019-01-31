@@ -47,9 +47,9 @@ namespace ExtendedControls
     [ToolStripItemDesignerAvailability(ToolStripItemDesignerAvailability.ToolStrip | ToolStripItemDesignerAvailability.StatusStrip)]
     public class ToolStripComboBoxCustom : System.Windows.Forms.ToolStripControlHost
     {
-        public ComboBoxCustom ComboBox { get { return (ComboBoxCustom)base.Control; } }
+        public ExtComboBox ComboBox { get { return (ExtComboBox)base.Control; } }
 
-        public ToolStripComboBoxCustom() : base(new ComboBoxCustom())
+        public ToolStripComboBoxCustom() : base(new ExtComboBox())
         {
         }
 
@@ -67,7 +67,7 @@ namespace ExtendedControls
         public int ScrollBarWidth { get { return ComboBox.ScrollBarWidth; } set { ComboBox.ScrollBarWidth = value; } }
         public int ItemHeight { get { return ComboBox.ItemHeight; } set { ComboBox.ItemHeight = value; } }
         public int SelectedIndex { get { return ComboBox.SelectedIndex; } set { ComboBox.SelectedIndex = value; } }
-        public ComboBoxCustom.ObjectCollection Items { get { return ComboBox.Items; } set { ComboBox.Items = value; } }
+        public ExtComboBox.ObjectCollection Items { get { return ComboBox.Items; } set { ComboBox.Items = value; } }
         public object DataSource { get { return ComboBox.DataSource; } set { ComboBox.DataSource = value; } }
         public string DisplayMember { get { return ComboBox.DisplayMember; } set { ComboBox.DisplayMember = value; } }
         public string ValueMember { get { return ComboBox.ValueMember; } set { ComboBox.ValueMember = value; } }

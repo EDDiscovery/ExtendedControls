@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,18 +13,15 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class RadioButtonCustom : RadioButton
+    public class ExtRadioButton : RadioButton
     {
         public Color RadioButtonColor { get; set; } = Color.Gray;       // border of
         public Color RadioButtonInnerColor { get; set; } = Color.White; // inner border of
@@ -36,7 +33,7 @@ namespace ExtendedControls
 
         public float FontNerfReduction { get; set; } = 0.5F;              // When windows paints control, seems to use a slightly smaller font than what has been ordered
 
-        public RadioButtonCustom() : base()
+        public ExtRadioButton() : base()
         {
         }
 

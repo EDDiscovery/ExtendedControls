@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.buttonExt1 = new ExtendedControls.ButtonExt();
-            this.buttonExt2 = new ExtendedControls.ButtonExt();
-            this.buttonExt3 = new ExtendedControls.ButtonExt();
+            this.buttonExt1 = new ExtendedControls.ExtButton();
+            this.buttonExt2 = new ExtendedControls.ExtButton();
+            this.buttonExt3 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // buttonExt1
@@ -81,8 +81,8 @@
 
         #endregion
         private System.Windows.Forms.Timer timer1;
-        private ExtendedControls.ButtonExt buttonExt1;
-        private ExtendedControls.ButtonExt buttonExt2;
-        private ExtendedControls.ButtonExt buttonExt3;
+        private ExtendedControls.ExtButton buttonExt1;
+        private ExtendedControls.ExtButton buttonExt2;
+        private ExtendedControls.ExtButton buttonExt3;
     }
 }

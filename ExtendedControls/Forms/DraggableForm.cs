@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright © 2017-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,16 +13,14 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using BaseUtils.Win32;
 using BaseUtils.Win32Constants;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -192,7 +190,7 @@ namespace ExtendedControls
                             const int edgesz = 5;   // 5 is generous.. really only a few pixels gets thru before the subwindows grabs them
 
                             if (SizeGripStyle != SizeGripStyle.Hide && WindowState != FormWindowState.Maximized && (p.X + p.Y >= ClientSize.Width + ClientSize.Height -
-                                (Controls.OfType<StatusStripCustom>().FirstOrDefault()?.Height ?? Controls.OfType<StatusStrip>().FirstOrDefault()?.Height ?? CaptionHeight)))
+                                (Controls.OfType<ExtStatusStrip>().FirstOrDefault()?.Height ?? Controls.OfType<StatusStrip>().FirstOrDefault()?.Height ?? CaptionHeight)))
                             {
                                 m.Result = (IntPtr)HT.BOTTOMRIGHT;
                             }

@@ -13,15 +13,12 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class SplitContainerCustom : System.Windows.Forms.SplitContainer
+    public class ExtSplitContainer : System.Windows.Forms.SplitContainer
     {
         public bool LayoutChanging { get; private set; } = false;
         protected override void OnLayout(LayoutEventArgs e)

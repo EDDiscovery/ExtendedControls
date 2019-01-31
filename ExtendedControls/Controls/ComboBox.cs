@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -19,14 +19,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
+
 
 namespace ExtendedControls
 {
-    public class ComboBoxCustom : Control
+    public class ExtComboBox : Control
     {
         public class ObjectCollection : IList<string>, ICollection<string>
         {
@@ -188,7 +187,7 @@ namespace ExtendedControls
         private Point arrowpt1c, arrowpt2c, arrowpt3c;
         private bool isActivated = false;
         private bool mouseover = false;
-        private DropDownCustom _customdropdown;
+        private ExtListBoxForm _customdropdown;
         private int itemheight = 13;
 
         // ForeColor = text, BackColor = control background
@@ -229,7 +228,7 @@ namespace ExtendedControls
 
         public event EventHandler SelectedIndexChanged;
 
-        public ComboBoxCustom()
+        public ExtComboBox()
         {
             //Text = "";
             this._cbsystem = new ComboBox();
@@ -475,7 +474,7 @@ namespace ExtendedControls
             if (Items.Count == 0 || !Enabled)
                 return;
 
-            _customdropdown = new DropDownCustom(this.Name);
+            _customdropdown = new ExtListBoxForm(this.Name);
 
             int fittableitems = this.DropDownHeight / this.ItemHeight;
 

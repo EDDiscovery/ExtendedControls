@@ -8,9 +8,9 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class DropDownCustom : Form
+    public class ExtListBoxForm : Form
     {
-        private ListControlCustom listcontrol;
+        private ExtListBox listcontrol;
 
         public event EventHandler SelectedIndexChanged;
         public event KeyPressEventHandler KeyPressed;
@@ -36,13 +36,13 @@ namespace ExtendedControls
 
         private bool closeondeactivateselected;
 
-        public DropDownCustom(string name = "", bool closeondeact = true)
+        public ExtListBoxForm(string name = "", bool closeondeact = true)
         {
             closeondeactivateselected = closeondeact;
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.ShowInTaskbar = false;
-            this.listcontrol = new ListControlCustom();
+            this.listcontrol = new ExtListBox();
             this.Name = this.listcontrol.Name = name;
             this.listcontrol.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             this.listcontrol.Dock = DockStyle.Fill;

@@ -81,7 +81,7 @@ namespace ExtendedControls
                 outer.Controls.Add(textLabel);
 
             Label[] lbs = new Label[lab.Length];
-            ExtendedControls.TextBoxBorder[] tbs = new ExtendedControls.TextBoxBorder[lab.Length];
+            ExtendedControls.ExtTextBox[] tbs = new ExtendedControls.ExtTextBox[lab.Length];
 
             ToolTip tt = new ToolTip();
             tt.ShowAlways = true;
@@ -91,7 +91,7 @@ namespace ExtendedControls
             for (int i = 0; i < lab.Length; i++)
             {
                 lbs[i] = new Label() { Left = lx, Top = y, Width = lw, Text = lab[i] };
-                tbs[i] = new ExtendedControls.TextBoxBorder()
+                tbs[i] = new ExtendedControls.ExtTextBox()
                 {
                     Left = tx,
                     Top = y,
@@ -118,11 +118,11 @@ namespace ExtendedControls
                 y += vspacing;
             }
 
-            ExtendedControls.ButtonExt confirmation = new ExtendedControls.ButtonExt() { Text = "OK".Tx(), Left = tbs[0].Right - 80, Width = 80, Top = y, DialogResult = DialogResult.OK };
+            ExtendedControls.ExtButton confirmation = new ExtendedControls.ExtButton() { Text = "OK".Tx(), Left = tbs[0].Right - 80, Width = 80, Top = y, DialogResult = DialogResult.OK };
             outer.Controls.Add(confirmation);
             confirmation.Click += (sender, e) => { prompt.Close(); };
 
-            ExtendedControls.ButtonExt cancel = new ExtendedControls.ButtonExt() { Text = "Cancel".Tx(), Left = confirmation.Location.X - 90, Width = 80, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
+            ExtendedControls.ExtButton cancel = new ExtendedControls.ExtButton() { Text = "Cancel".Tx(), Left = confirmation.Location.X - 90, Width = 80, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
             outer.Controls.Add(cancel);
             cancel.Click += (sender, e) => { prompt.Close(); };
 
@@ -136,7 +136,7 @@ namespace ExtendedControls
 
             if (prompt.ShowDialog(p) == DialogResult.OK)
             {
-                var r = (from ExtendedControls.TextBoxBorder t in tbs select t.Text).ToList();
+                var r = (from ExtendedControls.ExtTextBox t in tbs select t.Text).ToList();
                 return r;
             }
             else

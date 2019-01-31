@@ -28,14 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.rolluppanel = new ExtendedControls.RollUpPanel();
-            this.buttonExt4 = new ExtendedControls.ButtonExt();
+            this.rolluppanel = new ExtendedControls.ExtPanelRollUp();
+            this.buttonExt4 = new ExtendedControls.ExtButton();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBoxCustom2 = new ExtendedControls.ComboBoxCustom();
-            this.comboBoxCustom1 = new ExtendedControls.ComboBoxCustom();
-            this.buttonExt3 = new ExtendedControls.ButtonExt();
-            this.buttonExt2 = new ExtendedControls.ButtonExt();
-            this.buttonExt1 = new ExtendedControls.ButtonExt();
+            this.comboBoxCustom2 = new ExtendedControls.ExtComboBox();
+            this.comboBoxCustom1 = new ExtendedControls.ExtComboBox();
+            this.buttonExt3 = new ExtendedControls.ExtButton();
+            this.buttonExt2 = new ExtendedControls.ExtButton();
+            this.buttonExt1 = new ExtendedControls.ExtButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.rolluppanel.SuspendLayout();
@@ -218,15 +218,15 @@
 
         #endregion
 
-        private ExtendedControls.RollUpPanel rolluppanel;
-        private ExtendedControls.ButtonExt buttonExt3;
-        private ExtendedControls.ButtonExt buttonExt2;
-        private ExtendedControls.ButtonExt buttonExt1;
+        private ExtendedControls.ExtPanelRollUp rolluppanel;
+        private ExtendedControls.ExtButton buttonExt3;
+        private ExtendedControls.ExtButton buttonExt2;
+        private ExtendedControls.ExtButton buttonExt1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private ExtendedControls.ComboBoxCustom comboBoxCustom1;
-        private ExtendedControls.ComboBoxCustom comboBoxCustom2;
+        private ExtendedControls.ExtComboBox comboBoxCustom1;
+        private ExtendedControls.ExtComboBox comboBoxCustom2;
         private System.Windows.Forms.ComboBox comboBox1;
-        private ExtendedControls.ButtonExt buttonExt4;
+        private ExtendedControls.ExtButton buttonExt4;
     }
 }

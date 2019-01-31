@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AudioDeviceConfigure));
-            this.comboBoxCustomDevice = new ExtendedControls.ComboBoxCustom();
+            this.comboBoxCustomDevice = new ExtendedControls.ExtComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.buttonExtOK = new ExtendedControls.ButtonExt();
-            this.buttonExtCancel = new ExtendedControls.ButtonExt();
+            this.buttonExtOK = new ExtendedControls.ExtButton();
+            this.buttonExtCancel = new ExtendedControls.ExtButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -131,10 +131,10 @@
 
         #endregion
 
-        private ExtendedControls.ComboBoxCustom comboBoxCustomDevice;
+        private ExtendedControls.ExtComboBox comboBoxCustomDevice;
         private System.Windows.Forms.Label label1;
-        private ExtendedControls.ButtonExt buttonExtOK;
-        private ExtendedControls.ButtonExt buttonExtCancel;
+        private ExtendedControls.ExtButton buttonExtOK;
+        private ExtendedControls.ExtButton buttonExtCancel;
         private System.Windows.Forms.Panel panel1;
     }
 }

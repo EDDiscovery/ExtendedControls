@@ -1,6 +1,6 @@
 ﻿namespace ExtendedControls
 {
-    partial class PanelSelectionList
+    partial class ExtPanelDropDown
     {
         /// <summary> 
         /// Required designer variable.

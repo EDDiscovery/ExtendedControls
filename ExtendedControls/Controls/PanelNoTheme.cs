@@ -13,23 +13,13 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    /// <summary>
-    /// A <see cref="Panel"/> that doesn't participate in theming.
-    /// </summary>
     public class PanelNoTheme : Panel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PanelNoTheme"/> class.
-        /// </summary>
         public PanelNoTheme() : base() { }
     }
 }

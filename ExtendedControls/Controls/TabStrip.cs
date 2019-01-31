@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 - 2017 EDDiscovery development team
+ * Copyright © 2016 - 2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,16 +13,11 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Imaging;
 
 namespace ExtendedControls
 {
@@ -495,13 +490,13 @@ namespace ExtendedControls
 
         #region Implementation - as Pop Out list
 
-        DropDownCustom dropdown;
+        ExtListBoxForm dropdown;
 
         private void drawnPanelListSelection_Click(object sender, EventArgs e)
         {
             autofadeinouttimer.Stop();      // in case we are in an autofade
 
-            dropdown = new DropDownCustom("", true);
+            dropdown = new ExtListBoxForm("", true);
 
             dropdown.SelectionBackColor = this.DropDownBackgroundColor;
             dropdown.ForeColor = this.ForeColor;

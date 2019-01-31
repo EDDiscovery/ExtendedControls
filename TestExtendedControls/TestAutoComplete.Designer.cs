@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.autoCompleteTextBox1 = new ExtendedControls.AutoCompleteTextBox();
-            this.comboBoxCustom1 = new ExtendedControls.ComboBoxCustom();
-            this.autoCompleteTextBox2 = new ExtendedControls.AutoCompleteTextBox();
-            this.textBoxBorder1 = new ExtendedControls.TextBoxBorder();
+            this.autoCompleteTextBox1 = new ExtendedControls.ExtTextBoxAutoComplete();
+            this.comboBoxCustom1 = new ExtendedControls.ExtComboBox();
+            this.autoCompleteTextBox2 = new ExtendedControls.ExtTextBoxAutoComplete();
+            this.textBoxBorder1 = new ExtendedControls.ExtTextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -158,10 +158,10 @@
 
         #endregion
 
-        private ExtendedControls.AutoCompleteTextBox autoCompleteTextBox1;
-        private ExtendedControls.ComboBoxCustom comboBoxCustom1;
-        private ExtendedControls.AutoCompleteTextBox autoCompleteTextBox2;
-        private ExtendedControls.TextBoxBorder textBoxBorder1;
+        private ExtendedControls.ExtTextBoxAutoComplete autoCompleteTextBox1;
+        private ExtendedControls.ExtComboBox comboBoxCustom1;
+        private ExtendedControls.ExtTextBoxAutoComplete autoCompleteTextBox2;
+        private ExtendedControls.ExtTextBox textBoxBorder1;
         private System.Windows.Forms.Timer timer1;
     }
 }

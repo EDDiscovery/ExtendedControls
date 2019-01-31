@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,19 +13,15 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class NumericUpDownCustom : Control
+    public class ExtNumericUpDown : Control
     {
         // Fore not use, Back used as background of whole control (may show if Autosize=on)
         public Color TextBoxBackColor { get { return tbbackcolor; } set { tb.BackColor = tbbackcolor = value; } }
@@ -53,7 +49,7 @@ namespace ExtendedControls
 
         #region Implementation
 
-        public NumericUpDownCustom() : base()
+        public ExtNumericUpDown() : base()
         {
             tb = new TextBox();
             tb.BorderStyle = BorderStyle.None;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright © 2017-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -63,7 +63,7 @@ namespace ExtendedControls
             // ComboBoxCustom
             public Entry(string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, List<string> comboitems, Size? sz = null)
             {
-                controltype = typeof(ExtendedControls.ComboBoxCustom); text = t; pos = p; size = s; tooltip = tt; controlname = nam;
+                controltype = typeof(ExtendedControls.ExtComboBox); text = t; pos = p; size = s; tooltip = tt; controlname = nam;
                 comboboxitems = string.Join(",", comboitems);
                 comboboxdropdownsize = sz;
             }
@@ -146,12 +146,12 @@ namespace ExtendedControls
             if (t != null)
             {
                 Control c = t.control;
-                if (c is ExtendedControls.TextBoxBorder)
-                    return (c as ExtendedControls.TextBoxBorder).Text;
-                else if (c is ExtendedControls.CheckBoxCustom)
-                    return (c as ExtendedControls.CheckBoxCustom).Checked ? "1" : "0";
-                else if (c is ExtendedControls.CustomDateTimePicker)
-                    return (c as ExtendedControls.CustomDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                if (c is ExtendedControls.ExtTextBox)
+                    return (c as ExtendedControls.ExtTextBox).Text;
+                else if (c is ExtendedControls.ExtCheckBox)
+                    return (c as ExtendedControls.ExtCheckBox).Checked ? "1" : "0";
+                else if (c is ExtendedControls.ExtDateTimePicker)
+                    return (c as ExtendedControls.ExtDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                 else if (c is ExtendedControls.NumberBoxDouble)
                 {
                     var cn = c as ExtendedControls.NumberBoxDouble;
@@ -162,9 +162,9 @@ namespace ExtendedControls
                     var cn = c as ExtendedControls.NumberBoxLong;
                     return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
                 }
-                else if (c is ExtendedControls.ComboBoxCustom)
+                else if (c is ExtendedControls.ExtComboBox)
                 {
-                    ExtendedControls.ComboBoxCustom cb = c as ExtendedControls.ComboBoxCustom;
+                    ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
                     return (cb.SelectedIndex != -1) ? cb.Text : "";
                 }
             }
@@ -201,7 +201,7 @@ namespace ExtendedControls
             Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                CustomDateTimePicker c = t.control as CustomDateTimePicker;
+                ExtDateTimePicker c = t.control as ExtDateTimePicker;
                 if (c != null)
                     return c.Value;
             }
@@ -215,19 +215,19 @@ namespace ExtendedControls
             if (t != null)
             {
                 Control c = t.control;
-                if (c is ExtendedControls.TextBoxBorder)
+                if (c is ExtendedControls.ExtTextBox)
                 {
-                    (c as ExtendedControls.TextBoxBorder).Text = value;
+                    (c as ExtendedControls.ExtTextBox).Text = value;
                     return true;
                 }
-                else if (c is ExtendedControls.CheckBoxCustom)
+                else if (c is ExtendedControls.ExtCheckBox)
                 {
-                    (c as ExtendedControls.CheckBoxCustom).Checked = !value.Equals("0");
+                    (c as ExtendedControls.ExtCheckBox).Checked = !value.Equals("0");
                     return true;
                 }
-                else if (c is ExtendedControls.ComboBoxCustom)
+                else if (c is ExtendedControls.ExtComboBox)
                 {
-                    ExtendedControls.ComboBoxCustom cb = c as ExtendedControls.ComboBoxCustom;
+                    ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
                     if (cb.Items.Contains(value))
                     {
                         cb.Enabled = false;
@@ -283,17 +283,17 @@ namespace ExtendedControls
             if (type == null)
                 return "Missing type";
             else if (type.Equals("button"))
-                ctype = typeof(ExtendedControls.ButtonExt);
+                ctype = typeof(ExtendedControls.ExtButton);
             else if (type.Equals("textbox"))
-                ctype = typeof(ExtendedControls.TextBoxBorder);
+                ctype = typeof(ExtendedControls.ExtTextBox);
             else if (type.Equals("checkbox"))
-                ctype = typeof(ExtendedControls.CheckBoxCustom);
+                ctype = typeof(ExtendedControls.ExtCheckBox);
             else if (type.Equals("label"))
                 ctype = typeof(System.Windows.Forms.Label);
             else if (type.Equals("combobox"))
-                ctype = typeof(ExtendedControls.ComboBoxCustom);
+                ctype = typeof(ExtendedControls.ExtComboBox);
             else if (type.Equals("datetime"))
-                ctype = typeof(ExtendedControls.CustomDateTimePicker);
+                ctype = typeof(ExtendedControls.ExtDateTimePicker);
             else if (type.Equals("numberboxlong"))
                 ctype = typeof(ExtendedControls.NumberBoxLong);
             else if (type.Equals("numberboxdouble"))
@@ -417,16 +417,16 @@ namespace ExtendedControls
                 c.Size = ent.size;
                 c.Location = ent.pos;
                 //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
-                if (!(ent.controltype == null || c is ExtendedControls.ComboBoxCustom || c is ExtendedControls.CustomDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong ))        // everything but get text
+                if (!(ent.controltype == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong ))        // everything but get text
                     c.Text = ent.text;
                 c.Tag = ent;     // point control tag at ent structure
                 outer.Controls.Add(c);
                 if (ent.tooltip != null)
                     tt.SetToolTip(c, ent.tooltip);
 
-                if (c is ExtendedControls.ButtonExt)
+                if (c is ExtendedControls.ExtButton)
                 {
-                    ExtendedControls.ButtonExt b = c as ExtendedControls.ButtonExt;
+                    ExtendedControls.ExtButton b = c as ExtendedControls.ExtButton;
                     b.Click += (sender, ev) =>
                     {
                         if (!ProgClose)
@@ -472,9 +472,9 @@ namespace ExtendedControls
                         }
                     };
                 }
-                else if (c is ExtendedControls.TextBoxBorder)
+                else if (c is ExtendedControls.ExtTextBox)
                 {
-                    ExtendedControls.TextBoxBorder tb = c as ExtendedControls.TextBoxBorder;
+                    ExtendedControls.ExtTextBox tb = c as ExtendedControls.ExtTextBox;
                     tb.Multiline = tb.WordWrap = ent.textboxmultiline;
                     tb.Size = ent.size;     // restate size in case multiline is on
                     tb.ClearOnFirstChar = ent.clearonfirstchar;
@@ -487,9 +487,9 @@ namespace ExtendedControls
                         }
                     };
                 }
-                else if (c is ExtendedControls.CheckBoxCustom)
+                else if (c is ExtendedControls.ExtCheckBox)
                 {
-                    ExtendedControls.CheckBoxCustom cb = c as ExtendedControls.CheckBoxCustom;
+                    ExtendedControls.ExtCheckBox cb = c as ExtendedControls.ExtCheckBox;
                     cb.Checked = ent.checkboxchecked;
                     cb.Click += (sender, ev) =>
                     {
@@ -502,9 +502,9 @@ namespace ExtendedControls
                 }
 
 
-                if (c is ExtendedControls.CustomDateTimePicker)
+                if (c is ExtendedControls.ExtDateTimePicker)
                 {
-                    ExtendedControls.CustomDateTimePicker dt = c as ExtendedControls.CustomDateTimePicker;
+                    ExtendedControls.ExtDateTimePicker dt = c as ExtendedControls.ExtDateTimePicker;
                     DateTime t;
                     if (DateTime.TryParse(ent.text, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out t))     // assume local, so no conversion
                         dt.Value = t;
@@ -526,9 +526,9 @@ namespace ExtendedControls
                     }
                 }
 
-                if (c is ExtendedControls.ComboBoxCustom)
+                if (c is ExtendedControls.ExtComboBox)
                 {
-                    ExtendedControls.ComboBoxCustom cb = c as ExtendedControls.ComboBoxCustom;
+                    ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
                     if (ent.comboboxdropdownsize != null)
                     {
                         cb.DropDownHeight = ent.comboboxdropdownsize.Value.Height;

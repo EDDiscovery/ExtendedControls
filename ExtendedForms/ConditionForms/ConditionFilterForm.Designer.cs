@@ -44,13 +44,13 @@ namespace ExtendedConditionsForms
         private void InitializeComponent()
         {
             this.panelTop = new System.Windows.Forms.Panel();
-            this.panel_close = new ExtendedControls.DrawnPanel();
-            this.panel_minimize = new ExtendedControls.DrawnPanel();
+            this.panel_close = new ExtendedControls.ExtPanelDrawn();
+            this.panel_minimize = new ExtendedControls.ExtPanelDrawn();
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
-            this.buttonCancel = new ExtendedControls.ButtonExt();
-            this.buttonOK = new ExtendedControls.ButtonExt();
-            this.statusStripCustom = new ExtendedControls.StatusStripCustom();
+            this.buttonCancel = new ExtendedControls.ExtButton();
+            this.buttonOK = new ExtendedControls.ExtButton();
+            this.statusStripCustom = new ExtendedControls.ExtStatusStrip();
             this.conditionFilterUC = new ExtendedConditionsForms.ConditionFilterUC();
             this.panelTop.SuspendLayout();
             this.panelOK.SuspendLayout();
@@ -84,7 +84,7 @@ namespace ExtendedConditionsForms
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_minimize.ImageSelected = ExtendedControls.DrawnPanel.ImageType.Minimize;
+            this.panel_minimize.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(1045, 0);
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
@@ -179,11 +179,11 @@ namespace ExtendedConditionsForms
 
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Label label_index;
-        private ExtendedControls.ButtonExt buttonOK;
-        private ExtendedControls.ButtonExt buttonCancel;
-        private ExtendedControls.DrawnPanel panel_minimize;
-        private ExtendedControls.DrawnPanel panel_close;
-        private ExtendedControls.StatusStripCustom statusStripCustom;
+        private ExtendedControls.ExtButton buttonOK;
+        private ExtendedControls.ExtButton buttonCancel;
+        private ExtendedControls.ExtPanelDrawn panel_minimize;
+        private ExtendedControls.ExtPanelDrawn panel_close;
+        private ExtendedControls.ExtStatusStrip statusStripCustom;
         private System.Windows.Forms.Panel panelOK;
         private ConditionFilterUC conditionFilterUC;
     }

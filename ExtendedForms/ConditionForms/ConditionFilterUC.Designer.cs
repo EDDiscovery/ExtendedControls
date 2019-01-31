@@ -44,9 +44,9 @@ namespace ExtendedConditionsForms
         private void InitializeComponent()
         {
             this.panelConditionUC = new System.Windows.Forms.Panel();
-            this.panelVScroll = new ExtendedControls.PanelVScroll();
-            this.vScrollBarCustom1 = new ExtendedControls.VScrollBarCustom();
-            this.buttonMore = new ExtendedControls.ButtonExt();
+            this.panelVScroll = new ExtendedControls.ExtPanelScroll();
+            this.vScrollBarCustom1 = new ExtendedControls.ExtScrollBar();
+            this.buttonMore = new ExtendedControls.ExtButton();
             this.panelConditionUC.SuspendLayout();
             this.panelVScroll.SuspendLayout();
             this.SuspendLayout();
@@ -129,9 +129,9 @@ namespace ExtendedConditionsForms
         }
 
         #endregion
-        private ExtendedControls.ButtonExt buttonMore;
-        private ExtendedControls.VScrollBarCustom vScrollBarCustom1;
-        private ExtendedControls.PanelVScroll panelVScroll;
+        private ExtendedControls.ExtButton buttonMore;
+        private ExtendedControls.ExtScrollBar vScrollBarCustom1;
+        private ExtendedControls.ExtPanelScroll panelVScroll;
         private System.Windows.Forms.Panel panelConditionUC;
     }
 }

@@ -42,19 +42,19 @@ namespace ExtendedConditionsForms
         private class Group 
         {
             public Panel panel;
-            public ExtendedControls.ButtonExt upbutton;
-            public ExtendedControls.ComboBoxCustom evlist;
-            public ExtendedControls.ComboBoxCustom innercond;
-            public ExtendedControls.ComboBoxCustom outercond;
+            public ExtendedControls.ExtButton upbutton;
+            public ExtendedControls.ExtComboBox evlist;
+            public ExtendedControls.ExtComboBox innercond;
+            public ExtendedControls.ExtComboBox outercond;
             public Label outerlabel;
 
             public class Conditions
             {
-                public ExtendedControls.AutoCompleteTextBox fname;
-                public ExtendedControls.ComboBoxCustom cond;
-                public ExtendedControls.TextBoxBorder value;
-                public ExtendedControls.ButtonExt del;
-                public ExtendedControls.ButtonExt more;
+                public ExtendedControls.ExtTextBoxAutoComplete fname;
+                public ExtendedControls.ExtComboBox cond;
+                public ExtendedControls.ExtTextBox value;
+                public ExtendedControls.ExtButton del;
+                public ExtendedControls.ExtButton more;
                 public Group group;
             }
 
@@ -227,7 +227,7 @@ namespace ExtendedConditionsForms
 
             if (eventlist != null)
             {
-                g.evlist = new ExtendedControls.ComboBoxCustom();
+                g.evlist = new ExtendedControls.ExtComboBox();
                 g.evlist.Items.AddRange(eventlist);
                 g.evlist.Location = new Point(panelxmargin, panelymargin);
                 g.evlist.Size = new Size(150, 24);
@@ -239,7 +239,7 @@ namespace ExtendedConditionsForms
                 g.panel.Controls.Add(g.evlist);
             }
 
-            g.innercond = new ExtendedControls.ComboBoxCustom();
+            g.innercond = new ExtendedControls.ExtComboBox();
             g.innercond.Items.AddRange(Enum.GetNames(typeof(ConditionEntry.LogicalCondition)));
             g.innercond.SelectedIndex = 0;
             g.innercond.Size = new Size(48, 24);
@@ -248,7 +248,7 @@ namespace ExtendedConditionsForms
                 g.innercond.Text = initialcondinner;
             g.panel.Controls.Add(g.innercond);
 
-            g.outercond = new ExtendedControls.ComboBoxCustom();
+            g.outercond = new ExtendedControls.ExtComboBox();
             g.outercond.Items.AddRange(Enum.GetNames(typeof(ConditionEntry.LogicalCondition)));
             g.outercond.SelectedIndex = 0;
             g.outercond.Size = new Size(60, 24);
@@ -263,7 +263,7 @@ namespace ExtendedConditionsForms
             g.outerlabel.Visible = false;
             g.panel.Controls.Add(g.outerlabel);
 
-            g.upbutton = new ExtendedControls.ButtonExt();
+            g.upbutton = new ExtendedControls.ExtButton();
             g.upbutton.Size = new Size(24, 24);
             g.upbutton.Text = "^";
             g.upbutton.Click += Up_Click;
@@ -278,7 +278,7 @@ namespace ExtendedConditionsForms
 
         private void Evlist_SelectedIndexChanged(object sender, EventArgs e)                // EVENT list changed
         {
-            ExtendedControls.ComboBoxCustom b = sender as ExtendedControls.ComboBoxCustom;
+            ExtendedControls.ExtComboBox b = sender as ExtendedControls.ExtComboBox;
             Group g = (Group)b.Tag;
 
             if ( g.condlist.Count == 0 )        // if no conditions, create one..
@@ -294,7 +294,7 @@ namespace ExtendedConditionsForms
 
         private void Up_Click(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group g = (Group)b.Tag;
             int indexof = groups.IndexOf(g);
             groups.Remove(g);
@@ -319,7 +319,7 @@ namespace ExtendedConditionsForms
 
             Group.Conditions c = new Group.Conditions();
 
-            c.fname = new ExtendedControls.AutoCompleteTextBox();
+            c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
             c.fname.Size = new Size(140, 24);
             c.fname.SetAutoCompletor(AutoCompletor);
             c.fname.Tag = g;
@@ -328,7 +328,7 @@ namespace ExtendedConditionsForms
                 c.fname.Text = initialfname;
             g.panel.Controls.Add(c.fname);                                                // 1st control
 
-            c.cond = new ExtendedControls.ComboBoxCustom();
+            c.cond = new ExtendedControls.ExtComboBox();
             c.cond.Items.AddRange(ConditionEntry.MatchNames);
             c.cond.SelectedIndex = 0;
             c.cond.Size = new Size(140, 24);
@@ -342,21 +342,21 @@ namespace ExtendedConditionsForms
 
             g.panel.Controls.Add(c.cond);         // must be next
 
-            c.value = new ExtendedControls.TextBoxBorder();
+            c.value = new ExtendedControls.ExtTextBox();
 
             if (initialvalue != null)
                 c.value.Text = initialvalue;
 
             g.panel.Controls.Add(c.value);         // must be next
 
-            c.del = new ExtendedControls.ButtonExt();
+            c.del = new ExtendedControls.ExtButton();
             c.del.Size = new Size(24, 24);
             c.del.Text = "X";
             c.del.Click += ConditionDelClick;
             c.del.Tag = c;
             g.panel.Controls.Add(c.del);
 
-            c.more = new ExtendedControls.ButtonExt();
+            c.more = new ExtendedControls.ExtButton();
             c.more.Size = new Size(24, 24);
             c.more.Text = "+";
             c.more.Click += NewConditionClick;
@@ -376,7 +376,7 @@ namespace ExtendedConditionsForms
 
         private void ConditionDelClick(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group.Conditions c = (Group.Conditions)b.Tag;
             Delete(c);
         }
@@ -406,7 +406,7 @@ namespace ExtendedConditionsForms
 
         private void NewConditionClick(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group g = (Group)b.Tag;
             CreateCondition(g);
         }
@@ -611,7 +611,7 @@ namespace ExtendedConditionsForms
 
         Dictionary<string, List<string>> cachedevents = new Dictionary<string, List<string>>();
 
-        List<string> AutoCompletor(string s, ExtendedControls.AutoCompleteTextBox a)
+        List<string> AutoCompletor(string s, ExtendedControls.ExtTextBoxAutoComplete a)
         {
             Group g = a.Tag as Group;
 

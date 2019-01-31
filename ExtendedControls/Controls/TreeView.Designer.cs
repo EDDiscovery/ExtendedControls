@@ -1,6 +1,6 @@
 ﻿namespace ExtendedControls.Controls
 {
-    partial class TreeViewCustom
+    partial class ExtTreeView
     {
         /// <summary>
         /// Required designer variable.

@@ -46,7 +46,7 @@ namespace DialogTest
             System.Diagnostics.Debug.WriteLine("Selected " + panelSelectionList1.SelectedIndex);
         }
 
-        public static List<string> AutoList(string input, AutoCompleteTextBox t)
+        public static List<string> AutoList(string input, ExtTextBoxAutoComplete t)
         {
             List<string> res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
             return res;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,19 +13,15 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using BaseUtils.Win32Constants;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
-using System.Reflection;
 
 namespace ExtendedControls
 {
-    public class TextBoxBorder : Control
+    public class ExtTextBox : Control
     {
         // BorderColour != transparent to use ours
         // BorderStyle to set textbox style..  None for off.  Can use both if you wish 
@@ -61,7 +57,7 @@ namespace ExtendedControls
 
         public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(textbox, text); } // only needed for dynamic changes..
 
-        public Action<TextBoxBorder> ReturnPressed;                              // fires if return pressed
+        public Action<ExtTextBox> ReturnPressed;                              // fires if return pressed
 
         protected TextBox textbox;
         private Color bordercolor = Color.Transparent;
@@ -73,7 +69,7 @@ namespace ExtendedControls
         private char lastkey;               // records key presses
         private int keyspressed = 0;
 
-        public TextBoxBorder() : base()
+        public ExtTextBox() : base()
         {
             this.GotFocus += TextBoxBorder_GotFocus;
             textbox = new TextBox();
@@ -178,7 +174,7 @@ namespace ExtendedControls
 
             string keyInput = e.KeyChar.ToString();
 
-            TextBoxBorder tempBox = this;
+            ExtTextBox tempBox = this;
 
             if (Char.IsDigit(e.KeyChar))
             {
