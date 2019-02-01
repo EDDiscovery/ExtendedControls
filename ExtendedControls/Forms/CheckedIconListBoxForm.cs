@@ -56,11 +56,13 @@ namespace ExtendedControls
 
         public void SetItems(string[] i) { items = i.ToList(); PrepareText(); }
         public void SetItems(List<string> i) { items = i; PrepareText(); }
+        public void AddItem(string i) { int c = items.Count; items.Add(i); PrepareText(c); }
         public void AddItems(string[] i) { int c = items.Count; items.AddRange(i); PrepareText(c); }
         public void AddItems(List<string> i) { int c = items.Count; items.AddRange(i); PrepareText(c); }
 
         public void SetImageItems(Image[] i) { imageItems = i.ToList(); PrepareImages(); }
         public void SetImageItems(List<Image> i) { imageItems = i; PrepareImages(); }
+        public void AddImageItem(Image i) { int c = imageItems.Count; imageItems.Add(i); PrepareImages(c); }
         public void AddImageItems(Image[] i) { int c = imageItems.Count; imageItems.AddRange(i); PrepareImages(c); }
         public void AddImageItems(List<Image> i) { int c = imageItems.Count; imageItems.AddRange(i); PrepareImages(c); }
 

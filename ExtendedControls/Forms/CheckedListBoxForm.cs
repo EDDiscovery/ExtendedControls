@@ -29,6 +29,12 @@ namespace ExtendedControls
         public bool CloseOnDeactivate { get; set; } = true;
         public event ItemCheckEventHandler CheckedChanged;
 
+        public void SetItems(string[] i) { Items.Clear(); Items.AddRange(i); }
+        public void SetItems(List<string> i) { Items.Clear(); Items.AddRange(i.ToArray()); }
+        public void AddItem(string i) { Items.Add(i);  }
+        public void AddItems(string[] i) { Items.AddRange(i); }
+        public void AddItems(List<string> i) { Items.AddRange(i.ToArray()); }
+
         private Point SetPosition { get; set; }
         private Size SetSize { get; set; }
         private bool ignorechangeevent = false;
