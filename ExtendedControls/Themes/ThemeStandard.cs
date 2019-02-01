@@ -957,6 +957,15 @@ namespace ExtendedControls
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
                 ctrl.BackColor = currentsettings.colors[Settings.CI.textbox_back];
             }
+            else if ( myControl is CheckedIconListBoxForm )
+            {
+                CheckedIconListBoxForm ctrl = myControl as CheckedIconListBoxForm;
+
+                if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
+                    ctrl.FlatStyle = FlatStyle.System;
+                else
+                    ctrl.FlatStyle = FlatStyle.Popup;
+            }
             else
             {
                 if (!parentnamespace.Equals("ExtendedControls"))

@@ -160,8 +160,9 @@ namespace ExtendedControls
                 CheckedChanged(this, e);
         }
 
-        protected override void OnShown(EventArgs e)
+        protected override void OnLayout(LayoutEventArgs levent)
         {
+            base.OnLayout(levent);
             Location = SetPosition;
             Size = SetSize;
             clb.Size = SetSize;

@@ -65,6 +65,7 @@ namespace ExtendedControls
         public void AddImageItem(Image i) { int c = imageItems.Count; imageItems.Add(i); PrepareImages(c); }
         public void AddImageItems(Image[] i) { int c = imageItems.Count; imageItems.AddRange(i); PrepareImages(c); }
         public void AddImageItems(List<Image> i) { int c = imageItems.Count; imageItems.AddRange(i); PrepareImages(c); }
+        public void AddNullImageItems(int count) { while (count-- > 0) imageItems.Add(null); }
 
         public Size ImageSize { get; set; } = new Size(0, 0);                       // if not set, each image sets its size. If no images, then use this to set alternate size 
         public bool IsOpen { get; set; } = false;
@@ -279,23 +280,35 @@ namespace ExtendedControls
             }
         }
 
-        protected override void OnShown(EventArgs e)        // here we position the controls
+        protected override void OnLayout(LayoutEventArgs levent)
         {
+            base.OnLayout(levent);
+
             Location = position;
             Size = size;
 
             int lpos = HorizontalSpacing;
             int vpos = VerticalSpacing;
 
+            Size defsize = new Size(24, 24);
+            foreach (var i in imageItems)
+            {
+                if (i != null)                  // find first non null and use for defsize
+                {
+                    defsize = i.Size;
+                    break;
+                }
+            }
+
             bool hasimagesize = ImageSize.Width > 0 && ImageSize.Height > 0;        // has fixed size.. if so use it, else base it on first image, or 24x24
-            Size imgsize = hasimagesize ? ImageSize : (imageItems.Count > 0 ? imageItems[0].Size : new Size(24, 24));
+            Size imgsize = hasimagesize ? ImageSize : defsize;
 
             Size chkboxsize = (CheckBoxSize.Height < 1 || CheckBoxSize.Width < 1) ? imgsize : CheckBoxSize; // based on imagesize or checkboxsize
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
             for (int i = 0; i < items.Count; i++)
             {
-                if (i < imageItems.Count)
+                if (i < imageItems.Count && imageItems[i] != null)
                     imgsize = hasimagesize ? ImageSize : imageItems[i].Size;        // set size of item
 
                 int vcentre = vpos + imgsize.Height / 2;
