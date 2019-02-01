@@ -53,10 +53,17 @@ namespace ExtendedControls
 
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
         public bool CloseOnDeactivate { get; set; } = true;
-        public void SetItems(string [] i) { items.AddRange(i); PrepareText(); }
-        public void SetItems(List<string> i) { items.AddRange(i); PrepareText(); }
-        public void SetImageItems(List<Image> i) { imageItems.AddRange(i); PrepareImages(); }
-        public void SetImageItems(Image[] i) { imageItems.AddRange(i); PrepareImages(); }
+
+        public void SetItems(string[] i) { items = i.ToList(); PrepareText(); }
+        public void SetItems(List<string> i) { items = i; PrepareText(); }
+        public void AddItems(string[] i) { int c = items.Count; items.AddRange(i); PrepareText(c); }
+        public void AddItems(List<string> i) { int c = items.Count; items.AddRange(i); PrepareText(c); }
+
+        public void SetImageItems(Image[] i) { imageItems = i.ToList(); PrepareImages(); }
+        public void SetImageItems(List<Image> i) { imageItems = i; PrepareImages(); }
+        public void AddImageItems(Image[] i) { int c = imageItems.Count; imageItems.AddRange(i); PrepareImages(c); }
+        public void AddImageItems(List<Image> i) { int c = imageItems.Count; imageItems.AddRange(i); PrepareImages(c); }
+
         public Size ImageSize { get; set; } = new Size(0, 0);                       // if not set, each image sets its size. If no images, then use this to set alternate size 
         public bool IsOpen { get; set; } = false;
 
@@ -190,12 +197,12 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void PrepareText()          // text items have changed, so create checkboxes
+        private void PrepareText(int startfrom = 0)          // text items have changed, so create checkboxes
         {
             if (controllist == null)
                 controllist = new List<ControlSet>();
 
-            for (int i = 0; i < items.Count; i++)
+            for (int i = startfrom; i < items.Count; i++)
             {
                 if (i >= controllist.Count)
                     controllist.Add(new ControlSet());          // ensure we have a control set
@@ -241,14 +248,14 @@ namespace ExtendedControls
             }
         }
 
-        private void PrepareImages()
+        private void PrepareImages(int startfrom = 0)
         {
             if (controllist == null)
                 controllist = new List<ControlSet>();
 
-            for (int i = 0; i < imageItems.Count; i++)
+            for (int i = startfrom; i < imageItems.Count; i++)
             {
-                if (controllist.Count < i)
+                if (i >= controllist.Count)
                     controllist.Add(new ControlSet());          // ensure we have a control set
 
                 if (controllist[i].icon != null)                // remove old ones - strange if they do this..

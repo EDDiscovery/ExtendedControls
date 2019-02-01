@@ -25,7 +25,9 @@ namespace DialogTest
         {
             CheckedIconListBoxForm f = new CheckedIconListBoxForm();
             f.SetItems(new string[] { "One", "Two", "Three", "Four", "Five", "Six", "7", "8", "9", "10", "11", "12", "13" });
+            f.AddItems(new string[] { "1-One", "1-Two", "1-Three", "1-Four", "1-Five", "1-Six", "1-7", "1-8", "1-9", "1-10", "1-11", "1-12", "1-13" });
             f.SetImageItems(new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, });
+            f.AddImageItems(new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, });
             f.PositionBelow(extButton1, new Size(200, 300));
             f.SetChecked("Two;Four");
             f.SetColour(Color.AliceBlue, Color.DarkOrange);
