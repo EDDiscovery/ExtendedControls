@@ -24,15 +24,15 @@ namespace ExtendedControls
 {
     public class CheckedListBoxForm : Form
     {
-        private CheckedListBox clb;
         public CheckedListBox.ObjectCollection Items { get { return clb.Items; } }
         public bool IsOpen { get; set; } = false;
-
+        public bool CloseOnDeactivate { get; set; } = true;
         public event ItemCheckEventHandler CheckedChanged;
 
         private Point SetPosition { get; set; }
         private Size SetSize { get; set; }
         private bool ignorechangeevent = false;
+        private CheckedListBox clb;
 
         public CheckedListBoxForm()
         {
@@ -63,7 +63,7 @@ namespace ExtendedControls
             SetSize = s;
         }
 
-        public void SetColour(Color backcolour, Color textc)
+        public void SetColour(Color backcolour, Color textc)        // Forecolour used for text
         {
             BackColor = backcolour;
             clb.BackColor = backcolour;
@@ -94,9 +94,9 @@ namespace ExtendedControls
 
             for (int i = ignore; i < clb.Items.Count; i++)
             {
-                if (list.Contains(clb.Items[i]) || all)
-                    clb.SetItemChecked(i, true);
+                clb.SetItemChecked(i, list.Contains(clb.Items[i]) || all);
             }
+
             ignorechangeevent = false;
         }
 
@@ -146,10 +146,12 @@ namespace ExtendedControls
             return GetChecked(ignore,allornone).SplitNoEmptyStartFinish(';');
         }
 
+        #region Implementation
+
         protected void ItemCheck(Object sender , ItemCheckEventArgs e )
         {
             if (CheckedChanged != null && !ignorechangeevent)
-                CheckedChanged(sender, e);
+                CheckedChanged(this, e);
         }
 
         protected override void OnShown(EventArgs e)
@@ -165,5 +167,7 @@ namespace ExtendedControls
             this.Close();
             IsOpen = false;
         }
+
+        #endregion
     }
 }

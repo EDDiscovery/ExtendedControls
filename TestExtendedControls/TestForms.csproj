@@ -70,6 +70,12 @@
     <Compile Include="TestConditionUC.Designer.cs">
       <DependentUpon>TestConditionUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestListBoxIcon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestListBoxIcon.Designer.cs">
+      <DependentUpon>TestListBoxIcon.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestTabControlCustom.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -151,6 +157,9 @@
     <EmbeddedResource Include="TestCompassControl.resx">
       <DependentUpon>TestCompassControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestListBoxIcon.resx">
+      <DependentUpon>TestListBoxIcon.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestTabControlCustom.resx">
       <DependentUpon>TestTabControlCustom.cs</DependentUpon>
     </EmbeddedResource>
@@ -173,6 +182,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\Logo8bpp48.pspimage" />
+    <None Include="Resources\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -222,6 +233,12 @@
       <Project>{298C11C9-B58F-415C-8458-1CAE3C6CAB62}</Project>
       <Name>ExtendedForms</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo8bpp48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo8bpp48rot.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

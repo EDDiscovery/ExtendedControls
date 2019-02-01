@@ -29,7 +29,7 @@ namespace ExtendedControls
         public int ScrollBarWidth { get; set; } = 20;
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
-        public ExtScrollBar vsc;
+        public ExtScrollBar ScrollBar;
         public int ScrollOffset { get {return -scrollpos; } }
 
         private int scrollpos = 0;
@@ -45,10 +45,10 @@ namespace ExtendedControls
 
             if (e.Control is ExtScrollBar)
             {
-                vsc = e.Control as ExtScrollBar;
-                vsc.Width = ScrollBarWidth;
-                vsc.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
-                vsc.Name = "VScrollPanel";
+                ScrollBar = e.Control as ExtScrollBar;
+                ScrollBar.Width = ScrollBarWidth;
+                ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
+                ScrollBar.Name = "VScrollPanel";
             }
 
             e.Control.MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll
@@ -65,12 +65,12 @@ namespace ExtendedControls
             area.Width -= InternalMargin.Left + InternalMargin.Right;
             area.Height -= InternalMargin.Top + InternalMargin.Bottom;
 
-            if (vsc != null)
+            if (ScrollBar != null)
             {
                 Point p = new Point(area.X + ((VerticalScrollBarDockRight) ? (area.Width - ScrollBarWidth) : 0), area.Y);
-                vsc.Location = p;
+                ScrollBar.Location = p;
                 //System.Diagnostics.Debug.WriteLine("vsc {0}", vsc.Location);
-                vsc.Size = new Size(ScrollBarWidth, area.Height);
+                ScrollBar.Size = new Size(ScrollBarWidth, area.Height);
             }
 
             ScrollTo(scrollpos);
@@ -78,14 +78,14 @@ namespace ExtendedControls
 
         private void Control_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (vsc != null)
+            if (ScrollBar != null)
             {
                 if (e.Delta > 0)
-                    vsc.ValueLimited -= vsc.LargeChange;
+                    ScrollBar.ValueLimited -= ScrollBar.LargeChange;
                 else
-                    vsc.ValueLimited += vsc.LargeChange;
+                    ScrollBar.ValueLimited += ScrollBar.LargeChange;
 
-                ScrollTo(vsc.Value);
+                ScrollTo(ScrollBar.Value);
             }
         }
 
@@ -133,7 +133,7 @@ namespace ExtendedControls
                 newscrollpos = 0;
             else
             {
-                int maxscr = maxy - ClientRectangle.Height + ((vsc != null) ? vsc.LargeChange : 0);
+                int maxscr = maxy - ClientRectangle.Height + ((ScrollBar != null) ? ScrollBar.LargeChange : 0);
 
                 if (newscrollpos > maxscr)
                     newscrollpos = maxscr;
@@ -157,11 +157,11 @@ namespace ExtendedControls
                 PerformLayout();
             }
 
-            if (vsc != null)
+            if (ScrollBar != null)
             {
-                vsc.Maximum = maxy - ClientRectangle.Height + vsc.LargeChange;
-                vsc.Minimum = 0;
-                vsc.Value = newscrollpos;
+                ScrollBar.Maximum = maxy - ClientRectangle.Height + ScrollBar.LargeChange;
+                ScrollBar.Minimum = 0;
+                ScrollBar.Value = newscrollpos;
 
                 //System.Diagnostics.Debug.WriteLine("Scroll {0} to {1} maxy {2} sb {3} ch {4}", scrollpos, newscrollpos, maxy, vsc.Maximum, ClientRectangle.Height);
             }
