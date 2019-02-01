@@ -13,16 +13,19 @@ namespace DialogTest
 {
     public partial class TestListBoxIcon : Form
     {
+        ThemeStandard theme;
         public TestListBoxIcon()
         {
             InitializeComponent();
+            theme = new ThemeStandard();
+            theme.LoadBaseThemes();
         }
 
         private void extButton1_Click(object sender, EventArgs e)
         {
             CheckedIconListBoxForm f = new CheckedIconListBoxForm();
-            f.Items.AddRange(new string[] { "One", "Two", "Three", "Four", "Five", "Six", "7", "8", "9", "10", "11", "12", "13" });
-            f.ImageItems.AddRange(new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, });
+            f.SetItems(new string[] { "One", "Two", "Three", "Four", "Five", "Six", "7", "8", "9", "10", "11", "12", "13" });
+            f.SetImageItems(new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, });
             f.PositionBelow(extButton1, new Size(200, 300));
             f.SetChecked("Two;Four");
             f.SetColour(Color.AliceBlue, Color.DarkOrange);
@@ -43,8 +46,8 @@ namespace DialogTest
         private void extButton3_Click(object sender, EventArgs e)
         {
             CheckedIconListBoxForm f = new CheckedIconListBoxForm();
-            f.Items.AddRange(new string[] { "One", "Two", "Three", "Four", "Five", "Six", "7", "8", "9", "10", "11", "12", "13" });
-            f.ImageItems.AddRange(new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, });
+            f.SetItems(new string[] { "One", "Two", "Three", "Four", "Five", "Six", "7", "8", "9", "10", "11", "12", "13" });
+            f.SetImageItems(new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, });
             f.PositionBelow(extButton1, new Size(200, 300));
             f.SetChecked("Two;Four");
             f.SetColour(Color.AliceBlue, Color.Aqua);
@@ -87,5 +90,20 @@ namespace DialogTest
             extRichTextBox1.Select(extRichTextBox1.Text.Length, extRichTextBox1.Text.Length);
         }
 
+        private void extButton4_Click(object sender, EventArgs e)
+        {
+            CheckedIconListBoxForm f = new CheckedIconListBoxForm();
+            f.SetItems(new string[] { "One", "Two", "Three", "Four", "Five", "Six", "7", "8", "9", "10", "11", "12", "13" });
+           // f.SetImageItems(new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, });
+            f.PositionBelow(extButton1, new Size(200, 300));
+            f.SetChecked("Two;Four");
+            f.CheckedChanged += F_CheckedChanged;
+            f.TickBoxReductionSize = 8;
+            f.Font = new Font("Euro Caps", 16);
+            theme.SetThemeByName("Elite EuroCaps");
+            theme.ApplyToControls(f);
+            f.Show(this);
+
+        }
     }
 }

@@ -36,6 +36,7 @@ namespace ExtendedControls
 
         public ExtPanelScroll()
         {
+            MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -80,6 +81,7 @@ namespace ExtendedControls
         {
             if (ScrollBar != null)
             {
+                //System.Diagnostics.Debug.WriteLine("Mousewheel" + Environment.TickCount);
                 if (e.Delta > 0)
                     ScrollBar.ValueLimited -= ScrollBar.LargeChange;
                 else
