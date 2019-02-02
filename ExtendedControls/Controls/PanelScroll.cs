@@ -118,6 +118,18 @@ namespace ExtendedControls
             ScrollTo(scrollpos);
         }
 
+        //long tickcountlastforce = 0;        // time forcing of updates so we don't do it too frequently. - keep code until proven
+    //    long curtick = Environment.TickCount;
+    //    long delta = curtick - tickcountlastforce;
+    //            if (delta > 0)
+    //            {
+    //                System.Diagnostics.Debug.WriteLine("UPD Scroll to " + newscrollpos);
+    //                tickcountlastforce = curtick;
+    //                Update();
+    //}
+    //            else
+    //                System.Diagnostics.Debug.WriteLine("--- Scroll to " + newscrollpos);
+
         private int ScrollTo(int newscrollpos )
         {
             //System.Diagnostics.Debug.WriteLine((Environment.TickCount % 10000).ToString("00000") + "  VS Scroll to");
@@ -151,12 +163,13 @@ namespace ExtendedControls
                         // System.Diagnostics.Debug.WriteLine("Move {0}", c.Name);
 
                         int ynoscroll = c.Location.Y + scrollpos;
-                        c.Location = new Point(c.Location.X, ynoscroll - newscrollpos);       // SPENT AGES with the bloody AutoScrollPosition.. could not get it to work..
+                        int ynewscroll = ynoscroll - newscrollpos;
+                        c.Location = new Point(c.Location.X, ynewscroll);       // SPENT AGES with the bloody AutoScrollPosition.. could not get it to work..
                     }
                 }
 
                 ResumeLayout();
-                PerformLayout();
+                Update(); // force redisplay
             }
 
             if (ScrollBar != null)
