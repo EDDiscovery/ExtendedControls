@@ -50,6 +50,7 @@ namespace ExtendedControls
         public float ThumbColorScaling { get { return sb.ThumbColorScaling; } set { sb.ThumbColorScaling = value; } }
         public Color MouseOverButtonColor { get { return sb.MouseOverButtonColor; } set { sb.MouseOverButtonColor = value; } }
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
+        public int LargeChange {  get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
         public bool CloseOnDeactivate { get; set; } = true;
@@ -305,6 +306,8 @@ namespace ExtendedControls
 
             Size chkboxsize = (CheckBoxSize.Height < 1 || CheckBoxSize.Width < 1) ? imgsize : CheckBoxSize; // based on imagesize or checkboxsize
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
+
+            //System.Diagnostics.Debug.WriteLine("Chk " + chkboxsize + " " + imgsize);
 
             for (int i = 0; i < items.Count; i++)
             {
