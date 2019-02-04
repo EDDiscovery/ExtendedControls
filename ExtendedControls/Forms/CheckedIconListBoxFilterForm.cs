@@ -27,10 +27,12 @@ namespace ExtendedControls
 
     public class CheckedIconListBoxFilterForm
     {
-        public Action<string> SaveBack;         // called to save back value
-        public Action<CheckedIconListBoxFilterForm, FormClosedEventArgs> Changed;       // called after save back to say fully changed.
+        public Action<string,Object> SaveBack;         // called to save back value
+        public Action<CheckedIconListBoxFilterForm, Object> Changed;       // called after save back to say fully changed.
+        public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or NOne is reported, else its all entries or empty list
 
         private ExtendedControls.CheckedIconListBoxForm cc;
+        private Object tagback;
 
         private class Options
         {
@@ -56,12 +58,12 @@ namespace ExtendedControls
         }
 
         // present below control
-        public void Filter(string settings, Control ctr, Form parent, List<string> list = null, List<Image> images = null)
+        public void Filter(string settings, Control ctr, Form parent, List<string> list = null, List<Image> images = null, Object tag = null)
         {
             Filter(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(ctr.Width * 3, 600), parent, list, images);
         }
 
-        public void Filter(string settings, Point p, Size s, Form parent, List<string> list = null, List<Image> images = null)
+        public void Filter(string settings, Point p, Size s, Form parent, List<string> list = null, List<Image> images = null, Object tag = null)
         {
             if (cc == null)
             {
@@ -104,6 +106,8 @@ namespace ExtendedControls
 
                 ThemeableFormsInstance.Instance.ApplyToControls(cc, applytothis: true);
 
+                tagback = tag;
+
                 cc.Show(parent);
             }
             else
@@ -145,9 +149,9 @@ namespace ExtendedControls
 
         private void FilterClosed(Object sender, FormClosedEventArgs e)
         {
-            SaveBack?.Invoke(cc.GetChecked(ReservedEntries));
+            SaveBack?.Invoke(cc.GetChecked(ReservedEntries,AllOrNoneBack),tagback);
             cc = null;
-            Changed?.Invoke(this, e);
+            Changed?.Invoke(this, tagback);
         }
     }
 }
