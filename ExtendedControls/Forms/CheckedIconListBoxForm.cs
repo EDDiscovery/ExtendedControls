@@ -71,6 +71,8 @@ namespace ExtendedControls
         public Size ImageSize { get; set; } = new Size(0, 0);                       // if not set, each image sets its size. If no images, then use this to set alternate size 
         public bool IsOpen { get; set; } = false;
 
+        public int ItemCount { get { return items.Count; } }
+
         public event ItemCheckEventHandler CheckedChanged;
 
         private Point position;

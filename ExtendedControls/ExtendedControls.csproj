@@ -68,6 +68,7 @@
     <Compile Include="Controls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\CheckedIconListBoxFilterForm.cs" />
     <Compile Include="Forms\CheckedIconListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -288,6 +289,12 @@
       <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
       <Name>BaseUtils</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\None.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\All.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
