@@ -57,6 +57,20 @@ namespace ExtendedControls
             standardoptions.Add(new Options() { Name = name, Image = img });
         }
 
+        public void AddStandardOption(List<Tuple<string,Image>> list)                // standard option
+        {
+            foreach (var x in list)
+                AddStandardOption(x.Item1, x.Item2);
+        }
+
+        public void SortStandardOptions()
+        {
+            standardoptions.Sort(delegate (Options left, Options right)     // in order, oldest first
+            {
+                return left.Name.CompareTo(right.Name);
+            });
+        }
+
         // present below control
         public void Filter(string settings, Control ctr, Form parent, List<string> list = null, List<Image> images = null, Object tag = null)
         {
