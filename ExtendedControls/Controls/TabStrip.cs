@@ -32,6 +32,7 @@ namespace ExtendedControls
         public object[] TagList;      // tags for them..
         public bool ShowPopOut { get; set; }= true; // Pop out icon show
         public Color SelectedBackColor { get; set; } = Color.Transparent;   // if set, show selected with a back colour
+        public Color StripBackColor { get { return panelStrip.BackColor; } set { panelStrip.BackColor = value; } }
 
         // if you set this, when empty, a panel will appear with the color selected
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
