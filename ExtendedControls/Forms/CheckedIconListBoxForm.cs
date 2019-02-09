@@ -50,44 +50,111 @@ namespace ExtendedControls
         public float ThumbColorScaling { get { return sb.ThumbColorScaling; } set { sb.ThumbColorScaling = value; } }
         public Color MouseOverButtonColor { get { return sb.MouseOverButtonColor; } set { sb.MouseOverButtonColor = value; } }
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
-        public int LargeChange {  get { return sb.LargeChange; } set { sb.LargeChange = value; } }
+        public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
         public bool CloseOnDeactivate { get; set; } = true;
 
-        public void SetItems(string[] i) { items = i.ToList(); PrepareText(); }
-        public void SetItems(List<string> i) { items = i; PrepareText(); }
-        public void AddItem(string i) { int c = items.Count; items.Add(i); PrepareText(c); }
-        public void AddItems(string[] i) { int c = items.Count; items.AddRange(i); PrepareText(c); }
-        public void AddItems(List<string> i) { int c = items.Count; items.AddRange(i); PrepareText(c); }
-
-        public void SetImageItems(Image[] i) { imageItems = i.ToList(); PrepareImages(); }
-        public void SetImageItems(List<Image> i) { imageItems = i; PrepareImages(); }
-        public void AddImageItem(Image i) { int c = imageItems.Count; imageItems.Add(i); PrepareImages(c); }
-        public void AddImageItems(Image[] i) { int c = imageItems.Count; imageItems.AddRange(i); PrepareImages(c); }
-        public void AddImageItems(List<Image> i) { int c = imageItems.Count; imageItems.AddRange(i); PrepareImages(c); }
-        public void AddNullImageItems(int count) { while (count-- > 0) imageItems.Add(null); }
-
         public Size ImageSize { get; set; } = new Size(0, 0);                       // if not set, each image sets its size. If no images, then use this to set alternate size 
         public bool IsOpen { get; set; } = false;
 
-        public int ItemCount { get { return items.Count; } }
+        public int ItemCount { get { return controllist.Count; } }
 
-        public event ItemCheckEventHandler CheckedChanged;
+        public Action<CheckedIconListBoxForm, ItemCheckEventArgs> CheckedChanged;       // called after save back to say fully changed.
 
-        private Point position;
-        private Size size;
-        private bool ignorechangeevent = false;
-        private List<string> items;
-        private List<Image> imageItems;
+        public void SetItems(IEnumerable<string> tags, IEnumerable<string> text, IEnumerable<Image> image = null)
+        {
+            if (controllist.Count > 0)
+            {
+                ps.Controls.Clear();
+
+                foreach (var c in controllist)
+                {
+                    c.checkbox.Dispose();
+                    c.icon.Dispose();
+                    c.label.Dispose();
+                }
+
+                controllist = new List<ControlSet>();
+            }
+
+            AddItems(tags,text,image);
+        }
+
+        public void AddItems(IEnumerable<string> tags, IEnumerable<string> text, IEnumerable<Image> image = null)
+        {
+            string[] tg = tags.ToArray();
+            string[] tx = text.ToArray();
+            Image[] im = image?.ToArray();
+
+            for( int i = 0; i < tx.Count(); i++ )
+            {
+                AddItem(tg[i], tx[i], (im != null && i < im.Length) ? im[i] : null);
+            }
+        }
+
+        public void AddItem(string tag, string text, Image img = null)
+        {
+            ControlSet c = new ControlSet();
+
+            c.tag = tag;
+
+            ExtCheckBox cb = new ExtCheckBox();
+            cb.BackColor = this.BackColor;
+            cb.CheckBoxColor = this.CheckBoxColor;
+            cb.CheckBoxInnerColor = this.CheckBoxInnerColor;
+            cb.CheckColor = this.CheckColor;
+            cb.MouseOverColor = this.MouseOverColor;
+            cb.FlatStyle = FlatStyle;
+            cb.TickBoxReductionSize = TickBoxReductionSize;
+            cb.CheckedChanged += CheckedIconListBoxForm_CheckedChanged;
+            cb.Tag = controllist.Count;
+            c.checkbox = cb;
+            ps.Controls.Add(cb);
+
+            Label lb = new Label()
+            {
+                Text = (string)text,
+                Tag = controllist.Count,
+                Font = this.Font,
+                ForeColor = this.ForeColor,
+                TextAlign = ContentAlignment.MiddleLeft,
+            };
+            lb.MouseDown += Text_MouseDown;
+
+            c.label = lb;
+            ps.Controls.Add(lb);
+
+            if (img != null)
+            {
+                PanelNoTheme ipanel = new PanelNoTheme()
+                {
+                    BackgroundImage = img,
+                    Tag = controllist.Count,
+                    BackgroundImageLayout = ImageLayout.Stretch,
+                };
+
+                ipanel.MouseDown += Ipanel_MouseDown;
+                c.icon = ipanel;
+                ps.Controls.Add(ipanel);
+            }
+
+            controllist.Add(c);
+        }
+
         class ControlSet
         {
             public ExtCheckBox checkbox;
             public Panel icon;
-            public Label text;
+            public Label label;
+            public string tag;  // logical tag for settings
         };
 
         private List<ControlSet> controllist;
+
+        private Point position;
+        private Size size;
+        private bool ignorechangeevent = false;
         private ExtPanelScroll ps;
         private ExtScrollBar sb;
 
@@ -99,8 +166,7 @@ namespace ExtendedControls
             AutoSize = false;
             Padding = new Padding(0);
             IsOpen = true;
-            items = new List<string>();
-            imageItems = new List<Image>();
+            controllist = new List<ControlSet>();
             ps = new ExtPanelScroll();
             ps.Dock = DockStyle.Fill;
             Controls.Add(ps);
@@ -132,37 +198,58 @@ namespace ExtendedControls
             Font = fnt;
         }
 
-        public void SetChecked(string value, int ignore = 0)        // using ; as the separator
+        public void SetChecked(string tag, bool state = true)        // using ; as the separator
         {
-            SetChecked(value.SplitNoEmptyStrings(';'));
+            SetChecked(tag.SplitNoEmptyStrings(';'),state);
         }
 
-        public void SetChecked(List<string> list, int ignore = 0)   // null allowed
+        public void SetChecked(List<string> taglist, bool state = true)   // null allowed
         {
-            if (list != null)
-                SetChecked(list.ToArray(), ignore);
+            if (taglist != null)
+                SetChecked(taglist.ToArray(), state);
         }
 
-        public void SetChecked(string[] list, int ignore = 0)       // empty array allowed
+        public void SetChecked(string[] taglist, bool state = true)    // empty array is okay
+        {
+            SetChecked(taglist, state ? CheckState.Checked : CheckState.Unchecked);
+        }
+
+        public void SetChecked(string[] taglist, CheckState state = CheckState.Checked)    // empty array is okay
         {
             ignorechangeevent = true;
 
-            bool all = list.Length == 1 && list[0].Equals("All");
-
-            for (int i = ignore; i < items.Count; i++)
-                controllist[i].checkbox.Checked = list.Contains(items[i]) || all;
+            for (int i = 0; i < controllist.Count; i++)
+            {
+                if (taglist.Contains(controllist[i].tag))
+                    controllist[i].checkbox.CheckState = state;
+            }
 
             ignorechangeevent = false;
         }
 
-        public void SetChecked(bool c, int ignore = 0, int count = 0)
+        public void SetCheckedFromToEnd(int start, bool state = true)
+        {
+            SetChecked(start, state, -1);
+        }
+
+        public void SetChecked(int start, bool state, int end = 0)
+        {
+            SetChecked(start, state ? CheckState.Checked : CheckState.Unchecked, end);
+        }
+
+        public void SetChecked(int start, CheckState state = CheckState.Checked, int end = 0)       // full one allowing intermediates
         {
             ignorechangeevent = true;
-            if (count == 0)
-                count = items.Count - ignore;
+            if (end == 0)
+                end = start;
+            else if (end < 0)
+                end = controllist.Count() - 1;
 
-            for (int i = ignore; count-- > 0; i++)
-                controllist[i].checkbox.Checked = c;
+            for (int i = start; i <= end; i++)  // inclusive
+            {
+                controllist[i].checkbox.CheckState = state;
+            }
+
             ignorechangeevent = false;
         }
 
@@ -171,18 +258,18 @@ namespace ExtendedControls
             string ret = "";
 
             int total = 0;
-            for (int i = ignore; i < items.Count; i++)
+            for (int i = ignore; i < controllist.Count; i++)
             {
-                if (controllist[i].checkbox.Checked)
+                if (controllist[i].checkbox.CheckState == CheckState.Checked)
                 {
-                    ret += items[i] + ";";
+                    ret += controllist[i].tag + ";";
                     total++;
                 }
             }
 
             if (allornone)
             {
-                if (total == items.Count - ignore)
+                if (total == controllist.Count - ignore)
                     ret = "All";
                 if (ret.Length == 0)
                     ret = "None";
@@ -203,86 +290,6 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void PrepareText(int startfrom = 0)          // text items have changed, so create checkboxes
-        {
-            if (controllist == null)
-                controllist = new List<ControlSet>();
-
-            for (int i = startfrom; i < items.Count; i++)
-            {
-                if (i >= controllist.Count)
-                    controllist.Add(new ControlSet());          // ensure we have a control set
-
-                if (controllist[i].text != null)                // remove old ones - strange if they do this..
-                {
-                    ps.Controls.Remove(controllist[i].text);
-                    controllist[i].text.Dispose();
-                }
-
-                if (controllist[i].checkbox != null)            // remove old ones - strange if they do this..
-                {
-                    ps.Controls.Remove(controllist[i].checkbox);
-                    controllist[i].checkbox.Dispose();
-                }
-
-                ExtCheckBox cb = new ExtCheckBox();
-                cb.BackColor = this.BackColor;
-                cb.CheckBoxColor = this.CheckBoxColor;
-                cb.CheckBoxInnerColor = this.CheckBoxInnerColor;
-                cb.CheckColor = this.CheckColor;
-                cb.MouseOverColor = this.MouseOverColor;
-                cb.FlatStyle = FlatStyle;
-                cb.TickBoxReductionSize = TickBoxReductionSize;
-                cb.CheckedChanged += CheckedIconListBoxForm_CheckedChanged;
-                cb.Tag = i;
-
-                controllist[i].checkbox = cb;
-                ps.Controls.Add(cb);
-
-                Label text = new Label()
-                {
-                    Text = (string)items[i],
-                    Tag = i,
-                    Font = this.Font,
-                    ForeColor = this.ForeColor,
-                    TextAlign = ContentAlignment.MiddleLeft,
-                };
-                text.MouseDown += Text_MouseDown;
-
-                controllist[i].text = text;
-                ps.Controls.Add(text);
-            }
-        }
-
-        private void PrepareImages(int startfrom = 0)
-        {
-            if (controllist == null)
-                controllist = new List<ControlSet>();
-
-            for (int i = startfrom; i < imageItems.Count; i++)
-            {
-                if (i >= controllist.Count)
-                    controllist.Add(new ControlSet());          // ensure we have a control set
-
-                if (controllist[i].icon != null)                // remove old ones - strange if they do this..
-                {
-                    ps.Controls.Remove(controllist[i].icon);
-                    controllist[i].icon.Dispose();
-                }
-
-                PanelNoTheme ipanel = new PanelNoTheme()
-                {
-                    BackgroundImage = imageItems[i],
-                    Tag = i,
-                    BackgroundImageLayout = ImageLayout.Stretch,
-                };
-
-                ipanel.MouseDown += Ipanel_MouseDown;
-                controllist[i].icon = ipanel;
-                ps.Controls.Add(ipanel);
-            }
-        }
-
         protected override void OnLayout(LayoutEventArgs levent)
         {
             base.OnLayout(levent);
@@ -294,14 +301,16 @@ namespace ExtendedControls
             int vpos = VerticalSpacing;
 
             Size defsize = new Size(24, 24);
-            foreach (var i in imageItems)
+            foreach (var ce in controllist)
             {
-                if (i != null)                  // find first non null and use for defsize
+                if (ce.icon != null)                  // find first non null and use for defsize
                 {
-                    defsize = i.Size;
+                    defsize = ce.icon.BackgroundImage.Size;
                     break;
                 }
             }
+
+            //System.Diagnostics.Debug.WriteLine("Def icon size" + defsize);
 
             bool hasimagesize = ImageSize.Width > 0 && ImageSize.Height > 0;        // has fixed size.. if so use it, else base it on first image, or 24x24
             Size imgsize = hasimagesize ? ImageSize : defsize;
@@ -311,10 +320,12 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("Chk " + chkboxsize + " " + imgsize);
 
-            for (int i = 0; i < items.Count; i++)
+            for (int i = 0; i < controllist.Count; i++)
             {
-                if (i < imageItems.Count && imageItems[i] != null)
-                    imgsize = hasimagesize ? ImageSize : imageItems[i].Size;        // set size of item
+                if (controllist[i].icon != null)
+                    imgsize = hasimagesize ? ImageSize : controllist[i].icon.BackgroundImage.Size;        // set size of item
+
+                //System.Diagnostics.Debug.WriteLine(i + "=" + imgsize);
 
                 int vcentre = vpos + imgsize.Height / 2;
 
@@ -330,8 +341,8 @@ namespace ExtendedControls
                     tpos += imgsize.Width + HorizontalSpacing;
                 }
 
-                controllist[i].text.Size = new Size(this.Width - HorizontalSpacing - ps.ScrollBarWidth - tpos, imgsize.Height);
-                controllist[i].text.Location = new Point(tpos, vpos);
+                controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - ps.ScrollBarWidth - tpos, imgsize.Height);
+                controllist[i].label.Location = new Point(tpos, vpos);
 
                 vpos += imgsize.Height + VerticalSpacing;
             }
@@ -352,14 +363,14 @@ namespace ExtendedControls
         {
             PanelNoTheme p = sender as PanelNoTheme;
             ExtCheckBox cb = controllist[(int)p.Tag].checkbox;
-            cb.Checked = !cb.Checked;
+            cb.CheckState = cb.CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
         }
 
         private void Text_MouseDown(object sender, MouseEventArgs e)
         {
             Label p = sender as Label;
             ExtCheckBox cb = controllist[(int)p.Tag].checkbox;
-            cb.Checked = !cb.Checked;
+            cb.CheckState = cb.CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
         }
 
         // Sent after the change, different from the checkedlistboxform as its sent during the change before the item check changes. beware.
@@ -369,10 +380,10 @@ namespace ExtendedControls
             {
                 ExtCheckBox cb = sender as ExtCheckBox;
                 int index = (int)cb.Tag;
-                var state = cb.Checked ? CheckState.Checked : CheckState.Unchecked;
+
                 var prevstate = cb.Checked ? CheckState.Unchecked : CheckState.Checked;
 
-                ItemCheckEventArgs i = new ItemCheckEventArgs((int)cb.Tag,state,prevstate);
+                ItemCheckEventArgs i = new ItemCheckEventArgs((int)cb.Tag,cb.CheckState, prevstate);
                 CheckedChanged(this,i );
             }
         }

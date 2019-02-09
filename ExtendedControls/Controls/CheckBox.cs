@@ -23,16 +23,16 @@ namespace ExtendedControls
 {
     public class ExtCheckBox : CheckBox
     {
+        // Flatstyle Popout/Flat mode, not Apprearance Button only
         public Color CheckBoxColor { get; set; } = Color.Gray;       // border
         public Color CheckBoxInnerColor { get; set; } = Color.White;
         public Color CheckColor { get; set; } = Color.DarkBlue;
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
         public float FontNerfReduction { get; set; } = 0.5F;
-        public int TickBoxReductionSize { get; set; } = 10;          // no of pixels smaller than the height to make the tick box
-
-        public Image ImageUnchecked = null;                         // set both this and Image to draw a image instead of the check. Must set FlatSytle popup and Appearance=normal
+        public int TickBoxReductionSize { get; set; } = 10;         // no of pixels smaller than the height to make the tick box
+        public Image ImageUnchecked = null;                         // set both this and Image to draw a image instead of the check. 
+        public Image ImageIndeterminate = null;                     // can set this, if required, if using indeterminate value
         public float ImageButtonDisabledScaling { get; set; } = 0.5F;   // scaling when disabled
-
         public ImageAttributes DrawnImageAttributesEnabled = null;         // Image override (colour etc) for images using Image
         public ImageAttributes DrawnImageAttributesDisabled = null;         // Image override (colour etc) for images using Image
 
@@ -47,7 +47,7 @@ namespace ExtendedControls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (Appearance == Appearance.Button || FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard || FlatStyle == FlatStyle.Flat)
+            if (Appearance == Appearance.Button || FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard )
                 base.OnPaint(e);
             else
             {
@@ -57,7 +57,7 @@ namespace ExtendedControls
                     e.Graphics.FillRectangle(br, rect);
 
                 rect.Height -= TickBoxReductionSize;
-                rect.Y += TickBoxReductionSize/2;
+                rect.Y += TickBoxReductionSize / 2;
                 rect.Width = rect.Height;
 
                 Rectangle textarea = ClientRectangle;
@@ -111,15 +111,17 @@ namespace ExtendedControls
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
                 using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
-                using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(0.5F)))
-                using (Font ft = BaseUtils.FontLoader.GetFont(this.Font.Name, this.Font.Size - FontNerfReduction)) // font 0.5 points smaller, seems to work, otherwise it just won't fit
                 {
-                    e.Graphics.DrawString(this.Text, ft, textb, textarea, fmt);
+                    using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(0.5F)))
+                    {
+                        using (Font ft = BaseUtils.FontLoader.GetFont(this.Font.Name, this.Font.Size - FontNerfReduction)) // font 0.5 points smaller, seems to work, otherwise it just won't fit
+                            e.Graphics.DrawString(this.Text, ft, textb, textarea, fmt);
+                    }
                 }
 
                 if (Image != null && ImageUnchecked != null)
                 {
-                    Image image = Checked ? Image : ImageUnchecked;
+                    Image image = CheckState == CheckState.Checked ? Image : ( (CheckState == CheckState.Indeterminate && ImageIndeterminate != null ) ? ImageIndeterminate : ImageUnchecked);
 
                     if (DrawnImageAttributesEnabled != null)
                         e.Graphics.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, (Enabled) ? DrawnImageAttributesEnabled : DrawnImageAttributesDisabled);
@@ -127,19 +129,29 @@ namespace ExtendedControls
                         e.Graphics.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
                 }
                 else
-                { 
-                    if (Checked)
-                    { 
+                {
+                    Color c1 = Color.FromArgb(200, CheckColor);
+                    if (CheckState == CheckState.Checked)
+                    {
                         Point pt1 = new Point(checkarea.X + 2, checkarea.Y + checkarea.Height / 2 - 1);
                         Point pt2 = new Point(checkarea.X + checkarea.Width / 2 - 1, checkarea.Bottom - 2);
                         Point pt3 = new Point(checkarea.X + checkarea.Width - 2, checkarea.Y);
-
-                        Color c1 = Color.FromArgb(200, CheckColor);
 
                         using (Pen pcheck = new Pen(c1, 2.0F))
                         {
                             e.Graphics.DrawLine(pcheck, pt1, pt2);
                             e.Graphics.DrawLine(pcheck, pt2, pt3);
+                        }
+                    }
+                    else if ( CheckState == CheckState.Indeterminate )
+                    {
+                        Size cb = new Size(checkarea.Width - 5, checkarea.Height - 5);
+                        if (cb.Width > 0 && cb.Height > 0)
+                        {
+                            using (Brush br = new SolidBrush(c1))
+                            {
+                                e.Graphics.FillRectangle(br, new Rectangle(new Point(checkarea.X + 2, checkarea.Y + 2), cb ));
+                            }
                         }
                     }
                 }
