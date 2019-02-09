@@ -200,7 +200,8 @@ namespace ExtendedControls
 
         public void SetChecked(string tag, bool state = true)        // using ; as the separator
         {
-            SetChecked(tag.SplitNoEmptyStrings(';'),state);
+            if ( tag != null )
+                SetChecked(tag.SplitNoEmptyStrings(';'),state);
         }
 
         public void SetChecked(List<string> taglist, bool state = true)   // null allowed
@@ -211,20 +212,24 @@ namespace ExtendedControls
 
         public void SetChecked(string[] taglist, bool state = true)    // empty array is okay
         {
-            SetChecked(taglist, state ? CheckState.Checked : CheckState.Unchecked);
+            if (taglist != null)
+                SetChecked(taglist, state ? CheckState.Checked : CheckState.Unchecked);
         }
 
         public void SetChecked(string[] taglist, CheckState state = CheckState.Checked)    // empty array is okay
         {
-            ignorechangeevent = true;
-
-            for (int i = 0; i < controllist.Count; i++)
+            if (taglist != null)
             {
-                if (taglist.Contains(controllist[i].tag))
-                    controllist[i].checkbox.CheckState = state;
-            }
+                ignorechangeevent = true;
 
-            ignorechangeevent = false;
+                for (int i = 0; i < controllist.Count; i++)
+                {
+                    if (taglist.Contains(controllist[i].tag))
+                        controllist[i].checkbox.CheckState = state;
+                }
+
+                ignorechangeevent = false;
+            }
         }
 
         public void SetCheckedFromToEnd(int start, bool state = true)

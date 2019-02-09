@@ -26,7 +26,7 @@ namespace ExtendedControls
 
     public class CheckedIconListBoxFilterForm
     {
-        public Action<string,Object> SaveBack;                     // Action on close, string is the settings.
+        public Action<string,Object> Closing;                       // Action on close, string is the settings.
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported, else its all entries or empty list
         public Action<CheckedIconListBoxFilterForm, ItemCheckEventArgs> CheckedChanged;       // when any tick has changed
         public bool CloseOnDeactivate { get; set; } = true;         // close when deactivated - this would be normal behaviour
@@ -91,7 +91,11 @@ namespace ExtendedControls
                 foreach (var x in standardoptions)
                     cc.AddItem(x.Tag, x.Text, x.Image);
 
-                cc.SetChecked(settings);
+                string[] slist = settings.SplitNoEmptyStartFinish(';');
+                if (slist.Length == 1 && slist[0].Equals("All"))
+                    cc.SetCheckedFromToEnd(ReservedEntries);
+                else
+                    cc.SetChecked(settings);
 
                 SetFilterSet();
 
@@ -121,19 +125,19 @@ namespace ExtendedControls
             int p = 2;
             foreach (var eo in groupoptions)
             {
-                if (list.Equals(eo.Tag))        // exactly, tick
+                if (list.MatchesAllItemsInList(eo.Tag,';'))        // exactly, tick
                 {
-                    System.Diagnostics.Debug.WriteLine("Checking T " + eo.Tag + " vs " + list);
+                    //System.Diagnostics.Debug.WriteLine("Checking T " + eo.Tag + " vs " + list);
                     cc.SetChecked(p);
                 }
-                else if (list.ContainsAllItems(eo.Tag, ';')) // contains, intermediate
+                else if (list.ContainsAllItemsInList(eo.Tag, ';')) // contains, intermediate
                 {
-                    System.Diagnostics.Debug.WriteLine("Checking I " + eo.Tag + " vs " + list);
+                    //System.Diagnostics.Debug.WriteLine("Checking I " + eo.Tag + " vs " + list + list.Equals(eo.Tag));
                     cc.SetChecked(p, CheckState.Indeterminate);
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("Checking F " + eo.Tag + " vs " + list);
+                    //System.Diagnostics.Debug.WriteLine("Checking F " + eo.Tag + " vs " + list);
                     cc.SetChecked(p, false);
                 }
 
@@ -151,7 +155,7 @@ namespace ExtendedControls
                 }
                 else if (e.Index < ReservedEntries)
                 {
-                    bool shift = Control.ModifierKeys.HasFlag(Keys.Shift);
+                    bool shift = Control.ModifierKeys.HasFlag(Keys.Control);
 
                     if ( !shift )
                         cc.SetCheckedFromToEnd(ReservedEntries, false);   // if not shift, we clear all, and apply this tag
@@ -173,7 +177,7 @@ namespace ExtendedControls
 
         private void FilterClosed(Object sender, FormClosedEventArgs e)
         {
-            SaveBack?.Invoke(cc.GetChecked(ReservedEntries,AllOrNoneBack),tagback);
+            Closing?.Invoke(cc.GetChecked(ReservedEntries,AllOrNoneBack),tagback);
             cc = null;
         }
     }
