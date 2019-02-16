@@ -23,7 +23,10 @@ namespace DialogTest
                 dataGridView1.Rows.Add(row);
             }
 
-            extPanelDataGridViewScrollRollUpButtons1.Add(5, 10);
+            extPanelDataGridViewScrollRollUpButtons1.ForeColor = Color.Black;
+            extPanelDataGridViewScrollRollUpButtons1.Add(5, 15);
+            extPanelDataGridViewScrollRollUpButtons1.Add(6, 8);
+            extPanelDataGridViewScrollRollUpButtons1.Add(8, 12);
             extPanelDataGridViewScrollRollUpButtons1.Add(50, 70);
 
           }

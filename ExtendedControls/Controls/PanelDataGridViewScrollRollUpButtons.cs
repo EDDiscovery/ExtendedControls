@@ -28,6 +28,10 @@ namespace ExtendedControls
         {
             public int start;
             public int end;
+            public bool collapsed;
+            public int level;
+            internal ExtPanelDrawn button;
+            public bool Overlapped(RollUpRange other) { return (start >= other.start && start <= other.end) || (end >= other.start && end <= other.end); }
         };
 
         public List<RollUpRange> Rollups { get; private set; } = new List<RollUpRange>();
@@ -37,8 +41,6 @@ namespace ExtendedControls
         public ExtPanelDataGridViewScrollRollUpButtons() : base()
         {
         }
-
-        public int GetWantedWidth() { return 50; }
 
         public void RowAdded(int row)
         {
@@ -55,12 +57,52 @@ namespace ExtendedControls
 
         public void Add(int rowstart, int rowend)
         {
-            Rollups.Add(new RollUpRange() { start = rowstart, end = rowend });
-            ExtPanelDrawn pb = new ExtPanelDrawn() { ImageSelected = ExtPanelDrawn.ImageType.Expand, Padding = new Padding(0), Size = new Size(16,16) };
-            buttons.Add(pb);
-            Controls.Add(pb);
+            RollUpRange r = new RollUpRange() { start = rowstart, end = rowend };
+            r.button = new ExtPanelDrawn() { ImageSelected = ExtPanelDrawn.ImageType.Collapse, Padding = new Padding(0), Size = new Size(butsize,butsize), ForeColor = this.ForeColor };
+            r.button.Tag = r;
+            r.button.Click += Button_Click;
+            Controls.Add(r.button);
+            Rollups.Add(r);
+            LevelUp();
             Invalidate();
         }
+
+        private void Button_Click(object sender, EventArgs e)
+        {
+            ExtPanelDrawn but = sender as ExtPanelDrawn;
+            RollUpRange r = but.Tag as RollUpRange;
+            r.collapsed = !r.collapsed;
+            Invalidate();
+            if ( r.collapsed )
+            {
+
+            }
+        }
+
+        void LevelUp()
+        {
+            Rollups.Sort(delegate (RollUpRange first, RollUpRange last) { return first.start.CompareTo(last.start); }); // in start order
+
+            foreach (var r in Rollups)
+                r.level = 0;
+
+            int maxlevel = 0;
+
+            for (int i = 0; i < Rollups.Count; i++)
+            {
+                for (int j = i+1; j < Rollups.Count; j++)
+                {
+                    if ( Rollups[j].Overlapped(Rollups[i]))
+                    {
+                        Rollups[j].level = Rollups[i].level + 1;
+                        maxlevel = Math.Max(Rollups[j].level, maxlevel);
+                    }
+                }
+            }
+
+            Width = (butsize + 2) * (maxlevel+1);
+        }
+
 
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -77,19 +119,22 @@ namespace ExtendedControls
 
                     if ((relstart >= 0 && relstart < depth) || (relend >= 0 && relend < depth))
                     {
+                        //if ( dgv.Rows[relstart].Visible && dg)
                         System.Diagnostics.Debug.WriteLine("display " + toprow + " depth " + depth + " rel " + relstart + " " + relend + " | " + rur.start + " - " + rur.end);
 
-                        if ( relstart < 0 )
+                        int barx = butleft + (butsize+2) * rur.level;
+
+                        if (relstart < 0)
                         {
-                            if ( relend >= depth )
+                            if (relend >= depth)
                             {
                                 System.Diagnostics.Debug.WriteLine("..both out - display full non end bar");
-                                DisplayBar(pe.Graphics, dgv.ColumnHeadersHeight, dgv.Bottom, false, false, i);
+                                DisplayBar(pe.Graphics, barx, dgv.ColumnHeadersHeight, dgv.Bottom, false, false, i);
                             }
                             else
                             {
                                 var rowendrect = dgv.GetRowDisplayRectangle(rur.end, true);
-                                DisplayBar(pe.Graphics, dgv.ColumnHeadersHeight, rowendrect.Bottom, false, true, i);
+                                DisplayBar(pe.Graphics, barx, dgv.ColumnHeadersHeight, (rowendrect.Top + rowendrect.Bottom) / 2 - 8, false, true, i);
                                 System.Diagnostics.Debug.WriteLine("..top out - display top to end bar " + rowendrect.Bottom);
                             }
                         }
@@ -97,44 +142,50 @@ namespace ExtendedControls
                         {
                             var rowstartrect = dgv.GetRowDisplayRectangle(rur.start, true);
 
-                            if ( relend >= depth )
+                            if (relend >= depth)
                             {
                                 System.Diagnostics.Debug.WriteLine("..bot out - display " + rowstartrect.Top + " to end");
-                                DisplayBar(pe.Graphics, rowstartrect.Top, dgv.Bottom, true, false, i);
+                                DisplayBar(pe.Graphics, barx, rowstartrect.Top, dgv.Bottom, true, false, i);
                             }
                             else
                             {
                                 var rowendrect = dgv.GetRowDisplayRectangle(rur.end, true);
                                 System.Diagnostics.Debug.WriteLine("..all in");
-                                DisplayBar(pe.Graphics, rowstartrect.Top, rowendrect.Bottom, true, true, i);
+                                DisplayBar(pe.Graphics, barx, rowstartrect.Top, (rowendrect.Top + rowendrect.Bottom)/2 - 8, true, true, i);    // all in
                             }
                         }
 
                         System.Diagnostics.Debug.WriteLine("..");
 
                     }
+                    else
+                        rur.button.Visible = false;
                 }
             }
         }
 
-        public void DisplayBar(Graphics g, int top, int bot, bool topbut, bool botbut, int butno)
+        public void DisplayBar(Graphics g, int x, int top, int bot, bool topbar, bool botbut, int butno)
         {
-            using (Brush b = new SolidBrush(Color.Red))
+            System.Diagnostics.Debug.WriteLine("Bar " + butno + " " + top + " " + bot + " " + topbar + " " + botbut);
+
+            using (Brush b = new SolidBrush(this.ForeColor))
             {
                 using (Pen p = new Pen(b))
                 {
-                    Point tp = new Point(5, top);
-                    Point bp = new Point(5, bot);
+                    Point tp = new Point(x, top);
+                    Point bp = new Point(x, bot);
                     g.DrawLine(p, tp, bp );
 
-                    if (topbut)
+                    if (topbar)
                     {
-                        g.DrawLine(p, tp, new Point(10, tp.Y));
+                        g.DrawLine(p, tp, new Point(x+butsize/4, tp.Y));
                     }
                     if (botbut)
                     {
-                        buttons[butno].Location = new Point(5, bp.Y);
+                        Rollups[butno].button.Location = new Point(x-butsize/2, bp.Y);
+                        Rollups[butno].button.ImageSelected = Rollups[butno].collapsed ? ExtPanelDrawn.ImageType.Expand : ExtPanelDrawn.ImageType.Collapse;
                     }
+                    Rollups[butno].button.Visible = botbut;
 
                 }
             }
@@ -150,7 +201,8 @@ namespace ExtendedControls
         #region Variables
 
         DataGridView dgv;
-        List<ExtPanelDrawn> buttons = new List<ExtPanelDrawn>();
+        const int butleft = 8;
+        const int butsize = 16;
 
         #endregion
     }

@@ -75,8 +75,7 @@ namespace ExtendedControls
             if ( rollup != null )
             {
                 rollup.Location = new Point(left, area.Y);
-                rollup.Size = new Size(rollup.GetWantedWidth(), area.Height);
-                left += rollup.GetWantedWidth();
+                left += rollup.Width;
             }
 
             if ( vsc != null )
