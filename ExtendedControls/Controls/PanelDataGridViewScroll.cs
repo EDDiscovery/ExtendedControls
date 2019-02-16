@@ -49,6 +49,10 @@ namespace ExtendedControls
                 vsc = e.Control as ExtScrollBar;
                 vsc.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
             }
+            else if ( e.Control is ExtPanelDataGridViewScrollRollUpButtons)
+            {
+                rollup = e.Control as ExtPanelDataGridViewScrollRollUpButtons;
+            }
             else
                 Debug.Assert(true, "Data view Scroller Panel requires DataGridView and VScrollBarCustom to be added");
         }
@@ -65,39 +69,68 @@ namespace ExtendedControls
             area.Width -= InternalMargin.Left + InternalMargin.Right;
             area.Height -= InternalMargin.Top + InternalMargin.Bottom;
 
-            if (dgv != null)                       // during designing, you may get in a situation where this code runs but these are not attached.  Fail gracefully. otherwise VS crashes
+            int left = area.X;
+            int right = area.Width;
+
+            if ( rollup != null )
             {
-                dgv.Location = new Point(area.X + ((VerticalScrollBarDockRight) ? 0 : ScrollBarWidth), area.Y);
-                dgv.Size = new Size(area.Width - ScrollBarWidth, area.Height);
-                dgvcolumnheaderheight = dgv.ColumnHeadersHeight;
+                rollup.Location = new Point(left, area.Y);
+                rollup.Size = new Size(rollup.GetWantedWidth(), area.Height);
+                left += rollup.GetWantedWidth();
             }
 
-            if (vsc != null)
+            if ( vsc != null )
             {
-                vsc.Location = new Point(area.X + ((VerticalScrollBarDockRight) ? (area.Width - ScrollBarWidth) : 0), area.Y+dgvcolumnheaderheight);
-                vsc.Size = new Size(ScrollBarWidth, area.Height - dgvcolumnheaderheight) ;
+                vsc.Size = new Size(ScrollBarWidth, area.Height - dgvcolumnheaderheight);
+
+                if (!VerticalScrollBarDockRight)
+                {
+                    vsc.Location = new Point(left, area.Y + dgvcolumnheaderheight);
+                    left += ScrollBarWidth;
+                }
+                else
+                {
+                    right -= ScrollBarWidth;
+                    vsc.Location = new Point(right, area.Y + dgvcolumnheaderheight);
+                }
+            }
+
+            if (dgv != null)                       // during designing, you may get in a situation where this code runs but these are not attached.  Fail gracefully. otherwise VS crashes
+            {
+                dgv.Location = new Point(left, area.Y);
+                dgv.Size = new Size(right-left, area.Height);
+                dgvcolumnheaderheight = dgv.ColumnHeadersHeight;
             }
 
             if ( dgv != null && vsc != null )
             {
                 vsc.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingRowIndex, dgv.Rows.GetRowCount(DataGridViewElementStates.Visible) - 1, dgv.DisplayedRowCount(false));
             }
+
+            rollup?.SetDGV(dgv);
+            rollup?.Invalidate();
         }
 
         protected void DGVRowsAdded(Object sender, DataGridViewRowsAddedEventArgs e)
         {
-            int rows = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);
-            Debug.Assert(vsc != null, "No Scroll bar attached");
-            //Console.WriteLine("Rows Added: first:" + dgv.FirstDisplayedScrollingRowIndex + " disp:" + dgv.DisplayedRowCount(false) + " rows" + rows + " Added " + e.RowCount);
-            vsc.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingRowIndex, rows - 1, dgv.DisplayedRowCount(false));
+            int firstvisible = dgv.FirstDisplayedScrollingRowIndex;
+
+            if (firstvisible >= 0)
+            {
+                int rows = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);
+
+                vsc?.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingRowIndex, rows - 1, dgv.DisplayedRowCount(false));
+                rollup?.RowAdded(e.RowIndex);
+            }
         }
 
         protected void DGVRowsRemoved(Object sender, DataGridViewRowsRemovedEventArgs e)
         {
+            int firstvisible = dgv.FirstDisplayedScrollingRowIndex;
             int rows = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);
-            Debug.Assert(vsc != null, "No Scroll bar attached");
-            //Console.WriteLine("Rows Removed: first:" + dgv.FirstDisplayedScrollingRowIndex + " disp:" + dgv.DisplayedRowCount(false) + " rows" + rows +  " Removed " + e.RowCount);
-            vsc.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingRowIndex, rows - 1, dgv.DisplayedRowCount(false));
+
+            vsc?.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingRowIndex, rows - 1, dgv.DisplayedRowCount(false));
+            rollup?.RowRemoved(e.RowIndex);
         }
 
         protected virtual void DGVRowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
@@ -105,8 +138,8 @@ namespace ExtendedControls
             if (e.StateChanged.Equals(DataGridViewElementStates.Visible))
             {
                 int rows = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);
-                Debug.Assert(vsc != null, "No Scroll bar attached");
-                vsc.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingColumnIndex, rows - 1, dgv.DisplayedRowCount(false));
+                vsc?.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingColumnIndex, rows - 1, dgv.DisplayedRowCount(false));
+                rollup?.RowChangedState(e.Row.Index);
             }
         }
 
@@ -118,29 +151,34 @@ namespace ExtendedControls
         //    vsc.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingColumnIndex, rows - 1, dgv.DisplayedRowCount(false));
         }
 
-
-        protected virtual void DGVMWheel(object sender, MouseEventArgs e)
-        {
-            if (e.Delta > 0)
-                vsc.ValueLimited--;                 // control takes care of end limits..
-            else
-                vsc.ValueLimited++;                 // end is UserLimit, not maximum
-
-            SetFirstDisplayed(vsc.Value);
-        }
-
+        // DGV scroll due to keyboard
         bool ignoredgvscroll = false;
         protected void DGVScroll(Object sender, ScrollEventArgs e)
         {
             if (ignoredgvscroll == false)
             {
                 int rows = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);
-                Debug.Assert(vsc != null, "No Scroll bar attached");
                 //Console.WriteLine("DGV Scroll: first:" + dgv.FirstDisplayedScrollingRowIndex + " disp:" + dgv.DisplayedRowCount(false) + " rows" + rows);
-                vsc.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingRowIndex, rows - 1, dgv.DisplayedRowCount(false));
+                vsc?.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingRowIndex, rows - 1, dgv.DisplayedRowCount(false));
+                rollup?.Invalidate();
             }
         }
 
+        // DGV mouse wheel occurrred..
+        protected virtual void DGVMWheel(object sender, MouseEventArgs e)
+        {
+            if (vsc != null)
+            {
+                if (e.Delta > 0)
+                    vsc.ValueLimited--;                 // control takes care of end limits..
+                else
+                    vsc.ValueLimited++;                 // end is UserLimit, not maximum
+
+                SetFirstDisplayed(vsc.Value);
+            }
+        }
+
+        // scroll bar changed
         protected virtual void OnScrollBarChanged(object sender, ScrollEventArgs e)
         {
             Debug.Assert(dgv != null, "No Data view attached");
@@ -160,6 +198,7 @@ namespace ExtendedControls
                     ignoredgvscroll = true;
                     dgv.FirstDisplayedScrollingRowIndex = rowi;     // don't fire the DGVScroll.. as we can get into a cycle if rows are hidden
                     ignoredgvscroll = false;
+                    rollup?.Invalidate();
                     return;
                 }
             }
@@ -169,6 +208,7 @@ namespace ExtendedControls
         {
             int rows = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);
             vsc.SetValueMaximumLargeChange(dgv.FirstDisplayedScrollingRowIndex, rows - 1, dgv.DisplayedRowCount(false));
+            rollup?.Invalidate();
         }
 
 
@@ -178,6 +218,7 @@ namespace ExtendedControls
 
         DataGridView dgv;
         ExtScrollBar vsc;
+        ExtPanelDataGridViewScrollRollUpButtons rollup;
 
         #endregion
     }

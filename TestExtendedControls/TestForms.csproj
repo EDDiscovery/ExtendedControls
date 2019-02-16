@@ -70,6 +70,18 @@
     <Compile Include="TestConditionUC.Designer.cs">
       <DependentUpon>TestConditionUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestPanelDrawnPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPanelDrawnPanel.Designer.cs">
+      <DependentUpon>TestPanelDrawnPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestPanelScrollRollUp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPanelScrollRollUp.Designer.cs">
+      <DependentUpon>TestPanelScrollRollUp.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestPanelScroll.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +149,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestConditionUC.resx">
       <DependentUpon>TestConditionUC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestPanelDrawnPanel.resx">
+      <DependentUpon>TestPanelDrawnPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestPanelScrollRollUp.resx">
+      <DependentUpon>TestPanelScrollRollUp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestPanelScroll.resx">
       <DependentUpon>TestPanelScroll.cs</DependentUpon>
