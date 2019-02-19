@@ -33,6 +33,22 @@ namespace ExtendedControls
             outlining?.Scrolled();
         }
 
+        public void Suspend()                           // use these for quicker adding in of rows to table
+        {
+            dgv.RowsAdded -= DGVRowsAdded;              // need to keep row removed in case outlining range goes out 
+            dgv.RowStateChanged -= DGVRowStateChanged;
+            dgv.SuspendLayout();
+        }
+
+        public void Resume()                            
+        {
+            UpdateScrollBar();
+            outlining?.Scrolled();
+            dgv.ResumeLayout();
+            dgv.RowsAdded += DGVRowsAdded;
+            dgv.RowStateChanged += DGVRowStateChanged;
+        }
+
 
         #region Implementation
         public ExtPanelDataGridViewScroll() : base()
@@ -87,6 +103,7 @@ namespace ExtendedControls
             if ( outlining != null )    // attach to left, allocate area
             {
                 outlining.Location = new Point(left, area.Y);
+                outlining.Size = new Size(outlining.Width, area.Height);
                 left += outlining.Width;
             }
 
@@ -152,7 +169,7 @@ namespace ExtendedControls
             {
                 dgv.RowStateChanged -= DGVRowStateChanged;      // don't cause repeated call backs
 
-                while( startrow <= endrow )
+                while ( startrow <= endrow )
                     dgv.Rows[startrow++].Visible = state;       // set state
 
                 dgv.RowStateChanged += DGVRowStateChanged;
