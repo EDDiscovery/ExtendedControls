@@ -49,7 +49,9 @@ namespace DialogTest
                         break;
                 }
 
-                Application.Run(sel);
+                if ( sel != null )
+                    Application.Run(sel);
+
             }
         }
 

@@ -359,6 +359,7 @@ namespace ExtendedControls
 
         private void SetValues(int v, int max, int min , int lc, int sc , bool limittousermax = false )   // this allows it to be set to maximum..
         {
+            //System.Diagnostics.Debug.WriteLine("Set Scroll " + v + " min " + min + " max " + max);
             smallchange = sc;                                   // has no effect on display of control
             bool iv = false;
 
