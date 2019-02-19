@@ -167,12 +167,15 @@ namespace ExtendedControls
         {
             if ( dgv != null )
             {
+                dgv.SuspendLayout();
+
                 dgv.RowStateChanged -= DGVRowStateChanged;      // don't cause repeated call backs
 
                 while ( startrow <= endrow )
                     dgv.Rows[startrow++].Visible = state;       // set state
 
                 dgv.RowStateChanged += DGVRowStateChanged;
+                dgv.ResumeLayout();
 
                 UpdateScrollBar();
                 outlining?.Scrolled();

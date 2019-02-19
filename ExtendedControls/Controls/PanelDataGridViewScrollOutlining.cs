@@ -248,7 +248,7 @@ namespace ExtendedControls
                     }
 
                     //System.Diagnostics.Debug.WriteLine("***** toprow " + toprow + " botrow " + botrow + Environment.StackTrace.StackTrace("Scrolled",3));
-                    System.Diagnostics.Debug.WriteLine("***** toprow " + toprow + " botrow " + botrow + " rows disp " + rowsdisplayed + " Rowc " + dgv.RowCount);
+                    //System.Diagnostics.Debug.WriteLine("***** toprow " + toprow + " botrow " + botrow + " rows disp " + rowsdisplayed + " Rowc " + dgv.RowCount);
 
                     SuspendLayout();
 
@@ -265,27 +265,35 @@ namespace ExtendedControls
                             bool endonscreen = dgv.Rows[rur.r.end].Displayed;
                             bool topbotinrange = (toprow >= rur.r.start && toprow <= rur.r.end) || (botrow >= rur.r.start && botrow <= rur.r.end);
 
-                            // we display the line if start on screen, if end on screen and start visible, or we are within a greater range.
-                            rur.display = startonscreen || (endonscreen && startvisible) || (topbotinrange && startvisible);
-                            rur.button.Visible = rur.display;
+                            rur.linedisplay = startonscreen || (endonscreen && startvisible) || (topbotinrange && startvisible);
 
-                            if (rur.display)
+                            // we display the line if start on screen, if end on screen and start visible (not rolled up), or we are within a greater range and not rolled up
+                            rur.linedisplay = startonscreen || (endonscreen && startvisible) || (topbotinrange && startvisible);
+
+                            if (rur.linedisplay)        // if line on screen, calc extent.
                             {
                                 rur.yend = (endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Bottom : this.Height) - butsize;
                                 rur.ystart = startonscreen ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top : dgv.ColumnHeadersHeight;
-
-                                int bx = butleft + rur.level * (butsize + butpadding);
-                                rur.button.Location = new Point(bx, rur.yend);
-                                rur.button.ImageSelected = startvisible ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
-
                             }
 
-                            //System.Diagnostics.Debug.WriteLine("Bar " + i + " " + rur.r.start + "-" + rur.r.end + " sv:" + startvisible + " ev:" + endvisible + " sos:" + startonscreen + " eos:" + endonscreen + " topbotinrange:" + topbotinrange + " display:" + rur.display);
+                            bool butvis = rur.linedisplay || endonscreen;       // if at end, or line, we have a button
+                            rur.button.Visible = butvis;
+
+                            if ( butvis )
+                            { 
+                                int bx = butleft + rur.level * (butsize + butpadding);
+                                int by = (endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Bottom : this.Height) -butsize; // if end on scren, place there, else at bottom
+
+                                rur.button.Location = new Point(bx,  by);
+                                rur.button.ImageSelected = startvisible ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
+                            }
+
+//                            System.Diagnostics.Debug.WriteLine("Bar " + i + " " + rur.r.start + "-" + rur.r.end + " sv:" + startvisible + " ev:" + endvisible + " sos:" + startonscreen + " eos:" + endonscreen + " topbotinrange:" + topbotinrange + " display:" + rur.linedisplay + " but " + butvis);
                         }
                         else
                         {
                             //System.Diagnostics.Debug.WriteLine("Bar " + i + " invisible");
-                            rur.display = false; // both invisible, means this is collapsed
+                            rur.linedisplay = false; // both invisible, means this is collapsed
                             rur.button.Visible = false;
                         }
 
@@ -305,7 +313,7 @@ namespace ExtendedControls
             {
                 var rur = Rollups[i];
 
-                if ( rur.display )
+                if ( rur.linedisplay )
                 {
                     bool startonscreen = dgv.Rows[rur.r.start].Displayed;
                     int x = butleft + butsize/2 + rur.level * (butsize + 2);
@@ -352,7 +360,7 @@ namespace ExtendedControls
             public int level;
             internal ExtPanelDrawn button;
             public bool Overlapped(OutlineState other) { return (r.start >= other.r.start && r.start <= other.r.end) || (r.end >= other.r.start && r.end <= other.r.end); }
-            public bool display;
+            public bool linedisplay;
             public int ystart, yend;
         };
 
