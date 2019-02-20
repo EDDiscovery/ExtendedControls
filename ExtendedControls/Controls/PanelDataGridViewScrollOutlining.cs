@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -30,8 +31,10 @@ namespace ExtendedControls
             public bool expanded;
 
             public Outline() { }
-            public Outline(int start, int end, bool expanded = true) { this.start = start; this.end = end; this.expanded = true; }
+            public Outline(int start, int end, bool expanded = true) { this.start = start; this.end = end; this.expanded = expanded; }
         }
+
+        public int KeepLastEntriesVisibleOnRollUp { get; set; } = 1;
 
         #region Interface
 
@@ -46,11 +49,6 @@ namespace ExtendedControls
                 rur.r.expanded = dgv.Rows[rowstart].Visible;
 
             return rur?.r;
-        }
-
-        public bool Add(Outline r)
-        {
-            return Add(r.start, r.end);
         }
 
         public bool Add(int rowstart, int rowend)       // add new area, area must be unique
@@ -72,7 +70,7 @@ namespace ExtendedControls
                 return false;
         }
 
-        public void Add(List<Outline> list)
+        public void Add(List<Outline> list)     // applies visibility if parent is dgv scroll
         {
             foreach (var r in list)
             {
@@ -86,6 +84,12 @@ namespace ExtendedControls
                     Controls.Add(rup.button);
                     Rollups.Add(rup);
                 }
+            }
+
+            if (Parent is ExtPanelDataGridViewScroll)   // this implements an efficient visibility change system
+            {
+                var tuple = (from x in list orderby x.start select new Tuple<int, int, bool>(x.start, x.end- KeepLastEntriesVisibleOnRollUp, x.expanded)).ToList();
+                (Parent as ExtPanelDataGridViewScroll).ChangeVisibility(tuple);
             }
 
             RollUpChanged();
@@ -123,34 +127,6 @@ namespace ExtendedControls
 
             ResumeLayout();
             Invalidate();
-        }
-
-
-        public bool SetState( Outline ru , bool state )        // and change its state
-        {
-            OutlineState rur = FindEntry(ru.start,ru.end);
-
-            if (rur != null)
-            {
-                if (Parent is ExtPanelDataGridViewScroll)   // this implements an efficient visibility change system
-                {
-                    (Parent as ExtPanelDataGridViewScroll).ChangeVisibility(rur.r.start, rur.r.end - 1, state);
-                }
-                else
-                {
-                    processed = true;
-                    for (int r = rur.r.start; r < rur.r.end; r++)
-                    {
-                        dgv.Rows[r].Visible = state;
-                    }
-                    processed = false;
-
-                    Scrolled();
-                }
-                return true;
-            }
-            else
-                return false;
         }
 
         #endregion
@@ -248,7 +224,7 @@ namespace ExtendedControls
                     }
 
                     //System.Diagnostics.Debug.WriteLine("***** toprow " + toprow + " botrow " + botrow + Environment.StackTrace.StackTrace("Scrolled",3));
-                    //System.Diagnostics.Debug.WriteLine("***** toprow " + toprow + " botrow " + botrow + " rows disp " + rowsdisplayed + " Rowc " + dgv.RowCount);
+  //                  System.Diagnostics.Debug.WriteLine("***** toprow " + toprow + " botrow " + botrow + " rows disp " + rowsdisplayed + " Rowc " + dgv.RowCount);
 
                     SuspendLayout();
 
@@ -272,17 +248,17 @@ namespace ExtendedControls
 
                             if (rur.linedisplay)        // if line on screen, calc extent.
                             {
-                                rur.yend = (endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Bottom : this.Height) - butsize;
-                                rur.ystart = startonscreen ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top : dgv.ColumnHeadersHeight;
+                                rur.ystart = startonscreen ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top+butpadding : dgv.ColumnHeadersHeight;
+                                rur.yend = (endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Top : this.Height);
                             }
 
                             bool butvis = rur.linedisplay || endonscreen;       // if at end, or line, we have a button
                             rur.button.Visible = butvis;
 
                             if ( butvis )
-                            { 
+                            {
                                 int bx = butleft + rur.level * (butsize + butpadding);
-                                int by = (endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Bottom : this.Height) -butsize; // if end on scren, place there, else at bottom
+                                int by = endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Top : (rur.r.start == botrow) ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top :(this.Height-butsize);
 
                                 rur.button.Location = new Point(bx,  by);
                                 rur.button.ImageSelected = startvisible ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
@@ -339,7 +315,11 @@ namespace ExtendedControls
             ExtPanelDrawn but = sender as ExtPanelDrawn;
             OutlineState rur = but.Tag as OutlineState;
 
-            SetState(rur.r, !dgv.Rows[rur.r.start].Visible);
+            if (Parent is ExtPanelDataGridViewScroll)   // this implements an efficient visibility change system
+            {
+                bool state = !dgv.Rows[rur.r.start].Visible;
+                (Parent as ExtPanelDataGridViewScroll).ChangeVisibility(rur.r.start, rur.r.end - KeepLastEntriesVisibleOnRollUp, state);
+            }
         }
 
         #endregion

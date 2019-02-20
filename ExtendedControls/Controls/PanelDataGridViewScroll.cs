@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -49,6 +50,50 @@ namespace ExtendedControls
             dgv.RowStateChanged += DGVRowStateChanged;
         }
 
+        public void ChangeVisibility(int startrow, int endrow, bool state)       // this efficiently changes the visibility and stops repeated scroll updates
+        {
+            if (dgv != null)
+            {
+                dgv.SuspendLayout();
+
+                dgv.RowStateChanged -= DGVRowStateChanged;      // don't cause repeated call backs
+
+                while (startrow <= endrow)
+                    dgv.Rows[startrow++].Visible = state;       // set state
+
+                dgv.RowStateChanged += DGVRowStateChanged;
+                dgv.ResumeLayout();
+
+                UpdateScrollBar();
+                outlining?.Scrolled();
+            }
+        }
+
+        // vislist must be ordered by start
+        public void ChangeVisibility(List<Tuple<int, int, bool>> vislist)       // this efficiently changes the visibility and stops repeated scroll updates
+        {
+            if (dgv != null)
+            {
+                dgv.SuspendLayout();
+
+                dgv.RowStateChanged -= DGVRowStateChanged;      // don't cause repeated call backs
+
+                foreach (var v in vislist)
+                {
+                    if (v.Item1 < dgv.RowCount && v.Item2 < dgv.RowCount && dgv.Rows[v.Item1].Visible != v.Item3)
+                    {
+                        for (int r = v.Item1; r <= v.Item2; r++)
+                            dgv.Rows[r].Visible = v.Item3;
+                    }
+                }
+
+                dgv.RowStateChanged += DGVRowStateChanged;
+                dgv.ResumeLayout();
+
+                UpdateScrollBar();
+                outlining?.Scrolled();
+            }
+        }
 
         #region Implementation
         public ExtPanelDataGridViewScroll() : base()
@@ -161,25 +206,6 @@ namespace ExtendedControls
         {
             UpdateScrollBar();
             outlining?.RowRemoved(e.RowIndex);
-        }
-
-        public void ChangeVisibility( int startrow, int endrow, bool  state )       // this efficiently changes the visibility and stops repeated scroll updates
-        {
-            if ( dgv != null )
-            {
-                dgv.SuspendLayout();
-
-                dgv.RowStateChanged -= DGVRowStateChanged;      // don't cause repeated call backs
-
-                while ( startrow <= endrow )
-                    dgv.Rows[startrow++].Visible = state;       // set state
-
-                dgv.RowStateChanged += DGVRowStateChanged;
-                dgv.ResumeLayout();
-
-                UpdateScrollBar();
-                outlining?.Scrolled();
-            }
         }
 
         protected virtual void DGVRowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
