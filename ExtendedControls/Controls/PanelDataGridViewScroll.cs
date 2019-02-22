@@ -31,7 +31,7 @@ namespace ExtendedControls
         public void UpdateScroll()      // call if hide/unhide cells - no call back for this
         {
             UpdateScrollBar();
-            outlining?.Scrolled();
+            outlining?.UpdateOutlines();
         }
 
         public void Suspend()                           // use these for quicker adding in of rows to table
@@ -44,7 +44,7 @@ namespace ExtendedControls
         public void Resume()                            
         {
             UpdateScrollBar();
-            outlining?.Scrolled();
+            outlining?.UpdateOutlines();
             dgv.ResumeLayout();
             dgv.RowsAdded += DGVRowsAdded;
             dgv.RowStateChanged += DGVRowStateChanged;
@@ -65,12 +65,12 @@ namespace ExtendedControls
                 dgv.ResumeLayout();
 
                 UpdateScrollBar();
-                outlining?.Scrolled();
+                outlining?.UpdateOutlines();
             }
         }
 
-        // vislist must be ordered by start
-        public void ChangeVisibility(List<Tuple<int, int, bool>> vislist)       // this efficiently changes the visibility and stops repeated scroll updates
+        // on areas identify bits to be on.  its sorted. startrow-endrow identify the whole range - areas outside onareas are off.
+        public void ChangeVisibility(int startrow, int endrow, BaseUtils.IntRangeList onareas)
         {
             if (dgv != null)
             {
@@ -78,12 +78,52 @@ namespace ExtendedControls
 
                 dgv.RowStateChanged -= DGVRowStateChanged;      // don't cause repeated call backs
 
-                foreach (var v in vislist)
+                int rowpos = startrow;
+                foreach (var r in onareas.Ranges)
                 {
-                    if (v.Item1 < dgv.RowCount && v.Item2 < dgv.RowCount && dgv.Rows[v.Item1].Visible != v.Item3)
+                    while (rowpos < r.Start)
                     {
-                        for (int r = v.Item1; r <= v.Item2; r++)
-                            dgv.Rows[r].Visible = v.Item3;
+                        //System.Diagnostics.Debug.WriteLine("Row " + rowpos + " Off");
+                        dgv.Rows[rowpos++].Visible = false;       // set state
+                    }
+
+                    while (rowpos <= r.End)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("Row " + rowpos + " On");
+                        dgv.Rows[rowpos++].Visible = true;       // set state
+                    }
+                }
+
+                while (rowpos <= endrow)
+                {
+                    //System.Diagnostics.Debug.WriteLine("Row " + rowpos + " On");
+                    dgv.Rows[rowpos++].Visible = true;       // set state
+                }
+
+                dgv.RowStateChanged += DGVRowStateChanged;
+                dgv.ResumeLayout();
+
+                UpdateScrollBar();
+                outlining?.UpdateOutlines();
+            }
+        }
+
+        public void ApplyOutlining()        // outlining areas have been made, with visibility.. apply.  Presume all is visible, so only do invisible bits
+        {
+            if ( outlining != null )
+            {
+                dgv.SuspendLayout();
+                dgv.RowStateChanged -= DGVRowStateChanged;      // don't cause repeated call backs
+
+                foreach (ExtPanelDataGridViewScrollOutlining.Outline o in outlining.OutlineSet())
+                {
+                    if ( !o.expanded )
+                    {
+                        if (dgv.Rows[o.start].Visible == true || dgv.Rows[o.end].Visible == true)       // if either start/end is visible, its not been done already by a parent
+                        {
+                            for (int i = o.start; i <= o.end - 1; i++)
+                                dgv.Rows[i].Visible = false;
+                        }
                     }
                 }
 
@@ -91,7 +131,7 @@ namespace ExtendedControls
                 dgv.ResumeLayout();
 
                 UpdateScrollBar();
-                outlining?.Scrolled();
+                outlining?.UpdateOutlines();
             }
         }
 
@@ -224,7 +264,7 @@ namespace ExtendedControls
             if (ignoredgvscroll == false)
             {
                 UpdateScrollBar();
-                outlining?.Scrolled();
+                outlining?.UpdateOutlines();
             }
         }
 
@@ -257,7 +297,7 @@ namespace ExtendedControls
                         ignoredgvscroll = true; // don't fire the DGVScrolled.. as we can get into a cycle if rows are hidden
                         dgv.FirstDisplayedScrollingRowIndex = rowi;     
                         ignoredgvscroll = false;
-                        outlining?.Scrolled();
+                        outlining?.UpdateOutlines();
                         return;
                     }
                 }

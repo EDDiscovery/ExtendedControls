@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -36,6 +37,8 @@ namespace ExtendedControls
 
         public int KeepLastEntriesVisibleOnRollUp { get; set; } = 1;
 
+        public IEnumerable OutlineSet() { return (from x in Outlines select x.r); }
+
         #region Interface
 
         public ExtPanelDataGridViewScrollOutlining() : base()
@@ -51,19 +54,21 @@ namespace ExtendedControls
             return rur?.r;
         }
 
-        public bool Add(int rowstart, int rowend)       // add new area, area must be unique
+        // Add/remove does not affect DGV - you need to do that yourself
+
+        public bool Add(int rowstart, int rowend, bool expandedout = true)       // add new area, area must be unique
         {
             if (FindEntry(rowstart, rowend) == null)
             {
                 OutlineState rup = new OutlineState();
-                rup.r = new Outline() { start = rowstart, end = rowend };
+                rup.r = new Outline() { start = rowstart, end = rowend, expanded = expandedout };
                 rup.button = new ExtPanelDrawn() { Visible = false, ImageSelected = ExtPanelDrawn.ImageType.Collapse, Padding = new Padding(0), Size = new Size(butsize, butsize), ForeColor = this.ForeColor };
                 rup.button.Tag = rup;
                 rup.button.Click += Button_Click;
                 Controls.Add(rup.button);
-                Rollups.Add(rup);
-                RollUpChanged();
-                Scrolled();
+                Outlines.Add(rup);
+                RollUpListChanged();
+                UpdateOutlines();
                 return true;
             }
             else
@@ -82,18 +87,12 @@ namespace ExtendedControls
                     rup.button.Tag = rup;
                     rup.button.Click += Button_Click;
                     Controls.Add(rup.button);
-                    Rollups.Add(rup);
+                    Outlines.Add(rup);
                 }
             }
 
-            if (Parent is ExtPanelDataGridViewScroll)   // this implements an efficient visibility change system
-            {
-                var tuple = (from x in list orderby x.start select new Tuple<int, int, bool>(x.start, x.end- KeepLastEntriesVisibleOnRollUp, x.expanded)).ToList();
-                (Parent as ExtPanelDataGridViewScroll).ChangeVisibility(tuple);
-            }
-
-            RollUpChanged();
-            Scrolled();
+            RollUpListChanged();
+            UpdateOutlines();
         }
 
         public bool Remove(int rowstart, int rowend)        // remove it
@@ -103,9 +102,9 @@ namespace ExtendedControls
             {
                 Controls.Remove(r.button);
                 r.button.Dispose();
-                Rollups.Remove(r);
-                RollUpChanged();
-                Scrolled();
+                Outlines.Remove(r);
+                RollUpListChanged();
+                UpdateOutlines();
                 Invalidate();   // ensure in case we have gone to zero rollups
                 return true;
             }
@@ -116,13 +115,13 @@ namespace ExtendedControls
         public void Clear()
         {
             SuspendLayout();
-            foreach (var rur in Rollups)
+            foreach (var rur in Outlines)
             {
                 Controls.Remove(rur.button);
                 rur.button.Dispose();
             }
 
-            Rollups.Clear();
+            Outlines.Clear();
             this.Width = MinWidth;
 
             ResumeLayout();
@@ -138,71 +137,40 @@ namespace ExtendedControls
             this.dgv = dgv;
         }
 
-        private void RollUpChanged()        // changed list of rollups, resort, work out level of each, reset the outlining size
+        private void RollUpListChanged()        // changed list of rollups, resort, work out level of each, reset the outlining size
         {
-            Rollups.Sort(delegate (OutlineState first, OutlineState last) { return first.r.start.CompareTo(last.r.start); }); // in start order
+            Outlines.Sort(delegate (OutlineState first, OutlineState last) { return first.r.start.CompareTo(last.r.start); }); // in start order
 
-            foreach (var r in Rollups)
+            foreach (var r in Outlines)
                 r.level = 0;
 
             int maxlevel = 0;
 
-            for (int i = 0; i < Rollups.Count; i++)
+            for (int i = 0; i < Outlines.Count; i++)
+                Outlines[i].parent = -1;
+
+            for (int i = 0; i < Outlines.Count; i++)
             {
-                for (int j = i + 1; j < Rollups.Count; j++)
+                for (int j = i + 1; j < Outlines.Count; j++)
                 {
-                    if (Rollups[j].Overlapped(Rollups[i]))
+                    if (Outlines[j].Overlapped(Outlines[i]))
                     {
-                        Rollups[j].level = Rollups[i].level + 1;
-                        maxlevel = Math.Max(Rollups[j].level, maxlevel);
+                        Outlines[j].level = Outlines[i].level + 1;
+                        Outlines[j].parent = i;
+                        maxlevel = Math.Max(Outlines[j].level, maxlevel);
                     }
                 }
             }
 
-            this.Width = Math.Max((butsize + butpadding) * (maxlevel + 1) + butleft, MinWidth);          // resize control appropriately
+            int width = Math.Max((butsize + butpadding) * (maxlevel + 1) + butleft, MinWidth);          // resize control appropriately
+
+            if (width != this.Width)
+                this.Width = width;
         }
 
-        public void RowAdded(int row)
+        public void UpdateOutlines()      // something materially changed - work out display and set controls
         {
-            Scrolled();
-        }
-
-        public void RowRemoved(int row)
-        {
-            List<OutlineState> removelist = new List<OutlineState>();
-
-            foreach( var rur in Rollups )     // double check they are not removing a start or end row..
-            {
-                if (rur.r.start == row || rur.r.end == row)
-                    removelist.Add(rur);
-            }
-
-            foreach (var r in removelist)       // if so, remove the roll up
-                Rollups.Remove(r);
-
-            if (removelist.Count > 0)       // if changed, rework states
-                RollUpChanged();
-
-            Scrolled();
-        }
-
-        public void RowChangedState(int row)
-        {
-            if (!processed)       // need some trigger to get the first process done
-                Scrolled();
-        }
-
-        protected override void OnLayout(LayoutEventArgs levent)
-        {
-            if (!processed)       // need some trigger to get the first process done
-                Scrolled();
-        }
-
-        bool processed = false;
-
-        public void Scrolled()      // something materially changed - work out display and set controls
-        {
-            if (Rollups.Count > 0)
+            if (Outlines.Count > 0)
             {
                 int toprow = dgv?.FirstDisplayedScrollingRowIndex ?? -1;
 
@@ -215,7 +183,7 @@ namespace ExtendedControls
                     int rowscounted = 0;
                     for (int i = toprow + 1; i < dgv.Rows.Count; i++)
                     {
-                        if (dgv.Rows[i].Displayed)  // from the next one, go thru all, counting off displayed rows, until we have enough
+                        if (dgv.Rows[i].Displayed)  // from the next one, go thru all, counting off displayed rows, until we have enough, to estimate where bot row is
                         {
                             botrow = i;
                             if (++rowscounted == rowsdisplayed)     // we have our total of rows, quit now
@@ -228,24 +196,34 @@ namespace ExtendedControls
 
                     SuspendLayout();
 
-                    for (int i = 0; i < Rollups.Count; i++)
+                    for (int i = 0; i < Outlines.Count; i++)
                     {
-                        var rur = Rollups[i];
-                        bool endvisible = dgv.Rows[rur.r.end].Visible;            // endvisible = not = outer has collapsed the whole list
+                        var rur = Outlines[i];
 
-                        if (endvisible)       // end must be visible, else something else has rolled it up
+                        bool completelyhidden = false;
+                        for( int p = rur.parent; p != -1; p = Outlines[p].parent )       // go up tree and see if any parents are hidden, if they are, we are off
                         {
-                            bool startvisible = dgv.Rows[rur.r.start].Visible;        // startvisible = not = outer collapsed, or this is collapsed
+                            if (Outlines[p].r.expanded == false)
+                            {
+                                completelyhidden = true;
+                                break;
+                            }
+                        }
 
+                        if ( !completelyhidden )    // a child may have hidden out end row, so we don't have anywhere to display the button
+                            completelyhidden = !dgv.Rows[rur.r.end].Visible;        // check its there
+
+                        if (!completelyhidden)       // end must be visible, else something else has rolled it up
+                        {
                             bool startonscreen = dgv.Rows[rur.r.start].Displayed;
                             bool endonscreen = dgv.Rows[rur.r.end].Displayed;
                             bool topbotinrange = (toprow >= rur.r.start && toprow <= rur.r.end) || (botrow >= rur.r.start && botrow <= rur.r.end);
 
-                            rur.linedisplay = startonscreen || (endonscreen && startvisible) || (topbotinrange && startvisible);
+                            rur.linedisplay = startonscreen || (endonscreen && rur.r.expanded) || (topbotinrange && rur.r.expanded);
 
                             // we display the line if start on screen, if end on screen and start visible (not rolled up), or we are within a greater range and not rolled up
-                            rur.linedisplay = startonscreen || (endonscreen && startvisible) || (topbotinrange && startvisible);
-
+                            rur.linedisplay = startonscreen || (endonscreen && rur.r.expanded) || (topbotinrange && rur.r.expanded);
+                            
                             if (rur.linedisplay)        // if line on screen, calc extent.
                             {
                                 rur.ystart = startonscreen ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top+butpadding : dgv.ColumnHeadersHeight;
@@ -261,10 +239,10 @@ namespace ExtendedControls
                                 int by = endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Top : (rur.r.start == botrow) ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top :(this.Height-butsize);
 
                                 rur.button.Location = new Point(bx,  by);
-                                rur.button.ImageSelected = startvisible ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
+                                rur.button.ImageSelected = rur.r.expanded ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
                             }
 
-//                            System.Diagnostics.Debug.WriteLine("Bar " + i + " " + rur.r.start + "-" + rur.r.end + " sv:" + startvisible + " ev:" + endvisible + " sos:" + startonscreen + " eos:" + endonscreen + " topbotinrange:" + topbotinrange + " display:" + rur.linedisplay + " but " + butvis);
+                            System.Diagnostics.Debug.WriteLine("Bar " + i + " " + rur.r.start + "-" + rur.r.end + " sos:" + startonscreen + " eos:" + endonscreen + " topbotinrange:" + topbotinrange + " display:" + rur.linedisplay + " but " + butvis);
                         }
                         else
                         {
@@ -285,9 +263,9 @@ namespace ExtendedControls
         protected override void OnPaint(PaintEventArgs pe)      // note you can't control the controls in here, it causes a repaint!  only can paint
         {
             //System.Diagnostics.Debug.WriteLine("Repaint");
-            for (int i = 0; i < Rollups.Count; i++)
+            for (int i = 0; i < Outlines.Count; i++)
             {
-                var rur = Rollups[i];
+                var rur = Outlines[i];
 
                 if ( rur.linedisplay )
                 {
@@ -317,10 +295,78 @@ namespace ExtendedControls
 
             if (Parent is ExtPanelDataGridViewScroll)   // this implements an efficient visibility change system
             {
-                bool state = !dgv.Rows[rur.r.start].Visible;
-                (Parent as ExtPanelDataGridViewScroll).ChangeVisibility(rur.r.start, rur.r.end - KeepLastEntriesVisibleOnRollUp, state);
+                rur.r.expanded = !rur.r.expanded;
+
+                if (rur.r.expanded == false)       // off is easy - hide everything
+                {
+                    (Parent as ExtPanelDataGridViewScroll).ChangeVisibility(rur.r.start, rur.r.end - KeepLastEntriesVisibleOnRollUp, rur.r.expanded);
+                }
+                else
+                {
+                    BaseUtils.IntRangeList irl = new BaseUtils.IntRangeList();
+                    irl.Add(rur.r.start, rur.r.end);
+                    Vis(Outlines.IndexOf(rur), irl);         // remove visibility of any children marked hidden
+                    irl.Sort();
+                    (Parent as ExtPanelDataGridViewScroll).ChangeVisibility(rur.r.start, rur.r.end, irl);
+               }
             }
         }
+
+        private void Vis(int parent, BaseUtils.IntRangeList irl)
+        {
+            for (int j = 0; j < Outlines.Count; j++)     // go thru roll ups, looking for parent, and if off, mark areas as removed from vis
+            {
+                if ( Outlines[j].parent == parent )
+                {
+                    if ( Outlines[j].r.expanded == false )
+                    {
+                        irl.Remove(Outlines[j].r.start, Outlines[j].r.end - KeepLastEntriesVisibleOnRollUp);      // remove this range
+                    }
+
+                    Vis(j, irl);    // any children..
+                }
+            }
+        }
+
+        public void RowAdded(int row)
+        {
+            UpdateOutlines();
+        }
+
+        public void RowRemoved(int row)
+        {
+            List<OutlineState> removelist = new List<OutlineState>();
+
+            foreach (var rur in Outlines)     // double check they are not removing a start or end row..
+            {
+                if (rur.r.start == row || rur.r.end == row)
+                    removelist.Add(rur);
+            }
+
+            foreach (var r in removelist)       // if so, remove the roll up
+                Outlines.Remove(r);
+
+            if (removelist.Count > 0)       // if changed, rework states
+                RollUpListChanged();
+
+            UpdateOutlines();
+        }
+
+        public void RowChangedState(int row)
+        {
+            if (!processed)       // need some trigger to get the first process done
+                UpdateOutlines();
+        }
+
+        protected override void OnLayout(LayoutEventArgs levent)
+        {
+            if (!processed)       // need some trigger to get the first process done
+                UpdateOutlines();
+        }
+
+        bool processed = false;
+
+
 
         #endregion
 
@@ -331,20 +377,21 @@ namespace ExtendedControls
         const int butpadding = 2;
         const int butleft = 2;
         const int butsize = 16;
-        private List<OutlineState> Rollups { get; set; } = new List<OutlineState>();
+        private List<OutlineState> Outlines { get; set; } = new List<OutlineState>();
 
-        private class OutlineState        // do not alter if you get one as a reference via Find
+        private class OutlineState        
         {
             public Outline r;
 
             public int level;
+            public int parent;
             internal ExtPanelDrawn button;
             public bool Overlapped(OutlineState other) { return (r.start >= other.r.start && r.start <= other.r.end) || (r.end >= other.r.start && r.end <= other.r.end); }
             public bool linedisplay;
             public int ystart, yend;
         };
 
-        private OutlineState FindEntry(int rowstart, int rowend) => Rollups.Find(x => x.r.start == rowstart && x.r.end == rowend);
+        private OutlineState FindEntry(int rowstart, int rowend) => Outlines.Find(x => x.r.start == rowstart && x.r.end == rowend);
 
         #endregion
     }

@@ -121,7 +121,7 @@
             this.panel2.Location = new System.Drawing.Point(723, 51);
             this.panel2.Name = "panel2";
             this.panel2.ScrollBarWidth = 20;
-            this.panel2.Size = new System.Drawing.Size(463, 467);
+            this.panel2.Size = new System.Drawing.Size(463, 565);
             this.panel2.TabIndex = 3;
             this.panel2.VerticalScrollBarDockRight = false;
             // 
@@ -136,7 +136,7 @@
             this.dataGridView2.Location = new System.Drawing.Point(20, 0);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView2.Size = new System.Drawing.Size(443, 467);
+            this.dataGridView2.Size = new System.Drawing.Size(443, 565);
             this.dataGridView2.TabIndex = 1;
             // 
             // dataGridViewTextBoxColumn1
@@ -171,7 +171,7 @@
             this.extScrollBar2.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar2.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBar2.Name = "extScrollBar2";
-            this.extScrollBar2.Size = new System.Drawing.Size(20, 467);
+            this.extScrollBar2.Size = new System.Drawing.Size(20, 565);
             this.extScrollBar2.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar2.SmallChange = 1;
             this.extScrollBar2.TabIndex = 0;
@@ -192,16 +192,17 @@
             this.panel.Location = new System.Drawing.Point(12, 51);
             this.panel.Name = "panel";
             this.panel.ScrollBarWidth = 20;
-            this.panel.Size = new System.Drawing.Size(677, 467);
+            this.panel.Size = new System.Drawing.Size(677, 565);
             this.panel.TabIndex = 1;
             this.panel.VerticalScrollBarDockRight = false;
             // 
             // Outlining1
             // 
             this.Outlining1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.Outlining1.KeepLastEntriesVisibleOnRollUp = 1;
             this.Outlining1.Location = new System.Drawing.Point(0, 0);
             this.Outlining1.Name = "Outlining1";
-            this.Outlining1.Size = new System.Drawing.Size(50, 467);
+            this.Outlining1.Size = new System.Drawing.Size(50, 565);
             this.Outlining1.TabIndex = 2;
             // 
             // dataGridView1
@@ -215,7 +216,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(70, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(607, 467);
+            this.dataGridView1.Size = new System.Drawing.Size(607, 565);
             this.dataGridView1.TabIndex = 1;
             // 
             // Column1
@@ -250,7 +251,7 @@
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBar1.Name = "extScrollBar1";
-            this.extScrollBar1.Size = new System.Drawing.Size(20, 467);
+            this.extScrollBar1.Size = new System.Drawing.Size(20, 565);
             this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar1.SmallChange = 1;
             this.extScrollBar1.TabIndex = 0;
