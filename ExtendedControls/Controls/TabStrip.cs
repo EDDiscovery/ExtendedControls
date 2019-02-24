@@ -233,7 +233,7 @@ namespace ExtendedControls
 
         private void panelPopOut_Click(object sender, EventArgs e)
         {
-            if (OnPopOut != null)
+            if (OnPopOut != null && selectedindex >= 0)
                 OnPopOut(this, selectedindex);
         }
 
