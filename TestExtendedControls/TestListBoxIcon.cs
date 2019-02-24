@@ -123,7 +123,7 @@ namespace DialogTest
 
         private void extButton5_Click(object sender, EventArgs e)
         {
-            CheckedIconListBoxFilterForm f = new CheckedIconListBoxFilterForm();
+            CheckedIconListBoxSelectionForm f = new CheckedIconListBoxSelectionForm();
 
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
 
@@ -137,7 +137,26 @@ namespace DialogTest
             f.CloseOnDeactivate = false;
             f.CheckedChanged += F_CheckedChanged;
 
-            f.Filter("", extButton5, this, applytheme:true);
+            f.Show("", extButton5, this, applytheme:true);
+
+        }
+
+        private void extButton6_Click(object sender, EventArgs e)
+        {
+            CheckedIconListBoxSelectionForm f = new CheckedIconListBoxSelectionForm();
+
+            var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
+
+            for (int i = 0; i < 50; i++)
+            {
+                f.AddStandardOption("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length]);
+            }
+
+            f.CloseOnDeactivate = false;
+            f.CloseOnChange = true;
+            f.CheckedChanged += F_CheckedChanged;
+
+            f.Show("", extButton5, this, applytheme: true, allnone:false);
 
         }
     }

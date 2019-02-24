@@ -41,6 +41,7 @@
             this.extButton3 = new ExtendedControls.ExtButton();
             this.extButton4 = new ExtendedControls.ExtButton();
             this.extButton5 = new ExtendedControls.ExtButton();
+            this.extButton6 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -169,6 +170,16 @@
             this.extButton5.UseVisualStyleBackColor = true;
             this.extButton5.Click += new System.EventHandler(this.extButton5_Click);
             // 
+            // extButton6
+            // 
+            this.extButton6.Location = new System.Drawing.Point(12, 157);
+            this.extButton6.Name = "extButton6";
+            this.extButton6.Size = new System.Drawing.Size(75, 23);
+            this.extButton6.TabIndex = 1;
+            this.extButton6.Text = "IconTF";
+            this.extButton6.UseVisualStyleBackColor = true;
+            this.extButton6.Click += new System.EventHandler(this.extButton6_Click);
+            // 
             // TestListBoxIcon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -176,6 +187,7 @@
             this.ClientSize = new System.Drawing.Size(714, 323);
             this.Controls.Add(this.extRichTextBox1);
             this.Controls.Add(this.extButton2);
+            this.Controls.Add(this.extButton6);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton4);
             this.Controls.Add(this.extButton3);
@@ -200,5 +212,6 @@
         private ExtendedControls.ExtButton extButton3;
         private ExtendedControls.ExtButton extButton4;
         private ExtendedControls.ExtButton extButton5;
+        private ExtendedControls.ExtButton extButton6;
     }
 }

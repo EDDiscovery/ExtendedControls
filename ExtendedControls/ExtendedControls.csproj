@@ -71,7 +71,7 @@
     <Compile Include="Controls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\CheckedIconListBoxFilterForm.cs" />
+    <Compile Include="Forms\CheckedIconListBoxSelectionForm.cs" />
     <Compile Include="Forms\CheckedIconListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>

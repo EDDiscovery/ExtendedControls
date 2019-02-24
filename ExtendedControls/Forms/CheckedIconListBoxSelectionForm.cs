@@ -24,12 +24,13 @@ namespace ExtendedControls
 {
     // Represents a check list, with optional group options, and standard options.  Tags/Text are separated.
 
-    public class CheckedIconListBoxFilterForm
+    public class CheckedIconListBoxSelectionForm
     {
         public Action<string,Object> Closing;                       // Action on close, string is the settings.
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported, else its all entries or empty list
-        public Action<CheckedIconListBoxFilterForm, ItemCheckEventArgs> CheckedChanged;       // when any tick has changed
+        public Action<CheckedIconListBoxSelectionForm, ItemCheckEventArgs> CheckedChanged;       // when any tick has changed
         public bool CloseOnDeactivate { get; set; } = true;         // close when deactivated - this would be normal behaviour
+        public bool CloseOnChange { get; set; } = false;            // close when any is changed
 
         private ExtendedControls.CheckedIconListBoxForm cc;
         private Object tagback;
@@ -46,7 +47,14 @@ namespace ExtendedControls
 
         public void AddGroupOption(string tags, string text, Image img = null)      // group option
         {
-            groupoptions.Add(new Options() { Tag = tags, Text = text, Image = img });
+            var o = new Options() { Tag = tags, Text = text, Image = img };
+            groupoptions.Add(o);
+        }
+
+        public void AddGroupOptionAtTop(string tags, string text, Image img = null)      // group option
+        {
+            var o = new Options() { Tag = tags, Text = text, Image = img };
+                groupoptions.Insert(0, o);
         }
 
         public void AddStandardOption(string tag, string text, Image img = null)                // standard option
@@ -69,12 +77,12 @@ namespace ExtendedControls
         }
 
         // present below control
-        public void Filter(string settings, Control ctr, Form parent,  Object tag = null, bool applytheme = true, int width = -1, bool allnone = true)
+        public void Show(string settings, Control ctr, Form parent,  Object tag = null, bool applytheme = true, int width = -1, bool allnone = true)
         {
-            Filter(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(width < 1 ? (ctr.Width * 3) : width, 600), parent, tag, applytheme, allnone);
+            Show(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(width < 1 ? (ctr.Width * 3) : width, 600), parent, tag, applytheme, allnone);
         }
 
-        public void Filter(string settings, Point p, Size s, Form parent, Object tag = null, bool applytheme = true, bool allnone = true)
+        public void Show(string settings, Point p, Size s, Form parent, Object tag = null, bool applytheme = true, bool allnone = true)
         {
             if (cc == null)
             {
@@ -82,8 +90,8 @@ namespace ExtendedControls
 
                 if (allnone)
                 {
-                    AddGroupOption("All", "All".Tx(), Properties.Resources.All);       // displayed, translate
-                    AddGroupOption("None", "None".Tx(), Properties.Resources.None);
+                    AddGroupOptionAtTop("None", "None".Tx(), Properties.Resources.None);
+                    AddGroupOptionAtTop("All", "All".Tx(), Properties.Resources.All);       // displayed, translate
                 }
                     
                 foreach (var x in groupoptions)
@@ -98,9 +106,9 @@ namespace ExtendedControls
                 else
                     cc.SetChecked(settings);
 
-                SetFilterSet();
+                SetGroupOptions();
 
-                cc.FormClosed += FilterClosed;
+                cc.FormClosed += FormClosed;
                 cc.CheckedChanged += checkboxchanged;
                 cc.PositionSize(p, s);
                 cc.LargeChange = cc.ItemCount * Properties.Resources.All.Height / 40;   // 40 ish scroll movements
@@ -116,11 +124,11 @@ namespace ExtendedControls
                 cc.Close();
         }
 
-        private void SetFilterSet()
+        private void SetGroupOptions()
         {
             string list = cc.GetChecked(groupoptions.Count());       // using All or None.. on items beyond reserved entries
                                                                 //            System.Diagnostics.Debug.WriteLine("Checked" + list);
-            int p = 2;
+            int p = 0;
             foreach (var eo in groupoptions)
             {
                 if ( eo.Tag == "All")
@@ -165,7 +173,7 @@ namespace ExtendedControls
                     string tag = groupoptions[e.Index].Tag;
                     if ( tag == "All")
                         cc.SetCheckedFromToEnd(groupoptions.Count(), true);
-                    else if ( tag == "None ")
+                    else if ( tag == "None")
                         cc.SetCheckedFromToEnd(groupoptions.Count(), false);
                     else
                         cc.SetChecked(tag);
@@ -181,11 +189,14 @@ namespace ExtendedControls
                 }
             }
 
-            SetFilterSet();
+            SetGroupOptions();
             CheckedChanged?.Invoke(this, e);
+
+            if (CloseOnChange)
+                cc.Close();
         }
 
-        private void FilterClosed(Object sender, FormClosedEventArgs e)
+        private void FormClosed(Object sender, FormClosedEventArgs e)
         {
             Closing?.Invoke(cc.GetChecked(groupoptions.Count,AllOrNoneBack),tagback);
             cc = null;
