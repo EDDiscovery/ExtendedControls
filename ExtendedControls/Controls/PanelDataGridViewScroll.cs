@@ -295,7 +295,9 @@ namespace ExtendedControls
                     if (dgv.Rows[rowi].Visible == true && rowindex-- == 0)
                     {
                         ignoredgvscroll = true; // don't fire the DGVScrolled.. as we can get into a cycle if rows are hidden
-                        dgv.FirstDisplayedScrollingRowIndex = rowi;     
+                        dgv.FirstDisplayedScrollingRowIndex = rowi;
+                        dgv.Update();
+                        vsc.Update();
                         ignoredgvscroll = false;
                         outlining?.UpdateOutlines();
                         return;

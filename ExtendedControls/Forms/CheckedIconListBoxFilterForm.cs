@@ -44,8 +44,6 @@ namespace ExtendedControls
         private List<Options> groupoptions = new List<Options>();
         private List<Options> standardoptions = new List<Options>();
 
-        private int ReservedEntries { get { return 2 + groupoptions.Count(); } }
-
         public void AddGroupOption(string tags, string text, Image img = null)      // group option
         {
             groupoptions.Add(new Options() { Tag = tags, Text = text, Image = img });
@@ -71,20 +69,23 @@ namespace ExtendedControls
         }
 
         // present below control
-        public void Filter(string settings, Control ctr, Form parent,  Object tag = null, bool applytheme = true)
+        public void Filter(string settings, Control ctr, Form parent,  Object tag = null, bool applytheme = true, int width = -1, bool allnone = true)
         {
-            Filter(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(ctr.Width * 3, 600), parent, tag, applytheme);
+            Filter(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(width < 1 ? (ctr.Width * 3) : width, 600), parent, tag, applytheme, allnone);
         }
 
-        public void Filter(string settings, Point p, Size s, Form parent, Object tag = null, bool applytheme = true)
+        public void Filter(string settings, Point p, Size s, Form parent, Object tag = null, bool applytheme = true, bool allnone = true)
         {
             if (cc == null)
             {
                 cc = new ExtendedControls.CheckedIconListBoxForm();
 
-                cc.AddItem("All", "All".Tx(), Properties.Resources.All);       // displayed, translate
-                cc.AddItem("None", "None".Tx(),Properties.Resources.None);
-
+                if (allnone)
+                {
+                    AddGroupOption("All", "All".Tx(), Properties.Resources.All);       // displayed, translate
+                    AddGroupOption("None", "None".Tx(), Properties.Resources.None);
+                }
+                    
                 foreach (var x in groupoptions)
                     cc.AddItem(x.Tag, x.Text, x.Image);
 
@@ -93,7 +94,7 @@ namespace ExtendedControls
 
                 string[] slist = settings.SplitNoEmptyStartFinish(';');
                 if (slist.Length == 1 && slist[0].Equals("All"))
-                    cc.SetCheckedFromToEnd(ReservedEntries);
+                    cc.SetCheckedFromToEnd(groupoptions.Count());
                 else
                     cc.SetChecked(settings);
 
@@ -117,15 +118,20 @@ namespace ExtendedControls
 
         private void SetFilterSet()
         {
-            string list = cc.GetChecked(ReservedEntries);       // using All or None.. on items beyond reserved entries
+            string list = cc.GetChecked(groupoptions.Count());       // using All or None.. on items beyond reserved entries
                                                                 //            System.Diagnostics.Debug.WriteLine("Checked" + list);
-            cc.SetChecked(0,list.Equals("All"));
-            cc.SetChecked(1,list.Equals("None"));
-
             int p = 2;
             foreach (var eo in groupoptions)
             {
-                if (list.MatchesAllItemsInList(eo.Tag,';'))        // exactly, tick
+                if ( eo.Tag == "All")
+                {
+                    cc.SetChecked(p, list.Equals("All"));
+                }
+                else if ( eo.Tag == "None")
+                {
+                    cc.SetChecked(p, list.Equals("None"));
+                }
+                else if (list.MatchesAllItemsInList(eo.Tag,';'))        // exactly, tick
                 {
                     //System.Diagnostics.Debug.WriteLine("Checking T " + eo.Tag + " vs " + list);
                     cc.SetChecked(p);
@@ -149,25 +155,29 @@ namespace ExtendedControls
         {
             if (e.NewValue == CheckState.Checked)       // all or none set all of them
             {
-                if (e.Index <= 1)
-                {
-                    cc.SetCheckedFromToEnd(ReservedEntries, e.Index == 0);
-                }
-                else if (e.Index < ReservedEntries)
+                if (e.Index < groupoptions.Count())
                 {
                     bool shift = Control.ModifierKeys.HasFlag(Keys.Control);
 
                     if ( !shift )
-                        cc.SetCheckedFromToEnd(ReservedEntries, false);   // if not shift, we clear all, and apply this tag
+                        cc.SetCheckedFromToEnd(groupoptions.Count(), false);   // if not shift, we clear all, and apply this tag
 
-                    cc.SetChecked(groupoptions[e.Index - 2].Tag);
+                    string tag = groupoptions[e.Index].Tag;
+                    if ( tag == "All")
+                        cc.SetCheckedFromToEnd(groupoptions.Count(), true);
+                    else if ( tag == "None ")
+                        cc.SetCheckedFromToEnd(groupoptions.Count(), false);
+                    else
+                        cc.SetChecked(tag);
                 }
             }
             else
             {
-                if ( e.Index >= 2 && e.Index < ReservedEntries )        // off on this clears the entries of it only
+                if ( e.Index < groupoptions.Count())        // off on this clears the entries of it only
                 {
-                    cc.SetChecked(groupoptions[e.Index - 2].Tag, false);
+                    string tag = groupoptions[e.Index].Tag;
+                    if ( tag != "All" && tag != "None ")
+                        cc.SetChecked(tag, false);
                 }
             }
 
@@ -177,7 +187,7 @@ namespace ExtendedControls
 
         private void FilterClosed(Object sender, FormClosedEventArgs e)
         {
-            Closing?.Invoke(cc.GetChecked(ReservedEntries,AllOrNoneBack),tagback);
+            Closing?.Invoke(cc.GetChecked(groupoptions.Count,AllOrNoneBack),tagback);
             cc = null;
         }
     }

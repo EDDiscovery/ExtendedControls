@@ -55,42 +55,29 @@ namespace ExtendedControls
         }
 
         // Add/remove does not affect DGV - you need to do that yourself
-
-        public bool Add(int rowstart, int rowend, bool expandedout = true)       // add new area, area must be unique
+        // areas must be unique
+        // no update means you must call UpdateAfterAdd.
+        public bool Add(int rowstart, int rowend, bool expandedout = true, bool noupdate = false)       
         {
             if (FindEntry(rowstart, rowend) == null)
             {
                 OutlineState rup = new OutlineState();
                 rup.r = new Outline() { start = rowstart, end = rowend, expanded = expandedout };
-                rup.button = new ExtPanelDrawn() { Visible = false, ImageSelected = ExtPanelDrawn.ImageType.Collapse, Padding = new Padding(0), Size = new Size(butsize, butsize), ForeColor = this.ForeColor };
-                rup.button.Tag = rup;
-                rup.button.Click += Button_Click;
-                Controls.Add(rup.button);
                 Outlines.Add(rup);
-                RollUpListChanged();
-                UpdateOutlines();
+
+                if (!noupdate)
+                {
+                    RollUpListChanged();
+                    UpdateOutlines();
+                }
                 return true;
             }
             else
                 return false;
         }
 
-        public void Add(List<Outline> list)     // applies visibility if parent is dgv scroll
+        public void UpdateAfterAdd()
         {
-            foreach (var r in list)
-            {
-                if (FindEntry(r.start, r.end) == null)
-                {
-                    OutlineState rup = new OutlineState();
-                    rup.r = r;
-                    rup.button = new ExtPanelDrawn() { Visible = false, ImageSelected = ExtPanelDrawn.ImageType.Collapse, Padding = new Padding(0), Size = new Size(butsize, butsize), ForeColor = this.ForeColor };
-                    rup.button.Tag = rup;
-                    rup.button.Click += Button_Click;
-                    Controls.Add(rup.button);
-                    Outlines.Add(rup);
-                }
-            }
-
             RollUpListChanged();
             UpdateOutlines();
         }
@@ -139,10 +126,25 @@ namespace ExtendedControls
 
         private void RollUpListChanged()        // changed list of rollups, resort, work out level of each, reset the outlining size
         {
-            Outlines.Sort(delegate (OutlineState first, OutlineState last) { return first.r.start.CompareTo(last.r.start); }); // in start order
+            Outlines.Sort(delegate (OutlineState first, OutlineState last) 
+                {
+                    int c = first.r.start.CompareTo(last.r.start);      // start order, then in largest range (biggest end)
+                    return c != 0 ? c : -first.r.end.CompareTo(last.r.end); // so smaller ones are placed after larger ranges
+                });
+
+            SuspendLayout();
 
             foreach (var r in Outlines)
+            {
+                if (r.button == null)       // check we have a button, if not, add..
+                {
+                    r.button = new ExtPanelDrawn() { Visible = false, ImageSelected = ExtPanelDrawn.ImageType.Collapse, Padding = new Padding(0), Size = new Size(butsize, butsize), ForeColor = this.ForeColor };
+                    r.button.Tag = r;
+                    r.button.Click += Button_Click;
+                    Controls.Add(r.button);
+                }
                 r.level = 0;
+            }
 
             int maxlevel = 0;
 
@@ -162,6 +164,7 @@ namespace ExtendedControls
                 }
             }
 
+            ResumeLayout();
             int width = Math.Max((butsize + butpadding) * (maxlevel + 1) + butleft, MinWidth);          // resize control appropriately
 
             if (width != this.Width)
@@ -200,61 +203,74 @@ namespace ExtendedControls
                     {
                         var rur = Outlines[i];
 
-                        bool completelyhidden = false;
-                        for( int p = rur.parent; p != -1; p = Outlines[p].parent )       // go up tree and see if any parents are hidden, if they are, we are off
+                        if (rur.button != null)     // we may be doing a delayed add, and get scrolled, so cope with it.. no button is set 
                         {
-                            if (Outlines[p].r.expanded == false)
+                            System.Diagnostics.Debug.Assert(i > 0 || rur.parent == -1);     // first must have -1 as parent else we have not called roll up
+
+                            bool completelyhidden = false;
+                            for (int p = rur.parent; p != -1; p = Outlines[p].parent)       // go up tree and see if any parents are hidden, if they are, we are off
                             {
-                                completelyhidden = true;
-                                break;
-                            }
-                        }
-
-                        if ( !completelyhidden )    // a child may have hidden out end row, so we don't have anywhere to display the button
-                            completelyhidden = !dgv.Rows[rur.r.end].Visible;        // check its there
-
-                        if (!completelyhidden)       // end must be visible, else something else has rolled it up
-                        {
-                            bool startonscreen = dgv.Rows[rur.r.start].Displayed;
-                            bool endonscreen = dgv.Rows[rur.r.end].Displayed;
-                            bool topbotinrange = (toprow >= rur.r.start && toprow <= rur.r.end) || (botrow >= rur.r.start && botrow <= rur.r.end);
-
-                            rur.linedisplay = startonscreen || (endonscreen && rur.r.expanded) || (topbotinrange && rur.r.expanded);
-
-                            // we display the line if start on screen, if end on screen and start visible (not rolled up), or we are within a greater range and not rolled up
-                            rur.linedisplay = startonscreen || (endonscreen && rur.r.expanded) || (topbotinrange && rur.r.expanded);
-                            
-                            if (rur.linedisplay)        // if line on screen, calc extent.
-                            {
-                                rur.ystart = startonscreen ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top+butpadding : dgv.ColumnHeadersHeight;
-                                rur.yend = (endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Top : this.Height);
+                                if (Outlines[p].r.expanded == false)
+                                {
+                                    completelyhidden = true;
+                                    break;
+                                }
                             }
 
-                            bool butvis = rur.linedisplay || endonscreen;       // if at end, or line, we have a button
-                            rur.button.Visible = butvis;
-
-                            if ( butvis )
+                            if (!completelyhidden)    // a child may have hidden out end row, so we don't have anywhere to display the button
                             {
-                                int bx = butleft + rur.level * (butsize + butpadding);
-                                int by = endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Top : (rur.r.start == botrow) ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top :(this.Height-butsize);
+                                completelyhidden = !dgv.Rows[rur.r.end].Visible;        // check its there
 
-                                rur.button.Location = new Point(bx,  by);
-                                rur.button.ImageSelected = rur.r.expanded ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
+                                //   if (rur.r.start >= 24000 && rur.r.start <= 25000)
+                                //     if (!completelyhidden ) System.Diagnostics.Debug.WriteLine("Line " + rur.r.end + "is not visible so hiding bar");
                             }
 
-                            System.Diagnostics.Debug.WriteLine("Bar " + i + " " + rur.r.start + "-" + rur.r.end + " sos:" + startonscreen + " eos:" + endonscreen + " topbotinrange:" + topbotinrange + " display:" + rur.linedisplay + " but " + butvis);
-                        }
-                        else
-                        {
-                            //System.Diagnostics.Debug.WriteLine("Bar " + i + " invisible");
-                            rur.linedisplay = false; // both invisible, means this is collapsed
-                            rur.button.Visible = false;
-                        }
+                            if (!completelyhidden)       // end must be visible, else something else has rolled it up
+                            {
+                                bool startonscreen = dgv.Rows[rur.r.start].Displayed;
+                                bool endonscreen = dgv.Rows[rur.r.end].Displayed;
+                                bool topbotinrange = (toprow >= rur.r.start && toprow <= rur.r.end) || (botrow >= rur.r.start && botrow <= rur.r.end);
 
+                                rur.linedisplay = startonscreen || (endonscreen && rur.r.expanded) || (topbotinrange && rur.r.expanded);
+
+                                // we display the line if start on screen, if end on screen and start visible (not rolled up), or we are within a greater range and not rolled up
+                                rur.linedisplay = startonscreen || (endonscreen && rur.r.expanded) || (topbotinrange && rur.r.expanded);
+
+                                if (rur.linedisplay)        // if line on screen, calc extent.
+                                {
+                                    rur.ystart = startonscreen ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top + butpadding : dgv.ColumnHeadersHeight;
+                                    rur.yend = (endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Top : this.Height);
+                                }
+
+                                bool butvis = rur.linedisplay || endonscreen;       // if at end, or line, we have a button
+                                rur.button.Visible = butvis;
+
+                                if (butvis)
+                                {
+                                    int bx = butleft + rur.level * (butsize + butpadding);
+                                    int by = endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Top : (rur.r.start == botrow) ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top : (this.Height - butsize);
+
+                                    rur.button.Location = new Point(bx, by);
+                                    rur.button.ImageSelected = rur.r.expanded ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
+                                }
+
+                                //   if (rur.r.start >= 24000 && rur.r.start <= 25000)
+                                //      System.Diagnostics.Debug.WriteLine("Bar " + i + " " + rur.r.start + "-" + rur.r.end + " sos:" + startonscreen + " eos:" + endonscreen + " topbotinrange:" + topbotinrange + " display:" + rur.linedisplay + " but " + butvis);
+                            }
+                            else
+                            {
+                                //     if (rur.r.start >= 24000 && rur.r.start <= 25000)
+                                //       System.Diagnostics.Debug.WriteLine("Bar " + i + " " + rur.r.start + "-" + rur.r.end + " invisible parent " + rur.parent);
+
+                                rur.linedisplay = false; // both invisible, means this is collapsed
+                                rur.button.Visible = false;
+                            }
+                        }
                     }
 
                     ResumeLayout();
                     Invalidate();
+                    Update();
                 }
             }
 
@@ -373,7 +389,7 @@ namespace ExtendedControls
         #region Variables
 
         DataGridView dgv;
-        const int MinWidth = 10;
+        const int MinWidth = 2;
         const int butpadding = 2;
         const int butleft = 2;
         const int butsize = 16;
