@@ -37,7 +37,6 @@
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extPanelScroll1 = new ExtendedControls.ExtPanelScroll();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.contextMenuStrip1.SuspendLayout();
             this.extPanelScroll1.SuspendLayout();
             this.SuspendLayout();
@@ -90,11 +89,10 @@
             // extPanelScroll1
             // 
             this.extPanelScroll1.Controls.Add(this.extScrollBar1);
-            this.extPanelScroll1.InternalMargin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-            this.extPanelScroll1.Location = new System.Drawing.Point(88, 38);
+            this.extPanelScroll1.Location = new System.Drawing.Point(12, 38);
             this.extPanelScroll1.Name = "extPanelScroll1";
             this.extPanelScroll1.ScrollBarWidth = 20;
-            this.extPanelScroll1.Size = new System.Drawing.Size(168, 568);
+            this.extPanelScroll1.Size = new System.Drawing.Size(575, 568);
             this.extPanelScroll1.TabIndex = 1;
             this.extPanelScroll1.VerticalScrollBarDockRight = true;
             // 
@@ -109,8 +107,8 @@
             this.extScrollBar1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extScrollBar1.HideScrollBar = false;
             this.extScrollBar1.LargeChange = 10;
-            this.extScrollBar1.Location = new System.Drawing.Point(148, 0);
-            this.extScrollBar1.Maximum = -558;
+            this.extScrollBar1.Location = new System.Drawing.Point(555, 0);
+            this.extScrollBar1.Maximum = -568;
             this.extScrollBar1.Minimum = 0;
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
@@ -124,23 +122,14 @@
             this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extScrollBar1.ThumbColorScaling = 0.5F;
             this.extScrollBar1.ThumbDrawAngle = 0F;
-            this.extScrollBar1.Value = -558;
-            this.extScrollBar1.ValueLimited = -558;
-            // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Location = new System.Drawing.Point(282, 38);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 568);
-            this.panel1.TabIndex = 2;
+            this.extScrollBar1.Value = -568;
+            this.extScrollBar1.ValueLimited = -568;
             // 
             // TestPanelScroll
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(714, 640);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.extPanelScroll1);
             this.Name = "TestPanelScroll";
             this.Text = "Form1";
@@ -159,6 +148,5 @@
         private System.Windows.Forms.ToolStripMenuItem statsToolStripMenuItem;
         private ExtendedControls.ExtPanelScroll extPanelScroll1;
         private ExtendedControls.ExtScrollBar extScrollBar1;
-        private System.Windows.Forms.Panel panel1;
     }
 }

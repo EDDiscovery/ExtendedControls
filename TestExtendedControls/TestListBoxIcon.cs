@@ -156,7 +156,7 @@ namespace DialogTest
             f.CloseOnChange = true;
             f.CheckedChanged += F_CheckedChanged;
 
-            f.Show("", extButton5, this, applytheme: true, allnone:false);
+            f.Show("", extButton5, this, applytheme: true);
 
         }
     }
