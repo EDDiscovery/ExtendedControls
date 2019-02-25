@@ -45,12 +45,19 @@ namespace ExtendedControls
         private List<Options> groupoptions = new List<Options>();
         private List<Options> standardoptions = new List<Options>();
 
+        public void AddAllNone()
+        {
+            AddGroupOptionAtTop("All", "All".Tx(), Properties.Resources.All);       // displayed, translate
+            AddGroupOptionAtTop("None", "None".Tx(), Properties.Resources.None);
+        }
+
         public void AddGroupOption(string tags, string text, Image img = null)      // group option
         {
             var o = new Options() { Tag = tags, Text = text, Image = img };
             groupoptions.Add(o);
         }
 
+        
         public void AddGroupOptionAtTop(string tags, string text, Image img = null)      // group option
         {
             var o = new Options() { Tag = tags, Text = text, Image = img };
@@ -77,23 +84,17 @@ namespace ExtendedControls
         }
 
         // present below control
-        public void Show(string settings, Control ctr, Form parent,  Object tag = null, bool applytheme = true, int width = -1, bool allnone = true)
+        public void Show(string settings, Control ctr, Form parent,  Object tag = null, bool applytheme = true, int width = 0, int height = -600)
         {
-            Show(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(width < 1 ? (ctr.Width * 3) : width, 600), parent, tag, applytheme, allnone);
+            Show(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(width == 0 ? (ctr.Width * 3) : width, height), parent, tag, applytheme);
         }
 
-        public void Show(string settings, Point p, Size s, Form parent, Object tag = null, bool applytheme = true, bool allnone = true)
+        public void Show(string settings, Point p, Size s, Form parent, Object tag = null, bool applytheme = true)
         {
             if (cc == null)
             {
                 cc = new ExtendedControls.CheckedIconListBoxForm();
 
-                if (allnone)
-                {
-                    AddGroupOptionAtTop("None", "None".Tx(), Properties.Resources.None);
-                    AddGroupOptionAtTop("All", "All".Tx(), Properties.Resources.All);       // displayed, translate
-                }
-                    
                 foreach (var x in groupoptions)
                     cc.AddItem(x.Tag, x.Text, x.Image);
 
@@ -110,6 +111,10 @@ namespace ExtendedControls
 
                 cc.FormClosed += FormClosed;
                 cc.CheckedChanged += checkboxchanged;
+
+                if ( s.Height < 1)
+                    s.Height = cc.HeightNeeded() + cc.Padding.Vertical;
+
                 cc.PositionSize(p, s);
                 cc.LargeChange = cc.ItemCount * Properties.Resources.All.Height / 40;   // 40 ish scroll movements
                 cc.CloseOnDeactivate = CloseOnDeactivate;

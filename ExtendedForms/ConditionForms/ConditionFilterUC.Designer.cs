@@ -66,7 +66,6 @@ namespace ExtendedConditionsForms
             this.panelVScroll.Controls.Add(this.vScrollBarCustom1);
             this.panelVScroll.Controls.Add(this.buttonMore);
             this.panelVScroll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelVScroll.InternalMargin = new System.Windows.Forms.Padding(0);
             this.panelVScroll.Location = new System.Drawing.Point(0, 0);
             this.panelVScroll.Name = "panelVScroll";
             this.panelVScroll.ScrollBarWidth = 20;

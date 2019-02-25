@@ -28,7 +28,6 @@ namespace ExtendedControls
     {
         public int ScrollBarWidth { get; set; } = 20;
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
-        public Padding InternalMargin { get; set; }            // allows spacing around controls
         public ExtScrollBar ScrollBar;
         public int ScrollOffset { get {return -scrollpos; } }
 
@@ -50,31 +49,33 @@ namespace ExtendedControls
                 ScrollBar.Width = ScrollBarWidth;
                 ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
                 ScrollBar.Name = "VScrollPanel";
+                ScrollTo(0);
             }
 
             e.Control.MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll
         }
 
+        bool doneonescroll = false;
+
         protected override void OnLayout(LayoutEventArgs levent)
         {
             base.OnLayout(levent);
 
-            //System.Diagnostics.Debug.WriteLine((Environment.TickCount % 10000).ToString("00000") + "  VS Layout");
             Rectangle area = ClientRectangle;
-            area.X += InternalMargin.Left;
-            area.Y += InternalMargin.Top;
-            area.Width -= InternalMargin.Left + InternalMargin.Right;
-            area.Height -= InternalMargin.Top + InternalMargin.Bottom;
 
-            if (ScrollBar != null)
+            if (ScrollBar != null && area.Width>0 && area.Height>0)
             {
                 Point p = new Point(area.X + ((VerticalScrollBarDockRight) ? (area.Width - ScrollBarWidth) : 0), area.Y);
                 ScrollBar.Location = p;
-                //System.Diagnostics.Debug.WriteLine("vsc {0}", vsc.Location);
                 ScrollBar.Size = new Size(ScrollBarWidth, area.Height);
+
+                if ( !doneonescroll )
+                {
+                    doneonescroll = true;
+                    ScrollTo(scrollpos);
+                }
             }
 
-            ScrollTo(scrollpos);
         }
 
         private void Control_MouseWheel(object sender, MouseEventArgs e)
@@ -118,21 +119,10 @@ namespace ExtendedControls
             ScrollTo(scrollpos);
         }
 
-        //long tickcountlastforce = 0;        // time forcing of updates so we don't do it too frequently. - keep code until proven
-    //    long curtick = Environment.TickCount;
-    //    long delta = curtick - tickcountlastforce;
-    //            if (delta > 0)
-    //            {
-    //                System.Diagnostics.Debug.WriteLine("UPD Scroll to " + newscrollpos);
-    //                tickcountlastforce = curtick;
-    //                Update();
-    //}
-    //            else
-    //                System.Diagnostics.Debug.WriteLine("--- Scroll to " + newscrollpos);
-
         private int ScrollTo(int newscrollpos )
         {
-            //System.Diagnostics.Debug.WriteLine((Environment.TickCount % 10000).ToString("00000") + "  VS Scroll to");
+            System.Diagnostics.Debug.WriteLine("Scroll panel is " + ClientRectangle + " curscrollpos " + scrollpos);
+            System.Diagnostics.Debug.WriteLine("From " + Environment.StackTrace.StackTrace("ScrollTo",5));
             int maxy = 0;
             foreach (Control c in Controls)
             {
@@ -140,18 +130,19 @@ namespace ExtendedControls
                 {
                     int ynoscroll = c.Location.Y + scrollpos;
                     maxy = Math.Max(maxy, ynoscroll + c.Height + 4);
+                    System.Diagnostics.Debug.WriteLine("Control " + c.Size + " " + c.Location + " maxy " + maxy);
                 }
             }
 
-            if (maxy < ClientRectangle.Height)          // see if need scroll..
-                newscrollpos = 0;
-            else
-            {
-                int maxscr = maxy - ClientRectangle.Height + ((ScrollBar != null) ? ScrollBar.LargeChange : 0);
+            //                int maxscr = maxy - ClientRectangle.Height + ((ScrollBar != null) ? ScrollBar.LargeChange : 0);
+            int maxscr = maxy - ClientRectangle.Height;
 
-                if (newscrollpos > maxscr)
-                    newscrollpos = maxscr;
-            }
+            System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " maxscr " + maxscr);
+
+            if (maxy <= ClientRectangle.Height)          // see if need scroll..
+                newscrollpos = 0;
+            else if (newscrollpos > maxscr)
+                newscrollpos = maxscr;
 
             if (newscrollpos != scrollpos)
             {
@@ -174,10 +165,8 @@ namespace ExtendedControls
 
             if (ScrollBar != null)
             {
-                ScrollBar.Maximum = maxy - ClientRectangle.Height + ScrollBar.LargeChange;
-                ScrollBar.Minimum = 0;
-                ScrollBar.Value = newscrollpos;
-
+                System.Diagnostics.Debug.WriteLine("Set scroll " + newscrollpos + " m " + maxscr + " lc" + ScrollBar.LargeChange);
+                ScrollBar.SetValueMaximumMinimum(newscrollpos, maxscr, 0);
                 //System.Diagnostics.Debug.WriteLine("Scroll {0} to {1} maxy {2} sb {3} ch {4}", scrollpos, newscrollpos, maxy, vsc.Maximum, ClientRectangle.Height);
             }
 

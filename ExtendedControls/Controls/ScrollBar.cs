@@ -57,6 +57,7 @@ namespace ExtendedControls
         public int SmallChange { get { return smallchange; } set { SetValues(thumbvalue, maximum, minimum, largechange, value); } }
         public void SetValueMaximum(int v, int m) { SetValues(v, m, minimum, largechange, smallchange); }
         public void SetValueMaximumLargeChange(int v, int m, int lc) { SetValues(v, m, minimum, lc, smallchange); }
+        public void SetValueMaximumMinimum(int v, int max, int min) { SetValues(v, max, min, largechange, smallchange); }
 
         #region Events
         public event ScrollEventHandler Scroll

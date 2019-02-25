@@ -62,6 +62,8 @@ namespace ExtendedControls
 
         public Action<CheckedIconListBoxForm, ItemCheckEventArgs> CheckedChanged;       // called after save back to say fully changed.
 
+        private Size defsize = new Size(24, 24);        // default size if no other sizes given by ImageSize/Icons etc
+
         public void SetItems(IEnumerable<string> tags, IEnumerable<string> text, IEnumerable<Image> image = null)
         {
             if (controllist.Count > 0)
@@ -293,6 +295,23 @@ namespace ExtendedControls
             return GetChecked(ignore, allornone).SplitNoEmptyStartFinish(';');
         }
 
+        public int HeightNeeded()
+        {
+            bool hasimagesize = ImageSize.Width > 0 && ImageSize.Height > 0;        // has fixed size.. if so use it, else base it on first image, or 24x24
+            Size imgsize = hasimagesize ? ImageSize : defsize;
+
+            int vpos = VerticalSpacing;
+            for (int i = 0; i < controllist.Count; i++)
+            {
+                if (controllist[i].icon != null)
+                    imgsize = hasimagesize ? ImageSize : controllist[i].icon.BackgroundImage.Size;        // set size of item
+
+                vpos += imgsize.Height + VerticalSpacing;
+            }
+
+            return vpos;
+        }
+
         #region Implementation
 
         protected override void OnLayout(LayoutEventArgs levent)
@@ -302,10 +321,11 @@ namespace ExtendedControls
             Location = position;
             Size = size;
 
+            System.Diagnostics.Debug.WriteLine("Client " + ClientRectangle);
+
             int lpos = HorizontalSpacing;
             int vpos = VerticalSpacing;
 
-            Size defsize = new Size(24, 24);
             foreach (var ce in controllist)
             {
                 if (ce.icon != null)                  // find first non null and use for defsize
