@@ -68,7 +68,7 @@ namespace ExtendedControls
         {
             if (controllist.Count > 0)
             {
-                ps.Controls.Clear();
+                panelscroll.Controls.Clear();
 
                 foreach (var c in controllist)
                 {
@@ -112,7 +112,7 @@ namespace ExtendedControls
             cb.CheckedChanged += CheckedIconListBoxForm_CheckedChanged;
             cb.Tag = controllist.Count;
             c.checkbox = cb;
-            ps.Controls.Add(cb);
+            panelscroll.Controls.Add(cb);
 
             Label lb = new Label()
             {
@@ -125,7 +125,8 @@ namespace ExtendedControls
             lb.MouseDown += Text_MouseDown;
 
             c.label = lb;
-            ps.Controls.Add(lb);
+            panelscroll.Controls.Add(lb);
+            panelscroll.Controls.Add(lb);
 
             if (img != null)
             {
@@ -138,7 +139,7 @@ namespace ExtendedControls
 
                 ipanel.MouseDown += Ipanel_MouseDown;
                 c.icon = ipanel;
-                ps.Controls.Add(ipanel);
+                panelscroll.Controls.Add(ipanel);
             }
 
             controllist.Add(c);
@@ -157,7 +158,7 @@ namespace ExtendedControls
         private Point position;
         private Size size;
         private bool ignorechangeevent = false;
-        private ExtPanelScroll ps;
+        private ExtPanelScroll panelscroll;
         private ExtScrollBar sb;
 
         public CheckedIconListBoxForm()
@@ -169,11 +170,12 @@ namespace ExtendedControls
             Padding = new Padding(0);
             IsOpen = true;
             controllist = new List<ControlSet>();
-            ps = new ExtPanelScroll();
-            ps.Dock = DockStyle.Fill;
-            Controls.Add(ps);
+            panelscroll = new ExtPanelScroll();
+            panelscroll.Dock = DockStyle.Fill;
+            Controls.Add(panelscroll);
             sb = new ExtScrollBar();
-            ps.Controls.Add(sb);
+            panelscroll.Controls.Add(sb);
+            panelscroll.ScrollBar.HideScrollBar = true;
         }
 
         public void PositionSize(Point p, Size s)
@@ -314,14 +316,18 @@ namespace ExtendedControls
 
         #region Implementation
 
+        protected override void OnShown(EventArgs e)        // must be done in OnShown, not on OnLayout.. doing that screws up
+        {
+            Location = position;        // first place it onto the correct screen.. so that we know what screen to clip to
+            Size = new Size(10, 10);        // size it small, so windows itself does not bump the control to another screen.
+            this.PositionSizeWithinScreen(size.Width,size.Height, true);    // then keep it on the screen.  always lock to button H
+        }
+
         protected override void OnLayout(LayoutEventArgs levent)
         {
             base.OnLayout(levent);
 
-            Location = position;
-            Size = size;
-
-            System.Diagnostics.Debug.WriteLine("Client " + ClientRectangle);
+//            System.Diagnostics.Debug.WriteLine("Client " + ClientRectangle);
 
             int lpos = HorizontalSpacing;
             int vpos = VerticalSpacing;
@@ -366,7 +372,7 @@ namespace ExtendedControls
                     tpos += imgsize.Width + HorizontalSpacing;
                 }
 
-                controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - ps.ScrollBarWidth - tpos, imgsize.Height);
+                controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - panelscroll.ScrollBarWidth - tpos, imgsize.Height);
                 controllist[i].label.Location = new Point(tpos, vpos);
 
                 vpos += imgsize.Height + VerticalSpacing;
