@@ -86,7 +86,7 @@ namespace ExtendedConditionsForms
             this.vScrollBarCustom1.HideScrollBar = false;
             this.vScrollBarCustom1.LargeChange = 32;
             this.vScrollBarCustom1.Location = new System.Drawing.Point(1076, 0);
-            this.vScrollBarCustom1.Maximum = -500;
+            this.vScrollBarCustom1.Maximum = -504;
             this.vScrollBarCustom1.Minimum = 0;
             this.vScrollBarCustom1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.vScrollBarCustom1.MousePressedButtonColor = System.Drawing.Color.Red;
@@ -95,13 +95,12 @@ namespace ExtendedConditionsForms
             this.vScrollBarCustom1.SliderColor = System.Drawing.Color.DarkGray;
             this.vScrollBarCustom1.SmallChange = 1;
             this.vScrollBarCustom1.TabIndex = 0;
-            this.vScrollBarCustom1.Text = "vScrollBarCustom1";
             this.vScrollBarCustom1.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.vScrollBarCustom1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.vScrollBarCustom1.ThumbColorScaling = 0.5F;
             this.vScrollBarCustom1.ThumbDrawAngle = 0F;
-            this.vScrollBarCustom1.Value = -500;
-            this.vScrollBarCustom1.ValueLimited = -500;
+            this.vScrollBarCustom1.Value = -504;
+            this.vScrollBarCustom1.ValueLimited = -504;
             // 
             // buttonMore
             // 
