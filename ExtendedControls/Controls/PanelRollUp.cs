@@ -153,12 +153,17 @@ namespace ExtendedControls
             pinbutton.ImageUnchecked = down;
         }
 
-        protected override void OnControlAdded(ControlEventArgs e)
+        protected override void OnControlAdded(ControlEventArgs e)      // when a control is hooked, we place a mouse enter/leave so we know we are still within this panel
         {
             base.OnControlAdded(e);
             //System.Diagnostics.Debug.WriteLine("Added " + e.Control.Name + " " + e.Control.GetType().Name);
             e.Control.MouseEnter += Control_MouseEnter;
             e.Control.MouseLeave += Control_MouseLeave;
+            foreach ( Control c in e.Control.Controls )
+            {
+                c.MouseEnter += Control_MouseEnter;
+                c.MouseLeave += Control_MouseLeave;
+            }
         }
 
         public void RollDown()

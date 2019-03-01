@@ -59,7 +59,7 @@ namespace ExtendedControls
             remove { Events.RemoveHandler(EVENT_VALUECHANGED, value); }
         }
 
-        public Action<bool> ValidityChanged;                    // fires (second) if validity changes
+        public Action<NumberBox<T>,bool> ValidityChanged;                    // fires (second) if validity changes
 
         // Finally, Use TextChanged to see all changes, then you can check for IsValid.  Fires after ValueChanged/ValidityChanged
 
@@ -139,14 +139,14 @@ namespace ExtendedControls
                     }
 
                     if (InErrorCondition)
-                        ValidityChanged?.Invoke(true);
+                        ValidityChanged?.Invoke(this,true);
 
                     InErrorCondition = false;
                 }
                 else
                 {                               // Invalid, indicate
                     if (!InErrorCondition)
-                        ValidityChanged?.Invoke(false);
+                        ValidityChanged?.Invoke(this,false);
                     InErrorCondition = true;
                 }
             }

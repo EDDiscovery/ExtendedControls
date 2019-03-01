@@ -26,7 +26,7 @@ namespace ExtendedControls
 
     public class CheckedIconListBoxSelectionForm
     {
-        public Action<string,Object> Closing;                       // Action on close, string is the settings.
+        public Action<string, Object> Closing;                       // Action on close, string is the settings.
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported, else its all entries or empty list
         public Action<CheckedIconListBoxSelectionForm, ItemCheckEventArgs> CheckedChanged;       // when any tick has changed
         public bool CloseOnDeactivate { get; set; } = true;         // close when deactivated - this would be normal behaviour
@@ -84,9 +84,9 @@ namespace ExtendedControls
         }
 
         // present below control
-        public void Show(string settings, Control ctr, Form parent,  Object tag = null, bool applytheme = true, int width = 0, int height = -600)
+        public void Show(string settings, Control ctr, Form parent,  int width, Object tag = null, bool applytheme = true, int height = -1)
         {
-            Show(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(width == 0 ? (ctr.Width * 3) : width, height), parent, tag, applytheme);
+            Show(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(width, height), parent, tag, applytheme);
         }
 
         public void Show(string settings, Point p, Size s, Form parent, Object tag = null, bool applytheme = true)
@@ -112,8 +112,8 @@ namespace ExtendedControls
                 cc.FormClosed += FormClosed;
                 cc.CheckedChanged += checkboxchanged;
 
-                if ( s.Height < 1)
-                    s.Height = cc.HeightNeeded() + cc.Padding.Vertical;
+                if (s.Height < 1)
+                    s.Height = cc.HeightNeeded();
 
                 cc.PositionSize(p, s);
                 cc.LargeChange = cc.ItemCount * Properties.Resources.All.Height / 40;   // 40 ish scroll movements

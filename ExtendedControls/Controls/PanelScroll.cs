@@ -47,10 +47,19 @@ namespace ExtendedControls
                 ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
                 ScrollBar.Name = "VScrollPanel";
             }
+            else
+            {
+                e.Control.LocationChanged += Control_LocationChanged;   // and any location/size/visible changes means scroll bar is changed
+                e.Control.VisibleChanged += Control_VisibleChanged;
+                e.Control.SizeChanged += Control_SizeChanged;
+            }
 
-            e.Control.MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll
-            e.Control.LocationChanged += Control_LocationChanged;   // and any location/visible changes effect the scroller
-            e.Control.VisibleChanged += Control_VisibleChanged;
+            e.Control.MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll, including the ExtScrollBar
+        }
+
+        private void Control_SizeChanged(object sender, EventArgs e)
+        {
+            ScrollTo(scrollpos);
         }
 
         private void Control_VisibleChanged(object sender, EventArgs e)
@@ -99,17 +108,6 @@ namespace ExtendedControls
             ScrollTo(e.NewValue);
         }
 
-        //public void RestateScroll()             // call this if you've messed about with the position of controls..
-        //{
-        //    foreach (Control c in Controls)
-        //    {
-        //        if (!(c is ExtScrollBar))
-        //        {
-        //            c.Location = new Point(c.Left, c.Top - scrollpos); 
-        //        }
-        //    }
-        //}
-
         public void ToEnd()
         {
             ScrollTo(99999999);
@@ -122,8 +120,8 @@ namespace ExtendedControls
 
         private int ScrollTo(int newscrollpos )
         {
-            System.Diagnostics.Debug.WriteLine("Scroll panel is " + ClientRectangle + " curscrollpos " + scrollpos);
-            System.Diagnostics.Debug.WriteLine("From " + Environment.StackTrace.StackTrace("ScrollTo",5));
+            //System.Diagnostics.Debug.WriteLine("Scroll panel is " + ClientRectangle + " curscrollpos " + scrollpos);
+            //System.Diagnostics.Debug.WriteLine("From " + Environment.StackTrace.StackTrace("ScrollTo",5));
             int maxy = 0;
             foreach (Control c in Controls)
             {
@@ -166,7 +164,7 @@ namespace ExtendedControls
             if (ScrollBar != null)
             {
                 ScrollBar.SetValueMaximumMinimum(newscrollpos, maxscr, 0);
-                System.Diagnostics.Debug.WriteLine("Scroll {0} to {1} maxscr {2} maxy {3} ClientH {4}", scrollpos, newscrollpos, maxscr , maxy , ClientRectangle.Height);
+              //  System.Diagnostics.Debug.WriteLine("Scroll {0} to {1} maxscr {2} maxy {3} ClientH {4}", scrollpos, newscrollpos, maxscr , maxy , ClientRectangle.Height);
             }
 
             scrollpos = newscrollpos;

@@ -24,7 +24,14 @@ namespace ExtendedControls
 {
     public class ConfigurableForm : DraggableForm
     {
-        public event Action<string, string, Object> Trigger;        // returns dialog logical name, name of control, caller tag object
+        // returns dialog logical name, name of control (plus options), caller tag object
+        // name of control on click for button / Checkbox / ComboBox
+        // name:Return for number box, textBox 
+        // name:Validity:true/false for Number boxes,
+        // Cancel for ending dialog,
+        // Escape for escape.
+
+        public event Action<string, string, Object> Trigger;        
 
         private List<Entry> entries;
         private Object callertag;
@@ -261,6 +268,20 @@ namespace ExtendedControls
             return false;
         }
 
+        public bool SetEnabled(string controlname, bool state)      // set enable state of dialog control
+        {
+            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t != null)
+            {
+                var cn = t.control as Control;
+                cn.Enabled = state;
+                return true;
+            }
+            else
+                return false;
+        }
+
+
         #endregion
 
         #region Implementation
@@ -453,6 +474,14 @@ namespace ExtendedControls
                             Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
                     };
+                    cb.ValidityChanged += (box, s) =>
+                    {
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.controlname + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
                 }
                 else if (c is ExtendedControls.NumberBoxLong)
                 {
@@ -469,6 +498,14 @@ namespace ExtendedControls
                         {
                             Entry en = (Entry)(box.Tag);
                             Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
+                    cb.ValidityChanged += (box, s) =>
+                    {
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.controlname + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
                     };
                 }

@@ -87,9 +87,14 @@ namespace ExtendedControls
             OutlineState r = FindEntry(rowstart, rowend);
             if (r != null)
             {
-                Controls.Remove(r.button);
-                r.button.Dispose();
+                if (r.button != null)
+                {
+                    Controls.Remove(r.button);
+                    r.button.Dispose();
+                }
+
                 Outlines.Remove(r);
+
                 RollUpListChanged();
                 UpdateOutlines();
                 Invalidate();   // ensure in case we have gone to zero rollups
@@ -104,8 +109,11 @@ namespace ExtendedControls
             SuspendLayout();
             foreach (var rur in Outlines)
             {
-                Controls.Remove(rur.button);
-                rur.button.Dispose();
+                if (rur.button != null)
+                {
+                    Controls.Remove(rur.button);
+                    rur.button.Dispose();
+                }
             }
 
             Outlines.Clear();
@@ -118,6 +126,12 @@ namespace ExtendedControls
         #endregion
 
         #region Implementation
+
+        protected override void OnResize(EventArgs eventargs)
+        {
+            base.OnResize(eventargs);
+            UpdateOutlines();
+        }
 
         public void SetDGV(DataGridView dgv)    // called to set dgv
         {
@@ -252,6 +266,7 @@ namespace ExtendedControls
 
                                     rur.button.Location = new Point(bx, by);
                                     rur.button.ImageSelected = rur.r.expanded ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
+                                  //  System.Diagnostics.Debug.WriteLine(rur.r.start + "-" + rur.r.end + " button state " + rur.r.expanded);
                                 }
 
                                 //   if (rur.r.start >= 24000 && rur.r.start <= 25000)
