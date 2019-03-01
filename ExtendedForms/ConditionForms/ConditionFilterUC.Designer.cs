@@ -43,10 +43,12 @@ namespace ExtendedConditionsForms
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panelConditionUC = new System.Windows.Forms.Panel();
             this.panelVScroll = new ExtendedControls.ExtPanelScroll();
             this.vScrollBarCustom1 = new ExtendedControls.ExtScrollBar();
             this.buttonMore = new ExtendedControls.ExtButton();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.panelConditionUC.SuspendLayout();
             this.panelVScroll.SuspendLayout();
             this.SuspendLayout();
@@ -112,6 +114,13 @@ namespace ExtendedConditionsForms
             this.buttonMore.UseVisualStyleBackColor = true;
             this.buttonMore.Click += new System.EventHandler(this.buttonMore_Click);
             // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 32000;
+            this.toolTip.InitialDelay = 500;
+            this.toolTip.ReshowDelay = 100;
+            this.toolTip.ShowAlways = true;
+            // 
             // ConditionFilterUC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -131,5 +140,6 @@ namespace ExtendedConditionsForms
         private ExtendedControls.ExtScrollBar vScrollBarCustom1;
         private ExtendedControls.ExtPanelScroll panelVScroll;
         private System.Windows.Forms.Panel panelConditionUC;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

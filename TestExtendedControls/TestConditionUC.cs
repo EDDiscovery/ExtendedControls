@@ -28,7 +28,11 @@ namespace DialogTest
             List<string> events = new List<string>() { "eone", "etwo" };
             List<string> varfields = new List<string>() { "vone", "vtwo" };
 
-            frm.InitFilter("Name", this.Icon, events, null, varfields, eventscond);
+            frm.InitFilter("Name", this.Icon, events, null, varfields, eventscond, (ev, txt) =>
+            {
+                return "Help on " + ev + ":" + txt;
+            });
+
             if (frm.ShowDialog() == DialogResult.OK)
                 eventscond = frm.Result;
         }
@@ -37,9 +41,15 @@ namespace DialogTest
         private void buttonCondition(object sender, EventArgs e)
         {
             ConditionFilterForm frm = new ConditionFilterForm();
-            List<string> varfields = new List<string>() { "vone", "vtwo" };
+            List<string> varfields = new List<string>() { "vone", "vtwo" , "xone", "xtwo" };
+            List<string> varfieldshelp = new List<string>() { "Help for vone\nThis is it", "Help for vtwo\nThis is it", "Help for xone" , "helo for xtwo" };
 
-            frm.InitCondition("Name", this.Icon, varfields, conds);
+            frm.InitCondition("Name", this.Icon, varfields, conds, (ev, txt) => 
+                    {
+                        int indexof = varfields.IndexOf(txt);
+                        return indexof >= 0 ? varfieldshelp[indexof] : null;
+                    });
+
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var list = frm.Result;

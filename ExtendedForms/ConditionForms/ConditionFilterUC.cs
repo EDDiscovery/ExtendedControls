@@ -27,8 +27,11 @@ namespace ExtendedConditionsForms
     {
         public ConditionLists Result;
 
-        public delegate List<string> AdditionalNames(string ev);
+        public delegate List<string> AdditionalNames(string ev);    // additional names associated with event ev.
         public event AdditionalNames onAdditionalNames;             // may be set to provide event driven names
+
+        public delegate string NameHelp(string ev, string name);    // pass event name (may be null) and text in box
+        public event NameHelp onNameHelp;                           // may be set to provide help on name in left hand box
 
         public int Groups { get { return groups.Count; } }
         public Action<int> onChangeInGroups;                        // called if any change in group numbers
@@ -36,7 +39,7 @@ namespace ExtendedConditionsForms
         public Action<int> onCalcMinsize;                           // called with the y size of the windows, allows the caller if implemented to resize to suit
 
         private List<string> eventlist;
-        private List<string> additionalfieldnames;          
+        private List<string> additionalfieldnames;
         private bool allowoutercond;
 
         private class Group 
@@ -50,7 +53,7 @@ namespace ExtendedConditionsForms
 
             public class Conditions
             {
-                public ExtendedControls.ExtTextBoxAutoComplete fname;
+                public ExtendedControls.ExtTextBoxAutoCompleteDropDown fname;
                 public ExtendedControls.ExtComboBox cond;
                 public ExtendedControls.ExtTextBox value;
                 public ExtendedControls.ExtButton del;
@@ -78,31 +81,31 @@ namespace ExtendedConditionsForms
 
         // used to start when just filtering.. uses a fixed event list .. must provide a call back to obtain names associated with an event
 
-        public void InitFilter(List<string> events, AdditionalNames a, List<string> varfields,  ConditionLists j = null)
+        public void InitFilter(List<string> events, AdditionalNames a, List<string> varfields,  ConditionLists j = null, NameHelp n = null)
         {
             onAdditionalNames = a;
             this.eventlist = events;
             events.Add("All");
-            Init(events, varfields, true);
+            Init(events, varfields, n, true);
             LoadConditions(j);
         }
 
         // used to start when inside a condition of an IF of a program action (does not need additional names, already resolved)
 
-        public void InitConditionList(List<string> varfields, ConditionLists j = null)
+        public void InitConditionList(List<string> varfields, ConditionLists j = null, NameHelp n = null)
         {
-            Init(null, varfields, true);
+            Init(null, varfields, n, true);
             LoadConditions(j);
         }
 
         // used to start for a condition on an action form (does not need additional names, already resolved)
 
-        public void InitCondition(List<string> varfields, Condition j)
+        public void InitCondition(List<string> varfields, Condition j, NameHelp n = null)
         {
             ConditionLists l = new ConditionLists();
             if ( j!= null && j.fields != null )
                 l.Add(j);
-            Init(null, varfields, false);
+            Init(null, varfields, n, false);
             buttonMore.Visible = true;
             LoadConditions(l);
         }
@@ -169,11 +172,12 @@ namespace ExtendedConditionsForms
         #region Init
 
         private void Init(List<string> el,                             // list of event types or null if event types not used
-                          List<string> varfields,                      // list of additional variable/field names (must be set)
+                          List<string> varfields, NameHelp n,                    // list of additional variable/field names (must be set)
                           bool outerconditions)                        // outc selects if group outer action can be selected, else its OR
         {
             eventlist = el;
             additionalfieldnames = varfields;
+            onNameHelp = n;
             allowoutercond = outerconditions;
 
             // set up where a condition would start on the panel.. dep if the event list is on and the action file system is on..
@@ -288,6 +292,11 @@ namespace ExtendedConditionsForms
                 else
                     CreateCondition(g);
             }
+            else
+            {
+                foreach (var c in g.condlist)           // clear any tool tips
+                    c.fname.TextBox.SetTipDynamically(toolTip, "");
+            }
 
             FixUpGroups();                      // and reposition and maybe turn on/off the group outer cond
         }
@@ -319,11 +328,12 @@ namespace ExtendedConditionsForms
 
             Group.Conditions c = new Group.Conditions();
 
-            c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
+            c.fname = new ExtendedControls.ExtTextBoxAutoCompleteDropDown();
             c.fname.Size = new Size(140, 24);
-            c.fname.SetAutoCompletor(AutoCompletor);
-            c.fname.Tag = g;
-            c.fname.DropDownWidth = 200;
+            c.fname.TextBox.SetAutoCompletor(AutoCompletor);
+            c.fname.TextBox.Tag = g;
+            c.fname.TextBox.DropDownWidth = 200;
+            c.fname.TextBox.TextChanged += TextChangedInLeft;
             if (initialfname != null)
                 c.fname.Text = initialfname;
             g.panel.Controls.Add(c.fname);                                                // 1st control
@@ -367,6 +377,18 @@ namespace ExtendedConditionsForms
             g.condlist.Add(c);
 
             g.panel.ResumeLayout();
+        }
+
+        private void TextChangedInLeft(object sender, EventArgs e)
+        {
+            if (onNameHelp != null)
+            {
+                ExtendedControls.ExtTextBoxAutoComplete t = sender as ExtendedControls.ExtTextBoxAutoComplete;
+                Group g = t.Tag as Group;
+                string evtype = g.evlist?.Text;
+                string help = onNameHelp(evtype, t.Text);
+                t.SetTipDynamically(toolTip, help ?? "");
+            }
         }
 
         private void Cond_SelectedIndexChanged(object sender, EventArgs e)          // on condition changing, see if value is needed 
@@ -627,8 +649,6 @@ namespace ExtendedConditionsForms
 
                     if ( onAdditionalNames != null )
                     {
-                        //  List<string> classnames =
-
                         List<string> classnames = onAdditionalNames(evtype);
                         if (classnames != null)
                             cachedevents[evtype].AddRange(classnames);

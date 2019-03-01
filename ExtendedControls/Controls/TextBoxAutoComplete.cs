@@ -119,6 +119,12 @@ namespace ExtendedControls
             }
         }
 
+        public void ForceAutoComplete(string autocomplete)
+        {
+            autocompletestring = autocomplete;
+            TimeOutTick(null, null);
+        }
+
         private void TimeOutTick(object sender, EventArgs e)
         {
             waitforautotimer.Stop();
@@ -135,7 +141,7 @@ namespace ExtendedControls
             {
                 //System.Diagnostics.Debug.WriteLine("{0} Begin AC", Environment.TickCount % 10000);
                 restartautocomplete = false;
-                autocompletestrings = func(string.Copy(autocompletestring),this);    // pass a copy, in case we change it out from under it
+                autocompletestrings = func(string.Copy(autocompletestring), this);    // pass a copy, in case we change it out from under it
                 //System.Diagnostics.Debug.WriteLine("{0} finish func ret {1} restart {2}", Environment.TickCount % 10000, autocompletestrings.Count, restartautocomplete);
             } while (restartautocomplete == true);
 

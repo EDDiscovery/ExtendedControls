@@ -53,6 +53,9 @@
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\TextBoxAutoCompleteDropDown.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TextBoxAutoComplete.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -216,6 +219,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\TextBoxAutoCompleteDropDown.resx">
+      <DependentUpon>TextBoxAutoCompleteDropDown.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
@@ -301,6 +307,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\All.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowDown.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
