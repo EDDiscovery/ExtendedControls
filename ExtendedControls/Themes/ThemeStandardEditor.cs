@@ -43,42 +43,44 @@ namespace ExtendedControls
             comboBox_TextBorder.DataSource = ThemeStandard.TextboxBorderStyles;
             comboBox_ButtonStyle.DataSource = ThemeStandard.ButtonStyles;
 
-            SetPanel(panel_theme1, "Form Back Colour", ThemeStandard.Settings.CI.form);                  // using tag, and tool tips, hook up patches to enum
-            SetPanel(panel_theme2, "Text box Back Colour", ThemeStandard.Settings.CI.textbox_back);
-            SetPanel(panel_theme3, "Text box Text Colour", ThemeStandard.Settings.CI.textbox_fore);
-            SetPanel(panel_theme4, "Text box Highlight Colour", ThemeStandard.Settings.CI.textbox_highlight);
-            SetPanel(panel_theme15, "Text box Success Colour", ThemeStandard.Settings.CI.textbox_success);
-            SetPanel(panel_theme5, "Button Back Colour", ThemeStandard.Settings.CI.button_back);
-            SetPanel(panel_theme6, "Button Text Colour", ThemeStandard.Settings.CI.button_text);
-            SetPanel(panel_theme7, "Grid Border Back Colour", ThemeStandard.Settings.CI.grid_borderback);
-            SetPanel(panel_theme8, "Grid Border Text Colour", ThemeStandard.Settings.CI.grid_bordertext);
-            SetPanel(panel_theme9, "Grid Cell Back Colour", ThemeStandard.Settings.CI.grid_cellbackground);
-            SetPanel(panel_theme10, "Grid Cell Text Colour", ThemeStandard.Settings.CI.grid_celltext);
-            SetPanel(panel_theme11, "Menu Back Colour", ThemeStandard.Settings.CI.menu_back);
-            SetPanel(panel_theme12, "Menu Text Colour", ThemeStandard.Settings.CI.menu_fore);
-            SetPanel(panel_theme13, "Visited system without known position", ThemeStandard.Settings.CI.travelgrid_nonvisted);
-            SetPanel(panel_theme14, "Visited system with coordinates", ThemeStandard.Settings.CI.travelgrid_visited);
-            SetPanel(panel_theme16, "Check Box Text Colour", ThemeStandard.Settings.CI.checkbox);
-            SetPanel(panel_theme17, "Label Text Colour", ThemeStandard.Settings.CI.label);
-            SetPanel(panel_theme18, "Group box Back Colour", ThemeStandard.Settings.CI.group_back);
-            SetPanel(panel_theme19, "Group box Text Colour", ThemeStandard.Settings.CI.group_text);
-            SetPanel(panel_theme30, "Text Box Border Colour", ThemeStandard.Settings.CI.textbox_border);
-            SetPanel(panel_theme31, "Button Border Colour", ThemeStandard.Settings.CI.button_border);
-            SetPanel(panel_theme32, "Grid Border Line Colour", ThemeStandard.Settings.CI.grid_borderlines);
-            SetPanel(panel_theme33, "Group box Border Line Colour", ThemeStandard.Settings.CI.group_borderlines);
-            SetPanel(panel_theme35, "Tab Control Border Line Colour", ThemeStandard.Settings.CI.tabcontrol_borderlines);
-            SetPanel(panel_theme40, "Text Box Scroll Bar Slider Colour", ThemeStandard.Settings.CI.textbox_sliderback);
-            SetPanel(panel_theme41, "Text Box Scroll Bar Arrow Colour", ThemeStandard.Settings.CI.textbox_scrollarrow);
-            SetPanel(panel_theme42, "Text Box Scroll Bar Button Colour", ThemeStandard.Settings.CI.textbox_scrollbutton);
-            SetPanel(panel_theme43, "Grid Scroll Bar Slider Colour", ThemeStandard.Settings.CI.grid_sliderback);
-            SetPanel(panel_theme44, "Grid Scroll Bar Arrow Colour", ThemeStandard.Settings.CI.grid_scrollarrow);
-            SetPanel(panel_theme45, "Grid Scroll Bar Button Colour", ThemeStandard.Settings.CI.grid_scrollbutton);
-            SetPanel(panel_theme50, "Menu Dropdown Back Colour", ThemeStandard.Settings.CI.menu_dropdownback);
-            SetPanel(panel_theme51, "Menu Dropdown Text Colour", ThemeStandard.Settings.CI.menu_dropdownfore);
-            SetPanel(panel_theme60, "Tool Strip Back Colour", ThemeStandard.Settings.CI.toolstrip_back);
-            SetPanel(panel_theme61, "Tool Strip Border Colour", ThemeStandard.Settings.CI.toolstrip_border);
-            SetPanel(panel_theme70, "Check Box Tick Color", ThemeStandard.Settings.CI.checkbox_tick );
-            SetPanel(panel_theme71, "S-Panel Text Colour", ThemeStandard.Settings.CI.s_panel);
+            BaseUtils.Translator.Instance.Translate(this);
+
+            SetPanel(panel_theme1, "Form Back Colour".Tx(this, "PTT1"), ThemeStandard.Settings.CI.form);                  // using tag, and tool tips, hook up patches to enum
+            SetPanel(panel_theme2, "Text box Back Colour".Tx(this, "PTT2"), ThemeStandard.Settings.CI.textbox_back);
+            SetPanel(panel_theme3, "Text box Text Colour".Tx(this, "PTT3"), ThemeStandard.Settings.CI.textbox_fore);
+            SetPanel(panel_theme4, "Text box Highlight Colour".Tx(this, "PTT4"), ThemeStandard.Settings.CI.textbox_highlight);
+            SetPanel(panel_theme15, "Text box Success Colour".Tx(this, "PTT15"), ThemeStandard.Settings.CI.textbox_success);
+            SetPanel(panel_theme5, "Button Back Colour".Tx(this, "PTT5"), ThemeStandard.Settings.CI.button_back);
+            SetPanel(panel_theme6, "Button Text Colour".Tx(this, "PTT6"), ThemeStandard.Settings.CI.button_text);
+            SetPanel(panel_theme7, "Grid Border Back Colour".Tx(this, "PTT7"), ThemeStandard.Settings.CI.grid_borderback);
+            SetPanel(panel_theme8, "Grid Border Text Colour".Tx(this, "PTT8"), ThemeStandard.Settings.CI.grid_bordertext);
+            SetPanel(panel_theme9, "Grid Cell Back Colour".Tx(this, "PTT9"), ThemeStandard.Settings.CI.grid_cellbackground);
+            SetPanel(panel_theme10, "Grid Cell Text Colour".Tx(this, "PTT10"), ThemeStandard.Settings.CI.grid_celltext);
+            SetPanel(panel_theme11, "Menu Back Colour".Tx(this, "PTT11"), ThemeStandard.Settings.CI.menu_back);
+            SetPanel(panel_theme12, "Menu Text Colour".Tx(this, "PTT12"), ThemeStandard.Settings.CI.menu_fore);
+            SetPanel(panel_theme13, "Visited system without known position".Tx(this, "PTT13"), ThemeStandard.Settings.CI.travelgrid_nonvisted);
+            SetPanel(panel_theme14, "Visited system with coordinates".Tx(this, "PTT14"), ThemeStandard.Settings.CI.travelgrid_visited);
+            SetPanel(panel_theme16, "Check Box Text Colour".Tx(this, "PTT16"), ThemeStandard.Settings.CI.checkbox);
+            SetPanel(panel_theme17, "Label Text Colour".Tx(this, "PTT17"), ThemeStandard.Settings.CI.label);
+            SetPanel(panel_theme18, "Group box Back Colour".Tx(this, "PTT18"), ThemeStandard.Settings.CI.group_back);
+            SetPanel(panel_theme19, "Group box Text Colour".Tx(this, "PTT19"), ThemeStandard.Settings.CI.group_text);
+            SetPanel(panel_theme30, "Text Box Border Colour".Tx(this, "PTT30"), ThemeStandard.Settings.CI.textbox_border);
+            SetPanel(panel_theme31, "Button Border Colour".Tx(this, "PTT31"), ThemeStandard.Settings.CI.button_border);
+            SetPanel(panel_theme32, "Grid Border Line Colour".Tx(this, "PTT32"), ThemeStandard.Settings.CI.grid_borderlines);
+            SetPanel(panel_theme33, "Group box Border Line Colour".Tx(this, "PTT33"), ThemeStandard.Settings.CI.group_borderlines);
+            SetPanel(panel_theme35, "Tab Control Border Line Colour".Tx(this, "PTT35"), ThemeStandard.Settings.CI.tabcontrol_borderlines);
+            SetPanel(panel_theme40, "Text Box Scroll Bar Slider Colour".Tx(this, "PTT40"), ThemeStandard.Settings.CI.textbox_sliderback);
+            SetPanel(panel_theme41, "Text Box Scroll Bar Arrow Colour".Tx(this, "PTT41"), ThemeStandard.Settings.CI.textbox_scrollarrow);
+            SetPanel(panel_theme42, "Text Box Scroll Bar Button Colour".Tx(this, "PTT42"), ThemeStandard.Settings.CI.textbox_scrollbutton);
+            SetPanel(panel_theme43, "Grid Scroll Bar Slider Colour".Tx(this, "PTT43"), ThemeStandard.Settings.CI.grid_sliderback);
+            SetPanel(panel_theme44, "Grid Scroll Bar Arrow Colour".Tx(this, "PTT44"), ThemeStandard.Settings.CI.grid_scrollarrow);
+            SetPanel(panel_theme45, "Grid Scroll Bar Button Colour".Tx(this, "PTT45"), ThemeStandard.Settings.CI.grid_scrollbutton);
+            SetPanel(panel_theme50, "Menu Dropdown Back Colour".Tx(this, "PTT50"), ThemeStandard.Settings.CI.menu_dropdownback);
+            SetPanel(panel_theme51, "Menu Dropdown Text Colour".Tx(this, "PTT51"), ThemeStandard.Settings.CI.menu_dropdownfore);
+            SetPanel(panel_theme60, "Tool Strip Back Colour".Tx(this, "PTT60"), ThemeStandard.Settings.CI.toolstrip_back);
+            SetPanel(panel_theme61, "Tool Strip Border Colour".Tx(this, "PTT61"), ThemeStandard.Settings.CI.toolstrip_border);
+            SetPanel(panel_theme70, "Check Box Tick Color".Tx(this, "PTT70"), ThemeStandard.Settings.CI.checkbox_tick );
+            SetPanel(panel_theme71, "S-Panel Text Colour".Tx(this, "PTT71"), ThemeStandard.Settings.CI.s_panel);
 
             UpdatePatchesEtc();
 
@@ -125,7 +127,7 @@ namespace ExtendedControls
             UpdatePatch(panel_theme61);
             UpdatePatch(panel_theme70);
             UpdatePatch(panel_theme71);
-            textBox_Font.Text = theme.FontName + " " + theme.FontSize + " points";
+            textBox_Font.Text = theme.FontName + " " + theme.FontSize + " points".Tx(this,"FontSize");
             checkBox_theme_windowframe.Checked = theme.WindowsFrame;
         }
 
@@ -217,7 +219,7 @@ namespace ExtendedControls
                         ApplyChanges?.Invoke();
                     }
                     else
-                        ExtendedControls.MessageBoxTheme.Show(this, "Font does not have regular style");
+                        ExtendedControls.MessageBoxTheme.Show(this, "Font does not have regular style".Tx(this,"FDNHRS"));
                 }
             }
         }
@@ -233,6 +235,6 @@ namespace ExtendedControls
             theme.ButtonStyle = (string)comboBox_ButtonStyle.SelectedItem;
             ApplyChanges?.Invoke();
         }
-
+        
     }
 }
