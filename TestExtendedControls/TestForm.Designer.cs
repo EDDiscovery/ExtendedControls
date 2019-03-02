@@ -42,6 +42,7 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.radioButtonCustom1 = new ExtendedControls.ExtRadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -97,7 +98,6 @@
             this.richTextBoxScroll1 = new ExtendedControls.ExtRichTextBox();
             this.vScrollBarCustom2 = new ExtendedControls.ExtScrollBar();
             this.vScrollBarCustom1 = new ExtendedControls.ExtScrollBar();
-            this.radioButtonCustom1 = new ExtendedControls.ExtRadioButton();
             this.checkBoxCustom1 = new ExtendedControls.ExtCheckBox();
             this.comboBoxCustom2 = new ExtendedControls.ExtComboBox();
             this.comboBoxCustom1 = new ExtendedControls.ExtComboBox();
@@ -216,12 +216,30 @@
             // 
             this.groupBox3.Controls.Add(this.radioButtonCustom1);
             this.groupBox3.Controls.Add(this.radioButton1);
-            this.groupBox3.Location = new System.Drawing.Point(213, 237);
+            this.groupBox3.Location = new System.Drawing.Point(733, 143);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(150, 100);
             this.groupBox3.TabIndex = 27;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "groupBox3";
+            // 
+            // radioButtonCustom1
+            // 
+            this.radioButtonCustom1.AutoSize = true;
+            this.radioButtonCustom1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.radioButtonCustom1.FontNerfReduction = 0.5F;
+            this.radioButtonCustom1.Location = new System.Drawing.Point(21, 54);
+            this.radioButtonCustom1.MouseOverColor = System.Drawing.Color.Green;
+            this.radioButtonCustom1.Name = "radioButtonCustom1";
+            this.radioButtonCustom1.RadioButtonColor = System.Drawing.Color.Gray;
+            this.radioButtonCustom1.RadioButtonInnerColor = System.Drawing.Color.White;
+            this.radioButtonCustom1.SelectedColor = System.Drawing.Color.DarkBlue;
+            this.radioButtonCustom1.SelectedColorRing = System.Drawing.Color.Black;
+            this.radioButtonCustom1.Size = new System.Drawing.Size(119, 17);
+            this.radioButtonCustom1.TabIndex = 1;
+            this.radioButtonCustom1.TabStop = true;
+            this.radioButtonCustom1.Text = "radioButtonCustom1";
+            this.radioButtonCustom1.UseVisualStyleBackColor = true;
             // 
             // radioButton1
             // 
@@ -277,7 +295,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(531, 140);
+            this.button6.Location = new System.Drawing.Point(910, 143);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
             this.button6.TabIndex = 39;
@@ -287,7 +305,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(635, 139);
+            this.button7.Location = new System.Drawing.Point(1014, 142);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
             this.button7.TabIndex = 40;
@@ -297,7 +315,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(733, 140);
+            this.button8.Location = new System.Drawing.Point(1112, 143);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 23);
             this.button8.TabIndex = 41;
@@ -317,10 +335,11 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(655, 90);
+            this.textBox1.Location = new System.Drawing.Point(147, 305);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 46;
+            this.textBox1.Text = "textbox";
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             this.textBox1.Validating += new System.ComponentModel.CancelEventHandler(this.textBox1_Validating);
             // 
@@ -343,7 +362,7 @@
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(831, 140);
+            this.button16.Location = new System.Drawing.Point(1210, 143);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(75, 23);
             this.button16.TabIndex = 50;
@@ -494,6 +513,7 @@
             this.numberBoxLong1.ClearOnFirstChar = false;
             this.numberBoxLong1.ControlBackground = System.Drawing.SystemColors.Control;
             this.numberBoxLong1.DelayBeforeNotification = 0;
+            this.numberBoxLong1.DropDownButton = false;
             this.numberBoxLong1.Format = "D";
             this.numberBoxLong1.InErrorCondition = false;
             this.numberBoxLong1.Location = new System.Drawing.Point(977, 44);
@@ -523,6 +543,7 @@
             this.numberBoxLong0.ClearOnFirstChar = false;
             this.numberBoxLong0.ControlBackground = System.Drawing.SystemColors.Control;
             this.numberBoxLong0.DelayBeforeNotification = 0;
+            this.numberBoxLong0.DropDownButton = false;
             this.numberBoxLong0.Format = "D";
             this.numberBoxLong0.InErrorCondition = false;
             this.numberBoxLong0.Location = new System.Drawing.Point(977, 23);
@@ -552,6 +573,7 @@
             this.textBoxDouble2.ClearOnFirstChar = false;
             this.textBoxDouble2.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxDouble2.DelayBeforeNotification = 1000;
+            this.textBoxDouble2.DropDownButton = false;
             this.textBoxDouble2.Format = "0.###";
             this.textBoxDouble2.InErrorCondition = false;
             this.textBoxDouble2.Location = new System.Drawing.Point(977, 96);
@@ -580,6 +602,7 @@
             this.textBoxDouble1.ClearOnFirstChar = false;
             this.textBoxDouble1.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxDouble1.DelayBeforeNotification = 1000;
+            this.textBoxDouble1.DropDownButton = false;
             this.textBoxDouble1.Format = "0.###";
             this.textBoxDouble1.InErrorCondition = false;
             this.textBoxDouble1.Location = new System.Drawing.Point(977, 70);
@@ -722,6 +745,7 @@
             this.autoCompleteTextBox2.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox2.DropDownBorderColor = System.Drawing.Color.Green;
+            this.autoCompleteTextBox2.DropDownButton = false;
             this.autoCompleteTextBox2.DropDownHeight = 80;
             this.autoCompleteTextBox2.DropDownItemHeight = 20;
             this.autoCompleteTextBox2.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
@@ -754,6 +778,7 @@
             this.autoCompleteTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
+            this.autoCompleteTextBox1.DropDownButton = false;
             this.autoCompleteTextBox1.DropDownHeight = 80;
             this.autoCompleteTextBox1.DropDownItemHeight = 20;
             this.autoCompleteTextBox1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
@@ -847,7 +872,7 @@
             this.HoldingPanel.Controls.Add(this.vScrollBarCustom3);
             this.HoldingPanel.Controls.Add(this.dataGridView1);
             this.HoldingPanel.InternalMargin = new System.Windows.Forms.Padding(0);
-            this.HoldingPanel.Location = new System.Drawing.Point(531, 177);
+            this.HoldingPanel.Location = new System.Drawing.Point(910, 180);
             this.HoldingPanel.Name = "HoldingPanel";
             this.HoldingPanel.ScrollBarWidth = 16;
             this.HoldingPanel.Size = new System.Drawing.Size(477, 300);
@@ -1075,24 +1100,6 @@
             this.vScrollBarCustom1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBarCustom1_ScrollSYS);
             this.vScrollBarCustom1.ValueChanged += new System.EventHandler(this.vScrollBarCustom1_ValueChanged_1);
             // 
-            // radioButtonCustom1
-            // 
-            this.radioButtonCustom1.AutoSize = true;
-            this.radioButtonCustom1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.radioButtonCustom1.FontNerfReduction = 0.5F;
-            this.radioButtonCustom1.Location = new System.Drawing.Point(21, 54);
-            this.radioButtonCustom1.MouseOverColor = System.Drawing.Color.Green;
-            this.radioButtonCustom1.Name = "radioButtonCustom1";
-            this.radioButtonCustom1.RadioButtonColor = System.Drawing.Color.Gray;
-            this.radioButtonCustom1.RadioButtonInnerColor = System.Drawing.Color.White;
-            this.radioButtonCustom1.SelectedColor = System.Drawing.Color.DarkBlue;
-            this.radioButtonCustom1.SelectedColorRing = System.Drawing.Color.Black;
-            this.radioButtonCustom1.Size = new System.Drawing.Size(119, 17);
-            this.radioButtonCustom1.TabIndex = 1;
-            this.radioButtonCustom1.TabStop = true;
-            this.radioButtonCustom1.Text = "radioButtonCustom1";
-            this.radioButtonCustom1.UseVisualStyleBackColor = true;
-            // 
             // checkBoxCustom1
             // 
             this.checkBoxCustom1.AutoSize = true;
@@ -1256,6 +1263,7 @@
             this.textBoxBorder1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorder1.ClearOnFirstChar = false;
             this.textBoxBorder1.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorder1.DropDownButton = false;
             this.textBoxBorder1.InErrorCondition = false;
             this.textBoxBorder1.Location = new System.Drawing.Point(18, 305);
             this.textBoxBorder1.Multiline = false;
@@ -1266,6 +1274,7 @@
             this.textBoxBorder1.SelectionStart = 0;
             this.textBoxBorder1.Size = new System.Drawing.Size(100, 26);
             this.textBoxBorder1.TabIndex = 13;
+            this.textBoxBorder1.Text = "exttextbox";
             this.textBoxBorder1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.textBoxBorder1.WordWrap = true;
             this.textBoxBorder1.TextChanged += new System.EventHandler(this.textBoxBorder1_TextChanged);
@@ -1281,7 +1290,7 @@
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.Red;
-            this.groupBox1.Location = new System.Drawing.Point(2, 37);
+            this.groupBox1.Location = new System.Drawing.Point(2, 32);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(361, 186);
             this.groupBox1.TabIndex = 4;

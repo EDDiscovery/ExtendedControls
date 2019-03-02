@@ -15,9 +15,15 @@ namespace DialogTest
 {
     public partial class TestConditionUC: Form
     {
+        ThemeStandard theme;
+
         public TestConditionUC()
         {
             InitializeComponent();
+            theme = new ThemeStandard();
+            theme.LoadBaseThemes();
+            theme.SetThemeByName("Elite Verdana");
+            ExtendedControls.ThemeableFormsInstance.Instance = theme;
         }
 
         ConditionLists eventscond;
@@ -33,23 +39,35 @@ namespace DialogTest
                 return "Help on " + ev + ":" + txt;
             });
 
+            theme.ApplyToForm(frm);
+
             if (frm.ShowDialog() == DialogResult.OK)
                 eventscond = frm.Result;
         }
 
-        Condition conds;
         private void buttonCondition(object sender, EventArgs e)
         {
             ConditionFilterForm frm = new ConditionFilterForm();
             List<string> varfields = new List<string>() { "vone", "vtwo" , "xone", "xtwo" };
+            varfields.AddRange(varfields);
+            varfields.AddRange(varfields);
+            varfields.AddRange(varfields);
+            varfields.AddRange(varfields);
+            varfields.AddRange(varfields);
+            varfields.AddRange(varfields);
             List<string> varfieldshelp = new List<string>() { "Help for vone\nThis is it", "Help for vtwo\nThis is it", "Help for xone" , "helo for xtwo" };
+
+            List<ConditionEntry> ces = new List<ConditionEntry>() { new ConditionEntry("Fred", ConditionEntry.MatchType.Contains, "Jim") };
+
+            Condition conds = new Condition("", "", "", ces);
 
             frm.InitCondition("Name", this.Icon, varfields, conds, (ev, txt) => 
                     {
                         int indexof = varfields.IndexOf(txt);
-                        return indexof >= 0 ? varfieldshelp[indexof] : null;
+                        return indexof >= 0 && indexof < varfieldshelp.Count ? varfieldshelp[indexof] : null;
                     });
 
+            theme.ApplyToForm(frm);
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var list = frm.Result;

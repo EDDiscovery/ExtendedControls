@@ -76,6 +76,8 @@ namespace ExtendedControls
             }
         }
 
+        public Image DropDownButtonImage { get { return dropdownbutton.Image; } set { dropdownbutton.Image = value; } }     // if you want something else.. keep it small
+
         public Action<ExtTextBox> DropDownButtonClick = null;                              // if the button is pressed
 
         protected TextBox textbox;
@@ -146,10 +148,10 @@ namespace ExtendedControls
                 textbox.Size = new Size(ClientRectangle.Width - offset * 2 - butwidth, ClientRectangle.Height - offset * 2);
 
                 dropdownbutton.Location = new Point(ClientRectangle.Width - offset - butwidth, offset);
-                dropdownbutton.Size = new Size(butwidth, textbox.Height);
+                dropdownbutton.Size = new Size(butwidth, Math.Min(textbox.Height,16));
                 this.Height = textbox.Height + offset * 2;
                 
-                //System.Diagnostics.Debug.WriteLine("Repos " + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle);
+              //  System.Diagnostics.Debug.WriteLine("Repos " + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle + " dd " + dropdownbutton.Size);
             }
         }
 

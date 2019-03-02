@@ -38,6 +38,11 @@ namespace ExtendedConditionsForms
 
         public Action<int> onCalcMinsize;                           // called with the y size of the windows, allows the caller if implemented to resize to suit
 
+        public int LeftSizeConditionWidth { get; set; } = 200;       // change before init.
+        public int ConditionWidth { get; set; } = 140;       // change before init.
+        public int EventWidth { get; set; } = 150;       // change before init.
+        public int DropDownHeight { get; set; } = 400;       // change before init.
+
         private List<string> eventlist;
         private List<string> additionalfieldnames;
         private bool allowoutercond;
@@ -234,8 +239,8 @@ namespace ExtendedConditionsForms
                 g.evlist = new ExtendedControls.ExtComboBox();
                 g.evlist.Items.AddRange(eventlist);
                 g.evlist.Location = new Point(panelxmargin, panelymargin);
-                g.evlist.Size = new Size(150, 24);
-                g.evlist.DropDownHeight = 400;
+                g.evlist.Size = new Size(EventWidth, 24);
+                g.evlist.DropDownHeight = DropDownHeight;
                 if (initialev != null && initialev.Length > 0)
                     g.evlist.Text = initialev;
                 g.evlist.SelectedIndexChanged += Evlist_SelectedIndexChanged;
@@ -330,10 +335,11 @@ namespace ExtendedConditionsForms
 
             c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
             c.fname.DropDownButton = true;
-            c.fname.Size = new Size(140, 24);
+            c.fname.Size = new Size(LeftSizeConditionWidth, 32);
             c.fname.SetAutoCompletor(AutoCompletor);
             c.fname.Tag = g;
-            c.fname.DropDownWidth = 200;
+            c.fname.DropDownWidth = LeftSizeConditionWidth*3/2;
+            c.fname.DropDownHeight = DropDownHeight;
             c.fname.TextChanged += TextChangedInLeft;
             if (initialfname != null)
                 c.fname.Text = initialfname;
@@ -342,8 +348,8 @@ namespace ExtendedConditionsForms
             c.cond = new ExtendedControls.ExtComboBox();
             c.cond.Items.AddRange(ConditionEntry.MatchNames);
             c.cond.SelectedIndex = 0;
-            c.cond.Size = new Size(140, 24);
-            c.cond.DropDownHeight = 400;
+            c.cond.Size = new Size(ConditionWidth, 24);
+            c.cond.DropDownHeight = DropDownHeight;
             c.cond.Tag = g;
 
             if (initialcond != null)
@@ -543,6 +549,8 @@ namespace ExtendedConditionsForms
 
             panelVScroll.ResumeLayout();
             ResumeLayout();
+            Invalidate(true);
+            Update();
         }
 
         #endregion
