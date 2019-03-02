@@ -53,7 +53,7 @@ namespace ExtendedConditionsForms
 
             public class Conditions
             {
-                public ExtendedControls.ExtTextBoxAutoCompleteDropDown fname;
+                public ExtendedControls.ExtTextBoxAutoComplete fname;
                 public ExtendedControls.ExtComboBox cond;
                 public ExtendedControls.ExtTextBox value;
                 public ExtendedControls.ExtButton del;
@@ -295,7 +295,7 @@ namespace ExtendedConditionsForms
             else
             {
                 foreach (var c in g.condlist)           // clear any tool tips
-                    c.fname.TextBox.SetTipDynamically(toolTip, "");
+                    c.fname.SetTipDynamically(toolTip, "");
             }
 
             FixUpGroups();                      // and reposition and maybe turn on/off the group outer cond
@@ -328,12 +328,13 @@ namespace ExtendedConditionsForms
 
             Group.Conditions c = new Group.Conditions();
 
-            c.fname = new ExtendedControls.ExtTextBoxAutoCompleteDropDown();
+            c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
+            c.fname.DropDownButton = true;
             c.fname.Size = new Size(140, 24);
-            c.fname.TextBox.SetAutoCompletor(AutoCompletor);
-            c.fname.TextBox.Tag = g;
-            c.fname.TextBox.DropDownWidth = 200;
-            c.fname.TextBox.TextChanged += TextChangedInLeft;
+            c.fname.SetAutoCompletor(AutoCompletor);
+            c.fname.Tag = g;
+            c.fname.DropDownWidth = 200;
+            c.fname.TextChanged += TextChangedInLeft;
             if (initialfname != null)
                 c.fname.Text = initialfname;
             g.panel.Controls.Add(c.fname);                                                // 1st control

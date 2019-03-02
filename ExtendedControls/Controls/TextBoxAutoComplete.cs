@@ -44,7 +44,7 @@ namespace ExtendedControls
         private System.Threading.Thread ThreadAutoComplete;
         private PerformAutoComplete func = null;
         private List<string> autocompletestrings = null;
-        ExtListBoxForm _cbdropdown;
+        ExtListBoxForm cbdropdown;
         int autocompletelastcount = 0;
         private bool disableauto = false;
 
@@ -61,8 +61,12 @@ namespace ExtendedControls
             this.Click += AutoCompleteTextBox_Click;
             this.KeyDown += AutoCompleteTextBox_KeyDown;
 
+            DropDownButtonClick = (s) =>                            // this is the default action if the user turns on the drop down button in text box
+            {
+                Text = "";
+                ForceAutoComplete("");
+            };
         }
-
 
         // Sometimes, the user is quicker than the timer, and has commited to a selection before the results even come back.
         public void AbortAutoComplete()
@@ -71,10 +75,10 @@ namespace ExtendedControls
             {
                 waitforautotimer.Stop();
             }
-            else if (_cbdropdown != null)
+            else if (cbdropdown != null)
             {
-                _cbdropdown.Close();
-                _cbdropdown = null;
+                cbdropdown.Close();
+                cbdropdown = null;
                 Invalidate(true);
             }
         }
@@ -157,15 +161,15 @@ namespace ExtendedControls
 
             if ( count > 0)
             {
-                if ( _cbdropdown != null && (autocompletelastcount < count || autocompletelastcount > count+5))
+                if ( cbdropdown != null && (autocompletelastcount < count || autocompletelastcount > count+5))
                 {
-                    _cbdropdown.Close();
-                    _cbdropdown = null;
+                    cbdropdown.Close();
+                    cbdropdown = null;
                 }
 
-                if (_cbdropdown == null)
+                if (cbdropdown == null)
                 {
-                    _cbdropdown = new ExtListBoxForm("", false);
+                    cbdropdown = new ExtListBoxForm("", false);
 
                     int fittableitems = this.DropDownHeight / this.DropDownItemHeight;
 
@@ -177,62 +181,62 @@ namespace ExtendedControls
                     if (fittableitems > autocompletestrings.Count())                             // no point doing more than we have..
                         fittableitems = autocompletestrings.Count();
 
-                    _cbdropdown.Size = new Size(this.DropDownWidth > 0 ? this.DropDownWidth : this.Width, fittableitems * this.DropDownItemHeight + 4);
+                    cbdropdown.Size = new Size(this.DropDownWidth > 0 ? this.DropDownWidth : this.Width, fittableitems * this.DropDownItemHeight + 4);
 
-                    _cbdropdown.SelectionBackColor = this.DropDownBackgroundColor;
-                    _cbdropdown.ForeColor = this.ForeColor;
-                    _cbdropdown.BackColor = this.DropDownBorderColor;
-                    _cbdropdown.BorderColor = this.DropDownBorderColor;
-                    _cbdropdown.Items = autocompletestrings;
-                    _cbdropdown.ItemHeight = this.DropDownItemHeight;
-                    _cbdropdown.SelectedIndex = 0;
-                    _cbdropdown.FlatStyle = this.FlatStyle;
-                    _cbdropdown.Font = this.Font;
-                    _cbdropdown.ScrollBarColor = this.DropDownScrollBarColor;
-                    _cbdropdown.ScrollBarButtonColor = this.DropDownScrollBarButtonColor;
-                    _cbdropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
-                    _cbdropdown.Activated += _cbdropdown_DropDown;
-                    _cbdropdown.SelectedIndexChanged += _cbdropdown_SelectedIndexChanged;
+                    cbdropdown.SelectionBackColor = this.DropDownBackgroundColor;
+                    cbdropdown.ForeColor = this.ForeColor;
+                    cbdropdown.BackColor = this.DropDownBorderColor;
+                    cbdropdown.BorderColor = this.DropDownBorderColor;
+                    cbdropdown.Items = autocompletestrings;
+                    cbdropdown.ItemHeight = this.DropDownItemHeight;
+                    cbdropdown.SelectedIndex = 0;
+                    cbdropdown.FlatStyle = this.FlatStyle;
+                    cbdropdown.Font = this.Font;
+                    cbdropdown.ScrollBarColor = this.DropDownScrollBarColor;
+                    cbdropdown.ScrollBarButtonColor = this.DropDownScrollBarButtonColor;
+                    cbdropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
+                    cbdropdown.Activated += cbdropdown_DropDown;
+                    cbdropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
 
-                    _cbdropdown.Show(FindForm());
+                    cbdropdown.Show(FindForm());
                     Focus();                // Major change.. we now keep the focus at all times
                 }
                 else
                 {
-                    _cbdropdown.Items.Clear();
-                    _cbdropdown.Items = autocompletestrings;
-                    _cbdropdown.Refresh();
+                    cbdropdown.Items.Clear();
+                    cbdropdown.Items = autocompletestrings;
+                    cbdropdown.Refresh();
                 }
 
                 autocompletelastcount = count;
             }
             else
             {
-                if (_cbdropdown != null)
+                if (cbdropdown != null)
                 {
                     //System.Diagnostics.Debug.WriteLine("{0} Close prev", Environment.TickCount % 10000);
-                    _cbdropdown.Close();
-                    _cbdropdown = null;
+                    cbdropdown.Close();
+                    cbdropdown = null;
                 }
             }
         }
 
-        private void _cbdropdown_DropDown(object sender, EventArgs e)
+        private void cbdropdown_DropDown(object sender, EventArgs e)
         {
             Point location = this.PointToScreen(new Point(0, 0));
-            _cbdropdown.Location = new Point(location.X, location.Y + this.Height );
+            cbdropdown.Location = new Point(location.X, location.Y + this.Height );
             this.Invalidate(true);
         }
 
-        private void _cbdropdown_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbdropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedindex = _cbdropdown.SelectedIndex;
-            if (selectedindex >= 0 && selectedindex < _cbdropdown.Items.Count)
+            int selectedindex = cbdropdown.SelectedIndex;
+            if (selectedindex >= 0 && selectedindex < cbdropdown.Items.Count)
             {
-                this.Text = _cbdropdown.Items[selectedindex];
+                this.Text = cbdropdown.Items[selectedindex];
                 this.Select(this.Text.Length, this.Text.Length);
-                _cbdropdown.Close();
-                _cbdropdown = null;
+                cbdropdown.Close();
+                cbdropdown = null;
                 this.Invalidate(true);
                 Focus();
             }
@@ -241,10 +245,10 @@ namespace ExtendedControls
 
         private void AutoCompleteTextBox_Click(object sender, EventArgs e)
         {
-            if ( _cbdropdown != null )
+            if ( cbdropdown != null )
             {
-                _cbdropdown.Close();
-                _cbdropdown = null;
+                cbdropdown.Close();
+                cbdropdown = null;
             }
         }
 
@@ -254,17 +258,17 @@ namespace ExtendedControls
         {
             //System.Diagnostics.Debug.WriteLine("{0} Keypress {1}", Environment.TickCount % 10000 , e.KeyCode);
 
-            if (_cbdropdown != null)        // pass certain keys to the shown drop down
+            if (cbdropdown != null)        // pass certain keys to the shown drop down
             {
                 if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Up || e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
                 {
-                    _cbdropdown.KeyDownAction(e);
+                    cbdropdown.KeyDownAction(e);
                     e.Handled = true;
                 }
                 else if (e.KeyCode == Keys.Escape)
                 {
-                    _cbdropdown.Close();
-                    _cbdropdown = null;
+                    cbdropdown.Close();
+                    cbdropdown = null;
                 }
             }
         }

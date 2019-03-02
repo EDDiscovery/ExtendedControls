@@ -59,6 +59,25 @@ namespace ExtendedControls
 
         public Action<ExtTextBox> ReturnPressed;                              // fires if return pressed
 
+        public bool DropDownButton                                           // extra visual control added within the bounds of the textbox border..
+        {
+            get { return dropdownbuttonshown; }
+            set
+            {
+                if (value != dropdownbuttonshown)
+                {
+                    if (value)                                               // only add the control to the GUI load if its shown
+                        Controls.Add(dropdownbutton);
+                    else
+                        Controls.Remove(dropdownbutton);
+
+                    dropdownbuttonshown = value; Invalidate(); Update();
+                }
+            }
+        }
+
+        public Action<ExtTextBox> DropDownButtonClick = null;                              // if the button is pressed
+
         protected TextBox textbox;
         private Color bordercolor = Color.Transparent;
         private Color controlbackcolor = SystemColors.Control;
@@ -68,6 +87,9 @@ namespace ExtendedControls
 
         private char lastkey;               // records key presses
         private int keyspressed = 0;
+        private bool dropdownbuttonshown = false;
+
+        private ExtButton dropdownbutton;
 
         public ExtTextBox() : base()
         {
@@ -77,6 +99,13 @@ namespace ExtendedControls
             backerrorcolor = Color.Red;
             backnormalcolor = textbox.BackColor;
             inerrorcondition = false;
+
+            dropdownbutton = new ExtButton();                               // we only add it to controls list if shown.. to limit the load on the GUI
+            dropdownbutton.Image = Properties.Resources.ArrowDown;
+            dropdownbutton.Click += Dropdownbutton_Click;
+            dropdownbutton.MouseMove += Textbox_MouseMove;
+            dropdownbutton.MouseEnter += Textbox_MouseEnter;
+            dropdownbutton.MouseLeave += Textbox_MouseLeave;
 
             // Enter and Leave is handled by this wrapper control itself, since when we leave the textbox, we leave this
             textbox.Click += Textbox_Click;
@@ -111,9 +140,15 @@ namespace ExtendedControls
             if (ClientRectangle.Width > 0)
             {
                 int offset = OurBorder ? borderoffset : 0;
+                int butwidth = dropdownbuttonshown ? 16 : 0;
+
                 textbox.Location = new Point(offset, offset);
-                textbox.Size = new Size(ClientRectangle.Width - offset * 2, ClientRectangle.Height - offset * 2);
+                textbox.Size = new Size(ClientRectangle.Width - offset * 2 - butwidth, ClientRectangle.Height - offset * 2);
+
+                dropdownbutton.Location = new Point(ClientRectangle.Width - offset - butwidth, offset);
+                dropdownbutton.Size = new Size(butwidth, textbox.Height);
                 this.Height = textbox.Height + offset * 2;
+                
                 //System.Diagnostics.Debug.WriteLine("Repos " + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle);
             }
         }
@@ -121,7 +156,6 @@ namespace ExtendedControls
         protected override void OnLayout(LayoutEventArgs levent)
         {
             Reposition();
-
         }
 
         bool firstpaint = true;
@@ -377,6 +411,11 @@ namespace ExtendedControls
 
                 OnTextChanged(e);
             }
+        }
+
+        private void Dropdownbutton_Click(object sender, EventArgs e)
+        {
+            DropDownButtonClick?.Invoke(this);
         }
 
         #endregion
