@@ -23,8 +23,10 @@ namespace ExtendedControls
 {
     public class ExtTextBoxAutoComplete : ExtTextBox
     {
+        #region Public IF
+
         // programtic change of text does not make autocomplete execute.
-        public override string Text { get { return base.Text; } set { disableauto = true; base.Text = value; disableauto = false; } }
+        public override string Text { get { return base.Text; } set { tempdisableauto = true; base.Text = value; tempdisableauto = false; } }
 
         public int DropDownWidth { get; set; } = 0;     // means auto size
         public int DropDownHeight { get; set; } = 200;
@@ -36,19 +38,9 @@ namespace ExtendedControls
         public Color DropDownMouseOverBackgroundColor { get; set; } = Color.Red;
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 
-
-        private System.Windows.Forms.Timer waitforautotimer;
-        private bool inautocomplete = false;
-        private string autocompletestring;
-        private bool restartautocomplete = false;
-        private System.Threading.Thread ThreadAutoComplete;
-        private PerformAutoComplete func = null;
-        private List<string> autocompletestrings = null;
-        ExtListBoxForm cbdropdown;
-        int autocompletelastcount = 0;
-        private bool disableauto = false;
-
-        public delegate List<string> PerformAutoComplete(string input , ExtTextBoxAutoComplete t);
+        public delegate List<string> PerformAutoComplete(string input, ExtTextBoxAutoComplete t);
+        private PerformAutoComplete AutoCompleteFunction { get; set; } = null;
+        public void SetAutoCompletor(PerformAutoComplete p)  { AutoCompleteFunction = p; }  // older interface
 
         public ExtTextBoxAutoComplete() : base()
         {
@@ -61,36 +53,48 @@ namespace ExtendedControls
             this.Click += AutoCompleteTextBox_Click;
             this.KeyDown += AutoCompleteTextBox_KeyDown;
 
-            DropDownButtonClick = (s) =>                            // this is the default action if the user turns on the drop down button in text box
+            AuxButtonClick = (s) =>                            // this is the default action if the user turns on the drop down button in text box
             {
-                Text = "";
-                ForceAutoComplete("");
+                if ( cbdropdown == null )                           // if off, clear field and autocomplete nothing
+                {
+                    Text = "";
+                    AutoComplete("");
+                }
+                else
+                {
+                    CancelAutoComplete();                           // rollup
+                }
             };
         }
 
-        // Sometimes, the user is quicker than the timer, and has commited to a selection before the results even come back.
-        public void AbortAutoComplete()
+        public void AutoComplete(string autocomplete)           // call to autocomplete this
+        {
+            autocompletestring = autocomplete;
+            TimeOutTick(null, null);
+        }
+
+        public void CancelAutoComplete()        // Sometimes, the user is quicker than the timer, and has commited to a selection before the results even come back.
         {
             if (waitforautotimer.Enabled)
-            {
                 waitforautotimer.Stop();
-            }
-            else if (cbdropdown != null)
+
+            if (cbdropdown != null)
             {
                 cbdropdown.Close();
                 cbdropdown = null;
                 Invalidate(true);
             }
+
+            EndButtonImage = Properties.Resources.ArrowDown;
         }
 
-        public void SetAutoCompletor(PerformAutoComplete p)
-        {
-            func = p;
-        }
+        #endregion
+
+        #region Implementation
 
         private void AutoCompleteTextBox_HandleDestroyed(object sender, EventArgs e)
         {
-            if (func != null)
+            if (AutoCompleteFunction != null)
             {
                 waitforautotimer.Stop();
                 restartautocomplete = false;
@@ -105,9 +109,9 @@ namespace ExtendedControls
         private void TextChangeEventHandler(object sender, EventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine("{0} text change event", Environment.TickCount % 10000);
-            if (func != null && !disableauto)
+            if (AutoCompleteFunction != null && !tempdisableauto)
             {
-                if (!inautocomplete)
+                if (!executingautocomplete)
                 {
                     //System.Diagnostics.Debug.WriteLine("{0} Start timer", Environment.TickCount % 10000);
                     waitforautotimer.Stop();
@@ -123,16 +127,10 @@ namespace ExtendedControls
             }
         }
 
-        public void ForceAutoComplete(string autocomplete)
-        {
-            autocompletestring = autocomplete;
-            TimeOutTick(null, null);
-        }
-
         private void TimeOutTick(object sender, EventArgs e)
         {
             waitforautotimer.Stop();
-            inautocomplete = true;
+            executingautocomplete = true;
 
             ThreadAutoComplete = new System.Threading.Thread(new System.Threading.ThreadStart(AutoComplete));
             ThreadAutoComplete.Name = "AutoComplete";
@@ -145,7 +143,7 @@ namespace ExtendedControls
             {
                 //System.Diagnostics.Debug.WriteLine("{0} Begin AC", Environment.TickCount % 10000);
                 restartautocomplete = false;
-                autocompletestrings = func(string.Copy(autocompletestring), this);    // pass a copy, in case we change it out from under it
+                autocompletestrings = AutoCompleteFunction(string.Copy(autocompletestring), this);    // pass a copy, in case we change it out from under it
                 //System.Diagnostics.Debug.WriteLine("{0} finish func ret {1} restart {2}", Environment.TickCount % 10000, autocompletestrings.Count, restartautocomplete);
             } while (restartautocomplete == true);
 
@@ -155,14 +153,14 @@ namespace ExtendedControls
         private void AutoCompleteFinished()
         {
             //System.Diagnostics.Debug.WriteLine("{0} Show results {1}", Environment.TickCount % 10000, autocompletestrings.Count);
-            inautocomplete = false;
+            executingautocomplete = false;
 
             int count = autocompletestrings.Count;
 
             if ( count > 0)
             {
                 if ( cbdropdown != null && (autocompletelastcount < count || autocompletelastcount > count+5))
-                {
+                {                               // close if the counts are wildly different
                     cbdropdown.Close();
                     cbdropdown = null;
                 }
@@ -198,6 +196,7 @@ namespace ExtendedControls
                     cbdropdown.Activated += cbdropdown_DropDown;
                     cbdropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
 
+                    EndButtonImage = Properties.Resources.ArrowUp;
                     cbdropdown.Show(FindForm());
                     Focus();                // Major change.. we now keep the focus at all times
                 }
@@ -212,12 +211,7 @@ namespace ExtendedControls
             }
             else
             {
-                if (cbdropdown != null)
-                {
-                    //System.Diagnostics.Debug.WriteLine("{0} Close prev", Environment.TickCount % 10000);
-                    cbdropdown.Close();
-                    cbdropdown = null;
-                }
+                CancelAutoComplete();
             }
         }
 
@@ -235,21 +229,15 @@ namespace ExtendedControls
             {
                 this.Text = cbdropdown.Items[selectedindex];
                 this.Select(this.Text.Length, this.Text.Length);
-                cbdropdown.Close();
-                cbdropdown = null;
-                this.Invalidate(true);
+
+                CancelAutoComplete();
                 Focus();
             }
         }
 
-
-        private void AutoCompleteTextBox_Click(object sender, EventArgs e)
+        private void AutoCompleteTextBox_Click(object sender, EventArgs e)      // clicking on the text box cancels autocomplete
         {
-            if ( cbdropdown != null )
-            {
-                cbdropdown.Close();
-                cbdropdown = null;
-            }
+            CancelAutoComplete();
         }
 
         // keys when WE have to focus, which we do all the time now, some need passing onto the control.
@@ -267,13 +255,26 @@ namespace ExtendedControls
                 }
                 else if (e.KeyCode == Keys.Escape)
                 {
-                    cbdropdown.Close();
-                    cbdropdown = null;
+                    CancelAutoComplete();
                 }
             }
         }
 
+        #endregion
 
+        #region Internal Vars
+
+        private System.Windows.Forms.Timer waitforautotimer;
+        private bool executingautocomplete = false;
+        private string autocompletestring;
+        private bool restartautocomplete = false;
+        private System.Threading.Thread ThreadAutoComplete;
+        private List<string> autocompletestrings = null;
+        ExtListBoxForm cbdropdown;
+        int autocompletelastcount = 0;
+        private bool tempdisableauto = false;
+
+        #endregion
     }
 
 }

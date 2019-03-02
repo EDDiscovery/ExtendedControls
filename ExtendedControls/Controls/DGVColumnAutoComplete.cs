@@ -79,7 +79,7 @@ namespace ExtendedControls
         /// </summary>
         private class CellDisplayControl : DataGridViewTextBoxCell
         {
-            private CellEditControl _ctl;
+            private CellEditControl celleditcontrol;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="CellDisplayControl"/> class.
@@ -112,10 +112,10 @@ namespace ExtendedControls
                 base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
                 if (DataGridView.EditingControl != null)    // This should not be needed, but just in case...
                 {
-                    _ctl = DataGridView.EditingControl as CellEditControl;
-                    _ctl.Text = (string)(Value ?? DefaultNewRowValue);
+                    celleditcontrol = DataGridView.EditingControl as CellEditControl;
+                    celleditcontrol.Text = (string)(Value ?? DefaultNewRowValue);
                     if (OwningColumn != null && ((ExtDataGridViewColumnAutoComplete)OwningColumn).AutoCompleteGenerator != null)
-                        _ctl.SetAutoCompletor((OwningColumn as ExtDataGridViewColumnAutoComplete).AutoCompleteGenerator);
+                        celleditcontrol.SetAutoCompletor((OwningColumn as ExtDataGridViewColumnAutoComplete).AutoCompleteGenerator);
                 }
             }
 
@@ -129,8 +129,8 @@ namespace ExtendedControls
             {
                 // The user can commit to a selection before AC can even generate results. If so, we need to
                 // abort it, otherwise the popup appears at a random location, and it is unbound from this DGV.
-                if (_ctl != null)
-                    _ctl.AbortAutoComplete();
+                if (celleditcontrol != null)
+                    celleditcontrol.CancelAutoComplete();
                 base.DetachEditingControl();
             }
         }

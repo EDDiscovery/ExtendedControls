@@ -14,10 +14,16 @@ namespace DialogTest
     public partial class TestAutoComplete : Form
     {
         static List<string> list = new List<string>();
+        ThemeStandard theme;
 
         public TestAutoComplete()
         {
             InitializeComponent();
+            theme = new ThemeStandard();
+            theme.LoadBaseThemes();
+            theme.SetThemeByName("Elite Verdana");
+            theme.WindowsFrame = true;
+            ExtendedControls.ThemeableFormsInstance.Instance = theme;
 
             list.Add("one");
             list.Add("only");
@@ -39,6 +45,8 @@ namespace DialogTest
             autoCompleteTextBox2.KeyUp += AutoCompleteTextBox2_KeyUp;
 
             comboBoxCustom1.Items.AddRange(list);
+
+            theme.ApplyToForm(this);
         }
 
         private void AutoCompleteTextBox2_KeyUp(object sender, KeyEventArgs e)

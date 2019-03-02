@@ -513,7 +513,7 @@
             this.numberBoxLong1.ClearOnFirstChar = false;
             this.numberBoxLong1.ControlBackground = System.Drawing.SystemColors.Control;
             this.numberBoxLong1.DelayBeforeNotification = 0;
-            this.numberBoxLong1.DropDownButton = false;
+            this.numberBoxLong1.EndButton = false;
             this.numberBoxLong1.Format = "D";
             this.numberBoxLong1.InErrorCondition = false;
             this.numberBoxLong1.Location = new System.Drawing.Point(977, 44);
@@ -543,7 +543,7 @@
             this.numberBoxLong0.ClearOnFirstChar = false;
             this.numberBoxLong0.ControlBackground = System.Drawing.SystemColors.Control;
             this.numberBoxLong0.DelayBeforeNotification = 0;
-            this.numberBoxLong0.DropDownButton = false;
+            this.numberBoxLong0.EndButton = false;
             this.numberBoxLong0.Format = "D";
             this.numberBoxLong0.InErrorCondition = false;
             this.numberBoxLong0.Location = new System.Drawing.Point(977, 23);
@@ -573,7 +573,7 @@
             this.textBoxDouble2.ClearOnFirstChar = false;
             this.textBoxDouble2.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxDouble2.DelayBeforeNotification = 1000;
-            this.textBoxDouble2.DropDownButton = false;
+            this.textBoxDouble2.EndButton = false;
             this.textBoxDouble2.Format = "0.###";
             this.textBoxDouble2.InErrorCondition = false;
             this.textBoxDouble2.Location = new System.Drawing.Point(977, 96);
@@ -602,7 +602,7 @@
             this.textBoxDouble1.ClearOnFirstChar = false;
             this.textBoxDouble1.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxDouble1.DelayBeforeNotification = 1000;
-            this.textBoxDouble1.DropDownButton = false;
+            this.textBoxDouble1.EndButton = false;
             this.textBoxDouble1.Format = "0.###";
             this.textBoxDouble1.InErrorCondition = false;
             this.textBoxDouble1.Location = new System.Drawing.Point(977, 70);
@@ -745,7 +745,7 @@
             this.autoCompleteTextBox2.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox2.DropDownBorderColor = System.Drawing.Color.Green;
-            this.autoCompleteTextBox2.DropDownButton = false;
+            this.autoCompleteTextBox2.EndButton = false;
             this.autoCompleteTextBox2.DropDownHeight = 80;
             this.autoCompleteTextBox2.DropDownItemHeight = 20;
             this.autoCompleteTextBox2.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
@@ -778,7 +778,7 @@
             this.autoCompleteTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.autoCompleteTextBox1.DropDownButton = false;
+            this.autoCompleteTextBox1.EndButton = false;
             this.autoCompleteTextBox1.DropDownHeight = 80;
             this.autoCompleteTextBox1.DropDownItemHeight = 20;
             this.autoCompleteTextBox1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
@@ -1263,7 +1263,7 @@
             this.textBoxBorder1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorder1.ClearOnFirstChar = false;
             this.textBoxBorder1.ControlBackground = System.Drawing.SystemColors.Control;
-            this.textBoxBorder1.DropDownButton = false;
+            this.textBoxBorder1.EndButton = false;
             this.textBoxBorder1.InErrorCondition = false;
             this.textBoxBorder1.Location = new System.Drawing.Point(18, 305);
             this.textBoxBorder1.Multiline = false;

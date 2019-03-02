@@ -23,6 +23,7 @@ namespace DialogTest
             theme = new ThemeStandard();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
+            theme.WindowsFrame = true;
             ExtendedControls.ThemeableFormsInstance.Instance = theme;
         }
 

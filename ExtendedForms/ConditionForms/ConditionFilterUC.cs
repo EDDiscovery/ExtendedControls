@@ -334,7 +334,7 @@ namespace ExtendedConditionsForms
             Group.Conditions c = new Group.Conditions();
 
             c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
-            c.fname.DropDownButton = true;
+            c.fname.EndButton = true;
             c.fname.Size = new Size(LeftSizeConditionWidth, 32);
             c.fname.SetAutoCompletor(AutoCompletor);
             c.fname.Tag = g;

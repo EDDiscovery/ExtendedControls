@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestAutoComplete));
             this.autoCompleteTextBox1 = new ExtendedControls.ExtTextBoxAutoComplete();
             this.comboBoxCustom1 = new ExtendedControls.ExtComboBox();
             this.autoCompleteTextBox2 = new ExtendedControls.ExtTextBoxAutoComplete();
@@ -40,12 +41,16 @@
             // 
             this.autoCompleteTextBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.autoCompleteTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.autoCompleteTextBox1.BackErrorColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox1.BorderColor = System.Drawing.Color.Transparent;
             this.autoCompleteTextBox1.BorderColorScaling = 0.5F;
             this.autoCompleteTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.autoCompleteTextBox1.ClearOnFirstChar = false;
             this.autoCompleteTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
+            this.autoCompleteTextBox1.EndButton = true;
+            this.autoCompleteTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox1.DropDownButtonImage")));
             this.autoCompleteTextBox1.DropDownHeight = 200;
             this.autoCompleteTextBox1.DropDownItemHeight = 20;
             this.autoCompleteTextBox1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
@@ -53,6 +58,7 @@
             this.autoCompleteTextBox1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox1.DropDownWidth = 0;
             this.autoCompleteTextBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.autoCompleteTextBox1.InErrorCondition = false;
             this.autoCompleteTextBox1.Location = new System.Drawing.Point(40, 37);
             this.autoCompleteTextBox1.Multiline = false;
             this.autoCompleteTextBox1.Name = "autoCompleteTextBox1";
@@ -71,6 +77,7 @@
             this.comboBoxCustom1.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustom1.ButtonColorScaling = 0.5F;
             this.comboBoxCustom1.DataSource = null;
+            this.comboBoxCustom1.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustom1.DisplayMember = "";
             this.comboBoxCustom1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustom1.DropDownHeight = 106;
@@ -89,18 +96,23 @@
             this.comboBoxCustom1.Size = new System.Drawing.Size(355, 21);
             this.comboBoxCustom1.TabIndex = 1;
             this.comboBoxCustom1.Text = "comboBoxCustom1";
+            this.comboBoxCustom1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustom1.ValueMember = "";
             // 
             // autoCompleteTextBox2
             // 
             this.autoCompleteTextBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.autoCompleteTextBox2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.autoCompleteTextBox2.BackErrorColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox2.BorderColor = System.Drawing.Color.Transparent;
             this.autoCompleteTextBox2.BorderColorScaling = 0.5F;
             this.autoCompleteTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.autoCompleteTextBox2.ClearOnFirstChar = false;
             this.autoCompleteTextBox2.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox2.DropDownBorderColor = System.Drawing.Color.Green;
+            this.autoCompleteTextBox2.EndButton = false;
+            this.autoCompleteTextBox2.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox2.DropDownButtonImage")));
             this.autoCompleteTextBox2.DropDownHeight = 200;
             this.autoCompleteTextBox2.DropDownItemHeight = 20;
             this.autoCompleteTextBox2.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
@@ -108,6 +120,7 @@
             this.autoCompleteTextBox2.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox2.DropDownWidth = 0;
             this.autoCompleteTextBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.autoCompleteTextBox2.InErrorCondition = false;
             this.autoCompleteTextBox2.Location = new System.Drawing.Point(40, 87);
             this.autoCompleteTextBox2.Multiline = false;
             this.autoCompleteTextBox2.Name = "autoCompleteTextBox2";
@@ -124,10 +137,15 @@
             // 
             this.textBoxBorder1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.textBoxBorder1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorder1.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorder1.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorder1.BorderColorScaling = 0.5F;
             this.textBoxBorder1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorder1.ClearOnFirstChar = false;
             this.textBoxBorder1.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorder1.EndButton = false;
+            this.textBoxBorder1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorder1.DropDownButtonImage")));
+            this.textBoxBorder1.InErrorCondition = false;
             this.textBoxBorder1.Location = new System.Drawing.Point(40, 222);
             this.textBoxBorder1.Multiline = false;
             this.textBoxBorder1.Name = "textBoxBorder1";

@@ -23,6 +23,8 @@ namespace ExtendedControls
 {
     public class ExtTextBox : Control
     {
+        #region Public interface
+
         // BorderColour != transparent to use ours
         // BorderStyle to set textbox style..  None for off.  Can use both if you wish 
 
@@ -59,39 +61,28 @@ namespace ExtendedControls
 
         public Action<ExtTextBox> ReturnPressed;                              // fires if return pressed
 
-        public bool DropDownButton                                           // extra visual control added within the bounds of the textbox border..
+        public bool EndButton                                               // extra visual control added within the bounds of the textbox border at end
         {
-            get { return dropdownbuttonshown; }
+            get { return endbuttonshown; }
             set
             {
-                if (value != dropdownbuttonshown)
+                if (value != endbuttonshown)
                 {
                     if (value)                                               // only add the control to the GUI load if its shown
-                        Controls.Add(dropdownbutton);
+                        Controls.Add(endbutton);
                     else
-                        Controls.Remove(dropdownbutton);
+                        Controls.Remove(endbutton);
 
-                    dropdownbuttonshown = value; Invalidate(); Update();
+                    endbuttonshown = value;
+                    Invalidate();
+                    Update();
                 }
             }
         }
 
-        public Image DropDownButtonImage { get { return dropdownbutton.Image; } set { dropdownbutton.Image = value; } }     // if you want something else.. keep it small
+        public Image EndButtonImage { get { return endbutton.Image; } set { endbutton.Image = value; } }     // if you want something else.. keep it small
 
-        public Action<ExtTextBox> DropDownButtonClick = null;                              // if the button is pressed
-
-        protected TextBox textbox;
-        private Color bordercolor = Color.Transparent;
-        private Color controlbackcolor = SystemColors.Control;
-        private Color backnormalcolor;        // normal back colour..
-        private Color backerrorcolor;        // error back colour..
-        private bool inerrorcondition;          // if in error condition
-
-        private char lastkey;               // records key presses
-        private int keyspressed = 0;
-        private bool dropdownbuttonshown = false;
-
-        private ExtButton dropdownbutton;
+        public Action<ExtTextBox> AuxButtonClick = null;                              // if the button is pressed
 
         public ExtTextBox() : base()
         {
@@ -102,12 +93,12 @@ namespace ExtendedControls
             backnormalcolor = textbox.BackColor;
             inerrorcondition = false;
 
-            dropdownbutton = new ExtButton();                               // we only add it to controls list if shown.. to limit the load on the GUI
-            dropdownbutton.Image = Properties.Resources.ArrowDown;
-            dropdownbutton.Click += Dropdownbutton_Click;
-            dropdownbutton.MouseMove += Textbox_MouseMove;
-            dropdownbutton.MouseEnter += Textbox_MouseEnter;
-            dropdownbutton.MouseLeave += Textbox_MouseLeave;
+            endbutton = new ExtButton();                               // we only add it to controls list if shown.. to limit the load on the GUI
+            endbutton.Image = Properties.Resources.ArrowDown;
+            endbutton.Click += Dropdownbutton_Click;
+            endbutton.MouseMove += Textbox_MouseMove;
+            endbutton.MouseEnter += Textbox_MouseEnter;
+            endbutton.MouseLeave += Textbox_MouseLeave;
 
             // Enter and Leave is handled by this wrapper control itself, since when we leave the textbox, we leave this
             textbox.Click += Textbox_Click;
@@ -128,6 +119,10 @@ namespace ExtendedControls
             Controls.Add(textbox);
         }
 
+        #endregion
+
+        #region Implementation
+
         private void TextBoxBorder_GotFocus(object sender, EventArgs e)
         {
             textbox.Focus();
@@ -142,13 +137,13 @@ namespace ExtendedControls
             if (ClientRectangle.Width > 0)
             {
                 int offset = OurBorder ? borderoffset : 0;
-                int butwidth = dropdownbuttonshown ? 16 : 0;
+                int butwidth = endbuttonshown ? 16 : 0;
 
                 textbox.Location = new Point(offset, offset);
                 textbox.Size = new Size(ClientRectangle.Width - offset * 2 - butwidth, ClientRectangle.Height - offset * 2);
 
-                dropdownbutton.Location = new Point(ClientRectangle.Width - offset - butwidth, offset);
-                dropdownbutton.Size = new Size(butwidth, Math.Min(textbox.Height,16));
+                endbutton.Location = new Point(ClientRectangle.Width - offset - butwidth, offset);
+                endbutton.Size = new Size(butwidth, Math.Min(textbox.Height,16));
                 this.Height = textbox.Height + offset * 2;
                 
               //  System.Diagnostics.Debug.WriteLine("Repos " + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle + " dd " + dropdownbutton.Size);
@@ -199,52 +194,7 @@ namespace ExtendedControls
             }
         }
 
-        public void NumericKeyPressHandler(KeyPressEventArgs e)     // given a keypress, validate it for number format..
-        {
-            const char vbBack = '\u0008';
-
-            System.Globalization.NumberFormatInfo numberFormatInfo = System.Globalization.CultureInfo.CurrentCulture.NumberFormat;
-            string decimalSeparator = numberFormatInfo.NumberDecimalSeparator;
-            string groupSeparator = numberFormatInfo.NumberGroupSeparator;
-            string negativeSign = numberFormatInfo.NegativeSign;
-
-            string keyInput = e.KeyChar.ToString();
-
-            ExtTextBox tempBox = this;
-
-            if (Char.IsDigit(e.KeyChar))
-            {
-                if (tempBox.Text.Length != 0)
-                {
-                    if (tempBox.SelectionStart == 0 && (tempBox.Text[0].ToString()) == negativeSign && tempBox.SelectionLength == 0)
-                        e.Handled = true;
-                }
-            }
-            else if (keyInput.Equals(negativeSign))
-            {
-                if (tempBox.SelectionStart != 0 || (tempBox.Text.Contains(negativeSign) && !tempBox.SelectedText.Contains(negativeSign)))
-                    e.Handled = true;
-            }
-            else if (keyInput.Equals(decimalSeparator))
-            {
-                if (tempBox.Text.Length != 0)
-                {
-                    if (tempBox.SelectionStart == 0 && (tempBox.Text[0].ToString()) == negativeSign && !tempBox.SelectedText.Contains(negativeSign) || tempBox.Text.Contains(decimalSeparator) && !tempBox.SelectedText.Contains(decimalSeparator))
-                        e.Handled = true;
-
-                }
-                // Decimal separator is OK
-            }
-            else if (e.KeyChar == vbBack)
-            {
-                // Backspace key is OK
-            }
-            else
-            {
-                // Consume this invalid key and beep.
-                e.Handled = true;
-            }
-        }
+        #endregion
 
         #region Supported Events
 
@@ -417,8 +367,25 @@ namespace ExtendedControls
 
         private void Dropdownbutton_Click(object sender, EventArgs e)
         {
-            DropDownButtonClick?.Invoke(this);
+            AuxButtonClick?.Invoke(this);
         }
+
+        #endregion
+
+        #region Variables
+
+        protected TextBox textbox;
+        private Color bordercolor = Color.Transparent;
+        private Color controlbackcolor = SystemColors.Control;
+        private Color backnormalcolor;        // normal back colour..
+        private Color backerrorcolor;        // error back colour..
+        private bool inerrorcondition;          // if in error condition
+
+        private char lastkey;               // records key presses
+        private int keyspressed = 0;
+        private bool endbuttonshown = false;
+
+        private ExtButton endbutton;
 
         #endregion
 
