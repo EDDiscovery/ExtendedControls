@@ -294,7 +294,7 @@ namespace ExtendedControls
                 Rectangle buttonarea = ClientRectangle;
                 buttonarea.Inflate(-1, -1);                     // inside it.
 
-               // System.Diagnostics.Debug.WriteLine("Paint " + this.Name + " " + ClientRectangle +" " + border + " " + buttonarea + " c " + BackColor + " " + FlatAppearance.BorderColor);
+                //System.Diagnostics.Debug.WriteLine("ButPaint " + this.Name + " " + ClientRectangle +" " + border + " " + buttonarea + " c " + BackColor + " " + FlatAppearance.BorderColor + " E:" + Enabled + " D:" + ButtonDisabledScaling);
 
                 Color colBack = Color.Empty;
                 Color colBorder = Color.Empty;
@@ -359,7 +359,7 @@ namespace ExtendedControls
                 if (!string.IsNullOrEmpty(Text))
                 {
                     using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(RtlTranslateAlignment(TextAlign)))
-                    using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(0.5F)))
+                    using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(ButtonDisabledScaling)))
                     {
                         if (this.UseMnemonic)
                             fmt.HotkeyPrefix = this.ShowKeyboardCues ? HotkeyPrefix.Show : HotkeyPrefix.Hide;

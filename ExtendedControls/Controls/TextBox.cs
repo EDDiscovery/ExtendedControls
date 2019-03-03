@@ -82,7 +82,9 @@ namespace ExtendedControls
 
         public Image EndButtonImage { get { return endbutton.Image; } set { endbutton.Image = value; } }     // if you want something else.. keep it small
 
-        public Action<ExtTextBox> AuxButtonClick = null;                              // if the button is pressed
+        public Action<ExtTextBox> EndButtonClick = null;                              // if the button is pressed
+        public bool EndButtonEnable { get { return endbutton.Enabled; } set { endbutton.Enabled = value; this.Invalidate(true); Update(); System.Diagnostics.Debug.WriteLine("EB " + value); } }
+
 
         public ExtTextBox() : base()
         {
@@ -94,6 +96,7 @@ namespace ExtendedControls
             inerrorcondition = false;
 
             endbutton = new ExtButton();                               // we only add it to controls list if shown.. to limit the load on the GUI
+            endbutton.Name = "EB";
             endbutton.Image = Properties.Resources.ArrowDown;
             endbutton.Click += Dropdownbutton_Click;
             endbutton.MouseMove += Textbox_MouseMove;
@@ -102,6 +105,7 @@ namespace ExtendedControls
 
             // Enter and Leave is handled by this wrapper control itself, since when we leave the textbox, we leave this
             textbox.Click += Textbox_Click;
+            textbox.Name = "TB";
             textbox.DoubleClick += Textbox_DoubleClick;
             textbox.KeyUp += Textbox_KeyUp;
             textbox.KeyDown += Textbox_KeyDown;
@@ -367,7 +371,7 @@ namespace ExtendedControls
 
         private void Dropdownbutton_Click(object sender, EventArgs e)
         {
-            AuxButtonClick?.Invoke(this);
+            EndButtonClick?.Invoke(this);
         }
 
         #endregion

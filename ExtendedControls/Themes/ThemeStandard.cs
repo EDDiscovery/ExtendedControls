@@ -561,6 +561,9 @@ namespace ExtendedControls
                 }
                 else
                 {
+                    ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
+                    //TBD check with EDD - why did we do the 1.0f
+
                     if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
                     {
                         System.Drawing.Imaging.ColorMap colormap1 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
@@ -576,15 +579,15 @@ namespace ExtendedControls
                         ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap1, colormap2 });     // used ButtonDisabledScaling note!
                     }
 
-                    if (ctrl.Image != null && ctrl.Text.Length == 0)        // if no text, background is solid form to make the back disappear
+                    if (ctrl.Image != null && ctrl.Text.Length == 0)        // if no text, just image, background is form to make the back disappear
                     {
                         ctrl.BackColor = currentsettings.colors[Settings.CI.form];
-                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
+//                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
                     }
                     else
                     {
                         ctrl.BackColor = currentsettings.colors[Settings.CI.button_back];       // else its a graduated back
-                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
+//                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
                     }
 
                     ctrl.FlatAppearance.BorderColor = (ctrl.Image != null) ? currentsettings.colors[Settings.CI.form] : currentsettings.colors[Settings.CI.button_border];

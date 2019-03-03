@@ -27,7 +27,8 @@ namespace ExtendedConditionsForms
     {
         public ConditionLists Result { get { return conditionFilterUC.Result; } }
 
-        string initialtitle;
+        public event Func<string, List<ConditionFilterUC.VariableName>> VariableNamesEvents { add { conditionFilterUC.VariableNamesEvents += value; } remove { conditionFilterUC.VariableNamesEvents -= value; } }
+        public List<ConditionFilterUC.VariableName> VariableNames { get { return conditionFilterUC.VariableNames; } set { conditionFilterUC.VariableNames = value; } }
 
         public ConditionFilterForm()
         {
@@ -36,26 +37,26 @@ namespace ExtendedConditionsForms
 
         // used to start when just filtering.. uses a fixed event list .. must provide a call back to obtain names associated with an event
 
-        public void InitFilter(string t, Icon ic, List<string> events, ConditionFilterUC.AdditionalNames a, List<string> varfields,  ConditionLists j = null, ConditionFilterUC.NameHelp n = null)
+        public void InitFilter(string t, Icon ic, List<string> events, ConditionLists j = null)
         {
             InitThis(t, ic);
-            conditionFilterUC.InitFilter(events, a, varfields, j, n);
+            conditionFilterUC.InitFilter(events, j);
         }
 
         // used to start when inside a condition of an IF of a program action (does not need additional names, already resolved)
 
-        public void InitCondition(string t, Icon ic, List<string> varfields, ConditionLists j = null, ConditionFilterUC.NameHelp n = null)
+        public void InitCondition(string t, Icon ic, ConditionLists jl = null)
         {
             InitThis(t, ic);
-            conditionFilterUC.InitConditionList(varfields,j, n);
+            conditionFilterUC.InitConditionList(jl);
         }
 
         // used to start for a condition on an action form (does not need additional names, already resolved)
 
-        public void InitCondition(string t, Icon ic, List<string> varfields, Condition j, ConditionFilterUC.NameHelp n = null)
+        public void InitCondition(string t, Icon ic, Condition j)
         {
             InitThis(t, ic);
-            conditionFilterUC.InitCondition(varfields, j, n);
+            conditionFilterUC.InitCondition(j);
         }
 
         // This start
@@ -147,6 +148,8 @@ namespace ExtendedConditionsForms
         {
             Close();
         }
+
+        private string initialtitle;
 
     }
 }

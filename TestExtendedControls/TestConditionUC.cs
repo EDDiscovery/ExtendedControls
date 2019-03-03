@@ -32,13 +32,22 @@ namespace DialogTest
         private void buttonEvents(object sender, EventArgs e)
         {
             ConditionFilterForm frm = new ConditionFilterForm();
-            List<string> events = new List<string>() { "eone", "etwo" };
-            List<string> varfields = new List<string>() { "vone", "vtwo" };
+            frm.VariableNamesEvents += (evname) => 
+                {
+                    List<ConditionFilterUC.VariableName> list = new List<ConditionFilterUC.VariableName>();
+                    list.Add(new ConditionFilterUC.VariableName("one:" + evname, "help on one"));
+                    list.Add(new ConditionFilterUC.VariableName("two:" + evname, "help on two"));
+                    return list;
+                };
 
-            frm.InitFilter("Name", this.Icon, events, null, varfields, eventscond, (ev, txt) =>
-            {
-                return "Help on " + ev + ":" + txt;
-            });
+            frm.VariableNames = new List<ConditionFilterUC.VariableName>();
+            frm.VariableNames.Add(new ConditionFilterUC.VariableName("defone", "String", ConditionEntry.MatchType.Contains));
+            frm.VariableNames.Add(new ConditionFilterUC.VariableName("deftwo", "Number", ConditionEntry.MatchType.NumericEquals));
+            frm.VariableNames.Add(new ConditionFilterUC.VariableName("defthree", "help!"));
+
+            List<string> events = new List<string>() { "eone", "etwo" };
+
+            frm.InitFilter("Name", this.Icon, events);
 
             theme.ApplyToForm(frm);
 
@@ -49,24 +58,16 @@ namespace DialogTest
         private void buttonCondition(object sender, EventArgs e)
         {
             ConditionFilterForm frm = new ConditionFilterForm();
-            List<string> varfields = new List<string>() { "vone", "vtwo" , "xone", "xtwo" };
-            varfields.AddRange(varfields);
-            varfields.AddRange(varfields);
-            varfields.AddRange(varfields);
-            varfields.AddRange(varfields);
-            varfields.AddRange(varfields);
-            varfields.AddRange(varfields);
-            List<string> varfieldshelp = new List<string>() { "Help for vone\nThis is it", "Help for vtwo\nThis is it", "Help for xone" , "helo for xtwo" };
 
-            List<ConditionEntry> ces = new List<ConditionEntry>() { new ConditionEntry("Fred", ConditionEntry.MatchType.Contains, "Jim") };
+            List<ConditionEntry> ces = new List<ConditionEntry>() { new ConditionEntry("Fred", ConditionEntry.MatchType.NumericGreaterEqual, "20") };
 
             Condition conds = new Condition("", "", "", ces);
 
-            frm.InitCondition("Name", this.Icon, varfields, conds, (ev, txt) => 
-                    {
-                        int indexof = varfields.IndexOf(txt);
-                        return indexof >= 0 && indexof < varfieldshelp.Count ? varfieldshelp[indexof] : null;
-                    });
+            frm.VariableNames = new List<ConditionFilterUC.VariableName>();
+            frm.VariableNames.Add(new ConditionFilterUC.VariableName("defone", "String", ConditionEntry.MatchType.Contains));
+            frm.VariableNames.Add(new ConditionFilterUC.VariableName("deftwo", "Number", ConditionEntry.MatchType.NumericEquals));
+
+            frm.InitCondition("Name", this.Icon, conds);
 
             theme.ApplyToForm(frm);
             if (frm.ShowDialog() == DialogResult.OK)
@@ -82,9 +83,8 @@ namespace DialogTest
         private void buttonExt3_Click(object sender, EventArgs e)
         {
             ConditionFilterForm frm = new ConditionFilterForm();
-            List<string> varfields = new List<string>() { "vone", "vtwo" };
 
-            frm.InitCondition("Name", this.Icon, varfields, clist2);
+            frm.InitCondition("Name", this.Icon, clist2);
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 clist2 = frm.Result;

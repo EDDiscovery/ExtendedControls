@@ -38,9 +38,11 @@ namespace ExtendedControls
         public Color DropDownMouseOverBackgroundColor { get; set; } = Color.Red;
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 
+        // use EndButtonEnable to turn on autocompleter button
+
         public delegate List<string> PerformAutoComplete(string input, ExtTextBoxAutoComplete t);
-        private PerformAutoComplete AutoCompleteFunction { get; set; } = null;
-        public void SetAutoCompletor(PerformAutoComplete p)  { AutoCompleteFunction = p; }  // older interface
+        private PerformAutoComplete AutoCompleteFunction { get { return autoCompleteFunction; } set { autoCompleteFunction = value; EndButtonEnable = value != null; } }
+        public void SetAutoCompletor(PerformAutoComplete p) { AutoCompleteFunction = p; }  // older interface
 
         public ExtTextBoxAutoComplete() : base()
         {
@@ -53,7 +55,9 @@ namespace ExtendedControls
             this.Click += AutoCompleteTextBox_Click;
             this.KeyDown += AutoCompleteTextBox_KeyDown;
 
-            AuxButtonClick = (s) =>                            // this is the default action if the user turns on the drop down button in text box
+            EndButtonEnable = false;
+
+            EndButtonClick = (s) =>                            // this is the default action if the user turns on the drop down button in text box
             {
                 if ( cbdropdown == null )                           // if off, clear field and autocomplete nothing
                 {
@@ -94,7 +98,7 @@ namespace ExtendedControls
 
         private void AutoCompleteTextBox_HandleDestroyed(object sender, EventArgs e)
         {
-            if (AutoCompleteFunction != null)
+            if (autoCompleteFunction != null)
             {
                 waitforautotimer.Stop();
                 restartautocomplete = false;
@@ -109,7 +113,7 @@ namespace ExtendedControls
         private void TextChangeEventHandler(object sender, EventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine("{0} text change event", Environment.TickCount % 10000);
-            if (AutoCompleteFunction != null && !tempdisableauto)
+            if (autoCompleteFunction != null && !tempdisableauto)
             {
                 if (!executingautocomplete)
                 {
@@ -143,7 +147,7 @@ namespace ExtendedControls
             {
                 //System.Diagnostics.Debug.WriteLine("{0} Begin AC", Environment.TickCount % 10000);
                 restartautocomplete = false;
-                autocompletestrings = AutoCompleteFunction(string.Copy(autocompletestring), this);    // pass a copy, in case we change it out from under it
+                autocompletestrings = autoCompleteFunction(string.Copy(autocompletestring), this);    // pass a copy, in case we change it out from under it
                 //System.Diagnostics.Debug.WriteLine("{0} finish func ret {1} restart {2}", Environment.TickCount % 10000, autocompletestrings.Count, restartautocomplete);
             } while (restartautocomplete == true);
 
@@ -273,6 +277,7 @@ namespace ExtendedControls
         ExtListBoxForm cbdropdown;
         int autocompletelastcount = 0;
         private bool tempdisableauto = false;
+        private PerformAutoComplete autoCompleteFunction = null;
 
         #endregion
     }
