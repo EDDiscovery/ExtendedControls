@@ -43,7 +43,8 @@ namespace ExtendedControls
         public delegate List<string> PerformAutoComplete(string input, ExtTextBoxAutoComplete t);
         private PerformAutoComplete AutoCompleteFunction { get { return autoCompleteFunction; } set { autoCompleteFunction = value; EndButtonEnable = value != null; } }
         public void SetAutoCompletor(PerformAutoComplete p) { AutoCompleteFunction = p; }  // older interface
-        public void SetAutoCompletor(PerformAutoComplete p, bool endbuttonvisible ) { AutoCompleteFunction = p; EndButtonVisible = endbuttonvisible; } 
+        public void SetAutoCompletor(PerformAutoComplete p, bool endbuttonvisible ) { AutoCompleteFunction = p; EndButtonVisible = endbuttonvisible; }
+        public string AutoCompleteCommentMarker { get; set; } = null;       // text after this is comments not autocomplete text
 
         public ExtTextBoxAutoComplete() : base()
         {
@@ -232,7 +233,16 @@ namespace ExtendedControls
             int selectedindex = cbdropdown.SelectedIndex;
             if (selectedindex >= 0 && selectedindex < cbdropdown.Items.Count)
             {
-                this.Text = cbdropdown.Items[selectedindex];
+                string txt = cbdropdown.Items[selectedindex];
+
+                if ( AutoCompleteCommentMarker != null )        // comment marker removes text after it
+                {
+                    int index = txt.IndexOf(AutoCompleteCommentMarker);
+                    if (index >= 0)
+                        txt = txt.Left(index).TrimEnd();
+                }
+
+                this.Text = txt;
                 this.Select(this.Text.Length, this.Text.Length);
 
                 CancelAutoComplete();

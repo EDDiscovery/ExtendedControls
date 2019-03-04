@@ -305,6 +305,7 @@ namespace ExtendedConditionsForms
             c.fname.Tag = new Tuple<Group,Group.Conditions>(g,c);
             c.fname.DropDownWidth = LeftSizeConditionWidth*3/2;
             c.fname.DropDownHeight = DropDownHeight;
+            c.fname.AutoCompleteCommentMarker = commentmarker;
             if (initialfname != null)
                 c.fname.Text = initialfname;
             g.panel.Controls.Add(c.fname);                                                // 1st control
@@ -647,7 +648,7 @@ namespace ExtendedConditionsForms
                 foreach (var x in gc.Item1.variables)
                 {
                     if (x.Name.StartsWith(s, StringComparison.InvariantCultureIgnoreCase))
-                        ret.Add(x.Name);
+                        ret.Add(x.Name + (x.Comment != null ? (" " + commentmarker + " "+ x.Comment) : ""));
                 }
             }
 
@@ -708,6 +709,8 @@ namespace ExtendedConditionsForms
         private const int panelxmargin = 3;
         private const int panelymargin = 1;
         private const int conditionhoff = 26;
+
+        private const string commentmarker = "|";
 
         #endregion
 
