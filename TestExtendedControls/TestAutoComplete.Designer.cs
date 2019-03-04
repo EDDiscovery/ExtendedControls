@@ -49,7 +49,6 @@
             this.autoCompleteTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.autoCompleteTextBox1.EndButton = true;
             this.autoCompleteTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox1.DropDownButtonImage")));
             this.autoCompleteTextBox1.DropDownHeight = 200;
             this.autoCompleteTextBox1.DropDownItemHeight = 20;
@@ -111,7 +110,6 @@
             this.autoCompleteTextBox2.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox2.DropDownBorderColor = System.Drawing.Color.Green;
-            this.autoCompleteTextBox2.EndButton = false;
             this.autoCompleteTextBox2.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox2.DropDownButtonImage")));
             this.autoCompleteTextBox2.DropDownHeight = 200;
             this.autoCompleteTextBox2.DropDownItemHeight = 20;
@@ -143,7 +141,6 @@
             this.textBoxBorder1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorder1.ClearOnFirstChar = false;
             this.textBoxBorder1.ControlBackground = System.Drawing.SystemColors.Control;
-            this.textBoxBorder1.EndButton = false;
             this.textBoxBorder1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorder1.DropDownButtonImage")));
             this.textBoxBorder1.InErrorCondition = false;
             this.textBoxBorder1.Location = new System.Drawing.Point(40, 222);

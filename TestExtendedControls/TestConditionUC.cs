@@ -34,16 +34,16 @@ namespace DialogTest
             ConditionFilterForm frm = new ConditionFilterForm();
             frm.VariableNamesEvents += (evname) => 
                 {
-                    List<ConditionFilterUC.VariableName> list = new List<ConditionFilterUC.VariableName>();
-                    list.Add(new ConditionFilterUC.VariableName("one:" + evname, "help on one"));
-                    list.Add(new ConditionFilterUC.VariableName("two:" + evname, "help on two"));
+                    List<BaseUtils.TypeHelpers.PropertyNameInfo> list = new List<BaseUtils.TypeHelpers.PropertyNameInfo>();
+                    list.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("one:" + evname, "help on one"));
+                    list.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("two:" + evname, "help on two"));
                     return list;
                 };
 
-            frm.VariableNames = new List<ConditionFilterUC.VariableName>();
-            frm.VariableNames.Add(new ConditionFilterUC.VariableName("defone", "String", ConditionEntry.MatchType.Contains));
-            frm.VariableNames.Add(new ConditionFilterUC.VariableName("deftwo", "Number", ConditionEntry.MatchType.NumericEquals));
-            frm.VariableNames.Add(new ConditionFilterUC.VariableName("defthree", "help!"));
+            frm.VariableNames = new List<BaseUtils.TypeHelpers.PropertyNameInfo>();
+            frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("defone", "String", ConditionEntry.MatchType.Contains));
+            frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("deftwo", "Number", ConditionEntry.MatchType.NumericEquals));
+            frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("defthree", "help!"));
 
             List<string> events = new List<string>() { "eone", "etwo" };
 
@@ -63,9 +63,9 @@ namespace DialogTest
 
             Condition conds = new Condition("", "", "", ces);
 
-            frm.VariableNames = new List<ConditionFilterUC.VariableName>();
-            frm.VariableNames.Add(new ConditionFilterUC.VariableName("defone", "String", ConditionEntry.MatchType.Contains));
-            frm.VariableNames.Add(new ConditionFilterUC.VariableName("deftwo", "Number", ConditionEntry.MatchType.NumericEquals));
+            frm.VariableNames = new List<BaseUtils.TypeHelpers.PropertyNameInfo>();
+            frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("defone", "String", ConditionEntry.MatchType.Contains));
+            frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("deftwo", "Number", ConditionEntry.MatchType.NumericEquals));
 
             frm.InitCondition("Name", this.Icon, conds);
 
