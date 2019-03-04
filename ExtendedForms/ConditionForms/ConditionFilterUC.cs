@@ -305,7 +305,6 @@ namespace ExtendedConditionsForms
             c.fname.Tag = new Tuple<Group,Group.Conditions>(g,c);
             c.fname.DropDownWidth = LeftSizeConditionWidth*3/2;
             c.fname.DropDownHeight = DropDownHeight;
-            c.fname.TextChanged += TextChangedInLeft;
             if (initialfname != null)
                 c.fname.Text = initialfname;
             g.panel.Controls.Add(c.fname);                                                // 1st control
@@ -350,6 +349,8 @@ namespace ExtendedConditionsForms
 
             g.variables = CreateVariables(g.evlist?.Text);
             c.fname.EndButtonEnable = (g.variables?.Count ?? 0) > 0;
+
+            c.fname.TextChanged += TextChangedInLeft;       // only when fully set up do we turn on the text change handler - exception if you do it sooner
 
             g.panel.ResumeLayout();
         }
