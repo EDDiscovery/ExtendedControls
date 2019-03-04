@@ -27,8 +27,8 @@ namespace ExtendedConditionsForms
     {
         public ConditionLists Result { get { return conditionFilterUC.Result; } }
 
-        public event Func<string, List<ConditionFilterUC.VariableName>> VariableNamesEvents { add { conditionFilterUC.VariableNamesEvents += value; } remove { conditionFilterUC.VariableNamesEvents -= value; } }
-        public List<ConditionFilterUC.VariableName> VariableNames { get { return conditionFilterUC.VariableNames; } set { conditionFilterUC.VariableNames = value; } }
+        public event Func<string, List<TypeHelpers.PropertyNameInfo>> VariableNamesEvents { add { conditionFilterUC.VariableNamesEvents += value; } remove { conditionFilterUC.VariableNamesEvents -= value; } }
+        public List<TypeHelpers.PropertyNameInfo> VariableNames { get { return conditionFilterUC.VariableNames; } set { conditionFilterUC.VariableNames = value; } }
 
         public ConditionFilterForm()
         {

@@ -29,22 +29,8 @@ namespace ExtendedConditionsForms
 
         public ConditionLists Result;
 
-        public class VariableName
-        {
-            public string Name;
-
-            public ConditionEntry.MatchType? DefaultCondition;      // null if don't force, else condition
-            public string Help;
-
-            public VariableName() { }
-            public VariableName(string name, string help, ConditionEntry.MatchType? defcondition = null)
-            {
-                Name = name; DefaultCondition = defcondition;  Help = help;
-            }
-        }
-
-        public Func<string, List<VariableName>> VariableNamesEvents;         // set to hook up additional names, keyed by event
-        public List<VariableName> VariableNames { get; set; } = null;        // set to add variable names
+        public Func<string, List<TypeHelpers.PropertyNameInfo>> VariableNamesEvents;         // set to hook up additional names, keyed by event
+        public List<TypeHelpers.PropertyNameInfo> VariableNames { get; set; } = null;        // set to add variable names
 
         public int Groups { get { return groups.Count; } }
         public Action<int> onChangeInGroups;                        // called if any change in group numbers
@@ -394,7 +380,7 @@ namespace ExtendedConditionsForms
                                 if ( mtc != defcls)
                                 {
                                     System.Diagnostics.Debug.WriteLine("Select cond" + v.DefaultCondition.Value + " cur " + mt);
-                                    cb.Text = ConditionEntry.MatchNames[(int)v.DefaultCondition.Value];
+                                    cb.SelectedItem = ConditionEntry.MatchNames[(int)v.DefaultCondition.Value];
                                 }
                             }
                         }
@@ -667,21 +653,22 @@ namespace ExtendedConditionsForms
             return ret;
         }
 
-        private List<VariableName> CreateVariables(string evname)       // may return null
+        private List<TypeHelpers.PropertyNameInfo> CreateVariables(string evname)       // may return null
         {
-            if (evname.HasChars())
-            {
-                var currentadditionalnames = VariableNamesEvents(evname);
+            List<TypeHelpers.PropertyNameInfo> names = null;
 
-                if (currentadditionalnames == null)
-                    currentadditionalnames = VariableNames;
-                else if (VariableNames != null)
-                    currentadditionalnames.AddRange(VariableNames);
+            if (evname.HasChars())                                      // if event name present..
+                names = VariableNamesEvents?.Invoke(evname) ?? null;       // if present, call it, else null.  may return null
 
-                return currentadditionalnames;
-            }
-            else
-                return VariableNames;
+            if (names == null)
+                names = VariableNames;
+            else if (VariableNames != null)
+                names.AddRange(VariableNames);
+
+            if ( names != null )
+                names.Sort(delegate (TypeHelpers.PropertyNameInfo left, TypeHelpers.PropertyNameInfo right) { return left.Name.CompareTo(right.Name); });
+
+            return names;
         }
 
         #endregion
@@ -699,7 +686,7 @@ namespace ExtendedConditionsForms
             public ExtendedControls.ExtComboBox innercond;
             public ExtendedControls.ExtComboBox outercond;
             public Label outerlabel;
-            public List<VariableName> variables;        // collated variables against the evlist and VariableNames..
+            public List<TypeHelpers.PropertyNameInfo> variables;        // collated variables against the evlist and VariableNames..
 
             public class Conditions
             {
