@@ -298,7 +298,7 @@ namespace ExtendedConditionsForms
             Group.Conditions c = new Group.Conditions();
 
             c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
-            c.fname.EndButton = true;
+            c.fname.EndButtonVisible = true;
             c.fname.Name = "CVar";
             c.fname.Size = new Size(LeftSizeConditionWidth, 32);
             c.fname.SetAutoCompletor(AutoCompletor);

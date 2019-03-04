@@ -18,6 +18,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.ComponentModel;
 
 namespace ExtendedControls
 {
@@ -61,30 +62,30 @@ namespace ExtendedControls
 
         public Action<ExtTextBox> ReturnPressed;                              // fires if return pressed
 
-        public bool EndButton                                               // extra visual control added within the bounds of the textbox border at end
+        public bool EndButtonVisible                                         // extra visual control added within the bounds of the textbox border at end
         {
-            get { return endbuttonshown; }
+            get { return endbuttontoshow; }
             set
             {
-                if (value != endbuttonshown)
+                if (value != endbuttontoshow)
                 {
-                    if (value)                                               // only add the control to the GUI load if its shown
-                        Controls.Add(endbutton);
-                    else
-                        Controls.Remove(endbutton);
-
-                    endbuttonshown = value;
-                    Invalidate();
+                    endbutton.Visible = endbuttontoshow = value;
+                    Invalidate(true);
                     Update();
                 }
             }
         }
 
+        public new void Invalidate()
+        {
+            textbox.Invalidate();
+            endbutton.Invalidate();
+        }
+
+        public bool EndButtonEnable { get { return endbutton.Enabled; } set { endbutton.Enabled = value; this.Invalidate(true); Update(); System.Diagnostics.Debug.WriteLine("EB " + value); } }
         public Image EndButtonImage { get { return endbutton.Image; } set { endbutton.Image = value; } }     // if you want something else.. keep it small
 
         public Action<ExtTextBox> EndButtonClick = null;                              // if the button is pressed
-        public bool EndButtonEnable { get { return endbutton.Enabled; } set { endbutton.Enabled = value; this.Invalidate(true); Update(); System.Diagnostics.Debug.WriteLine("EB " + value); } }
-
 
         public ExtTextBox() : base()
         {
@@ -95,6 +96,8 @@ namespace ExtendedControls
             backnormalcolor = textbox.BackColor;
             inerrorcondition = false;
 
+            SuspendLayout();
+
             endbutton = new ExtButton();                               // we only add it to controls list if shown.. to limit the load on the GUI
             endbutton.Name = "EB";
             endbutton.Image = Properties.Resources.ArrowDown;
@@ -102,6 +105,8 @@ namespace ExtendedControls
             endbutton.MouseMove += Textbox_MouseMove;
             endbutton.MouseEnter += Textbox_MouseEnter;
             endbutton.MouseLeave += Textbox_MouseLeave;
+            endbutton.Visible = false;
+            Controls.Add(endbutton);
 
             // Enter and Leave is handled by this wrapper control itself, since when we leave the textbox, we leave this
             textbox.Click += Textbox_Click;
@@ -121,6 +126,8 @@ namespace ExtendedControls
             textbox.Validating += Textbox_Validating;
             textbox.Validated += Textbox_Validated;
             Controls.Add(textbox);
+
+            ResumeLayout();
         }
 
         #endregion
@@ -141,16 +148,20 @@ namespace ExtendedControls
             if (ClientRectangle.Width > 0)
             {
                 int offset = OurBorder ? borderoffset : 0;
-                int butwidth = endbuttonshown ? 16 : 0;
+                int butwidth = endbuttontoshow ? 16 : 0;
 
                 textbox.Location = new Point(offset, offset);
                 textbox.Size = new Size(ClientRectangle.Width - offset * 2 - butwidth, ClientRectangle.Height - offset * 2);
 
-                endbutton.Location = new Point(ClientRectangle.Width - offset - butwidth, offset);
-                endbutton.Size = new Size(butwidth, Math.Min(textbox.Height,16));
+                if (endbuttontoshow)
+                {
+                    endbutton.Location = new Point(ClientRectangle.Width - offset - butwidth, offset);
+                    endbutton.Size = new Size(butwidth, Math.Min(textbox.Height, 16));
+                }
+
                 this.Height = textbox.Height + offset * 2;
                 
-              //  System.Diagnostics.Debug.WriteLine("Repos " + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle + " dd " + dropdownbutton.Size);
+                //System.Diagnostics.Debug.WriteLine("Repos " + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle + " dd " + endbutton.Size);
             }
         }
 
@@ -387,9 +398,9 @@ namespace ExtendedControls
 
         private char lastkey;               // records key presses
         private int keyspressed = 0;
-        private bool endbuttonshown = false;
 
         private ExtButton endbutton;
+        private bool endbuttontoshow = false; // you can't trust visible
 
         #endregion
 

@@ -43,6 +43,7 @@ namespace ExtendedControls
         public delegate List<string> PerformAutoComplete(string input, ExtTextBoxAutoComplete t);
         private PerformAutoComplete AutoCompleteFunction { get { return autoCompleteFunction; } set { autoCompleteFunction = value; EndButtonEnable = value != null; } }
         public void SetAutoCompletor(PerformAutoComplete p) { AutoCompleteFunction = p; }  // older interface
+        public void SetAutoCompletor(PerformAutoComplete p, bool endbuttonvisible ) { AutoCompleteFunction = p; EndButtonVisible = endbuttonvisible; } 
 
         public ExtTextBoxAutoComplete() : base()
         {
