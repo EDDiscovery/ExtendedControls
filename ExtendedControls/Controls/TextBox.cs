@@ -82,7 +82,7 @@ namespace ExtendedControls
             endbutton.Invalidate();
         }
 
-        public bool EndButtonEnable { get { return endbutton.Enabled; } set { endbutton.Enabled = value; this.Invalidate(true); Update(); System.Diagnostics.Debug.WriteLine("EB " + value); } }
+        public bool EndButtonEnable { get { return endbutton.Enabled; } set { endbutton.Enabled = value; this.Invalidate(true); Update();  } }
         public Image EndButtonImage { get { return endbutton.Image; } set { endbutton.Image = value; } }     // if you want something else.. keep it small
 
         public Action<ExtTextBox> EndButtonClick = null;                              // if the button is pressed
