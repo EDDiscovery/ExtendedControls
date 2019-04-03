@@ -40,17 +40,14 @@ namespace ExtendedControls
                             Action<Object> acknowledgeaction = null, Object acknowledgedata = null)    
         {
             Icon = ic;
-            Text = title;
 
             textBoxInfo.SetTabs(array ?? new int[] { 0, 100, 200, 300, 400, 500, 600, 800,900,1000,1100,1200 });
             textBoxInfo.ReadOnly = true;
-            textBoxInfo.Text = info;
+            System.Diagnostics.Debug.WriteLine("Info " + info);
             textBoxInfo.Select(0, 0);
 
             ackaction = acknowledgeaction;
             ackdata = acknowledgedata;
-
-            labelCaption.Text = title;
 
             textBoxInfo.Font = SystemFonts.DefaultFont;
 
@@ -71,7 +68,11 @@ namespace ExtendedControls
 
             buttonAcknowledge.Visible = ackaction != null;
 
-            BaseUtils.Translator.Instance.Translate(this);
+            BaseUtils.Translator.Instance.Translate(this, ignorelist:new Control[] { textBoxInfo, labelCaption, this });
+
+            textBoxInfo.Text = info;
+            labelCaption.Text = title;
+            Text = title;
         }
 
 
