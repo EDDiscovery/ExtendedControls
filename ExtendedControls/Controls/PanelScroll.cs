@@ -57,6 +57,19 @@ namespace ExtendedControls
             e.Control.MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll, including the ExtScrollBar
         }
 
+        protected override void OnResize(EventArgs eventargs)       // added in resize event - should have been in here
+        {
+            Rectangle area = ClientRectangle;
+
+            if (ScrollBar != null && area.Width > 0 && area.Height > 0)
+            {
+                Point p = new Point(area.X + ((VerticalScrollBarDockRight) ? (area.Width - ScrollBarWidth) : 0), area.Y);
+                ScrollBar.Location = p;
+                ScrollBar.Size = new Size(ScrollBarWidth, area.Height);
+                ScrollTo(scrollpos);
+            }
+        }
+
         private void Control_SizeChanged(object sender, EventArgs e)
         {
             ScrollTo(scrollpos);
@@ -129,7 +142,7 @@ namespace ExtendedControls
                 {
                     int ynoscroll = c.Location.Y + scrollpos;
                     maxy = Math.Max(maxy, ynoscroll + c.Height);
-             //       System.Diagnostics.Debug.WriteLine("Control " + c.Size + " " + c.Location + " maxy " + maxy);
+                    //       System.Diagnostics.Debug.WriteLine("Control " + c.Size + " " + c.Location + " maxy " + maxy);
                 }
             }
 
@@ -139,6 +152,8 @@ namespace ExtendedControls
                 newscrollpos = 0;
             else if (newscrollpos > maxscr)
                 newscrollpos = maxscr;
+
+            //System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " maxscr " + maxscr  + " new scr " + newscrollpos + " old scroll " + scrollpos);
 
             if (newscrollpos != scrollpos)
             {
@@ -164,7 +179,7 @@ namespace ExtendedControls
             if (ScrollBar != null)
             {
                 ScrollBar.SetValueMaximumMinimum(newscrollpos, maxscr, 0);
-              //  System.Diagnostics.Debug.WriteLine("Scroll {0} to {1} maxscr {2} maxy {3} ClientH {4}", scrollpos, newscrollpos, maxscr , maxy , ClientRectangle.Height);
+               // System.Diagnostics.Debug.WriteLine("Scroll {0} to {1} maxscr {2} maxy {3} ClientH {4}", scrollpos, newscrollpos, maxscr , maxy , ClientRectangle.Height);
             }
 
             scrollpos = newscrollpos;

@@ -89,10 +89,11 @@
             // extPanelScroll1
             // 
             this.extPanelScroll1.Controls.Add(this.extScrollBar1);
-            this.extPanelScroll1.Location = new System.Drawing.Point(12, 38);
+            this.extPanelScroll1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extPanelScroll1.Location = new System.Drawing.Point(0, 0);
             this.extPanelScroll1.Name = "extPanelScroll1";
             this.extPanelScroll1.ScrollBarWidth = 20;
-            this.extPanelScroll1.Size = new System.Drawing.Size(575, 568);
+            this.extPanelScroll1.Size = new System.Drawing.Size(879, 666);
             this.extPanelScroll1.TabIndex = 1;
             this.extPanelScroll1.VerticalScrollBarDockRight = true;
             // 
@@ -107,13 +108,13 @@
             this.extScrollBar1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extScrollBar1.HideScrollBar = false;
             this.extScrollBar1.LargeChange = 10;
-            this.extScrollBar1.Location = new System.Drawing.Point(555, 0);
-            this.extScrollBar1.Maximum = -568;
+            this.extScrollBar1.Location = new System.Drawing.Point(694, 0);
+            this.extScrollBar1.Maximum = -656;
             this.extScrollBar1.Minimum = 0;
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBar1.Name = "extScrollBar1";
-            this.extScrollBar1.Size = new System.Drawing.Size(20, 568);
+            this.extScrollBar1.Size = new System.Drawing.Size(20, 640);
             this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar1.SmallChange = 1;
             this.extScrollBar1.TabIndex = 0;
@@ -122,14 +123,14 @@
             this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extScrollBar1.ThumbColorScaling = 0.5F;
             this.extScrollBar1.ThumbDrawAngle = 0F;
-            this.extScrollBar1.Value = -568;
-            this.extScrollBar1.ValueLimited = -568;
+            this.extScrollBar1.Value = -656;
+            this.extScrollBar1.ValueLimited = -656;
             // 
             // TestPanelScroll
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(714, 640);
+            this.ClientSize = new System.Drawing.Size(879, 666);
             this.Controls.Add(this.extPanelScroll1);
             this.Name = "TestPanelScroll";
             this.Text = "Form1";
