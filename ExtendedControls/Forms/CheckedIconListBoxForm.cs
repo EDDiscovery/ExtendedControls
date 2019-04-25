@@ -320,7 +320,7 @@ namespace ExtendedControls
         {
             Location = position;        // first place it onto the correct screen.. so that we know what screen to clip to
             Size = new Size(10, 10);        // size it small, so windows itself does not bump the control to another screen.
-            this.PositionSizeWithinScreen(size.Width,size.Height, true);    // then keep it on the screen.  always lock to button H
+            this.PositionSizeWithinScreen(size.Width,size.Height, true, 64);    // then keep it on the screen.  always lock to button H
         }
 
         protected override void OnLayout(LayoutEventArgs levent)
