@@ -204,7 +204,9 @@ namespace ExtendedControls
 
         public Font GetFontMaxSized(float size) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, Math.Min(currentsettings.fontsize, size)); }
         public Font GetFontAtSize(float size) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, size); }
+        public Font GetFontAtSize(float size, FontStyle fs) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, size, fs); }
         public Font GetFontStandardFontSize() { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, StandardFontSize); }
+        public Font GetFontStandardFontSize(FontStyle fs) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, StandardFontSize, fs); }
 
         public Settings currentsettings;           // if name = custom, then its not a standard theme..
         protected List<Settings> themelist;
