@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj" />
-    <ProjectReference Include="..\..\BaseUtilities\BaseUtils.WinForms\BaseUtils.WinForms.csproj" />
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtils.WinForms\BaseUtils.WinForms.csproj" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
