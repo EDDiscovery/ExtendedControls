@@ -20,6 +20,14 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="*Forms\*.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="*\*.Designer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\BaseUtilities\Audio\Audio.csproj" />
     <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj" />
     <ProjectReference Include="..\..\BaseUtilities\BaseUtils.WinForms\BaseUtils.WinForms.csproj" />

@@ -21,8 +21,47 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
   </ItemGroup>
+  <ItemGroup Label="Controls">
+    <Compile Update="Controls\ImageViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\PanelDropDown.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\TabStrip.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\TreeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup Label="Forms">
+    <Compile Update="Forms\InfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\KeyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MessageBoxTheme.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Themes\ThemeStandardEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj" />
     <ProjectReference Include="..\..\BaseUtilities\BaseUtils.WinForms\BaseUtils.WinForms.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
