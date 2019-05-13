@@ -592,7 +592,7 @@ namespace ExtendedControls
 
             this.Icon = icon;
 
-            theme.ApplyToFormStandardFontSize(this);
+            theme.ApplyStd(this);
 
             //foreach( Control c in Controls[0].Controls )   System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
 
