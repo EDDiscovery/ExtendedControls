@@ -55,11 +55,11 @@ namespace ExtendedControls
 
             if (theme != null)
             {
-                bool winborder = theme.ApplyToFormStandardFontSize(this);
+                bool winborder = theme.ApplyDialog(this);
                 if (winborder)
                     panelTop.Visible = false;
                 if (pointsize != -1)
-                    textBoxInfo.Font = BaseUtils.FontLoader.GetFont(theme.FontName, pointsize);
+                    textBoxInfo.Font = theme.GetScaledFont(pointsize/12);       // 12 is standard size..
             }
             else
             {

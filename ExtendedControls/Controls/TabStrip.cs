@@ -436,8 +436,8 @@ namespace ExtendedControls
 
             panelPopOutIcon.Location = panelSelectedIcon.Location;     // same position, mutually exclusive
             panelListSelection.Location = new Point(panelSelectedIcon.Right + TabFieldSpacing, panelSelectedIcon.Top);
-            labelTitle.Location = new Point(xpos + TabFieldSpacing, labelTitle.Top);
-            labelControlText.Location = new Point(labelTitle.Right + TabFieldSpacing, labelControlText.Top);
+            labelTitle.Location = new Point(xpos + TabFieldSpacing, 2);
+            labelControlText.Location = new Point(labelTitle.Right + TabFieldSpacing, labelTitle.Top);
 
         }
 

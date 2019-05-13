@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KeyForm));
             this.checkBoxShift = new ExtendedControls.ExtCheckBox();
             this.checkBoxCtrl = new ExtendedControls.ExtCheckBox();
             this.checkBoxAlt = new ExtendedControls.ExtCheckBox();
@@ -66,7 +67,6 @@
             this.checkBoxShift.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxShift.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxShift.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxShift.FontNerfReduction = 0.5F;
             this.checkBoxShift.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxShift.Location = new System.Drawing.Point(12, 15);
             this.checkBoxShift.MouseOverColor = System.Drawing.Color.CornflowerBlue;
@@ -75,7 +75,7 @@
             this.checkBoxShift.TabIndex = 0;
             this.checkBoxShift.Text = "Shift";
             this.checkBoxShift.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxShift.TickBoxReductionSize = 10;
+            this.checkBoxShift.TickBoxReductionRatio = 0.75f;
             this.checkBoxShift.UseVisualStyleBackColor = true;
             this.checkBoxShift.MouseDown += new System.Windows.Forms.MouseEventHandler(this.checkBoxsac_MouseDown);
             // 
@@ -87,7 +87,6 @@
             this.checkBoxCtrl.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCtrl.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxCtrl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxCtrl.FontNerfReduction = 0.5F;
             this.checkBoxCtrl.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCtrl.Location = new System.Drawing.Point(87, 15);
             this.checkBoxCtrl.MouseOverColor = System.Drawing.Color.CornflowerBlue;
@@ -96,7 +95,7 @@
             this.checkBoxCtrl.TabIndex = 0;
             this.checkBoxCtrl.Text = "Ctrl";
             this.checkBoxCtrl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxCtrl.TickBoxReductionSize = 10;
+            this.checkBoxCtrl.TickBoxReductionRatio = 0.75f;
             this.checkBoxCtrl.UseVisualStyleBackColor = true;
             this.checkBoxCtrl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.checkBoxsac_MouseDown);
             // 
@@ -108,7 +107,6 @@
             this.checkBoxAlt.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxAlt.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxAlt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxAlt.FontNerfReduction = 0.5F;
             this.checkBoxAlt.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxAlt.Location = new System.Drawing.Point(163, 15);
             this.checkBoxAlt.MouseOverColor = System.Drawing.Color.CornflowerBlue;
@@ -117,7 +115,7 @@
             this.checkBoxAlt.TabIndex = 0;
             this.checkBoxAlt.Text = "Alt";
             this.checkBoxAlt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxAlt.TickBoxReductionSize = 10;
+            this.checkBoxAlt.TickBoxReductionRatio = 0.75f;
             this.checkBoxAlt.UseVisualStyleBackColor = true;
             this.checkBoxAlt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.checkBoxsac_MouseDown);
             // 
@@ -129,7 +127,6 @@
             this.checkBoxKey.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxKey.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxKey.FontNerfReduction = 0.5F;
             this.checkBoxKey.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxKey.Location = new System.Drawing.Point(247, 15);
             this.checkBoxKey.MouseOverColor = System.Drawing.Color.CornflowerBlue;
@@ -138,7 +135,7 @@
             this.checkBoxKey.TabIndex = 0;
             this.checkBoxKey.Text = "Press Key";
             this.checkBoxKey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxKey.TickBoxReductionSize = 10;
+            this.checkBoxKey.TickBoxReductionRatio = 0.75f;
             this.checkBoxKey.UseVisualStyleBackColor = true;
             // 
             // buttonReset
@@ -171,6 +168,9 @@
             this.textBoxKeys.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxKeys.ClearOnFirstChar = false;
             this.textBoxKeys.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxKeys.EndButtonEnable = true;
+            this.textBoxKeys.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxKeys.EndButtonImage")));
+            this.textBoxKeys.EndButtonVisible = false;
             this.textBoxKeys.InErrorCondition = false;
             this.textBoxKeys.Location = new System.Drawing.Point(87, 203);
             this.textBoxKeys.Multiline = false;
@@ -207,6 +207,7 @@
             // 
             // textBoxSendTo
             // 
+            this.textBoxSendTo.AutoCompleteCommentMarker = null;
             this.textBoxSendTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.textBoxSendTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxSendTo.BackErrorColor = System.Drawing.Color.Red;
@@ -223,6 +224,9 @@
             this.textBoxSendTo.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.textBoxSendTo.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.textBoxSendTo.DropDownWidth = 0;
+            this.textBoxSendTo.EndButtonEnable = false;
+            this.textBoxSendTo.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxSendTo.EndButtonImage")));
+            this.textBoxSendTo.EndButtonVisible = false;
             this.textBoxSendTo.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.textBoxSendTo.InErrorCondition = false;
             this.textBoxSendTo.Location = new System.Drawing.Point(125, 277);
@@ -347,7 +351,6 @@
             // radioButtonUp
             // 
             this.radioButtonUp.AutoSize = true;
-            this.radioButtonUp.FontNerfReduction = 0.5F;
             this.radioButtonUp.Location = new System.Drawing.Point(4, 46);
             this.radioButtonUp.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.radioButtonUp.Name = "radioButtonUp";
@@ -365,7 +368,6 @@
             // radioButtonDown
             // 
             this.radioButtonDown.AutoSize = true;
-            this.radioButtonDown.FontNerfReduction = 0.5F;
             this.radioButtonDown.Location = new System.Drawing.Point(4, 24);
             this.radioButtonDown.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.radioButtonDown.Name = "radioButtonDown";
@@ -383,7 +385,6 @@
             // radioButtonPress
             // 
             this.radioButtonPress.AutoSize = true;
-            this.radioButtonPress.FontNerfReduction = 0.5F;
             this.radioButtonPress.Location = new System.Drawing.Point(4, 3);
             this.radioButtonPress.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.radioButtonPress.Name = "radioButtonPress";
@@ -408,6 +409,9 @@
             this.textBoxNextDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxNextDelay.ClearOnFirstChar = false;
             this.textBoxNextDelay.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxNextDelay.EndButtonEnable = true;
+            this.textBoxNextDelay.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxNextDelay.EndButtonImage")));
+            this.textBoxNextDelay.EndButtonVisible = false;
             this.textBoxNextDelay.InErrorCondition = false;
             this.textBoxNextDelay.Location = new System.Drawing.Point(185, 148);
             this.textBoxNextDelay.Multiline = false;
@@ -435,6 +439,9 @@
             this.textBoxDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxDelay.ClearOnFirstChar = false;
             this.textBoxDelay.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxDelay.EndButtonEnable = true;
+            this.textBoxDelay.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxDelay.EndButtonImage")));
+            this.textBoxDelay.EndButtonVisible = false;
             this.textBoxDelay.InErrorCondition = false;
             this.textBoxDelay.Location = new System.Drawing.Point(185, 122);
             this.textBoxDelay.Multiline = false;

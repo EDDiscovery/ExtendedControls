@@ -725,7 +725,7 @@
             this.checkBoxCustom2.Name = "checkBoxCustom2";
             this.checkBoxCustom2.Size = new System.Drawing.Size(38, 38);
             this.checkBoxCustom2.TabIndex = 58;
-            this.checkBoxCustom2.TickBoxReductionSize = 10;
+            this.checkBoxCustom2.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustom2.UseVisualStyleBackColor = false;
             this.checkBoxCustom2.CheckedChanged += new System.EventHandler(this.checkBoxCustom2_CheckedChanged);
             // 

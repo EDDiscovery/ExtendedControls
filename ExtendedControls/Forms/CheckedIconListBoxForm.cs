@@ -32,7 +32,7 @@ namespace ExtendedControls
         public Color CheckColor { get; set; } = Color.DarkBlue;
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
         public Size CheckBoxSize { get; set; } = new Size(0, 0);                   // if not set, ImageSize sets the size, or first image, else 24/24
-        public int TickBoxReductionSize { get; set; } = 10;                        // After working out size, reduce by this amount
+        public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
         public int VerticalSpacing { get; set; } = 4;
         public int HorizontalSpacing { get; set; } = 4;
 
@@ -108,7 +108,7 @@ namespace ExtendedControls
             cb.CheckColor = this.CheckColor;
             cb.MouseOverColor = this.MouseOverColor;
             cb.FlatStyle = FlatStyle;
-            cb.TickBoxReductionSize = TickBoxReductionSize;
+            cb.TickBoxReductionRatio = TickBoxReductionRatio;
             cb.CheckedChanged += CheckedIconListBoxForm_CheckedChanged;
             cb.Tag = controllist.Count;
             c.checkbox = cb;
@@ -125,7 +125,6 @@ namespace ExtendedControls
             lb.MouseDown += Text_MouseDown;
 
             c.label = lb;
-            panelscroll.Controls.Add(lb);
             panelscroll.Controls.Add(lb);
 
             if (img != null)
@@ -308,7 +307,9 @@ namespace ExtendedControls
                 if (controllist[i].icon != null)
                     imgsize = hasimagesize ? ImageSize : controllist[i].icon.BackgroundImage.Size;        // set size of item
 
-                vpos += imgsize.Height + VerticalSpacing;
+                int vspacing = Math.Max((int)controllist[i].label.Font.GetHeight() + 2, imgsize.Height);
+
+                vpos += vspacing + VerticalSpacing;
             }
 
             return vpos;
@@ -372,10 +373,12 @@ namespace ExtendedControls
                     tpos += imgsize.Width + HorizontalSpacing;
                 }
 
-                controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - panelscroll.ScrollBarWidth - tpos, imgsize.Height);
+                int vspacing = Math.Max((int)controllist[i].label.Font.GetHeight() + 2, imgsize.Height);
+
+                controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - panelscroll.ScrollBarWidth - tpos, vspacing);
                 controllist[i].label.Location = new Point(tpos, vpos);
 
-                vpos += imgsize.Height + VerticalSpacing;
+                vpos += vspacing + VerticalSpacing;
             }
         }
 

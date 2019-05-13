@@ -144,7 +144,7 @@
             this.checkBoxCustom1.Size = new System.Drawing.Size(106, 23);
             this.checkBoxCustom1.TabIndex = 4;
             this.checkBoxCustom1.Text = "checkBoxCustom1";
-            this.checkBoxCustom1.TickBoxReductionSize = 10;
+            this.checkBoxCustom1.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustom1.UseVisualStyleBackColor = true;
             // 
             // TestSelectionPanel

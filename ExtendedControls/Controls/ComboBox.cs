@@ -16,6 +16,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -27,169 +28,6 @@ namespace ExtendedControls
 {
     public class ExtComboBox : Control
     {
-        public class ObjectCollection : IList<string>, ICollection<string>
-        {
-            private IList _explicitCollection;
-            private ComboBox _combobox;
-
-            private IList _collection
-            {
-                get
-                {
-                    if (_explicitCollection != null)
-                    {
-                        return _explicitCollection;
-                    }
-                    else if (_combobox.DisplayMember != null && _combobox.DataSource != null && _combobox.DataSource is ICollection)
-                    {
-                        return GetMembers((ICollection)_combobox.DataSource, _combobox.DisplayMember).ToList();
-                    }
-                    else
-                    {
-                        return _combobox.Items;
-                    }
-                }
-            }
-
-            protected IEnumerable<object> GetMembers(ICollection vals, string displaymember)
-            {
-                foreach (object val in vals)
-                {
-                    Type t = val.GetType();
-                    PropertyInfo pi = t.GetProperty(displaymember);
-                    object dm = pi.GetValue(val, new object[0]);
-                    yield return dm;
-                }
-            }
-
-
-            public ObjectCollection(ComboBox cb)
-            {
-                this._combobox = cb;
-            }
-
-            public ObjectCollection(IList<string> vals)
-            {
-                _explicitCollection = vals as IList;
-            }
-
-
-            public ObjectCollection(string[] vals)
-            {
-                _explicitCollection = vals.ToList() as IList;
-            }
-
-
-            public string this[int index]
-            {
-                get
-                {
-                    return _collection[index].ToNullSafeString();
-                }
-
-                set
-                {
-                    _collection[index] = value;
-                }
-            }
-
-            public int Count
-            {
-                get
-                {
-                    return _collection.Count;
-                }
-            }
-
-            public bool IsReadOnly
-            {
-                get
-                {
-                    return _collection.IsReadOnly;
-                }
-            }
-
-            public void Add(string item)
-            {
-                _collection.Add(item);
-            }
-
-            public void AddRange(IEnumerable<string> items)
-            {
-                foreach (var val in items)
-                {
-                    _collection.Add(val);
-                }
-            }
-
-            public void Clear()
-            {
-                _collection.Clear();
-            }
-
-            public bool Contains(string item)
-            {
-                return _collection.Contains(item);
-            }
-
-            public void CopyTo(string[] array, int arrayIndex)
-            {
-                _collection.OfType<object>().Select(v => v.ToNullSafeString()).ToList().CopyTo(array, arrayIndex);
-            }
-
-            public IEnumerator<string> GetEnumerator()
-            {
-                return _collection.OfType<object>().Select(v => v.ToNullSafeString()).GetEnumerator();
-            }
-
-            public int IndexOf(string item)
-            {
-                return _collection.IndexOf(item);
-            }
-
-            public void Insert(int index, string item)
-            {
-                _collection.Insert(index, item);
-            }
-
-            public bool Remove(string item)
-            {
-                _collection.Remove(item);
-                return true;
-            }
-
-            public void RemoveAt(int index)
-            {
-                _collection.RemoveAt(index);
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-
-            public static implicit operator ObjectCollection(List<string> vals)
-            {
-                return new ObjectCollection(vals);
-            }
-
-            public static implicit operator ObjectCollection(string[] vals)
-            {
-                return new ObjectCollection(vals);
-            }
-        }
-
-        protected ObjectCollection _items;
-
-        private ComboBox _cbsystem;
-        private Rectangle topBoxTextArea, arrowRectangleArea, topBoxOutline, textBoxBackArea;
-        private Point arrowpt1, arrowpt2, arrowpt3;
-        private Point arrowpt1c, arrowpt2c, arrowpt3c;
-        private bool isActivated = false;
-        private bool mouseover = false;
-        private ExtListBoxForm _customdropdown;
-        private int itemheight = 13;
-
         // ForeColor = text, BackColor = control background
         public Color MouseOverBackgroundColor { get; set; } = Color.Silver;
         public Color BorderColor { get; set; } = Color.White;
@@ -252,6 +90,17 @@ namespace ExtendedControls
 
         bool firstpaint = true;
 
+        protected override void OnFontChanged(EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Font change " + this.Name + " " + Font.Size + " " + Size);
+            base.OnFontChanged(e);
+        }
+
+        protected override void OnLayout(LayoutEventArgs levent)
+        {
+            base.OnLayout(levent);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (firstpaint)
@@ -270,21 +119,24 @@ namespace ExtendedControls
                 int extraborder = 1;
                 int texthorzspacing = 1;
 
+                int scw = (int)(ScrollBarWidth);
+
                 textBoxBackArea = new Rectangle(ClientRectangle.X + extraborder, ClientRectangle.Y + extraborder,
                                                             ClientRectangle.Width - 2 * extraborder, ClientRectangle.Height - 2 * extraborder);
 
                 topBoxTextArea = new Rectangle(ClientRectangle.X + extraborder + texthorzspacing, ClientRectangle.Y + extraborder,
-                                        ClientRectangle.Width - 2 * extraborder - 2 * texthorzspacing - ScrollBarWidth, ClientRectangle.Height - 2 * extraborder);
+                                        ClientRectangle.Width - 2 * extraborder - 2 * texthorzspacing - scw, ClientRectangle.Height - 2 * extraborder);
 
-                arrowRectangleArea = new Rectangle(ClientRectangle.Width - ScrollBarWidth - extraborder, ClientRectangle.Y + extraborder,
-                                                    ScrollBarWidth, ClientRectangle.Height - 2 * extraborder);
+                arrowRectangleArea = new Rectangle(ClientRectangle.Width - scw - extraborder, ClientRectangle.Y + extraborder,
+                                                    scw, ClientRectangle.Height - 2 * extraborder);
 
                 topBoxOutline = new Rectangle(ClientRectangle.X, ClientRectangle.Y,
                                                 ClientRectangle.Width - 1, ClientRectangle.Height - 1);
 
-
-                int hoffset = arrowRectangleArea.Width / 3;
-                int voffset = arrowRectangleArea.Height / 3;
+                //                int hoffset = arrowRectangleArea.Width / 3;
+                //              int voffset = arrowRectangleArea.Height / 3;
+                int hoffset = arrowRectangleArea.Width / 16+2;
+                int voffset = arrowRectangleArea.Height / 6;
                 arrowpt1 = new Point(arrowRectangleArea.X + hoffset, arrowRectangleArea.Y + voffset);
                 arrowpt2 = new Point(arrowRectangleArea.X + arrowRectangleArea.Width / 2, arrowRectangleArea.Y + arrowRectangleArea.Height - voffset);
                 arrowpt3 = new Point(arrowRectangleArea.X + arrowRectangleArea.Width - hoffset, arrowpt1.Y);
@@ -474,9 +326,10 @@ namespace ExtendedControls
             if (Items.Count == 0 || !Enabled)
                 return;
 
-            _customdropdown = new ExtListBoxForm(this.Name);
+            customdropdown = new ExtListBoxForm(this.Name);
 
-            int fittableitems = this.DropDownHeight / this.ItemHeight;
+            int ih = this.ItemHeight;
+            int fittableitems = this.DropDownHeight / ih;
 
             if (fittableitems == 0)
             {
@@ -486,30 +339,35 @@ namespace ExtendedControls
             if (fittableitems > this.Items.Count())                             // no point doing more than we have..
                 fittableitems = this.Items.Count();
 
-            _customdropdown.Size = new Size(this.DropDownWidth > 9 ? this.DropDownWidth : this.Width, fittableitems * this.ItemHeight + 4);
+            // 1-9 states 100,200,300 min width/this width
 
-            _customdropdown.SelectionBackColor = this.DropDownBackgroundColor;
-            _customdropdown.MouseOverBackgroundColor = this.MouseOverBackgroundColor;
-            _customdropdown.ForeColor = this.ForeColor;
-            _customdropdown.BackColor = this.BorderColor;
-            _customdropdown.BorderColor = this.BorderColor;
-            _customdropdown.Items = this.Items.ToList();
-            _customdropdown.ItemHeight = this.ItemHeight;
-            _customdropdown.SelectedIndex = this.SelectedIndex;
-            _customdropdown.FlatStyle = this.FlatStyle;
-            _customdropdown.Font = this.Font;
-            _customdropdown.ScrollBarColor = this.ScrollBarColor;
-            _customdropdown.ScrollBarButtonColor = this.ScrollBarButtonColor;
+            int ddw = this.DropDownWidth > 9 ? this.DropDownWidth : Math.Max(this.DropDownWidth * 100,this.Width);
 
-            _customdropdown.Activated += _customdropdown_DropDown;
-            _customdropdown.SelectedIndexChanged += _customdropdown_SelectedIndexChanged;
-            _customdropdown.OtherKeyPressed += _customdropdown_OtherKeyPressed;
-            _customdropdown.Deactivate += _customdropdown_Deactivate;
+            customdropdown.Size = new Size(ddw , fittableitems * ih + 4);
 
-            _customdropdown.Show(FindForm());
+            customdropdown.SelectionBackColor = this.DropDownBackgroundColor;
+            customdropdown.MouseOverBackgroundColor = this.MouseOverBackgroundColor;
+            customdropdown.ForeColor = this.ForeColor;
+            customdropdown.BackColor = this.BorderColor;
+            customdropdown.BorderColor = this.BorderColor;
+            customdropdown.Items = this.Items.ToList();
+            customdropdown.ItemHeight = ih;
+            customdropdown.SelectedIndex = this.SelectedIndex;
+            customdropdown.FlatStyle = this.FlatStyle;
+            customdropdown.Font = this.Font;
+            customdropdown.ScrollBarColor = this.ScrollBarColor;
+            customdropdown.ScrollBarButtonColor = this.ScrollBarButtonColor;
+            customdropdown.ScrollBarWidth = (int)(ScrollBarWidth);
+
+            customdropdown.Activated += _customdropdown_DropDown;
+            customdropdown.SelectedIndexChanged += _customdropdown_SelectedIndexChanged;
+            customdropdown.OtherKeyPressed += _customdropdown_OtherKeyPressed;
+            customdropdown.Deactivate += _customdropdown_Deactivate;
+
+            customdropdown.Show(FindForm());
              
             // enforce size.. some reason SHow is scaling it probably due to autosizing.. can't turn off. force back
-            _customdropdown.Size = new Size(this.DropDownWidth > 9 ? this.DropDownWidth : this.Width, fittableitems * this.ItemHeight + 4);
+            customdropdown.Size = new Size(this.DropDownWidth > 9 ? this.DropDownWidth : this.Width, fittableitems * ih + 4);
         }
 
         private void _customdropdown_Deactivate(object sender, EventArgs e)
@@ -523,12 +381,12 @@ namespace ExtendedControls
             Point location = this.PointToScreen(new Point(0, 0));
 
             int botscr = Screen.FromControl(this).WorkingArea.Height;
-            int botcontrol = location.Y + this.Height + _customdropdown.Height;
+            int botcontrol = location.Y + this.Height + customdropdown.Height;
 
             if (botcontrol < botscr)
-                _customdropdown.Location = new Point(location.X, location.Y + this.Height);
+                customdropdown.Location = new Point(location.X, location.Y + this.Height);
             else
-                _customdropdown.Location = new Point(location.X, location.Y -_customdropdown.Height);
+                customdropdown.Location = new Point(location.X, location.Y -customdropdown.Height);
 
             isActivated = true;
             this.Invalidate(true);
@@ -536,7 +394,7 @@ namespace ExtendedControls
 
         private void _customdropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedindex = _customdropdown.SelectedIndex;
+            int selectedindex = customdropdown.SelectedIndex;
             isActivated = false;            // call has already closed the custom drop down..
             this.Invalidate(true);
             if (_cbsystem.SelectedIndex != selectedindex)
@@ -552,7 +410,7 @@ namespace ExtendedControls
         {
             if ( e.KeyCode == Keys.Escape )
             {
-                _customdropdown.Close();
+                customdropdown.Close();
                 isActivated = false;
                 this.Invalidate(true);
             }
@@ -570,5 +428,171 @@ namespace ExtendedControls
 
             base.OnMouseLeave(e);    // same as mouse 
         }
+
+
+        public class ObjectCollection : IList<string>, ICollection<string>
+        {
+            private IList _explicitCollection;
+            private ComboBox _combobox;
+
+            private IList _collection
+            {
+                get
+                {
+                    if (_explicitCollection != null)
+                    {
+                        return _explicitCollection;
+                    }
+                    else if (_combobox.DisplayMember != null && _combobox.DataSource != null && _combobox.DataSource is ICollection)
+                    {
+                        return GetMembers((ICollection)_combobox.DataSource, _combobox.DisplayMember).ToList();
+                    }
+                    else
+                    {
+                        return _combobox.Items;
+                    }
+                }
+            }
+
+            protected IEnumerable<object> GetMembers(ICollection vals, string displaymember)
+            {
+                foreach (object val in vals)
+                {
+                    Type t = val.GetType();
+                    PropertyInfo pi = t.GetProperty(displaymember);
+                    object dm = pi.GetValue(val, new object[0]);
+                    yield return dm;
+                }
+            }
+
+
+            public ObjectCollection(ComboBox cb)
+            {
+                this._combobox = cb;
+            }
+
+            public ObjectCollection(IList<string> vals)
+            {
+                _explicitCollection = vals as IList;
+            }
+
+
+            public ObjectCollection(string[] vals)
+            {
+                _explicitCollection = vals.ToList() as IList;
+            }
+
+
+            public string this[int index]
+            {
+                get
+                {
+                    return _collection[index].ToNullSafeString();
+                }
+
+                set
+                {
+                    _collection[index] = value;
+                }
+            }
+
+            public int Count
+            {
+                get
+                {
+                    return _collection.Count;
+                }
+            }
+
+            public bool IsReadOnly
+            {
+                get
+                {
+                    return _collection.IsReadOnly;
+                }
+            }
+
+            public void Add(string item)
+            {
+                _collection.Add(item);
+            }
+
+            public void AddRange(IEnumerable<string> items)
+            {
+                foreach (var val in items)
+                {
+                    _collection.Add(val);
+                }
+            }
+
+            public void Clear()
+            {
+                _collection.Clear();
+            }
+
+            public bool Contains(string item)
+            {
+                return _collection.Contains(item);
+            }
+
+            public void CopyTo(string[] array, int arrayIndex)
+            {
+                _collection.OfType<object>().Select(v => v.ToNullSafeString()).ToList().CopyTo(array, arrayIndex);
+            }
+
+            public IEnumerator<string> GetEnumerator()
+            {
+                return _collection.OfType<object>().Select(v => v.ToNullSafeString()).GetEnumerator();
+            }
+
+            public int IndexOf(string item)
+            {
+                return _collection.IndexOf(item);
+            }
+
+            public void Insert(int index, string item)
+            {
+                _collection.Insert(index, item);
+            }
+
+            public bool Remove(string item)
+            {
+                _collection.Remove(item);
+                return true;
+            }
+
+            public void RemoveAt(int index)
+            {
+                _collection.RemoveAt(index);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            public static implicit operator ObjectCollection(List<string> vals)
+            {
+                return new ObjectCollection(vals);
+            }
+
+            public static implicit operator ObjectCollection(string[] vals)
+            {
+                return new ObjectCollection(vals);
+            }
+        }
+
+        protected ObjectCollection _items;
+
+        private ComboBox _cbsystem;
+        private Rectangle topBoxTextArea, arrowRectangleArea, topBoxOutline, textBoxBackArea;
+        private Point arrowpt1, arrowpt2, arrowpt3;
+        private Point arrowpt1c, arrowpt2c, arrowpt3c;
+        private bool isActivated = false;
+        private bool mouseover = false;
+        private ExtListBoxForm customdropdown;
+        private int itemheight = 13;
+
+
     }
 }

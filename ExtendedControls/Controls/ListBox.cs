@@ -37,7 +37,7 @@ namespace ExtendedControls
             } }
 
         public List<Image> ImageItems { get { return imageitems; } set { imageitems = value; } }
-        public int ItemHeight { get { return itemheight; } set { itemheight = value; lbsys.ItemHeight = value; } }
+        public int ItemHeight { get { return Itemheight; } set { Itemheight = value; lbsys.ItemHeight = value; } }
 
         public int[] ItemSeperators { get; set; } = null;     // set to array giving index of each separator
 
@@ -72,7 +72,7 @@ namespace ExtendedControls
         private ListBox lbsys;
         private List<string> items;
         private List<Image> imageitems;
-        private int itemheight = 13;
+        private int Itemheight = 13;
         private FlatStyle flatstyle = FlatStyle.System;
 
         #region Implementation
@@ -92,7 +92,7 @@ namespace ExtendedControls
             this.Controls.Add(lbsys);
             lbsys.SelectedIndexChanged += lbsys_SelectedIndexChanged;
             lbsys.DrawItem += Lbsys_DrawItem;
-            lbsys.ItemHeight = itemheight;
+            lbsys.ItemHeight = Itemheight;
             lbsys.DrawMode = DrawMode.OwnerDrawFixed;
         }
 
@@ -123,14 +123,17 @@ namespace ExtendedControls
             int items = (Items != null) ? Items.Count() : 0;
             itemslayoutestimatedon = items;
 
-            displayableitems = (ClientRectangle.Height-bordersize*2) / itemheight;            // number of items to display
+            if (Itemheight < (int)Font.GetHeight() + 2)         // set minimum to font
+                Itemheight = (int)Font.GetHeight() + 2;
+
+            displayableitems = (ClientRectangle.Height-bordersize*2) / Itemheight;            // number of items to display
 
             if (items > 0 && displayableitems > items)
                 displayableitems = items;
 
             mainarea = new Rectangle(bordersize, bordersize, 
                             ClientRectangle.Width - bordersize * 2, 
-                            (FitToItemsHeight) ? (displayableitems * itemheight) : (ClientRectangle.Height - bordersize*2));
+                            (FitToItemsHeight) ? (displayableitems * Itemheight) : (ClientRectangle.Height - bordersize*2));
             borderrect = mainarea;
             borderrect.Inflate(bordersize,bordersize);
             borderrect.Width--; borderrect.Height--;        // adjust to rect not area.
@@ -211,7 +214,7 @@ namespace ExtendedControls
             if (Items != null && Items.Count > 0)
             {
                 Rectangle totalarea = mainarea;     // total width area
-                totalarea.Height = itemheight;
+                totalarea.Height = Itemheight;
                 Rectangle textarea = totalarea;     // where we draw text
                 Rectangle imagearea = totalarea;
 
@@ -219,7 +222,7 @@ namespace ExtendedControls
                 {
                     if (FitImagesToItemHeight)
                     {
-                        imagearea = new Rectangle(imagearea.X, imagearea.Y, itemheight - 1, itemheight - 1);
+                        imagearea = new Rectangle(imagearea.X, imagearea.Y, Itemheight - 1, Itemheight - 1);
                         textarea.X += imagearea.Width + 1;
                     }
                     else
@@ -263,7 +266,7 @@ namespace ExtendedControls
                                 }
                             }
 
-                            totalarea.Y += itemheight;
+                            totalarea.Y += Itemheight;
                             textarea.Y = imagearea.Y = totalarea.Y;
                         }
 
@@ -289,7 +292,7 @@ namespace ExtendedControls
                 {
                     if (FitImagesToItemHeight)
                     {
-                        imagearea = new Rectangle(imagearea.X, imagearea.Y, itemheight - 1,itemheight - 1);
+                        imagearea = new Rectangle(imagearea.X, imagearea.Y, Itemheight - 1,Itemheight - 1);
                         textarea.X += imagearea.Width + 1;
                     }
                     else
@@ -337,7 +340,7 @@ namespace ExtendedControls
 
             if (items > 0)                                // if any items.. just to check
             {
-                int index = firstindex + e.Location.Y / itemheight;
+                int index = firstindex + e.Location.Y / Itemheight;
 
                 if (index >= items)                 // due to the few pixels for border.  we let them have this
                     index = items - 1;
@@ -410,7 +413,7 @@ namespace ExtendedControls
                 return;
 
             int y = e.Location.Y;
-            int index = (y / itemheight) + firstindex;
+            int index = (y / Itemheight) + firstindex;
             focusindex = index;
             Invalidate();
         }

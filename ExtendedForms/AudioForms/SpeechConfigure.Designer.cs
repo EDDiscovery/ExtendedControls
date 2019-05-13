@@ -116,14 +116,13 @@ namespace ExtendedAudioForms
             this.checkBoxCustomComplete.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomComplete.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomComplete.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomComplete.FontNerfReduction = 0.5F;
             this.checkBoxCustomComplete.Location = new System.Drawing.Point(15, 132);
             this.checkBoxCustomComplete.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomComplete.Name = "checkBoxCustomComplete";
             this.checkBoxCustomComplete.Size = new System.Drawing.Size(159, 17);
             this.checkBoxCustomComplete.TabIndex = 1;
             this.checkBoxCustomComplete.Text = "Wait until speech completes";
-            this.checkBoxCustomComplete.TickBoxReductionSize = 10;
+            this.checkBoxCustomComplete.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustomComplete.UseVisualStyleBackColor = true;
             // 
             // panelOuter
@@ -310,14 +309,13 @@ namespace ExtendedAudioForms
             this.checkBoxCustomLiteral.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomLiteral.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomLiteral.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomLiteral.FontNerfReduction = 0.5F;
             this.checkBoxCustomLiteral.Location = new System.Drawing.Point(197, 132);
             this.checkBoxCustomLiteral.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomLiteral.Name = "checkBoxCustomLiteral";
             this.checkBoxCustomLiteral.Size = new System.Drawing.Size(54, 17);
             this.checkBoxCustomLiteral.TabIndex = 1;
             this.checkBoxCustomLiteral.Text = "Literal";
-            this.checkBoxCustomLiteral.TickBoxReductionSize = 10;
+            this.checkBoxCustomLiteral.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustomLiteral.UseVisualStyleBackColor = true;
             // 
             // textBoxBorderTest
@@ -373,14 +371,13 @@ namespace ExtendedAudioForms
             this.checkBoxCustomR.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomR.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomR.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomR.FontNerfReduction = 0.5F;
             this.checkBoxCustomR.Location = new System.Drawing.Point(271, 319);
             this.checkBoxCustomR.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomR.Name = "checkBoxCustomR";
             this.checkBoxCustomR.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomR.TabIndex = 8;
             this.checkBoxCustomR.Text = "Override";
-            this.checkBoxCustomR.TickBoxReductionSize = 10;
+            this.checkBoxCustomR.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustomR.UseVisualStyleBackColor = true;
             this.checkBoxCustomR.CheckedChanged += new System.EventHandler(this.checkBoxCustomR_CheckedChanged);
             // 
@@ -390,14 +387,13 @@ namespace ExtendedAudioForms
             this.checkBoxCustomV.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomV.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomV.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomV.FontNerfReduction = 0.5F;
             this.checkBoxCustomV.Location = new System.Drawing.Point(271, 261);
             this.checkBoxCustomV.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomV.Name = "checkBoxCustomV";
             this.checkBoxCustomV.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomV.TabIndex = 8;
             this.checkBoxCustomV.Text = "Override";
-            this.checkBoxCustomV.TickBoxReductionSize = 10;
+            this.checkBoxCustomV.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustomV.UseVisualStyleBackColor = true;
             this.checkBoxCustomV.CheckedChanged += new System.EventHandler(this.checkBoxCustomV_CheckedChanged);
             // 

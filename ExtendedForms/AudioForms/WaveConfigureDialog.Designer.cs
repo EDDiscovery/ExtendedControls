@@ -115,14 +115,13 @@ namespace ExtendedAudioForms
             this.checkBoxCustomV.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomV.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomV.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomV.FontNerfReduction = 0.5F;
             this.checkBoxCustomV.Location = new System.Drawing.Point(276, 159);
             this.checkBoxCustomV.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomV.Name = "checkBoxCustomV";
             this.checkBoxCustomV.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomV.TabIndex = 5;
             this.checkBoxCustomV.Text = "Override";
-            this.checkBoxCustomV.TickBoxReductionSize = 10;
+            this.checkBoxCustomV.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustomV.UseVisualStyleBackColor = true;
             this.checkBoxCustomV.CheckedChanged += new System.EventHandler(this.checkBoxCustomV_CheckedChanged);
             // 
@@ -132,14 +131,13 @@ namespace ExtendedAudioForms
             this.checkBoxCustomComplete.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomComplete.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomComplete.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomComplete.FontNerfReduction = 0.5F;
             this.checkBoxCustomComplete.Location = new System.Drawing.Point(12, 82);
             this.checkBoxCustomComplete.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomComplete.Name = "checkBoxCustomComplete";
             this.checkBoxCustomComplete.Size = new System.Drawing.Size(150, 17);
             this.checkBoxCustomComplete.TabIndex = 2;
             this.checkBoxCustomComplete.Text = "Wait until audio completes";
-            this.checkBoxCustomComplete.TickBoxReductionSize = 10;
+            this.checkBoxCustomComplete.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustomComplete.UseVisualStyleBackColor = true;
             // 
             // buttonExtTest

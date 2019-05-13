@@ -189,14 +189,13 @@ namespace ExtendedConditionsForms
             this.checkBoxCustomRefresh.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomRefresh.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomRefresh.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomRefresh.FontNerfReduction = 0.5F;
             this.checkBoxCustomRefresh.Location = new System.Drawing.Point(6, 48);
             this.checkBoxCustomRefresh.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomRefresh.Name = "checkBoxCustomRefresh";
             this.checkBoxCustomRefresh.Size = new System.Drawing.Size(93, 17);
             this.checkBoxCustomRefresh.TabIndex = 6;
             this.checkBoxCustomRefresh.Text = "Run at refresh";
-            this.checkBoxCustomRefresh.TickBoxReductionSize = 10;
+            this.checkBoxCustomRefresh.TickBoxReductionRatio = 0.75f;
             this.toolTip1.SetToolTip(this.checkBoxCustomRefresh, "Click to indicate that this event can run during the refresh cycle");
             this.checkBoxCustomRefresh.UseVisualStyleBackColor = true;
             // 

@@ -20,10 +20,11 @@ namespace ExtendedControls
 {
     public interface ITheme                     // Extended controls use this if they want to be themed
     {
-        bool ApplyToFormStandardFontSize(Form form);  
-        bool ApplyToForm(Form form, float size); 
-        bool ApplyToForm(Form form, Font fnt = null);   // null means use standard one
-        void ApplyToControls(Control parent, Font fnt = null, bool applytothis = false);
+        bool ApplyStd(Form form);
+        bool ApplyDialog(Form form);
+
+        void ApplyStdSubControls(Control parent, bool applytothis = false);
+        void ApplyDialogSubControls(Control parent, bool applytothis = false);
 
         Color ButtonBackColor { get; set; }
         Color ButtonTextColor { get; set; }
@@ -40,8 +41,9 @@ namespace ExtendedControls
 
         Color LabelColor { get; set; }
 
-
         string FontName { get; set; }
+        Font GetScaledFont(float scaled, FontStyle fs = FontStyle.Regular);       // 1.0 = selected font size.
+
         bool WindowsFrame { get; set; }
         Icon MessageBoxWindowIcon { get; set; }
     }

@@ -31,7 +31,7 @@ namespace ExtendedAudioForms
         {
             comboBoxCustomDevice.Items.AddRange(dr.GetAudioEndpoints().ToArray());
             comboBoxCustomDevice.SelectedItem = dr.GetAudioEndpoint();
-            bool border = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToForm(this, System.Drawing.SystemFonts.DefaultFont) ?? true;
+            bool border = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyStd(this) ?? true;
 
             this.Text = title;
             if (!border)

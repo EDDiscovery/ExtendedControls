@@ -194,7 +194,7 @@ namespace ExtendedControls
             {
                 fd.Font = BaseUtils.FontLoader.GetFont(theme.FontName, theme.FontSize);
                 fd.MinSize = 4;
-                fd.MaxSize = 12;
+                fd.MaxSize = 24;
                 DialogResult result;
 
                 try

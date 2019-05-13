@@ -108,7 +108,7 @@ namespace ExtendedControls
             ITheme theme = ThemeableFormsInstance.Instance;
             if (theme != null)  // paranoid
             {
-                border = theme.ApplyToFormStandardFontSize(this);
+                border = theme.ApplyDialog(this);
             }
 
             labelCaption.Visible = !border;

@@ -28,13 +28,14 @@ namespace ExtendedControls
         public Color CheckBoxInnerColor { get; set; } = Color.White;
         public Color CheckColor { get; set; } = Color.DarkBlue;
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
-        public float FontNerfReduction { get; set; } = 0.5F;
-        public int TickBoxReductionSize { get; set; } = 10;         // no of pixels smaller than the height to make the tick box
+        public float TickBoxReductionRatio { get; set; } = 0.75f;
         public Image ImageUnchecked = null;                         // set both this and Image to draw a image instead of the check. 
         public Image ImageIndeterminate = null;                     // can set this, if required, if using indeterminate value
         public float ImageButtonDisabledScaling { get; set; } = 0.5F;   // scaling when disabled
         public ImageAttributes DrawnImageAttributesEnabled = null;         // Image override (colour etc) for images using Image
         public ImageAttributes DrawnImageAttributesDisabled = null;         // Image override (colour etc) for images using Image
+
+        private Font FontToUse = null;
 
         public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)
         {
@@ -43,6 +44,18 @@ namespace ExtendedControls
 
         public ExtCheckBox() : base()
         {
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            FontToUse = null;   // need to reestimate
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            FontToUse = null;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -56,8 +69,9 @@ namespace ExtendedControls
                 using (Brush br = new SolidBrush(this.BackColor))
                     e.Graphics.FillRectangle(br, rect);
 
-                rect.Height -= TickBoxReductionSize;
-                rect.Y += TickBoxReductionSize / 2;
+                int reduce = (int)(rect.Height * TickBoxReductionRatio);
+                rect.Y += (rect.Height - reduce) / 2;
+                rect.Height = reduce;
                 rect.Width = rect.Height;
 
                 Rectangle textarea = ClientRectangle;
@@ -110,12 +124,14 @@ namespace ExtendedControls
 
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
+                using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.FitBlackBox })
                 {
                     using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(0.5F)))
                     {
-                        using (Font ft = BaseUtils.FontLoader.GetFont(this.Font.Name, this.Font.Size - FontNerfReduction)) // font 0.5 points smaller, seems to work, otherwise it just won't fit
-                            e.Graphics.DrawString(this.Text, ft, textb, textarea, fmt);
+                        if (FontToUse == null || FontToUse.FontFamily != Font.FontFamily || FontToUse.Style != Font.Style)
+                            FontToUse = e.Graphics.GetFontToFitRectangle(this.Text, Font, textarea, fmt);
+
+                        e.Graphics.DrawString(this.Text, FontToUse, textb, textarea, fmt);
                     }
                 }
 

@@ -149,7 +149,7 @@ namespace ExtendedControls
             if (theme != null)  // paranoid
             {
                 this.ForeColor = theme.TextBlockColor;
-                framed = theme.ApplyToForm(this,12);
+                framed = theme.ApplyDialog(this);
                 this.Font = labelCaption.Font;
                 if (theme.MessageBoxWindowIcon != null)
                     this.Icon = theme.MessageBoxWindowIcon;

@@ -119,7 +119,7 @@ namespace ExtendedControls
                 cc.LargeChange = cc.ItemCount * Properties.Resources.All.Height / 40;   // 40 ish scroll movements
                 cc.CloseOnDeactivate = CloseOnDeactivate;
                 if (applytheme)
-                    ThemeableFormsInstance.Instance?.ApplyToControls(cc, applytothis: true);
+                    ThemeableFormsInstance.Instance?.ApplyStd(cc);
 
                 tagback = tag;
 

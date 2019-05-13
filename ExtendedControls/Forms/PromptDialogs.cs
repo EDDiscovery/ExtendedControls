@@ -132,7 +132,7 @@ namespace ExtendedControls
             prompt.CancelButton = cancel;
             prompt.ShowInTaskbar = false;
 
-            theme.ApplyToFormStandardFontSize(prompt);
+            theme.ApplyDialog(prompt);
 
             if (prompt.ShowDialog(p) == DialogResult.OK)
             {

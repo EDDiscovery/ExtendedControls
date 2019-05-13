@@ -523,14 +523,13 @@ namespace ExtendedAudioForms
             this.checkBoxG.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxG.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxG.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxG.FontNerfReduction = 0.5F;
             this.checkBoxG.Location = new System.Drawing.Point(472, 331);
             this.checkBoxG.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxG.Name = "checkBoxG";
             this.checkBoxG.Size = new System.Drawing.Size(59, 17);
             this.checkBoxG.TabIndex = 19;
             this.checkBoxG.Text = "Enable";
-            this.checkBoxG.TickBoxReductionSize = 10;
+            this.checkBoxG.TickBoxReductionRatio = 0.75f;
             this.checkBoxG.UseVisualStyleBackColor = true;
             this.checkBoxG.CheckedChanged += new System.EventHandler(this.checkBoxG_CheckedChanged);
             // 
@@ -540,14 +539,13 @@ namespace ExtendedAudioForms
             this.checkBoxD.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxD.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxD.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxD.FontNerfReduction = 0.5F;
             this.checkBoxD.Location = new System.Drawing.Point(472, 262);
             this.checkBoxD.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxD.Name = "checkBoxD";
             this.checkBoxD.Size = new System.Drawing.Size(59, 17);
             this.checkBoxD.TabIndex = 17;
             this.checkBoxD.Text = "Enable";
-            this.checkBoxD.TickBoxReductionSize = 10;
+            this.checkBoxD.TickBoxReductionRatio = 0.75f;
             this.checkBoxD.UseVisualStyleBackColor = true;
             this.checkBoxD.CheckedChanged += new System.EventHandler(this.checkBoxD_CheckedChanged);
             // 
@@ -585,14 +583,13 @@ namespace ExtendedAudioForms
             this.checkBoxR.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxR.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxR.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxR.FontNerfReduction = 0.5F;
             this.checkBoxR.Location = new System.Drawing.Point(472, 190);
             this.checkBoxR.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxR.Name = "checkBoxR";
             this.checkBoxR.Size = new System.Drawing.Size(59, 17);
             this.checkBoxR.TabIndex = 12;
             this.checkBoxR.Text = "Enable";
-            this.checkBoxR.TickBoxReductionSize = 10;
+            this.checkBoxR.TickBoxReductionRatio = 0.75f;
             this.checkBoxR.UseVisualStyleBackColor = true;
             this.checkBoxR.CheckedChanged += new System.EventHandler(this.checkBoxR_CheckedChanged);
             // 
@@ -602,14 +599,13 @@ namespace ExtendedAudioForms
             this.checkBoxC.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxC.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxC.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxC.FontNerfReduction = 0.5F;
             this.checkBoxC.Location = new System.Drawing.Point(472, 112);
             this.checkBoxC.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxC.Name = "checkBoxC";
             this.checkBoxC.Size = new System.Drawing.Size(59, 17);
             this.checkBoxC.TabIndex = 8;
             this.checkBoxC.Text = "Enable";
-            this.checkBoxC.TickBoxReductionSize = 10;
+            this.checkBoxC.TickBoxReductionRatio = 0.75f;
             this.checkBoxC.UseVisualStyleBackColor = true;
             this.checkBoxC.CheckedChanged += new System.EventHandler(this.checkBoxC_CheckedChanged);
             // 
@@ -619,14 +615,13 @@ namespace ExtendedAudioForms
             this.checkBoxE.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxE.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxE.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxE.FontNerfReduction = 0.5F;
             this.checkBoxE.Location = new System.Drawing.Point(472, 43);
             this.checkBoxE.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxE.Name = "checkBoxE";
             this.checkBoxE.Size = new System.Drawing.Size(59, 17);
             this.checkBoxE.TabIndex = 3;
             this.checkBoxE.Text = "Enable";
-            this.checkBoxE.TickBoxReductionSize = 10;
+            this.checkBoxE.TickBoxReductionRatio = 0.75f;
             this.checkBoxE.UseVisualStyleBackColor = true;
             this.checkBoxE.CheckedChanged += new System.EventHandler(this.checkBoxE_CheckedChanged);
             // 
@@ -650,14 +645,13 @@ namespace ExtendedAudioForms
             this.checkBoxCustomNone.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomNone.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomNone.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomNone.FontNerfReduction = 0.5F;
             this.checkBoxCustomNone.Location = new System.Drawing.Point(472, 438);
             this.checkBoxCustomNone.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomNone.Name = "checkBoxCustomNone";
             this.checkBoxCustomNone.Size = new System.Drawing.Size(75, 17);
             this.checkBoxCustomNone.TabIndex = 20;
             this.checkBoxCustomNone.Text = "No effects";
-            this.checkBoxCustomNone.TickBoxReductionSize = 10;
+            this.checkBoxCustomNone.TickBoxReductionRatio = 0.75f;
             this.checkBoxCustomNone.UseVisualStyleBackColor = true;
             this.checkBoxCustomNone.CheckedChanged += new System.EventHandler(this.checkBoxCustomNone_CheckedChanged);
             // 
@@ -757,14 +751,13 @@ namespace ExtendedAudioForms
             this.checkBoxP.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxP.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxP.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxP.FontNerfReduction = 0.5F;
             this.checkBoxP.Location = new System.Drawing.Point(472, 393);
             this.checkBoxP.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxP.Name = "checkBoxP";
             this.checkBoxP.Size = new System.Drawing.Size(59, 17);
             this.checkBoxP.TabIndex = 19;
             this.checkBoxP.Text = "Enable";
-            this.checkBoxP.TickBoxReductionSize = 10;
+            this.checkBoxP.TickBoxReductionRatio = 0.75f;
             this.checkBoxP.UseVisualStyleBackColor = true;
             this.checkBoxP.CheckedChanged += new System.EventHandler(this.checkBoxP_CheckedChanged);
             // 

@@ -98,7 +98,7 @@ namespace ExtendedConditionsForms
                     foreach (ConditionEntry f in fe.fields)
                         CreateConditionInt(g, f.itemname, ConditionEntry.MatchNames[(int)f.matchtype], f.matchstring);
 
-                    ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+                    ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialogSubControls(g.panel);
 
                     groups.Add(g);
                 }
@@ -170,7 +170,7 @@ namespace ExtendedConditionsForms
             if (eventlist == null)      // if we don't have any event list, auto create a condition
                 CreateConditionInt(g, null, null, null);
 
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialogSubControls(g.panel);
 
             groups.Add(g);
             panelVScroll.Controls.Add(g.panel);
@@ -197,6 +197,7 @@ namespace ExtendedConditionsForms
             {
                 g.evlist = new ExtendedControls.ExtComboBox();
                 g.evlist.Items.AddRange(eventlist);
+                g.evlist.DropDownWidth = 400;
                 g.evlist.Location = new Point(panelxmargin, panelymargin);
                 g.evlist.Size = new Size(EventWidth, 24);
                 g.evlist.DropDownHeight = DropDownHeight;
@@ -287,7 +288,7 @@ namespace ExtendedConditionsForms
         private void CreateCondition(Group g, string initialfname = null, string initialcond = null, string initialvalue = null )
         {
             CreateConditionInt(g, initialfname, initialcond, initialvalue);
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialogSubControls(g.panel);
             FixUpGroups();
         }
 
@@ -303,7 +304,7 @@ namespace ExtendedConditionsForms
             c.fname.Size = new Size(LeftSizeConditionWidth, 32);
             c.fname.SetAutoCompletor(AutoCompletor);
             c.fname.Tag = new Tuple<Group,Group.Conditions>(g,c);
-            c.fname.DropDownWidth = LeftSizeConditionWidth*3/2;
+            c.fname.DropDownWidth = LeftSizeConditionWidth*2;
             c.fname.DropDownHeight = DropDownHeight;
             c.fname.AutoCompleteCommentMarker = commentmarker;
             if (initialfname != null)
@@ -315,6 +316,7 @@ namespace ExtendedConditionsForms
             c.cond.SelectedIndex = 0;
             c.cond.Size = new Size(ConditionWidth, 24);
             c.cond.DropDownHeight = DropDownHeight;
+            c.cond.DropDownWidth = ConditionWidth * 2;
             c.cond.Tag = g;
 
             if (initialcond != null)
@@ -526,7 +528,8 @@ namespace ExtendedConditionsForms
                 // pos the panel
 
                 g.panel.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
-                g.panel.Size = new Size(Math.Max(panelwidth - panelxmargin * 2, farx), Math.Max(vnextcond, panelymargin + conditionhoff));
+                //g.panel.Size = new Size(Math.Max(panelwidth - panelxmargin * 2, farx), Math.Max(vnextcond, panelymargin + conditionhoff));
+                g.panel.Size = new Size(Math.Max(panelwidth - panelxmargin * 2, farx), 10);
                 g.panel.BorderStyle = (g.condlist.Count > 1) ? BorderStyle.FixedSingle : BorderStyle.None;
 
                 y += g.panel.Height + 2;
