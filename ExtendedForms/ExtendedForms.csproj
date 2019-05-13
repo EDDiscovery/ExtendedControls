@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Sdk="Microsoft.NET.Sdk.WindowsDesktop" Project="Sdk.props" Condition="'$(TargetFramework)' == 'netcoreapp3.0'"/>
   <PropertyGroup>
     <ProjectGuid>{298C11C9-B58F-415C-8458-1CAE3C6CAB62}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
