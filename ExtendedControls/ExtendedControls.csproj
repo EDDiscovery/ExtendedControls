@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
     <ProjectGuid>{2049403F-F4C7-45E6-B777-6390C78E4D2B}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExtendedControls</RootNamespace>
     <AssemblyName>ExtendedControls</AssemblyName>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFrameworks>net461<!-- ;netcoreapp3.0 --></TargetFrameworks>
     <Company>EDDiscovery</Company>
     <Version>1.1.0.0</Version>
   </PropertyGroup>
@@ -16,10 +16,12 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
     <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Design" />
   </ItemGroup>
   <ItemGroup Label="Controls">
     <Compile Update="Controls\ImageViewer.cs">
@@ -63,5 +65,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <PackageReference Include="System.Windows.Forms.DataVisualization">
+      <Version>1.0.0-prerelease.19218.1</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>
