@@ -184,10 +184,7 @@ namespace ExtendedControls
                     cbdropdown.ScrollBarButtonColor = this.DropDownScrollBarButtonColor;
                     cbdropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
                     cbdropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
-
-                    Point location = this.PointToScreen(new Point(0, 0));
-                    cbdropdown.SetLocation = new Point(location.X, location.Y + this.Height);
-
+                    cbdropdown.PositionBelow(this);
                     EndButtonImage = Properties.Resources.ArrowUp;
                     cbdropdown.Show(FindForm());
                     Focus();                // Major change.. we now keep the focus at all times

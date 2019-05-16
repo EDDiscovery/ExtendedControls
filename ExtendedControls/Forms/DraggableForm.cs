@@ -178,7 +178,6 @@ namespace ExtendedControls
 
                 case WM.NCHITTEST:      // Windows honours NCHITTEST; Mono does not 
                     {
-                        System.Diagnostics.Debug.WriteLine("Hit test " + AllowResize);
                         if (!AllowResize)
                         {
                             m.Result = (IntPtr)HT.CAPTION;

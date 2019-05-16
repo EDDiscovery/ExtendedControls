@@ -38,11 +38,12 @@ namespace ExtendedControls
             }   
         }
 
+        public string MessageText { get { return themeTextBox.Text; } set { themeTextBox.Text = value; } }
+
         //      public string MsgText { get { return msgText; } set { SetText(value); } }     // modeless update
 
         MessageBoxButtons? buttons;     // The buttons that this dialog will display
         MessageBoxIcon mbIcon;          // The icon that this dialog will show
-        string msgText;                 // The text displayed by this form
 
         public MessageBoxTheme(string text, string caption = null, MessageBoxButtons? buttons = MessageBoxButtons.OK, MessageBoxIcon messageBoxIcon = MessageBoxIcon.None, Icon formIcon = null)
         {
@@ -50,8 +51,8 @@ namespace ExtendedControls
 
             DialogResult = DialogResult.None;
 
-            this.msgText = text;
             this.Text = labelCaption.Text = caption ?? "Warning".Tx(this);
+            themeTextBox.Text = text;
             this.buttons = buttons;
             this.mbIcon = messageBoxIcon;
             if (formIcon != null)
@@ -143,8 +144,6 @@ namespace ExtendedControls
                 default:
                     break;
             }
-
-            themeTextBox.Text = msgText;
 
             ITheme theme = ThemeableFormsInstance.Instance;
             bool framed = true;

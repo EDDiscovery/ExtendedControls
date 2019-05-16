@@ -34,6 +34,7 @@ namespace ExtendedControls
 
         public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location.
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
+        public void PositionBelow(Control c, int xoff, int yoff = 0) { SetLocation = c.PointToScreen(new Point(xoff, c.Height+yoff)); }
         public bool RightAlignedToLocation { get; set; } = false;
 
         private bool closeondeactivateselected;

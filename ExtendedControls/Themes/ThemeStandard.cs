@@ -440,7 +440,7 @@ namespace ExtendedControls
         private bool ApplyToForm(Form form, Font fnt)
         {
             UpdateControls(form.Parent, form, fnt, 0);
-            UpdateToolsTripRenderer();
+            UpdateToolsStripRenderer();
             return WindowsFrame;
         }
 
@@ -473,7 +473,7 @@ namespace ExtendedControls
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level)    // parent can be null
         {
 #if DEBUG
-            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString());
+            System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
 #endif
 
             float mouseoverscaling = 1.3F;
@@ -941,6 +941,8 @@ namespace ExtendedControls
             }
             else if (myControl is ToolStrip)
             {
+                myControl.Font = fnt;       // Toolstrips don't seem to inherit Forms font, so force
+
                 foreach (ToolStripItem i in ((ToolStrip)myControl).Items)   // make sure any buttons have the button back colour set
                 {
                     if (i is ToolStripButton || i is ToolStripDropDownButton)
@@ -1004,7 +1006,7 @@ namespace ExtendedControls
         }
 
 
-        private void UpdateToolsTripRenderer()
+        private void UpdateToolsStripRenderer()
         {
             ThemeToolStripRenderer toolstripRenderer = ToolStripManager.Renderer as ThemeToolStripRenderer;
 

@@ -56,7 +56,7 @@ namespace ExtendedConditionsForms
         public void Init(string t, Icon ic, Variables vbs , Dictionary<string, string> altops = null,
                                                                 bool showatleastoneentry = false ,
                                                                 bool showrunatrefreshcheckbox = false , 
-                                                                bool setrunatrefrechcheckboxstate = false,
+                                                                bool setrunatrefreshcheckboxstate = false,
                                                                 bool allowadd = false, 
                                                                 bool allownoexpand = false, 
                                                                 bool allowmultipleentries = true)
@@ -73,7 +73,7 @@ namespace ExtendedConditionsForms
 
             int pos = panelmargin;
             checkBoxCustomRefresh.Enabled = checkBoxCustomRefresh.Visible = showrunatrefreshcheckbox;
-            checkBoxCustomRefresh.Checked = setrunatrefrechcheckboxstate;
+            checkBoxCustomRefresh.Checked = setrunatrefreshcheckboxstate;
             checkBoxCustomRefresh.Location = new Point(pos, panelmargin);
 
             if (vbs != null)

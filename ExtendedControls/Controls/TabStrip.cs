@@ -511,9 +511,7 @@ namespace ExtendedControls
             dropdown.ItemSeperators = ListSelectionItemSeparators;
             dropdown.ImageItems = ImageList.ToList();
             dropdown.FlatStyle = FlatStyle.Popup;
-
-            Point location = panelListSelection.PointToScreen(new Point(0, 0));
-            dropdown.SetLocation = new Point(location.X + panelListSelection.Width, location.Y);
+            dropdown.PositionBelow(panelListSelection);
 
             dropdown.SelectedIndexChanged += (s, ea) =>
             {

@@ -95,8 +95,7 @@ namespace ExtendedControls
             {
                 if (dropdown == false)
                 {
-                    Point location = this.PointToScreen(new Point(0, 0));
-                    ddc.SetLocation = new Point(location.X + this.Width, location.Y + this.Height);   // -n means align right to this loc
+                    ddc.PositionBelow(this,this.Width);
                     ddc.RightAlignedToLocation = true;
                     System.Diagnostics.Debug.WriteLine("dcc border " + ddc.BorderColor);
                     ddc.Show(FindForm());

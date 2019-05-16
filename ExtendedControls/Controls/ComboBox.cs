@@ -330,9 +330,7 @@ namespace ExtendedControls
             customdropdown.Font = this.Font;
             customdropdown.ScrollBarColor = this.ScrollBarColor;
             customdropdown.ScrollBarButtonColor = this.ScrollBarButtonColor;
-
-            Point location = this.PointToScreen(new Point(0, 0));
-            customdropdown.SetLocation = new Point(location.X, location.Y + this.Height);
+            customdropdown.PositionBelow(this);
 
             customdropdown.Activated += customdropdown_Activated;
             customdropdown.SelectedIndexChanged += customdropdown_SelectedIndexChanged;
