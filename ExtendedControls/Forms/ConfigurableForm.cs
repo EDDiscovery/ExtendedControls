@@ -68,18 +68,16 @@ namespace ExtendedControls
             }
 
             // ComboBoxCustom
-            public Entry(string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, List<string> comboitems, Size? sz = null)
+            public Entry(string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, List<string> comboitems)
             {
                 controltype = typeof(ExtendedControls.ExtComboBox); text = t; pos = p; size = s; tooltip = tt; controlname = nam;
                 comboboxitems = string.Join(",", comboitems);
-                comboboxdropdownsize = sz;
             }
 
             public bool checkboxchecked;        // fill in for checkbox
             public bool textboxmultiline;       // fill in for textbox
             public bool clearonfirstchar;       // fill in for textbox
             public string comboboxitems;        // fill in for combobox. comma separ list.
-            public Size? comboboxdropdownsize;  // may be null, fill in for combobox
             public string customdateformat;     // fill in for datetimepicker
             public double numberboxdoubleminimum = double.MinValue;   // for double box
             public double numberboxdoublemaximum = double.MaxValue;
@@ -389,7 +387,7 @@ namespace ExtendedControls
             return null;
         }
 
-        public void Init(Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname, Object callertag)
+        public void Init(Icon icon, System.Drawing.Size minsize, System.Drawing.Point pos, string caption, string lname, Object callertag)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
@@ -397,13 +395,6 @@ namespace ExtendedControls
             ITheme theme = ThemeableFormsInstance.Instance;
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
-
-            if (theme.WindowsFrame)
-            {
-                size.Height += 50;
-            }
-
-            Size = size;
 
             if (pos.X == -999)
                 StartPosition = FormStartPosition.CenterScreen;
@@ -566,11 +557,6 @@ namespace ExtendedControls
                 if (c is ExtendedControls.ExtComboBox)
                 {
                     ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
-                    if (ent.comboboxdropdownsize != null)
-                    {
-                        cb.DropDownHeight = ent.comboboxdropdownsize.Value.Height;
-                        cb.DropDownWidth = ent.comboboxdropdownsize.Value.Width;
-                    }
 
                     cb.Items.AddRange(ent.comboboxitems.Split(','));
                     if (cb.Items.Contains(ent.text))
@@ -592,7 +578,15 @@ namespace ExtendedControls
 
             this.Icon = icon;
 
+            this.AutoScaleMode = AutoScaleMode.Font;
+
             theme.ApplyStd(this);
+
+            int fh = (int)this.Font.GetHeight();        // use the FH to nerf the extra area so it scales with FH.. this helps keep the controls within a framed window
+            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 8) + fh);
+
+            this.PositionSizeWithinScreen(Math.Max(minsize.Width, measureitemsinwindow.Width), Math.Max(minsize.Height, measureitemsinwindow.Height),true,64);
+
 
             //foreach( Control c in Controls[0].Controls )   System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
 

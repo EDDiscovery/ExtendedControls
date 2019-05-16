@@ -33,10 +33,7 @@ namespace ExtendedControls
 
         public override Color ForeColor { get { return base.ForeColor; } set { ddc.ForeColor = base.ForeColor = value; } }
         public bool FitToItemsHeight { get { return ddc.FitToItemsHeight; } set { ddc.FitToItemsHeight = value; } }
-        public int ScrollBarWidth { get { return ddc.ScrollBarWidth; } set { ddc.ScrollBarWidth = value; } }
-        public int DropDownWidth { get { return dropdownwidth; } set { dropdownwidth = value; } }
-        public int DropDownHeight { get { return dropdownheight; } set { dropdownheight = value; } }
-        public int ItemHeight { get { return ddc.ItemHeight; } set { ddc.ItemHeight = value; } }
+
         public Color BorderColor { get { return ddc.BorderColor; } set { ddc.BorderColor = value; } } 
         public FlatStyle FlatStyle { get { return ddc.FlatStyle; } set { ddc.FlatStyle = value; } }
         public Color SelectionBackColor { get { return ddc.SelectionBackColor; } set { ddc.SelectionBackColor = value; } }
@@ -49,22 +46,13 @@ namespace ExtendedControls
         public string SelectedItem { get { return (ddc.SelectedIndex>=0) ? ddc.Items[ddc.SelectedIndex] : null; }  }
 
         private ExtListBoxForm ddc;
-        int dropdownwidth = 200;
-        int dropdownheight = 400;
 
         public ExtPanelDropDown()
         {
             InitializeComponent();
             ddc = new ExtListBoxForm("PSDD",false);
             ddc.SelectedIndexChanged += Ddc_SelectedIndexChanged;
-            ddc.Activated += Ddc_DropDown;
             ddc.Deactivate += Ddc_Deactivate;
-        }
-
-        private void Ddc_DropDown(object sender, EventArgs e)
-        {
-            Point location = this.PointToScreen(new Point(Width-dropdownwidth, Height));
-            ddc.Location = location;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -92,6 +80,12 @@ namespace ExtendedControls
             }
         }
 
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            ddc.Font = Font;
+        }
+
         bool dropdown = false;
 
         protected override void OnMouseClick(MouseEventArgs e)
@@ -101,14 +95,10 @@ namespace ExtendedControls
             {
                 if (dropdown == false)
                 {
-                    int fittableitems = this.DropDownHeight / this.ItemHeight;
-                    if (fittableitems == 0)
-                        fittableitems = 5;
-
-                    if (fittableitems > this.Items.Count())                             // no point doing more than we have..
-                        fittableitems = this.Items.Count();
-
-                    ddc.Size = new Size(this.DropDownWidth > 9 ? this.DropDownWidth : this.Width, fittableitems * this.ItemHeight + 4);
+                    Point location = this.PointToScreen(new Point(0, 0));
+                    ddc.SetLocation = new Point(location.X + this.Width, location.Y + this.Height);   // -n means align right to this loc
+                    ddc.RightAlignedToLocation = true;
+                    System.Diagnostics.Debug.WriteLine("dcc border " + ddc.BorderColor);
                     ddc.Show(FindForm());
                 }
                 else
@@ -117,7 +107,6 @@ namespace ExtendedControls
                 }
 
                 dropdown = !dropdown;
-
             }
         }
 

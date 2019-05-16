@@ -41,8 +41,6 @@ namespace ExtendedControls
         public int TabFieldSpacing { get; set; } = 8;
 
         // only if using ListSelection:
-        public int DropDownWidth { get; set; } = 400;
-        public int DropDownHeight { get; set; } = 200;
         public Color DropDownBackgroundColor { get; set; } = Color.Gray;
         public Color DropDownBorderColor { get; set; } = Color.Green;
         public Color DropDownScrollBarColor { get; set; } = Color.LightGray;
@@ -508,17 +506,15 @@ namespace ExtendedControls
             dropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
             dropdown.ItemSeperatorColor = this.DropDownItemSeperatorColor;
 
-            dropdown.ItemHeight = ImageList[0].Size.Height+2;
+            dropdown.Font = Font;
             dropdown.Items = TextList.ToList();
             dropdown.ItemSeperators = ListSelectionItemSeparators;
             dropdown.ImageItems = ImageList.ToList();
             dropdown.FlatStyle = FlatStyle.Popup;
-            dropdown.Activated += (s,ea) => 
-            {
-                Point location = panelListSelection.PointToScreen(new Point(0, 0));
-                dropdown.Location = dropdown.PositionWithinScreen(location.X + panelListSelection.Width, location.Y);
-                this.Invalidate(true);
-            };
+
+            Point location = panelListSelection.PointToScreen(new Point(0, 0));
+            dropdown.SetLocation = new Point(location.X + panelListSelection.Width, location.Y);
+
             dropdown.SelectedIndexChanged += (s, ea) =>
             {
                 tdm = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
@@ -531,7 +527,6 @@ namespace ExtendedControls
                 MouseLeavePanelObjects(sender, e);          // same as a mouse leave on one of the controls
             };
 
-            dropdown.Size = new Size(DropDownWidth, DropDownHeight);
             dropdown.Show(this.FindForm());
             tdm = TabDisplayMode.ExpandedInList;            // hold display in here during list presentation
         }

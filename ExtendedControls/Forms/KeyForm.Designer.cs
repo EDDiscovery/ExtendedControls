@@ -218,12 +218,9 @@
             this.textBoxSendTo.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxSendTo.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.textBoxSendTo.DropDownBorderColor = System.Drawing.Color.Gray;
-            this.textBoxSendTo.DropDownHeight = 400;
-            this.textBoxSendTo.DropDownItemHeight = 20;
             this.textBoxSendTo.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.textBoxSendTo.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.textBoxSendTo.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.textBoxSendTo.DropDownWidth = 0;
             this.textBoxSendTo.EndButtonEnable = false;
             this.textBoxSendTo.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxSendTo.EndButtonImage")));
             this.textBoxSendTo.EndButtonVisible = false;
@@ -312,23 +309,18 @@
             // 
             // comboBoxKeySelector
             // 
-            this.comboBoxKeySelector.ArrowWidth = 1;
             this.comboBoxKeySelector.BorderColor = System.Drawing.Color.White;
             this.comboBoxKeySelector.ButtonColorScaling = 0.5F;
             this.comboBoxKeySelector.DataSource = null;
             this.comboBoxKeySelector.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxKeySelector.DisplayMember = "";
             this.comboBoxKeySelector.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.comboBoxKeySelector.DropDownHeight = 600;
-            this.comboBoxKeySelector.DropDownWidth = 250;
             this.comboBoxKeySelector.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxKeySelector.ItemHeight = 13;
             this.comboBoxKeySelector.Location = new System.Drawing.Point(185, 86);
             this.comboBoxKeySelector.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxKeySelector.Name = "comboBoxKeySelector";
             this.comboBoxKeySelector.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.comboBoxKeySelector.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.comboBoxKeySelector.ScrollBarWidth = 16;
             this.comboBoxKeySelector.SelectedIndex = -1;
             this.comboBoxKeySelector.SelectedItem = null;
             this.comboBoxKeySelector.SelectedValue = null;

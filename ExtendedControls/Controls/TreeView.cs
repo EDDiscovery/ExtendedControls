@@ -41,7 +41,6 @@ namespace ExtendedControls.Controls
         public Color TreeViewBackColor { get { return TreeView.BackColor; } set { TreeView.BackColor = value; } }
         public Color BorderColor { get; set; } = Color.Transparent;
         public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
-        public int ScrollBarWidth { get; set; } = 20;
         public bool ShowLineCount { get; set; } = false;                // count lines
         public bool HideScrollBar { get; set; } = true;                   // hide if no scroll needed
 
@@ -149,8 +148,10 @@ namespace ExtendedControls.Controls
             TreeView.Location = new Point(bordersize, bordersize);
             TreeView.Size = new Size(ClientRectangle.Width - bordersize * 2, treeviewclienth);
 
-            ScrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
-            ScrollBar.Size = new Size(ScrollBarWidth, treeviewclienth);
+            int scrollbarwidth = Font.ScalePixels(20);
+
+            ScrollBar.Location = new Point(ClientRectangle.Width - scrollbarwidth - bordersize, bordersize);
+            ScrollBar.Size = new Size(scrollbarwidth, treeviewclienth);
             // we're letting the TreeView scroll itself, just hiding the default scroll bar under the themeable custom one when it's needed
             if (visibleonlayout) ScrollBar.BringToFront();
             else TreeView.BringToFront();

@@ -26,9 +26,14 @@ namespace ExtendedControls
 {
     public partial class ExtPanelScroll : Panel               // Written because I could not get the manual autoscroll to work when controls dynamically added
     {
-        public int ScrollBarWidth { get; set; } = 20;
+        public bool InternalScrollbar { get; set; } = false;        // indicates internal scroll bar. put a scroll bar inside the control on the designer to do this
+
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
+
+        public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
+
         public ExtScrollBar ScrollBar;
+
         public int ScrollOffset { get {return -scrollpos; } }
 
         private int scrollpos = 0;
@@ -38,14 +43,22 @@ namespace ExtendedControls
             MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll
         }
 
+        public void AddScrollBar(ExtScrollBar bar)      // for use of an external scroll bar
+        {
+            ScrollBar = bar;
+            ScrollBar.MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll, including the ExtScrollBar
+            ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
+            InternalScrollbar = false;
+        }
+
         protected override void OnControlAdded(ControlEventArgs e)
         {  
             if (e.Control is ExtScrollBar)
             {
                 ScrollBar = e.Control as ExtScrollBar;
-                ScrollBar.Width = ScrollBarWidth;
                 ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
                 ScrollBar.Name = "VScrollPanel";
+                InternalScrollbar = true;
             }
             else
             {
@@ -55,18 +68,29 @@ namespace ExtendedControls
             }
 
             e.Control.MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll, including the ExtScrollBar
+
+            base.OnControlAdded(e);
         }
 
         protected override void OnResize(EventArgs eventargs)       // added in resize event - should have been in here
         {
-            Rectangle area = ClientRectangle;
+            if (ScrollBar != null )
+            {
+                SetSC();
+                ScrollTo(scrollpos);
+            }
 
-            if (ScrollBar != null && area.Width > 0 && area.Height > 0)
+            base.OnResize(eventargs);       // call base class to let any hooks run
+        }
+
+        private void SetSC()
+        {
+            Rectangle area = ClientRectangle;
+            if (InternalScrollbar && ClientRectangle.Width > 0 && ClientRectangle.Height > 0)
             {
                 Point p = new Point(area.X + ((VerticalScrollBarDockRight) ? (area.Width - ScrollBarWidth) : 0), area.Y);
                 ScrollBar.Location = p;
                 ScrollBar.Size = new Size(ScrollBarWidth, area.Height);
-                ScrollTo(scrollpos);
             }
         }
 
@@ -90,16 +114,10 @@ namespace ExtendedControls
 
         protected override void OnLayout(LayoutEventArgs levent)
         {
+            if ( ScrollBar != null )
+                SetSC();
+
             base.OnLayout(levent);
-
-            Rectangle area = ClientRectangle;
-
-            if (ScrollBar != null && area.Width>0 && area.Height>0)
-            {
-                Point p = new Point(area.X + ((VerticalScrollBarDockRight) ? (area.Width - ScrollBarWidth) : 0), area.Y);
-                ScrollBar.Location = p;
-                ScrollBar.Size = new Size(ScrollBarWidth, area.Height);
-            }
         }
 
         private void Control_MouseWheel(object sender, MouseEventArgs e)

@@ -191,9 +191,24 @@ namespace ExtendedControls
             }
         }
 
+        private const float dialogscaling = 0.8f;
+
+        public Font GetDialogFont       // dialogs get a slighly smaller font
+        {
+            get
+            {
+                return GetFontSizeStyle(currentsettings.fontsize * dialogscaling, FontStyle.Regular);
+            }
+        }
+
         public Font GetScaledFont(float scaling, FontStyle fs = FontStyle.Regular)
         {
             return GetFontSizeStyle(currentsettings.fontsize * scaling, fs);
+        }
+
+        public Font GetDialogScaledFont(float scaling, FontStyle fs = FontStyle.Regular)
+        {
+            return GetFontSizeStyle(currentsettings.fontsize * scaling * dialogscaling, fs);
         }
 
         private Font GetFontSizeStyle(float size, FontStyle fs)
@@ -419,24 +434,13 @@ namespace ExtendedControls
 
         public bool ApplyDialog(Form form)
         {
-            dialogy = true;
-            bool win = ApplyToForm(form, GetScaledFont(0.8f));
-            dialogy = false;
-            return win;
+            return ApplyToForm(form, GetDialogFont);
         }
 
         private bool ApplyToForm(Form form, Font fnt)
         {
             UpdateControls(form.Parent, form, fnt, 0);
-
-            //form.FormBorderStyle = WindowsFrame ? FormBorderStyle.Sizable : FormBorderStyle.None;
-            //form.Opacity = currentsettings.formopacity / 100;
-            //form.BackColor = currentsettings.colors[Settings.CI.form];
-
-            //ApplyToControls(form, fnt);        // form is the parent of form!
-
             UpdateToolsTripRenderer();
-
             return WindowsFrame;
         }
 
@@ -455,7 +459,7 @@ namespace ExtendedControls
 
         public void ApplyDialogSubControls(Control ctrl, bool applytothis = false)
         {
-            Font fnt = GetScaledFont(0.8f);
+            Font fnt = GetDialogFont;
 
             if (applytothis)
                 UpdateControls(ctrl.Parent, ctrl, fnt, 0);
@@ -465,8 +469,6 @@ namespace ExtendedControls
                     UpdateControls(ctrl, c, fnt, 0);
             }
         }
-
-        bool dialogy = false;
 
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level)    // parent can be null
         {
@@ -525,14 +527,6 @@ namespace ExtendedControls
                     ctrl.ScrollBarFlatStyle = FlatStyle.Popup;
                 }
 
-                if (myControl.Font.Name.Contains("Courier"))                  // okay if we ordered a fixed font, don't override
-                {
-                    Font fntf = BaseUtils.FontLoader.GetFont(myControl.Font.Name, currentsettings.fontsize); // make one of the selected size
-                    myControl.Font = fntf;
-                }
-                else
-                    myControl.Font = fnt;
-
                 ctrl.Invalidate();
                 ctrl.PerformLayout();
             }
@@ -556,8 +550,6 @@ namespace ExtendedControls
                 else if (currentsettings.textboxborderstyle.Equals(TextboxBorderStyles[3]))
                     ctrl.BorderColor = currentsettings.colors[Settings.CI.textbox_border];
 
-                myControl.Font = fnt;
-
                 if (myControl is ExtTextBoxAutoComplete || myControl is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
                 {
                     ExtTextBoxAutoComplete actb = myControl as ExtTextBoxAutoComplete;
@@ -566,7 +558,6 @@ namespace ExtendedControls
                     actb.DropDownScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
                     actb.DropDownScrollBarColor = currentsettings.colors[Settings.CI.textbox_sliderback];
                     actb.DropDownMouseOverBackgroundColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
-                    actb.DropDownItemHeight = (int)actb.Font.GetHeight() + 6;
 
                     if (currentsettings.buttonstyle.Equals(ButtonStyles[0]))
                         actb.FlatStyle = FlatStyle.System;
@@ -606,6 +597,8 @@ namespace ExtendedControls
                         //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap2.OldColor + " to " + colormap2.NewColor);
 
                         ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap1, colormap2 });     // used ButtonDisabledScaling note!
+
+                        ctrl.ImageLayout = ImageLayout.Stretch;
                     }
 
                     if (ctrl.Image != null && ctrl.Text.Length == 0)        // if no text, just image, background is form to make the back disappear
@@ -627,8 +620,6 @@ namespace ExtendedControls
                     else
                         ctrl.FlatStyle = FlatStyle.Popup;
                 }
-
-                myControl.Font = fnt;
             }
             else if (myControl is ExtTabControl)
             {
@@ -650,7 +641,6 @@ namespace ExtendedControls
                 else
                     ctrl.FlatStyle = FlatStyle.System;
 
-                ctrl.Font = fnt;
             }
             else if (myControl is ExtListBox)
             {
@@ -669,16 +659,12 @@ namespace ExtendedControls
                     ctrl.ScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
                     ctrl.ScrollBarColor = currentsettings.colors[Settings.CI.textbox_sliderback];
 
-                    if (ctrl.ImageItems == null)        // ones with images are not auto set..
-                        ctrl.ItemHeight = (int)ctrl.Font.GetHeight() + 6;
-
                     if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
                         ctrl.FlatStyle = FlatStyle.Flat;
                     else
                         ctrl.FlatStyle = FlatStyle.Popup;
                 }
 
-                myControl.Font = fnt;
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
             }
             else if (myControl is ExtPanelDropDown)
@@ -686,15 +672,12 @@ namespace ExtendedControls
                 ExtPanelDropDown ctrl = (ExtPanelDropDown)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
                 ctrl.SelectionMarkColor = ctrl.ForeColor;
-                ctrl.ItemHeight = (int)ctrl.Font.GetHeight() + 6;
                 ctrl.BackColor = ctrl.SelectionBackColor = currentsettings.colors[Settings.CI.button_back];
                 ctrl.BorderColor = currentsettings.colors[Settings.CI.button_border];
                 ctrl.MouseOverBackgroundColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
                 ctrl.ScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
                 ctrl.ScrollBarColor = currentsettings.colors[Settings.CI.textbox_sliderback];
                 ctrl.FlatStyle = FlatStyle.Popup;
-
-                myControl.Font = fnt;
             }
             else if (myControl is ExtComboBox)
             {
@@ -704,7 +687,6 @@ namespace ExtendedControls
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
                 {
                     ctrl.FlatStyle = FlatStyle.System;
-                    myControl.Font = fnt;
                 }
                 else
                 {
@@ -719,21 +701,13 @@ namespace ExtendedControls
                     else
                         ctrl.FlatStyle = FlatStyle.Popup;
 
-                 //   myControl.Font = fnt;
-
-                    float fh = ctrl.Font.GetHeight();
-                    ctrl.ItemHeight = (int)fh + 6;
-                    System.Diagnostics.Debug.WriteLine("Control " + ctrl.Name + " set to " + ctrl.ItemHeight + " " + ctrl.Font.Size + "  "+ ctrl.Font);
                 }
-
-            //    here,problem is, some of them get resized due to being in a group box, but the ones in the toolbar do not.
 
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
             }
             else if (myControl is NumericUpDown)
             {                                                                   // BACK colour does not work..
                 myControl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
-                myControl.Font = fnt;
             }
             else if (myControl is ExtDrawnPanelNoTheme)        // ignore these..
             {
@@ -752,6 +726,16 @@ namespace ExtendedControls
                 ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
                 //System.Diagnostics.Debug.WriteLine("Drawn Panel Image button " + ctrl.Name);
             }
+            else if (myControl is TableLayoutPanel)
+            {
+                TableLayoutPanel ctrl = myControl as TableLayoutPanel;
+                ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+            }
+            else if (myControl is FlowLayoutPanel)
+            {
+                FlowLayoutPanel ctrl = myControl as FlowLayoutPanel;
+                ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+            }
             else if (myControl is PanelNoTheme)
             {
             }
@@ -763,7 +747,6 @@ namespace ExtendedControls
             else if (myControl is Label)
             {
                 myControl.ForeColor = currentsettings.colors[Settings.CI.label];
-                myControl.Font = fnt;
 
                 if (myControl is ExtLabel)
                     (myControl as ExtLabel).TextBackColor = currentsettings.colors[Settings.CI.form];
@@ -775,7 +758,6 @@ namespace ExtendedControls
                 ctrl.BackColor = currentsettings.colors[Settings.CI.group_back];
                 ctrl.BorderColor = currentsettings.colors[Settings.CI.group_borderlines];
                 ctrl.FlatStyle = FlatStyle.Flat;           // always in Flat, always apply our border.
-                ctrl.Font = fnt;
             }
             else if (myControl is ExtCheckBox)
             {
@@ -790,7 +772,6 @@ namespace ExtendedControls
                     ctrl.MouseOverColor = currentsettings.colors[Settings.CI.checkbox].Multiply(1.4F);
                     ctrl.TickBoxReductionRatio = 0.75f;
                     ctrl.CheckColor = currentsettings.colors[Settings.CI.checkbox_tick];
-                    ctrl.Font = fnt;
 
                     if (ctrl.Image == null)       // only for unimage ones
                     {
@@ -828,7 +809,6 @@ namespace ExtendedControls
                 ExtRadioButton ctrl = (ExtRadioButton)myControl;
 
                 ctrl.FlatStyle = FlatStyle.System;
-                ctrl.Font = fnt;
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
                     ctrl.FlatStyle = FlatStyle.System;
@@ -866,9 +846,6 @@ namespace ExtendedControls
                 ctrl.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
                 ctrl.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 
-                ctrl.Font = fnt;
-                Font fnt2;
-
                 foreach (DataGridViewColumn col in ctrl.Columns)
                 {
                     if (col.CellType == typeof(DataGridViewComboBoxCell))
@@ -882,15 +859,6 @@ namespace ExtendedControls
                             cbocol.FlatStyle = FlatStyle.Popup;
                     }
                 }
-
-                if (myControl.Name.Contains("dataGridViewTravel") && fnt.Size > 10F)
-                    fnt2 = BaseUtils.FontLoader.GetFont(currentsettings.fontname, 10F);
-                else
-                    fnt2 = fnt;
-
-                ctrl.ColumnHeadersDefaultCellStyle.Font = fnt2;
-                ctrl.RowHeadersDefaultCellStyle.Font = fnt2;
-                ctrl.Columns[0].DefaultCellStyle.Font = fnt2;
             }
             else if (myControl is ExtScrollBar && !(parent is ExtListBox || parent is ExtRichTextBox))
             {                   // selected items need VScroll controlled here. Others control it themselves
@@ -925,6 +893,7 @@ namespace ExtendedControls
                 Color c1 = currentsettings.colors[Settings.CI.textbox_scrollbutton];
                 ctrl.updown.BackColor = c1;
                 ctrl.updown.ForeColor = currentsettings.colors[Settings.CI.textbox_scrollarrow];
+                ctrl.updown.BorderColor = currentsettings.colors[Settings.CI.button_border];
                 ctrl.updown.MouseOverColor = c1.Multiply(mouseoverscaling);
                 ctrl.updown.MouseSelectedColor = c1.Multiply(mouseselectedscaling);
                 ctrl.Invalidate();
@@ -969,7 +938,6 @@ namespace ExtendedControls
             {
                 myControl.BackColor = currentsettings.colors[Settings.CI.form];
                 myControl.ForeColor = currentsettings.colors[Settings.CI.label];
-                myControl.Font = fnt;
             }
             else if (myControl is ToolStrip)
             {
@@ -985,13 +953,14 @@ namespace ExtendedControls
                         i.BackColor = currentsettings.colors[Settings.CI.textbox_back];
                     }
 
-                    i.Font = fnt;
+//??                    i.Font = fnt;
                 }
             }
             else if (myControl is TabStrip)
             {
                 TabStrip ts = myControl as TabStrip;
                 //System.Diagnostics.Debug.WriteLine("*************** TAB Strip themeing" + myControl.Name + " " + myControl.Tag);
+                ts.ForeColor = currentsettings.colors[Settings.CI.button_text];
                 ts.DropDownBackgroundColor = currentsettings.colors[Settings.CI.button_back];
                 ts.DropDownBorderColor = currentsettings.colors[Settings.CI.textbox_border];
                 ts.DropDownScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
@@ -1030,170 +999,9 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine(level + "Control " + myControl.Name + " " + myControl.Location + " " + myControl.Size);
 
-           // Size cursize = myControl.FindMaxSubControlArea(0, 0);
-
             foreach (Control subC in myControl.Controls)
                 UpdateControls(myControl, subC, fnt, level + 1);
-
-            //bool moveable = (myControl is GroupBox || myControl.GetType().Name.Equals("Panel") || myControl is Form);
-            //if (moveable)
-            //{
-            //    int maxh = -1;
-            //    List<ControlList> controls = new List<ControlList>();
-
-            //    foreach (Control x in myControl.Controls)
-            //        controls.Add(new ControlList() { ctrl = x, left = x.Left, right = x.Right, bottom = x.Bottom, top = x.Top });
-
-            //    controls.Sort(delegate (ControlList left, ControlList right) { return left.top.CompareTo(right.top); });        // sort in top order
-
-
-            //    for (int i = 0; i < controls.Count; i++)
-            //    {
-            //        for (int j = i + 1; j < controls.Count; j++)
-            //        {
-            //            bool voverlap = controls[j].top > controls[i].top && controls[j].top <= controls[i].bottom;
-            //            bool leftoverlap = controls[j].left >= controls[i].left && controls[j].left <= controls[i].right;
-            //            bool rightoverlap = controls[j].right >= controls[i].left && controls[j].right <= controls[i].right;
-            //            bool alignedbelow = controls[j].left >= controls[i].left - 10 && controls[j].left <= controls[i].left + 10;
-
-            //            if (i != j && voverlap)
-            //            {
-            //                if (alignedbelow && controls[j].ctrl.Visible)
-            //                {
-            //                    int delta = (controls[i].bottom + 0) - controls[j].top;
-
-            //                    if (dialogy)
-            //                        System.Diagnostics.Debug.WriteLine("Overlap " + controls[i].ctrl.Name + " with " + controls[j].ctrl.Name + " delta " + delta + " " + voverlap);
-
-            //                    int jtop = controls[j].top;
-
-            //                    for (int k = 0; k < controls.Count; k++)
-            //                    {
-            //                        if (k != i && controls[k].top >= jtop)
-            //                        {
-            //                            controls[k].top = controls[k].ctrl.Top = controls[k].top + delta;
-            //                            controls[k].bottom += delta;
-            //                            if (dialogy)
-            //                                System.Diagnostics.Debug.WriteLine("..shift " + controls[k].ctrl.Name + " to " + controls[k].top + " " + controls[k].ctrl.Location + " " + controls[k].ctrl.Size);
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //if (moveable )//|| myControl is FlowLayoutPanel)
-            //{
-            //    Size newsize = myControl.FindMaxSubControlArea(0, 0);
-            //    int deltah = newsize.Height - cursize.Height;
-
-            //    if (deltah > 0)
-            //    {
-            //        System.Diagnostics.Debug.WriteLine("Grouping Control  " + myControl.Name + " cursize " + cursize + " newsize " + newsize + " Deltah " + deltah);
-            //        myControl.Height += deltah + 4;
-            //    }
-            //}
-
-
-
-            //bool childgrow = false;
-            //int maxh = 0;
-            //for (int i = 0; i < controls.Count; i++)
-            //{
-            //    Control subC = controls[i].ctrl;
-            //    Size ctrl = subC.Size;
-            //    UpdateControls(myControl, subC, fnt, level + 1);
-
-            //    if (shiftus)
-            //    {
-            //        System.Diagnostics.Debug.WriteLine(level + " In " + myControl.Name + " " + subC.Name + " orgsize " + ctrl + " newsize " + subC.Size + " at " + subC.Location);
-            //        int hgrow = subC.Height - ctrl.Height;
-
-            //        if (hgrow > 0)
-            //        {
-            //            System.Diagnostics.Debug.WriteLine(level + " In " + myControl.Name + " " + subC.Name + " grew " + hgrow + " orgsize " + ctrl + " newsize " + subC.Size + " at " + subC.Location);
-
-            //            for (int j = 0; j < controls.Count; j++)
-            //            {
-            //                if (controls[j].top > subC.Top)
-            //                {
-            //                    int org = controls[j].top;
-            //                    controls[j].top = controls[j].ctrl.Top = controls[j].top + hgrow;
-            //                    System.Diagnostics.Debug.WriteLine(level + " .. shift " + controls[j].ctrl.Name + " "  + org + " to " + controls[j].top);
-            //                }
-            //            }
-
-            //            childgrow = true;
-            //        }
-            //    }
-
-            //    maxh = Math.Max(maxh, controls[i].ctrl.Bottom + 1);
-            //}
-
-            //if (childgrow)
-            //{
-            //    int orgsize = myControl.Height;
-            //    myControl.Height = maxh;
-            //    System.Diagnostics.Debug.WriteLine(level + " Resize " + myControl.Name + " " + orgsize + " to " + maxh);
-            //}
-            //if (myControl is Form)
-            //    ;
-
-            ////if (!cursize.IsEmpty && (myControl is GroupBox || myControl is Panel || myControl is Form ))
-            //if (!cursize.IsEmpty && (myControl is GroupBox || myControl is Panel || myControl is Form ))
-            //{
-            //    System.Diagnostics.Debug.WriteLine("grouping " + myControl.Name );
-
-            //    for( int i = 0; i < controls.Count; i++ )
-            //    {
-            //        ControlList cur = controls[i];
-
-            //        for (int j = i + 1; j < controls.Count; j++)
-            //        {
-            //            ControlList other = controls[j];
-
-            //            if (other.top <= cur.bottom &&         // in order, so it must be at or below, so if other.top is less than our bottom
-            //                (other.left >= cur.left && other.left <= cur.right))
-            //            {
-            //                int offset = cur.bottom - other.top + 8;
-
-            //                System.Diagnostics.Debug.WriteLine("Overlap " + cur.ctrl.Name + " with" + other.ctrl.Name + " add " + offset);
-
-            //                for (int k = 0 ; k < controls.Count; k++)
-            //                {
-            //                    if (controls[k].top > cur.top)     // shift everything below us down
-            //                    {
-            //                        controls[k].top += offset;
-            //                        controls[k].bottom += offset;
-            //                        //controls[k].ctrl.Anchor = AnchorStyles.Left | AnchorStyles.Top;
-            //                        controls[k].ctrl.Top = controls[k].top;
-            //                     //   System.Diagnostics.Debug.WriteLine(".. set " + controls[k].ctrl.Name + " " + controls[k].top  + "-" + controls[k].bottom);
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //    }
-
-            //    Size newsize = myControl.FindSizedForControls(0, 0);
-            //    int deltah = newsize.Height - cursize.Height;
-
-            //    if (deltah > 0)
-            //    {
-            //        System.Diagnostics.Debug.WriteLine("Grouping Control  " + myControl.Name + " cursize " + cursize + " newsize " + newsize + " Deltah " + deltah);
-            //        myControl.Height += deltah + 8;
-
-            //    }
-            //}
         }
-
-        class ControlList
-        {
-            public Control ctrl;
-            public int top, left;
-            public int right, bottom;
-        };
 
 
         private void UpdateToolsTripRenderer()
@@ -1238,7 +1046,15 @@ namespace ExtendedControls
 
         public Color GroupBoxOverride(Control parent, Color d)      // if its a group box behind the control, use the group box back color..
         {
-            return (parent is GroupBox) ? currentsettings.colors[Settings.CI.group_back] : d;
+            Control x = parent;
+            while( x != null )
+            {
+                if (x is GroupBox)
+                    return currentsettings.colors[Settings.CI.group_back];
+                x = x.Parent;
+            }
+
+            return d;
         }
 
         public List<string> GetThemeList()

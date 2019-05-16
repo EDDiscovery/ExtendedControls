@@ -36,57 +36,50 @@ namespace ExtendedControls
         public Color ScrollBarButtonColor { get; set; } = Color.LightGray;
         public bool DisableBackgroundDisabledShadingGradient { get; set; } = false;     // set, non system only, stop scaling for disabled state (useful for transparency)
 
-        public int ArrowWidth { get; set; } = 1;
         public float ButtonColorScaling { get; set; } = 0.5F;           // Popup style only
-        public int ScrollBarWidth { get; set; } = 16;
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 
-        //Set width to 1 to scale it to the same width as the Button..
-        public int DropDownWidth { get { return _cbsystem.DropDownWidth; } set { _cbsystem.DropDownWidth = value; } }
-        public int DropDownHeight { get { return _cbsystem.DropDownHeight; } set { _cbsystem.DropDownHeight = value; } }
-        public int ItemHeight { get { return itemheight; } set { itemheight = _cbsystem.ItemHeight = value;  } }
-
-        public int SelectedIndex { get { return _cbsystem.SelectedIndex; } set { _cbsystem.SelectedIndex = value; base.Text = _cbsystem.Text; Invalidate(); } }
+        public int SelectedIndex { get { return cbsystem.SelectedIndex; } set { cbsystem.SelectedIndex = value; base.Text = cbsystem.Text; Invalidate(); } }
 
         public ObjectCollection Items { get { return _items; } set { _items.Clear(); _items.AddRange(value.ToArray()); } }
 
-        public override AnchorStyles Anchor { get { return base.Anchor; } set { base.Anchor = value; _cbsystem.Anchor = value; } }
-        public override DockStyle Dock { get { return base.Dock; } set { base.Dock = value; _cbsystem.Dock = value; } }
-        public override Font Font { get { return base.Font; } set { base.Font = value; _cbsystem.Font = value; } }
-        public override string Text { get { return base.Text; } set { base.Text = value; _cbsystem.Text = value; Invalidate();  } }
+        public override AnchorStyles Anchor { get { return base.Anchor; } set { base.Anchor = value; cbsystem.Anchor = value; } }
+        public override DockStyle Dock { get { return base.Dock; } set { base.Dock = value; cbsystem.Dock = value; } }
+        public override Font Font { get { return base.Font; } set { base.Font = value; cbsystem.Font = value; } }
+        public override string Text { get { return base.Text; } set { base.Text = value; cbsystem.Text = value; Invalidate();  } }
         public System.Drawing.ContentAlignment TextAlign { get; set; } = System.Drawing.ContentAlignment.MiddleLeft;      // ONLY for non system combo boxes
 
         // BEWARE SET value/display before DATA SOURCE
-        public object DataSource { get { return _cbsystem.DataSource; } set { _cbsystem.DataSource = value; } }
-        public string ValueMember { get { return _cbsystem.ValueMember; } set { _cbsystem.ValueMember = value; } }
-        public string DisplayMember { get { return _cbsystem.DisplayMember; } set { _cbsystem.DisplayMember = value; } }
-        public object SelectedItem { get { return _cbsystem.SelectedItem; } set { _cbsystem.SelectedItem = value; base.Text = _cbsystem.Text; Invalidate(); } }
-        public object SelectedValue { get { return _cbsystem.SelectedValue; } set { _cbsystem.SelectedValue = value; } }
-        public new System.Drawing.Size Size { get { return _cbsystem.Size; } set { _cbsystem.Size = value; base.Size = value; } }
+        public object DataSource { get { return cbsystem.DataSource; } set { cbsystem.DataSource = value; } }
+        public string ValueMember { get { return cbsystem.ValueMember; } set { cbsystem.ValueMember = value; } }
+        public string DisplayMember { get { return cbsystem.DisplayMember; } set { cbsystem.DisplayMember = value; } }
+        public object SelectedItem { get { return cbsystem.SelectedItem; } set { cbsystem.SelectedItem = value; base.Text = cbsystem.Text; Invalidate(); } }
+        public object SelectedValue { get { return cbsystem.SelectedValue; } set { cbsystem.SelectedValue = value; } }
+        public new System.Drawing.Size Size { get { return cbsystem.Size; } set { cbsystem.Size = value; base.Size = value; } }
 
         public event EventHandler SelectedIndexChanged;
 
         public ExtComboBox()
         {
             //Text = "";
-            this._cbsystem = new ComboBox();
-            this._cbsystem.Dock = DockStyle.Fill;
-            this._cbsystem.SelectedIndexChanged += _cbsystem_SelectedIndexChanged;
-            this._cbsystem.DropDownStyle = ComboBoxStyle.DropDownList;
-            this._cbsystem.MouseLeave += _cbsystem_MouseLeave;
-            this._cbsystem.MouseEnter += _cbsystem_MouseEnter;
-            this._cbsystem.MouseUp += _cbsystem_MouseUp;
-            this._items = new ObjectCollection(this._cbsystem);
-            this.Controls.Add(this._cbsystem);
+            this.cbsystem = new ComboBox();
+            this.cbsystem.Dock = DockStyle.Fill;
+            this.cbsystem.SelectedIndexChanged += _cbsystem_SelectedIndexChanged;
+            this.cbsystem.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.cbsystem.MouseLeave += cbsystem_MouseLeave;
+            this.cbsystem.MouseEnter += cbsystem_MouseEnter;
+            this.cbsystem.MouseUp += cbsystem_MouseUp;
+            this._items = new ObjectCollection(this.cbsystem);
+            this.Controls.Add(this.cbsystem);
         }
 
         public void SetTipDynamically(ToolTip t, string text)// only needed for dynamic changes..
         {
             t.SetToolTip(this, text);
-            t.SetToolTip(_cbsystem, text);
+            t.SetToolTip(cbsystem, text);
         }                                       
 
-        public ComboBox GetInternalSystemControl { get { return this._cbsystem; }  }
+        public ComboBox GetInternalSystemControl { get { return this.cbsystem; }  }
 
         bool firstpaint = true;
 
@@ -107,7 +100,7 @@ namespace ExtendedControls
             {
                 System.ComponentModel.IContainer ic = this.GetParentContainerComponents();
 
-                ic?.CopyToolTips(this, new Control[] { this, _cbsystem });
+                ic?.CopyToolTips(this, new Control[] { this, cbsystem });
 
                 firstpaint = false;
             }
@@ -119,27 +112,25 @@ namespace ExtendedControls
                 int extraborder = 1;
                 int texthorzspacing = 1;
 
-                int scw = (int)(ScrollBarWidth);
+                int arrowwidth = Font.ScalePixels(20);
 
                 textBoxBackArea = new Rectangle(ClientRectangle.X + extraborder, ClientRectangle.Y + extraborder,
                                                             ClientRectangle.Width - 2 * extraborder, ClientRectangle.Height - 2 * extraborder);
 
                 topBoxTextArea = new Rectangle(ClientRectangle.X + extraborder + texthorzspacing, ClientRectangle.Y + extraborder,
-                                        ClientRectangle.Width - 2 * extraborder - 2 * texthorzspacing - scw, ClientRectangle.Height - 2 * extraborder);
+                                        ClientRectangle.Width - 2 * extraborder - 2 * texthorzspacing - arrowwidth, ClientRectangle.Height - 2 * extraborder);
 
-                arrowRectangleArea = new Rectangle(ClientRectangle.Width - scw - extraborder, ClientRectangle.Y + extraborder,
-                                                    scw, ClientRectangle.Height - 2 * extraborder);
+                arrowRectangleArea = new Rectangle(ClientRectangle.Width - arrowwidth - extraborder, ClientRectangle.Y + extraborder,
+                                                    arrowwidth, ClientRectangle.Height - 2 * extraborder);
 
                 topBoxOutline = new Rectangle(ClientRectangle.X, ClientRectangle.Y,
                                                 ClientRectangle.Width - 1, ClientRectangle.Height - 1);
 
-                //                int hoffset = arrowRectangleArea.Width / 3;
-                //              int voffset = arrowRectangleArea.Height / 3;
-                int hoffset = arrowRectangleArea.Width / 16+2;
+                int hoffset = arrowRectangleArea.Width/12 + 2;
                 int voffset = arrowRectangleArea.Height / 6;
-                arrowpt1 = new Point(arrowRectangleArea.X + hoffset, arrowRectangleArea.Y + voffset);
-                arrowpt2 = new Point(arrowRectangleArea.X + arrowRectangleArea.Width / 2, arrowRectangleArea.Y + arrowRectangleArea.Height - voffset);
-                arrowpt3 = new Point(arrowRectangleArea.X + arrowRectangleArea.Width - hoffset, arrowpt1.Y);
+                arrowpt1 = new Point(arrowRectangleArea.Left + hoffset, arrowRectangleArea.Y + voffset);
+                arrowpt2 = new Point(arrowRectangleArea.XCenter(), arrowRectangleArea.Bottom - voffset);
+                arrowpt3 = new Point(arrowRectangleArea.Right - hoffset, arrowpt1.Y);
 
                 arrowpt1c = new Point(arrowpt1.X, arrowpt2.Y);
                 arrowpt2c = new Point(arrowpt2.X, arrowpt1.Y);
@@ -155,7 +146,7 @@ namespace ExtendedControls
                     textb = new SolidBrush(this.ForeColor);
                     p = new Pen(BorderColor);
                     p2 = new Pen(ForeColor);
-                    p2.Width = ArrowWidth;
+                    p2.Width = Font.ScaleSize(1.5f);
                 }
                 else
                 {
@@ -226,29 +217,29 @@ namespace ExtendedControls
         {
             if (this.FlatStyle == FlatStyle.System)
             {
-                _cbsystem.Visible = true;
+                cbsystem.Visible = true;
                 this.Invalidate(true);
             }
             else
             {
-                _cbsystem.Visible = false;
+                cbsystem.Visible = false;
                 this.Invalidate(true);
             }
         }
 
-        private void _cbsystem_MouseEnter(object sender, EventArgs e)       // if cbsystem is active, fired.. pass onto our ME handler
+        private void cbsystem_MouseEnter(object sender, EventArgs e)       // if cbsystem is active, fired.. pass onto our ME handler
         {
             //System.Diagnostics.Debug.WriteLine("CB sys Mouse enter " + _cbsystem.Size + " "  + this.Size);
             base.OnMouseEnter(e);
         }
 
-        private void _cbsystem_MouseLeave(object sender, EventArgs e)       // if cbsystem is active, fired.. pass onto our ML handler.
+        private void cbsystem_MouseLeave(object sender, EventArgs e)       // if cbsystem is active, fired.. pass onto our ML handler.
         {
             //System.Diagnostics.Debug.WriteLine("CB sys Mouse leave");
             base.OnMouseLeave(e);
         }
 
-        private void _cbsystem_MouseUp(object sender, MouseEventArgs e)
+        private void cbsystem_MouseUp(object sender, MouseEventArgs e)
         {
             base.OnMouseUp(e);
         }
@@ -256,7 +247,7 @@ namespace ExtendedControls
         protected override void OnMouseEnter(EventArgs eventargs)           // ours is active.  Fired when entered
         {
             //System.Diagnostics.Debug.WriteLine("CBC Enter , visible " + _cbsystem.Visible);
-            if (!_cbsystem.Visible)
+            if (!cbsystem.Visible)
             {
                 base.OnMouseEnter(eventargs);
                 mouseover = true;
@@ -268,7 +259,7 @@ namespace ExtendedControls
         {
             //System.Diagnostics.Debug.WriteLine("CBC Leave, activated" + isActivated + " visible " + _cbsystem.Visible);
 
-            if (!_cbsystem.Visible)
+            if (!cbsystem.Visible)
             {
                 if (isActivated == false)
                     base.OnMouseLeave(eventargs);
@@ -294,14 +285,14 @@ namespace ExtendedControls
                 {
                     if ( SelectedIndex>0)
                     {
-                        _cbsystem.SelectedIndex = SelectedIndex-1;            // triggers _cbsystem_SelectedIndexChanged
+                        cbsystem.SelectedIndex = SelectedIndex-1;            // triggers _cbsystem_SelectedIndexChanged
                     }
                 }
                 else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right)
                 {
                     if ( SelectedIndex<this.Items.Count-1)
                     {
-                        _cbsystem.SelectedIndex = SelectedIndex+1;            // triggers _cbsystem_SelectedIndexChanged
+                        cbsystem.SelectedIndex = SelectedIndex+1;            // triggers _cbsystem_SelectedIndexChanged
                     }
                 }
             }
@@ -328,77 +319,48 @@ namespace ExtendedControls
 
             customdropdown = new ExtListBoxForm(this.Name);
 
-            int ih = this.ItemHeight;
-            int fittableitems = this.DropDownHeight / ih;
-
-            if (fittableitems == 0)
-            {
-                fittableitems = 5;
-            }
-
-            if (fittableitems > this.Items.Count())                             // no point doing more than we have..
-                fittableitems = this.Items.Count();
-
-            // 1-9 states 100,200,300 min width/this width
-
-            int ddw = this.DropDownWidth > 9 ? this.DropDownWidth : Math.Max(this.DropDownWidth * 100,this.Width);
-
-            customdropdown.Size = new Size(ddw , fittableitems * ih + 4);
-
             customdropdown.SelectionBackColor = this.DropDownBackgroundColor;
             customdropdown.MouseOverBackgroundColor = this.MouseOverBackgroundColor;
             customdropdown.ForeColor = this.ForeColor;
             customdropdown.BackColor = this.BorderColor;
             customdropdown.BorderColor = this.BorderColor;
             customdropdown.Items = this.Items.ToList();
-            customdropdown.ItemHeight = ih;
             customdropdown.SelectedIndex = this.SelectedIndex;
             customdropdown.FlatStyle = this.FlatStyle;
             customdropdown.Font = this.Font;
             customdropdown.ScrollBarColor = this.ScrollBarColor;
             customdropdown.ScrollBarButtonColor = this.ScrollBarButtonColor;
-            customdropdown.ScrollBarWidth = (int)(ScrollBarWidth);
 
-            customdropdown.Activated += _customdropdown_DropDown;
-            customdropdown.SelectedIndexChanged += _customdropdown_SelectedIndexChanged;
-            customdropdown.OtherKeyPressed += _customdropdown_OtherKeyPressed;
-            customdropdown.Deactivate += _customdropdown_Deactivate;
+            Point location = this.PointToScreen(new Point(0, 0));
+            customdropdown.SetLocation = new Point(location.X, location.Y + this.Height);
+
+            customdropdown.Activated += customdropdown_Activated;
+            customdropdown.SelectedIndexChanged += customdropdown_SelectedIndexChanged;
+            customdropdown.OtherKeyPressed += customdropdown_OtherKeyPressed;
+            customdropdown.Deactivate += customdropdown_Deactivate;
 
             customdropdown.Show(FindForm());
-             
-            // enforce size.. some reason SHow is scaling it probably due to autosizing.. can't turn off. force back
-            customdropdown.Size = new Size(this.DropDownWidth > 9 ? this.DropDownWidth : this.Width, fittableitems * ih + 4);
         }
 
-        private void _customdropdown_Deactivate(object sender, EventArgs e)
+        private void customdropdown_Deactivate(object sender, EventArgs e)
         {
             isActivated = false;
             this.Invalidate(true);
         }
 
-        private void _customdropdown_DropDown(object sender, EventArgs e)
+        private void customdropdown_Activated(object sender, EventArgs e)
         {
-            Point location = this.PointToScreen(new Point(0, 0));
-
-            int botscr = Screen.FromControl(this).WorkingArea.Height;
-            int botcontrol = location.Y + this.Height + customdropdown.Height;
-
-            if (botcontrol < botscr)
-                customdropdown.Location = new Point(location.X, location.Y + this.Height);
-            else
-                customdropdown.Location = new Point(location.X, location.Y -customdropdown.Height);
-
             isActivated = true;
             this.Invalidate(true);
         }
 
-        private void _customdropdown_SelectedIndexChanged(object sender, EventArgs e)
+        private void customdropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedindex = customdropdown.SelectedIndex;
             isActivated = false;            // call has already closed the custom drop down..
             this.Invalidate(true);
-            if (_cbsystem.SelectedIndex != selectedindex)
-                _cbsystem.SelectedIndex = selectedindex; // triggers _cbsystem_SelectedIndexChanged, but only if we change the index..
+            if (cbsystem.SelectedIndex != selectedindex)
+                cbsystem.SelectedIndex = selectedindex; // triggers _cbsystem_SelectedIndexChanged, but only if we change the index..
             else
                 _cbsystem_SelectedIndexChanged(sender, e);      // otherwise, fire it off manually.. this is what the system box does, if the user clicks on it, fires it off
             Focus();
@@ -406,7 +368,7 @@ namespace ExtendedControls
             base.OnMouseLeave(e);    // same as mouse 
         }
 
-        private void _customdropdown_OtherKeyPressed(object sender, KeyEventArgs e)
+        private void customdropdown_OtherKeyPressed(object sender, KeyEventArgs e)
         {
             if ( e.KeyCode == Keys.Escape )
             {
@@ -418,7 +380,7 @@ namespace ExtendedControls
 
         private void _cbsystem_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Text = _cbsystem.Text;
+            this.Text = cbsystem.Text;
             this.Invalidate(true);
 
             if (this.Enabled && SelectedIndexChanged != null)
@@ -584,15 +546,12 @@ namespace ExtendedControls
 
         protected ObjectCollection _items;
 
-        private ComboBox _cbsystem;
+        private ComboBox cbsystem;
         private Rectangle topBoxTextArea, arrowRectangleArea, topBoxOutline, textBoxBackArea;
         private Point arrowpt1, arrowpt2, arrowpt3;
         private Point arrowpt1c, arrowpt2c, arrowpt3c;
         private bool isActivated = false;
         private bool mouseover = false;
         private ExtListBoxForm customdropdown;
-        private int itemheight = 13;
-
-
     }
 }

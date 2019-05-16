@@ -24,7 +24,6 @@ namespace ExtendedControls
     {
         public int RollUpDelay { get; set; } = 1000;            // before rolling
         public int UnrollHoverDelay { get; set; } = 1000;       // set to large value and forces click to open functionality
-        public int UnrolledHeight { get; set; } = 32;
         public int RolledUpHeight { get; set; } = 5;
         public int RollUpAnimationTime { get; set; } = 500;            // animation time
         public bool ShowHiddenMarker { get { return hiddenmarkershow; } set { hiddenmarkershow = value; SetHMViz(); } }
@@ -42,6 +41,7 @@ namespace ExtendedControls
         private ExtCheckBox pinbutton;        // public so you can theme them with colour/IAs
         private ExtPanelDrawn hiddenmarker1;
         private ExtPanelDrawn hiddenmarker2;
+        private int unrolledheight;     // calculated from controls in the panel
 
         long targetrolltickstart;     // when the roll is supposed to be in time
         const int rolltimerinterval = 25;
@@ -58,16 +58,18 @@ namespace ExtendedControls
         {
             SuspendLayout();
 
-            this.Height = UnrolledHeight;
+            this.Height = unrolledheight;
 
             pinbutton = new ExtCheckBox();
             pinbutton.Appearance = Appearance.Normal;
             pinbutton.FlatStyle = FlatStyle.Popup;
-            pinbutton.Size = new Size(24, 24);
+            pinbutton.Size = new Size(32, 32);
             pinbutton.Image = ExtendedControls.Properties.Resources.pindownwhite2;          //colours 222 and 255 used
             pinbutton.ImageUnchecked = ExtendedControls.Properties.Resources.pinupwhite2;
+            pinbutton.ImageLayout = ImageLayout.Stretch;
             pinbutton.Checked = true;
             pinbutton.CheckedChanged += Pinbutton_CheckedChanged;
+            pinbutton.TickBoxReductionRatio = 1;
             pinbutton.Name = "RUP Pinbutton";
 
             hiddenmarker1 = new ExtDrawnPanelNoTheme();
@@ -94,7 +96,7 @@ namespace ExtendedControls
             timer = new Timer();
             timer.Tick += Timer_Tick;
 
-            pinbutton.Visible = false;
+            SetPin(false);
         }
 
         protected override void OnBackColorChanged(EventArgs e)
@@ -146,7 +148,6 @@ namespace ExtendedControls
             PinStateChanged?.Invoke(this, pinbutton);
         }
 
-
         public void SetPinImages(Image up, Image down)
         {
             pinbutton.Image = up;
@@ -170,9 +171,11 @@ namespace ExtendedControls
         {
             timer.Stop();
 
-            if (Height < UnrolledHeight)
+            unrolledheight = this.FindMaxSubControlArea(0, 0).Height;
+
+            if (Height < unrolledheight)
             {
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll down, start animating");
+               // System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll down, start animating");
                 mode = Mode.RollDown;
                 targetrolltickstart = Environment.TickCount;
                 timer.Interval = rolltimerinterval;
@@ -198,6 +201,7 @@ namespace ExtendedControls
 
             if (Height > RolledUpHeight)
             {
+                unrolledheight = this.FindMaxSubControlArea(0, 0).Height;
                 //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll up, start animating");
                 mode = Mode.RollUp;
                 targetrolltickstart = Environment.TickCount;
@@ -214,7 +218,7 @@ namespace ExtendedControls
 
         private void StartRollUpTimer()
         {
-            if (mode == Mode.None && Height != RolledUpHeight)
+            if (mode == Mode.None && Height > RolledUpHeight)
             {
                 timer.Stop();
                 timer.Interval = RollUpDelay;
@@ -226,7 +230,7 @@ namespace ExtendedControls
 
         private void StartRollDownTimer()
         {
-            if (mode == Mode.None && Height == RolledUpHeight)
+            if (mode == Mode.None && Height <= RolledUpHeight)
             {
                 timer.Stop();
                 timer.Interval = UnrollHoverDelay;
@@ -250,7 +254,7 @@ namespace ExtendedControls
             base.OnMouseEnter(eventargs);
             inarea = true;
             StartRollDownTimer();
-            pinbutton.Visible = true;
+            SetPin(true);
         }
 
         private void Control_MouseEnter(object sender, EventArgs e)
@@ -258,7 +262,7 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine("RUP Entered " + sender.GetType().Name);
             inarea = true;
             StartRollDownTimer();
-            pinbutton.Visible = true;
+            SetPin(true);
         }
 
         protected override void OnMouseLeave(EventArgs eventargs)
@@ -281,7 +285,7 @@ namespace ExtendedControls
             base.OnLayout(levent);
             if (ClientRectangle.Width > 0)
             {
-                pinbutton.Left = ClientRectangle.Width - pinbutton.Width - 8;
+                pinbutton.Left = ClientRectangle.Width - pinbutton.Width - 8 ;
                 pinbutton.Top = 3;
 
                 int hmwidth = Math.Abs(HiddenMarkerWidth);
@@ -298,12 +302,12 @@ namespace ExtendedControls
         private void Timer_Tick(object sender, EventArgs e)
         {
             double rollpercent = (double)(Environment.TickCount - targetrolltickstart) / RollUpAnimationTime;
-            int rolldiff = UnrolledHeight - RolledUpHeight;
+            int rolldiff = unrolledheight - RolledUpHeight;
             //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent);
 
             if (mode == Mode.RollUp)        // roll up animation, move one step on, check for end
             {
-                Height = Math.Max((int)(UnrolledHeight - rolldiff * rollpercent), RolledUpHeight);
+                Height = Math.Max((int)(unrolledheight - rolldiff * rollpercent), RolledUpHeight);
                 //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height);
 
                 if (Height == RolledUpHeight)    // end
@@ -325,10 +329,10 @@ namespace ExtendedControls
             }
             else if (mode == Mode.RollDown) // roll down animation, move one step on, check for end
             {
-                Height = Math.Min((int)(RolledUpHeight + rolldiff * rollpercent), UnrolledHeight);
+                Height = Math.Min((int)(RolledUpHeight + rolldiff * rollpercent), unrolledheight);
                 //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height);
 
-                if (Height == UnrolledHeight)        // end, everything is already visible.  hide the hidden marker
+                if (Height == unrolledheight)        // end, everything is already visible.  hide the hidden marker
                 {
                     timer.Stop();
                     mode = Mode.None;
@@ -367,5 +371,14 @@ namespace ExtendedControls
                 }
             }
         }
+
+
+        private void SetPin(bool vis)
+        {
+            int sz = Font.ScalePixels(32);
+            pinbutton.Size = new Size(sz, sz);
+            pinbutton.Visible = vis;
+        }
+
     }
 }

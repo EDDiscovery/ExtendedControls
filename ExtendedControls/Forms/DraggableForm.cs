@@ -29,8 +29,8 @@ namespace ExtendedControls
     {
         public DraggableForm()
         {
-            _dblClickTimer = new Timer();
-            _dblClickTimer.Tick += (o, e) => { ((Timer)o).Enabled = false; };
+            dblClickTimer = new Timer();
+            dblClickTimer.Tick += (o, e) => { ((Timer)o).Enabled = false; };
         }
 
 
@@ -64,13 +64,13 @@ namespace ExtendedControls
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && _dblClickTimer != null)
+            if (disposing && dblClickTimer != null)
             {
-                _dblClickTimer.Enabled = false;
-                _dblClickTimer.Tag = null;
-                _dblClickTimer.Dispose();
+                dblClickTimer.Enabled = false;
+                dblClickTimer.Tag = null;
+                dblClickTimer.Dispose();
             }
-            _dblClickTimer = null;
+            dblClickTimer = null;
             base.Dispose(disposing);
         }
 
@@ -145,7 +145,9 @@ namespace ExtendedControls
                                 else
                                 {
                                     mmi.ptMaxSize.X = wa.Width;
-                                    mmi.ptMaxSize.Y = wa.Height;
+                                    mmi.ptMaxSize.Y = wa.Height;  
+                                    //mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = wa.Width;
+                                    //mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = wa.Height;
                                 }
 
                                 if (!this.MinimumSize.IsEmpty)
@@ -158,6 +160,7 @@ namespace ExtendedControls
                                     mmi.ptMinTrackSize.X = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CXMINTRACK);
                                     mmi.ptMinTrackSize.Y = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CYMINTRACK);
                                 }
+                              //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
                             }
                             else
                             {
@@ -167,6 +170,7 @@ namespace ExtendedControls
 
                             Marshal.StructureToPtr(mmi, m.LParam, false);
                             m.Result = IntPtr.Zero;
+                            //System.Diagnostics.Debug.WriteLine("MINMAX " + mmi.ptMaxSize);
                             return;
                         }
                         break;
@@ -174,6 +178,7 @@ namespace ExtendedControls
 
                 case WM.NCHITTEST:      // Windows honours NCHITTEST; Mono does not 
                     {
+                        System.Diagnostics.Debug.WriteLine("Hit test " + AllowResize);
                         if (!AllowResize)
                         {
                             m.Result = (IntPtr)HT.CAPTION;
@@ -189,8 +194,9 @@ namespace ExtendedControls
                             const int CaptionHeight = 32;
                             const int edgesz = 5;   // 5 is generous.. really only a few pixels gets thru before the subwindows grabs them
 
-                            if (SizeGripStyle != SizeGripStyle.Hide && WindowState != FormWindowState.Maximized && (p.X + p.Y >= ClientSize.Width + ClientSize.Height -
-                                (Controls.OfType<ExtStatusStrip>().FirstOrDefault()?.Height ?? Controls.OfType<StatusStrip>().FirstOrDefault()?.Height ?? CaptionHeight)))
+                            int botarea = Controls.OfType<ExtStatusStrip>().FirstOrDefault()?.Height ?? Controls.OfType<StatusStrip>().FirstOrDefault()?.Height ?? CaptionHeight;
+
+                            if (SizeGripStyle != SizeGripStyle.Hide && WindowState != FormWindowState.Maximized && (p.X + p.Y >= ClientSize.Width + ClientSize.Height - botarea ))
                             {
                                 m.Result = (IntPtr)HT.BOTTOMRIGHT;
                             }
@@ -228,23 +234,23 @@ namespace ExtendedControls
                         if (!windowsborder && m.WParam == (IntPtr)HT.CAPTION)
                         {
                             var p = new Point(unchecked((int)m.LParam));
-                            if (_dblClickTimer.Enabled && ((Rectangle)_dblClickTimer.Tag).Contains(p))
+                            if (dblClickTimer.Enabled && ((Rectangle)dblClickTimer.Tag).Contains(p))
                             {
-                                _dblClickTimer.Enabled = false;
-                                _dblClickTimer.Tag = Rectangle.Empty;
+                                dblClickTimer.Enabled = false;
+                                dblClickTimer.Tag = Rectangle.Empty;
                                 SendMessage(WM.NCLBUTTONDBLCLK, (IntPtr)HT.CAPTION, m.LParam);
                                 m.Result = IntPtr.Zero;
                                 return;
                             }
                             else
                             {
-                                _dblClickTimer.Enabled = false;
-                                _dblClickTimer.Interval = SystemInformation.DoubleClickTime;
+                                dblClickTimer.Enabled = false;
+                                dblClickTimer.Interval = SystemInformation.DoubleClickTime;
                                 var dblclksz = SystemInformation.DoubleClickSize;
                                 var dblclkrc = new Rectangle(p, dblclksz);
                                 dblclkrc.Offset(dblclksz.Width / -2, dblclksz.Height / -2);
-                                _dblClickTimer.Tag = dblclkrc;
-                                _dblClickTimer.Enabled = true;
+                                dblClickTimer.Tag = dblclkrc;
+                                dblClickTimer.Enabled = true;
                             }
                         }
                         break;
@@ -255,7 +261,7 @@ namespace ExtendedControls
 
         #region Private implementation
 
-        private System.Windows.Forms.Timer _dblClickTimer = null;
+        private System.Windows.Forms.Timer dblClickTimer = null;
 
         #endregion
     }

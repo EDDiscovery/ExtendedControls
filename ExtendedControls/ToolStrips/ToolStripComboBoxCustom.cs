@@ -60,12 +60,7 @@ namespace ExtendedControls
         public Color ScrollBarButtonColor { get { return ComboBox.ScrollBarButtonColor; } set { ComboBox.ScrollBarButtonColor = value; } }
 
         public FlatStyle FlatStyle { get { return ComboBox.FlatStyle; } set { ComboBox.FlatStyle = value; } }
-        public int DropDownWidth { get { return ComboBox.DropDownWidth; } set { ComboBox.DropDownWidth = value; } }
-        public int DropDownHeight { get { return ComboBox.DropDownHeight; } set { ComboBox.DropDownHeight = value; } }
-        public int ArrowWidth { get { return ComboBox.ArrowWidth; } set { ComboBox.ArrowWidth = value; } }
         public float ButtonColorScaling { get { return ComboBox.ButtonColorScaling; } set { ComboBox.ButtonColorScaling = value; } }
-        public int ScrollBarWidth { get { return ComboBox.ScrollBarWidth; } set { ComboBox.ScrollBarWidth = value; } }
-        public int ItemHeight { get { return ComboBox.ItemHeight; } set { ComboBox.ItemHeight = value; } }
         public int SelectedIndex { get { return ComboBox.SelectedIndex; } set { ComboBox.SelectedIndex = value; } }
         public ExtComboBox.ObjectCollection Items { get { return ComboBox.Items; } set { ComboBox.Items = value; } }
         public object DataSource { get { return ComboBox.DataSource; } set { ComboBox.DataSource = value; } }

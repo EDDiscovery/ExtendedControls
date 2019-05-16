@@ -32,10 +32,13 @@ namespace ExtendedControls
         public Image ImageUnchecked = null;                         // set both this and Image to draw a image instead of the check. 
         public Image ImageIndeterminate = null;                     // can set this, if required, if using indeterminate value
         public float ImageButtonDisabledScaling { get; set; } = 0.5F;   // scaling when disabled
+        public ImageLayout ImageLayout { get { return imagelayout; } set { imagelayout = value; Invalidate(); } }
+
         public ImageAttributes DrawnImageAttributesEnabled = null;         // Image override (colour etc) for images using Image
         public ImageAttributes DrawnImageAttributesDisabled = null;         // Image override (colour etc) for images using Image
 
         private Font FontToUse = null;
+        private ImageLayout imagelayout = ImageLayout.Center;               // new! image layout
 
         public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)
         {
@@ -138,11 +141,12 @@ namespace ExtendedControls
                 if (Image != null && ImageUnchecked != null)
                 {
                     Image image = CheckState == CheckState.Checked ? Image : ( (CheckState == CheckState.Indeterminate && ImageIndeterminate != null ) ? ImageIndeterminate : ImageUnchecked);
+                    Size isize = (imagelayout == ImageLayout.Stretch) ? checkarea.Size : Image.Size;
 
                     if (DrawnImageAttributesEnabled != null)
-                        e.Graphics.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, (Enabled) ? DrawnImageAttributesEnabled : DrawnImageAttributesDisabled);
+                        e.Graphics.DrawImage(image, new Rectangle(0, 0, isize.Width, isize.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, (Enabled) ? DrawnImageAttributesEnabled : DrawnImageAttributesDisabled);
                     else
-                        e.Graphics.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
+                        e.Graphics.DrawImage(image, new Rectangle(0, 0, isize.Width, isize.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
                 }
                 else
                 {

@@ -24,9 +24,10 @@ namespace ExtendedControls
 {
     public class ExtPanelDataGridViewScroll : Panel      // Must have a DGV and a VScroll added as children by the framework
     {
-        public int ScrollBarWidth { get; set; } = 20;
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
+
+        public int ScrollBarWidth { get { return Font.ScalePixels(20); } }       // if internal
 
         public void UpdateScroll()      // call if hide/unhide cells - no call back for this
         {

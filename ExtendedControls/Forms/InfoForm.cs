@@ -37,8 +37,9 @@ namespace ExtendedControls
         }
 
         public void Info(string title, Icon ic, string info , int[] array = null, float pointsize= -1, 
-                            Action<Object> acknowledgeaction = null, Object acknowledgedata = null)    
+                            Action<Object> acknowledgeaction = null, Object acknowledgedata = null, bool usedialogfont= true)    
         {
+            AutoScaleMode = AutoScaleMode.Font;
             Icon = ic;
 
             textBoxInfo.SetTabs(array ?? new int[] { 0, 100, 200, 300, 400, 500, 600, 800,900,1000,1100,1200 });
@@ -49,17 +50,15 @@ namespace ExtendedControls
             ackaction = acknowledgeaction;
             ackdata = acknowledgedata;
 
-            textBoxInfo.Font = SystemFonts.DefaultFont;
-
             ITheme theme = ThemeableFormsInstance.Instance;
 
             if (theme != null)
             {
-                bool winborder = theme.ApplyDialog(this);
+                bool winborder = usedialogfont ? theme.ApplyDialog(this) : theme.ApplyStd(this);
                 if (winborder)
                     panelTop.Visible = false;
                 if (pointsize != -1)
-                    textBoxInfo.Font = theme.GetScaledFont(pointsize/12);       // 12 is standard size..
+                    textBoxInfo.Font = usedialogfont ? theme.GetDialogScaledFont(pointsize/12f) : theme.GetScaledFont(pointsize/12f);       // 12 is standard size..
             }
             else
             {
@@ -73,6 +72,7 @@ namespace ExtendedControls
             textBoxInfo.Text = info;
             labelCaption.Text = title;
             Text = title;
+            System.Diagnostics.Debug.WriteLine("Main " + Font + " text font " + textBoxInfo.Font);
         }
 
 

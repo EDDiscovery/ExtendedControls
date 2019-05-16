@@ -92,7 +92,6 @@ namespace ExtendedControls
             this.textBoxInfo.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
             this.textBoxInfo.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
             this.textBoxInfo.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.textBoxInfo.ScrollBarWidth = 20;
             this.textBoxInfo.ShowLineCount = false;
             this.textBoxInfo.Size = new System.Drawing.Size(273, 228);
             this.textBoxInfo.TabIndex = 2;

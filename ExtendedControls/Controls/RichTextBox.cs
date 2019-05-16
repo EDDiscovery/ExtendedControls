@@ -44,7 +44,6 @@ namespace ExtendedControls
         public Color TextBoxBackColor { get { return TextBox.BackColor; } set { TextBox.BackColor = value; } }
         public Color BorderColor { get; set; } = Color.Transparent;
         public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
-        public int ScrollBarWidth { get; set; } = 20;
         public bool ShowLineCount { get; set; } = false;                // count lines
         public bool HideScrollBar { get; set; } = true;                   // hide if no scroll needed
 
@@ -61,10 +60,16 @@ namespace ExtendedControls
         public Color ScrollBarForeColor { get { return ScrollBar.ForeColor; } set { ScrollBar.ForeColor = value; } }
 
         public override string Text { get { return TextBox.Text; } set { TextBox.Text = value; UpdateScrollBar(); } }                // return only textbox text
+        public string[] Lines {  get { return TextBox.Lines; } }
+
         public string Rtf { get { return TextBox.Rtf; } set { TextBox.Rtf = value; } }
         public int LineCount { get { return TextBox.GetLineFromCharIndex(TextBox.Text.Length) + 1; } }
 
         public int ScrollBarLineTweak { get; set; } = 0;            // cause or before layout
+
+        public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
+
+        public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(TextBox, text); } // only needed for dynamic changes..
 
         public delegate void OnTextBoxChanged(object sender, EventArgs e);
         public event OnTextBoxChanged TextBoxChanged;
@@ -225,22 +230,28 @@ namespace ExtendedControls
 
         public double GetRealFontHeight()
         {
+            //System.Diagnostics.Debug.WriteLine("Font " + FontHeight + " " + Font.GetHeight());
             int h = FontHeight;
             if (h > 16)     // FUDGE - seems to show 1 below. measured.
-                h++;
+               h++;
             return h;
         }
 
         public int EstimateLinesInBox(int height)
         {
             int lines = (int)(height/ GetRealFontHeight()) + ScrollBarLineTweak;
-            //System.Diagnostics.Debug.WriteLine(this.Name + " Est Lines " + lines + " on " + height + " on " + GetRealFontHeight() + " Font " + Font.Name + " " + Font.Size + " "  + FontHeight);
+            //System.Diagnostics.Debug.WriteLine(this.Name + " Est Lines " + lines +" h " + height + " on " + GetRealFontHeight() + " Font " + Font.Name + " " + Font.Size + " "  + FontHeight);
             return lines;
         }
 
         public int EstimateVerticalSizeFromText()
         {
-            int numberlines = TextBox.Lines.Count();
+            int lastselpos = this.Text.Length;
+            int numberlines = (lastselpos >= 0) ? (TextBox.GetLineFromCharIndex(lastselpos) + 1) : 0;
+            //            previous method did not incl word wrap int numberlines = TextBox.Lines.Count();
+
+            //System.Diagnostics.Debug.WriteLine("Estimated " + numberlines + " incl word wrap" + " total lines " + TextBox.Lines.Count());
+
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
             double fonth = GetRealFontHeight();
             int pixels = (int)( fonth * numberlines) + bordersize * 2 + 4;      // 4 extra for border area of this (bounds-client rect)
@@ -296,22 +307,6 @@ namespace ExtendedControls
         #endregion
 
         private int lc = 1;
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            // 
-            // RichTextBoxScroll
-            // 
-            this.Resize += new System.EventHandler(this.RichTextBoxScroll_Resize);
-            this.ResumeLayout(false);
-
-        }
-
-        private void RichTextBoxScroll_Resize(object sender, EventArgs e)
-        {
-            //System.Diagnostics.Debug.WriteLine("Resize" + Size);
-        }
 
         private void TextBox_MouseLeave(object sender, EventArgs e)             // using the text box mouse actions, pass thru to ours so registered handlers work
         {
