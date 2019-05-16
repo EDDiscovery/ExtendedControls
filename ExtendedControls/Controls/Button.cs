@@ -339,7 +339,7 @@ namespace ExtendedControls
 
                 if (Image != null)
                 {
-                    Size isize = (imagelayout == ImageLayout.Stretch) ? buttonarea.Size : Image.Size;
+                    Size isize = (imagelayout == ImageLayout.Stretch) ? new Size(buttonarea.Height,buttonarea.Height) : Image.Size;
 
                     if ((Enabled && drawnImageAttributesEnabled != null) || (!Enabled && drawnImageAttributesDisabled != null))
                     {

@@ -1,6 +1,6 @@
 ﻿namespace DialogTest
 {
-    partial class TestCompositeButton
+    partial class TestButtons
     {
         /// <summary>
         /// Required designer variable.
@@ -29,20 +29,56 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.extButton2 = new ExtendedControls.ExtButton();
+            this.extButton3 = new ExtendedControls.ExtButton();
+            this.extButton1 = new ExtendedControls.ExtButton();
             this.compositeButton1 = new ExtendedControls.CompositeButton();
             this.buttonExt1 = new ExtendedControls.ExtButton();
             this.buttonExt2 = new ExtendedControls.ExtButton();
-            this.extButton1 = new ExtendedControls.ExtButton();
-            this.extButton2 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackgroundImage = global::DialogTest.Properties.Resources.edsm32x32;
-            this.panel1.Location = new System.Drawing.Point(162, 171);
+            this.panel1.Location = new System.Drawing.Point(106, 60);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(48, 48);
             this.panel1.TabIndex = 0;
+            // 
+            // extButton2
+            // 
+            this.extButton2.Location = new System.Drawing.Point(127, 12);
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(75, 23);
+            this.extButton2.TabIndex = 4;
+            this.extButton2.Text = "400x400";
+            this.extButton2.UseVisualStyleBackColor = true;
+            this.extButton2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // extButton3
+            // 
+            this.extButton3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.extButton3.Image = global::DialogTest.Properties.Resources.galaxy;
+            this.extButton3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.extButton3.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.extButton3.Location = new System.Drawing.Point(12, 212);
+            this.extButton3.Name = "extButton3";
+            this.extButton3.Size = new System.Drawing.Size(84, 45);
+            this.extButton3.TabIndex = 3;
+            this.extButton3.Text = "128x128";
+            this.extButton3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.extButton3.UseVisualStyleBackColor = true;
+            this.extButton3.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // extButton1
+            // 
+            this.extButton1.Location = new System.Drawing.Point(12, 12);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.TabIndex = 3;
+            this.extButton1.Text = "128x128";
+            this.extButton1.UseVisualStyleBackColor = true;
+            this.extButton1.Click += new System.EventHandler(this.button1_Click);
             // 
             // compositeButton1
             // 
@@ -56,11 +92,11 @@
             this.compositeButton1.Decals = new System.Windows.Forms.Panel[] {
         this.panel1};
             this.compositeButton1.DecalSpacing = 8;
-            this.compositeButton1.Location = new System.Drawing.Point(352, 27);
+            this.compositeButton1.Location = new System.Drawing.Point(252, 12);
             this.compositeButton1.MinimumDecalButtonVerticalSpacing = 8;
             this.compositeButton1.Name = "compositeButton1";
             this.compositeButton1.Padding = new System.Windows.Forms.Padding(10);
-            this.compositeButton1.Size = new System.Drawing.Size(373, 390);
+            this.compositeButton1.Size = new System.Drawing.Size(261, 168);
             this.compositeButton1.TabIndex = 1;
             this.compositeButton1.Text = "This is a test";
             this.compositeButton1.TextBackColor = System.Drawing.Color.Transparent;
@@ -75,7 +111,7 @@
             this.buttonExt1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.buttonExt1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonExt1.Image = global::DialogTest.Properties.Resources.galaxy;
-            this.buttonExt1.Location = new System.Drawing.Point(134, 332);
+            this.buttonExt1.Location = new System.Drawing.Point(78, 110);
             this.buttonExt1.Name = "buttonExt1";
             this.buttonExt1.Size = new System.Drawing.Size(48, 48);
             this.buttonExt1.TabIndex = 0;
@@ -90,7 +126,7 @@
             this.buttonExt2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonExt2.Image = global::DialogTest.Properties.Resources.galaxy_gray;
             this.buttonExt2.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.buttonExt2.Location = new System.Drawing.Point(190, 332);
+            this.buttonExt2.Location = new System.Drawing.Point(134, 110);
             this.buttonExt2.Margin = new System.Windows.Forms.Padding(0);
             this.buttonExt2.Name = "buttonExt2";
             this.buttonExt2.Size = new System.Drawing.Size(48, 48);
@@ -98,36 +134,17 @@
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
             // 
-            // extButton1
-            // 
-            this.extButton1.Location = new System.Drawing.Point(12, 12);
-            this.extButton1.Name = "extButton1";
-            this.extButton1.Size = new System.Drawing.Size(75, 23);
-            this.extButton1.TabIndex = 3;
-            this.extButton1.Text = "128x128";
-            this.extButton1.UseVisualStyleBackColor = true;
-            this.extButton1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // extButton2
-            // 
-            this.extButton2.Location = new System.Drawing.Point(127, 12);
-            this.extButton2.Name = "extButton2";
-            this.extButton2.Size = new System.Drawing.Size(75, 23);
-            this.extButton2.TabIndex = 4;
-            this.extButton2.Text = "400x400";
-            this.extButton2.UseVisualStyleBackColor = true;
-            this.extButton2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // TestCompositeButton
+            // TestButtons
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(1060, 623);
             this.Controls.Add(this.extButton2);
+            this.Controls.Add(this.extButton3);
             this.Controls.Add(this.extButton1);
             this.Controls.Add(this.compositeButton1);
-            this.Name = "TestCompositeButton";
+            this.Name = "TestButtons";
             this.Text = "TestCompositeButton";
             this.ResumeLayout(false);
 
@@ -140,5 +157,6 @@
         private System.Windows.Forms.Panel panel1;
         private ExtendedControls.ExtButton extButton1;
         private ExtendedControls.ExtButton extButton2;
+        private ExtendedControls.ExtButton extButton3;
     }
 }

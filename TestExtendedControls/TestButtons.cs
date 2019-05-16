@@ -11,17 +11,18 @@ using System.Windows.Forms;
 
 namespace DialogTest
 {
-    public partial class TestCompositeButton : Form
+    public partial class TestButtons : Form
     {
         ThemeStandard theme;
 
-        public TestCompositeButton()
+        public TestButtons()
         {
             theme = new ThemeStandard();
             ThemeableFormsInstance.Instance = theme;
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontSize = 12;
+            theme.FontSize = 24;
+            theme.WindowsFrame = true;
 
             InitializeComponent();
 
