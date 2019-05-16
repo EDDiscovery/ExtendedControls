@@ -13,12 +13,13 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+using ExtendedControls;
 using System;
 using System.Windows.Forms;
 
 namespace ExtendedAudioForms
 {
-    public partial class AudioDeviceConfigure : Form
+    public partial class AudioDeviceConfigure : DraggableForm
     {
         public string Selected { get { return comboBoxCustomDevice.SelectedIndex >= 0 ? (string)comboBoxCustomDevice.SelectedItem : null; } }
 
@@ -31,7 +32,7 @@ namespace ExtendedAudioForms
         {
             comboBoxCustomDevice.Items.AddRange(dr.GetAudioEndpoints().ToArray());
             comboBoxCustomDevice.SelectedItem = dr.GetAudioEndpoint();
-            bool border = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyStd(this) ?? true;
+            bool border = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this) ?? true;
 
             this.Text = title;
             if (!border)
@@ -41,6 +42,16 @@ namespace ExtendedAudioForms
         private void buttonExtOK_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
+        }
+
+        private void CapMouseDown(object sender, MouseEventArgs e)
+        {
+            OnCaptionMouseDown((Control)sender, e);
+        }
+
+        private void CapMouseUp(object sender, MouseEventArgs e)
+        {
+            OnCaptionMouseUp((Control)sender, e);
         }
     }
 }

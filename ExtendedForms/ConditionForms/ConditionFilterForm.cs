@@ -65,7 +65,7 @@ namespace ExtendedConditionsForms
         {
             initialtitle = t;
             this.Icon = ic;
-            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyStd(this) ?? false;
+            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this) ?? false;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
 
             BaseUtils.Translator.Instance?.Translate(this, new Control[] { label_index });

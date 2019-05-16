@@ -37,11 +37,6 @@ namespace ExtendedConditionsForms
 
         public Action<int> onCalcMinsize;                           // called with the y size of the windows, allows the caller if implemented to resize to suit
 
-        public int LeftSizeConditionWidth { get; set; } = 200;       // change before init.
-        public int ConditionWidth { get; set; } = 140;       // change before init.
-        public int EventWidth { get; set; } = 150;       // change before init.
-        public int DropDownHeight { get; set; } = 400;       // change before init.
-
         public ConditionFilterUC()
         {
             groups = new List<Group>();
@@ -73,8 +68,7 @@ namespace ExtendedConditionsForms
             ConditionLists l = new ConditionLists();
             if ( j!= null && j.fields != null )
                 l.Add(j);
-            Init(null, false);
-            buttonMore.Visible = true;
+            Init(null, false);          // no outer conditions..
             LoadConditions(l);
         }
 
@@ -143,15 +137,12 @@ namespace ExtendedConditionsForms
         {
             eventlist = el;
             allowoutercond = outerconditions;
-
-            // set up where a condition would start on the panel.. dep if the event list is on and the action file system is on..
-            // sizes are the sizes of the controls and gaps
-            condxoffset = ((eventlist != null) ? (150 + 8) : 0) + panelxmargin + 8;
         }
 
         private void panelVScroll_Resize(object sender, EventArgs e)
         {
-            FixUpGroups(false);
+            if ( Width>0 && Height>0)
+                FixUpGroups(false);
         }
 
         #endregion
@@ -193,14 +184,14 @@ namespace ExtendedConditionsForms
             g.panel = new Panel();
             g.panel.SuspendLayout();
 
+            int p24 = Font.ScalePixels(24);
+
             if (eventlist != null)
             {
                 g.evlist = new ExtendedControls.ExtComboBox();
                 g.evlist.Items.AddRange(eventlist);
-                g.evlist.DropDownWidth = 400;
                 g.evlist.Location = new Point(panelxmargin, panelymargin);
-                g.evlist.Size = new Size(EventWidth, 24);
-                g.evlist.DropDownHeight = DropDownHeight;
+                g.evlist.Size = new Size(Font.ScalePixels(150), p24);
                 if (initialev != null && initialev.Length > 0)
                     g.evlist.Text = initialev;
                 g.evlist.SelectedIndexChanged += Evlist_SelectedIndexChanged;
@@ -211,7 +202,7 @@ namespace ExtendedConditionsForms
             g.innercond = new ExtendedControls.ExtComboBox();
             g.innercond.Items.AddRange(Enum.GetNames(typeof(ConditionEntry.LogicalCondition)));
             g.innercond.SelectedIndex = 0;
-            g.innercond.Size = new Size(48, 24);
+            g.innercond.Size = new Size(Font.ScalePixels(60), p24);
             g.innercond.Visible = false;
             if ( initialcondinner != null)
                 g.innercond.Text = initialcondinner;
@@ -220,7 +211,7 @@ namespace ExtendedConditionsForms
             g.outercond = new ExtendedControls.ExtComboBox();
             g.outercond.Items.AddRange(Enum.GetNames(typeof(ConditionEntry.LogicalCondition)));
             g.outercond.SelectedIndex = 0;
-            g.outercond.Size = new Size(60, 24);
+            g.outercond.Size = new Size(Font.ScalePixels(60), p24);
             g.outercond.Enabled = g.outercond.Visible = false;
             if (initialcondouter != null)
                 g.outercond.Text = initialcondouter;
@@ -233,7 +224,7 @@ namespace ExtendedConditionsForms
             g.panel.Controls.Add(g.outerlabel);
 
             g.upbutton = new ExtendedControls.ExtButton();
-            g.upbutton.Size = new Size(24, 24);
+            g.upbutton.Size = new Size(p24,p24);
             g.upbutton.Text = "^";
             g.upbutton.Click += Up_Click;
             g.upbutton.Tag = g;
@@ -298,14 +289,14 @@ namespace ExtendedConditionsForms
 
             Group.Conditions c = new Group.Conditions();
 
+            int p24 = Font.ScalePixels(24);
+
             c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
             c.fname.EndButtonVisible = true;
             c.fname.Name = "CVar";
-            c.fname.Size = new Size(LeftSizeConditionWidth, 32);
+            c.fname.Size = new Size(Font.ScalePixels(200), Font.ScalePixels(32));
             c.fname.SetAutoCompletor(AutoCompletor);
             c.fname.Tag = new Tuple<Group,Group.Conditions>(g,c);
-            c.fname.DropDownWidth = LeftSizeConditionWidth*2;
-            c.fname.DropDownHeight = DropDownHeight;
             c.fname.AutoCompleteCommentMarker = commentmarker;
             if (initialfname != null)
                 c.fname.Text = initialfname;
@@ -314,9 +305,7 @@ namespace ExtendedConditionsForms
             c.cond = new ExtendedControls.ExtComboBox();
             c.cond.Items.AddRange(ConditionEntry.MatchNames);
             c.cond.SelectedIndex = 0;
-            c.cond.Size = new Size(ConditionWidth, 24);
-            c.cond.DropDownHeight = DropDownHeight;
-            c.cond.DropDownWidth = ConditionWidth * 2;
+            c.cond.Size = new Size(Font.ScalePixels(140), p24);
             c.cond.Tag = g;
 
             if (initialcond != null)
@@ -334,14 +323,14 @@ namespace ExtendedConditionsForms
             g.panel.Controls.Add(c.value);         // must be next
 
             c.del = new ExtendedControls.ExtButton();
-            c.del.Size = new Size(24, 24);
+            c.del.Size = new Size(p24, p24);
             c.del.Text = "X";
             c.del.Click += ConditionDelClick;
             c.del.Tag = c;
             g.panel.Controls.Add(c.del);
 
             c.more = new ExtendedControls.ExtButton();
-            c.more.Size = new Size(24, 24);
+            c.more.Size = new Size(p24, p24);
             c.more.Text = "+";
             c.more.Click += NewConditionClick;
             c.more.Tag = g;
@@ -469,18 +458,20 @@ namespace ExtendedConditionsForms
                             showouter = true;
                     }
 
-                    showouter &= allowoutercond;                // qualify with outer condition switch
+                    showouter = showouter && allowoutercond;     // qualify with outer condition switch
                 }
                 else
                     showouter = (i > 0) && allowoutercond;       // and enabled/disable the outer condition switch
-
-                g.outercond.Enabled = g.outercond.Visible = g.outerlabel.Visible = showouter;       // and enabled/disable the outer condition switch
 
                 // Now position the conditions inside the panel
 
                 int vnextcond = panelymargin;
 
-                int farx = (g.evlist!= null) ? (g.evlist.Right-g.innercond.Width+8) : 0 ;   // innercond cause below adds it back on
+                int condxoffset = (g.evlist != null) ? (g.evlist.Right + 8) : panelxmargin;
+                int farx = condxoffset; // should never not have a condition but ..
+
+                int panelxspacing = Font.ScalePixels(4);
+                int panelyspacing = Font.ScalePixels(6);
 
                 for (int condc = 0; condc < g.condlist.Count; condc++)
                 {
@@ -490,59 +481,63 @@ namespace ExtendedConditionsForms
                     if (!c.fname.Enabled)
                         c.fname.Text = "";
 
-                    c.cond.Location = new Point(c.fname.Right + 4, vnextcond);
+                    c.cond.Location = new Point(c.fname.Right + panelxspacing, vnextcond);
 
-                    c.value.Location = new Point(c.cond.Right + 4, vnextcond + 2);
+                    c.value.Location = new Point(c.cond.Right + panelxspacing, vnextcond + 2);
                     c.value.Size = new Size(panelwidth - condxoffset - c.fname.Width - 4 - c.cond.Width - 4 - c.del.Width - 4 - c.more.Width - 4 - g.innercond.Width - 4 - g.upbutton.Width + 8, 24);
                     c.value.Enabled = !ConditionEntry.IsNullOperation(c.cond.Text) && !ConditionEntry.IsUnaryOperation(c.cond.Text);
                     if (!c.value.Enabled)
                         c.value.Text = "";
 
-                    c.del.Location = new Point(c.value.Right + 4, vnextcond);
-                    c.more.Location = new Point(c.del.Right + 4, vnextcond);
+                    c.del.Location = new Point(c.value.Right + panelxspacing, vnextcond);
+                    c.more.Location = new Point(c.del.Right + panelxspacing, vnextcond);
                     c.more.Visible = (condc == g.condlist.Count - 1);
 
-                    vnextcond += conditionhoff;
-                    farx = c.more.Left + 4;     // where the more button is
+                    vnextcond += c.fname.Height + panelyspacing;
+                    farx = c.more.Left;     // where the innercond/up buttons are
                 }
 
                 // and the outer/inner conditions
 
                 g.innercond.Visible = (g.condlist.Count > 1);       // inner condition on if multiple
                 g.innercond.Location = new Point(farx, panelymargin);    // inner condition is in same place as more button
-                farx = g.innercond.Right + 4;                       // move off    
+                farx = g.innercond.Right + panelxspacing;                       // move off    
 
                 // and the up button.. 
+                g.upbutton.Visible = (i != 0 && g.condlist.Count > 0);
                 g.upbutton.Location = new Point(farx, panelymargin);
-                g.upbutton.Visible = (i != 0);
-                farx = g.upbutton.Right;
 
                 // allocate space for the outercond if req.
-                if (g.outercond.Enabled)
+                g.outercond.Enabled = g.outercond.Visible = g.outerlabel.Visible = showouter;       // and enabled/disable the outer condition switch
+
+                if (showouter)
                 {
                     g.outercond.Location = new Point(panelxmargin, vnextcond);
-                    g.outerlabel.Location = new Point(g.outercond.Location.X + g.outercond.Width + 4, g.outercond.Location.Y + 3);
-                    vnextcond += conditionhoff;
+                    g.outerlabel.Location = new Point(g.outercond.Location.X + g.outercond.Width + panelxspacing, g.outercond.Location.Y + 3);
+                    vnextcond += g.outercond.Height+ panelyspacing;
                 }
 
                 // pos the panel
 
                 g.panel.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
-                //g.panel.Size = new Size(Math.Max(panelwidth - panelxmargin * 2, farx), Math.Max(vnextcond, panelymargin + conditionhoff));
-                g.panel.Size = new Size(Math.Max(panelwidth - panelxmargin * 2, farx), 10);
+                g.panel.Size = new Size(Math.Max(panelwidth - panelxmargin * 2, farx), Math.Max(vnextcond + panelyspacing, g.innercond.Bottom + panelyspacing));
                 g.panel.BorderStyle = (g.condlist.Count > 1) ? BorderStyle.FixedSingle : BorderStyle.None;
 
-                y += g.panel.Height + 2;
+                y += g.panel.Height + panelyspacing*2;
 
                 // and make sure actions list is right
 
                 g.panel.ResumeLayout();
             }
 
-            buttonMore.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
-            buttonMore.Visible = allowoutercond || groups.Count == 0;
-
-            y += buttonMore.Height;
+            if (allowoutercond || groups.Count == 0)
+            {
+                buttonMore.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
+                buttonMore.Visible = true;
+                y = buttonMore.Bottom;
+            }
+            else
+                buttonMore.Visible = false;
 
             if (calcminsize )
                 onCalcMinsize?.Invoke(y);
@@ -707,12 +702,9 @@ namespace ExtendedConditionsForms
         }
 
         private List<Group> groups;
-        private int condxoffset;     // where conditions start in x, estimate in Init
 
         private const int panelxmargin = 3;
-        private const int panelymargin = 1;
-        private const int conditionhoff = 26;
-
+        private const int panelymargin = 3;
         private const string commentmarker = "|";
 
         #endregion

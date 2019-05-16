@@ -178,7 +178,6 @@ namespace ExtendedConditionsForms
             this.panelVScroll1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelVScroll1.Location = new System.Drawing.Point(0, 0);
             this.panelVScroll1.Name = "panelVScroll1";
-            this.panelVScroll1.ScrollBarWidth = 20;
             this.panelVScroll1.Size = new System.Drawing.Size(641, 290);
             this.panelVScroll1.TabIndex = 8;
             this.panelVScroll1.VerticalScrollBarDockRight = true;

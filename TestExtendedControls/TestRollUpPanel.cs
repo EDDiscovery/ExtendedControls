@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExtendedControls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,34 +13,20 @@ namespace DialogTest
 {
     public partial class TestRollUpPanel : Form
     {
+
+        ThemeStandard theme;
+
         public TestRollUpPanel()
         {
             InitializeComponent();
+
+            theme = new ThemeStandard();
+            theme.LoadBaseThemes();
+            theme.SetThemeByName("Elite Verdana");
+            theme.WindowsFrame = true;
+        
             rolluppanel.HiddenMarkerWidth = -100;
             rolluppanel.SetPinState(true);
-            comboBoxCustom1.Items.AddRange(new string[] { "1Fred", "Jim", "Sheila", "George" });
-            comboBoxCustom1.DropDownBackgroundColor = Color.Red;
-            comboBoxCustom1.FlatStyle = FlatStyle.Popup;
-            comboBoxCustom1.Repaint();
-            comboBoxCustom2.Items.AddRange(KeyObjectExtensions.KeyListString(true));
-            comboBoxCustom2.SelectedItem = Keys.ShiftKey.VKeyToString();
-            //comboBoxCustom1.FlatStyle = FlatStyle.Popup;
-
-            System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images    
-            colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
-            colormap.NewColor = Color.Orange;
-            System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images    
-            colormap2.OldColor = Color.FromArgb(222,222,222);                                                        // white is defined as the forecolour
-            colormap2.NewColor = Color.Orange.Multiply(0.8F);
-            foreach ( Control c in rolluppanel.Controls )
-            {
-                if (c is ExtendedControls.ExtCheckBox)
-                    (c as ExtendedControls.ExtCheckBox).SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
-                else if (c is ExtendedControls.ExtButton)
-                    (c as ExtendedControls.ExtButton).SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
-            }
-
-            KeyObjectExtensions.VerifyKeyOE();
         }
 
         private void TestRollUpPanel_KeyDown(object sender, KeyEventArgs e)
@@ -50,6 +37,19 @@ namespace DialogTest
         {
             System.Diagnostics.Debug.WriteLine("Key down " + e.KeyCode + " " + e.KeyData);
 
+        }
+
+        private void extButton1_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 12;
+            theme.ApplyStd(this);
+
+        }
+
+        private void extButton2_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 20;
+            theme.ApplyStd(this);
         }
     }
 }

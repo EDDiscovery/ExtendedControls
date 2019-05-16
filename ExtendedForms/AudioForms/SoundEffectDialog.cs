@@ -18,10 +18,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using AudioExtensions;
 using BaseUtils;
+using ExtendedControls;
 
 namespace ExtendedAudioForms
 {
-    public partial class SoundEffectsDialog : Form
+    public partial class SoundEffectsDialog : DraggableForm
     {
         public delegate void TestSettings(SoundEffectsDialog sender, Variables effect);
         public event TestSettings TestSettingEvent;
@@ -100,7 +101,7 @@ namespace ExtendedAudioForms
 
             checkBoxCustomNone.Checked = ap.OverrideNone;
 
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyStd(this);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this);
         }
 
         public Variables GetEffects()
@@ -261,6 +262,16 @@ namespace ExtendedAudioForms
         {
             Variables vs = new Variables(defaulteffectsconfig[comboBoxCustomVoices.SelectedIndex],Variables.FromMode.MultiEntryComma);
             Set(vs);
+        }
+
+        private void CapMouseDown(object sender, MouseEventArgs e)
+        {
+            OnCaptionMouseDown((Control)sender, e);
+        }
+
+        private void CapMouseUp(object sender, MouseEventArgs e)
+        {
+            OnCaptionMouseUp((Control)sender, e);
         }
 
     }

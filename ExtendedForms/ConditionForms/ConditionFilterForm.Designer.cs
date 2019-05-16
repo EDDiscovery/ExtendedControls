@@ -166,11 +166,7 @@ namespace ExtendedConditionsForms
             // 
             // conditionFilterUC
             // 
-            this.conditionFilterUC.ConditionWidth = 140;
             this.conditionFilterUC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.conditionFilterUC.DropDownHeight = 400;
-            this.conditionFilterUC.EventWidth = 150;
-            this.conditionFilterUC.LeftSizeConditionWidth = 200;
             this.conditionFilterUC.Location = new System.Drawing.Point(3, 32);
             this.conditionFilterUC.Name = "conditionFilterUC";
             this.conditionFilterUC.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);

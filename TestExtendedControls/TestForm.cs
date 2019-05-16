@@ -125,31 +125,6 @@ namespace DialogTest
             richTextBoxScroll1.ScrollBarFlatStyle = FlatStyle.Popup;
             richTextBoxScroll1.HideScrollBar = true;
 
-            dataGridView1.Rows.Clear();
-
-            for( int i = 0; i < 100; i++ )
-            {
-                string cg1 = "r" + i + " c1";
-                string cg2 = "r" + i + " c2";
-                string cg3 = "r" + i + " c3";
-                string cg4 = "r" + i + " c4";
-                string cg5 = "r" + i + " c5";
-                object[] rowobj = { cg1, cg2, cg3, cg4, cg5 };
-                int rc = dataGridView1.RowCount-1;
-                dataGridView1.Rows.Add(rowobj);
-                dataGridView1.Rows[rc].HeaderCell.Value = i.ToString();
-
-               // dataGridView1.Rows[rc].HeaderCell.Style.ForeColor = (i % 2 == 0) ? Color.Red : Color.White;
-                //dataGridView1.Rows[rc].HeaderCell.Style.BackColor = (i % 2 == 0) ? Color.White : Color.Red;
-            }
-
-
-            Font fnt1 = new Font("Euro Caps", 12F);
-            dataGridView1.ColumnHeadersDefaultCellStyle.Font = fnt1;
-            dataGridView1.RowHeadersDefaultCellStyle.Font = fnt1;
-            dataGridView1.RowHeadersDefaultCellStyle.ForeColor = Color.Blue;
-            dataGridView1.RowHeadersDefaultCellStyle.BackColor = Color.White;
-
             numericUpDownCustom1.AutoSize = true;
             numericUpDownCustom1.Minimum = -100;
 
@@ -330,28 +305,6 @@ namespace DialogTest
 
         }
 
-        int addindex = 1000;
-        private void button6_Click(object sender, EventArgs e)
-        {
-            string cg1 = "r" + addindex + " c1";
-            string cg2 = "r" + addindex + " c2";
-            string cg3 = "r" + addindex + " c3";
-            string cg4 = "r" + addindex + " c4";
-            string cg5 = "r" + addindex + " c5";
-            addindex++;
-            object[] rowobj = { cg1, cg2, cg3, cg4, cg5 };
-            dataGridView1.Rows.Add(rowobj);
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            dataGridView1.Rows.Clear();
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            dataGridView1.Rows.RemoveAt(0);
-        }
 
         private void button9_Click(object sender, EventArgs e)
         {
@@ -408,16 +361,6 @@ namespace DialogTest
             //Console.WriteLine("KD key " + e.KeyCode.ToString());
         }
 
-        private void button16_Click(object sender, EventArgs e)
-        {
-            for (int l = 2; l < 5; l++)
-            {
-                dataGridView1.Rows[l].Visible =!dataGridView1.Rows[l].Visible;
-            }
-
-            HoldingPanel.UpdateScroll();
-        }
-
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
 
@@ -439,31 +382,7 @@ namespace DialogTest
             return f;
         }
 
-        CheckedListBoxForm cc;
-
-        private void button17_Click(object sender, EventArgs e)
-        {
-            if (cc == null)
-            {
-                Button b = sender as Button;
-                cc = new CheckedListBoxForm();
-                cc.Items.Add("One");
-                cc.Items.Add("Two");
-                cc.Items.Add("Three four five six seven eight nine ten");
-                cc.Items.Add("Four");
-                cc.FormClosed += FormClosed2;
-                cc.PositionBelow(b, new Size(b.Width, 400));
-                cc.Show();
-            }
-            else
-                cc.Close();
-        }
-
-        private void FormClosed2(Object sender, FormClosedEventArgs e )
-        {
-            cc = null;
-        }
-
+        
         private void checkBoxCustom2_CheckedChanged(object sender, EventArgs e)
         {
             CheckBox cb = sender as CheckBox;

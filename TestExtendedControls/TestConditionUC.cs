@@ -23,22 +23,29 @@ namespace DialogTest
             theme = new ThemeStandard();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
+            theme.FontSize = 12;
+            theme.WindowsFrame = false;
             ExtendedControls.ThemeableFormsInstance.Instance = theme;
+
         }
 
         ConditionLists eventscond;
 
         private void buttonEvents(object sender, EventArgs e)
         {
+            EV(12);
+        }
+
+        private void EV(float s)
+        { 
             ConditionFilterForm frm = new ConditionFilterForm();
-            frm.VariableNamesEvents += (evname) => 
-                {
-                    List<BaseUtils.TypeHelpers.PropertyNameInfo> list = new List<BaseUtils.TypeHelpers.PropertyNameInfo>();
-                    list.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("one:" + evname, "help on one"));
-                    list.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("two:" + evname, "help on two"));
-                    return list;
-                };
+            frm.VariableNamesEvents += (evname) =>
+            {
+                List<BaseUtils.TypeHelpers.PropertyNameInfo> list = new List<BaseUtils.TypeHelpers.PropertyNameInfo>();
+                list.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("one:" + evname, "help on one"));
+                list.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("two:" + evname, "help on two"));
+                return list;
+            };
 
             frm.VariableNames = new List<BaseUtils.TypeHelpers.PropertyNameInfo>();
             frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("defone", "String", ConditionEntry.MatchType.Contains));
@@ -47,16 +54,26 @@ namespace DialogTest
 
             List<string> events = new List<string>() { "eone", "etwo" };
 
+            theme.FontSize = s;
             frm.InitFilter("Name", this.Icon, events);
-
-            theme.ApplyToForm(frm);
 
             if (frm.ShowDialog() == DialogResult.OK)
                 eventscond = frm.Result;
         }
 
+        private void extButton1_Click(object sender, EventArgs e)
+        {
+            EV(20);
+
+        }
+
         private void buttonCondition(object sender, EventArgs e)
         {
+            CD(12);
+        }
+
+        private void CD(float s)
+        { 
             ConditionFilterForm frm = new ConditionFilterForm();
 
             List<ConditionEntry> ces = new List<ConditionEntry>() { new ConditionEntry("Fred", ConditionEntry.MatchType.NumericGreaterEqual, "20") };
@@ -67,9 +84,9 @@ namespace DialogTest
             frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("defone", "String", ConditionEntry.MatchType.Contains));
             frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("deftwo", "Number", ConditionEntry.MatchType.NumericEquals));
 
+            theme.FontSize = s;
             frm.InitCondition("Name", this.Icon, conds);
 
-            theme.ApplyToForm(frm);
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var list = frm.Result;
@@ -78,17 +95,38 @@ namespace DialogTest
             }
         }
 
+        private void extButton2_Click(object sender, EventArgs e)
+        {
+            CD(20);
+
+        }
+
+
         ConditionLists clist2;
 
         private void buttonExt3_Click(object sender, EventArgs e)
         {
+            CL(12);
+        }
+
+
+        private void CL(float s)
+        {
             ConditionFilterForm frm = new ConditionFilterForm();
 
+            theme.FontSize = s;
             frm.InitCondition("Name", this.Icon, clist2);
+
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 clist2 = frm.Result;
             }
+
+        }
+
+        private void extButton3_Click(object sender, EventArgs e)
+        {
+            CL(20);
 
         }
     }

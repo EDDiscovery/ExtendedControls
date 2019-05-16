@@ -46,7 +46,7 @@ namespace DialogTest
 
             comboBoxCustom1.Items.AddRange(list);
 
-            theme.ApplyToForm(this);
+            theme.ApplyStd(this);
         }
 
         private void AutoCompleteTextBox2_KeyUp(object sender, KeyEventArgs e)

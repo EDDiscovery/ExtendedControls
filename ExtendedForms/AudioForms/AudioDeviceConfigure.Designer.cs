@@ -39,28 +39,25 @@
             // 
             // comboBoxCustomDevice
             // 
-            this.comboBoxCustomDevice.ArrowWidth = 1;
             this.comboBoxCustomDevice.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustomDevice.ButtonColorScaling = 0.5F;
             this.comboBoxCustomDevice.DataSource = null;
+            this.comboBoxCustomDevice.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomDevice.DisplayMember = "";
             this.comboBoxCustomDevice.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.comboBoxCustomDevice.DropDownHeight = 106;
-            this.comboBoxCustomDevice.DropDownWidth = 248;
             this.comboBoxCustomDevice.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustomDevice.ItemHeight = 13;
             this.comboBoxCustomDevice.Location = new System.Drawing.Point(14, 55);
             this.comboBoxCustomDevice.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomDevice.Name = "comboBoxCustomDevice";
             this.comboBoxCustomDevice.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomDevice.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomDevice.ScrollBarWidth = 16;
             this.comboBoxCustomDevice.SelectedIndex = -1;
             this.comboBoxCustomDevice.SelectedItem = null;
             this.comboBoxCustomDevice.SelectedValue = null;
-            this.comboBoxCustomDevice.Size = new System.Drawing.Size(428, 23);
+            this.comboBoxCustomDevice.Size = new System.Drawing.Size(428, 21);
             this.comboBoxCustomDevice.TabIndex = 0;
             this.comboBoxCustomDevice.Text = "comboBoxCustom1";
+            this.comboBoxCustomDevice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomDevice.ValueMember = "";
             // 
             // label1
@@ -74,9 +71,6 @@
             // 
             // buttonExtOK
             // 
-            this.buttonExtOK.BorderColorScaling = 1.25F;
-            this.buttonExtOK.ButtonColorScaling = 0.5F;
-            this.buttonExtOK.ButtonDisabledScaling = 0.5F;
             this.buttonExtOK.Location = new System.Drawing.Point(367, 105);
             this.buttonExtOK.Name = "buttonExtOK";
             this.buttonExtOK.Size = new System.Drawing.Size(75, 23);
@@ -87,9 +81,6 @@
             // 
             // buttonExtCancel
             // 
-            this.buttonExtCancel.BorderColorScaling = 1.25F;
-            this.buttonExtCancel.ButtonColorScaling = 0.5F;
-            this.buttonExtCancel.ButtonDisabledScaling = 0.5F;
             this.buttonExtCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonExtCancel.Location = new System.Drawing.Point(273, 105);
             this.buttonExtCancel.Name = "buttonExtCancel";
@@ -110,6 +101,8 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(455, 150);
             this.panel1.TabIndex = 4;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CapMouseDown);
+            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CapMouseUp);
             // 
             // AudioDeviceConfigure
             // 

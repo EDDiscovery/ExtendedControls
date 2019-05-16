@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestForm));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             ExtendedControls.TabStyleSquare tabStyleSquare1 = new ExtendedControls.TabStyleSquare();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.button10 = new System.Windows.Forms.Button();
@@ -60,7 +59,6 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.button17 = new System.Windows.Forms.Button();
             this.imageTabList = new System.Windows.Forms.ImageList(this.components);
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
@@ -85,14 +83,6 @@
             this.numericUpDownCustom1 = new ExtendedControls.ExtNumericUpDown();
             this.drawnPanel1 = new ExtendedControls.ExtPanelDrawn();
             this.buttonExt1 = new ExtendedControls.ExtButton();
-            this.HoldingPanel = new ExtendedControls.ExtPanelDataGridViewScroll();
-            this.vScrollBarCustom3 = new ExtendedControls.ExtScrollBar();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.c1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.c2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.c3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.listControlCustom2 = new ExtendedControls.ExtListBox();
             this.listControlCustom1 = new ExtendedControls.ExtListBox();
             this.richTextBoxScroll1 = new ExtendedControls.ExtRichTextBox();
@@ -112,8 +102,6 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.HoldingPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -227,7 +215,6 @@
             // 
             this.radioButtonCustom1.AutoSize = true;
             this.radioButtonCustom1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.radioButtonCustom1.FontNerfReduction = 0.5F;
             this.radioButtonCustom1.Location = new System.Drawing.Point(21, 54);
             this.radioButtonCustom1.MouseOverColor = System.Drawing.Color.Green;
             this.radioButtonCustom1.Name = "radioButtonCustom1";
@@ -295,33 +282,24 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(910, 143);
+            this.button6.Location = new System.Drawing.Point(0, 0);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 39;
-            this.button6.Text = "Add Row";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.TabIndex = 71;
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(1014, 142);
+            this.button7.Location = new System.Drawing.Point(0, 0);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 40;
-            this.button7.Text = "Clear";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button7.TabIndex = 70;
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(1112, 143);
+            this.button8.Location = new System.Drawing.Point(0, 0);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 23);
-            this.button8.TabIndex = 41;
-            this.button8.Text = "Del Row";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.button8.TabIndex = 69;
             // 
             // button9
             // 
@@ -362,13 +340,10 @@
             // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(1210, 143);
+            this.button16.Location = new System.Drawing.Point(0, 0);
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(75, 23);
-            this.button16.TabIndex = 50;
-            this.button16.Text = "HIDE Rows";
-            this.button16.UseVisualStyleBackColor = true;
-            this.button16.Click += new System.EventHandler(this.button16_Click);
+            this.button16.TabIndex = 68;
             // 
             // richTextBox1
             // 
@@ -415,16 +390,6 @@
             this.checkedListBox1.Size = new System.Drawing.Size(60, 64);
             this.checkedListBox1.TabIndex = 55;
             this.checkedListBox1.ThreeDCheckBoxes = true;
-            // 
-            // button17
-            // 
-            this.button17.Location = new System.Drawing.Point(767, 100);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(75, 23);
-            this.button17.TabIndex = 56;
-            this.button17.Text = "CheckedListControl";
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
             // 
             // imageTabList
             // 
@@ -513,6 +478,9 @@
             this.numberBoxLong1.ClearOnFirstChar = false;
             this.numberBoxLong1.ControlBackground = System.Drawing.SystemColors.Control;
             this.numberBoxLong1.DelayBeforeNotification = 0;
+            this.numberBoxLong1.EndButtonEnable = true;
+            this.numberBoxLong1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("numberBoxLong1.EndButtonImage")));
+            this.numberBoxLong1.EndButtonVisible = false;
             this.numberBoxLong1.Format = "D";
             this.numberBoxLong1.InErrorCondition = false;
             this.numberBoxLong1.Location = new System.Drawing.Point(977, 44);
@@ -542,6 +510,9 @@
             this.numberBoxLong0.ClearOnFirstChar = false;
             this.numberBoxLong0.ControlBackground = System.Drawing.SystemColors.Control;
             this.numberBoxLong0.DelayBeforeNotification = 0;
+            this.numberBoxLong0.EndButtonEnable = true;
+            this.numberBoxLong0.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("numberBoxLong0.EndButtonImage")));
+            this.numberBoxLong0.EndButtonVisible = false;
             this.numberBoxLong0.Format = "D";
             this.numberBoxLong0.InErrorCondition = false;
             this.numberBoxLong0.Location = new System.Drawing.Point(977, 23);
@@ -571,6 +542,9 @@
             this.textBoxDouble2.ClearOnFirstChar = false;
             this.textBoxDouble2.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxDouble2.DelayBeforeNotification = 1000;
+            this.textBoxDouble2.EndButtonEnable = true;
+            this.textBoxDouble2.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxDouble2.EndButtonImage")));
+            this.textBoxDouble2.EndButtonVisible = false;
             this.textBoxDouble2.Format = "0.###";
             this.textBoxDouble2.InErrorCondition = false;
             this.textBoxDouble2.Location = new System.Drawing.Point(977, 96);
@@ -599,6 +573,9 @@
             this.textBoxDouble1.ClearOnFirstChar = false;
             this.textBoxDouble1.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxDouble1.DelayBeforeNotification = 1000;
+            this.textBoxDouble1.EndButtonEnable = true;
+            this.textBoxDouble1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxDouble1.EndButtonImage")));
+            this.textBoxDouble1.EndButtonVisible = false;
             this.textBoxDouble1.Format = "0.###";
             this.textBoxDouble1.InErrorCondition = false;
             this.textBoxDouble1.Location = new System.Drawing.Point(977, 70);
@@ -626,7 +603,6 @@
             this.numericUpDownCustom2.Minimum = 0;
             this.numericUpDownCustom2.Name = "numericUpDownCustom2";
             this.numericUpDownCustom2.Size = new System.Drawing.Size(75, 23);
-            this.numericUpDownCustom2.SpinnerSize = 16;
             this.numericUpDownCustom2.TabIndex = 63;
             this.numericUpDownCustom2.Text = "0";
             this.numericUpDownCustom2.TextBoxBackColor = System.Drawing.SystemColors.Window;
@@ -717,20 +693,21 @@
             this.checkBoxCustom2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.checkBoxCustom2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.checkBoxCustom2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxCustom2.FontNerfReduction = 0.5F;
             this.checkBoxCustom2.Image = global::DialogTest.Properties.Resources.edsm32x32;
             this.checkBoxCustom2.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustom2.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustom2.Location = new System.Drawing.Point(729, 479);
             this.checkBoxCustom2.MouseOverColor = System.Drawing.Color.Red;
             this.checkBoxCustom2.Name = "checkBoxCustom2";
             this.checkBoxCustom2.Size = new System.Drawing.Size(38, 38);
             this.checkBoxCustom2.TabIndex = 58;
-            this.checkBoxCustom2.TickBoxReductionRatio = 0.75f;
+            this.checkBoxCustom2.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustom2.UseVisualStyleBackColor = false;
             this.checkBoxCustom2.CheckedChanged += new System.EventHandler(this.checkBoxCustom2_CheckedChanged);
             // 
             // autoCompleteTextBox2
             // 
+            this.autoCompleteTextBox2.AutoCompleteCommentMarker = null;
             this.autoCompleteTextBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.autoCompleteTextBox2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.autoCompleteTextBox2.BackErrorColor = System.Drawing.Color.Red;
@@ -741,12 +718,12 @@
             this.autoCompleteTextBox2.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox2.DropDownBorderColor = System.Drawing.Color.Green;
-            this.autoCompleteTextBox2.DropDownHeight = 80;
-            this.autoCompleteTextBox2.DropDownItemHeight = 20;
             this.autoCompleteTextBox2.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox2.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox2.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.autoCompleteTextBox2.DropDownWidth = 120;
+            this.autoCompleteTextBox2.EndButtonEnable = false;
+            this.autoCompleteTextBox2.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox2.EndButtonImage")));
+            this.autoCompleteTextBox2.EndButtonVisible = false;
             this.autoCompleteTextBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.autoCompleteTextBox2.InErrorCondition = false;
             this.autoCompleteTextBox2.Location = new System.Drawing.Point(587, 483);
@@ -763,6 +740,7 @@
             // 
             // autoCompleteTextBox1
             // 
+            this.autoCompleteTextBox1.AutoCompleteCommentMarker = null;
             this.autoCompleteTextBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.autoCompleteTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.autoCompleteTextBox1.BackErrorColor = System.Drawing.Color.Red;
@@ -773,12 +751,12 @@
             this.autoCompleteTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.autoCompleteTextBox1.DropDownHeight = 80;
-            this.autoCompleteTextBox1.DropDownItemHeight = 20;
             this.autoCompleteTextBox1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox1.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.autoCompleteTextBox1.DropDownWidth = 120;
+            this.autoCompleteTextBox1.EndButtonEnable = false;
+            this.autoCompleteTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox1.EndButtonImage")));
+            this.autoCompleteTextBox1.EndButtonVisible = false;
             this.autoCompleteTextBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.autoCompleteTextBox1.InErrorCondition = false;
             this.autoCompleteTextBox1.Location = new System.Drawing.Point(469, 483);
@@ -817,7 +795,6 @@
             this.numericUpDownCustom1.Minimum = 0;
             this.numericUpDownCustom1.Name = "numericUpDownCustom1";
             this.numericUpDownCustom1.Size = new System.Drawing.Size(75, 40);
-            this.numericUpDownCustom1.SpinnerSize = 20;
             this.numericUpDownCustom1.TabIndex = 45;
             this.numericUpDownCustom1.Text = "0";
             this.numericUpDownCustom1.TextBoxBackColor = System.Drawing.SystemColors.Control;
@@ -860,101 +837,6 @@
             this.buttonExt1.Text = "buttonExt1";
             this.buttonExt1.UseVisualStyleBackColor = false;
             // 
-            // HoldingPanel
-            // 
-            this.HoldingPanel.BackColor = System.Drawing.Color.Azure;
-            this.HoldingPanel.Controls.Add(this.vScrollBarCustom3);
-            this.HoldingPanel.Controls.Add(this.dataGridView1);
-            this.HoldingPanel.InternalMargin = new System.Windows.Forms.Padding(0);
-            this.HoldingPanel.Location = new System.Drawing.Point(910, 180);
-            this.HoldingPanel.Name = "HoldingPanel";
-            this.HoldingPanel.ScrollBarWidth = 16;
-            this.HoldingPanel.Size = new System.Drawing.Size(477, 300);
-            this.HoldingPanel.TabIndex = 38;
-            this.HoldingPanel.VerticalScrollBarDockRight = false;
-            // 
-            // vScrollBarCustom3
-            // 
-            this.vScrollBarCustom3.ArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.vScrollBarCustom3.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.vScrollBarCustom3.ArrowColorScaling = 0.5F;
-            this.vScrollBarCustom3.ArrowDownDrawAngle = 270F;
-            this.vScrollBarCustom3.ArrowUpDrawAngle = 90F;
-            this.vScrollBarCustom3.BorderColor = System.Drawing.Color.White;
-            this.vScrollBarCustom3.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.vScrollBarCustom3.HideScrollBar = true;
-            this.vScrollBarCustom3.LargeChange = 1;
-            this.vScrollBarCustom3.Location = new System.Drawing.Point(0, 0);
-            this.vScrollBarCustom3.Maximum = 0;
-            this.vScrollBarCustom3.Minimum = 0;
-            this.vScrollBarCustom3.MouseOverButtonColor = System.Drawing.Color.Green;
-            this.vScrollBarCustom3.MousePressedButtonColor = System.Drawing.Color.Red;
-            this.vScrollBarCustom3.Name = "vScrollBarCustom3";
-            this.vScrollBarCustom3.Size = new System.Drawing.Size(16, 300);
-            this.vScrollBarCustom3.SliderColor = System.Drawing.Color.DarkGray;
-            this.vScrollBarCustom3.SmallChange = 1;
-            this.vScrollBarCustom3.TabIndex = 38;
-            this.vScrollBarCustom3.Text = "vScrollBarCustom3";
-            this.vScrollBarCustom3.ThumbBorderColor = System.Drawing.Color.Yellow;
-            this.vScrollBarCustom3.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.vScrollBarCustom3.ThumbColorScaling = 0.5F;
-            this.vScrollBarCustom3.ThumbDrawAngle = 0F;
-            this.vScrollBarCustom3.Value = 0;
-            this.vScrollBarCustom3.ValueLimited = 0;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.c1,
-            this.c2,
-            this.c3,
-            this.Column4,
-            this.Column5});
-            this.dataGridView1.EnableHeadersVisualStyles = false;
-            this.dataGridView1.Location = new System.Drawing.Point(16, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.Info;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(461, 300);
-            this.dataGridView1.TabIndex = 37;
-            // 
-            // c1
-            // 
-            this.c1.HeaderText = "Column1";
-            this.c1.Name = "c1";
-            // 
-            // c2
-            // 
-            this.c2.HeaderText = "Column2";
-            this.c2.Name = "c2";
-            // 
-            // c3
-            // 
-            this.c3.HeaderText = "Column3";
-            this.c3.Name = "c3";
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Column4";
-            this.Column4.Name = "Column4";
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Column5";
-            this.Column5.Name = "Column5";
-            // 
             // listControlCustom2
             // 
             this.listControlCustom2.BackColor = System.Drawing.Color.White;
@@ -964,7 +846,6 @@
             this.listControlCustom2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.listControlCustom2.GradientColorScaling = 0.5F;
             this.listControlCustom2.ImageItems = null;
-            this.listControlCustom2.ItemHeight = 20;
             this.listControlCustom2.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom2.Items")));
             this.listControlCustom2.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom2.ItemSeperators = null;
@@ -973,7 +854,6 @@
             this.listControlCustom2.Name = "listControlCustom2";
             this.listControlCustom2.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.listControlCustom2.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.listControlCustom2.ScrollBarWidth = 16;
             this.listControlCustom2.SelectedIndex = -1;
             this.listControlCustom2.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom2.Size = new System.Drawing.Size(100, 100);
@@ -989,7 +869,6 @@
             this.listControlCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.listControlCustom1.GradientColorScaling = 0.5F;
             this.listControlCustom1.ImageItems = null;
-            this.listControlCustom1.ItemHeight = 20;
             this.listControlCustom1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom1.Items")));
             this.listControlCustom1.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom1.ItemSeperators = null;
@@ -998,7 +877,6 @@
             this.listControlCustom1.Name = "listControlCustom1";
             this.listControlCustom1.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.listControlCustom1.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.listControlCustom1.ScrollBarWidth = 16;
             this.listControlCustom1.SelectedIndex = -1;
             this.listControlCustom1.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom1.Size = new System.Drawing.Size(100, 100);
@@ -1028,7 +906,6 @@
             this.richTextBoxScroll1.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
             this.richTextBoxScroll1.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
             this.richTextBoxScroll1.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.richTextBoxScroll1.ScrollBarWidth = 20;
             this.richTextBoxScroll1.ShowLineCount = false;
             this.richTextBoxScroll1.Size = new System.Drawing.Size(172, 90);
             this.richTextBoxScroll1.TabIndex = 30;
@@ -1101,21 +978,20 @@
             this.checkBoxCustom1.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustom1.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxCustom1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.checkBoxCustom1.FontNerfReduction = 0.5F;
             this.checkBoxCustom1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.checkBoxCustom1.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustom1.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustom1.Location = new System.Drawing.Point(409, 143);
             this.checkBoxCustom1.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustom1.Name = "checkBoxCustom1";
             this.checkBoxCustom1.Size = new System.Drawing.Size(106, 17);
             this.checkBoxCustom1.TabIndex = 25;
             this.checkBoxCustom1.Text = "CheckBoxControl";
-            this.checkBoxCustom1.TickBoxReductionSize = 2;
+            this.checkBoxCustom1.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustom1.UseVisualStyleBackColor = true;
             // 
             // comboBoxCustom2
             // 
-            this.comboBoxCustom2.ArrowWidth = 1;
             this.comboBoxCustom2.BackColor = System.Drawing.Color.Black;
             this.comboBoxCustom2.BorderColor = System.Drawing.Color.Red;
             this.comboBoxCustom2.ButtonColorScaling = 0.5F;
@@ -1123,16 +999,12 @@
             this.comboBoxCustom2.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustom2.DisplayMember = "";
             this.comboBoxCustom2.DropDownBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.comboBoxCustom2.DropDownHeight = 100;
-            this.comboBoxCustom2.DropDownWidth = 229;
             this.comboBoxCustom2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustom2.ItemHeight = 13;
             this.comboBoxCustom2.Location = new System.Drawing.Point(18, 379);
             this.comboBoxCustom2.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustom2.Name = "comboBoxCustom2";
             this.comboBoxCustom2.ScrollBarButtonColor = System.Drawing.Color.Maroon;
             this.comboBoxCustom2.ScrollBarColor = System.Drawing.Color.Yellow;
-            this.comboBoxCustom2.ScrollBarWidth = 16;
             this.comboBoxCustom2.SelectedIndex = -1;
             this.comboBoxCustom2.SelectedItem = null;
             this.comboBoxCustom2.SelectedValue = null;
@@ -1144,7 +1016,6 @@
             // 
             // comboBoxCustom1
             // 
-            this.comboBoxCustom1.ArrowWidth = 1;
             this.comboBoxCustom1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.comboBoxCustom1.BorderColor = System.Drawing.Color.Red;
             this.comboBoxCustom1.ButtonColorScaling = 0.5F;
@@ -1152,16 +1023,12 @@
             this.comboBoxCustom1.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustom1.DisplayMember = "";
             this.comboBoxCustom1.DropDownBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.comboBoxCustom1.DropDownHeight = 100;
-            this.comboBoxCustom1.DropDownWidth = 229;
             this.comboBoxCustom1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBoxCustom1.ItemHeight = 13;
             this.comboBoxCustom1.Location = new System.Drawing.Point(18, 343);
             this.comboBoxCustom1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustom1.Name = "comboBoxCustom1";
             this.comboBoxCustom1.ScrollBarButtonColor = System.Drawing.Color.Maroon;
             this.comboBoxCustom1.ScrollBarColor = System.Drawing.Color.Yellow;
-            this.comboBoxCustom1.ScrollBarWidth = 16;
             this.comboBoxCustom1.SelectedIndex = -1;
             this.comboBoxCustom1.SelectedItem = null;
             this.comboBoxCustom1.SelectedValue = null;
@@ -1257,6 +1124,9 @@
             this.textBoxBorder1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorder1.ClearOnFirstChar = false;
             this.textBoxBorder1.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorder1.EndButtonEnable = true;
+            this.textBoxBorder1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorder1.EndButtonImage")));
+            this.textBoxBorder1.EndButtonVisible = false;
             this.textBoxBorder1.InErrorCondition = false;
             this.textBoxBorder1.Location = new System.Drawing.Point(18, 305);
             this.textBoxBorder1.Multiline = false;
@@ -1315,7 +1185,6 @@
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.checkBoxCustom2);
             this.Controls.Add(this.button18);
-            this.Controls.Add(this.button17);
             this.Controls.Add(this.checkedListBox1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.comboBox1);
@@ -1334,7 +1203,6 @@
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
-            this.Controls.Add(this.HoldingPanel);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.listControlCustom2);
             this.Controls.Add(this.listControlCustom1);
@@ -1369,8 +1237,6 @@
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.HoldingPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -1410,14 +1276,6 @@
         private System.Windows.Forms.Button button4;
         private ExtendedControls.ExtListBox listControlCustom1;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn c1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn c2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn c3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private ExtendedControls.ExtPanelDataGridViewScroll HoldingPanel;
-        private ExtendedControls.ExtScrollBar vScrollBarCustom3;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
@@ -1437,7 +1295,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.Button button17;
         private System.Windows.Forms.ImageList imageTabList;
         private System.Windows.Forms.Button button18;
         private ExtendedControls.ExtCheckBox checkBoxCustom2;

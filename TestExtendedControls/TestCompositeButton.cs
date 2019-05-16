@@ -13,12 +13,19 @@ namespace DialogTest
 {
     public partial class TestCompositeButton : Form
     {
+        ThemeStandard theme;
+
         public TestCompositeButton()
         {
+            theme = new ThemeStandard();
+            ThemeableFormsInstance.Instance = theme;
+            theme.LoadBaseThemes();
+            theme.SetThemeByName("Elite EuroCaps");
+            theme.FontSize = 12;
+
             InitializeComponent();
-            compositeButton1.TextBackColor = Color.White;
-            //compositeButton1.TextBackground = Color.Green;
-            compositeButton1.Font = new Font("Euro caps", 12);
+
+            theme.ApplyStd(this);
         }
 
         private void button1_Click(object sender, EventArgs e)

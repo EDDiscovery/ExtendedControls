@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ExtendedControls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,8 +13,15 @@ namespace DialogTest
 {
     public partial class TestTabStrip : Form
     {
+        ThemeStandard theme;
+
         public TestTabStrip()
         {
+            theme = new ThemeStandard();
+            theme.LoadBaseThemes();
+            theme.SetThemeByName("Elite Verdana");
+            theme.WindowsFrame = true;
+            
             InitializeComponent();
             tabStrip1.ImageList = new Bitmap[] {
                 DialogTest.Properties.Resources.galaxy_red, DialogTest.Properties.Resources.galaxy_gray,
@@ -220,6 +228,19 @@ namespace DialogTest
         private void button1_Click(object sender, EventArgs e)
         {
             tabStrip1.Close();
+        }
+
+        private void extButton1_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 12;
+            theme.ApplyStd(this);
+
+        }
+
+        private void extButton2_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 20;
+            theme.ApplyStd(this);
         }
     }
 }

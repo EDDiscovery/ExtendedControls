@@ -43,6 +43,7 @@ namespace ExtendedAudioForms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WaveConfigureDialog));
             this.textBoxBorderText = new ExtendedControls.ExtTextBox();
             this.buttonExtBrowse = new ExtendedControls.ExtButton();
             this.trackBarVolume = new System.Windows.Forms.TrackBar();
@@ -67,20 +68,32 @@ namespace ExtendedAudioForms
             // 
             // textBoxBorderText
             // 
+            this.textBoxBorderText.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxBorderText.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorderText.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderText.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorderText.BorderColorScaling = 0.5F;
+            this.textBoxBorderText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorderText.ClearOnFirstChar = false;
+            this.textBoxBorderText.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorderText.EndButtonEnable = true;
+            this.textBoxBorderText.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderText.EndButtonImage")));
+            this.textBoxBorderText.EndButtonVisible = false;
+            this.textBoxBorderText.InErrorCondition = false;
             this.textBoxBorderText.Location = new System.Drawing.Point(12, 37);
             this.textBoxBorderText.Multiline = true;
             this.textBoxBorderText.Name = "textBoxBorderText";
+            this.textBoxBorderText.ReadOnly = false;
+            this.textBoxBorderText.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxBorderText.SelectionLength = 0;
+            this.textBoxBorderText.SelectionStart = 0;
             this.textBoxBorderText.Size = new System.Drawing.Size(364, 24);
             this.textBoxBorderText.TabIndex = 0;
+            this.textBoxBorderText.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.textBoxBorderText.WordWrap = false;
             // 
             // buttonExtBrowse
             // 
-            this.buttonExtBrowse.BorderColorScaling = 1.25F;
-            this.buttonExtBrowse.ButtonColorScaling = 0.5F;
-            this.buttonExtBrowse.ButtonDisabledScaling = 0.5F;
             this.buttonExtBrowse.Location = new System.Drawing.Point(382, 21);
             this.buttonExtBrowse.Name = "buttonExtBrowse";
             this.buttonExtBrowse.Size = new System.Drawing.Size(75, 23);
@@ -115,13 +128,15 @@ namespace ExtendedAudioForms
             this.checkBoxCustomV.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomV.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomV.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxCustomV.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomV.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomV.Location = new System.Drawing.Point(276, 159);
             this.checkBoxCustomV.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomV.Name = "checkBoxCustomV";
             this.checkBoxCustomV.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomV.TabIndex = 5;
             this.checkBoxCustomV.Text = "Override";
-            this.checkBoxCustomV.TickBoxReductionRatio = 0.75f;
+            this.checkBoxCustomV.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustomV.UseVisualStyleBackColor = true;
             this.checkBoxCustomV.CheckedChanged += new System.EventHandler(this.checkBoxCustomV_CheckedChanged);
             // 
@@ -131,20 +146,19 @@ namespace ExtendedAudioForms
             this.checkBoxCustomComplete.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomComplete.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomComplete.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxCustomComplete.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomComplete.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomComplete.Location = new System.Drawing.Point(12, 82);
             this.checkBoxCustomComplete.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomComplete.Name = "checkBoxCustomComplete";
             this.checkBoxCustomComplete.Size = new System.Drawing.Size(150, 17);
             this.checkBoxCustomComplete.TabIndex = 2;
             this.checkBoxCustomComplete.Text = "Wait until audio completes";
-            this.checkBoxCustomComplete.TickBoxReductionRatio = 0.75f;
+            this.checkBoxCustomComplete.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustomComplete.UseVisualStyleBackColor = true;
             // 
             // buttonExtTest
             // 
-            this.buttonExtTest.BorderColorScaling = 1.25F;
-            this.buttonExtTest.ButtonColorScaling = 0.5F;
-            this.buttonExtTest.ButtonDisabledScaling = 0.5F;
             this.buttonExtTest.Location = new System.Drawing.Point(382, 50);
             this.buttonExtTest.Name = "buttonExtTest";
             this.buttonExtTest.Size = new System.Drawing.Size(75, 23);
@@ -155,9 +169,6 @@ namespace ExtendedAudioForms
             // 
             // buttonExtOK
             // 
-            this.buttonExtOK.BorderColorScaling = 1.25F;
-            this.buttonExtOK.ButtonColorScaling = 0.5F;
-            this.buttonExtOK.ButtonDisabledScaling = 0.5F;
             this.buttonExtOK.Location = new System.Drawing.Point(381, 198);
             this.buttonExtOK.Name = "buttonExtOK";
             this.buttonExtOK.Size = new System.Drawing.Size(75, 23);
@@ -168,9 +179,6 @@ namespace ExtendedAudioForms
             // 
             // buttonExtCancel
             // 
-            this.buttonExtCancel.BorderColorScaling = 1.25F;
-            this.buttonExtCancel.ButtonColorScaling = 0.5F;
-            this.buttonExtCancel.ButtonDisabledScaling = 0.5F;
             this.buttonExtCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonExtCancel.Location = new System.Drawing.Point(275, 198);
             this.buttonExtCancel.Name = "buttonExtCancel";
@@ -181,9 +189,6 @@ namespace ExtendedAudioForms
             // 
             // buttonExtEffects
             // 
-            this.buttonExtEffects.BorderColorScaling = 1.25F;
-            this.buttonExtEffects.ButtonColorScaling = 0.5F;
-            this.buttonExtEffects.ButtonDisabledScaling = 0.5F;
             this.buttonExtEffects.Location = new System.Drawing.Point(382, 154);
             this.buttonExtEffects.Name = "buttonExtEffects";
             this.buttonExtEffects.Size = new System.Drawing.Size(75, 23);
@@ -217,12 +222,11 @@ namespace ExtendedAudioForms
             this.panelOuter.Name = "panelOuter";
             this.panelOuter.Size = new System.Drawing.Size(475, 247);
             this.panelOuter.TabIndex = 50;
+            this.panelOuter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CapMouseDown);
+            this.panelOuter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CapMouseUp);
             // 
             // buttonExtDevice
             // 
-            this.buttonExtDevice.BorderColorScaling = 1.25F;
-            this.buttonExtDevice.ButtonColorScaling = 0.5F;
-            this.buttonExtDevice.ButtonDisabledScaling = 0.5F;
             this.buttonExtDevice.Location = new System.Drawing.Point(382, 92);
             this.buttonExtDevice.Name = "buttonExtDevice";
             this.buttonExtDevice.Size = new System.Drawing.Size(75, 23);
@@ -233,12 +237,29 @@ namespace ExtendedAudioForms
             // 
             // textBoxBorderStartTrigger
             // 
+            this.textBoxBorderStartTrigger.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxBorderStartTrigger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorderStartTrigger.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderStartTrigger.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorderStartTrigger.BorderColorScaling = 0.5F;
-            this.textBoxBorderStartTrigger.Location = new System.Drawing.Point(98, 116);
+            this.textBoxBorderStartTrigger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorderStartTrigger.ClearOnFirstChar = false;
+            this.textBoxBorderStartTrigger.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorderStartTrigger.EndButtonEnable = true;
+            this.textBoxBorderStartTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderStartTrigger.EndButtonImage")));
+            this.textBoxBorderStartTrigger.EndButtonVisible = false;
+            this.textBoxBorderStartTrigger.InErrorCondition = false;
+            this.textBoxBorderStartTrigger.Location = new System.Drawing.Point(116, 116);
+            this.textBoxBorderStartTrigger.Multiline = false;
             this.textBoxBorderStartTrigger.Name = "textBoxBorderStartTrigger";
+            this.textBoxBorderStartTrigger.ReadOnly = false;
+            this.textBoxBorderStartTrigger.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxBorderStartTrigger.SelectionLength = 0;
+            this.textBoxBorderStartTrigger.SelectionStart = 0;
             this.textBoxBorderStartTrigger.Size = new System.Drawing.Size(100, 20);
             this.textBoxBorderStartTrigger.TabIndex = 49;
+            this.textBoxBorderStartTrigger.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxBorderStartTrigger.WordWrap = true;
             // 
             // labelStartTrigger
             // 
@@ -251,43 +272,57 @@ namespace ExtendedAudioForms
             // 
             // textBoxBorderEndTrigger
             // 
+            this.textBoxBorderEndTrigger.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxBorderEndTrigger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorderEndTrigger.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderEndTrigger.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorderEndTrigger.BorderColorScaling = 0.5F;
+            this.textBoxBorderEndTrigger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorderEndTrigger.ClearOnFirstChar = false;
+            this.textBoxBorderEndTrigger.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorderEndTrigger.EndButtonEnable = true;
+            this.textBoxBorderEndTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderEndTrigger.EndButtonImage")));
+            this.textBoxBorderEndTrigger.EndButtonVisible = false;
+            this.textBoxBorderEndTrigger.InErrorCondition = false;
             this.textBoxBorderEndTrigger.Location = new System.Drawing.Point(357, 116);
+            this.textBoxBorderEndTrigger.Multiline = false;
             this.textBoxBorderEndTrigger.Name = "textBoxBorderEndTrigger";
+            this.textBoxBorderEndTrigger.ReadOnly = false;
+            this.textBoxBorderEndTrigger.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxBorderEndTrigger.SelectionLength = 0;
+            this.textBoxBorderEndTrigger.SelectionStart = 0;
             this.textBoxBorderEndTrigger.Size = new System.Drawing.Size(100, 20);
             this.textBoxBorderEndTrigger.TabIndex = 47;
+            this.textBoxBorderEndTrigger.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxBorderEndTrigger.WordWrap = true;
             // 
             // comboBoxCustomPriority
             // 
-            this.comboBoxCustomPriority.ArrowWidth = 1;
             this.comboBoxCustomPriority.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustomPriority.ButtonColorScaling = 0.5F;
             this.comboBoxCustomPriority.DataSource = null;
+            this.comboBoxCustomPriority.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomPriority.DisplayMember = "";
             this.comboBoxCustomPriority.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.comboBoxCustomPriority.DropDownHeight = 106;
-            this.comboBoxCustomPriority.DropDownWidth = 110;
             this.comboBoxCustomPriority.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustomPriority.ItemHeight = 13;
             this.comboBoxCustomPriority.Location = new System.Drawing.Point(226, 79);
             this.comboBoxCustomPriority.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomPriority.Name = "comboBoxCustomPriority";
             this.comboBoxCustomPriority.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomPriority.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomPriority.ScrollBarWidth = 16;
             this.comboBoxCustomPriority.SelectedIndex = -1;
             this.comboBoxCustomPriority.SelectedItem = null;
             this.comboBoxCustomPriority.SelectedValue = null;
-            this.comboBoxCustomPriority.Size = new System.Drawing.Size(110, 23);
+            this.comboBoxCustomPriority.Size = new System.Drawing.Size(110, 21);
             this.comboBoxCustomPriority.TabIndex = 46;
             this.comboBoxCustomPriority.Text = "comboBoxCustom1";
+            this.comboBoxCustomPriority.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomPriority.ValueMember = "";
             // 
             // labelEndTrigger
             // 
             this.labelEndTrigger.AutoSize = true;
-            this.labelEndTrigger.Location = new System.Drawing.Point(261, 119);
+            this.labelEndTrigger.Location = new System.Drawing.Point(246, 119);
             this.labelEndTrigger.Name = "labelEndTrigger";
             this.labelEndTrigger.Size = new System.Drawing.Size(62, 13);
             this.labelEndTrigger.TabIndex = 45;

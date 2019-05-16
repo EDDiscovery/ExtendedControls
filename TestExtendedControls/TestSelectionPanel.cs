@@ -14,10 +14,18 @@ namespace DialogTest
     public partial class TestSelectionPanel : Form
     {
         static List<string> list = new List<string>();
+        ThemeStandard theme;
 
         public TestSelectionPanel()
         {
             InitializeComponent();
+
+            theme = new ThemeStandard();
+            theme.LoadBaseThemes();
+            theme.SetThemeByName("Elite Verdana");
+            theme.WindowsFrame = true;
+
+
             panelSelectionList1.Items = new List<string>() { "One", "two", "three" };
             panelSelectionList1.SelectedIndexChanged += PanelSelectionList1_SelectedIndexChanged;
 
@@ -52,5 +60,18 @@ namespace DialogTest
             return res;
         }
 
+        private void buttonExt1_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 12;
+            theme.ApplyStd(this);
+
+        }
+
+        private void extButton1_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 20;
+            theme.ApplyStd(this);
+
+        }
     }
 }

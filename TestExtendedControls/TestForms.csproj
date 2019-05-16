@@ -70,11 +70,29 @@
     <Compile Include="TestConditionUC.Designer.cs">
       <DependentUpon>TestConditionUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestExtendedForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestExtendedForms.Designer.cs">
+      <DependentUpon>TestExtendedForms.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestVariousForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestVariousForms.Designer.cs">
+      <DependentUpon>TestVariousForms.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestPanelDrawnPanel.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="TestPanelDrawnPanel.Designer.cs">
       <DependentUpon>TestPanelDrawnPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestMisc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestMisc.Designer.cs">
+      <DependentUpon>TestMisc.cs</DependentUpon>
     </Compile>
     <Compile Include="TestPanelScrollOutlining.cs">
       <SubType>Form</SubType>
@@ -150,8 +168,17 @@
     <EmbeddedResource Include="TestConditionUC.resx">
       <DependentUpon>TestConditionUC.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestExtendedForms.resx">
+      <DependentUpon>TestExtendedForms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestVariousForms.resx">
+      <DependentUpon>TestVariousForms.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestPanelDrawnPanel.resx">
       <DependentUpon>TestPanelDrawnPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestMisc.resx">
+      <DependentUpon>TestMisc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestPanelScrollOutlining.resx">
       <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
@@ -248,6 +275,10 @@
     <None Include="Resources\3x3_grid.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BaseUtilities\Audio\Audio.csproj">
+      <Project>{59f99a05-ce16-4fb8-be99-f1a24f019cb8}</Project>
+      <Name>Audio</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BaseUtilities\BaseUtilities\BaseUtils.csproj">
       <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
       <Name>BaseUtils</Name>

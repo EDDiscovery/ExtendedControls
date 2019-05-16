@@ -37,9 +37,11 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.listControlCustom3 = new ExtendedControls.ExtListBox();
             this.tabStrip2 = new ExtendedControls.TabStrip();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button1 = new ExtendedControls.ExtButton();
             this.tabStrip3 = new ExtendedControls.TabStrip();
             this.tabStrip4 = new ExtendedControls.TabStrip();
+            this.extButton1 = new ExtendedControls.ExtButton();
+            this.extButton2 = new ExtendedControls.ExtButton();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,20 +59,20 @@
             this.tabStrip1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.tabStrip1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip1.DropDownHeight = 200;
             this.tabStrip1.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
             this.tabStrip1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.tabStrip1.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.tabStrip1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.tabStrip1.DropDownWidth = 400;
             this.tabStrip1.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip1.EmptyColorScaling = 0.5F;
             this.tabStrip1.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip1.EmptyPanelIcon")));
             this.tabStrip1.Location = new System.Drawing.Point(3, 3);
             this.tabStrip1.Name = "tabStrip1";
+            this.tabStrip1.SelectedBackColor = System.Drawing.Color.Transparent;
             this.tabStrip1.SelectedIndex = -1;
             this.tabStrip1.ShowPopOut = true;
             this.tabStrip1.Size = new System.Drawing.Size(484, 96);
+            this.tabStrip1.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip1.TabFieldSpacing = 8;
             this.tabStrip1.TabIndex = 0;
@@ -89,11 +91,11 @@
             // listControlCustom1
             // 
             this.listControlCustom1.BorderColor = System.Drawing.Color.Red;
+            this.listControlCustom1.FitImagesToItemHeight = false;
             this.listControlCustom1.FitToItemsHeight = true;
             this.listControlCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.listControlCustom1.GradientColorScaling = 0.5F;
             this.listControlCustom1.ImageItems = null;
-            this.listControlCustom1.ItemHeight = 20;
             this.listControlCustom1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom1.Items")));
             this.listControlCustom1.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom1.ItemSeperators = null;
@@ -102,7 +104,6 @@
             this.listControlCustom1.Name = "listControlCustom1";
             this.listControlCustom1.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.listControlCustom1.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.listControlCustom1.ScrollBarWidth = 16;
             this.listControlCustom1.SelectedIndex = -1;
             this.listControlCustom1.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom1.Size = new System.Drawing.Size(75, 143);
@@ -112,11 +113,11 @@
             // listControlCustom2
             // 
             this.listControlCustom2.BorderColor = System.Drawing.Color.Red;
+            this.listControlCustom2.FitImagesToItemHeight = false;
             this.listControlCustom2.FitToItemsHeight = true;
             this.listControlCustom2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.listControlCustom2.GradientColorScaling = 0.5F;
             this.listControlCustom2.ImageItems = null;
-            this.listControlCustom2.ItemHeight = 20;
             this.listControlCustom2.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom2.Items")));
             this.listControlCustom2.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom2.ItemSeperators = null;
@@ -125,7 +126,6 @@
             this.listControlCustom2.Name = "listControlCustom2";
             this.listControlCustom2.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.listControlCustom2.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.listControlCustom2.ScrollBarWidth = 16;
             this.listControlCustom2.SelectedIndex = -1;
             this.listControlCustom2.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom2.Size = new System.Drawing.Size(75, 143);
@@ -146,11 +146,11 @@
             // listControlCustom3
             // 
             this.listControlCustom3.BorderColor = System.Drawing.Color.Red;
+            this.listControlCustom3.FitImagesToItemHeight = false;
             this.listControlCustom3.FitToItemsHeight = true;
             this.listControlCustom3.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.listControlCustom3.GradientColorScaling = 0.5F;
             this.listControlCustom3.ImageItems = null;
-            this.listControlCustom3.ItemHeight = 26;
             this.listControlCustom3.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom3.Items")));
             this.listControlCustom3.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom3.ItemSeperators = null;
@@ -159,7 +159,6 @@
             this.listControlCustom3.Name = "listControlCustom3";
             this.listControlCustom3.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.listControlCustom3.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.listControlCustom3.ScrollBarWidth = 16;
             this.listControlCustom3.SelectedIndex = -1;
             this.listControlCustom3.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom3.Size = new System.Drawing.Size(74, 143);
@@ -171,20 +170,20 @@
             this.tabStrip2.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.tabStrip2.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip2.DropDownHeight = 200;
             this.tabStrip2.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
             this.tabStrip2.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.tabStrip2.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.tabStrip2.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.tabStrip2.DropDownWidth = 400;
             this.tabStrip2.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip2.EmptyColorScaling = 0.5F;
             this.tabStrip2.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip2.EmptyPanelIcon")));
             this.tabStrip2.Location = new System.Drawing.Point(45, 195);
             this.tabStrip2.Name = "tabStrip2";
+            this.tabStrip2.SelectedBackColor = System.Drawing.Color.Transparent;
             this.tabStrip2.SelectedIndex = -1;
             this.tabStrip2.ShowPopOut = true;
             this.tabStrip2.Size = new System.Drawing.Size(484, 96);
+            this.tabStrip2.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip2.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip2.TabFieldSpacing = 8;
             this.tabStrip2.TabIndex = 1;
@@ -202,22 +201,22 @@
             // tabStrip3
             // 
             this.tabStrip3.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tabStrip3.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.tabStrip3.DropDownBackgroundColor = System.Drawing.Color.Gainsboro;
             this.tabStrip3.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip3.DropDownHeight = 200;
             this.tabStrip3.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
             this.tabStrip3.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.tabStrip3.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.tabStrip3.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.tabStrip3.DropDownWidth = 400;
             this.tabStrip3.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip3.EmptyColorScaling = 0.5F;
             this.tabStrip3.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip3.EmptyPanelIcon")));
             this.tabStrip3.Location = new System.Drawing.Point(45, 297);
             this.tabStrip3.Name = "tabStrip3";
+            this.tabStrip3.SelectedBackColor = System.Drawing.Color.Transparent;
             this.tabStrip3.SelectedIndex = -1;
             this.tabStrip3.ShowPopOut = true;
             this.tabStrip3.Size = new System.Drawing.Size(484, 96);
+            this.tabStrip3.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip3.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip3.TabFieldSpacing = 8;
             this.tabStrip3.TabIndex = 1;
@@ -227,29 +226,51 @@
             this.tabStrip4.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip4.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.tabStrip4.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip4.DropDownHeight = 200;
             this.tabStrip4.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
             this.tabStrip4.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.tabStrip4.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.tabStrip4.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.tabStrip4.DropDownWidth = 400;
             this.tabStrip4.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip4.EmptyColorScaling = 0.5F;
             this.tabStrip4.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip4.EmptyPanelIcon")));
             this.tabStrip4.Location = new System.Drawing.Point(46, 399);
             this.tabStrip4.Name = "tabStrip4";
+            this.tabStrip4.SelectedBackColor = System.Drawing.Color.Transparent;
             this.tabStrip4.SelectedIndex = -1;
             this.tabStrip4.ShowPopOut = true;
             this.tabStrip4.Size = new System.Drawing.Size(484, 96);
+            this.tabStrip4.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip4.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip4.TabFieldSpacing = 8;
             this.tabStrip4.TabIndex = 1;
+            // 
+            // extButton1
+            // 
+            this.extButton1.Location = new System.Drawing.Point(49, 13);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.TabIndex = 5;
+            this.extButton1.Text = "T12";
+            this.extButton1.UseVisualStyleBackColor = true;
+            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
+            // 
+            // extButton2
+            // 
+            this.extButton2.Location = new System.Drawing.Point(155, 13);
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(75, 23);
+            this.extButton2.TabIndex = 6;
+            this.extButton2.Text = "T20";
+            this.extButton2.UseVisualStyleBackColor = true;
+            this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
             // 
             // TestTabStrip
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(926, 709);
+            this.Controls.Add(this.extButton2);
+            this.Controls.Add(this.extButton1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabStrip4);
             this.Controls.Add(this.tabStrip3);
@@ -277,8 +298,10 @@
         private System.Windows.Forms.ListBox listBox1;
         private ExtendedControls.ExtListBox listControlCustom3;
         private ExtendedControls.TabStrip tabStrip2;
-        private System.Windows.Forms.Button button1;
+        private ExtendedControls.ExtButton button1;
         private ExtendedControls.TabStrip tabStrip3;
         private ExtendedControls.TabStrip tabStrip4;
+        private ExtendedControls.ExtButton extButton1;
+        private ExtendedControls.ExtButton extButton2;
     }
 }

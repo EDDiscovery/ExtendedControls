@@ -523,13 +523,15 @@ namespace ExtendedAudioForms
             this.checkBoxG.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxG.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxG.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxG.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxG.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxG.Location = new System.Drawing.Point(472, 331);
             this.checkBoxG.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxG.Name = "checkBoxG";
             this.checkBoxG.Size = new System.Drawing.Size(59, 17);
             this.checkBoxG.TabIndex = 19;
             this.checkBoxG.Text = "Enable";
-            this.checkBoxG.TickBoxReductionRatio = 0.75f;
+            this.checkBoxG.TickBoxReductionRatio = 0.75F;
             this.checkBoxG.UseVisualStyleBackColor = true;
             this.checkBoxG.CheckedChanged += new System.EventHandler(this.checkBoxG_CheckedChanged);
             // 
@@ -539,22 +541,21 @@ namespace ExtendedAudioForms
             this.checkBoxD.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxD.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxD.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxD.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxD.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxD.Location = new System.Drawing.Point(472, 262);
             this.checkBoxD.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxD.Name = "checkBoxD";
             this.checkBoxD.Size = new System.Drawing.Size(59, 17);
             this.checkBoxD.TabIndex = 17;
             this.checkBoxD.Text = "Enable";
-            this.checkBoxD.TickBoxReductionRatio = 0.75f;
+            this.checkBoxD.TickBoxReductionRatio = 0.75F;
             this.checkBoxD.UseVisualStyleBackColor = true;
             this.checkBoxD.CheckedChanged += new System.EventHandler(this.checkBoxD_CheckedChanged);
             // 
             // buttonExtCancel
             // 
             this.buttonExtCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExtCancel.BorderColorScaling = 1.25F;
-            this.buttonExtCancel.ButtonColorScaling = 0.5F;
-            this.buttonExtCancel.ButtonDisabledScaling = 0.5F;
             this.buttonExtCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonExtCancel.Location = new System.Drawing.Point(378, 479);
             this.buttonExtCancel.Name = "buttonExtCancel";
@@ -566,9 +567,6 @@ namespace ExtendedAudioForms
             // buttonExtOK
             // 
             this.buttonExtOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExtOK.BorderColorScaling = 1.25F;
-            this.buttonExtOK.ButtonColorScaling = 0.5F;
-            this.buttonExtOK.ButtonDisabledScaling = 0.5F;
             this.buttonExtOK.Location = new System.Drawing.Point(472, 479);
             this.buttonExtOK.Name = "buttonExtOK";
             this.buttonExtOK.Size = new System.Drawing.Size(75, 23);
@@ -583,13 +581,15 @@ namespace ExtendedAudioForms
             this.checkBoxR.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxR.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxR.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxR.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxR.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxR.Location = new System.Drawing.Point(472, 190);
             this.checkBoxR.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxR.Name = "checkBoxR";
             this.checkBoxR.Size = new System.Drawing.Size(59, 17);
             this.checkBoxR.TabIndex = 12;
             this.checkBoxR.Text = "Enable";
-            this.checkBoxR.TickBoxReductionRatio = 0.75f;
+            this.checkBoxR.TickBoxReductionRatio = 0.75F;
             this.checkBoxR.UseVisualStyleBackColor = true;
             this.checkBoxR.CheckedChanged += new System.EventHandler(this.checkBoxR_CheckedChanged);
             // 
@@ -599,13 +599,15 @@ namespace ExtendedAudioForms
             this.checkBoxC.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxC.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxC.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxC.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxC.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxC.Location = new System.Drawing.Point(472, 112);
             this.checkBoxC.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxC.Name = "checkBoxC";
             this.checkBoxC.Size = new System.Drawing.Size(59, 17);
             this.checkBoxC.TabIndex = 8;
             this.checkBoxC.Text = "Enable";
-            this.checkBoxC.TickBoxReductionRatio = 0.75f;
+            this.checkBoxC.TickBoxReductionRatio = 0.75F;
             this.checkBoxC.UseVisualStyleBackColor = true;
             this.checkBoxC.CheckedChanged += new System.EventHandler(this.checkBoxC_CheckedChanged);
             // 
@@ -615,22 +617,21 @@ namespace ExtendedAudioForms
             this.checkBoxE.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxE.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxE.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxE.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxE.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxE.Location = new System.Drawing.Point(472, 43);
             this.checkBoxE.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxE.Name = "checkBoxE";
             this.checkBoxE.Size = new System.Drawing.Size(59, 17);
             this.checkBoxE.TabIndex = 3;
             this.checkBoxE.Text = "Enable";
-            this.checkBoxE.TickBoxReductionRatio = 0.75f;
+            this.checkBoxE.TickBoxReductionRatio = 0.75F;
             this.checkBoxE.UseVisualStyleBackColor = true;
             this.checkBoxE.CheckedChanged += new System.EventHandler(this.checkBoxE_CheckedChanged);
             // 
             // buttonExtTest
             // 
             this.buttonExtTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExtTest.BorderColorScaling = 1.25F;
-            this.buttonExtTest.ButtonColorScaling = 0.5F;
-            this.buttonExtTest.ButtonDisabledScaling = 0.5F;
             this.buttonExtTest.Location = new System.Drawing.Point(34, 479);
             this.buttonExtTest.Name = "buttonExtTest";
             this.buttonExtTest.Size = new System.Drawing.Size(75, 23);
@@ -645,40 +646,39 @@ namespace ExtendedAudioForms
             this.checkBoxCustomNone.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomNone.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomNone.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxCustomNone.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomNone.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomNone.Location = new System.Drawing.Point(472, 438);
             this.checkBoxCustomNone.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomNone.Name = "checkBoxCustomNone";
             this.checkBoxCustomNone.Size = new System.Drawing.Size(75, 17);
             this.checkBoxCustomNone.TabIndex = 20;
             this.checkBoxCustomNone.Text = "No effects";
-            this.checkBoxCustomNone.TickBoxReductionRatio = 0.75f;
+            this.checkBoxCustomNone.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustomNone.UseVisualStyleBackColor = true;
             this.checkBoxCustomNone.CheckedChanged += new System.EventHandler(this.checkBoxCustomNone_CheckedChanged);
             // 
             // comboBoxCustomVoices
             // 
             this.comboBoxCustomVoices.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.comboBoxCustomVoices.ArrowWidth = 1;
             this.comboBoxCustomVoices.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustomVoices.ButtonColorScaling = 0.5F;
             this.comboBoxCustomVoices.DataSource = null;
+            this.comboBoxCustomVoices.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomVoices.DisplayMember = "";
             this.comboBoxCustomVoices.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.comboBoxCustomVoices.DropDownHeight = 106;
-            this.comboBoxCustomVoices.DropDownWidth = 150;
             this.comboBoxCustomVoices.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustomVoices.ItemHeight = 13;
             this.comboBoxCustomVoices.Location = new System.Drawing.Point(162, 479);
             this.comboBoxCustomVoices.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomVoices.Name = "comboBoxCustomVoices";
             this.comboBoxCustomVoices.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomVoices.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomVoices.ScrollBarWidth = 16;
             this.comboBoxCustomVoices.SelectedIndex = -1;
             this.comboBoxCustomVoices.SelectedItem = null;
             this.comboBoxCustomVoices.SelectedValue = null;
-            this.comboBoxCustomVoices.Size = new System.Drawing.Size(171, 23);
+            this.comboBoxCustomVoices.Size = new System.Drawing.Size(171, 21);
             this.comboBoxCustomVoices.TabIndex = 47;
+            this.comboBoxCustomVoices.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomVoices.ValueMember = "";
             this.comboBoxCustomVoices.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomDefaults_SelectedIndexChanged);
             // 
@@ -744,6 +744,8 @@ namespace ExtendedAudioForms
             this.panelOuter.Name = "panelOuter";
             this.panelOuter.Size = new System.Drawing.Size(566, 523);
             this.panelOuter.TabIndex = 48;
+            this.panelOuter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CapMouseDown);
+            this.panelOuter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CapMouseUp);
             // 
             // checkBoxP
             // 
@@ -751,13 +753,15 @@ namespace ExtendedAudioForms
             this.checkBoxP.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxP.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxP.CheckColor = System.Drawing.Color.DarkBlue;
+            this.checkBoxP.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxP.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxP.Location = new System.Drawing.Point(472, 393);
             this.checkBoxP.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxP.Name = "checkBoxP";
             this.checkBoxP.Size = new System.Drawing.Size(59, 17);
             this.checkBoxP.TabIndex = 19;
             this.checkBoxP.Text = "Enable";
-            this.checkBoxP.TickBoxReductionRatio = 0.75f;
+            this.checkBoxP.TickBoxReductionRatio = 0.75F;
             this.checkBoxP.UseVisualStyleBackColor = true;
             this.checkBoxP.CheckedChanged += new System.EventHandler(this.checkBoxP_CheckedChanged);
             // 
