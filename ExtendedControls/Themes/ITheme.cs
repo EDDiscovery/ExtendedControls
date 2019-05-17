@@ -20,11 +20,10 @@ namespace ExtendedControls
 {
     public interface ITheme                     // Extended controls use this if they want to be themed
     {
-        bool ApplyStd(Form form);
-        bool ApplyDialog(Form form);
-
-        void ApplyStdSubControls(Control parent, bool applytothis = false);
-        void ApplyDialogSubControls(Control parent, bool applytothis = false);
+        bool ApplyStd(Control form);    // apply to this and subs
+        void ApplyStdSubControls(Control parent); // apply to subs only
+        bool ApplyDialog(Control form);
+        void ApplyDialogSubControls(Control parent);
 
         Color ButtonBackColor { get; set; }
         Color ButtonTextColor { get; set; }

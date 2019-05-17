@@ -116,16 +116,24 @@ namespace ExtendedControls
 
         public Entry Last { get { return entries.Last(); } }
 
-        public DialogResult ShowDialog(Form p, Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
+        public DialogResult ShowDialog(Form p, Icon icon, Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
         {
-            Init(icon, size, pos, caption, lname, callertag );
+            if (pos.X <= -999)
+                Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, posiscentrecoords: true);
+            else
+                Init(icon, pos, caption, lname, callertag);
+
             callback?.Invoke();
             return ShowDialog(p);
         }
 
-        public void Show(Form p, Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
+        public void Show(Form p, Icon icon, Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
         {
-            Init(icon, size, pos, caption, lname, callertag);
+            if (pos.X <= -999)
+                Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, posiscentrecoords: true);
+            else
+                Init(icon, pos, caption, lname, callertag);
+
             callback?.Invoke();
             Show(p);
         }
@@ -387,7 +395,7 @@ namespace ExtendedControls
             return null;
         }
 
-        public void Init(Icon icon, System.Drawing.Size minsize, System.Drawing.Point pos, string caption, string lname, Object callertag)
+        public void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, bool posiscentrecoords = false)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
@@ -396,15 +404,12 @@ namespace ExtendedControls
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            if (pos.X == -999)
-                StartPosition = FormStartPosition.CenterScreen;
-            else
-            {
-                Location = pos;
-                StartPosition = FormStartPosition.Manual;
-            }
+            ExtPanelScroll outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle };
 
-            Panel outer = new Panel() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle };
+            ExtScrollBar scr = new ExtScrollBar();
+            scr.HideScrollBar = true;
+            outer.Controls.Add(scr);
+
             outer.MouseDown += FormMouseDown;
             outer.MouseUp += FormMouseUp;
 
@@ -583,10 +588,13 @@ namespace ExtendedControls
             theme.ApplyStd(this);
 
             int fh = (int)this.Font.GetHeight();        // use the FH to nerf the extra area so it scales with FH.. this helps keep the controls within a framed window
-            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 8) + fh);
+            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 16) + fh);
 
-            this.PositionSizeWithinScreen(Math.Max(minsize.Width, measureitemsinwindow.Width), Math.Max(minsize.Height, measureitemsinwindow.Height),true,64);
+            StartPosition = FormStartPosition.Manual;
 
+            Location = pos;
+
+            this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height,false,64, centrecoords:posiscentrecoords);
 
             //foreach( Control c in Controls[0].Controls )   System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
 

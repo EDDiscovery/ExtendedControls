@@ -29,9 +29,9 @@ namespace ExtendedControls
         // BorderColour != transparent to use ours
         // BorderStyle to set textbox style..  None for off.  Can use both if you wish 
 
-        public Color BorderColor { get { return bordercolor; } set { bordercolor = value; Reposition(); Invalidate(true); } }
+        public Color BorderColor { get { return bordercolor; } set { bordercolor = value; InternalPositionControls(); Invalidate(true); } }
         public float BorderColorScaling { get; set; } = 0.5F;
-        public System.Windows.Forms.BorderStyle BorderStyle { get { return textbox.BorderStyle; } set { textbox.BorderStyle = value; Reposition(); Invalidate(true); } }
+        public System.Windows.Forms.BorderStyle BorderStyle { get { return textbox.BorderStyle; } set { textbox.BorderStyle = value; InternalPositionControls(); Invalidate(true); } }
 
         public override Color ForeColor { get { return textbox.ForeColor; } set { textbox.ForeColor = value; Invalidate(true); } }
         public override Color BackColor { get { return backnormalcolor; } set { backnormalcolor = value; if (!inerrorcondition) { textbox.BackColor = backnormalcolor; Invalidate(true); } } }
@@ -40,7 +40,7 @@ namespace ExtendedControls
         public Color ControlBackground { get { return controlbackcolor; } set { controlbackcolor = value; Invalidate(true); } } // colour of unfilled control area if border is on or button
 
         public bool WordWrap { get { return textbox.WordWrap; } set { textbox.WordWrap = value; } }
-        public bool Multiline { get { return textbox.Multiline; } set { textbox.Multiline = value; Reposition(); } }
+        public bool Multiline { get { return textbox.Multiline; } set { textbox.Multiline = value; InternalPositionControls(); } }
         public bool ReadOnly { get { return textbox.ReadOnly; } set { textbox.ReadOnly = value; } }
         public bool ClearOnFirstChar { get; set; } = false;
         public System.Windows.Forms.ScrollBars ScrollBars { get { return textbox.ScrollBars; } set { textbox.ScrollBars = value; } }
@@ -143,31 +143,31 @@ namespace ExtendedControls
 
         private bool OurBorder { get { return !BorderColor.IsFullyTransparent(); } }
 
-        private void Reposition()
+        private void InternalPositionControls()
         {
             if (ClientRectangle.Width > 0)
             {
-                int offset = OurBorder ? borderoffset : 0;
-                int butwidth = endbuttontoshow ? 16 : 0;
+                int bsize = OurBorder ? borderoffset : 0;
+                int butwidth = endbuttontoshow ? (Height*2/4) : 0;
+                int clientcentre = Height / 2;
 
-                textbox.Location = new Point(offset, offset);
-                textbox.Size = new Size(ClientRectangle.Width - offset * 2 - butwidth, ClientRectangle.Height - offset * 2);
+                textbox.Size = new Size(ClientRectangle.Width - bsize * 2 - butwidth, ClientRectangle.Height - bsize * 2);
+
+                textbox.Location = new Point(bsize, clientcentre - textbox.Height/2 );
 
                 if (endbuttontoshow)
                 {
-                    endbutton.Location = new Point(ClientRectangle.Width - offset - butwidth, offset);
-                    endbutton.Size = new Size(butwidth, Math.Min(textbox.Height, 16));
+                    endbutton.Location = new Point(ClientRectangle.Width - bsize - butwidth, clientcentre - butwidth/2);
+                    endbutton.Size = new Size(butwidth, butwidth);
                 }
 
-                this.Height = textbox.Height + offset * 2;
-                
-                //System.Diagnostics.Debug.WriteLine("Repos " + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle + " dd " + endbutton.Size);
+               // System.Diagnostics.Debug.WriteLine("Repos " + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle + " dd " + endbutton.Size);
             }
         }
 
         protected override void OnLayout(LayoutEventArgs levent)
         {
-            Reposition();
+            InternalPositionControls();
         }
 
         bool firstpaint = true;
@@ -194,16 +194,16 @@ namespace ExtendedControls
 
             if (OurBorder)
             {
-                Rectangle clientborder = new Rectangle(0, 0, ClientRectangle.Width, textbox.Height + borderoffset*2);       // paint it around the actual area of the textbox, not just bit
+                Rectangle area = ClientRectangle;
 
                 Color color1 = BorderColor;
                 Color color2 = BorderColor.Multiply(BorderColorScaling);
 
-                GraphicsPath g1 = ControlHelpersStaticFunc.RectCutCorners(clientborder.X + 1, clientborder.Y + 1, clientborder.Width - 2, clientborder.Height - 1, 1, 1);
+                GraphicsPath g1 = ControlHelpersStaticFunc.RectCutCorners(area.X + 1, area.Y + 1, area.Width - 2, area.Height - 1, 1, 1);
                 using (Pen pc1 = new Pen(color1, 1.0F))
                     e.Graphics.DrawPath(pc1, g1);
 
-                GraphicsPath g2 = ControlHelpersStaticFunc.RectCutCorners(clientborder.X, clientborder.Y, clientborder.Width, clientborder.Height - 1, 2, 2);
+                GraphicsPath g2 = ControlHelpersStaticFunc.RectCutCorners(area.X, area.Y, area.Width, area.Height - 1, 2, 2);
                 using (Pen pc2 = new Pen(color2, 1.0F))
                     e.Graphics.DrawPath(pc2, g2);
             }

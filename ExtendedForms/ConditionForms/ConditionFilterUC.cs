@@ -294,7 +294,7 @@ namespace ExtendedConditionsForms
             c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
             c.fname.EndButtonVisible = true;
             c.fname.Name = "CVar";
-            c.fname.Size = new Size(Font.ScalePixels(200), Font.ScalePixels(32));
+            c.fname.Size = new Size(Font.ScalePixels(200), p24);
             c.fname.SetAutoCompletor(AutoCompletor);
             c.fname.Tag = new Tuple<Group,Group.Conditions>(g,c);
             c.fname.AutoCompleteCommentMarker = commentmarker;
@@ -316,6 +316,7 @@ namespace ExtendedConditionsForms
             g.panel.Controls.Add(c.cond);         // must be next
 
             c.value = new ExtendedControls.ExtTextBox();
+            c.value.Size = new Size(100, p24);  // width will be set in positioning
 
             if (initialvalue != null)
                 c.value.Text = initialvalue;
@@ -476,15 +477,15 @@ namespace ExtendedConditionsForms
                 for (int condc = 0; condc < g.condlist.Count; condc++)
                 {
                     Group.Conditions c = g.condlist[condc];
-                    c.fname.Location = new Point(condxoffset, vnextcond + 2);
+                    c.fname.Location = new Point(condxoffset, vnextcond);
                     c.fname.Enabled = !ConditionEntry.IsNullOperation(c.cond.Text);
                     if (!c.fname.Enabled)
                         c.fname.Text = "";
 
                     c.cond.Location = new Point(c.fname.Right + panelxspacing, vnextcond);
 
-                    c.value.Location = new Point(c.cond.Right + panelxspacing, vnextcond + 2);
-                    c.value.Size = new Size(panelwidth - condxoffset - c.fname.Width - 4 - c.cond.Width - 4 - c.del.Width - 4 - c.more.Width - 4 - g.innercond.Width - 4 - g.upbutton.Width + 8, 24);
+                    c.value.Location = new Point(c.cond.Right + panelxspacing, vnextcond );
+                    c.value.Width = panelwidth - condxoffset - c.fname.Width - 4 - c.cond.Width - 4 - c.del.Width - 4 - c.more.Width - 4 - g.innercond.Width - 4 - g.upbutton.Width + 8;
                     c.value.Enabled = !ConditionEntry.IsNullOperation(c.cond.Text) && !ConditionEntry.IsUnaryOperation(c.cond.Text);
                     if (!c.value.Enabled)
                         c.value.Text = "";

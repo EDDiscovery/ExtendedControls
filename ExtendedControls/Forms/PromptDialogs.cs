@@ -46,11 +46,9 @@ namespace ExtendedControls
                             bool multiline = false, 
                             string[] tooltips = null, 
                             bool cursoratend = false,
-                            int widthboxes = 200,           // sizes based on standard dialog size of 8, scaled up
+                            int widthboxes = 200,           // sizes based on standard dialog size of 12, scaled up
                             int heightboxes = -1)
         {
-            ITheme theme = ThemeableFormsInstance.Instance;
-
             DraggableForm prompt = new DraggableForm()
             {
                 FormBorderStyle = FormBorderStyle.FixedDialog,
@@ -70,6 +68,8 @@ namespace ExtendedControls
             textLabel.MouseDown += (s, e) => { prompt.OnCaptionMouseDown(s as Control, e); };
             textLabel.MouseUp += (s, e) => { prompt.OnCaptionMouseUp(s as Control, e); };
 
+            ITheme theme = ThemeableFormsInstance.Instance;
+
             if (!theme.WindowsFrame)
                 outer.Controls.Add(textLabel);
 
@@ -83,14 +83,14 @@ namespace ExtendedControls
             if (heightboxes == -1)
                 heightboxes = multiline ? 80 : 24;
 
-            int tx = 120;
-
             for (int i = 0; i < lab.Length; i++)
             {
                 lbs[i] = new Label() { Left = lx, Top = y, AutoSize = true, Text = lab[i] };
+                outer.Controls.Add(lbs[i]);
+
                 tbs[i] = new ExtendedControls.ExtRichTextBox()
                 {
-                    Left = tx,
+                    Left = 0,       // will be set once we know the paras of all lines
                     Top = y,
                     Width = widthboxes,
                     Text = (def != null && i < def.Length) ? def[i] : "",
@@ -100,7 +100,6 @@ namespace ExtendedControls
                 if (cursoratend)
                     tbs[i].Select(tbs[i].Text.Length, tbs[i].Text.Length);
 
-                outer.Controls.Add(lbs[i]);
                 outer.Controls.Add(tbs[i]);
 
                 if (tooltips != null && i < tooltips.Length)
@@ -112,11 +111,11 @@ namespace ExtendedControls
                 y += heightboxes + 20;
             }
 
-            ExtendedControls.ExtButton confirmation = new ExtendedControls.ExtButton() { Text = "OK".Tx(), Left = tbs[0].Right - 100, Width = 100, Top = y, DialogResult = DialogResult.OK };
+            ExtendedControls.ExtButton confirmation = new ExtendedControls.ExtButton() { Text = "OK".Tx(), Left = 0, Width = 100, Top = y, DialogResult = DialogResult.OK };
             outer.Controls.Add(confirmation);
             confirmation.Click += (sender, e) => { prompt.Close(); };
 
-            ExtendedControls.ExtButton cancel = new ExtendedControls.ExtButton() { Text = "Cancel".Tx(), Left = confirmation.Location.X - 120, Width = 100, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
+            ExtendedControls.ExtButton cancel = new ExtendedControls.ExtButton() { Text = "Cancel".Tx(), Left = 0, Width = 100, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
             outer.Controls.Add(cancel);
             cancel.Click += (sender, e) => { prompt.Close(); };
 
@@ -128,6 +127,16 @@ namespace ExtendedControls
             prompt.AutoScaleMode = AutoScaleMode.Font;
 
             theme.ApplyDialog(prompt);
+
+            int controlleft = 0;
+            for (int i = 0; i < lab.Length; i++)
+                controlleft = Math.Max(controlleft, lbs[i].Right + 16);     // seems have to do this after sizing, confusingly
+
+            for (int i = 0; i < lab.Length; i++)                            // all go here
+                tbs[i].Left = controlleft;
+
+            confirmation.Left = tbs[0].Right - confirmation.Width;          // cancel/confirm based on this
+            cancel.Left = confirmation.Left - cancel.Width - 16;
 
             Size controlsize = outer.FindMaxSubControlArea(0, 0);
             prompt.Size = new Size(controlsize.Width + 40, controlsize.Height + (theme.WindowsFrame ? 50 : 8));

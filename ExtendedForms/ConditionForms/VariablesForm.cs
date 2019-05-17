@@ -63,6 +63,10 @@ namespace ExtendedConditionsForms
         {
 
             this.Icon = ic;
+
+            checkBoxCustomRefresh.Enabled = checkBoxCustomRefresh.Visible = showrunatrefreshcheckbox;
+            checkBoxCustomRefresh.Checked = setrunatrefreshcheckboxstate;
+
             bool winborder = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this) ?? true;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             this.Text = label_index.Text = t;
@@ -72,9 +76,6 @@ namespace ExtendedConditionsForms
             this.allowmultiple = allowmultipleentries;
 
             int pos = panelmargin;
-            checkBoxCustomRefresh.Enabled = checkBoxCustomRefresh.Visible = showrunatrefreshcheckbox;
-            checkBoxCustomRefresh.Checked = setrunatrefreshcheckboxstate;
-            checkBoxCustomRefresh.Location = new Point(pos, panelmargin);
 
             if (vbs != null)
             {
@@ -175,8 +176,9 @@ namespace ExtendedConditionsForms
 
         void FixUpGroups(bool minmax = true)      // fixes and positions groups.
         {
-            int y = checkBoxCustomRefresh.Bottom + 8;
+            int y = checkBoxCustomRefresh.Enabled ? (checkBoxCustomRefresh.Bottom + Font.ScalePixels(4)) : panelmargin;
 
+            System.Diagnostics.Debug.WriteLine("CR @ " + checkBoxCustomRefresh.Location + " " + checkBoxCustomRefresh.Size + " " + checkBoxCustomRefresh.Enabled + " "  + y);
             int panelwidth = Math.Max(panelVScroll1.Width - panelVScroll1.ScrollBarWidth, 10);
 
             foreach (Group g in groups)

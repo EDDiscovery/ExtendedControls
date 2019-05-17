@@ -196,8 +196,9 @@ namespace ExtendedControls
         public Font GetDialogFont       // dialogs get a slighly smaller font
         {
             get
-            {
-                return GetFontSizeStyle(currentsettings.fontsize * dialogscaling, FontStyle.Regular);
+            {       // we don't scale down fonts < 12 since they are v.small already
+                float fsize = currentsettings.fontsize >= 12 ? (currentsettings.fontsize * dialogscaling) : currentsettings.fontsize;
+                return GetFontSizeStyle(fsize, FontStyle.Regular);
             }
         }
 
@@ -208,7 +209,8 @@ namespace ExtendedControls
 
         public Font GetDialogScaledFont(float scaling, FontStyle fs = FontStyle.Regular)
         {
-            return GetFontSizeStyle(currentsettings.fontsize * scaling * dialogscaling, fs);
+            float fsize = currentsettings.fontsize >= 12 ? (currentsettings.fontsize * dialogscaling) : currentsettings.fontsize;
+            return GetFontSizeStyle(fsize * scaling, fs);
         }
 
         private Font GetFontSizeStyle(float size, FontStyle fs)
@@ -425,55 +427,43 @@ namespace ExtendedControls
                                                false, 95, "Microsoft Sans Serif", 8.25F));
         }
 
-        // Note user controls need the Font applied to them, generally done outside of this class, to size their controls properly.  See popout control
-
-        public bool ApplyStd(Form form)
+        public bool ApplyStd(Control form)      // normally a form, but can be a control, applies to this and ones below
         {
             return ApplyToForm(form, GetFont);
         }
 
-        public bool ApplyDialog(Form form)
+        public bool ApplyDialog(Control form)
         {
             return ApplyToForm(form, GetDialogFont);
         }
 
-        private bool ApplyToForm(Form form, Font fnt)
+        private bool ApplyToForm(Control form, Font fnt)
         {
             UpdateControls(form.Parent, form, fnt, 0);
             UpdateToolsStripRenderer();
             return WindowsFrame;
         }
 
-        public void ApplyStdSubControls(Control ctrl, bool applytothis = false)
+        public void ApplyStdSubControls(Control ctrl)
         {
             Font fnt = GetFont;
 
-            if (applytothis)
-                UpdateControls(ctrl.Parent, ctrl, fnt, 0);
-            else
-            {
-                foreach (Control c in ctrl.Controls)
-                    UpdateControls(ctrl, c, fnt, 0);
-            }
+            foreach (Control c in ctrl.Controls)
+                UpdateControls(ctrl, c, fnt, 0);
         }
 
-        public void ApplyDialogSubControls(Control ctrl, bool applytothis = false)
+        public void ApplyDialogSubControls(Control ctrl)
         {
             Font fnt = GetDialogFont;
 
-            if (applytothis)
-                UpdateControls(ctrl.Parent, ctrl, fnt, 0);
-            else
-            {
-                foreach (Control c in ctrl.Controls)
-                    UpdateControls(ctrl, c, fnt, 0);
-            }
+            foreach (Control c in ctrl.Controls)
+                UpdateControls(ctrl, c, fnt, 0);
         }
 
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level)    // parent can be null
         {
 #if DEBUG
-            System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
+            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
 #endif
 
             float mouseoverscaling = 1.3F;
@@ -573,7 +563,6 @@ namespace ExtendedControls
             {
                 ExtButton ctrl = (ExtButton)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
-                ctrl.AutoSize = true;
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
                 {

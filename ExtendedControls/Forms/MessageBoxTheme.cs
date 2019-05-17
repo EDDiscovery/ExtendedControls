@@ -44,6 +44,7 @@ namespace ExtendedControls
 
         MessageBoxButtons? buttons;     // The buttons that this dialog will display
         MessageBoxIcon mbIcon;          // The icon that this dialog will show
+        RichTextBox focusholder;        // holds the focus off screen so cursor does not show
 
         public MessageBoxTheme(string text, string caption = null, MessageBoxButtons? buttons = MessageBoxButtons.OK, MessageBoxIcon messageBoxIcon = MessageBoxIcon.None, Icon formIcon = null)
         {
@@ -176,6 +177,12 @@ namespace ExtendedControls
 
             themeTextBox.BorderStyle = BorderStyle.None;
             themeTextBox.BorderColor = Color.Transparent;
+            themeTextBox.ReadOnly = true;
+
+            focusholder = new RichTextBox();
+            focusholder.Location = new Point(20000, 10000); // impossible, as of 2019.. 
+            Controls.Add(focusholder);
+            focusholder.Focus();    // easy way to move the flashing caret from the primary rich text box - it does not seem to have a cursor off
         }
 
         private void buttonExt_Click(object sender, EventArgs e)
@@ -203,10 +210,13 @@ namespace ExtendedControls
             Width = wantedw;        // changing width changes estimate vert size
 
             int wantedh = themeTextBox.EstimateVerticalSizeFromText();
-            wantedh += panelButs.Height + +panelGap.Height + (framed ? 50 : labelCaption.Height);
+            wantedh = Math.Max(panelIcon.BackgroundImage != null ? panelIcon.Height : 0, wantedh);
+
+            wantedh += panelButs.Height + panelGap.Height + (framed ? 50 : labelCaption.Height) + Font.ScalePixels(8);
 
             this.Location = new Point(Owner.Left + Owner.Width / 2 - wantedw / 2, Owner.Top + Owner.Height / 2 - wantedh / 2);
             this.PositionSizeWithinScreen(wantedw,wantedh,false,72);
         }
+
     }
 }

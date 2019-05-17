@@ -83,17 +83,6 @@ namespace ExtendedControls
 
         bool firstpaint = true;
 
-        protected override void OnFontChanged(EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Font change " + this.Name + " " + Font.Size + " " + Size);
-            base.OnFontChanged(e);
-        }
-
-        protected override void OnLayout(LayoutEventArgs levent)
-        {
-            base.OnLayout(levent);
-        }
-
         protected override void OnPaint(PaintEventArgs e)
         {
             if (firstpaint)
