@@ -405,5 +405,17 @@ namespace ExtendedControls
                     Invalidate();
             }
         }
+
+        // debug for scaling
+        //protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("Scaling " + GetType().Name + " " + Name + " " + this.GetHeirarchy() + " " + Location + Size + " factor " + factor);
+        //    base.ScaleControl(factor, specified);
+        //    System.Diagnostics.Debug.WriteLine(".. to " + Location + Size);
+        //}
+
+
+
+
     }
 }

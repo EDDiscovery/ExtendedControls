@@ -74,7 +74,6 @@
             this.tabStrip1.Size = new System.Drawing.Size(484, 96);
             this.tabStrip1.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
-            this.tabStrip1.TabFieldSpacing = 8;
             this.tabStrip1.TabIndex = 0;
             // 
             // listView1
@@ -185,7 +184,6 @@
             this.tabStrip2.Size = new System.Drawing.Size(484, 96);
             this.tabStrip2.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip2.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
-            this.tabStrip2.TabFieldSpacing = 8;
             this.tabStrip2.TabIndex = 1;
             // 
             // button1
@@ -218,7 +216,6 @@
             this.tabStrip3.Size = new System.Drawing.Size(484, 96);
             this.tabStrip3.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip3.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
-            this.tabStrip3.TabFieldSpacing = 8;
             this.tabStrip3.TabIndex = 1;
             // 
             // tabStrip4
@@ -241,7 +238,6 @@
             this.tabStrip4.Size = new System.Drawing.Size(484, 96);
             this.tabStrip4.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip4.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
-            this.tabStrip4.TabFieldSpacing = 8;
             this.tabStrip4.TabIndex = 1;
             // 
             // extButton1

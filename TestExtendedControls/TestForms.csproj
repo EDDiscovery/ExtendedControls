@@ -52,6 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestSplitter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestSplitter.Designer.cs">
+      <DependentUpon>TestSplitter.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestButtons.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +168,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestSplitter.resx">
+      <DependentUpon>TestSplitter.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestButtons.resx">
       <DependentUpon>TestButtons.cs</DependentUpon>
     </EmbeddedResource>

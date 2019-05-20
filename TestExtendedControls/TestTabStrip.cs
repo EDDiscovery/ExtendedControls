@@ -21,6 +21,7 @@ namespace DialogTest
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
             theme.WindowsFrame = true;
+            theme.FontSize = 15;
             
             InitializeComponent();
             tabStrip1.ImageList = new Bitmap[] {

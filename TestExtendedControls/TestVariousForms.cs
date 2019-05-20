@@ -75,7 +75,7 @@ namespace DialogTest
             };
 
 
-            DialogResult res = f.ShowDialog(parent, parent.Icon, new Size(0,0), new Point(-999, -999), "Jump to Entry".Tx(t, "Title"));
+            DialogResult res = f.ShowDialog(parent, parent.Icon, new Point(-999, -999), "Jump to Entry".Tx(t, "Title"));
 
             if (res == DialogResult.OK)
             {

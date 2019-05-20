@@ -38,8 +38,6 @@ namespace ExtendedControls
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
         public float EmptyColorScaling { get; set; } = 0.5F;
 
-        public int TabFieldSpacing { get; set; } = 8;
-
         // only if using ListSelection:
         public Color DropDownBackgroundColor { get; set; } = Color.Gray;
         public Color DropDownBorderColor { get; set; } = Color.Green;
@@ -92,11 +90,13 @@ namespace ExtendedControls
         {
             InitializeComponent();
             labelControlText.Text = "";
-            labelTitle.Text = "Select";
+            labelTitle.Text = "?";
             autofadeinouttimer.Tick += AutoFadeInOutTick;
             autorepeat.Interval = 200;
             autorepeat.Tick += Autorepeat_Tick;
             panelSelectedIcon.BackgroundImage = EmptyPanelIcon;
+            panelSelectedIcon.BackgroundImageLayout = ImageLayout.Stretch;
+            panelPopOutIcon.Visible = panelListSelection.Visible = false;
         }
 
         #region Public interface
@@ -132,7 +132,7 @@ namespace ExtendedControls
                 CurrentControl = null;
                 selectedindex = -1;
                 labelControlText.Text = "";
-                labelTitle.Text = "Select";
+                labelTitle.Text = "?";
                 panelSelectedIcon.BackgroundImage = EmptyPanelIcon;
             }
         }
@@ -308,8 +308,8 @@ namespace ExtendedControls
                         Tag = inp,
                         BackgroundImageLayout = ImageLayout.Stretch,
                         Visible = false,
-                        Size = new Size(ImageList[inp].Width, ImageList[inp].Height),
-                        
+                        Size = panelSelectedIcon.Size,
+                       
                     };
 
                     imagepanels[inp].Click += TabIconClicked;
@@ -336,7 +336,9 @@ namespace ExtendedControls
             bool showpopouticon = false;
             bool showlistselection = false;
 
-            int xpos = panelSelectedIcon.Width + TabFieldSpacing;       // start here
+            int tabfieldspacing = Font.ScalePixels(8);
+
+            int xpos = panelSelectedIcon.Width + tabfieldspacing;       // start here
             bool arrowson = false;
 
             if (StripMode == StripModeType.ListSelection)               // in list mode
@@ -350,7 +352,7 @@ namespace ExtendedControls
                     }
 
                     showlistselection = true;
-                    xpos += panelListSelection.Width + TabFieldSpacing; // space on for allowing panel selector
+                    xpos += panelListSelection.Width + tabfieldspacing; // space on for allowing panel selector
                 }
             }
             else if (tdm != TabDisplayMode.Compressed)      // show icons..
@@ -433,9 +435,9 @@ namespace ExtendedControls
             labelControlText.Visible = showtext;
 
             panelPopOutIcon.Location = panelSelectedIcon.Location;     // same position, mutually exclusive
-            panelListSelection.Location = new Point(panelSelectedIcon.Right + TabFieldSpacing, panelSelectedIcon.Top);
-            labelTitle.Location = new Point(xpos + TabFieldSpacing, 2);
-            labelControlText.Location = new Point(labelTitle.Right + TabFieldSpacing, labelTitle.Top);
+            panelListSelection.Location = new Point(panelSelectedIcon.Right + tabfieldspacing, panelSelectedIcon.Top);
+            labelTitle.Location = new Point(xpos + tabfieldspacing, labelTitle.Top);
+            labelControlText.Location = new Point(labelTitle.Right + tabfieldspacing, labelTitle.Top);
 
         }
 
