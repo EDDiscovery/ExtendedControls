@@ -134,7 +134,7 @@
     <Compile Include="Controls\PanelDataGridViewScroll.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelDrawn.cs">
+    <Compile Include="Controls\ButtonDrawn.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\GroupBox.cs">
@@ -181,9 +181,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PanelRollUp.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\SplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\StatusStrip.cs">

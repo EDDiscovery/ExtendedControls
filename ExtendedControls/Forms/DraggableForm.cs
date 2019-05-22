@@ -33,7 +33,6 @@ namespace ExtendedControls
             dblClickTimer.Tick += (o, e) => { ((Timer)o).Enabled = false; };
         }
 
-
         /// <summary>
         /// The number of pixels from the top of the <see cref="SmartSysMenuForm"/> that will be interpreted as caption
         /// area when the <see cref="SmartSysMenuForm"/> is unframed. The default value is <c>28</c>.

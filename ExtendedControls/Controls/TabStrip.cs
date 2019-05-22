@@ -51,9 +51,9 @@ namespace ExtendedControls
         public Control CurrentControl;
 
         // events
-        public Action<TabStrip, Control> OnRemoving;
-        public Func<TabStrip, int,Control> OnCreateTab;
-        public Action<TabStrip, Control, int> OnPostCreateTab;
+        public Action<TabStrip, Control> OnRemoving;            // called due to ChangePanel or Close
+        public Func<TabStrip, int,Control> OnCreateTab;     // called due to  Create or due to ChangePanel
+        public Action<TabStrip, Control, int> OnPostCreateTab;  // called due to ChangePanel 
         public Action<TabStrip, int> OnPopOut;
 
         // internals

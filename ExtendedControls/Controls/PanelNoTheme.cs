@@ -14,6 +14,7 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ExtendedControls

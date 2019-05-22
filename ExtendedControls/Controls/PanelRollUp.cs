@@ -39,8 +39,8 @@ namespace ExtendedControls
         public event EventHandler RetractCompleted;
 
         private ExtCheckBox pinbutton;        // public so you can theme them with colour/IAs
-        private ExtPanelDrawn hiddenmarker1;
-        private ExtPanelDrawn hiddenmarker2;
+        private ExtButtonDrawn hiddenmarker1;
+        private ExtButtonDrawn hiddenmarker2;
         private int unrolledheight;     // calculated from controls in the panel
 
         long targetrolltickstart;     // when the roll is supposed to be in time
@@ -72,14 +72,14 @@ namespace ExtendedControls
 
             hiddenmarker1 = new ExtDrawnPanelNoTheme();
             hiddenmarker1.Name = "Hidden marker";
-            hiddenmarker1.ImageSelected = ExtPanelDrawn.ImageType.Bars;
+            hiddenmarker1.ImageSelected = ExtButtonDrawn.ImageType.Bars;
             hiddenmarker1.Visible = false;
             hiddenmarker1.Padding = new Padding(0);
             hiddenmarker1.Click += Hiddenmarker_Click;
 
             hiddenmarker2 = new ExtDrawnPanelNoTheme();
             hiddenmarker2.Name = "Hidden marker";
-            hiddenmarker2.ImageSelected = ExtPanelDrawn.ImageType.Bars;
+            hiddenmarker2.ImageSelected = ExtButtonDrawn.ImageType.Bars;
             hiddenmarker2.Visible = false;
             hiddenmarker2.Padding = new Padding(0);
             hiddenmarker2.Click += Hiddenmarker_Click;

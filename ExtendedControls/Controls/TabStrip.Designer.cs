@@ -46,8 +46,8 @@ namespace ExtendedControls
             this.components = new System.ComponentModel.Container();
             this.panelStrip = new System.Windows.Forms.Panel();
             this.labelControlText = new System.Windows.Forms.Label();
-            this.panelListSelection = new ExtendedControls.ExtPanelDrawn();
-            this.panelPopOutIcon = new ExtendedControls.ExtPanelDrawn();
+            this.panelListSelection = new ExtendedControls.ExtButtonDrawn();
+            this.panelPopOutIcon = new ExtendedControls.ExtButtonDrawn();
             this.panelArrowRight = new System.Windows.Forms.Panel();
             this.panelArrowLeft = new System.Windows.Forms.Panel();
             this.panelSelectedIcon = new System.Windows.Forms.Panel();
@@ -93,7 +93,7 @@ namespace ExtendedControls
             this.panelListSelection.AutoEllipsis = false;
             this.panelListSelection.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panelListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
-            this.panelListSelection.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.None;
+            this.panelListSelection.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
             this.panelListSelection.Location = new System.Drawing.Point(210, 3);
             this.panelListSelection.MouseOverColor = System.Drawing.Color.White;
             this.panelListSelection.MouseSelectedColor = System.Drawing.Color.Green;
@@ -114,7 +114,7 @@ namespace ExtendedControls
             this.panelPopOutIcon.AutoEllipsis = false;
             this.panelPopOutIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panelPopOutIcon.Image = global::ExtendedControls.Properties.Resources.popout;
-            this.panelPopOutIcon.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.None;
+            this.panelPopOutIcon.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
             this.panelPopOutIcon.Location = new System.Drawing.Point(161, 3);
             this.panelPopOutIcon.MouseOverColor = System.Drawing.Color.White;
             this.panelPopOutIcon.MouseSelectedColor = System.Drawing.Color.Green;
@@ -225,10 +225,10 @@ namespace ExtendedControls
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel panelArrowRight;
         private System.Windows.Forms.Panel panelArrowLeft;
-        private ExtendedControls.ExtPanelDrawn panelPopOutIcon;
+        private ExtendedControls.ExtButtonDrawn panelPopOutIcon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemPopOut;
         private System.Windows.Forms.Label labelControlText;
-        private ExtPanelDrawn panelListSelection;
+        private ExtButtonDrawn panelListSelection;
     }
 }

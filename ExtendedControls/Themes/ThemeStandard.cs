@@ -464,6 +464,8 @@ namespace ExtendedControls
         {
 #if DEBUG
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
+            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false));
+            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
 
             float mouseoverscaling = 1.3F;
@@ -701,9 +703,9 @@ namespace ExtendedControls
             else if (myControl is ExtDrawnPanelNoTheme)        // ignore these..
             {
             }
-            else if (myControl is ExtPanelDrawn)
+            else if (myControl is ExtButtonDrawn)
             {
-                ExtPanelDrawn ctrl = (ExtPanelDrawn)myControl;
+                ExtButtonDrawn ctrl = (ExtButtonDrawn)myControl;
                 ctrl.BackColor = currentsettings.colors[Settings.CI.form];
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.label];
                 ctrl.MouseOverColor = currentsettings.colors[Settings.CI.label].Multiply(mouseoverscaling);
@@ -988,7 +990,7 @@ namespace ExtendedControls
                 }
             }
 
-            //System.Diagnostics.Debug.WriteLine(level + "Control " + myControl.Name + " " + myControl.Location + " " + myControl.Size);
+            //System.Diagnostics.Debug.WriteLine("                  " + level + " Control " + myControl.Name + " " + myControl.Location + " " + myControl.Size);
 
             foreach (Control subC in myControl.Controls)
                 UpdateControls(myControl, subC, fnt, level + 1);

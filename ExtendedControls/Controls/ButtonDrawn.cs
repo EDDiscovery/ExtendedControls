@@ -31,7 +31,7 @@ namespace ExtendedControls
     /// (see <see cref="ImageSelected"/>) or <see cref="Control.Text"/>.
     /// </summary>
     [DefaultEvent(nameof(Click)), DefaultProperty(nameof(ImageSelected)), Designer(typeof(DrawnPanelDesigner))]
-    public class ExtPanelDrawn : Control, IButtonControl
+    public class ExtButtonDrawn : Control, IButtonControl
     {
         public enum ImageType       // Specifies the available image types to be displayed on a <see cref="ExtPanelDrawn"/>.
         {
@@ -133,7 +133,7 @@ namespace ExtendedControls
 
         #region Implementation
 
-        public ExtPanelDrawn() : base()
+        public ExtButtonDrawn() : base()
         {
             base.BackgroundImageLayout = ImageLayout.Zoom;
 
@@ -160,7 +160,7 @@ namespace ExtendedControls
         public new Image BackgroundImage { get { return base.BackgroundImage; } set { base.BackgroundImage = value; } }
         
         /// <summary>
-        /// Gets or sets a value that is returned to the parent <see cref="Form"/> when the <see cref="ExtPanelDrawn"/> is
+        /// Gets or sets a value that is returned to the parent <see cref="Form"/> when the <see cref="ExtButtonDrawn"/> is
         /// clicked.
         /// </summary>
         [Category("Behavior"), DefaultValue(typeof(DialogResult), nameof(DialogResult.None)),
@@ -168,10 +168,10 @@ namespace ExtendedControls
         public DialogResult DialogResult { get; set; } = DialogResult.None;
 
         /// <summary>
-        /// Receive notifications when the <see cref="ExtPanelDrawn"/> is the default button such that the appearance can
+        /// Receive notifications when the <see cref="ExtButtonDrawn"/> is the default button such that the appearance can
         /// be adjusted.
         /// </summary>
-        /// <param name="value"><c>true</c> if the <see cref="ExtPanelDrawn"/> is the default button; <c>false</c>
+        /// <param name="value"><c>true</c> if the <see cref="ExtButtonDrawn"/> is the default button; <c>false</c>
         /// otherwise.</param>
         public virtual void NotifyDefault(bool value)
         {
@@ -179,7 +179,7 @@ namespace ExtendedControls
         }
 
         /// <summary>
-        /// Generates a <see cref="Control.Click"/> event for the <see cref="ExtPanelDrawn"/>.
+        /// Generates a <see cref="Control.Click"/> event for the <see cref="ExtButtonDrawn"/>.
         /// </summary>
         public virtual void PerformClick()
         {
@@ -194,7 +194,7 @@ namespace ExtendedControls
         public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)
         {
             if (IsDisposed)
-                throw new ObjectDisposedException(this.Name ?? nameof(ExtPanelDrawn));
+                throw new ObjectDisposedException(this.Name ?? nameof(ExtButtonDrawn));
 
             drawnImageAttributesDisabled?.Dispose();
             drawnImageAttributesDisabled = null;
@@ -738,7 +738,7 @@ namespace ExtendedControls
         }
 
         /// <summary>
-        /// Paints the background of the <see cref="ExtPanelDrawn"/>.
+        /// Paints the background of the <see cref="ExtButtonDrawn"/>.
         /// </summary>
         /// <param name="e">A <see cref="PaintEventArgs"/> that contains the event data.</param>
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -918,7 +918,7 @@ namespace ExtendedControls
         #endregion
     }
 
-    public class ExtDrawnPanelNoTheme : ExtPanelDrawn       // indicates don't theme
+    public class ExtDrawnPanelNoTheme : ExtButtonDrawn       // indicates don't theme
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExtDrawnPanelNoTheme"/> class.

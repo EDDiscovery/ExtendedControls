@@ -20,7 +20,7 @@ using System.Windows.Forms.Design;
 namespace ExtendedControls.Controls.Design
 {
     /// <summary>
-    /// Extends the design-mode behaviour of a <see cref="ExtPanelDrawn"/> <see cref="Control"/>.
+    /// Extends the design-mode behaviour of a <see cref="ExtButtonDrawn"/> <see cref="Control"/>.
     /// </summary>
     public class DrawnPanelDesigner : ControlDesigner
     {
@@ -30,7 +30,7 @@ namespace ExtendedControls.Controls.Design
         public DrawnPanelDesigner() : base() { }
 
         /// <summary>
-        /// Initializes a newly created <see cref="ExtPanelDrawn"/>.
+        /// Initializes a newly created <see cref="ExtButtonDrawn"/>.
         /// </summary>
         /// <param name="defaultValues">A non-generic <see cref="IDictionary"/> containing the default
         /// <see cref="Control"/> properties with values.</param>

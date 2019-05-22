@@ -409,12 +409,11 @@ namespace ExtendedControls
         // debug for scaling
         //protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
         //{
-        //    System.Diagnostics.Debug.WriteLine("Scaling " + GetType().Name + " " + Name + " " + this.GetHeirarchy() + " " + Location + Size + " factor " + factor);
+        //    Size inits = Size;
+        //    Point initl = Location;
         //    base.ScaleControl(factor, specified);
-        //    System.Diagnostics.Debug.WriteLine(".. to " + Location + Size);
+        //    System.Diagnostics.Debug.WriteLine("Scaling " + GetType().Name + " " + Name + " " + this.GetHeirarchy() + " " + inits + initl + " factor " + factor + " -> " + Size + Location);
         //}
-
-
 
 
     }
