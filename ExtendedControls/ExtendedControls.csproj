@@ -308,5 +308,8 @@
   <ItemGroup>
     <None Include="Resources\ArrowUp.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Selector.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

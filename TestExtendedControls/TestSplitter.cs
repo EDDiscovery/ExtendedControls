@@ -30,7 +30,7 @@ namespace DialogTest
 
             SplitContainer sp = ControlHelpersStaticFunc.SplitterTreeMakeFromCtrlString(new BaseUtils.StringParser(splitctrl), MakeSplitContainer, MakeNode, 0);
 
-            panelPlayfield.Controls.Add(sp);
+            tabPage1.Controls.Add(sp);
 
             //theme.ApplyStd(this);
 
@@ -117,6 +117,13 @@ namespace DialogTest
         {
             theme.FontSize = 16;
             theme.ApplyStd(this);
+        }
+
+        private void extButton2_Click_1(object sender, EventArgs e)
+        {
+            theme.FontSize = 14;
+            theme.ApplyStd(this);
+
         }
     }
 
