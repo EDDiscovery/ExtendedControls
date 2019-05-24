@@ -471,6 +471,8 @@ namespace ExtendedControls
             float mouseoverscaling = 1.3F;
             float mouseselectedscaling = 1.5F;
 
+            const bool paneldebugmode = false;      // set for some help in those pesky panels
+
             Type controltype = myControl.GetType();
             string parentnamespace = parent?.GetType().Namespace ?? "NoParent";
 
@@ -519,6 +521,9 @@ namespace ExtendedControls
                     ctrl.ScrollBarFlatStyle = FlatStyle.Popup;
                 }
 
+                if (ctrl.ContextMenuStrip != null)      // propegate font
+                    ctrl.ContextMenuStrip.Font = fnt;
+
                 ctrl.Invalidate();
                 ctrl.PerformLayout();
             }
@@ -565,6 +570,7 @@ namespace ExtendedControls
             {
                 ExtButton ctrl = (ExtButton)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
+                ctrl.AutoSize = true;
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
                 {
@@ -719,20 +725,23 @@ namespace ExtendedControls
             }
             else if (myControl is TableLayoutPanel)
             {
-                TableLayoutPanel ctrl = myControl as TableLayoutPanel;
-                ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+                myControl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+            }
+            else if (myControl is ExtPanelRollUp)
+            {
+                myControl.BackColor = paneldebugmode ? Color.Green : GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
             }
             else if (myControl is FlowLayoutPanel)
             {
                 FlowLayoutPanel ctrl = myControl as FlowLayoutPanel;
-                ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+                ctrl.BackColor = paneldebugmode ? Color.Red : GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
             }
             else if (myControl is PanelNoTheme)
             {
             }
             else if (myControl is Panel)
             {
-                myControl.BackColor = currentsettings.colors[Settings.CI.form];
+                myControl.BackColor = paneldebugmode ? Color.Blue : currentsettings.colors[Settings.CI.form];
                 myControl.ForeColor = currentsettings.colors[Settings.CI.label];
             }
             else if (myControl is Label)
@@ -850,6 +859,9 @@ namespace ExtendedControls
                             cbocol.FlatStyle = FlatStyle.Popup;
                     }
                 }
+
+                if (ctrl.ContextMenuStrip != null)       // propergate font onto any attached context menus
+                    ctrl.ContextMenuStrip.Font = fnt;
             }
             else if (myControl is ExtScrollBar && !(parent is ExtListBox || parent is ExtRichTextBox))
             {                   // selected items need VScroll controlled here. Others control it themselves
@@ -946,7 +958,7 @@ namespace ExtendedControls
                         i.BackColor = currentsettings.colors[Settings.CI.textbox_back];
                     }
 
-//??                    i.Font = fnt;
+                    //??                    i.Font = fnt;
                 }
             }
             else if (myControl is TabStrip)

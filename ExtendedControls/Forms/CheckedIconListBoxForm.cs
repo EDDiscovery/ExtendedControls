@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    // Follows the CheckedListBoxForm functionality, but with Icons added.
+    // Follows the List Box, in a form, with icons functionality
 
     public class CheckedIconListBoxForm : Form
     {

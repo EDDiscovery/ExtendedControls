@@ -588,7 +588,9 @@ namespace ExtendedControls
             theme.ApplyStd(this);
 
             int fh = (int)this.Font.GetHeight();        // use the FH to nerf the extra area so it scales with FH.. this helps keep the controls within a framed window
-            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 16) + fh);
+
+            // measure the items after scaling. Exclude the scroll bar
+            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 16) + fh, new Type[] { typeof(ExtScrollBar) }, true);
 
             StartPosition = FormStartPosition.Manual;
 

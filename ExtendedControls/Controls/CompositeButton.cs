@@ -26,55 +26,58 @@ namespace ExtendedControls
         {
         }
 
+        public ExtLabel Label { get { return Controls.OfType<ExtLabel>().FirstOrDefault(); } }
+        public ExtButton[] Buttons { get { return Controls.OfType<ExtButton>().ToArray(); } }
+        public Panel[] Decals { get { return Controls.OfType<Panel>().ToArray(); } }
+
         protected override void OnLayout(LayoutEventArgs levent)
         {
-            Panel[] panels = Controls.OfType<Panel>().ToArray();
-            ExtButton[] buttons = Controls.OfType<ExtButton>().ToArray();
-            Label lab = Controls.OfType<Label>().FirstOrDefault();
-
-            int panelw = 0;
-            int panelhmax = 0;
-            foreach (var p in panels)       // first measure properties - all panels across
+            int decalw = 0;
+            int decalmaxh = 0;
+            foreach (var p in Decals)       // first measure properties - all panels across
             {
-                panelw += p.Width + p.Margin.Left + p.Margin.Right;
-                panelhmax = Math.Max(panelhmax, p.Height);
+                decalw += p.Width + p.Margin.Left + p.Margin.Right;
+                decalmaxh = Math.Max(decalmaxh, p.Height);
             }
 
             int butw = 0;
             int buthmax = 0;
-            foreach (var p in buttons)      // all buttons across
+            foreach (var p in Buttons)      // all buttons across
             {
+               // System.Diagnostics.Debug.WriteLine("Button " + p.Size);
                 butw += p.Width + p.Margin.Left + p.Margin.Right;
                 buthmax = Math.Max(buthmax, p.Height);
             }
 
-            int fonth = (int)Font.GetHeight() +2;       // +2 is to allow for rounding and nerf
-            int neededh = fonth + Padding.Top + panelhmax + Padding.Top + buthmax + Padding.Bottom;     // height needed
-
-            int vcentre = neededh / 2;
-            int hcentre = ClientRectangle.Width / 2;
-
-           // System.Diagnostics.Debug.WriteLine("panelh " + panelhmax + " buth " + buthmax + " fonth " + fonth + " => " + neededh + " " + vcentre);
-
-            if (lab != null)
+            if (Label != null)
             {
-                lab.Dock = DockStyle.Top;
-                lab.AutoSize = false;
-                lab.TextAlign = ContentAlignment.MiddleCenter;
-                lab.Height = vcentre - panelhmax/2;
+                Label.Dock = DockStyle.Top;
+                Label.AutoSize = false;
+                Label.TextAlign = ContentAlignment.MiddleCenter;
             }
 
-            int x = hcentre - panelw / 2;
-            foreach (var p in panels)
+
+            int fonth = (int)Font.GetHeight() + 2;       // +2 is to allow for rounding and nerf
+            int decalpos = Label.Top + fonth + Padding.Top;
+            int butpos = decalpos +  Padding.Top + decalmaxh;
+            int hcentre = ClientRectangle.Width / 2;
+
+            if (Label != null)
+                Label.Height = decalpos - Label.Top;
+
+            //System.Diagnostics.Debug.WriteLine(Name + " " + ClientRectangle + " panelh " + decalmaxh + " buth " + buthmax + " fonth " + fonth + Padding + " => ");
+
+            int x = hcentre - decalw / 2;
+            foreach (var p in Decals)
             {
-                p.Location = new Point(x + p.Margin.Left, vcentre - p.Height / 2);
+                p.Location = new Point(x + p.Margin.Left, decalpos);
                 x += p.Width + p.Margin.Left + p.Margin.Right;
             }
 
             x = hcentre - butw / 2;
-            foreach (var p in buttons)
+            foreach (var p in Buttons)
             {
-                p.Location = new Point(x + p.Margin.Left, vcentre + panelhmax/2 + Padding.Top + buthmax / 2 - p.Height / 2);
+                p.Location = new Point(x + p.Margin.Left, butpos);
                 x += p.Width + p.Margin.Left + p.Margin.Right;
             }
 
@@ -87,10 +90,12 @@ namespace ExtendedControls
                                                 string text, Font textfont, Color textfore, Color textbackgroundcol,
                                                 Image decal, Size decalsize,
                                                 Image[] buttons, Size buttonsize,
-                                                int padtop, int padbot,
+                                                int padtop,
                                                 Action<object, int> ButtonPressed)
         {
             CompositeButton but = new CompositeButton();
+            but.Name = text;
+            but.SuspendLayout();
             but.BackgroundImage = backimage;
             but.BackgroundImageLayout = ImageLayout.Stretch;
 
@@ -98,6 +103,7 @@ namespace ExtendedControls
             l.Text = text;
             l.Font = textfont;
             l.ForeColor = textfore;
+            l.Margin = new Padding(0);
             l.TextBackColor = l.BackColor = textbackgroundcol;
 
             but.Controls.Add(l);
@@ -105,6 +111,7 @@ namespace ExtendedControls
             Panel d = new Panel();
             d.BackgroundImage = decal;
             d.BackgroundImageLayout = ImageLayout.Stretch;
+            d.BackColor = Color.Transparent;
             d.Size = decalsize;
 
             but.Controls.Add(d);
@@ -121,7 +128,8 @@ namespace ExtendedControls
                 but.Controls.Add(b);
             }
 
-            but.Padding = new Padding(0,padtop,0,padbot);
+            but.Padding = new Padding(0, padtop, 0, 0);
+            but.ResumeLayout();
             return but;
         }
 

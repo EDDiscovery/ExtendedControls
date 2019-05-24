@@ -108,8 +108,14 @@ namespace ExtendedControls
 
         private void Control_LocationChanged(object sender, EventArgs e)
         {
-            if ( !ignorelocationchange )
-                ScrollTo(scrollpos);
+            if (!ignorelocationchange)
+            {
+                ignorelocationchange = true;        // stop recursioon
+                Control c = sender as Control;
+                c.Top = c.Top - scrollpos;      // account for scroll pos and move control to scroll pos offset
+                ignorelocationchange = false;
+                ScrollTo(scrollpos);    // check bar within bounds
+            }
         }
 
         protected override void OnLayout(LayoutEventArgs levent)
@@ -181,11 +187,10 @@ namespace ExtendedControls
                 {
                     if (!(c is ExtScrollBar))
                     {
-                        // System.Diagnostics.Debug.WriteLine("Move {0}", c.Name);
-
                         int ynoscroll = c.Location.Y + scrollpos;
                         int ynewscroll = ynoscroll - newscrollpos;
-                        c.Location = new Point(c.Location.X, ynewscroll);       // SPENT AGES with the bloody AutoScrollPosition.. could not get it to work..
+                        c.Top = ynewscroll;       // SPENT AGES with the bloody AutoScrollPosition.. could not get it to work..
+                        //System.Diagnostics.Debug.WriteLine("Move {0} {1}", c.Name, c.Location );
                     }
                 }
 

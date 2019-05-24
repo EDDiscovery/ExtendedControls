@@ -412,7 +412,10 @@ namespace ExtendedControls
         //    Size inits = Size;
         //    Point initl = Location;
         //    base.ScaleControl(factor, specified);
-        //    System.Diagnostics.Debug.WriteLine("Scaling " + GetType().Name + " " + Name + " " + this.GetHeirarchy() + " " + inits + initl + " factor " + factor + " -> " + Size + Location);
+        //    if (Name == "buttonSize" || Name == "buttonExtEditAddOns")
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("Scaling " + GetType().Name + " " + Name + " " + this.GetHeirarchy() + " " + inits + initl + " factor " + factor + " -> " + Size + Location);
+        //    }
         //}
 
 

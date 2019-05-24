@@ -128,9 +128,16 @@ namespace ExtendedControls
 
             public bool mouseover;
 
-            public void Translate(int x,int y)
+            public void Translate(int x, int y, bool alt = true)
             {
                 pos = new Rectangle(pos.X + x, pos.Y + y, pos.Width, pos.Height);
+                if (alt)
+                    altpos = new Rectangle(altpos.X + x, altpos.Y + y, altpos.Width, altpos.Height);
+            }
+
+            public void TranslateAlt(int x, int y)
+            {
+                altpos = new Rectangle(altpos.X + x, altpos.Y + y, altpos.Width, altpos.Height);
             }
 
             public void Position(int x, int y)

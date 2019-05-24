@@ -41,14 +41,14 @@ namespace ExtendedControls
         private ExtCheckBox pinbutton;        // public so you can theme them with colour/IAs
         private ExtButtonDrawn hiddenmarker1;
         private ExtButtonDrawn hiddenmarker2;
-        private int unrolledheight;     // calculated from controls in the panel
 
         long targetrolltickstart;     // when the roll is supposed to be in time
         const int rolltimerinterval = 25;
 
         Action<ExtPanelRollUp, ExtCheckBox> PinStateChanged = null;
 
-        enum Mode { None, PauseBeforeRollDown, PauseBeforeRollUp, RollUp, RollDown };
+        enum Mode { PauseBeforeRollDown, PauseBeforeRollUp, RollingUp, RollingDown, Down, Up };
+        private int unrolledheight;     // on resize, and down, its set.
         Mode mode;
         Timer timer;
         bool hiddenmarkershow = true;           // if to show it at all.
@@ -90,7 +90,7 @@ namespace ExtendedControls
 
             ResumeLayout();
 
-            mode = Mode.None;
+            mode = Mode.Down;
             timer = new Timer();
             timer.Tick += Timer_Tick;
 
@@ -152,29 +152,14 @@ namespace ExtendedControls
             pinbutton.ImageUnchecked = down;
         }
 
-        protected override void OnControlAdded(ControlEventArgs e)      // when a control is hooked, we place a mouse enter/leave so we know we are still within this panel
-        {
-            base.OnControlAdded(e);
-            //System.Diagnostics.Debug.WriteLine("Added " + e.Control.Name + " " + e.Control.GetType().Name);
-            e.Control.MouseEnter += Control_MouseEnter;
-            e.Control.MouseLeave += Control_MouseLeave;
-            foreach ( Control c in e.Control.Controls )
-            {
-                c.MouseEnter += Control_MouseEnter;
-                c.MouseLeave += Control_MouseLeave;
-            }
-        }
-
-        public void RollDown()
+        public void RollDown()      // start the roll down..
         {
             timer.Stop();
 
-            unrolledheight = this.FindMaxSubControlArea(0, 0).Height;
-
-            if (Height < unrolledheight)
+            if (mode != Mode.Down)
             {
-               // System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll down, start animating");
-                mode = Mode.RollDown;
+                System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll down, start animating, size " + unrolledheight);
+                mode = Mode.RollingDown;
                 targetrolltickstart = Environment.TickCount;
                 timer.Interval = rolltimerinterval;
                 DeployStarting?.Invoke(this, EventArgs.Empty);
@@ -186,37 +171,37 @@ namespace ExtendedControls
                         c.Visible = true;
                 }
             }
-            else
-            {
-                mode = Mode.None;
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " ignore roll down at max h");
-            }
         }
 
-        public void RollUp()
+        public void RollUp()        // start the roll up
         {
             timer.Stop();
 
-            if (Height > RolledUpHeight)
+            if (mode != Mode.Up )
             {
-                unrolledheight = this.FindMaxSubControlArea(0, 0).Height;
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll up, start animating");
-                mode = Mode.RollUp;
+                System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll up, start animating , child size " + this.FindMaxSubControlArea(0, 0));
+                mode = Mode.RollingUp;
                 targetrolltickstart = Environment.TickCount;
                 timer.Interval = rolltimerinterval;
                 RetractStarting?.Invoke(this, EventArgs.Empty);
                 timer.Start();
-            }
-            else
-            {
-                mode = Mode.None;
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " ignore roll up at min h");
+
+                foreach (Control c in Controls)     // panels attached must not be autosized
+                {
+                    if (c is Panel)
+                        (c as Panel).AutoSize = false;
+                }
+
+                wasautosized = this.AutoSize;
+                this.AutoSize = false;          // and we must not be..
             }
         }
 
+        bool wasautosized = false;
+
         private void StartRollUpTimer()
         {
-            if (mode == Mode.None && Height > RolledUpHeight)
+            if (mode != Mode.Up)
             {
                 timer.Stop();
                 timer.Interval = RollUpDelay;
@@ -228,7 +213,7 @@ namespace ExtendedControls
 
         private void StartRollDownTimer()
         {
-            if (mode == Mode.None && Height <= RolledUpHeight)
+            if (mode != Mode.Down)
             {
                 timer.Stop();
                 timer.Interval = UnrollHoverDelay;
@@ -236,37 +221,26 @@ namespace ExtendedControls
                 mode = Mode.PauseBeforeRollDown;
                 //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " begin wait for unroll");
             }
-            else if (mode == Mode.PauseBeforeRollUp)      // if in a roll up.. we stop it
-            {
-                timer.Stop();
-                mode = Mode.None;
-                //System.Diagnostics.Debug.WriteLine("Stop roll up timer");
-            }
         }
-
-        bool inarea = false;
 
         protected override void OnMouseEnter(EventArgs eventargs)
         {
-            //System.Diagnostics.Debug.WriteLine("RUP Enter panel");
+            System.Diagnostics.Debug.WriteLine("RUP Enter panel");
             base.OnMouseEnter(eventargs);
-            inarea = true;
             StartRollDownTimer();
             SetPin(true);
         }
 
         private void Control_MouseEnter(object sender, EventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("RUP Entered " + sender.GetType().Name);
-            inarea = true;
+            System.Diagnostics.Debug.WriteLine("RUP Entered " + sender.GetType().Name);
             StartRollDownTimer();
             SetPin(true);
         }
 
         protected override void OnMouseLeave(EventArgs eventargs)
         {
-            //System.Diagnostics.Debug.WriteLine("RUP Left panel");
-            inarea = false;
+            System.Diagnostics.Debug.WriteLine("RUP Left panel");
             base.OnMouseLeave(eventargs);
             StartRollUpTimer();
         }
@@ -274,13 +248,11 @@ namespace ExtendedControls
         private void Control_MouseLeave(object sender, EventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine("RUP Left " + sender.GetType().Name);
-            inarea = false;
             StartRollUpTimer();
         }
 
         protected override void OnLayout(LayoutEventArgs levent)
         {
-            base.OnLayout(levent);
             if (ClientRectangle.Width > 0)
             {
                 pinbutton.Left = ClientRectangle.Width - pinbutton.Width - 8;
@@ -294,7 +266,31 @@ namespace ExtendedControls
                 hiddenmarker2.Left = ClientRectangle.Width - SecondHiddenMarkerWidth;       // shown on right, when visible
                 hiddenmarker1.Width = hmwidth;
                 hiddenmarker2.Width = SecondHiddenMarkerWidth;       // shown on right, when visible
+            }
 
+            base.OnLayout(levent);
+        }
+
+        protected override void OnResize(EventArgs eventargs)
+        {
+            base.OnResize(eventargs);
+            if (mode == Mode.Down)
+            {
+                unrolledheight = ClientRectangle.Height;
+                System.Diagnostics.Debug.WriteLine(this.Name + " Roll down size" + unrolledheight);
+            }
+        }
+
+        protected override void OnControlAdded(ControlEventArgs e)      // when a control is hooked, we place a mouse enter/leave so we know we are still within this panel
+        {
+            base.OnControlAdded(e);
+            System.Diagnostics.Debug.WriteLine("Added " + e.Control.Name + " " + e.Control.GetType().Name);
+            e.Control.MouseEnter += Control_MouseEnter;
+            e.Control.MouseLeave += Control_MouseLeave;
+            foreach (Control c in e.Control.Controls)
+            {
+                c.MouseEnter += Control_MouseEnter;
+                c.MouseLeave += Control_MouseLeave;
             }
         }
 
@@ -302,12 +298,15 @@ namespace ExtendedControls
         {
             double rollpercent = (double)(Environment.TickCount - targetrolltickstart) / RollUpAnimationTime;
             int rolldiff = unrolledheight - RolledUpHeight;
-            //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent);
 
-            if (mode == Mode.RollUp)        // roll up animation, move one step on, check for end
+            bool inarea = this.ScreenRectangle().Contains(MousePosition.X, MousePosition.Y);
+
+            System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent + " mode " + mode + " inarea " + inarea);
+
+            if (mode == Mode.RollingUp)        // roll up animation, move one step on, check for end
             {
                 Height = Math.Max((int)(unrolledheight - rolldiff * rollpercent), RolledUpHeight);
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height);
+                System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height + " child size " + this.FindMaxSubControlArea(0, 0) + " child " + this.Controls[3].FindMaxSubControlArea(0, 0));
 
                 if (Height == RolledUpHeight)    // end
                 {
@@ -322,21 +321,33 @@ namespace ExtendedControls
                     SetHMViz();
                     //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At min h");
 
-                    mode = Mode.None;
+                    mode = Mode.Up;
                     RetractCompleted?.Invoke(this, EventArgs.Empty);
                 }
             }
-            else if (mode == Mode.RollDown) // roll down animation, move one step on, check for end
+            else if (mode == Mode.RollingDown) // roll down animation, move one step on, check for end
             {
                 Height = Math.Min((int)(RolledUpHeight + rolldiff * rollpercent), unrolledheight);
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height);
+                System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height);
 
                 if (Height == unrolledheight)        // end, everything is already visible.  hide the hidden marker
                 {
                     timer.Stop();
-                    mode = Mode.None;
+                    mode = Mode.Down;
                     hiddenmarkershouldbeshown = false;
                     SetHMViz();
+
+                    if (wasautosized)
+                    {
+                        this.AutoSize = true;
+
+                        foreach (Control c in Controls)     // all panels below become autosized.. shortcut for now.
+                        {
+                            if (c is Panel)
+                                (c as Panel).AutoSize = true;
+                        }
+                    }
+
                     DeployCompleted?.Invoke(this, EventArgs.Empty);
                 }
 
@@ -345,29 +356,24 @@ namespace ExtendedControls
             }
             else if (mode == Mode.PauseBeforeRollDown) // timer up.. check if in area, if so roll down
             {
-                mode = Mode.None;
                 timer.Stop();
 
                 if (inarea)
                     RollDown();
                 else
-                {
-                    //System.Diagnostics.Debug.WriteLine("Ignore roll down not in area " + inarea + " checked " + pinbutton.Checked);
-                }
+                    mode = Mode.Up;     // back to up
             }
             else if (mode == Mode.PauseBeforeRollUp)    // timer up, check if out of area and not pinned, if so roll up
             {
-                mode = Mode.None;
                 timer.Stop();
 
                 pinbutton.Visible = inarea;     // visible is same as inarea flag..
 
+                System.Diagnostics.Debug.WriteLine("Pause before - in area" + inarea);
                 if (!inarea && !pinbutton.Checked)      // if not in area, and its not checked..
                     RollUp();
                 else
-                {
-                    //System.Diagnostics.Debug.WriteLine("Ignore roll up.. area " + inarea + " checked " + pinbutton.Checked);
-                }
+                    mode = Mode.Down;   // back to down
             }
         }
 

@@ -39,7 +39,6 @@ namespace ExtendedControls
         public void Info(string title, Icon ic, string info , int[] array = null, float pointsize= -1, 
                             Action<Object> acknowledgeaction = null, Object acknowledgedata = null, bool usedialogfont= true)    
         {
-            AutoScaleMode = AutoScaleMode.Font;
             Icon = ic;
 
             textBoxInfo.SetTabs(array ?? new int[] { 0, 100, 200, 300, 400, 500, 600, 800,900,1000,1100,1200 });
