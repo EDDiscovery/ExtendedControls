@@ -31,7 +31,7 @@ namespace DialogTest
                                                            "Quick Init", new Font("Verdana", 8.25f), Color.Yellow, Color.Transparent,
                                                            Properties.Resources.edsm32x32, new Size(32, 32),
                                                            new Image[] { Properties.Resources.edlogo24, Properties.Resources.galaxy_black }, new Size(24, 24),
-                                                           3, 6,
+                                                           3,
                                                            (o, p) => { System.Diagnostics.Debug.WriteLine("CB " + o + " " + p); });
             this.Controls.Add(b);
             b.Location = new Point(250, 10);
@@ -43,7 +43,7 @@ namespace DialogTest
                                                            "Quick Init", new Font("Verdana", 8.25f), Color.Yellow, Color.Transparent,
                                                            Properties.Resources.ScreenShot, new Size(24, 24),
                                                            new Image[] { Properties.Resources.edlogo24, Properties.Resources.galaxy_black }, new Size(24, 24),
-                                                           3, 6,
+                                                           3,
                                                            (o, p) => { System.Diagnostics.Debug.WriteLine("CB " + o + " " + p); });
             b.Name = "Realistic";
             this.Controls.Add(b);

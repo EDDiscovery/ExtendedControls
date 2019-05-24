@@ -32,10 +32,12 @@
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
             this.rolluppanel = new ExtendedControls.ExtPanelRollUp();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
             this.rolluppanel.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -44,7 +46,7 @@
             this.panel1.Controls.Add(this.extButton2);
             this.panel1.Controls.Add(this.extButton1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 140);
+            this.panel1.Location = new System.Drawing.Point(0, 40);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(941, 100);
             this.panel1.TabIndex = 1;
@@ -71,38 +73,50 @@
             // 
             // rolluppanel
             // 
-            this.rolluppanel.Controls.Add(this.label2);
-            this.rolluppanel.Controls.Add(this.label1);
+            this.rolluppanel.AutoSize = true;
+            this.rolluppanel.Controls.Add(this.flowLayoutPanel1);
             this.rolluppanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.rolluppanel.HiddenMarkerWidth = 0;
             this.rolluppanel.Location = new System.Drawing.Point(0, 0);
             this.rolluppanel.Name = "rolluppanel";
             this.rolluppanel.PinState = true;
-            this.rolluppanel.RollUpAnimationTime = 500;
+            this.rolluppanel.RolledUpHeight = 5;
+            this.rolluppanel.RollUpAnimationTime = 2000;
             this.rolluppanel.RollUpDelay = 1000;
             this.rolluppanel.SecondHiddenMarkerWidth = 0;
             this.rolluppanel.ShowHiddenMarker = true;
-            this.rolluppanel.Size = new System.Drawing.Size(941, 140);
+            this.rolluppanel.Size = new System.Drawing.Size(941, 40);
             this.rolluppanel.TabIndex = 0;
             this.rolluppanel.UnrollHoverDelay = 1000;
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.SystemColors.Info;
+            this.label2.Location = new System.Drawing.Point(106, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(97, 40);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Just to show roll up";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 4);
+            this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(97, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Just to show roll up";
             // 
-            // label2
+            // flowLayoutPanel1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(293, 124);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(97, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Just to show roll up";
+            this.flowLayoutPanel1.AutoSize = true;
+            this.flowLayoutPanel1.Controls.Add(this.label1);
+            this.flowLayoutPanel1.Controls.Add(this.label2);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(941, 40);
+            this.flowLayoutPanel1.TabIndex = 4;
             // 
             // TestRollUpPanel
             // 
@@ -116,7 +130,10 @@
             this.panel1.ResumeLayout(false);
             this.rolluppanel.ResumeLayout(false);
             this.rolluppanel.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -128,5 +145,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
