@@ -116,26 +116,23 @@ namespace ExtendedControls
 
         public Entry Last { get { return entries.Last(); } }
 
-        public DialogResult ShowDialog(Form p, Icon icon, Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
-        {
-            if (pos.X <= -999)
-                Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, posiscentrecoords: true);
-            else
-                Init(icon, pos, caption, lname, callertag);
+        // pos.x <= -999 means autocentre to parent.
 
+        public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null)
+        {
+            InitCentred(p, icon, caption, lname, callertag);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
-        public void Show(Form p, Icon icon, Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
+        public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font)
         {
-            if (pos.X <= -999)
-                Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, posiscentrecoords: true);
-            else
-                Init(icon, pos, caption, lname, callertag);
+            Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, true , asm);
+        }
 
-            callback?.Invoke();
-            Show(p);
+        public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font)
+        {
+            Init(icon, pos, caption, lname, callertag, false, asm);
         }
 
         public new void Close()     // program close.. allow it to close properly
@@ -395,7 +392,7 @@ namespace ExtendedControls
             return null;
         }
 
-        public void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, bool posiscentrecoords = false)
+        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, bool posiscentrecoords = false, AutoScaleMode asm = AutoScaleMode.Font)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
@@ -583,14 +580,16 @@ namespace ExtendedControls
 
             this.Icon = icon;
 
-            this.AutoScaleMode = AutoScaleMode.Font;
+            this.AutoScaleMode = asm;
 
+            //this.DumpTree(0);
             theme.ApplyStd(this);
+            //this.DumpTree(0);
 
             int fh = (int)this.Font.GetHeight();        // use the FH to nerf the extra area so it scales with FH.. this helps keep the controls within a framed window
 
             // measure the items after scaling. Exclude the scroll bar
-            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 16) + fh, new Type[] { typeof(ExtScrollBar) }, true);
+            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 16) + fh, new Type[] { typeof(ExtScrollBar) });
 
             StartPosition = FormStartPosition.Manual;
 

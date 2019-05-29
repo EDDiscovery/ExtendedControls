@@ -917,12 +917,4 @@ namespace ExtendedControls
 
         #endregion
     }
-
-    public class ExtDrawnPanelNoTheme : ExtButtonDrawn       // indicates don't theme
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtDrawnPanelNoTheme"/> class.
-        /// </summary>
-        public ExtDrawnPanelNoTheme() : base() { }
-    }
 }

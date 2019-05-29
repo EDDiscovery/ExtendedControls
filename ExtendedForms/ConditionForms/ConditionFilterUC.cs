@@ -92,8 +92,6 @@ namespace ExtendedConditionsForms
                     foreach (ConditionEntry f in fe.fields)
                         CreateConditionInt(g, f.itemname, ConditionEntry.MatchNames[(int)f.matchtype], f.matchstring);
 
-                    ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialogSubControls(g.panel);
-
                     groups.Add(g);
                 }
 
@@ -161,9 +159,8 @@ namespace ExtendedConditionsForms
             if (eventlist == null)      // if we don't have any event list, auto create a condition
                 CreateConditionInt(g, null, null, null);
 
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialogSubControls(g.panel);
-
             groups.Add(g);
+           
             panelVScroll.Controls.Add(g.panel);
 
             FixUpGroups();
@@ -184,14 +181,14 @@ namespace ExtendedConditionsForms
             g.panel = new Panel();
             g.panel.SuspendLayout();
 
-            int p24 = Font.ScalePixels(24);
+            // lay out at 8.25 f spacing and then scale
 
             if (eventlist != null)
             {
                 g.evlist = new ExtendedControls.ExtComboBox();
                 g.evlist.Items.AddRange(eventlist);
                 g.evlist.Location = new Point(panelxmargin, panelymargin);
-                g.evlist.Size = new Size(Font.ScalePixels(150), p24);
+                g.evlist.Size = new Size(150, 24);
                 if (initialev != null && initialev.Length > 0)
                     g.evlist.Text = initialev;
                 g.evlist.SelectedIndexChanged += Evlist_SelectedIndexChanged;
@@ -202,7 +199,7 @@ namespace ExtendedConditionsForms
             g.innercond = new ExtendedControls.ExtComboBox();
             g.innercond.Items.AddRange(Enum.GetNames(typeof(ConditionEntry.LogicalCondition)));
             g.innercond.SelectedIndex = 0;
-            g.innercond.Size = new Size(Font.ScalePixels(60), p24);
+            g.innercond.Size = new Size(60, 24);
             g.innercond.Visible = false;
             if ( initialcondinner != null)
                 g.innercond.Text = initialcondinner;
@@ -211,7 +208,7 @@ namespace ExtendedConditionsForms
             g.outercond = new ExtendedControls.ExtComboBox();
             g.outercond.Items.AddRange(Enum.GetNames(typeof(ConditionEntry.LogicalCondition)));
             g.outercond.SelectedIndex = 0;
-            g.outercond.Size = new Size(Font.ScalePixels(60), p24);
+            g.outercond.Size = new Size(60, 24);
             g.outercond.Enabled = g.outercond.Visible = false;
             if (initialcondouter != null)
                 g.outercond.Text = initialcondouter;
@@ -224,17 +221,19 @@ namespace ExtendedConditionsForms
             g.panel.Controls.Add(g.outerlabel);
 
             g.upbutton = new ExtendedControls.ExtButton();
-            g.upbutton.Size = new Size(p24,p24);
+            g.upbutton.Size = new Size(24, 24);
             g.upbutton.Text = "^";
             g.upbutton.Click += Up_Click;
             g.upbutton.Tag = g;
             g.panel.Controls.Add(g.upbutton);
 
+            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.panel);
+            g.panel.Scale(FindForm().CurrentAutoScaleFactor());
+
             g.panel.ResumeLayout();
 
             return g;
         }
-
 
         private void Evlist_SelectedIndexChanged(object sender, EventArgs e)                // EVENT list changed
         {
@@ -279,7 +278,6 @@ namespace ExtendedConditionsForms
         private void CreateCondition(Group g, string initialfname = null, string initialcond = null, string initialvalue = null )
         {
             CreateConditionInt(g, initialfname, initialcond, initialvalue);
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialogSubControls(g.panel);
             FixUpGroups();
         }
 
@@ -287,14 +285,14 @@ namespace ExtendedConditionsForms
         {
             g.panel.SuspendLayout();
 
-            Group.Conditions c = new Group.Conditions();
+            g.panel.Scale(FindForm().InvCurrentAutoScaleFactor());      // until i rewrite this, so conditions are all in a panel, we need to remove then reapply scaling
 
-            int p24 = Font.ScalePixels(24);
+            Group.Conditions c = new Group.Conditions();
 
             c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
             c.fname.EndButtonVisible = true;
             c.fname.Name = "CVar";
-            c.fname.Size = new Size(Font.ScalePixels(200), p24);
+            c.fname.Size = new Size(200, 24);
             c.fname.SetAutoCompletor(AutoCompletor);
             c.fname.Tag = new Tuple<Group,Group.Conditions>(g,c);
             c.fname.AutoCompleteCommentMarker = commentmarker;
@@ -305,7 +303,7 @@ namespace ExtendedConditionsForms
             c.cond = new ExtendedControls.ExtComboBox();
             c.cond.Items.AddRange(ConditionEntry.MatchNames);
             c.cond.SelectedIndex = 0;
-            c.cond.Size = new Size(Font.ScalePixels(140), p24);
+            c.cond.Size = new Size(140, 24);
             c.cond.Tag = g;
 
             if (initialcond != null)
@@ -316,7 +314,7 @@ namespace ExtendedConditionsForms
             g.panel.Controls.Add(c.cond);         // must be next
 
             c.value = new ExtendedControls.ExtTextBox();
-            c.value.Size = new Size(100, p24);  // width will be set in positioning
+            c.value.Size = new Size(100, 24);  // width will be set in positioning
 
             if (initialvalue != null)
                 c.value.Text = initialvalue;
@@ -324,14 +322,14 @@ namespace ExtendedConditionsForms
             g.panel.Controls.Add(c.value);         // must be next
 
             c.del = new ExtendedControls.ExtButton();
-            c.del.Size = new Size(p24, p24);
+            c.del.Size = new Size(24,24);
             c.del.Text = "X";
             c.del.Click += ConditionDelClick;
             c.del.Tag = c;
             g.panel.Controls.Add(c.del);
 
             c.more = new ExtendedControls.ExtButton();
-            c.more.Size = new Size(p24, p24);
+            c.more.Size = new Size(24, 24);
             c.more.Text = "+";
             c.more.Click += NewConditionClick;
             c.more.Tag = g;
@@ -344,6 +342,9 @@ namespace ExtendedConditionsForms
             c.fname.EndButtonEnable = (g.variables?.Count ?? 0) > 0;
 
             c.fname.TextChanged += TextChangedInLeft;       // only when fully set up do we turn on the text change handler - exception if you do it sooner
+
+            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.panel);
+            g.panel.Scale(FindForm().CurrentAutoScaleFactor());
 
             g.panel.ResumeLayout();
         }

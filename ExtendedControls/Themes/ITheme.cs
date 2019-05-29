@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -20,10 +20,8 @@ namespace ExtendedControls
 {
     public interface ITheme                     // Extended controls use this if they want to be themed
     {
-        bool ApplyStd(Control form);    // apply to this and subs
-        void ApplyStdSubControls(Control parent); // apply to subs only
-        bool ApplyDialog(Control form);
-        void ApplyDialogSubControls(Control parent);
+        bool ApplyStd(Control ctrl);    // apply to this and subs
+        bool ApplyDialog(Control ctrl);
 
         Color ButtonBackColor { get; set; }
         Color ButtonTextColor { get; set; }

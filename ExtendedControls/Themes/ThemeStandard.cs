@@ -1,10 +1,23 @@
-﻿using System;
+﻿/*
+ * Copyright © 2016-2019 EDDiscovery development team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ * 
+ * EDDiscovery is not affiliated with Frontier Developments plc.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -427,14 +440,14 @@ namespace ExtendedControls
                                                false, 95, "Microsoft Sans Serif", 8.25F));
         }
 
-        public bool ApplyStd(Control form)      // normally a form, but can be a control, applies to this and ones below
+        public bool ApplyStd(Control ctrl)      // normally a form, but can be a control, applies to this and ones below
         {
-            return ApplyToForm(form, GetFont);
+            return ApplyToForm(ctrl, GetFont);
         }
 
-        public bool ApplyDialog(Control form)
+        public bool ApplyDialog(Control ctrl)
         {
-            return ApplyToForm(form, GetDialogFont);
+            return ApplyToForm(ctrl, GetDialogFont);
         }
 
         private bool ApplyToForm(Control form, Font fnt)
@@ -443,29 +456,13 @@ namespace ExtendedControls
             UpdateToolsStripRenderer();
             return WindowsFrame;
         }
-
-        public void ApplyStdSubControls(Control ctrl)
-        {
-            Font fnt = GetFont;
-
-            foreach (Control c in ctrl.Controls)
-                UpdateControls(ctrl, c, fnt, 0);
-        }
-
-        public void ApplyDialogSubControls(Control ctrl)
-        {
-            Font fnt = GetDialogFont;
-
-            foreach (Control c in ctrl.Controls)
-                UpdateControls(ctrl, c, fnt, 0);
-        }
-
+        
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level)    // parent can be null
         {
 #if DEBUG
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false));
-            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
+         //   System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
 
             float mouseoverscaling = 1.3F;
@@ -706,9 +703,6 @@ namespace ExtendedControls
             {                                                                   // BACK colour does not work..
                 myControl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
             }
-            else if (myControl is ExtDrawnPanelNoTheme)        // ignore these..
-            {
-            }
             else if (myControl is ExtButtonDrawn)
             {
                 ExtButtonDrawn ctrl = (ExtButtonDrawn)myControl;
@@ -942,7 +936,7 @@ namespace ExtendedControls
                 myControl.BackColor = currentsettings.colors[Settings.CI.form];
                 myControl.ForeColor = currentsettings.colors[Settings.CI.label];
             }
-            else if (myControl is ToolStrip)
+            else if (myControl is ToolStrip)    // MenuStrip is a tool stip
             {
                 myControl.Font = fnt;       // Toolstrips don't seem to inherit Forms font, so force
 

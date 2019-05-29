@@ -167,7 +167,7 @@ namespace ExtendedConditionsForms
             groups.Add(g);
 
             panelVScroll1.Controls.Add(g.panel);
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialogSubControls(g.panel);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(g.panel);
 
             FixUpGroups();
 

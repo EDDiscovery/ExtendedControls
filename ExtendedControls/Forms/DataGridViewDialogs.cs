@@ -55,7 +55,7 @@ public static class DataGridViewDialogs
             }
         };
 
-        DialogResult res = f.ShowDialog(parent, parent.Icon, new Point(-999, -999), "Jump to Entry".Tx(t,"Title"));
+        DialogResult res = f.ShowDialogCentred(parent, parent.Icon,  "Jump to Entry".Tx(t,"Title"));
 
         if (res == DialogResult.OK)
         {

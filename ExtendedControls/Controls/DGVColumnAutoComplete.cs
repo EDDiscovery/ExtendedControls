@@ -200,7 +200,7 @@ namespace ExtendedControls
             /// <param name="dgvStyle">The <see cref="DataGridViewCellStyle"/> to use as the model for the UI.</param>
             public void ApplyCellStyleToEditingControl(DataGridViewCellStyle dgvStyle)
             {
-                ExtendedControls.ThemeableFormsInstance.Instance.ApplyStdSubControls(Parent);
+                ExtendedControls.ThemeableFormsInstance.Instance.ApplyStd(Parent);
             }
 
             /// <summary>

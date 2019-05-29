@@ -70,14 +70,14 @@ namespace ExtendedControls
             pinbutton.TickBoxReductionRatio = 1;
             pinbutton.Name = "RUP Pinbutton";
 
-            hiddenmarker1 = new ExtDrawnPanelNoTheme();
+            hiddenmarker1 = new ExtButtonDrawn();
             hiddenmarker1.Name = "Hidden marker";
             hiddenmarker1.ImageSelected = ExtButtonDrawn.ImageType.Bars;
             hiddenmarker1.Visible = false;
             hiddenmarker1.Padding = new Padding(0);
             hiddenmarker1.Click += Hiddenmarker_Click;
 
-            hiddenmarker2 = new ExtDrawnPanelNoTheme();
+            hiddenmarker2 = new ExtButtonDrawn();
             hiddenmarker2.Name = "Hidden marker";
             hiddenmarker2.ImageSelected = ExtButtonDrawn.ImageType.Bars;
             hiddenmarker2.Visible = false;
@@ -119,6 +119,7 @@ namespace ExtendedControls
             bool hm1vis = hiddenmarkershow && hiddenmarkershouldbeshown;        // done this way, don't trust visible property, sometimes it can be delayed being set so can't reread it
             hiddenmarker1.Visible = hm1vis;
             hiddenmarker2.Visible = hm1vis && SecondHiddenMarkerWidth > 0;            // only visible if width >0 (not full or centre) and both sides
+//            System.Diagnostics.Debug.WriteLine("Hidden vis " + hm1vis + " ci set"  + hiddenmarker1.Size + hiddenmarker1.Location);
         }
 
         public void SetToolTip(ToolTip t, string ttpin = null, string ttmarker = null)
@@ -308,7 +309,7 @@ namespace ExtendedControls
             double rollpercent = (double)(Environment.TickCount - targetrolltickstart) / RollUpAnimationTime;
             int rolldiff = unrolledheight - RolledUpHeight;
 
-            bool inarea = this.ScreenRectangle().Contains(MousePosition.X, MousePosition.Y);
+            bool inarea = this.RectangleScreenCoords().Contains(MousePosition.X, MousePosition.Y);
 
             //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent + " mode " + mode + " inarea " + inarea);
 
@@ -328,7 +329,7 @@ namespace ExtendedControls
 
                     hiddenmarkershouldbeshown = true;
                     SetHMViz();
-                    //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At min h");
+                    System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At min h" + Height);
 
                     mode = Mode.Up;
                     RetractCompleted?.Invoke(this, EventArgs.Empty);
