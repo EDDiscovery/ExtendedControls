@@ -276,6 +276,8 @@ namespace ExtendedControls
 
             if (IsFontAvailable("Euro Caps"))
             {
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite EuroCaps High DPI", "Euro Caps", 20F, 95));
+
                 Color butback = Color.FromArgb(255, 32, 32, 32);
                 themelist.Add(new Settings("Elite EuroCaps Less Border", Color.Black,
                     Color.FromArgb(255, 64, 64, 64), Color.Orange, Color.FromArgb(255, 96, 96, 96), buttonstyle_gradient, // button
@@ -581,12 +583,12 @@ namespace ExtendedControls
                     if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
                     {
                         System.Drawing.Imaging.ColorMap colormap1 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                        colormap1.OldColor = Color.FromArgb(134, 134, 134);                                        // gray is defined as the forecolour to use in system mode
+                        colormap1.OldColor = Color.FromArgb(134, 134, 134);                                      // gray is defined as the forecolour
                         colormap1.NewColor = ctrl.ForeColor;
                         //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap1.OldColor + " to " + colormap1.NewColor);
 
                         System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                        colormap2.OldColor = Color.FromArgb(255, 255, 255);                                        // gray is defined as the forecolour to use in system mode
+                        colormap2.OldColor = Color.FromArgb(255, 255, 255);                                      // and white is defined as the forecolour
                         colormap2.NewColor = ctrl.ForeColor;
                         //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap2.OldColor + " to " + colormap2.NewColor);
 
@@ -763,7 +765,7 @@ namespace ExtendedControls
                 {
                     ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
                     ctrl.MouseOverColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
-                    ctrl.CheckColor = currentsettings.colors[Settings.CI.button_back].Multiply(0.8f);
+                    ctrl.CheckColor = currentsettings.colors[Settings.CI.button_back].Multiply(0.9f);
                 }
                 else
                 {
@@ -784,25 +786,14 @@ namespace ExtendedControls
 
                 if (ctrl.Image != null)
                 {
-                    System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
+                    System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       
                     colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
                     colormap.NewColor = ctrl.ForeColor;
-                    System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();
-                    colormap2.OldColor = Color.FromArgb(222, 222, 222);
-                    colormap2.NewColor = ctrl.ForeColor.Multiply(0.85F);
-                    ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
+                    ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
+
+                    ctrl.ImageLayout = ImageLayout.Stretch;
                 }
             }
-            //else if (ctrl.FlatStyle == FlatStyle.Flat)           // BUTTON and FLAT
-            //{
-            //    ctrl.ForeColor = currentsettings.colors[Settings.CI.checkbox];
-            //    ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.button_back]);
-            //    ctrl.FlatAppearance.CheckedBackColor = currentsettings.colors[Settings.CI.checkbox].MultiplyBrightness(0.5F);
-            //    ctrl.FlatAppearance.MouseOverBackColor = currentsettings.colors[Settings.CI.button_back].InvertBrightness(mouseoverscaling);
-            //    ctrl.FlatAppearance.MouseDownBackColor = currentsettings.colors[Settings.CI.button_back].InvertBrightness(mouseselectedscaling);
-            //    ctrl.FlatAppearance.BorderColor = currentsettings.colors[Settings.CI.button_border];
-            //}
-            //}
             else if (myControl is ExtRadioButton)
             {
                 ExtRadioButton ctrl = (ExtRadioButton)myControl;
