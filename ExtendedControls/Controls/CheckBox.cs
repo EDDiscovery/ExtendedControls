@@ -24,23 +24,25 @@ namespace ExtendedControls
     public class ExtCheckBox : CheckBox
     {
         // Flatstyle Popout/Flat mode, not Apprearance Button only
-        public Color CheckBoxColor { get; set; } = Color.Gray;       // border
-        public Color CheckBoxInnerColor { get; set; } = Color.White;
-        public Color CheckColor { get; set; } = Color.DarkBlue;
-        public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
-        public float TickBoxReductionRatio { get; set; } = 0.75f;
-        public Image ImageUnchecked = null;                         // set both this and Image to draw a image instead of the check. 
-        public Image ImageIndeterminate = null;                     // can set this, if required, if using indeterminate value
-        public float ImageButtonDisabledScaling { get; set; } = 0.5F;   // scaling when disabled
-        public ImageLayout ImageLayout { get { return imagelayout; } set { imagelayout = value; Invalidate(); } }
+        public Color CheckBoxColor { get; set; } = Color.Gray;          // Normal only border area colour
+        public Color CheckBoxInnerColor { get; set; } = Color.White;    // Normal only inner colour
+        public Color CheckColor { get; set; } = Color.DarkBlue;         // Button - back colour when checked, Normal - check colour
+        public Color MouseOverColor { get; set; } = Color.CornflowerBlue; // both - Mouse over 
+
+        public float TickBoxReductionRatio { get; set; } = 0.75f;       // Normal - size reduction
+        public Image ImageUnchecked { get; set; } = null;               // Both - set image when unchecked.  Also set Image
+        public Image ImageIndeterminate { get; set; } = null;           // Both - optional - can set this, if required, if using indeterminate value
+        public float ImageButtonDisabledScaling { get; set; } = 0.5F;   // Both - scaling when disabled - must call SetDrawnBitmapRemapTable
+        public float CheckBoxDisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
+        public ImageLayout ImageLayout { get { return imagelayout; } set { imagelayout = value; Invalidate(); } }   // Both. Also use TextLayout for Buttons
 
         public ImageAttributes DrawnImageAttributesEnabled = null;         // Image override (colour etc) for images using Image
         public ImageAttributes DrawnImageAttributesDisabled = null;         // Image override (colour etc) for images using Image
 
         private Font FontToUse = null;
-        private ImageLayout imagelayout = ImageLayout.Center;               // new! image layout
+        private ImageLayout imagelayout = ImageLayout.Center;           // image layout
 
-        public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)
+        public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)        // call to set up disable scaling
         {
             ControlHelpersStaticFunc.ComputeDrawnPanel(out DrawnImageAttributesEnabled, out DrawnImageAttributesDisabled, ImageButtonDisabledScaling, remap, colormatrix);
         }
@@ -63,120 +65,144 @@ namespace ExtendedControls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (Appearance == Appearance.Button || FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard )
+            if ( FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard )
                 base.OnPaint(e);
             else
             {
-                Rectangle rect = ClientRectangle;
+                bool hasimages = Image != null;
 
                 using (Brush br = new SolidBrush(this.BackColor))
-                    e.Graphics.FillRectangle(br, rect);
+                    e.Graphics.FillRectangle(br, ClientRectangle);
 
-                int reduce = (int)(rect.Height * TickBoxReductionRatio);
-                rect.Y += (rect.Height - reduce) / 2;
-                rect.Height = reduce;
-                rect.Width = rect.Height;
-
-                Rectangle textarea = ClientRectangle;
-                textarea.X = rect.Width;
-                textarea.Width -= rect.Width;
-                Color basecolor = (mouseover) ? MouseOverColor : CheckBoxColor;
-
-                if (Image == null)      // don't drawn when image defined
+                if (Appearance == Appearance.Button)
                 {
-                    using (Pen outer = new Pen(basecolor))
-                        e.Graphics.DrawRectangle(outer, rect);
-                }
-
-                rect.Inflate(-1, -1);
-
-                Rectangle checkarea = rect;
-                checkarea.Width++; checkarea.Height++;          // convert back to area
-
-                if (Enabled)
-                {
-                    if (Image == null)
+                    if ( Enabled )
                     {
-                        using (Pen second = new Pen(CheckBoxInnerColor, 1F))
-                            e.Graphics.DrawRectangle(second, rect);
+                        Rectangle marea = ClientRectangle;
+                        marea.Inflate(-2, -2);
 
-                        rect.Inflate(-1, -1);
-
-                        if (FlatStyle == FlatStyle.Flat)
+                        if ( mouseover )
                         {
-                            using (Brush inner = new SolidBrush(basecolor))
-                                e.Graphics.FillRectangle(inner, rect);      // fill slightly over size to make sure all pixels are painted
+                            using (Brush mover = new SolidBrush(MouseOverColor))
+                                e.Graphics.FillRectangle(mover, marea);
                         }
-                        else
+                        else if ( CheckState == CheckState.Checked )
                         {
-                            using (Brush inner = new LinearGradientBrush(rect, CheckBoxInnerColor, basecolor, 225))
-                                e.Graphics.FillRectangle(inner, rect);      // fill slightly over size to make sure all pixels are painted
+                            using (Brush mover = new SolidBrush(CheckColor))
+                                e.Graphics.FillRectangle(mover, marea);
                         }
+                    }
 
-                        using (Pen third = new Pen(basecolor, 1F))
-                            e.Graphics.DrawRectangle(third, rect);
+                    if (hasimages)
+                        DrawImage(ClientRectangle, e.Graphics);
+
+                    using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(RtlTranslateAlignment(TextAlign)))
+                    {
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        DrawText(ClientRectangle, e.Graphics, fmt);
+                        e.Graphics.SmoothingMode = SmoothingMode.Default;
                     }
                 }
                 else
                 {
-                    using (Brush disabled = new SolidBrush(CheckBoxInnerColor))
+                    Rectangle tickarea = ClientRectangle;
+                    int reduce = (int)(tickarea.Height * TickBoxReductionRatio);
+                    tickarea.Y += (tickarea.Height - reduce) / 2;
+                    tickarea.Height = reduce;
+                    tickarea.Width = tickarea.Height;
+
+                    Rectangle textarea = ClientRectangle;
+                    textarea.X = tickarea.Width;
+                    textarea.Width -= tickarea.Width;
+
+                    float discaling = Enabled ? 1.0f : CheckBoxDisabledScaling;
+
+                    Color checkboxbasecolour = (Enabled && mouseover) ? MouseOverColor : CheckBoxColor.Multiply(discaling);
+
+                    if (!hasimages)      // draw the over box of the checkbox if no images
                     {
-                        e.Graphics.FillRectangle(disabled, checkarea);
+                        using (Pen outer = new Pen(checkboxbasecolour))
+                            e.Graphics.DrawRectangle(outer, tickarea);
                     }
-                }
 
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    tickarea.Inflate(-1, -1);
 
-                using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.FitBlackBox })
-                {
-                    using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(0.5F)))
+                    Rectangle checkarea = tickarea;
+                    checkarea.Width++; checkarea.Height++;          // convert back to area
+
+                    //                System.Diagnostics.Debug.WriteLine("Owner draw " + Name + checkarea + rect);
+
+                    if (hasimages)
                     {
-                        if (FontToUse == null || FontToUse.FontFamily != Font.FontFamily || FontToUse.Style != Font.Style)
-                            FontToUse = e.Graphics.GetFontToFitRectangle(this.Text, Font, textarea, fmt);
-
-                        e.Graphics.DrawString(this.Text, FontToUse, textb, textarea, fmt);
-                    }
-                }
-
-                if (Image != null && ImageUnchecked != null)
-                {
-                    Image image = CheckState == CheckState.Checked ? Image : ( (CheckState == CheckState.Indeterminate && ImageIndeterminate != null ) ? ImageIndeterminate : ImageUnchecked);
-                    Size isize = (imagelayout == ImageLayout.Stretch) ? checkarea.Size : Image.Size;
-
-                    if (DrawnImageAttributesEnabled != null)
-                        e.Graphics.DrawImage(image, new Rectangle(0, 0, isize.Width, isize.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, (Enabled) ? DrawnImageAttributesEnabled : DrawnImageAttributesDisabled);
-                    else
-                        e.Graphics.DrawImage(image, new Rectangle(0, 0, isize.Width, isize.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
-                }
-                else
-                {
-                    Color c1 = Color.FromArgb(200, CheckColor);
-                    if (CheckState == CheckState.Checked)
-                    {
-                        Point pt1 = new Point(checkarea.X + 2, checkarea.Y + checkarea.Height / 2 - 1);
-                        Point pt2 = new Point(checkarea.X + checkarea.Width / 2 - 1, checkarea.Bottom - 2);
-                        Point pt3 = new Point(checkarea.X + checkarea.Width - 2, checkarea.Y);
-
-                        using (Pen pcheck = new Pen(c1, 2.0F))
+                        if (Enabled && mouseover)                // if mouse over, draw a nice box around it
                         {
-                            e.Graphics.DrawLine(pcheck, pt1, pt2);
-                            e.Graphics.DrawLine(pcheck, pt2, pt3);
-                        }
-                    }
-                    else if ( CheckState == CheckState.Indeterminate )
-                    {
-                        Size cb = new Size(checkarea.Width - 5, checkarea.Height - 5);
-                        if (cb.Width > 0 && cb.Height > 0)
-                        {
-                            using (Brush br = new SolidBrush(c1))
+                            using (Brush mover = new SolidBrush(MouseOverColor))
                             {
-                                e.Graphics.FillRectangle(br, new Rectangle(new Point(checkarea.X + 2, checkarea.Y + 2), cb ));
+                                e.Graphics.FillRectangle(mover, checkarea);
                             }
                         }
                     }
-                }
+                    else
+                    {                                   // in no image, we draw a set of boxes
+                        using (Pen second = new Pen(CheckBoxInnerColor.Multiply(discaling), 1F))
+                            e.Graphics.DrawRectangle(second, tickarea);
 
-                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+                        tickarea.Inflate(-1, -1);
+
+                        if (FlatStyle == FlatStyle.Flat)
+                        {
+                            using (Brush inner = new SolidBrush(checkboxbasecolour.Multiply(discaling)))
+                                e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
+                        }
+                        else
+                        {
+                            using (Brush inner = new LinearGradientBrush(tickarea, CheckBoxInnerColor.Multiply(discaling), checkboxbasecolour, 225))
+                                e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
+                        }
+
+                        using (Pen third = new Pen(checkboxbasecolour.Multiply(discaling), 1F))
+                            e.Graphics.DrawRectangle(third, tickarea);
+                    }
+
+                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                    using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.FitBlackBox })
+                        DrawText(textarea, e.Graphics, fmt);
+
+                    if (hasimages)
+                    {
+                        DrawImage(checkarea, e.Graphics);
+                    }
+                    else
+                    {
+                        Color c1 = Color.FromArgb(200, CheckColor.Multiply(discaling));
+                        if (CheckState == CheckState.Checked)
+                        {
+                            Point pt1 = new Point(checkarea.X + 2, checkarea.Y + checkarea.Height / 2 - 1);
+                            Point pt2 = new Point(checkarea.X + checkarea.Width / 2 - 1, checkarea.Bottom - 2);
+                            Point pt3 = new Point(checkarea.X + checkarea.Width - 2, checkarea.Y);
+
+                            using (Pen pcheck = new Pen(c1, 2.0F))
+                            {
+                                e.Graphics.DrawLine(pcheck, pt1, pt2);
+                                e.Graphics.DrawLine(pcheck, pt2, pt3);
+                            }
+                        }
+                        else if (CheckState == CheckState.Indeterminate)
+                        {
+                            Size cb = new Size(checkarea.Width - 5, checkarea.Height - 5);
+                            if (cb.Width > 0 && cb.Height > 0)
+                            {
+                                using (Brush br = new SolidBrush(c1))
+                                {
+                                    e.Graphics.FillRectangle(br, new Rectangle(new Point(checkarea.X + 2, checkarea.Y + 2), cb));
+                                }
+                            }
+                        }
+                    }
+
+                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+                }
 
             }
         }
@@ -193,6 +219,34 @@ namespace ExtendedControls
             base.OnMouseLeave(eventargs);
             mouseover = false;
             Invalidate();
+        }
+
+        private void DrawImage(Rectangle box, Graphics g)
+        {
+            Image image = CheckState == CheckState.Checked ? Image : ((CheckState == CheckState.Indeterminate && ImageIndeterminate != null) ? ImageIndeterminate : (ImageUnchecked!=null ?ImageUnchecked: Image));
+            Size isize = (imagelayout == ImageLayout.Stretch) ? box.Size : Image.Size;
+            Rectangle drawarea = ImageAlign.ImagePositionFromContentAlignment(box, isize);
+
+            //System.Diagnostics.Debug.WriteLine("Image for " + Name + " " + Enabled + " " + DrawnImageAttributesEnabled);
+
+            if (DrawnImageAttributesEnabled != null)
+                g.DrawImage(image, drawarea, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, (Enabled) ? DrawnImageAttributesEnabled : DrawnImageAttributesDisabled);
+            else
+                g.DrawImage(image, drawarea, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel);
+        }
+
+        private void DrawText(Rectangle box, Graphics g, StringFormat fmt)
+        {
+            if (this.Text.HasChars())
+            {
+                using (Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(CheckBoxDisabledScaling)))
+                {
+                    if (FontToUse == null || FontToUse.FontFamily != Font.FontFamily || FontToUse.Style != Font.Style)
+                        FontToUse = g.GetFontToFitRectangle(this.Text, Font, box, fmt);
+
+                    g.DrawString(this.Text, FontToUse, textb, box, fmt);
+                }
+            }
         }
 
         private bool mouseover = false;

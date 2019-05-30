@@ -757,47 +757,52 @@ namespace ExtendedControls
             {
                 ExtCheckBox ctrl = (ExtCheckBox)myControl;
 
-                if (ctrl.Appearance != Appearance.Button)          // NOT Button
+                ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+
+                if (ctrl.Appearance == Appearance.Button)
                 {
-                    ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+                    ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
+                    ctrl.MouseOverColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
+                    ctrl.CheckColor = currentsettings.colors[Settings.CI.button_back].Multiply(0.8f);
+                }
+                else
+                {
                     ctrl.ForeColor = currentsettings.colors[Settings.CI.checkbox];
                     ctrl.CheckBoxColor = currentsettings.colors[Settings.CI.checkbox];
                     ctrl.CheckBoxInnerColor = currentsettings.colors[Settings.CI.checkbox].Multiply(1.5F);
                     ctrl.MouseOverColor = currentsettings.colors[Settings.CI.checkbox].Multiply(1.4F);
                     ctrl.TickBoxReductionRatio = 0.75f;
                     ctrl.CheckColor = currentsettings.colors[Settings.CI.checkbox_tick];
-
-                    if (ctrl.Image == null)       // only for unimage ones
-                    {
-                        if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
-                            ctrl.FlatStyle = FlatStyle.System;
-                        else if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
-                            ctrl.FlatStyle = FlatStyle.Flat;
-                        else
-                            ctrl.FlatStyle = FlatStyle.Popup;
-                    }
-                    else
-                    {
-                        System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                        colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
-                        colormap.NewColor = ctrl.ForeColor;
-                        System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();
-                        colormap2.OldColor = Color.FromArgb(222, 222, 222);
-                        colormap2.NewColor = ctrl.ForeColor.Multiply(0.85F);
-                        ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
-                    }
-
                 }
-                else if (ctrl.FlatStyle == FlatStyle.Flat)           // BUTTON and FLAT
+
+                if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
+                    ctrl.FlatStyle = FlatStyle.System;
+                else if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
+                    ctrl.FlatStyle = FlatStyle.Flat;
+                else
+                    ctrl.FlatStyle = FlatStyle.Popup;
+
+                if (ctrl.Image != null)
                 {
-                    ctrl.ForeColor = currentsettings.colors[Settings.CI.checkbox];
-                    ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.button_back]);
-                    ctrl.FlatAppearance.CheckedBackColor = currentsettings.colors[Settings.CI.checkbox].MultiplyBrightness(0.5F);
-                    ctrl.FlatAppearance.MouseOverBackColor = currentsettings.colors[Settings.CI.button_back].InvertBrightness(mouseoverscaling);
-                    ctrl.FlatAppearance.MouseDownBackColor = currentsettings.colors[Settings.CI.button_back].InvertBrightness(mouseselectedscaling);
-                    ctrl.FlatAppearance.BorderColor = currentsettings.colors[Settings.CI.button_border];
+                    System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
+                    colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
+                    colormap.NewColor = ctrl.ForeColor;
+                    System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();
+                    colormap2.OldColor = Color.FromArgb(222, 222, 222);
+                    colormap2.NewColor = ctrl.ForeColor.Multiply(0.85F);
+                    ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
                 }
             }
+            //else if (ctrl.FlatStyle == FlatStyle.Flat)           // BUTTON and FLAT
+            //{
+            //    ctrl.ForeColor = currentsettings.colors[Settings.CI.checkbox];
+            //    ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.button_back]);
+            //    ctrl.FlatAppearance.CheckedBackColor = currentsettings.colors[Settings.CI.checkbox].MultiplyBrightness(0.5F);
+            //    ctrl.FlatAppearance.MouseOverBackColor = currentsettings.colors[Settings.CI.button_back].InvertBrightness(mouseoverscaling);
+            //    ctrl.FlatAppearance.MouseDownBackColor = currentsettings.colors[Settings.CI.button_back].InvertBrightness(mouseselectedscaling);
+            //    ctrl.FlatAppearance.BorderColor = currentsettings.colors[Settings.CI.button_border];
+            //}
+            //}
             else if (myControl is ExtRadioButton)
             {
                 ExtRadioButton ctrl = (ExtRadioButton)myControl;

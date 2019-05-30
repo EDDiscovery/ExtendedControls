@@ -50,17 +50,7 @@ namespace DialogTest
             b.Location = new Point(250, 120);
             b.Size = new Size(128, b.FindMaxSubControlArea(0, 6).Height);
 
-            //   theme.ApplyStd(this);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-//            compositeButton1.Size = new Size(128, 128);
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-  //          compositeButton1.Size = new Size(400, 400);
+            theme.ApplyStd(this);
         }
 
         private void extButton5_Click(object sender, EventArgs e)
@@ -87,6 +77,18 @@ namespace DialogTest
         private void upDown1_Selected(object sender, MouseEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Up/Down " + e.Delta);
+        }
+
+        private void extCheckBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Click");
+        }
+
+        private void extButton11_Click(object sender, EventArgs e)
+        {
+            extCheckBoxEDSMSmall.Enabled = extCheckBoxButtonText.Enabled = extCheckBoxButtonIT.Enabled =
+
+            extCheckBoxSys.Enabled = extCheckBoxPopUpNormal.Enabled = extCheckBoxPopupNormalImage.Enabled = !extCheckBoxPopupNormalImage.Enabled;
         }
     }
 }
