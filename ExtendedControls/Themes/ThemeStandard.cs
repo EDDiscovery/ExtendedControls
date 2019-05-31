@@ -532,7 +532,7 @@ namespace ExtendedControls
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
                 ctrl.BackColor = currentsettings.colors[Settings.CI.textbox_back];
                 ctrl.BackErrorColor = currentsettings.colors[Settings.CI.textbox_highlight];
-                ctrl.ControlBackground = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+                ctrl.ControlBackground = currentsettings.colors[Settings.CI.textbox_back]; // previously, but not sure why, GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
                 ctrl.BorderColor = Color.Transparent;
                 ctrl.BorderStyle = BorderStyle.None;
                 ctrl.AutoSize = true;

@@ -22,11 +22,12 @@ namespace DialogTest
             theme = new ThemeStandard();
             ThemeableFormsInstance.Instance = theme;
             theme.LoadBaseThemes();
-            theme.SetThemeByName("Elite EuroCaps");
+            //theme.SetThemeByName("Elite EuroCaps");
+            theme.SetThemeByName("Elite Verdana");
             //theme.FontName = "Microsoft Sans Serif";
             //theme.FontName = "Arial";
-            theme.FontName = "Euro Caps";
-            theme.FontSize = 20f;
+            //theme.FontName = "Euro Caps";
+            //theme.FontSize = 20f;
             theme.WindowsFrame = true;
 
             InitializeComponent();
