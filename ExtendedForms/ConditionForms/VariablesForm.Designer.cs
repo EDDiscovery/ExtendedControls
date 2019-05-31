@@ -48,8 +48,8 @@ namespace ExtendedConditionsForms
             this.buttonOK = new ExtendedControls.ExtButton();
             this.statusStripCustom = new ExtendedControls.ExtStatusStrip();
             this.panelTop = new System.Windows.Forms.Panel();
-            this.panel_close = new ExtendedControls.ExtPanelDrawn();
-            this.panel_minimize = new ExtendedControls.ExtPanelDrawn();
+            this.panel_close = new ExtendedControls.ExtButtonDrawn();
+            this.panel_minimize = new ExtendedControls.ExtButtonDrawn();
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
             this.panelOuter = new System.Windows.Forms.Panel();
@@ -67,9 +67,6 @@ namespace ExtendedConditionsForms
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.BorderColorScaling = 1.25F;
-            this.buttonCancel.ButtonColorScaling = 0.5F;
-            this.buttonCancel.ButtonDisabledScaling = 0.5F;
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Location = new System.Drawing.Point(468, 4);
             this.buttonCancel.Name = "buttonCancel";
@@ -82,9 +79,6 @@ namespace ExtendedConditionsForms
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.BorderColorScaling = 1.25F;
-            this.buttonOK.ButtonColorScaling = 0.5F;
-            this.buttonOK.ButtonDisabledScaling = 0.5F;
             this.buttonOK.Location = new System.Drawing.Point(562, 4);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
@@ -117,26 +111,45 @@ namespace ExtendedConditionsForms
             // panel_close
             // 
             this.panel_close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_close.AutoEllipsis = false;
+            this.panel_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_close.Image = null;
+            this.panel_close.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Close;
             this.panel_close.Location = new System.Drawing.Point(620, 0);
+            this.panel_close.MouseOverColor = System.Drawing.Color.White;
+            this.panel_close.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panel_close.MouseSelectedColorEnable = true;
             this.panel_close.Name = "panel_close";
             this.panel_close.Padding = new System.Windows.Forms.Padding(6);
+            this.panel_close.PanelDisabledScaling = 0.25F;
             this.panel_close.Selectable = false;
             this.panel_close.Size = new System.Drawing.Size(24, 24);
             this.panel_close.TabIndex = 27;
             this.panel_close.TabStop = false;
+            this.panel_close.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel_close.UseMnemonic = true;
             this.panel_close.Click += new System.EventHandler(this.panel_close_Click);
             // 
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_minimize.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.Minimize;
+            this.panel_minimize.AutoEllipsis = false;
+            this.panel_minimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_minimize.Image = null;
+            this.panel_minimize.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(590, 0);
+            this.panel_minimize.MouseOverColor = System.Drawing.Color.White;
+            this.panel_minimize.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panel_minimize.MouseSelectedColorEnable = true;
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
+            this.panel_minimize.PanelDisabledScaling = 0.25F;
             this.panel_minimize.Selectable = false;
             this.panel_minimize.Size = new System.Drawing.Size(24, 24);
             this.panel_minimize.TabIndex = 26;
             this.panel_minimize.TabStop = false;
+            this.panel_minimize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel_minimize.UseMnemonic = true;
             this.panel_minimize.Click += new System.EventHandler(this.panel_minimize_Click);
             // 
             // label_index
@@ -176,9 +189,9 @@ namespace ExtendedConditionsForms
             this.panelVScroll1.Controls.Add(this.vScrollBarCustom2);
             this.panelVScroll1.Controls.Add(this.buttonMore);
             this.panelVScroll1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelVScroll1.InternalScrollbar = true;
             this.panelVScroll1.Location = new System.Drawing.Point(0, 0);
             this.panelVScroll1.Name = "panelVScroll1";
-            this.panelVScroll1.ScrollBarWidth = 20;
             this.panelVScroll1.Size = new System.Drawing.Size(641, 290);
             this.panelVScroll1.TabIndex = 8;
             this.panelVScroll1.VerticalScrollBarDockRight = true;
@@ -189,14 +202,15 @@ namespace ExtendedConditionsForms
             this.checkBoxCustomRefresh.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomRefresh.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomRefresh.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomRefresh.FontNerfReduction = 0.5F;
-            this.checkBoxCustomRefresh.Location = new System.Drawing.Point(6, 48);
+            this.checkBoxCustomRefresh.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomRefresh.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxCustomRefresh.Location = new System.Drawing.Point(3, 3);
             this.checkBoxCustomRefresh.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomRefresh.Name = "checkBoxCustomRefresh";
             this.checkBoxCustomRefresh.Size = new System.Drawing.Size(93, 17);
             this.checkBoxCustomRefresh.TabIndex = 6;
             this.checkBoxCustomRefresh.Text = "Run at refresh";
-            this.checkBoxCustomRefresh.TickBoxReductionSize = 10;
+            this.checkBoxCustomRefresh.TickBoxReductionRatio = 0.75F;
             this.toolTip1.SetToolTip(this.checkBoxCustomRefresh, "Click to indicate that this event can run during the refresh cycle");
             this.checkBoxCustomRefresh.UseVisualStyleBackColor = true;
             // 
@@ -211,13 +225,13 @@ namespace ExtendedConditionsForms
             this.vScrollBarCustom2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.vScrollBarCustom2.HideScrollBar = false;
             this.vScrollBarCustom2.LargeChange = 10;
-            this.vScrollBarCustom2.Location = new System.Drawing.Point(621, 0);
-            this.vScrollBarCustom2.Maximum = -211;
+            this.vScrollBarCustom2.Location = new System.Drawing.Point(628, 0);
+            this.vScrollBarCustom2.Maximum = -191;
             this.vScrollBarCustom2.Minimum = 0;
             this.vScrollBarCustom2.MouseOverButtonColor = System.Drawing.Color.Green;
             this.vScrollBarCustom2.MousePressedButtonColor = System.Drawing.Color.Red;
             this.vScrollBarCustom2.Name = "vScrollBarCustom2";
-            this.vScrollBarCustom2.Size = new System.Drawing.Size(20, 290);
+            this.vScrollBarCustom2.Size = new System.Drawing.Size(13, 290);
             this.vScrollBarCustom2.SliderColor = System.Drawing.Color.DarkGray;
             this.vScrollBarCustom2.SmallChange = 1;
             this.vScrollBarCustom2.TabIndex = 0;
@@ -226,15 +240,12 @@ namespace ExtendedConditionsForms
             this.vScrollBarCustom2.ThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.vScrollBarCustom2.ThumbColorScaling = 0.5F;
             this.vScrollBarCustom2.ThumbDrawAngle = 0F;
-            this.vScrollBarCustom2.Value = -211;
-            this.vScrollBarCustom2.ValueLimited = -211;
+            this.vScrollBarCustom2.Value = -191;
+            this.vScrollBarCustom2.ValueLimited = -191;
             // 
             // buttonMore
             // 
-            this.buttonMore.BorderColorScaling = 1.25F;
-            this.buttonMore.ButtonColorScaling = 0.5F;
-            this.buttonMore.ButtonDisabledScaling = 0.5F;
-            this.buttonMore.Location = new System.Drawing.Point(6, 6);
+            this.buttonMore.Location = new System.Drawing.Point(3, 65);
             this.buttonMore.Name = "buttonMore";
             this.buttonMore.Size = new System.Drawing.Size(24, 24);
             this.buttonMore.TabIndex = 5;
@@ -247,7 +258,7 @@ namespace ExtendedConditionsForms
             // 
             this.toolTip1.ShowAlways = true;
             // 
-            // ConditionVariablesForm
+            // VariablesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -257,7 +268,7 @@ namespace ExtendedConditionsForms
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.panelOK);
             this.Controls.Add(this.statusStripCustom);
-            this.Name = "ConditionVariablesForm";
+            this.Name = "VariablesForm";
             this.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ActionVariableForm";
@@ -278,8 +289,8 @@ namespace ExtendedConditionsForms
         private ExtendedControls.ExtButton buttonOK;
         private ExtendedControls.ExtStatusStrip statusStripCustom;
         private System.Windows.Forms.Panel panelTop;
-        private ExtendedControls.ExtPanelDrawn panel_close;
-        private ExtendedControls.ExtPanelDrawn panel_minimize;
+        private ExtendedControls.ExtButtonDrawn panel_close;
+        private ExtendedControls.ExtButtonDrawn panel_minimize;
         private System.Windows.Forms.Label label_index;
         private System.Windows.Forms.Panel panelOK;
         private System.Windows.Forms.Panel panelOuter;

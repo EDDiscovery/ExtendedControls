@@ -28,7 +28,6 @@ namespace ExtendedControls
         public Color TextBoxForeColor { get { return tbforecolor; } set { tb.ForeColor = tbforecolor = value; } }
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; PerformLayout(); Invalidate(); } }
         public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
-        public int SpinnerSize { get; set; } = 16;
         public bool AutoSizeTextBox { get { return autosize; } set { autosize = value; PerformLayout(); } }
         public UpDown updown = new UpDown();                            // for setting colours..
         public override string Text { get { return (tb != null) ? (tb.Text) : ""; } }
@@ -36,6 +35,8 @@ namespace ExtendedControls
         public int Maximum { get { return max; } set { Set(curvalue, value, min); } }
         public int Minimum { get { return min; } set { Set(curvalue, max, value); } }
         public int Value { get { return curvalue; } set { Set(value, max, min); } }
+
+        public int SpinnerWidth { get { return Font.ScalePixels(20); } }
 
         #region Events
 
@@ -62,6 +63,7 @@ namespace ExtendedControls
             updown.Selected += OnUpDown;
         }
 
+
         protected override void OnLayout(LayoutEventArgs levent)
         {
             base.OnLayout(levent);
@@ -73,10 +75,11 @@ namespace ExtendedControls
                 int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
 
                 tb.Location = new Point(bordersize, bordersize);
-                tb.Size = new Size(ClientRectangle.Width - SpinnerSize - bordersize * 2, ClientRectangle.Height - bordersize * 2);
+                tb.Size = new Size(ClientRectangle.Width - SpinnerWidth - bordersize * 2, ClientRectangle.Height - bordersize * 2);
 
-                updown.Location = new Point(ClientRectangle.Width - SpinnerSize - bordersize, bordersize);
-                updown.Size = new Size(SpinnerSize, tb.Height);
+                updown.Location = new Point(ClientRectangle.Width - SpinnerWidth - bordersize, bordersize);
+                updown.Size = new Size(SpinnerWidth, tb.Height);
+                updown.Invalidate(true);
             }
         }
 

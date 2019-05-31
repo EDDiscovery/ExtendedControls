@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -844,7 +844,7 @@ namespace ExtendedControls
             this.textBox_Font.Location = new System.Drawing.Point(261, 29);
             this.textBox_Font.Name = "textBox_Font";
             this.textBox_Font.ReadOnly = true;
-            this.textBox_Font.Size = new System.Drawing.Size(159, 20);
+            this.textBox_Font.Size = new System.Drawing.Size(211, 20);
             this.textBox_Font.TabIndex = 8;
             this.textBox_Font.Text = "Font Elite Dangerous";
             this.textBox_Font.MouseClick += new System.Windows.Forms.MouseEventHandler(this.textBox_Font_MouseClick);

@@ -43,6 +43,7 @@ namespace ExtendedAudioForms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SpeechConfigure));
             this.Title = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -101,13 +102,28 @@ namespace ExtendedAudioForms
             // 
             // textBoxBorderText
             // 
+            this.textBoxBorderText.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxBorderText.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorderText.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderText.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorderText.BorderColorScaling = 0.5F;
+            this.textBoxBorderText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorderText.ClearOnFirstChar = false;
+            this.textBoxBorderText.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorderText.EndButtonEnable = true;
+            this.textBoxBorderText.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderText.EndButtonImage")));
+            this.textBoxBorderText.EndButtonVisible = false;
+            this.textBoxBorderText.InErrorCondition = false;
             this.textBoxBorderText.Location = new System.Drawing.Point(14, 42);
             this.textBoxBorderText.Multiline = true;
             this.textBoxBorderText.Name = "textBoxBorderText";
+            this.textBoxBorderText.ReadOnly = false;
+            this.textBoxBorderText.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxBorderText.SelectionLength = 0;
+            this.textBoxBorderText.SelectionStart = 0;
             this.textBoxBorderText.Size = new System.Drawing.Size(401, 74);
             this.textBoxBorderText.TabIndex = 0;
+            this.textBoxBorderText.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.textBoxBorderText.WordWrap = false;
             // 
             // checkBoxCustomComplete
@@ -116,14 +132,15 @@ namespace ExtendedAudioForms
             this.checkBoxCustomComplete.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomComplete.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomComplete.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomComplete.FontNerfReduction = 0.5F;
+            this.checkBoxCustomComplete.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomComplete.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomComplete.Location = new System.Drawing.Point(15, 132);
             this.checkBoxCustomComplete.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomComplete.Name = "checkBoxCustomComplete";
             this.checkBoxCustomComplete.Size = new System.Drawing.Size(159, 17);
             this.checkBoxCustomComplete.TabIndex = 1;
             this.checkBoxCustomComplete.Text = "Wait until speech completes";
-            this.checkBoxCustomComplete.TickBoxReductionSize = 10;
+            this.checkBoxCustomComplete.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustomComplete.UseVisualStyleBackColor = true;
             // 
             // panelOuter
@@ -157,56 +174,86 @@ namespace ExtendedAudioForms
             this.panelOuter.Name = "panelOuter";
             this.panelOuter.Size = new System.Drawing.Size(433, 475);
             this.panelOuter.TabIndex = 0;
+            this.panelOuter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CapMouseDown);
+            this.panelOuter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CapMouseUp);
             // 
             // textBoxBorderEndTrigger
             // 
+            this.textBoxBorderEndTrigger.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxBorderEndTrigger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorderEndTrigger.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderEndTrigger.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorderEndTrigger.BorderColorScaling = 0.5F;
+            this.textBoxBorderEndTrigger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorderEndTrigger.ClearOnFirstChar = false;
+            this.textBoxBorderEndTrigger.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorderEndTrigger.EndButtonEnable = true;
+            this.textBoxBorderEndTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderEndTrigger.EndButtonImage")));
+            this.textBoxBorderEndTrigger.EndButtonVisible = false;
+            this.textBoxBorderEndTrigger.InErrorCondition = false;
             this.textBoxBorderEndTrigger.Location = new System.Drawing.Point(315, 165);
+            this.textBoxBorderEndTrigger.Multiline = false;
             this.textBoxBorderEndTrigger.Name = "textBoxBorderEndTrigger";
+            this.textBoxBorderEndTrigger.ReadOnly = false;
+            this.textBoxBorderEndTrigger.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxBorderEndTrigger.SelectionLength = 0;
+            this.textBoxBorderEndTrigger.SelectionStart = 0;
             this.textBoxBorderEndTrigger.Size = new System.Drawing.Size(100, 20);
             this.textBoxBorderEndTrigger.TabIndex = 12;
+            this.textBoxBorderEndTrigger.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxBorderEndTrigger.WordWrap = true;
             // 
             // textBoxBorderStartTrigger
             // 
+            this.textBoxBorderStartTrigger.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxBorderStartTrigger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorderStartTrigger.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderStartTrigger.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorderStartTrigger.BorderColorScaling = 0.5F;
-            this.textBoxBorderStartTrigger.Location = new System.Drawing.Point(83, 165);
+            this.textBoxBorderStartTrigger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorderStartTrigger.ClearOnFirstChar = false;
+            this.textBoxBorderStartTrigger.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorderStartTrigger.EndButtonEnable = true;
+            this.textBoxBorderStartTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderStartTrigger.EndButtonImage")));
+            this.textBoxBorderStartTrigger.EndButtonVisible = false;
+            this.textBoxBorderStartTrigger.InErrorCondition = false;
+            this.textBoxBorderStartTrigger.Location = new System.Drawing.Point(93, 165);
+            this.textBoxBorderStartTrigger.Multiline = false;
             this.textBoxBorderStartTrigger.Name = "textBoxBorderStartTrigger";
+            this.textBoxBorderStartTrigger.ReadOnly = false;
+            this.textBoxBorderStartTrigger.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxBorderStartTrigger.SelectionLength = 0;
+            this.textBoxBorderStartTrigger.SelectionStart = 0;
             this.textBoxBorderStartTrigger.Size = new System.Drawing.Size(100, 20);
             this.textBoxBorderStartTrigger.TabIndex = 12;
+            this.textBoxBorderStartTrigger.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxBorderStartTrigger.WordWrap = true;
             // 
             // comboBoxCustomPriority
             // 
-            this.comboBoxCustomPriority.ArrowWidth = 1;
             this.comboBoxCustomPriority.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustomPriority.ButtonColorScaling = 0.5F;
             this.comboBoxCustomPriority.DataSource = null;
+            this.comboBoxCustomPriority.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomPriority.DisplayMember = "";
             this.comboBoxCustomPriority.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.comboBoxCustomPriority.DropDownHeight = 106;
-            this.comboBoxCustomPriority.DropDownWidth = 110;
             this.comboBoxCustomPriority.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustomPriority.ItemHeight = 13;
             this.comboBoxCustomPriority.Location = new System.Drawing.Point(305, 132);
             this.comboBoxCustomPriority.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomPriority.Name = "comboBoxCustomPriority";
             this.comboBoxCustomPriority.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomPriority.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomPriority.ScrollBarWidth = 16;
             this.comboBoxCustomPriority.SelectedIndex = -1;
             this.comboBoxCustomPriority.SelectedItem = null;
             this.comboBoxCustomPriority.SelectedValue = null;
-            this.comboBoxCustomPriority.Size = new System.Drawing.Size(110, 23);
+            this.comboBoxCustomPriority.Size = new System.Drawing.Size(110, 21);
             this.comboBoxCustomPriority.TabIndex = 11;
             this.comboBoxCustomPriority.Text = "comboBoxCustom1";
+            this.comboBoxCustomPriority.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomPriority.ValueMember = "";
             // 
             // buttonExtTest
             // 
-            this.buttonExtTest.BorderColorScaling = 1.25F;
-            this.buttonExtTest.ButtonColorScaling = 0.5F;
-            this.buttonExtTest.ButtonDisabledScaling = 0.5F;
             this.buttonExtTest.Location = new System.Drawing.Point(340, 368);
             this.buttonExtTest.Name = "buttonExtTest";
             this.buttonExtTest.Size = new System.Drawing.Size(75, 23);
@@ -217,9 +264,6 @@ namespace ExtendedAudioForms
             // 
             // buttonExtDevice
             // 
-            this.buttonExtDevice.BorderColorScaling = 1.25F;
-            this.buttonExtDevice.ButtonColorScaling = 0.5F;
-            this.buttonExtDevice.ButtonDisabledScaling = 0.5F;
             this.buttonExtDevice.Location = new System.Drawing.Point(340, 256);
             this.buttonExtDevice.Name = "buttonExtDevice";
             this.buttonExtDevice.Size = new System.Drawing.Size(75, 23);
@@ -230,9 +274,6 @@ namespace ExtendedAudioForms
             // 
             // buttonExtEffects
             // 
-            this.buttonExtEffects.BorderColorScaling = 1.25F;
-            this.buttonExtEffects.ButtonColorScaling = 0.5F;
-            this.buttonExtEffects.ButtonDisabledScaling = 0.5F;
             this.buttonExtEffects.Location = new System.Drawing.Point(340, 211);
             this.buttonExtEffects.Name = "buttonExtEffects";
             this.buttonExtEffects.Size = new System.Drawing.Size(75, 23);
@@ -254,9 +295,6 @@ namespace ExtendedAudioForms
             // 
             // buttonExtCancel
             // 
-            this.buttonExtCancel.BorderColorScaling = 1.25F;
-            this.buttonExtCancel.ButtonColorScaling = 0.5F;
-            this.buttonExtCancel.ButtonDisabledScaling = 0.5F;
             this.buttonExtCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonExtCancel.Location = new System.Drawing.Point(249, 433);
             this.buttonExtCancel.Name = "buttonExtCancel";
@@ -267,9 +305,6 @@ namespace ExtendedAudioForms
             // 
             // buttonExtOK
             // 
-            this.buttonExtOK.BorderColorScaling = 1.25F;
-            this.buttonExtOK.ButtonColorScaling = 0.5F;
-            this.buttonExtOK.ButtonDisabledScaling = 0.5F;
             this.buttonExtOK.Location = new System.Drawing.Point(340, 433);
             this.buttonExtOK.Name = "buttonExtOK";
             this.buttonExtOK.Size = new System.Drawing.Size(75, 23);
@@ -280,28 +315,25 @@ namespace ExtendedAudioForms
             // 
             // comboBoxCustomVoice
             // 
-            this.comboBoxCustomVoice.ArrowWidth = 1;
             this.comboBoxCustomVoice.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustomVoice.ButtonColorScaling = 0.5F;
             this.comboBoxCustomVoice.DataSource = null;
+            this.comboBoxCustomVoice.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomVoice.DisplayMember = "";
             this.comboBoxCustomVoice.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.comboBoxCustomVoice.DropDownHeight = 106;
-            this.comboBoxCustomVoice.DropDownWidth = 203;
             this.comboBoxCustomVoice.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustomVoice.ItemHeight = 13;
             this.comboBoxCustomVoice.Location = new System.Drawing.Point(59, 211);
             this.comboBoxCustomVoice.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomVoice.Name = "comboBoxCustomVoice";
             this.comboBoxCustomVoice.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomVoice.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomVoice.ScrollBarWidth = 16;
             this.comboBoxCustomVoice.SelectedIndex = -1;
             this.comboBoxCustomVoice.SelectedItem = null;
             this.comboBoxCustomVoice.SelectedValue = null;
-            this.comboBoxCustomVoice.Size = new System.Drawing.Size(203, 23);
+            this.comboBoxCustomVoice.Size = new System.Drawing.Size(203, 21);
             this.comboBoxCustomVoice.TabIndex = 3;
             this.comboBoxCustomVoice.Text = "comboBoxCustom1";
+            this.comboBoxCustomVoice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomVoice.ValueMember = "";
             // 
             // checkBoxCustomLiteral
@@ -310,30 +342,47 @@ namespace ExtendedAudioForms
             this.checkBoxCustomLiteral.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomLiteral.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomLiteral.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomLiteral.FontNerfReduction = 0.5F;
+            this.checkBoxCustomLiteral.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomLiteral.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomLiteral.Location = new System.Drawing.Point(197, 132);
             this.checkBoxCustomLiteral.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomLiteral.Name = "checkBoxCustomLiteral";
             this.checkBoxCustomLiteral.Size = new System.Drawing.Size(54, 17);
             this.checkBoxCustomLiteral.TabIndex = 1;
             this.checkBoxCustomLiteral.Text = "Literal";
-            this.checkBoxCustomLiteral.TickBoxReductionSize = 10;
+            this.checkBoxCustomLiteral.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustomLiteral.UseVisualStyleBackColor = true;
             // 
             // textBoxBorderTest
             // 
+            this.textBoxBorderTest.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxBorderTest.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorderTest.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderTest.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorderTest.BorderColorScaling = 0.5F;
+            this.textBoxBorderTest.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorderTest.ClearOnFirstChar = false;
+            this.textBoxBorderTest.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorderTest.EndButtonEnable = true;
+            this.textBoxBorderTest.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderTest.EndButtonImage")));
+            this.textBoxBorderTest.EndButtonVisible = false;
+            this.textBoxBorderTest.InErrorCondition = false;
             this.textBoxBorderTest.Location = new System.Drawing.Point(11, 368);
             this.textBoxBorderTest.Multiline = true;
             this.textBoxBorderTest.Name = "textBoxBorderTest";
+            this.textBoxBorderTest.ReadOnly = false;
+            this.textBoxBorderTest.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxBorderTest.SelectionLength = 0;
+            this.textBoxBorderTest.SelectionStart = 0;
             this.textBoxBorderTest.Size = new System.Drawing.Size(313, 38);
             this.textBoxBorderTest.TabIndex = 7;
+            this.textBoxBorderTest.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxBorderTest.WordWrap = true;
             // 
             // labelEndTrigger
             // 
             this.labelEndTrigger.AutoSize = true;
-            this.labelEndTrigger.Location = new System.Drawing.Point(233, 168);
+            this.labelEndTrigger.Location = new System.Drawing.Point(223, 168);
             this.labelEndTrigger.Name = "labelEndTrigger";
             this.labelEndTrigger.Size = new System.Drawing.Size(62, 13);
             this.labelEndTrigger.TabIndex = 0;
@@ -373,14 +422,15 @@ namespace ExtendedAudioForms
             this.checkBoxCustomR.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomR.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomR.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomR.FontNerfReduction = 0.5F;
+            this.checkBoxCustomR.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomR.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomR.Location = new System.Drawing.Point(271, 319);
             this.checkBoxCustomR.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomR.Name = "checkBoxCustomR";
             this.checkBoxCustomR.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomR.TabIndex = 8;
             this.checkBoxCustomR.Text = "Override";
-            this.checkBoxCustomR.TickBoxReductionSize = 10;
+            this.checkBoxCustomR.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustomR.UseVisualStyleBackColor = true;
             this.checkBoxCustomR.CheckedChanged += new System.EventHandler(this.checkBoxCustomR_CheckedChanged);
             // 
@@ -390,14 +440,15 @@ namespace ExtendedAudioForms
             this.checkBoxCustomV.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustomV.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomV.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomV.FontNerfReduction = 0.5F;
+            this.checkBoxCustomV.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomV.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomV.Location = new System.Drawing.Point(271, 261);
             this.checkBoxCustomV.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomV.Name = "checkBoxCustomV";
             this.checkBoxCustomV.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomV.TabIndex = 8;
             this.checkBoxCustomV.Text = "Override";
-            this.checkBoxCustomV.TickBoxReductionSize = 10;
+            this.checkBoxCustomV.TickBoxReductionRatio = 0.75F;
             this.checkBoxCustomV.UseVisualStyleBackColor = true;
             this.checkBoxCustomV.CheckedChanged += new System.EventHandler(this.checkBoxCustomV_CheckedChanged);
             // 

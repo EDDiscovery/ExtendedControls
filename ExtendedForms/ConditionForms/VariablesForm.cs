@@ -32,7 +32,7 @@ namespace ExtendedConditionsForms
             public Panel panel;
             public ExtendedControls.ExtTextBox var;
             public ExtendedControls.ExtComboBox op;
-            public ExtendedControls.ExtTextBox value;
+            public ExtendedControls.ExtRichTextBox value;
             public ExtendedControls.ExtButton del;
         }
 
@@ -54,24 +54,28 @@ namespace ExtendedConditionsForms
         // altops, if given, describes the operator of each variable.
 
         public void Init(string t, Icon ic, Variables vbs , Dictionary<string, string> altops = null,
-                                                                bool showone = false ,
-                                                                bool showrefresh = false , bool showrefreshstate = false,
-                                                                bool allowadd = false, bool allownoexpand = false, 
-                                                                bool allowmultiple = true)
+                                                                bool showatleastoneentry = false ,
+                                                                bool showrunatrefreshcheckbox = false , 
+                                                                bool setrunatrefreshcheckboxstate = false,
+                                                                bool allowadd = false, 
+                                                                bool allownoexpand = false, 
+                                                                bool allowmultipleentries = true)
         {
+
             this.Icon = ic;
-            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToForm(this, SystemFonts.DefaultFont) ?? true;
+
+            checkBoxCustomRefresh.Enabled = checkBoxCustomRefresh.Visible = showrunatrefreshcheckbox;
+            checkBoxCustomRefresh.Checked = setrunatrefreshcheckboxstate;
+
+            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this) ?? true;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             this.Text = label_index.Text = t;
 
             showadd = allowadd;
             shownoexpand = allownoexpand;
-            this.allowmultiple = allowmultiple;
+            this.allowmultiple = allowmultipleentries;
 
             int pos = panelmargin;
-            checkBoxCustomRefresh.Enabled = checkBoxCustomRefresh.Visible = showrefresh;
-            checkBoxCustomRefresh.Checked = showrefreshstate;
-            checkBoxCustomRefresh.Location = new Point(pos, panelmargin);
 
             if (vbs != null)
             {
@@ -81,7 +85,7 @@ namespace ExtendedConditionsForms
                 }
             }
 
-            if ( groups.Count == 0 && showone )
+            if ( groups.Count == 0 && showatleastoneentry )
             {
                 CreateEntry("", "", "=");
             }
@@ -103,7 +107,8 @@ namespace ExtendedConditionsForms
             g.panel.BorderStyle = BorderStyle.FixedSingle;
 
             g.var = new ExtendedControls.ExtTextBox();
-            g.var.Size = new Size(120, 24);
+            g.var.Size = new Size(Font.ScalePixels(120), Font.ScalePixels(24));
+            System.Diagnostics.Debug.WriteLine("Var size" + g.var.Size);
             g.var.Location = new Point(panelmargin, panelmargin);
             g.var.Text = var;
             g.panel.Controls.Add(g.var);
@@ -114,7 +119,7 @@ namespace ExtendedConditionsForms
             if (shownoexpand || showadd)
             {
                 g.op = new ExtendedControls.ExtComboBox();
-                g.op.Size = new Size(50, 24);
+                g.op.Size = new Size(Font.ScalePixels(50), Font.ScalePixels(24));
                 g.op.Location = new Point(g.var.Right + 4, panelmargin);
 
                 string ttip="";
@@ -145,18 +150,14 @@ namespace ExtendedConditionsForms
                 nextpos = g.op.Right;
             }
 
-
-            g.value = new ExtendedControls.ExtTextBox();
+            g.value = new ExtendedControls.ExtRichTextBox();
             g.value.Location = new Point(nextpos + 4, panelmargin);
             g.value.Text = value.ReplaceEscapeControlChars();
-            g.value.Multiline = true;
-            g.value.WordWrap = true;
-            g.value.ScrollBars = ScrollBars.Vertical;
             toolTip1.SetToolTip(g.value, "Variable value");
             g.panel.Controls.Add(g.value);
 
             g.del = new ExtendedControls.ExtButton();
-            g.del.Size = new Size(24, 24);
+            g.del.Size = new Size(Font.ScalePixels(24), Font.ScalePixels(24));
             g.del.Text = "X";
             g.del.Tag = g;
             g.del.Click += Del_Clicked;
@@ -166,7 +167,7 @@ namespace ExtendedConditionsForms
             groups.Add(g);
 
             panelVScroll1.Controls.Add(g.panel);
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(g.panel);
 
             FixUpGroups();
 
@@ -175,19 +176,21 @@ namespace ExtendedConditionsForms
 
         void FixUpGroups(bool minmax = true)      // fixes and positions groups.
         {
-            int y = panelmargin;
+            int y = checkBoxCustomRefresh.Enabled ? (checkBoxCustomRefresh.Bottom + Font.ScalePixels(4)) : panelmargin;
 
-            if (checkBoxCustomRefresh.Enabled)
-                y += 32;
-
+            System.Diagnostics.Debug.WriteLine("CR @ " + checkBoxCustomRefresh.Location + " " + checkBoxCustomRefresh.Size + " " + checkBoxCustomRefresh.Enabled + " "  + y);
             int panelwidth = Math.Max(panelVScroll1.Width - panelVScroll1.ScrollBarWidth, 10);
 
             foreach (Group g in groups)
             {
-                g.panel.Size = new Size(panelwidth-panelmargin*2, 64);
                 g.panel.Location = new Point(panelmargin, y);
-                g.value.Size = new Size(panelwidth-180 - ((g.op!=null)?50:0), 56);
-                g.del.Location = new Point(g.value.Location.X + g.value.Width + 8, panelmargin);
+                g.panel.Size = new Size(panelwidth-panelmargin*2, Font.ScalePixels(128));
+
+                g.del.Location = new Point(g.panel.Width - g.del.Width - 8, panelmargin);
+
+                g.value.Size = new Size(g.del.Left -g.value.Left-8, g.panel.Height - 8);
+
+
                 y += g.panel.Height + 6;
             }
 
@@ -202,7 +205,7 @@ namespace ExtendedConditionsForms
             if (minmax) // stop circular relationsship with resize
             {
                 this.MinimumSize = new Size(600, y);
-                this.MaximumSize = new Size(Screen.FromControl(this).WorkingArea.Width, Screen.FromControl(this).WorkingArea.Height);
+                this.MaximumSize = new Size(Screen.FromControl(this).WorkingArea.Width, Screen.FromControl(this).WorkingArea.Height-128);
             }
         }
 

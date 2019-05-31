@@ -152,7 +152,7 @@ namespace ExtendedControls
             {
                 if (r.button == null)       // check we have a button, if not, add..
                 {
-                    r.button = new ExtPanelDrawn() { Visible = false, ImageSelected = ExtPanelDrawn.ImageType.Collapse, Padding = new Padding(0), Size = new Size(butsize, butsize), ForeColor = this.ForeColor };
+                    r.button = new ExtButtonDrawn() { Visible = false, ImageSelected = ExtButtonDrawn.ImageType.Collapse, Padding = new Padding(0), Size = new Size(butsize, butsize), ForeColor = this.ForeColor };
                     r.button.Tag = r;
                     r.button.Click += Button_Click;
                     Controls.Add(r.button);
@@ -265,7 +265,7 @@ namespace ExtendedControls
                                     int by = endonscreen ? dgv.GetRowDisplayRectangle(rur.r.end, true).Top : (rur.r.start == botrow) ? dgv.GetRowDisplayRectangle(rur.r.start, true).Top : (this.Height - butsize);
 
                                     rur.button.Location = new Point(bx, by);
-                                    rur.button.ImageSelected = rur.r.expanded ? ExtPanelDrawn.ImageType.Collapse : ExtPanelDrawn.ImageType.Expand;
+                                    rur.button.ImageSelected = rur.r.expanded ? ExtButtonDrawn.ImageType.Collapse : ExtButtonDrawn.ImageType.Expand;
                                   //  System.Diagnostics.Debug.WriteLine(rur.r.start + "-" + rur.r.end + " button state " + rur.r.expanded);
                                 }
 
@@ -321,7 +321,7 @@ namespace ExtendedControls
 
         private void Button_Click(object sender, EventArgs e)
         {
-            ExtPanelDrawn but = sender as ExtPanelDrawn;
+            ExtButtonDrawn but = sender as ExtButtonDrawn;
             OutlineState rur = but.Tag as OutlineState;
 
             if (Parent is ExtPanelDataGridViewScroll)   // this implements an efficient visibility change system
@@ -416,7 +416,7 @@ namespace ExtendedControls
 
             public int level;
             public int parent;
-            internal ExtPanelDrawn button;
+            internal ExtButtonDrawn button;
             public bool Overlapped(OutlineState other) { return (r.start >= other.r.start && r.start <= other.r.end) || (r.end >= other.r.start && r.end <= other.r.end); }
             public bool linedisplay;
             public int ystart, yend;

@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    // Follows the CheckedListBoxForm functionality, but with Icons added.
+    // Follows the List Box, in a form, with icons functionality
 
     public class CheckedIconListBoxForm : Form
     {
@@ -32,7 +32,7 @@ namespace ExtendedControls
         public Color CheckColor { get; set; } = Color.DarkBlue;
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
         public Size CheckBoxSize { get; set; } = new Size(0, 0);                   // if not set, ImageSize sets the size, or first image, else 24/24
-        public int TickBoxReductionSize { get; set; } = 10;                        // After working out size, reduce by this amount
+        public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
         public int VerticalSpacing { get; set; } = 4;
         public int HorizontalSpacing { get; set; } = 4;
 
@@ -55,10 +55,16 @@ namespace ExtendedControls
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
         public bool CloseOnDeactivate { get; set; } = true;
 
-        public Size ImageSize { get; set; } = new Size(0, 0);                       // if not set, each image sets its size. If no images, then use this to set alternate size 
+        // if not set, each image sets its size. If no images, then use this to set alternate size 
+        // if fonth > imageheight, then images are scaled to font size
+        public Size ImageSize { get; set; } = new Size(0, 0);                       
         public bool IsOpen { get; set; } = false;
 
         public int ItemCount { get { return controllist.Count; } }
+
+        public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location.
+        public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
+        public bool RightAlignedToLocation { get; set; } = false;
 
         public Action<CheckedIconListBoxForm, ItemCheckEventArgs> CheckedChanged;       // called after save back to say fully changed.
 
@@ -108,7 +114,7 @@ namespace ExtendedControls
             cb.CheckColor = this.CheckColor;
             cb.MouseOverColor = this.MouseOverColor;
             cb.FlatStyle = FlatStyle;
-            cb.TickBoxReductionSize = TickBoxReductionSize;
+            cb.TickBoxReductionRatio = TickBoxReductionRatio;
             cb.CheckedChanged += CheckedIconListBoxForm_CheckedChanged;
             cb.Tag = controllist.Count;
             c.checkbox = cb;
@@ -116,16 +122,16 @@ namespace ExtendedControls
 
             Label lb = new Label()
             {
+                AutoSize = true,
                 Text = (string)text,
                 Tag = controllist.Count,
-                Font = this.Font,
                 ForeColor = this.ForeColor,
                 TextAlign = ContentAlignment.MiddleLeft,
             };
+
             lb.MouseDown += Text_MouseDown;
 
             c.label = lb;
-            panelscroll.Controls.Add(lb);
             panelscroll.Controls.Add(lb);
 
             if (img != null)
@@ -154,53 +160,9 @@ namespace ExtendedControls
         };
 
         private List<ControlSet> controllist;
-
-        private Point position;
-        private Size size;
         private bool ignorechangeevent = false;
         private ExtPanelScroll panelscroll;
         private ExtScrollBar sb;
-
-        public CheckedIconListBoxForm()
-        {
-            FormBorderStyle = FormBorderStyle.None;
-            ShowInTaskbar = false;
-            StartPosition = FormStartPosition.Manual;
-            AutoSize = false;
-            Padding = new Padding(0);
-            IsOpen = true;
-            controllist = new List<ControlSet>();
-            panelscroll = new ExtPanelScroll();
-            panelscroll.Dock = DockStyle.Fill;
-            Controls.Add(panelscroll);
-            sb = new ExtScrollBar();
-            panelscroll.Controls.Add(sb);
-            panelscroll.ScrollBar.HideScrollBar = true;
-        }
-
-        public void PositionSize(Point p, Size s)
-        {
-            position = p;
-            size = s;
-        }
-
-        public void PositionBelow(Control b, Size s)
-        {
-            Point p = b.PointToScreen(new Point(0, b.Size.Height));
-            position = p;
-            size = s;
-        }
-
-        public void SetColour(Color backcolour, Color textc)        // Forecolour used for text
-        {
-            BackColor = backcolour;
-            ForeColor = textc;
-        }
-
-        public void SetFont(Font fnt)
-        {
-            Font = fnt;
-        }
 
         public void SetChecked(string tag, bool state = true)        // using ; as the separator
         {
@@ -297,37 +259,39 @@ namespace ExtendedControls
             return GetChecked(ignore, allornone).SplitNoEmptyStartFinish(';');
         }
 
-        public int HeightNeeded()
+        public CheckedIconListBoxForm()
         {
-            bool hasimagesize = ImageSize.Width > 0 && ImageSize.Height > 0;        // has fixed size.. if so use it, else base it on first image, or 24x24
-            Size imgsize = hasimagesize ? ImageSize : defsize;
-
-            int vpos = VerticalSpacing;
-            for (int i = 0; i < controllist.Count; i++)
-            {
-                if (controllist[i].icon != null)
-                    imgsize = hasimagesize ? ImageSize : controllist[i].icon.BackgroundImage.Size;        // set size of item
-
-                vpos += imgsize.Height + VerticalSpacing;
-            }
-
-            return vpos;
+            FormBorderStyle = FormBorderStyle.None;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.Manual;
+            AutoSize = false;
+            Padding = new Padding(0);
+            IsOpen = true;
+            controllist = new List<ControlSet>();
+            panelscroll = new ExtPanelScroll();
+            panelscroll.Dock = DockStyle.Fill;
+            Controls.Add(panelscroll);
+            sb = new ExtScrollBar();
+            panelscroll.Controls.Add(sb);
+            panelscroll.ScrollBar.HideScrollBar = true;
+            //this.Activated += new System.EventHandler(this.FormActivated);
+            //this.Shown += new System.EventHandler(this.FormActivated);
         }
 
         #region Implementation
 
-        protected override void OnShown(EventArgs e)        // must be done in OnShown, not on OnLayout.. doing that screws up
+        protected override void OnLoad(EventArgs e)
         {
-            Location = position;        // first place it onto the correct screen.. so that we know what screen to clip to
-            Size = new Size(10, 10);        // size it small, so windows itself does not bump the control to another screen.
-            this.PositionSizeWithinScreen(size.Width,size.Height, true, 64);    // then keep it on the screen.  always lock to button H
+            LayoutPosition();
+            base.OnShown(e);
         }
 
-        protected override void OnLayout(LayoutEventArgs levent)
+        private void LayoutPosition()
         {
-            base.OnLayout(levent);
-
-//            System.Diagnostics.Debug.WriteLine("Client " + ClientRectangle);
+            if (SetLocation.X != int.MinValue)
+            {
+                Location = SetLocation;
+            }
 
             int lpos = HorizontalSpacing;
             int vpos = VerticalSpacing;
@@ -351,6 +315,8 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("Chk " + chkboxsize + " " + imgsize);
 
+            int maxw = 0;
+
             for (int i = 0; i < controllist.Count; i++)
             {
                 if (controllist[i].icon != null)
@@ -358,7 +324,11 @@ namespace ExtendedControls
 
                 //System.Diagnostics.Debug.WriteLine(i + "=" + imgsize);
 
-                int vcentre = vpos + imgsize.Height / 2;
+                int fonth = (int)controllist[i].label.Font.GetHeight() + 2;
+
+                int vspacing = Math.Max(fonth, imgsize.Height);
+
+                int vcentre = vpos + vspacing / 2;
 
                 controllist[i].checkbox.Location = new Point(lpos, vcentre - chkboxsize.Height / 2);
                 controllist[i].checkbox.Size = chkboxsize;
@@ -367,16 +337,22 @@ namespace ExtendedControls
 
                 if (controllist[i].icon != null)
                 {
-                    controllist[i].icon.Size = imgsize;
-                    controllist[i].icon.Location = new Point(tpos, vpos);
-                    tpos += imgsize.Width + HorizontalSpacing;
+                    Size iconsize = (fonth > imgsize.Height) ? new Size((int)(imgsize.Width * (float)fonth / imgsize.Height), fonth) : imgsize;
+
+                    controllist[i].icon.Size = iconsize;
+                    controllist[i].icon.Location = new Point(tpos, vcentre - iconsize.Height / 2);
+                    tpos += iconsize.Width + HorizontalSpacing;
                 }
 
-                controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - panelscroll.ScrollBarWidth - tpos, imgsize.Height);
+                controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - panelscroll.ScrollBarWidth - tpos, vspacing);
                 controllist[i].label.Location = new Point(tpos, vpos);
 
-                vpos += imgsize.Height + VerticalSpacing;
+                maxw = Math.Max(maxw,controllist[i].label.Right+1);
+
+                vpos += vspacing + VerticalSpacing;
             }
+
+            this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, vpos, true, 64, RightAlignedToLocation);    // keep it on the screen. 
         }
 
         protected override void OnDeactivate(EventArgs e)
@@ -388,7 +364,6 @@ namespace ExtendedControls
                 IsOpen = false;
             }
         }
-
 
         private void Ipanel_MouseDown(object sender, MouseEventArgs e)
         {

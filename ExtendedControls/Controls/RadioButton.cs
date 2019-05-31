@@ -31,10 +31,22 @@ namespace ExtendedControls
 
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;   // mouse over colour
 
-        public float FontNerfReduction { get; set; } = 0.5F;              // When windows paints control, seems to use a slightly smaller font than what has been ordered
+        private Font FontToUse = null;
 
         public ExtRadioButton() : base()
         {
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            FontToUse = null;   // need to reestimate
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            FontToUse = null;   // need to reestimate
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -118,10 +130,14 @@ namespace ExtendedControls
                 }
 
                 using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(0.5F)))
-                using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
-                using (Font ft = BaseUtils.FontLoader.GetFont(this.Font.Name, this.Font.Size - FontNerfReduction)) // font 0.5 points smaller, seems to work, otherwise it just won't fit
                 {
-                    e.Graphics.DrawString(this.Text, ft, textb, textarea, fmt);
+                    using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
+                    {
+                        if (FontToUse == null || FontToUse.FontFamily != Font.FontFamily || FontToUse.Style != Font.Style)
+                            FontToUse = e.Graphics.GetFontToFitRectangle(this.Text, Font, textarea, fmt);
+
+                        e.Graphics.DrawString(this.Text, FontToUse, textb, textarea, fmt);
+                    }
                 }
 
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;

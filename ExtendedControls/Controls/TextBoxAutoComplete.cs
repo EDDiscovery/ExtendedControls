@@ -28,9 +28,6 @@ namespace ExtendedControls
         // programtic change of text does not make autocomplete execute.
         public override string Text { get { return base.Text; } set { tempdisableauto = true; base.Text = value; tempdisableauto = false; } }
 
-        public int DropDownWidth { get; set; } = 0;     // means auto size
-        public int DropDownHeight { get; set; } = 200;
-        public int DropDownItemHeight { get; set; } = 13;
         public Color DropDownBackgroundColor { get; set; } = Color.Gray;
         public Color DropDownBorderColor { get; set; } = Color.Green;
         public Color DropDownScrollBarColor { get; set; } = Color.LightGray;
@@ -175,33 +172,19 @@ namespace ExtendedControls
                 {
                     cbdropdown = new ExtListBoxForm("", false);
 
-                    int fittableitems = this.DropDownHeight / this.DropDownItemHeight;
-
-                    if (fittableitems == 0)
-                    {
-                        fittableitems = 5;
-                    }
-
-                    if (fittableitems > autocompletestrings.Count())                             // no point doing more than we have..
-                        fittableitems = autocompletestrings.Count();
-
-                    cbdropdown.Size = new Size(this.DropDownWidth > 0 ? this.DropDownWidth : this.Width, fittableitems * this.DropDownItemHeight + 4);
-
                     cbdropdown.SelectionBackColor = this.DropDownBackgroundColor;
                     cbdropdown.ForeColor = this.ForeColor;
                     cbdropdown.BackColor = this.DropDownBorderColor;
                     cbdropdown.BorderColor = this.DropDownBorderColor;
                     cbdropdown.Items = autocompletestrings;
-                    cbdropdown.ItemHeight = this.DropDownItemHeight;
                     cbdropdown.SelectedIndex = 0;
                     cbdropdown.FlatStyle = this.FlatStyle;
                     cbdropdown.Font = this.Font;
                     cbdropdown.ScrollBarColor = this.DropDownScrollBarColor;
                     cbdropdown.ScrollBarButtonColor = this.DropDownScrollBarButtonColor;
                     cbdropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
-                    cbdropdown.Activated += cbdropdown_DropDown;
                     cbdropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
-
+                    cbdropdown.PositionBelow(this);
                     EndButtonImage = Properties.Resources.ArrowUp;
                     cbdropdown.Show(FindForm());
                     Focus();                // Major change.. we now keep the focus at all times
@@ -219,13 +202,6 @@ namespace ExtendedControls
             {
                 CancelAutoComplete();
             }
-        }
-
-        private void cbdropdown_DropDown(object sender, EventArgs e)
-        {
-            Point location = this.PointToScreen(new Point(0, 0));
-            cbdropdown.Location = new Point(location.X, location.Y + this.Height );
-            this.Invalidate(true);
         }
 
         private void cbdropdown_SelectedIndexChanged(object sender, EventArgs e)

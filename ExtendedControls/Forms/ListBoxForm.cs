@@ -1,9 +1,22 @@
-﻿using System;
+﻿/*
+ * Copyright © 2016-2019 EDDiscovery development team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ * 
+ * EDDiscovery is not affiliated with Frontier Developments plc.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -28,11 +41,14 @@ namespace ExtendedControls
         public FlatStyle FlatStyle { get { return listcontrol.FlatStyle; } set { listcontrol.FlatStyle = value; } }
         public new Font Font { get { return base.Font; } set { base.Font = value; listcontrol.Font = value; } }
         public bool FitToItemsHeight { get { return listcontrol.FitToItemsHeight; } set { listcontrol.FitToItemsHeight = value; } }
-        public int ScrollBarWidth { get { return listcontrol.ScrollBarWidth; } set { listcontrol.ScrollBarWidth = value; } }
         public float GradientColorScaling { get { return listcontrol.GradientColorScaling; } set { listcontrol.GradientColorScaling = value; } }
-        public int ItemHeight { get { return listcontrol.ItemHeight; } set { listcontrol.ItemHeight = value; } }
         public bool FitImagesToItemHeight { get { return listcontrol.FitImagesToItemHeight; } set { listcontrol.FitImagesToItemHeight = value; } }                    // if set images need to fit within item height
         public Color ItemSeperatorColor { get { return listcontrol.ItemSeperatorColor; } set { listcontrol.ItemSeperatorColor = value; } }
+
+        public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location.
+        public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
+        public void PositionBelow(Control c, int xoff, int yoff = 0) { SetLocation = c.PointToScreen(new Point(xoff, c.Height+yoff)); }
+        public bool RightAlignedToLocation { get; set; } = false;
 
         private bool closeondeactivateselected;
 
@@ -47,13 +63,35 @@ namespace ExtendedControls
             this.listcontrol.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             this.listcontrol.Dock = DockStyle.Fill;
             this.listcontrol.Visible = true;
-            this.listcontrol.SelectedIndexChanged += _listcontrol_SelectedIndexChanged;
-            this.listcontrol.KeyPressed += _listcontrol_KeyPressed;
-            this.listcontrol.OtherKeyPressed += _listcontrol_OtherKeyPressed;
+            this.listcontrol.SelectedIndexChanged += listcontrol_SelectedIndexChanged;
+            this.listcontrol.KeyPressed += listcontrol_KeyPressed;
+            this.listcontrol.OtherKeyPressed += listcontrol_OtherKeyPressed;
             this.listcontrol.Margin = new Padding(0);
             this.listcontrol.FitToItemsHeight = false;
             this.Padding = new Padding(0);
             this.Controls.Add(this.listcontrol);
+            this.Activated += new System.EventHandler(this.FormActivated);
+        }
+
+        private void FormActivated(object sender, EventArgs e)
+        {
+            if ( SetLocation.X != int.MinValue)
+            {
+                Location = SetLocation;
+            }
+
+            int ih = (int)Font.GetHeight() + 2;
+            int hw = ih * Items.Count + 4;
+
+          //  System.Diagnostics.Debug.WriteLine("Set LBF loc " + Location + " Font " + Font + " ih " + ih + " hw " + hw);
+
+            using (Graphics g = this.CreateGraphics())
+            {
+                Size max = listcontrol.MeasureItems(g);
+                this.PositionSizeWithinScreen(max.Width + 16 + listcontrol.ScrollBarWidth, hw, true, 64, RightAlignedToLocation);    // keep it on the screen. 
+            }
+
+            //            System.Diagnostics.Debug.WriteLine(".. now " + Location + " " + Size + " Items " + Items.Count + " ih "  + ih + " hw" + hw);
         }
 
         public void KeyDownAction(KeyEventArgs e)
@@ -61,7 +99,8 @@ namespace ExtendedControls
             listcontrol.KeyDownAction(e);
         }
 
-        private void _listcontrol_SelectedIndexChanged(object sender, EventArgs e)
+
+        private void listcontrol_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (closeondeactivateselected)
                 this.Close();
@@ -71,13 +110,13 @@ namespace ExtendedControls
 
         }
 
-        private void _listcontrol_KeyPressed(object sender, KeyPressEventArgs e)
+        private void listcontrol_KeyPressed(object sender, KeyPressEventArgs e)
         {
             if (KeyPressed != null)
                 KeyPressed(this, e);
         }
 
-        private void _listcontrol_OtherKeyPressed(object sender, KeyEventArgs e)
+        private void listcontrol_OtherKeyPressed(object sender, KeyEventArgs e)
         {
             if (OtherKeyPressed != null)
                 OtherKeyPressed(this, e);
@@ -90,6 +129,8 @@ namespace ExtendedControls
             if ( closeondeactivateselected)
                 this.Close();
         }
+
+
     }
 
 }

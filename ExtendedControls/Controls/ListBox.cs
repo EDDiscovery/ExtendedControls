@@ -37,15 +37,13 @@ namespace ExtendedControls
             } }
 
         public List<Image> ImageItems { get { return imageitems; } set { imageitems = value; } }
-        public int ItemHeight { get { return itemheight; } set { itemheight = value; lbsys.ItemHeight = value; } }
 
         public int[] ItemSeperators { get; set; } = null;     // set to array giving index of each separator
 
         // in non standard styles
 
-        public bool FitToItemsHeight { get; set; } = true;                    // if set, move the border to integer of item height.
-        public bool FitImagesToItemHeight { get; set; } = false;                    // if set images scaled to fit within item height
-        public int ScrollBarWidth { get; set; } = 16;
+        public bool FitToItemsHeight { get; set; } = true;              // if set, move the border to integer of item height.
+        public bool FitImagesToItemHeight { get; set; } = false;        // if set images scaled to fit within item height
         public Color SelectionBackColor { get; set; } = Color.Gray;     // the area actually used (Not system)
         public Color BorderColor { get; set; } = Color.Red;             // not system
         public float GradientColorScaling { get; set; } = 0.5F;
@@ -53,6 +51,8 @@ namespace ExtendedControls
         public Color ScrollBarButtonColor { get; set; } = Color.LightGray;    // not system
         public Color MouseOverBackgroundColor { get; set; } = Color.Silver;
         public Color ItemSeperatorColor { get; set; } = Color.Red;
+
+        public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
 
         // All modes
 
@@ -72,7 +72,7 @@ namespace ExtendedControls
         private ListBox lbsys;
         private List<string> items;
         private List<Image> imageitems;
-        private int itemheight = 13;
+        private int itemheight;     // autoset
         private FlatStyle flatstyle = FlatStyle.System;
 
         #region Implementation
@@ -92,7 +92,6 @@ namespace ExtendedControls
             this.Controls.Add(lbsys);
             lbsys.SelectedIndexChanged += lbsys_SelectedIndexChanged;
             lbsys.DrawItem += Lbsys_DrawItem;
-            lbsys.ItemHeight = itemheight;
             lbsys.DrawMode = DrawMode.OwnerDrawFixed;
         }
 
@@ -110,6 +109,15 @@ namespace ExtendedControls
             {
                 lbsys.Width = this.Width;
                 lbsys.Height = this.Height;
+                lbsys.ItemHeight = (int)Font.GetHeight() + 2;
+            }
+        }
+
+        public Size MeasureItems(Graphics g)
+        {
+            using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.NoWrap })
+            {
+                return g.MeasureItems(Font, Items.ToArray(), fmt);
             }
         }
 
@@ -123,6 +131,11 @@ namespace ExtendedControls
             int items = (Items != null) ? Items.Count() : 0;
             itemslayoutestimatedon = items;
 
+            fontusedforestimate = Font;
+
+            itemheight = (int)Font.GetHeight() + 2;
+            lbsys.ItemHeight = itemheight;
+
             displayableitems = (ClientRectangle.Height-bordersize*2) / itemheight;            // number of items to display
 
             if (items > 0 && displayableitems > items)
@@ -134,6 +147,8 @@ namespace ExtendedControls
             borderrect = mainarea;
             borderrect.Inflate(bordersize,bordersize);
             borderrect.Width--; borderrect.Height--;        // adjust to rect not area.
+
+            //System.Diagnostics.Debug.WriteLine("List box" + mainarea + " " + items + "  " + displayableitems);
 
             if ( items > displayableitems )
             {
@@ -162,7 +177,7 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("Updated list control H=" + itemheight);
 
-            if (Items != null && itemslayoutestimatedon != Items.Count())  // item count changed, rework it out.
+            if (Items != null && itemslayoutestimatedon != Items.Count() || Font != fontusedforestimate )  // item count changed, rework it out.
                 CalculateLayout();
 
             if (firstindex < 0)                                           // if invalid (at start)
@@ -238,6 +253,8 @@ namespace ExtendedControls
                 using (Brush textb = new SolidBrush(this.ForeColor))
                 using (Brush highlight = new SolidBrush(MouseOverBackgroundColor))
                 {
+//                    System.Diagnostics.Debug.WriteLine("Draw LB in " + Font );
+
                     foreach (string s in Items)
                     {   // if not fitting to items height, 
                         if (offset >= firstindex && offset < firstindex + displayableitems + (FitToItemsHeight ? 0 : 1))
@@ -408,13 +425,15 @@ namespace ExtendedControls
 
             if (flatstyle == FlatStyle.System)
                 return;
-
-            int y = e.Location.Y;
-            int index = (y / itemheight) + firstindex;
-            focusindex = index;
-            Invalidate();
+            else if (itemheight > 0)  // may not have been set yet
+            {
+                int y = e.Location.Y;
+                int index = (y / itemheight) + firstindex;
+                focusindex = index;
+                Invalidate();
+            }
         }
-
+        
         protected override bool IsInputKey(Keys keyData)
         {
             if (keyData == Keys.Up || keyData == Keys.Down || keyData == Keys.Left || keyData == Keys.Right)        // grab these nav keys
@@ -477,6 +496,7 @@ namespace ExtendedControls
         private Rectangle borderrect, mainarea;
         private int bordersize;
         private int itemslayoutestimatedon = -1;
+        private Font fontusedforestimate = null;
         private int displayableitems = -1;
         private int firstindex = -1;
         private int focusindex = -1;

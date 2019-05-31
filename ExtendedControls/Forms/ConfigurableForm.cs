@@ -26,12 +26,13 @@ namespace ExtendedControls
     {
         // returns dialog logical name, name of control (plus options), caller tag object
         // name of control on click for button / Checkbox / ComboBox
-        // name:Return for number box, textBox 
+        // name:Return for number box, textBox.  Set SwallowReturn to true before returning to swallow the return
         // name:Validity:true/false for Number boxes,
         // Cancel for ending dialog,
         // Escape for escape.
 
         public event Action<string, string, Object> Trigger;        
+        public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
 
         private List<Entry> entries;
         private Object callertag;
@@ -68,18 +69,16 @@ namespace ExtendedControls
             }
 
             // ComboBoxCustom
-            public Entry(string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, List<string> comboitems, Size? sz = null)
+            public Entry(string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, List<string> comboitems)
             {
                 controltype = typeof(ExtendedControls.ExtComboBox); text = t; pos = p; size = s; tooltip = tt; controlname = nam;
                 comboboxitems = string.Join(",", comboitems);
-                comboboxdropdownsize = sz;
             }
 
             public bool checkboxchecked;        // fill in for checkbox
             public bool textboxmultiline;       // fill in for textbox
             public bool clearonfirstchar;       // fill in for textbox
             public string comboboxitems;        // fill in for combobox. comma separ list.
-            public Size? comboboxdropdownsize;  // may be null, fill in for combobox
             public string customdateformat;     // fill in for datetimepicker
             public double numberboxdoubleminimum = double.MinValue;   // for double box
             public double numberboxdoublemaximum = double.MaxValue;
@@ -118,18 +117,23 @@ namespace ExtendedControls
 
         public Entry Last { get { return entries.Last(); } }
 
-        public DialogResult ShowDialog(Form p, Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
+        // pos.x <= -999 means autocentre to parent.
+
+        public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null)
         {
-            Init(icon, size, pos, caption, lname, callertag );
+            InitCentred(p, icon, caption, lname, callertag);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
-        public void Show(Form p, Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname = null, Object callertag = null, Action callback = null)
+        public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font)
         {
-            Init(icon, size, pos, caption, lname, callertag);
-            callback?.Invoke();
-            Show(p);
+            Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, true , asm);
+        }
+
+        public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font)
+        {
+            Init(icon, pos, caption, lname, callertag, false, asm);
         }
 
         public new void Close()     // program close.. allow it to close properly
@@ -389,7 +393,7 @@ namespace ExtendedControls
             return null;
         }
 
-        public void Init(Icon icon, System.Drawing.Size size, System.Drawing.Point pos, string caption, string lname, Object callertag)
+        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, bool posiscentrecoords = false, AutoScaleMode asm = AutoScaleMode.Font)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
@@ -398,26 +402,14 @@ namespace ExtendedControls
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            if (theme.WindowsFrame)
-            {
-                size.Height += 50;
-            }
-
-            Size = size;
-
-            if (pos.X == -999)
-                StartPosition = FormStartPosition.CenterScreen;
-            else
-            {
-                Location = pos;
-                StartPosition = FormStartPosition.Manual;
-            }
-
-            Panel outer = new Panel() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle };
+            ExtPanelScroll outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle };
             outer.MouseDown += FormMouseDown;
             outer.MouseUp += FormMouseUp;
-
             Controls.Add(outer);
+
+            ExtScrollBar scr = new ExtScrollBar();
+            scr.HideScrollBar = true;
+            outer.Controls.Add(scr);
 
             this.Text = caption;
 
@@ -468,11 +460,14 @@ namespace ExtendedControls
                         cb.Format = ent.numberboxformat;
                     cb.ReturnPressed += (box) =>
                     {
+                        SwallowReturn = false;
                         if (!ProgClose)
                         {
                             Entry en = (Entry)(box.Tag);
                             Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
+
+                        return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
@@ -494,11 +489,13 @@ namespace ExtendedControls
                         cb.Format = ent.numberboxformat;
                     cb.ReturnPressed += (box) =>
                     {
+                        SwallowReturn = false;
                         if (!ProgClose)
                         {
                             Entry en = (Entry)(box.Tag);
                             Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
+                        return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
@@ -517,11 +514,13 @@ namespace ExtendedControls
                     tb.ClearOnFirstChar = ent.clearonfirstchar;
                     tb.ReturnPressed += (box) =>
                     {
+                        SwallowReturn = false;
                         if (!ProgClose)
                         {
                             Entry en = (Entry)(box.Tag);
                             Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
+                        return SwallowReturn;
                     };
                 }
                 else if (c is ExtendedControls.ExtCheckBox)
@@ -566,11 +565,6 @@ namespace ExtendedControls
                 if (c is ExtendedControls.ExtComboBox)
                 {
                     ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
-                    if (ent.comboboxdropdownsize != null)
-                    {
-                        cb.DropDownHeight = ent.comboboxdropdownsize.Value.Height;
-                        cb.DropDownWidth = ent.comboboxdropdownsize.Value.Width;
-                    }
 
                     cb.Items.AddRange(ent.comboboxitems.Split(','));
                     if (cb.Items.Contains(ent.text))
@@ -592,10 +586,30 @@ namespace ExtendedControls
 
             this.Icon = icon;
 
-            theme.ApplyToFormStandardFontSize(this);
+            this.AutoScaleMode = asm;
 
-            //foreach( Control c in Controls[0].Controls )   System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
+            //this.DumpTree(0);
+            theme.ApplyStd(this);
+            //this.DumpTree(0);
 
+            int fh = (int)this.Font.GetHeight();        // use the FH to nerf the extra area so it scales with FH.. this helps keep the controls within a framed window
+
+            // measure the items after scaling. Exclude the scroll bar
+            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 16) + fh, new Type[] { typeof(ExtScrollBar) });
+
+            StartPosition = FormStartPosition.Manual;
+
+            Location = pos;
+
+            this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height,false,64, centrecoords:posiscentrecoords);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            Control firsttextbox = Controls[0].Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete) });
+            if (firsttextbox != null)
+                firsttextbox.Focus();       // focus on first text box
+            base.OnShown(e);
         }
 
         protected override void Dispose(bool disposing)

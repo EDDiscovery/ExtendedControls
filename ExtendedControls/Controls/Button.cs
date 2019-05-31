@@ -29,17 +29,8 @@ namespace ExtendedControls
     /// </summary>
     public class ExtButton : Button
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtButton"/> class.
-        /// </summary>
-        /// <remarks>For best results, utilize the <see cref="Control.Click"/> event, or
-        /// <see cref="Control.OnClick(EventArgs)"/> for your processing. This event will occur for certain keyboard
-        /// inputs (space, enter, or mnemonic), as well as left mouse clicks, but not right mouse clicks.</remarks>
         public ExtButton() : base() { }
 
-        /// <summary>
-        /// This property is unsupported and should not be utilized.
-        /// </summary>
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), EditorBrowsable(EditorBrowsableState.Never)]
         public new Image BackgroundImage
         {
@@ -52,10 +43,6 @@ namespace ExtendedControls
             Description("Determines Image size in button for Flatstyle!=Standard, Stretch or Center only")]
         public ImageLayout ImageLayout { get { return imagelayout; } set { imagelayout = value; Invalidate(); } }
 
-        /// <summary>
-        /// Gets or sets a value that indicates how bright the border color will be when drawn with the
-        /// <see cref="FlatStyle.Popup"/> mode, and also either being hovered by the cursor or depressed.
-        /// </summary>
         [Category("Appearance"), DefaultValue(1.25F),
             Description("When using FlatStyle.Popup, the FlatAppearance.BorderColor will be multiplied by this amount during a hover or click.")]
         public float BorderColorScaling
@@ -73,10 +60,7 @@ namespace ExtendedControls
                 }
             }
         }
-        /// <summary>
-        /// Gets or sets a value that indicates how bright the bottom of the background gradient will be when
-        /// drawn using <see cref="FlatStyle.Popup"/>.
-        /// </summary>
+
         [Category("Appearance"), DefaultValue(0.5F),
             Description("When using FlatStyle.Popup, the BackColor multiplication factor for the bottom of the background gradient.")]
         public float ButtonColorScaling
@@ -94,10 +78,7 @@ namespace ExtendedControls
                 }
             }
         }
-        /// <summary>
-        /// Gets or sets a value that indicates how bright the button background will be when drawn with
-        /// <see cref="FlatStyle.Popup"/> and the control is not <see cref="Control.Enabled"/>.
-        /// </summary>
+
         [Category("Appearance"), DefaultValue(0.5F),
             Description("When using FlatStyle.Popup and not Enabled, this multiplication factor will be used for the background color.")]
         public float ButtonDisabledScaling
@@ -339,7 +320,7 @@ namespace ExtendedControls
 
                 if (Image != null)
                 {
-                    Size isize = (imagelayout == ImageLayout.Stretch) ? buttonarea.Size : Image.Size;
+                    Size isize = (imagelayout == ImageLayout.Stretch) ? new Size(buttonarea.Height,buttonarea.Height) : Image.Size;
 
                     if ((Enabled && drawnImageAttributesEnabled != null) || (!Enabled && drawnImageAttributesDisabled != null))
                     {
@@ -359,13 +340,15 @@ namespace ExtendedControls
                 if (!string.IsNullOrEmpty(Text))
                 {
                     using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(RtlTranslateAlignment(TextAlign)))
-                    using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(ButtonDisabledScaling)))
                     {
-                        if (this.UseMnemonic)
-                            fmt.HotkeyPrefix = this.ShowKeyboardCues ? HotkeyPrefix.Show : HotkeyPrefix.Hide;
-                        if (this.AutoEllipsis)
-                            fmt.Trimming = StringTrimming.EllipsisCharacter;
-                        pe.Graphics.DrawString(this.Text, this.Font, textb, buttonarea, fmt);
+                        using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(ButtonDisabledScaling)))
+                        {
+                            if (this.UseMnemonic)
+                                fmt.HotkeyPrefix = this.ShowKeyboardCues ? HotkeyPrefix.Show : HotkeyPrefix.Hide;
+                            if (this.AutoEllipsis)
+                                fmt.Trimming = StringTrimming.EllipsisCharacter;
+                            pe.Graphics.DrawString(this.Text, this.Font, textb, buttonarea, fmt);
+                        }
                     }
                 }
 
@@ -405,5 +388,19 @@ namespace ExtendedControls
                     Invalidate();
             }
         }
+
+        // debug for scaling
+        //protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
+        //{
+        //    Size inits = Size;
+        //    Point initl = Location;
+        //    base.ScaleControl(factor, specified);
+        //    if (Name == "buttonSize" || Name == "buttonExtEditAddOns")
+        //    {
+        //        System.Diagnostics.Debug.WriteLine("Scaling " + GetType().Name + " " + Name + " " + this.GetHeirarchy() + " " + inits + initl + " factor " + factor + " -> " + Size + Location);
+        //    }
+        //}
+
+
     }
 }

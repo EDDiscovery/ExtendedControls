@@ -50,12 +50,9 @@
             this.autoCompleteTextBox1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
             this.autoCompleteTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox1.DropDownButtonImage")));
-            this.autoCompleteTextBox1.DropDownHeight = 200;
-            this.autoCompleteTextBox1.DropDownItemHeight = 20;
             this.autoCompleteTextBox1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox1.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.autoCompleteTextBox1.DropDownWidth = 0;
             this.autoCompleteTextBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.autoCompleteTextBox1.InErrorCondition = false;
             this.autoCompleteTextBox1.Location = new System.Drawing.Point(40, 37);
@@ -72,23 +69,18 @@
             // 
             // comboBoxCustom1
             // 
-            this.comboBoxCustom1.ArrowWidth = 1;
             this.comboBoxCustom1.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustom1.ButtonColorScaling = 0.5F;
             this.comboBoxCustom1.DataSource = null;
             this.comboBoxCustom1.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustom1.DisplayMember = "";
             this.comboBoxCustom1.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.comboBoxCustom1.DropDownHeight = 106;
-            this.comboBoxCustom1.DropDownWidth = 355;
             this.comboBoxCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustom1.ItemHeight = 13;
             this.comboBoxCustom1.Location = new System.Drawing.Point(40, 157);
             this.comboBoxCustom1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustom1.Name = "comboBoxCustom1";
             this.comboBoxCustom1.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.comboBoxCustom1.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustom1.ScrollBarWidth = 16;
             this.comboBoxCustom1.SelectedIndex = -1;
             this.comboBoxCustom1.SelectedItem = null;
             this.comboBoxCustom1.SelectedValue = null;
@@ -111,12 +103,9 @@
             this.autoCompleteTextBox2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox2.DropDownBorderColor = System.Drawing.Color.Green;
             this.autoCompleteTextBox2.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox2.DropDownButtonImage")));
-            this.autoCompleteTextBox2.DropDownHeight = 200;
-            this.autoCompleteTextBox2.DropDownItemHeight = 20;
             this.autoCompleteTextBox2.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox2.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox2.DropDownScrollBarColor = System.Drawing.Color.LightGray;
-            this.autoCompleteTextBox2.DropDownWidth = 0;
             this.autoCompleteTextBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.autoCompleteTextBox2.InErrorCondition = false;
             this.autoCompleteTextBox2.Location = new System.Drawing.Point(40, 87);

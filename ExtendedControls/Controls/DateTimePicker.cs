@@ -216,23 +216,26 @@ namespace ExtendedControls
 
             if (ClientRectangle.Width > 0 && ClientRectangle.Height > 0)
             {
-                int offset = BorderColor.IsFullyTransparent() ? 0 : 2;
-                int height = ClientRectangle.Height - offset * 2;
+                int borderoffset = BorderColor.IsFullyTransparent() ? 0 : 2;
+                int height = ClientRectangle.Height - borderoffset * 2;
                 checkbox.Visible = ShowCheckBox;
-                checkbox.Location = new Point(offset + 2, offset);
+                checkbox.Location = new Point(borderoffset + 2, borderoffset);
                 checkbox.Size = new Size(height, height);
 
                 updown.Visible = ShowUpDown;
-                updown.Location = new Point(ClientRectangle.Width - ClientRectangle.Height - offset, offset);
+                updown.Location = new Point(ClientRectangle.Width - ClientRectangle.Height - borderoffset, borderoffset);
                 updown.Size = new Size(height, height);
 
-                calendaricon.Image = ExtendedControls.Properties.Resources.Calendar;
-                //calendaricon.Image = DialogTest.Properties.Resources.Calendar;
-                calendaricon.Location = new Point(ClientRectangle.Width - offset - calendaricon.Image.Width - 4, ClientRectangle.Height / 2 - calendaricon.Image.Height / 2);
+                Image ci = calendaricon.Image = ExtendedControls.Properties.Resources.Calendar;
 
-                calendaricon.Size = calendaricon.Image.Size;
+                int caliconh = height - 4;
+                int caliconw = (int)((float)caliconh / (float)ci.Height * ci.Width);
+
+                calendaricon.Size = new Size(caliconw, caliconh);
+                calendaricon.Image = ci;
+                calendaricon.Location = new Point(ClientRectangle.Width - borderoffset - caliconw- 4, ClientRectangle.Height / 2 - caliconh / 2);
+                calendaricon.SizeMode = PictureBoxSizeMode.StretchImage;
                 calendaricon.Visible = !ShowUpDown;
-                calendaricon.SizeMode = PictureBoxSizeMode.CenterImage;
 
                 xstart = (showcheckbox ? (checkbox.Right + 2) : 2) + (BorderColor.IsFullyTransparent() ? 2 : 0);
 

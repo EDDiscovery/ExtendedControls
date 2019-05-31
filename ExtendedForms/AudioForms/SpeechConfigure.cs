@@ -18,10 +18,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using AudioExtensions;
 using BaseUtils;
+using ExtendedControls;
 
 namespace ExtendedAudioForms
 {
-    public partial class SpeechConfigure : Form
+    public partial class SpeechConfigure : DraggableForm
     {
         public string SayText { get { return textBoxBorderText.Text; } }
         public bool Wait { get { return checkBoxCustomComplete.Checked; } }
@@ -126,7 +127,7 @@ namespace ExtendedAudioForms
 
             effects = ef;
 
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyToForm(this, System.Drawing.SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this);
         }
 
         private void buttonExtOK_Click(object sender, EventArgs e)
@@ -220,6 +221,16 @@ namespace ExtendedAudioForms
         private void Audio_sampleOverEvent(AudioQueue sender, object tag)
         {
             buttonExtTest.Text = "Test";
+        }
+
+        private void CapMouseDown(object sender, MouseEventArgs e)
+        {
+            OnCaptionMouseDown((Control)sender, e);
+        }
+
+        private void CapMouseUp(object sender, MouseEventArgs e)
+        {
+            OnCaptionMouseUp((Control)sender, e);
         }
 
     }

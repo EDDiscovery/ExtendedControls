@@ -91,6 +91,16 @@ namespace DialogTest.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch0\stshfloch31506\stshfhich31506\stshfbi31506\deflang2057\deflangfe2057\themelang2057\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f34\fbidi \froman\fcharset0\fprq2{\*\panose 02040503050406030204}Cambria Math;}
+        ///{\f37\fbidi \fswiss\fcharset0\fprq2{\*\panose 020f0502020204030204}Calibri;}{\flomajor\f31500\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string EDD_License {
+            get {
+                return ResourceManager.GetString("EDD_License", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap edlogo24 {
@@ -176,6 +186,26 @@ namespace DialogTest.Properties {
         internal static System.Drawing.Bitmap Logo8bpp48rot {
             get {
                 object obj = ResourceManager.GetObject("Logo8bpp48rot", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ScreenShot {
+            get {
+                object obj = ResourceManager.GetObject("ScreenShot", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Selector {
+            get {
+                object obj = ResourceManager.GetObject("Selector", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

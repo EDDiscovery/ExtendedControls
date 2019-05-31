@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -28,12 +28,12 @@ namespace ExtendedControls
                             string lab1, string defaultValue1, string caption, Icon ic, 
                             bool multiline = false, 
                             string tooltip = null, 
-                            int width = 600, 
-                            int vspacing  = -1,
-                            bool cursoratend = false)
+                            bool cursoratend = false,
+                            int widthboxes = 200,           // sizes based on standard dialog size of 8, scaled up
+                            int heightboxes = -1)
         {
             List<string> r = PromptMultiLine.ShowDialog(p, caption, ic, new string[] { lab1 }, 
-                    new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null , width, vspacing , cursoratend);
+                    new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null , cursoratend, widthboxes, heightboxes);
 
             return r?[0];
         }
@@ -45,84 +45,77 @@ namespace ExtendedControls
         public static List<string> ShowDialog(Form p, string caption, Icon ic, string[] lab, string[] def, 
                             bool multiline = false, 
                             string[] tooltips = null, 
-                            int width = 600, 
-                            int vspacing = -1,
-                            bool cursoratend = false)
+                            bool cursoratend = false,
+                            int widthboxes = 200,           // sizes based on standard dialog size of 12, scaled up
+                            int heightboxes = -1)
         {
-            ITheme theme = ThemeableFormsInstance.Instance;
-
-            int vstart = theme.WindowsFrame ? 20 : 40;
-            if ( vspacing == -1 )
-                vspacing = multiline ? 80 : 40;
-            int lw = 100;
-            int lx = 10;
-            int tx = 10 + lw + 8;
-
             DraggableForm prompt = new DraggableForm()
             {
-                Width = width,
-                Height = 90 + vspacing * lab.Length + (theme.WindowsFrame ? 20 : 0),
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 Text = caption,
                 StartPosition = FormStartPosition.CenterScreen,
                 Icon = ic
             };
 
+            int lx = 10;
+
             Panel outer = new Panel() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle };
             prompt.Controls.Add(outer);
             outer.MouseDown += (s, e) => { prompt.OnCaptionMouseDown(s as Control, e); };
             outer.MouseUp += (s, e) => { prompt.OnCaptionMouseUp(s as Control, e); };
 
-            Label textLabel = new Label() { Left = lx, Top = 8, Width = prompt.Width - 50, Text = caption };
+            Label textLabel = new Label() { Left = lx, Top = 8, AutoSize = true, Text = caption };
             textLabel.MouseDown += (s, e) => { prompt.OnCaptionMouseDown(s as Control, e); };
             textLabel.MouseUp += (s, e) => { prompt.OnCaptionMouseUp(s as Control, e); };
+
+            ITheme theme = ThemeableFormsInstance.Instance;
 
             if (!theme.WindowsFrame)
                 outer.Controls.Add(textLabel);
 
             Label[] lbs = new Label[lab.Length];
-            ExtendedControls.ExtTextBox[] tbs = new ExtendedControls.ExtTextBox[lab.Length];
+            ExtendedControls.ExtRichTextBox[] tbs = new ExtendedControls.ExtRichTextBox[lab.Length];
 
             ToolTip tt = new ToolTip();
             tt.ShowAlways = true;
 
-            int y = vstart;
+            int y = theme.WindowsFrame ? 20 : 40;
+            if (heightboxes == -1)
+                heightboxes = multiline ? 80 : 24;
 
             for (int i = 0; i < lab.Length; i++)
             {
-                lbs[i] = new Label() { Left = lx, Top = y, Width = lw, Text = lab[i] };
-                tbs[i] = new ExtendedControls.ExtTextBox()
+                lbs[i] = new Label() { Left = lx, Top = y, AutoSize = true, Text = lab[i] };
+                outer.Controls.Add(lbs[i]);
+
+                tbs[i] = new ExtendedControls.ExtRichTextBox()
                 {
-                    Left = tx,
+                    Left = 0,       // will be set once we know the paras of all lines
                     Top = y,
-                    Width = prompt.Width - 50 - tx,
+                    Width = widthboxes,
                     Text = (def != null && i < def.Length) ? def[i] : "",
-                    Multiline = multiline,      // set before height!
-                    Height = vspacing - 20,
-                    ScrollBars = (multiline) ? ScrollBars.Vertical : ScrollBars.None,
-                    WordWrap = multiline
+                    Height = heightboxes,
                 };
 
                 if (cursoratend)
                     tbs[i].Select(tbs[i].Text.Length, tbs[i].Text.Length);
 
-                outer.Controls.Add(lbs[i]);
                 outer.Controls.Add(tbs[i]);
 
                 if (tooltips != null && i < tooltips.Length)
                 {
                     tt.SetToolTip(lbs[i], tooltips[i]);
-                    tbs[i].SetTipDynamically(tt, tooltips[i]);      // no container here, set tool tip on text boxes using this
+                    tbs[i].SetTipDynamically(tt,tooltips[i]);      // no container here, set tool tip on text boxes using this
                 }
 
-                y += vspacing;
+                y += heightboxes + 20;
             }
 
-            ExtendedControls.ExtButton confirmation = new ExtendedControls.ExtButton() { Text = "OK".Tx(), Left = tbs[0].Right - 80, Width = 80, Top = y, DialogResult = DialogResult.OK };
+            ExtendedControls.ExtButton confirmation = new ExtendedControls.ExtButton() { Text = "OK".Tx(), Left = 0, Width = 100, Top = y, DialogResult = DialogResult.OK };
             outer.Controls.Add(confirmation);
             confirmation.Click += (sender, e) => { prompt.Close(); };
 
-            ExtendedControls.ExtButton cancel = new ExtendedControls.ExtButton() { Text = "Cancel".Tx(), Left = confirmation.Location.X - 90, Width = 80, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
+            ExtendedControls.ExtButton cancel = new ExtendedControls.ExtButton() { Text = "Cancel".Tx(), Left = 0, Width = 100, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
             outer.Controls.Add(cancel);
             cancel.Click += (sender, e) => { prompt.Close(); };
 
@@ -131,12 +124,26 @@ namespace ExtendedControls
 
             prompt.CancelButton = cancel;
             prompt.ShowInTaskbar = false;
+            prompt.AutoScaleMode = AutoScaleMode.Font;
 
-            theme.ApplyToFormStandardFontSize(prompt);
+            theme.ApplyDialog(prompt);
+
+            int controlleft = 0;
+            for (int i = 0; i < lab.Length; i++)
+                controlleft = Math.Max(controlleft, lbs[i].Right + 16);     // seems have to do this after sizing, confusingly
+
+            for (int i = 0; i < lab.Length; i++)                            // all go here
+                tbs[i].Left = controlleft;
+
+            confirmation.Left = tbs[0].Right - confirmation.Width;          // cancel/confirm based on this
+            cancel.Left = confirmation.Left - cancel.Width - 16;
+
+            Size controlsize = outer.FindMaxSubControlArea(0, 0);
+            prompt.Size = new Size(controlsize.Width + 40, controlsize.Height + (theme.WindowsFrame ? 50 : 8));
 
             if (prompt.ShowDialog(p) == DialogResult.OK)
             {
-                var r = (from ExtendedControls.ExtTextBox t in tbs select t.Text).ToList();
+                var r = (from t in tbs select t.Text).ToList();
                 return r;
             }
             else

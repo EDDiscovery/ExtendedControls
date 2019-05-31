@@ -13,10 +13,18 @@ namespace DialogTest
 {
     public partial class TestPanelScrollOutlining : Form
     {
+        ThemeStandard theme;
+
         public TestPanelScrollOutlining()
         {
             InitializeComponent();
-            for( int i = 0; i < 100; i++ )
+
+            theme = new ThemeStandard();
+            theme.LoadBaseThemes();
+            theme.SetThemeByName("Elite Verdana");
+            theme.WindowsFrame = true;
+
+            for ( int i = 0; i < 100; i++ )
             {
                 DataGridViewRow row = dataGridView1.RowTemplate.Clone() as DataGridViewRow;
                 row.CreateCells(dataGridView1, i.ToString(), "2", "3");
@@ -115,6 +123,20 @@ namespace DialogTest
         private void button3_Click(object sender, EventArgs e)
         {
             dataGridView1.Rows.RemoveAt(6);
+        }
+
+        private void extButton1_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 12;
+            theme.ApplyStd(this);
+
+        }
+
+        private void extButton2_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 20;
+            theme.ApplyStd(this);
+
         }
     }
 }

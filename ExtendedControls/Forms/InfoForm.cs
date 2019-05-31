@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 EDDiscovery development team
+ * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -37,7 +37,7 @@ namespace ExtendedControls
         }
 
         public void Info(string title, Icon ic, string info , int[] array = null, float pointsize= -1, 
-                            Action<Object> acknowledgeaction = null, Object acknowledgedata = null)    
+                            Action<Object> acknowledgeaction = null, Object acknowledgedata = null, bool usedialogfont= true)    
         {
             Icon = ic;
 
@@ -49,17 +49,15 @@ namespace ExtendedControls
             ackaction = acknowledgeaction;
             ackdata = acknowledgedata;
 
-            textBoxInfo.Font = SystemFonts.DefaultFont;
-
             ITheme theme = ThemeableFormsInstance.Instance;
 
             if (theme != null)
             {
-                bool winborder = theme.ApplyToFormStandardFontSize(this);
+                bool winborder = usedialogfont ? theme.ApplyDialog(this) : theme.ApplyStd(this);
                 if (winborder)
                     panelTop.Visible = false;
                 if (pointsize != -1)
-                    textBoxInfo.Font = BaseUtils.FontLoader.GetFont(theme.FontName, pointsize);
+                    textBoxInfo.Font = usedialogfont ? theme.GetDialogScaledFont(pointsize/12f) : theme.GetScaledFont(pointsize/12f);       // 12 is standard size..
             }
             else
             {
@@ -73,6 +71,7 @@ namespace ExtendedControls
             textBoxInfo.Text = info;
             labelCaption.Text = title;
             Text = title;
+            System.Diagnostics.Debug.WriteLine("Main " + Font + " text font " + textBoxInfo.Font);
         }
 
 

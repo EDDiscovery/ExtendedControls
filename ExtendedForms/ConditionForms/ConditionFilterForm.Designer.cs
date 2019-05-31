@@ -44,8 +44,8 @@ namespace ExtendedConditionsForms
         private void InitializeComponent()
         {
             this.panelTop = new System.Windows.Forms.Panel();
-            this.panel_close = new ExtendedControls.ExtPanelDrawn();
-            this.panel_minimize = new ExtendedControls.ExtPanelDrawn();
+            this.panel_close = new ExtendedControls.ExtButtonDrawn();
+            this.panel_minimize = new ExtendedControls.ExtButtonDrawn();
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
             this.buttonCancel = new ExtendedControls.ExtButton();
@@ -64,7 +64,7 @@ namespace ExtendedConditionsForms
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(3, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1098, 24);
+            this.panelTop.Size = new System.Drawing.Size(1098, 32);
             this.panelTop.TabIndex = 4;
             this.panelTop.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_index_MouseDown);
             this.panelTop.MouseUp += new System.Windows.Forms.MouseEventHandler(this.label_index_MouseUp);
@@ -72,26 +72,45 @@ namespace ExtendedConditionsForms
             // panel_close
             // 
             this.panel_close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_close.AutoEllipsis = false;
+            this.panel_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_close.Image = null;
+            this.panel_close.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Close;
             this.panel_close.Location = new System.Drawing.Point(1075, 0);
+            this.panel_close.MouseOverColor = System.Drawing.Color.White;
+            this.panel_close.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panel_close.MouseSelectedColorEnable = true;
             this.panel_close.Name = "panel_close";
             this.panel_close.Padding = new System.Windows.Forms.Padding(6);
+            this.panel_close.PanelDisabledScaling = 0.25F;
             this.panel_close.Selectable = false;
             this.panel_close.Size = new System.Drawing.Size(24, 24);
             this.panel_close.TabIndex = 27;
             this.panel_close.TabStop = false;
+            this.panel_close.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel_close.UseMnemonic = true;
             this.panel_close.Click += new System.EventHandler(this.panel_close_Click);
             // 
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_minimize.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.Minimize;
+            this.panel_minimize.AutoEllipsis = false;
+            this.panel_minimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_minimize.Image = null;
+            this.panel_minimize.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(1045, 0);
+            this.panel_minimize.MouseOverColor = System.Drawing.Color.White;
+            this.panel_minimize.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panel_minimize.MouseSelectedColorEnable = true;
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
+            this.panel_minimize.PanelDisabledScaling = 0.25F;
             this.panel_minimize.Selectable = false;
             this.panel_minimize.Size = new System.Drawing.Size(24, 24);
             this.panel_minimize.TabIndex = 26;
             this.panel_minimize.TabStop = false;
+            this.panel_minimize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel_minimize.UseMnemonic = true;
             this.panel_minimize.Click += new System.EventHandler(this.panel_minimize_Click);
             // 
             // label_index
@@ -118,9 +137,9 @@ namespace ExtendedConditionsForms
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(922, 4);
+            this.buttonCancel.Location = new System.Drawing.Point(841, 4);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(100, 23);
             this.buttonCancel.TabIndex = 6;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -129,9 +148,9 @@ namespace ExtendedConditionsForms
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(1019, 4);
+            this.buttonOK.Location = new System.Drawing.Point(991, 4);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(100, 23);
             this.buttonOK.TabIndex = 7;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -148,13 +167,14 @@ namespace ExtendedConditionsForms
             // conditionFilterUC
             // 
             this.conditionFilterUC.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.conditionFilterUC.Location = new System.Drawing.Point(3, 24);
+            this.conditionFilterUC.Location = new System.Drawing.Point(3, 32);
             this.conditionFilterUC.Name = "conditionFilterUC";
             this.conditionFilterUC.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.conditionFilterUC.Size = new System.Drawing.Size(1098, 492);
+            this.conditionFilterUC.Size = new System.Drawing.Size(1098, 484);
             this.conditionFilterUC.TabIndex = 6;
+            this.conditionFilterUC.VariableNames = null;
             // 
-            // ConditionFilterFormUC
+            // ConditionFilterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -163,7 +183,7 @@ namespace ExtendedConditionsForms
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.panelOK);
             this.Controls.Add(this.statusStripCustom);
-            this.Name = "ConditionFilterFormUC";
+            this.Name = "ConditionFilterForm";
             this.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Filter Form";
@@ -181,8 +201,8 @@ namespace ExtendedConditionsForms
         private System.Windows.Forms.Label label_index;
         private ExtendedControls.ExtButton buttonOK;
         private ExtendedControls.ExtButton buttonCancel;
-        private ExtendedControls.ExtPanelDrawn panel_minimize;
-        private ExtendedControls.ExtPanelDrawn panel_close;
+        private ExtendedControls.ExtButtonDrawn panel_minimize;
+        private ExtendedControls.ExtButtonDrawn panel_close;
         private ExtendedControls.ExtStatusStrip statusStripCustom;
         private System.Windows.Forms.Panel panelOK;
         private ConditionFilterUC conditionFilterUC;

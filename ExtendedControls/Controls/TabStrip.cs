@@ -38,11 +38,7 @@ namespace ExtendedControls
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
         public float EmptyColorScaling { get; set; } = 0.5F;
 
-        public int TabFieldSpacing { get; set; } = 8;
-
         // only if using ListSelection:
-        public int DropDownWidth { get; set; } = 400;
-        public int DropDownHeight { get; set; } = 200;
         public Color DropDownBackgroundColor { get; set; } = Color.Gray;
         public Color DropDownBorderColor { get; set; } = Color.Green;
         public Color DropDownScrollBarColor { get; set; } = Color.LightGray;
@@ -55,9 +51,9 @@ namespace ExtendedControls
         public Control CurrentControl;
 
         // events
-        public Action<TabStrip, Control> OnRemoving;
-        public Func<TabStrip, int,Control> OnCreateTab;
-        public Action<TabStrip, Control, int> OnPostCreateTab;
+        public Action<TabStrip, Control> OnRemoving;            // called due to ChangePanel or Close
+        public Func<TabStrip, int,Control> OnCreateTab;     // called due to  Create or due to ChangePanel
+        public Action<TabStrip, Control, int> OnPostCreateTab;  // called due to ChangePanel 
         public Action<TabStrip, int> OnPopOut;
 
         // internals
@@ -94,11 +90,13 @@ namespace ExtendedControls
         {
             InitializeComponent();
             labelControlText.Text = "";
-            labelTitle.Text = "Select";
+            labelTitle.Text = "?";
             autofadeinouttimer.Tick += AutoFadeInOutTick;
             autorepeat.Interval = 200;
             autorepeat.Tick += Autorepeat_Tick;
             panelSelectedIcon.BackgroundImage = EmptyPanelIcon;
+            panelSelectedIcon.BackgroundImageLayout = ImageLayout.Stretch;
+            panelPopOutIcon.Visible = panelListSelection.Visible = false;
         }
 
         #region Public interface
@@ -134,7 +132,7 @@ namespace ExtendedControls
                 CurrentControl = null;
                 selectedindex = -1;
                 labelControlText.Text = "";
-                labelTitle.Text = "Select";
+                labelTitle.Text = "?";
                 panelSelectedIcon.BackgroundImage = EmptyPanelIcon;
             }
         }
@@ -310,8 +308,8 @@ namespace ExtendedControls
                         Tag = inp,
                         BackgroundImageLayout = ImageLayout.Stretch,
                         Visible = false,
-                        Size = new Size(ImageList[inp].Width, ImageList[inp].Height),
-                        
+                        Size = panelSelectedIcon.Size,
+                       
                     };
 
                     imagepanels[inp].Click += TabIconClicked;
@@ -338,7 +336,9 @@ namespace ExtendedControls
             bool showpopouticon = false;
             bool showlistselection = false;
 
-            int xpos = panelSelectedIcon.Width + TabFieldSpacing;       // start here
+            int tabfieldspacing = Font.ScalePixels(8);
+
+            int xpos = panelSelectedIcon.Width + tabfieldspacing;       // start here
             bool arrowson = false;
 
             if (StripMode == StripModeType.ListSelection)               // in list mode
@@ -352,7 +352,7 @@ namespace ExtendedControls
                     }
 
                     showlistselection = true;
-                    xpos += panelListSelection.Width + TabFieldSpacing; // space on for allowing panel selector
+                    xpos += panelListSelection.Width + tabfieldspacing; // space on for allowing panel selector
                 }
             }
             else if (tdm != TabDisplayMode.Compressed)      // show icons..
@@ -435,9 +435,9 @@ namespace ExtendedControls
             labelControlText.Visible = showtext;
 
             panelPopOutIcon.Location = panelSelectedIcon.Location;     // same position, mutually exclusive
-            panelListSelection.Location = new Point(panelSelectedIcon.Right + TabFieldSpacing, panelSelectedIcon.Top);
-            labelTitle.Location = new Point(xpos + TabFieldSpacing, labelTitle.Top);
-            labelControlText.Location = new Point(labelTitle.Right + TabFieldSpacing, labelControlText.Top);
+            panelListSelection.Location = new Point(panelSelectedIcon.Right + tabfieldspacing, panelSelectedIcon.Top);
+            labelTitle.Location = new Point(xpos + tabfieldspacing, labelTitle.Top);
+            labelControlText.Location = new Point(labelTitle.Right + tabfieldspacing, labelTitle.Top);
 
         }
 
@@ -508,17 +508,13 @@ namespace ExtendedControls
             dropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
             dropdown.ItemSeperatorColor = this.DropDownItemSeperatorColor;
 
-            dropdown.ItemHeight = ImageList[0].Size.Height+2;
+            dropdown.Font = Font;
             dropdown.Items = TextList.ToList();
             dropdown.ItemSeperators = ListSelectionItemSeparators;
             dropdown.ImageItems = ImageList.ToList();
             dropdown.FlatStyle = FlatStyle.Popup;
-            dropdown.Activated += (s,ea) => 
-            {
-                Point location = panelListSelection.PointToScreen(new Point(0, 0));
-                dropdown.Location = dropdown.PositionWithinScreen(location.X + panelListSelection.Width, location.Y);
-                this.Invalidate(true);
-            };
+            dropdown.PositionBelow(panelListSelection);
+
             dropdown.SelectedIndexChanged += (s, ea) =>
             {
                 tdm = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
@@ -531,7 +527,6 @@ namespace ExtendedControls
                 MouseLeavePanelObjects(sender, e);          // same as a mouse leave on one of the controls
             };
 
-            dropdown.Size = new Size(DropDownWidth, DropDownHeight);
             dropdown.Show(this.FindForm());
             tdm = TabDisplayMode.ExpandedInList;            // hold display in here during list presentation
         }

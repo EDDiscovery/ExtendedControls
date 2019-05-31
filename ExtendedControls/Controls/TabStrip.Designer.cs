@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 - 2017 EDDiscovery development team
+ * Copyright © 2016 - 2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -46,8 +46,8 @@ namespace ExtendedControls
             this.components = new System.ComponentModel.Container();
             this.panelStrip = new System.Windows.Forms.Panel();
             this.labelControlText = new System.Windows.Forms.Label();
-            this.panelListSelection = new ExtendedControls.ExtPanelDrawn();
-            this.panelPopOutIcon = new ExtendedControls.ExtPanelDrawn();
+            this.panelListSelection = new ExtendedControls.ExtButtonDrawn();
+            this.panelPopOutIcon = new ExtendedControls.ExtButtonDrawn();
             this.panelArrowRight = new System.Windows.Forms.Panel();
             this.panelArrowLeft = new System.Windows.Forms.Panel();
             this.panelSelectedIcon = new System.Windows.Forms.Panel();
@@ -61,6 +61,7 @@ namespace ExtendedControls
             // 
             // panelStrip
             // 
+            this.panelStrip.AutoSize = true;
             this.panelStrip.Controls.Add(this.labelControlText);
             this.panelStrip.Controls.Add(this.panelListSelection);
             this.panelStrip.Controls.Add(this.panelPopOutIcon);
@@ -89,25 +90,43 @@ namespace ExtendedControls
             // 
             // panelListSelection
             // 
+            this.panelListSelection.AutoEllipsis = false;
+            this.panelListSelection.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panelListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
-            this.panelListSelection.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.None;
+            this.panelListSelection.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
             this.panelListSelection.Location = new System.Drawing.Point(210, 3);
+            this.panelListSelection.MouseOverColor = System.Drawing.Color.White;
+            this.panelListSelection.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panelListSelection.MouseSelectedColorEnable = true;
             this.panelListSelection.Name = "panelListSelection";
+            this.panelListSelection.PanelDisabledScaling = 0.25F;
+            this.panelListSelection.Selectable = true;
             this.panelListSelection.Size = new System.Drawing.Size(24, 24);
             this.panelListSelection.TabIndex = 3;
+            this.panelListSelection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panelListSelection.UseMnemonic = true;
             this.panelListSelection.Click += new System.EventHandler(this.drawnPanelListSelection_Click);
             this.panelListSelection.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.panelListSelection.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
             // panelPopOutIcon
             // 
+            this.panelPopOutIcon.AutoEllipsis = false;
+            this.panelPopOutIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panelPopOutIcon.Image = global::ExtendedControls.Properties.Resources.popout;
-            this.panelPopOutIcon.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.None;
+            this.panelPopOutIcon.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
             this.panelPopOutIcon.Location = new System.Drawing.Point(161, 3);
+            this.panelPopOutIcon.MouseOverColor = System.Drawing.Color.White;
+            this.panelPopOutIcon.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panelPopOutIcon.MouseSelectedColorEnable = true;
             this.panelPopOutIcon.Name = "panelPopOutIcon";
+            this.panelPopOutIcon.PanelDisabledScaling = 0.25F;
+            this.panelPopOutIcon.Selectable = true;
             this.panelPopOutIcon.Size = new System.Drawing.Size(24, 24);
             this.panelPopOutIcon.TabIndex = 3;
+            this.panelPopOutIcon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.toolTip1.SetToolTip(this.panelPopOutIcon, "Click to pop out the current panel into another window");
+            this.panelPopOutIcon.UseMnemonic = true;
             this.panelPopOutIcon.Click += new System.EventHandler(this.panelPopOut_Click);
             this.panelPopOutIcon.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.panelPopOutIcon.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
@@ -194,6 +213,7 @@ namespace ExtendedControls
             this.panelStrip.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -205,10 +225,10 @@ namespace ExtendedControls
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Panel panelArrowRight;
         private System.Windows.Forms.Panel panelArrowLeft;
-        private ExtendedControls.ExtPanelDrawn panelPopOutIcon;
+        private ExtendedControls.ExtButtonDrawn panelPopOutIcon;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemPopOut;
         private System.Windows.Forms.Label labelControlText;
-        private ExtPanelDrawn panelListSelection;
+        private ExtButtonDrawn panelListSelection;
     }
 }

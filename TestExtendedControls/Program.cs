@@ -26,33 +26,6 @@ namespace DialogTest
             {
                 Application.Run((Form)Activator.CreateInstance(t));
             }
-            else
-            {
-                Form sel = null;
-
-                switch (arg1)
-                {
-                    case "keyform":
-                        ExtendedControls.KeyForm f = new ExtendedControls.KeyForm();
-                        f.Init(null, true, " ", "", "", -1, false);
-                        sel = f;
-                        break;
-
-                    case "infoform":
-                        ExtendedControls.ThemeStandard th = new ExtendedControls.ThemeStandard();
-                        th.LoadBaseThemes();
-                        th.SetThemeByName("Elite Verdana");
-                        ExtendedControls.ThemeableFormsInstance.Instance = th;
-                        ExtendedControls.InfoForm inf = new ExtendedControls.InfoForm();
-                        inf.Info("Info form", Properties.Resources._3x3_grid, "This is a nice test\r\nOf the info form\r\n", new int[] { 0, 100, 200, 300, 400, 500, 600 });
-                        sel = inf;
-                        break;
-                }
-
-                if ( sel != null )
-                    Application.Run(sel);
-
-            }
         }
 
     }

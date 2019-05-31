@@ -32,6 +32,10 @@ namespace ExtendedControls
         public bool CloseOnDeactivate { get; set; } = true;         // close when deactivated - this would be normal behaviour
         public bool CloseOnChange { get; set; } = false;            // close when any is changed
 
+        public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location.
+        public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
+        public bool RightAlignedToLocation { get; set; } = false;
+
         private ExtendedControls.CheckedIconListBoxForm cc;
         private Object tagback;
 
@@ -84,12 +88,12 @@ namespace ExtendedControls
         }
 
         // present below control
-        public void Show(string settings, Control ctr, Form parent,  int width, Object tag = null, bool applytheme = true, int height = -1)
+        public void Show(string settings, Control ctr, Form parent,  Object tag = null, bool applytheme = true)
         {
-            Show(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), new Size(width, height), parent, tag, applytheme);
+            Show(settings, ctr.PointToScreen(new Point(0, ctr.Size.Height)), parent, tag, applytheme);
         }
 
-        public void Show(string settings, Point p, Size s, Form parent, Object tag = null, bool applytheme = true)
+        public void Show(string settings, Point p, Form parent, Object tag = null, bool applytheme = true)
         {
             if (cc == null)
             {
@@ -111,15 +115,11 @@ namespace ExtendedControls
 
                 cc.FormClosed += FormClosed;
                 cc.CheckedChanged += checkboxchanged;
-
-                if (s.Height < 1)
-                    s.Height = cc.HeightNeeded();
-
-                cc.PositionSize(p, s);
+                cc.SetLocation = p;
                 cc.LargeChange = cc.ItemCount * Properties.Resources.All.Height / 40;   // 40 ish scroll movements
                 cc.CloseOnDeactivate = CloseOnDeactivate;
                 if (applytheme)
-                    ThemeableFormsInstance.Instance?.ApplyToControls(cc, applytothis: true);
+                    ThemeableFormsInstance.Instance?.ApplyStd(cc);
 
                 tagback = tag;
 

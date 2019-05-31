@@ -35,7 +35,7 @@
             this.addAsGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button1 = new System.Windows.Forms.Button();
+            this.button1 = new ExtendedControls.ExtButton();
             this.panel2 = new ExtendedControls.ExtPanelDataGridViewScroll();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,8 +49,10 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new ExtendedControls.ExtButton();
+            this.button3 = new ExtendedControls.ExtButton();
+            this.extButton1 = new ExtendedControls.ExtButton();
+            this.extButton2 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -120,7 +122,6 @@
             this.panel2.InternalMargin = new System.Windows.Forms.Padding(0);
             this.panel2.Location = new System.Drawing.Point(723, 51);
             this.panel2.Name = "panel2";
-            this.panel2.ScrollBarWidth = 20;
             this.panel2.Size = new System.Drawing.Size(463, 565);
             this.panel2.TabIndex = 3;
             this.panel2.VerticalScrollBarDockRight = false;
@@ -133,10 +134,10 @@
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3});
-            this.dataGridView2.Location = new System.Drawing.Point(20, 0);
+            this.dataGridView2.Location = new System.Drawing.Point(13, 0);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView2.Size = new System.Drawing.Size(443, 565);
+            this.dataGridView2.Size = new System.Drawing.Size(450, 565);
             this.dataGridView2.TabIndex = 1;
             // 
             // dataGridViewTextBoxColumn1
@@ -171,7 +172,7 @@
             this.extScrollBar2.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar2.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBar2.Name = "extScrollBar2";
-            this.extScrollBar2.Size = new System.Drawing.Size(20, 565);
+            this.extScrollBar2.Size = new System.Drawing.Size(13, 565);
             this.extScrollBar2.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar2.SmallChange = 1;
             this.extScrollBar2.TabIndex = 0;
@@ -191,7 +192,6 @@
             this.panel.InternalMargin = new System.Windows.Forms.Padding(0);
             this.panel.Location = new System.Drawing.Point(12, 51);
             this.panel.Name = "panel";
-            this.panel.ScrollBarWidth = 20;
             this.panel.Size = new System.Drawing.Size(677, 565);
             this.panel.TabIndex = 1;
             this.panel.VerticalScrollBarDockRight = false;
@@ -213,10 +213,10 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView1.Location = new System.Drawing.Point(70, 0);
+            this.dataGridView1.Location = new System.Drawing.Point(63, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(607, 565);
+            this.dataGridView1.Size = new System.Drawing.Size(614, 565);
             this.dataGridView1.TabIndex = 1;
             // 
             // Column1
@@ -251,7 +251,7 @@
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBar1.Name = "extScrollBar1";
-            this.extScrollBar1.Size = new System.Drawing.Size(20, 565);
+            this.extScrollBar1.Size = new System.Drawing.Size(13, 565);
             this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar1.SmallChange = 1;
             this.extScrollBar1.TabIndex = 0;
@@ -283,12 +283,34 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // extButton1
+            // 
+            this.extButton1.Location = new System.Drawing.Point(385, 13);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.TabIndex = 4;
+            this.extButton1.Text = "T12";
+            this.extButton1.UseVisualStyleBackColor = true;
+            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
+            // 
+            // extButton2
+            // 
+            this.extButton2.Location = new System.Drawing.Point(466, 12);
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(75, 23);
+            this.extButton2.TabIndex = 5;
+            this.extButton2.Text = "T20";
+            this.extButton2.UseVisualStyleBackColor = true;
+            this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
+            // 
             // TestPanelScrollOutlining
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Info;
             this.ClientSize = new System.Drawing.Size(1224, 640);
+            this.Controls.Add(this.extButton2);
+            this.Controls.Add(this.extButton1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button3);
@@ -319,14 +341,16 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private ExtendedControls.ExtPanelDataGridViewScrollOutlining Outlining1;
-        private System.Windows.Forms.Button button1;
+        private ExtendedControls.ExtButton button1;
         private ExtendedControls.ExtPanelDataGridViewScroll panel2;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private ExtendedControls.ExtScrollBar extScrollBar2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private ExtendedControls.ExtButton button2;
+        private ExtendedControls.ExtButton button3;
+        private ExtendedControls.ExtButton extButton1;
+        private ExtendedControls.ExtButton extButton2;
     }
 }

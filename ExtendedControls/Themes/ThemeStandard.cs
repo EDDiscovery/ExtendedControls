@@ -1,10 +1,23 @@
-﻿using System;
+﻿/*
+ * Copyright © 2016-2019 EDDiscovery development team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ * 
+ * EDDiscovery is not affiliated with Frontier Developments plc.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -103,7 +116,7 @@ namespace ExtendedControls
                 name = n;
                 colors = new Dictionary<CI, Color>();
                 colors.Add(CI.form, SystemColors.Menu);
-                colors.Add(CI.button_back, Color.FromArgb(255,225,225,225)); colors.Add(CI.button_text, SystemColors.ControlText); colors.Add(CI.button_border, SystemColors.ActiveBorder);
+                colors.Add(CI.button_back, Color.FromArgb(255, 225, 225, 225)); colors.Add(CI.button_text, SystemColors.ControlText); colors.Add(CI.button_border, SystemColors.ActiveBorder);
                 colors.Add(CI.grid_borderback, SystemColors.Menu); colors.Add(CI.grid_bordertext, SystemColors.MenuText);
                 colors.Add(CI.grid_cellbackground, SystemColors.ControlLightLight); colors.Add(CI.grid_celltext, SystemColors.MenuText); colors.Add(CI.grid_borderlines, SystemColors.ControlDark);
                 colors.Add(CI.grid_sliderback, SystemColors.ControlLight); colors.Add(CI.grid_scrollarrow, SystemColors.MenuText); colors.Add(CI.grid_scrollbutton, SystemColors.Control);
@@ -179,7 +192,6 @@ namespace ExtendedControls
         public double Opacity { get { return currentsettings.formopacity; } set { SetCustom(); currentsettings.formopacity = value; } }
         public string FontName { get { return currentsettings.fontname; } set { SetCustom(); currentsettings.fontname = value; } }
         public float FontSize { get { return currentsettings.fontsize; } set { SetCustom(); currentsettings.fontsize = value; } }
-        public int ItemHeightForFont() { return (int)(6+currentsettings.fontsize); }
 
         public void SetCustom()
         { currentsettings.name = "Custom"; }                                // set so custom..
@@ -188,25 +200,43 @@ namespace ExtendedControls
         {
             get
             {
-                if (currentsettings.fontname.Equals("") || currentsettings.fontsize < minfontsize)
-                {
-                    currentsettings.fontname = "Microsoft Sans Serif";          // in case schemes were loaded
-                    currentsettings.fontsize = 8.25F;
-                }
-
-                Font fnt = BaseUtils.FontLoader.GetFont(currentsettings.fontname, currentsettings.fontsize);        // if it does not know the font, it will substitute Sans serif
-                currentsettings.fontname = fnt.Name;    // save back what we are using, in case we had a bad name
-                return fnt;
+                return GetFontSizeStyle(currentsettings.fontsize, FontStyle.Regular);
             }
         }
 
-        private const int StandardFontSize = 10;
+        private const float dialogscaling = 0.8f;
 
-        public Font GetFontMaxSized(float size) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, Math.Min(currentsettings.fontsize, size)); }
-        public Font GetFontAtSize(float size) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, size); }
-        public Font GetFontAtSize(float size, FontStyle fs) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, size, fs); }
-        public Font GetFontStandardFontSize() { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, StandardFontSize); }
-        public Font GetFontStandardFontSize(FontStyle fs) { return BaseUtils.FontLoader.GetFont(currentsettings.fontname, StandardFontSize, fs); }
+        public Font GetDialogFont       // dialogs get a slighly smaller font
+        {
+            get
+            {       // we don't scale down fonts < 12 since they are v.small already
+                float fsize = currentsettings.fontsize >= 12 ? (currentsettings.fontsize * dialogscaling) : currentsettings.fontsize;
+                return GetFontSizeStyle(fsize, FontStyle.Regular);
+            }
+        }
+
+        public Font GetScaledFont(float scaling, FontStyle fs = FontStyle.Regular)
+        {
+            return GetFontSizeStyle(currentsettings.fontsize * scaling, fs);
+        }
+
+        public Font GetDialogScaledFont(float scaling, FontStyle fs = FontStyle.Regular)
+        {
+            float fsize = currentsettings.fontsize >= 12 ? (currentsettings.fontsize * dialogscaling) : currentsettings.fontsize;
+            return GetFontSizeStyle(fsize * scaling, fs);
+        }
+
+        private Font GetFontSizeStyle(float size, FontStyle fs)
+        {
+            if (currentsettings.fontname.Equals("") || currentsettings.fontsize < minfontsize)
+            {
+                currentsettings.fontname = "Microsoft Sans Serif";          // in case schemes were loaded badly
+                currentsettings.fontsize = 8.25F;
+            }
+
+            Font fnt = BaseUtils.FontLoader.GetFont(currentsettings.fontname, Math.Max(size,4f), fs);        // if it does not know the font, it will substitute Sans serif
+            return fnt;
+        }
 
         public Settings currentsettings;           // if name = custom, then its not a standard theme..
         protected List<Settings> themelist;
@@ -246,6 +276,8 @@ namespace ExtendedControls
 
             if (IsFontAvailable("Euro Caps"))
             {
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite EuroCaps High DPI", "Euro Caps", 20F, 95));
+
                 Color butback = Color.FromArgb(255, 32, 32, 32);
                 themelist.Add(new Settings("Elite EuroCaps Less Border", Color.Black,
                     Color.FromArgb(255, 64, 64, 64), Color.Orange, Color.FromArgb(255, 96, 96, 96), buttonstyle_gradient, // button
@@ -266,10 +298,16 @@ namespace ExtendedControls
             }
 
             if (IsFontAvailable("Verdana"))
-                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana", "Verdana", 8F));
+            {
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana", "Verdana", 10F));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana High DPI", "Verdana", 20F));
+            }
 
             if (IsFontAvailable("Calisto MT"))
+            {
                 themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Calisto", "Calisto MT", 12F));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Calisto High DPI", "Calisto MT", 20F));
+            }
 
             themelist.Add(new Settings("Easy Dark", Color.FromArgb(255, 65, 65, 65), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 245, 120, 30), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
@@ -288,6 +326,8 @@ namespace ExtendedControls
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 false, 100, "Arial", 9.75F));
 
+            themelist.Add(new Settings(themelist[themelist.Count - 1], "Easy Dark High DPI", "Arial", 20F));
+
             themelist.Add(new Settings("EDSM", Color.FromArgb(255, 39, 43, 48), // form
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
                 Color.FromArgb(255, 62, 68, 77), Color.FromArgb(255, 200, 200, 200), // grid borderback, bordertext
@@ -304,6 +344,19 @@ namespace ExtendedControls
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56), Color.FromArgb(255, 41, 46, 51), // toolstrip, back, border
                 Color.FromArgb(255, 255, 0, 0), // spanel
                 false, 100, "Arial", 10.25F));
+
+            themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM High DPI", "Arial", 20F));
+
+            if (IsFontAvailable("Arial Narrow"))
+            {
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM Arial Narrow", "Arial Narrow", 10.25F, 95));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM Arial Narrow High DPI", "Arial Narrow", 20F, 95));
+            }
+            if (IsFontAvailable("Euro Caps"))
+            {
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM EuroCaps", "Euro Caps", 10.25F, 95));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM EuroCaps High DPI", "Euro Caps", 20F, 95));
+            }
 
             themelist.Add(new Settings("Material Dark", Color.FromArgb(255, 54, 57, 63), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
@@ -322,11 +375,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 false, 100, "Microsoft Sans Serif", 9.75F));
 
-
-            if (IsFontAvailable("Arial Narrow"))
-                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM Arial Narrow", "Arial Narrow", 10.25F, 95));
-            if (IsFontAvailable("Euro Caps"))
-                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM EuroCaps", "Euro Caps", 10.25F, 95));
+            themelist.Add(new Settings(themelist[themelist.Count - 1], "Material Dark High DPI", "Microsoft Sans Serif", 20F));
 
             Color r1 = Color.FromArgb(255, 160, 0, 0);
             Color r2 = Color.FromArgb(255, 64, 0, 0);
@@ -410,58 +459,48 @@ namespace ExtendedControls
                                                false, 95, "Microsoft Sans Serif", 8.25F));
         }
 
-        // Note user controls need the Font applied to them, generally done outside of this class, to size their controls properly.  See popout control
-
-        public bool ApplyToFormStandardFontSize(Form form)
+        public bool ApplyStd(Control ctrl)      // normally a form, but can be a control, applies to this and ones below
         {
-            return ApplyToForm(form, GetFontAtSize(StandardFontSize));
+            return ApplyToForm(ctrl, GetFont);
         }
 
-        public bool ApplyToForm(Form form, float fontsize)
+        public bool ApplyDialog(Control ctrl)
         {
-            return ApplyToForm(form, GetFontAtSize(fontsize));
+            return ApplyToForm(ctrl, GetDialogFont);
         }
 
-        public bool ApplyToForm(Form form, Font fnt = null)
+        private bool ApplyToForm(Control form, Font fnt)
         {
-            if (fnt == null)
-                fnt = GetFont;                                          // do not apply to Form, only to sub controls
-
-            form.FormBorderStyle = WindowsFrame ? FormBorderStyle.Sizable : FormBorderStyle.None;
-            form.Opacity = currentsettings.formopacity / 100;
-            form.BackColor = currentsettings.colors[Settings.CI.form];
-
-            ApplyToControls(form, fnt);        // form is the parent of form!
-
-            UpdateToolsTripRenderer();
-
+            UpdateControls(form.Parent, form, fnt, 0);
+            UpdateToolsStripRenderer();
             return WindowsFrame;
         }
-
-        public void ApplyToControls(Control parent, Font fnt = null, bool applytothis = false)
-        {
-            if (fnt == null)
-                fnt = GetFont;                                          // do not apply to Form, only to sub controls
-
-            if (applytothis)
-                UpdateColorControls(parent.Parent, parent, fnt, 0);
-
-            foreach (Control c in parent.Controls)
-                UpdateColorControls(parent, c, fnt, 0);
-        }
-
-        private void UpdateColorControls(Control parent, Control myControl, Font fnt, int level)    // parent can be null
+        
+        private void UpdateControls(Control parent, Control myControl, Font fnt, int level)    // parent can be null
         {
 #if DEBUG
-            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString());
+            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
+            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false));
+         //   System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
+
             float mouseoverscaling = 1.3F;
             float mouseselectedscaling = 1.5F;
+
+            const bool paneldebugmode = false;      // set for some help in those pesky panels
 
             Type controltype = myControl.GetType();
             string parentnamespace = parent?.GetType().Namespace ?? "NoParent";
 
-            if (!parentnamespace.Equals("ExtendedControls") && (controltype.Name.Equals("Button") || controltype.Name.Equals("RadioButton") || controltype.Name.Equals("GroupBox") ||
+            if (myControl is Form)
+            {
+                Form f = myControl as Form;
+                f.FormBorderStyle = WindowsFrame ? FormBorderStyle.Sizable : FormBorderStyle.None;
+                f.Opacity = currentsettings.formopacity / 100;
+                f.BackColor = currentsettings.colors[Settings.CI.form];
+                f.Font = fnt;
+            }
+            else if (!parentnamespace.Equals("ExtendedControls") && (controltype.Name.Equals("Button") || controltype.Name.Equals("RadioButton") || controltype.Name.Equals("GroupBox") ||
                 controltype.Name.Equals("CheckBox") || controltype.Name.Equals("TextBox") ||
                 controltype.Name.Equals("ComboBox") || (controltype.Name.Equals("RichTextBox")))
                 )
@@ -498,13 +537,8 @@ namespace ExtendedControls
                     ctrl.ScrollBarFlatStyle = FlatStyle.Popup;
                 }
 
-                if (myControl.Font.Name.Contains("Courier"))                  // okay if we ordered a fixed font, don't override
-                {
-                    Font fntf = BaseUtils.FontLoader.GetFont(myControl.Font.Name, currentsettings.fontsize); // make one of the selected size
-                    myControl.Font = fntf;
-                }
-                else
-                    myControl.Font = fnt;
+                if (ctrl.ContextMenuStrip != null)      // propegate font
+                    ctrl.ContextMenuStrip.Font = fnt;
 
                 ctrl.Invalidate();
                 ctrl.PerformLayout();
@@ -515,7 +549,7 @@ namespace ExtendedControls
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
                 ctrl.BackColor = currentsettings.colors[Settings.CI.textbox_back];
                 ctrl.BackErrorColor = currentsettings.colors[Settings.CI.textbox_highlight];
-                ctrl.ControlBackground = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+                ctrl.ControlBackground = currentsettings.colors[Settings.CI.textbox_back]; // previously, but not sure why, GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
                 ctrl.BorderColor = Color.Transparent;
                 ctrl.BorderStyle = BorderStyle.None;
                 ctrl.AutoSize = true;
@@ -529,8 +563,6 @@ namespace ExtendedControls
                 else if (currentsettings.textboxborderstyle.Equals(TextboxBorderStyles[3]))
                     ctrl.BorderColor = currentsettings.colors[Settings.CI.textbox_border];
 
-                myControl.Font = fnt;
-
                 if (myControl is ExtTextBoxAutoComplete || myControl is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
                 {
                     ExtTextBoxAutoComplete actb = myControl as ExtTextBoxAutoComplete;
@@ -539,7 +571,6 @@ namespace ExtendedControls
                     actb.DropDownScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
                     actb.DropDownScrollBarColor = currentsettings.colors[Settings.CI.textbox_sliderback];
                     actb.DropDownMouseOverBackgroundColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
-                    actb.DropDownItemHeight = ItemHeightForFont();
 
                     if (currentsettings.buttonstyle.Equals(ButtonStyles[0]))
                         actb.FlatStyle = FlatStyle.System;
@@ -555,6 +586,7 @@ namespace ExtendedControls
             {
                 ExtButton ctrl = (ExtButton)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
+                ctrl.AutoSize = true;
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
                 {
@@ -564,32 +596,31 @@ namespace ExtendedControls
                 else
                 {
                     ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
-                    //TBD check with EDD - why did we do the 1.0f
 
                     if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
                     {
                         System.Drawing.Imaging.ColorMap colormap1 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                        colormap1.OldColor = Color.FromArgb(134, 134, 134);                                        // gray is defined as the forecolour to use in system mode
+                        colormap1.OldColor = Color.FromArgb(134, 134, 134);                                      // gray is defined as the forecolour
                         colormap1.NewColor = ctrl.ForeColor;
                         //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap1.OldColor + " to " + colormap1.NewColor);
 
                         System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                        colormap2.OldColor = Color.FromArgb(255, 255, 255);                                        // gray is defined as the forecolour to use in system mode
+                        colormap2.OldColor = Color.FromArgb(255, 255, 255);                                      // and white is defined as the forecolour
                         colormap2.NewColor = ctrl.ForeColor;
                         //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap2.OldColor + " to " + colormap2.NewColor);
 
                         ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap1, colormap2 });     // used ButtonDisabledScaling note!
+
+                        ctrl.ImageLayout = ImageLayout.Stretch;
                     }
 
                     if (ctrl.Image != null && ctrl.Text.Length == 0)        // if no text, just image, background is form to make the back disappear
                     {
                         ctrl.BackColor = currentsettings.colors[Settings.CI.form];
-//                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
                     }
                     else
                     {
                         ctrl.BackColor = currentsettings.colors[Settings.CI.button_back];       // else its a graduated back
-//                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
                     }
 
                     ctrl.FlatAppearance.BorderColor = (ctrl.Image != null) ? currentsettings.colors[Settings.CI.form] : currentsettings.colors[Settings.CI.button_border];
@@ -602,8 +633,6 @@ namespace ExtendedControls
                     else
                         ctrl.FlatStyle = FlatStyle.Popup;
                 }
-
-                myControl.Font = fnt;
             }
             else if (myControl is ExtTabControl)
             {
@@ -625,7 +654,6 @@ namespace ExtendedControls
                 else
                     ctrl.FlatStyle = FlatStyle.System;
 
-                ctrl.Font = fnt;
             }
             else if (myControl is ExtListBox)
             {
@@ -644,16 +672,12 @@ namespace ExtendedControls
                     ctrl.ScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
                     ctrl.ScrollBarColor = currentsettings.colors[Settings.CI.textbox_sliderback];
 
-                    if (ctrl.ImageItems == null)        // ones with images are not auto set..
-                        ctrl.ItemHeight = ItemHeightForFont();
-
                     if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
                         ctrl.FlatStyle = FlatStyle.Flat;
                     else
                         ctrl.FlatStyle = FlatStyle.Popup;
                 }
 
-                myControl.Font = fnt;
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
             }
             else if (myControl is ExtPanelDropDown)
@@ -661,15 +685,12 @@ namespace ExtendedControls
                 ExtPanelDropDown ctrl = (ExtPanelDropDown)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
                 ctrl.SelectionMarkColor = ctrl.ForeColor;
-                ctrl.ItemHeight = ItemHeightForFont();
                 ctrl.BackColor = ctrl.SelectionBackColor = currentsettings.colors[Settings.CI.button_back];
                 ctrl.BorderColor = currentsettings.colors[Settings.CI.button_border];
                 ctrl.MouseOverBackgroundColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
                 ctrl.ScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
                 ctrl.ScrollBarColor = currentsettings.colors[Settings.CI.textbox_sliderback];
                 ctrl.FlatStyle = FlatStyle.Popup;
-
-                myControl.Font = fnt;
             }
             else if (myControl is ExtComboBox)
             {
@@ -693,23 +714,17 @@ namespace ExtendedControls
                     else
                         ctrl.FlatStyle = FlatStyle.Popup;
 
-                    ctrl.ItemHeight = ItemHeightForFont();
                 }
 
-                myControl.Font = fnt;
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
             }
             else if (myControl is NumericUpDown)
             {                                                                   // BACK colour does not work..
                 myControl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
-                myControl.Font = fnt;
             }
-            else if (myControl is ExtDrawnPanelNoTheme)        // ignore these..
+            else if (myControl is ExtButtonDrawn)
             {
-            }
-            else if (myControl is ExtPanelDrawn)
-            {
-                ExtPanelDrawn ctrl = (ExtPanelDrawn)myControl;
+                ExtButtonDrawn ctrl = (ExtButtonDrawn)myControl;
                 ctrl.BackColor = currentsettings.colors[Settings.CI.form];
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.label];
                 ctrl.MouseOverColor = currentsettings.colors[Settings.CI.label].Multiply(mouseoverscaling);
@@ -721,20 +736,32 @@ namespace ExtendedControls
                 ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
                 //System.Diagnostics.Debug.WriteLine("Drawn Panel Image button " + ctrl.Name);
             }
+            else if (myControl is TableLayoutPanel)
+            {
+                myControl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+            }
+            else if (myControl is ExtPanelRollUp)
+            {
+                myControl.BackColor = paneldebugmode ? Color.Green : GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+            }
+            else if (myControl is FlowLayoutPanel)
+            {
+                FlowLayoutPanel ctrl = myControl as FlowLayoutPanel;
+                ctrl.BackColor = paneldebugmode ? Color.Red : GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+            }
             else if (myControl is PanelNoTheme)
             {
             }
             else if (myControl is Panel)
             {
-                myControl.BackColor = currentsettings.colors[Settings.CI.form];
+                myControl.BackColor = paneldebugmode ? Color.Blue : currentsettings.colors[Settings.CI.form];
                 myControl.ForeColor = currentsettings.colors[Settings.CI.label];
             }
             else if (myControl is Label)
             {
                 myControl.ForeColor = currentsettings.colors[Settings.CI.label];
-                myControl.Font = fnt;
 
-                if ( myControl is ExtLabel )
+                if (myControl is ExtLabel)
                     (myControl as ExtLabel).TextBackColor = currentsettings.colors[Settings.CI.form];
             }
             else if (myControl is ExtGroupBox)
@@ -744,52 +771,44 @@ namespace ExtendedControls
                 ctrl.BackColor = currentsettings.colors[Settings.CI.group_back];
                 ctrl.BorderColor = currentsettings.colors[Settings.CI.group_borderlines];
                 ctrl.FlatStyle = FlatStyle.Flat;           // always in Flat, always apply our border.
-                ctrl.Font = fnt;
             }
             else if (myControl is ExtCheckBox)
             {
                 ExtCheckBox ctrl = (ExtCheckBox)myControl;
 
-                if (ctrl.Appearance != Appearance.Button)          // NOT Button
+                ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+
+                if (ctrl.Appearance == Appearance.Button)
                 {
-                    ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
+                    ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
+                    ctrl.MouseOverColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
+                    ctrl.CheckColor = currentsettings.colors[Settings.CI.button_back].Multiply(0.9f);
+                }
+                else
+                {
                     ctrl.ForeColor = currentsettings.colors[Settings.CI.checkbox];
                     ctrl.CheckBoxColor = currentsettings.colors[Settings.CI.checkbox];
                     ctrl.CheckBoxInnerColor = currentsettings.colors[Settings.CI.checkbox].Multiply(1.5F);
                     ctrl.MouseOverColor = currentsettings.colors[Settings.CI.checkbox].Multiply(1.4F);
-                    ctrl.TickBoxReductionSize = (fnt.SizeInPoints > 10) ? 10 : 6;
+                    ctrl.TickBoxReductionRatio = 0.75f;
                     ctrl.CheckColor = currentsettings.colors[Settings.CI.checkbox_tick];
-                    ctrl.Font = fnt;
-
-                    if (ctrl.Image == null)       // only for unimage ones
-                    {
-                        if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
-                            ctrl.FlatStyle = FlatStyle.System;
-                        else if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
-                            ctrl.FlatStyle = FlatStyle.Flat;
-                        else
-                            ctrl.FlatStyle = FlatStyle.Popup;
-                    }
-                    else
-                    {
-                        System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                        colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
-                        colormap.NewColor = ctrl.ForeColor;
-                        System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();
-                        colormap2.OldColor = Color.FromArgb(222, 222, 222);
-                        colormap2.NewColor = ctrl.ForeColor.Multiply(0.85F);
-                        ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
-                    }
-
                 }
-                else if (ctrl.FlatStyle == FlatStyle.Flat)           // BUTTON and FLAT
+
+                if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
+                    ctrl.FlatStyle = FlatStyle.System;
+                else if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
+                    ctrl.FlatStyle = FlatStyle.Flat;
+                else
+                    ctrl.FlatStyle = FlatStyle.Popup;
+
+                if (ctrl.Image != null)
                 {
-                    ctrl.ForeColor = currentsettings.colors[Settings.CI.checkbox];
-                    ctrl.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.button_back]);
-                    ctrl.FlatAppearance.CheckedBackColor = currentsettings.colors[Settings.CI.checkbox].MultiplyBrightness(0.5F);
-                    ctrl.FlatAppearance.MouseOverBackColor = currentsettings.colors[Settings.CI.button_back].InvertBrightness(mouseoverscaling);
-                    ctrl.FlatAppearance.MouseDownBackColor = currentsettings.colors[Settings.CI.button_back].InvertBrightness(mouseselectedscaling);
-                    ctrl.FlatAppearance.BorderColor = currentsettings.colors[Settings.CI.button_border];
+                    System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       
+                    colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
+                    colormap.NewColor = ctrl.ForeColor;
+                    ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
+
+                    ctrl.ImageLayout = ImageLayout.Stretch;
                 }
             }
             else if (myControl is ExtRadioButton)
@@ -797,7 +816,6 @@ namespace ExtendedControls
                 ExtRadioButton ctrl = (ExtRadioButton)myControl;
 
                 ctrl.FlatStyle = FlatStyle.System;
-                ctrl.Font = fnt;
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
                     ctrl.FlatStyle = FlatStyle.System;
@@ -835,10 +853,7 @@ namespace ExtendedControls
                 ctrl.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
                 ctrl.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 
-                ctrl.Font = fnt;
-                Font fnt2;
-
-                foreach(DataGridViewColumn col in ctrl.Columns)
+                foreach (DataGridViewColumn col in ctrl.Columns)
                 {
                     if (col.CellType == typeof(DataGridViewComboBoxCell))
                     {   // Need to set flat style for colours to take on combobox cells.
@@ -852,14 +867,8 @@ namespace ExtendedControls
                     }
                 }
 
-                if (myControl.Name.Contains("dataGridViewTravel") && fnt.Size > 10F)
-                    fnt2 = BaseUtils.FontLoader.GetFont(currentsettings.fontname, 10F);
-                else
-                    fnt2 = fnt;
-
-                ctrl.ColumnHeadersDefaultCellStyle.Font = fnt2;
-                ctrl.RowHeadersDefaultCellStyle.Font = fnt2;
-                ctrl.Columns[0].DefaultCellStyle.Font = fnt2;
+                if (ctrl.ContextMenuStrip != null)       // propergate font onto any attached context menus
+                    ctrl.ContextMenuStrip.Font = fnt;
             }
             else if (myControl is ExtScrollBar && !(parent is ExtListBox || parent is ExtRichTextBox))
             {                   // selected items need VScroll controlled here. Others control it themselves
@@ -894,6 +903,7 @@ namespace ExtendedControls
                 Color c1 = currentsettings.colors[Settings.CI.textbox_scrollbutton];
                 ctrl.updown.BackColor = c1;
                 ctrl.updown.ForeColor = currentsettings.colors[Settings.CI.textbox_scrollarrow];
+                ctrl.updown.BorderColor = currentsettings.colors[Settings.CI.button_border];
                 ctrl.updown.MouseOverColor = c1.Multiply(mouseoverscaling);
                 ctrl.updown.MouseSelectedColor = c1.Multiply(mouseselectedscaling);
                 ctrl.Invalidate();
@@ -902,6 +912,13 @@ namespace ExtendedControls
             {
                 Chart ctrl = (Chart)myControl;
                 ctrl.BackColor = Color.Transparent;
+            }
+            else if (myControl is PictureBox)
+            {
+                PictureBox ctrl = (PictureBox)myControl;
+
+                if (ctrl.ContextMenuStrip != null)       // propergate font onto any attached context menus
+                    ctrl.ContextMenuStrip.Font = fnt;
             }
             else if (myControl is ExtDateTimePicker)
             {
@@ -917,7 +934,7 @@ namespace ExtendedControls
                 else
                     ctrl.checkbox.FlatStyle = FlatStyle.Popup;
 
-                ctrl.checkbox.TickBoxReductionSize = 4;
+                ctrl.checkbox.TickBoxReductionRatio = 0.75f;
                 ctrl.checkbox.ForeColor = currentsettings.colors[Settings.CI.checkbox];
                 ctrl.checkbox.CheckBoxColor = currentsettings.colors[Settings.CI.checkbox];
                 Color inner = currentsettings.colors[Settings.CI.checkbox].Multiply(1.5F);
@@ -938,10 +955,11 @@ namespace ExtendedControls
             {
                 myControl.BackColor = currentsettings.colors[Settings.CI.form];
                 myControl.ForeColor = currentsettings.colors[Settings.CI.label];
-                myControl.Font = fnt;
             }
-            else if (myControl is ToolStrip)
+            else if (myControl is ToolStrip)    // MenuStrip is a tool stip
             {
+                myControl.Font = fnt;       // Toolstrips don't seem to inherit Forms font, so force
+
                 foreach (ToolStripItem i in ((ToolStrip)myControl).Items)   // make sure any buttons have the button back colour set
                 {
                     if (i is ToolStripButton || i is ToolStripDropDownButton)
@@ -954,13 +972,14 @@ namespace ExtendedControls
                         i.BackColor = currentsettings.colors[Settings.CI.textbox_back];
                     }
 
-                    i.Font = fnt;
+                    //??                    i.Font = fnt;
                 }
             }
             else if (myControl is TabStrip)
             {
                 TabStrip ts = myControl as TabStrip;
                 //System.Diagnostics.Debug.WriteLine("*************** TAB Strip themeing" + myControl.Name + " " + myControl.Tag);
+                ts.ForeColor = currentsettings.colors[Settings.CI.button_text];
                 ts.DropDownBackgroundColor = currentsettings.colors[Settings.CI.button_back];
                 ts.DropDownBorderColor = currentsettings.colors[Settings.CI.textbox_border];
                 ts.DropDownScrollBarButtonColor = currentsettings.colors[Settings.CI.textbox_scrollbutton];
@@ -970,7 +989,7 @@ namespace ExtendedControls
                 ts.EmptyColor = currentsettings.colors[Settings.CI.button_back];
                 ts.SelectedBackColor = currentsettings.colors[Settings.CI.button_back];
             }
-            else if ( myControl is CompositeButton )
+            else if (myControl is CompositeButton)
             {
                 return;     // no themeing of it or sub controls
             }
@@ -980,7 +999,7 @@ namespace ExtendedControls
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
                 ctrl.BackColor = currentsettings.colors[Settings.CI.textbox_back];
             }
-            else if ( myControl is CheckedIconListBoxForm )
+            else if (myControl is CheckedIconListBoxForm)
             {
                 CheckedIconListBoxForm ctrl = myControl as CheckedIconListBoxForm;
 
@@ -997,13 +1016,14 @@ namespace ExtendedControls
                 }
             }
 
+            //System.Diagnostics.Debug.WriteLine("                  " + level + " Control " + myControl.Name + " " + myControl.Location + " " + myControl.Size);
+
             foreach (Control subC in myControl.Controls)
-            {
-                UpdateColorControls(myControl, subC, fnt, level + 1);
-            }
+                UpdateControls(myControl, subC, fnt, level + 1);
         }
 
-        private void UpdateToolsTripRenderer()
+
+        private void UpdateToolsStripRenderer()
         {
             ThemeToolStripRenderer toolstripRenderer = ToolStripManager.Renderer as ThemeToolStripRenderer;
 
@@ -1045,7 +1065,15 @@ namespace ExtendedControls
 
         public Color GroupBoxOverride(Control parent, Color d)      // if its a group box behind the control, use the group box back color..
         {
-            return (parent is GroupBox) ? currentsettings.colors[Settings.CI.group_back] : d;
+            Control x = parent;
+            while( x != null )
+            {
+                if (x is GroupBox)
+                    return currentsettings.colors[Settings.CI.group_back];
+                x = x.Parent;
+            }
+
+            return d;
         }
 
         public List<string> GetThemeList()

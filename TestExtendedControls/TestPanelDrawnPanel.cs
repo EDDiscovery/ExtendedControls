@@ -33,7 +33,7 @@ namespace DialogTest
                 Controls.Add(l);
                 hpos += l.Size.Width + 4;
 
-                foreach (var x in Enum.GetValues(typeof(ExtPanelDrawn.ImageType)).Cast<ExtPanelDrawn.ImageType>())
+                foreach (var x in Enum.GetValues(typeof(ExtButtonDrawn.ImageType)).Cast<ExtButtonDrawn.ImageType>())
                 {
                     if (hpos > this.Width - 40)
                     {
@@ -41,7 +41,7 @@ namespace DialogTest
                         vpos += size + 4;
                     }
 
-                    ExtPanelDrawn p = new ExtPanelDrawn();
+                    ExtButtonDrawn p = new ExtButtonDrawn();
                     p.Location = new Point(hpos, vpos);
                     p.Size = new Size(size, size);
                     p.ImageSelected = x;
