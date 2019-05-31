@@ -32,6 +32,7 @@ namespace DialogTest
         {
             theme.FontSize = 12;
             theme.ApplyStd(this);
+            System.Diagnostics.Debug.WriteLine("Font " + this.Font + this.Font.Height);
 
         }
 
@@ -39,6 +40,15 @@ namespace DialogTest
         {
             theme.FontSize = 20;
             theme.ApplyStd(this);
+            System.Diagnostics.Debug.WriteLine("Font " + this.Font + this.Font.Height);
+        }
+
+        private void extButton3_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 8.5f;
+            theme.ApplyStd(this);
+            System.Diagnostics.Debug.WriteLine("Font " + this.Font + this.Font.Height);
+
         }
 
         int tabstyle = 0;

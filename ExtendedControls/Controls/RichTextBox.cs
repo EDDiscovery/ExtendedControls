@@ -86,8 +86,8 @@ namespace ExtendedControls
         {
             if (ShowLineCount)
             {
-                s = lc + ":" + s;
-                lc++;
+                s = linecounter + ":" + s;
+                linecounter++;
             }
             TextBox.AppendText(s);
             TextBox.ScrollToCaret();
@@ -98,8 +98,8 @@ namespace ExtendedControls
         {
             if (ShowLineCount)
             {
-                s = lc + ":" + s;
-                lc++;
+                s = linecounter + ":" + s;
+                linecounter++;
             }
 
             TextBox.SelectionStart = TextBox.TextLength;
@@ -139,6 +139,7 @@ namespace ExtendedControls
 
         private RichTextBoxBack TextBox;                 // Use these with caution.
         private ExtScrollBar ScrollBar;
+        private int linecounter = 1;
 
         public ExtRichTextBox() : base()
         {
@@ -184,79 +185,77 @@ namespace ExtendedControls
             }
         }
 
-
-        bool visibleonlayout = false;
+        bool scrollbarvisibleonlayout = false;
 
         protected override void OnLayout(LayoutEventArgs levent)
         {
             base.OnLayout(levent);
 
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
+            int textboxclienth = ClientRectangle.Height - bordersize * 2;
 
-            int textboxclienth = ClientRectangle.Height - bordersize * 2;       // border is within Client area
-            int linesinbox = EstimateLinesInBox(textboxclienth);
-
-            int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
-            ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, linesinbox);
-
-            visibleonlayout = ScrollBar.IsScrollBarOn || DesignMode || !HideScrollBar;  // Hide must be on, or in design mode, or scroll bar is on due to values
+            scrollbarvisibleonlayout = ScrollBar.IsScrollBarOn || DesignMode || !HideScrollBar;  // Hide must be on, or in design mode, or scroll bar is on due to values
 
             TextBox.Location = new Point(bordersize, bordersize);
-            TextBox.Size = new Size(ClientRectangle.Width - (visibleonlayout ? ScrollBarWidth : 0) - bordersize * 2, textboxclienth);
-
-            //System.Diagnostics.Debug.WriteLine(this.Name + " text box size " + textboxclienth + " Lines " + linesinbox );
+            TextBox.Size = new Size(ClientRectangle.Width - (scrollbarvisibleonlayout ? ScrollBarWidth : 0) - bordersize * 2, textboxclienth);
 
             ScrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
             ScrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
-            
-            //System.Diagnostics.Debug.WriteLine("layout Scroll State Lines: " + LineCount + " FVL: " + firstVisibleLine + " textlines " + textboxlinesestimate);
         }
 
-        private void UpdateScrollBar()            // from the richtext, set the scroll bar
+        int visiblelines = 1;
+
+        protected override void OnFontChanged(EventArgs e)      // these events can change visible lines
+        {
+            base.OnFontChanged(e);
+            visiblelines = CalcVisibleLines(ClientRectangle.Height);
+            UpdateScrollBar();
+        }
+
+        protected override void OnResize(EventArgs eventargs)
+        {
+            base.OnResize(eventargs);
+            if (Width > 0)
+            {
+                visiblelines = CalcVisibleLines(ClientRectangle.Height);
+                UpdateScrollBar();
+            }
+        }
+
+        public float FontPixels()
+        {
+            using (var g = this.CreateGraphics())
+            {
+                Size f = TextRenderer.MeasureText(g, "FRED" + Environment.NewLine + "FRED" + Environment.NewLine + "FRED" + Environment.NewLine + "FRED", this.Font);
+                return (float)f.Height / 4.0f;
+            }
+        }
+
+        public int CalcVisibleLines(int height)
         {
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
-            int textboxclienth = ClientRectangle.Height - bordersize * 2;
-            int linesinbox = EstimateLinesInBox(textboxclienth);
+            int textboxclienth = height - bordersize * 2;
+            float fh = FontPixels();
+            float fvs = (float)textboxclienth / fh;
+            System.Diagnostics.Debug.WriteLine("Visible lines " + ((int)fvs) + " h " + textboxclienth + " fract " + fvs);
+            return (int)fvs;
+        }
 
+        private void UpdateScrollBar()            // from the richtext, vscroll occurred, set the scroll bar
+        {
             int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
-
-            //System.Diagnostics.Debug.WriteLine("Scroll State Lines: " + LineCount+ " FVL: " + firstVisibleLine + " textlines " + textboxlinesestimate);
-
-            ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, linesinbox );
-
-            if (ScrollBar.IsScrollBarOn != visibleonlayout)     // need to relayout if scroll bars pop on
+            ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
+            if (ScrollBar.IsScrollBarOn != scrollbarvisibleonlayout)     // need to relayout if scroll bars pop on
                 PerformLayout();
-        }
-
-        public double GetRealFontHeight()
-        {
-            //System.Diagnostics.Debug.WriteLine("Font " + FontHeight + " " + Font.GetHeight());
-            int h = FontHeight;
-            if (h > 16)     // FUDGE - seems to show 1 below. measured.
-               h++;
-            return h;
-        }
-
-        public int EstimateLinesInBox(int height)
-        {
-            int lines = (int)(height/ GetRealFontHeight()) + ScrollBarLineTweak;
-            //System.Diagnostics.Debug.WriteLine(this.Name + " Est Lines " + lines +" h " + height + " on " + GetRealFontHeight() + " Font " + Font.Name + " " + Font.Size + " "  + FontHeight);
-            return lines;
         }
 
         public int EstimateVerticalSizeFromText()
         {
             int lastselpos = this.Text.Length;
             int numberlines = (lastselpos >= 0) ? (TextBox.GetLineFromCharIndex(lastselpos) + 1) : 0;
-            //            previous method did not incl word wrap int numberlines = TextBox.Lines.Count();
-
-            //System.Diagnostics.Debug.WriteLine("Estimated " + numberlines + " incl word wrap" + " total lines " + TextBox.Lines.Count());
-
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
-            double fonth = GetRealFontHeight();
-            int pixels = (int)( fonth * numberlines) + bordersize * 2 + 4;      // 4 extra for border area of this (bounds-client rect)
-            //System.Diagnostics.Debug.WriteLine("Est Box " + numberlines + " " + bordersize + " " + fonth + " " + pixels + " " );
-            return pixels;
+            int neededpixels = (int)(FontPixels() * numberlines) + bordersize * 2 + 4;      // 4 extra for border area of this (bounds-client rect)
+            return neededpixels;
         }
 
         protected virtual void OnVscrollChanged(object sender, EventArgs e) // comes from TextBox, update scroll..
@@ -264,15 +263,9 @@ namespace ExtendedControls
             UpdateScrollBar();
         }
 
-        protected virtual void OnScrollBarChanged(object sender, ScrollEventArgs e)
+        protected virtual void OnScrollBarChanged(object sender, ScrollEventArgs e) // comes from scroll bar, update text position
         {
             ScrollToBar();
-        }
-
-        protected override void OnGotFocus(EventArgs e)             // Focus on us is given to the text box.
-        {
-            base.OnGotFocus(e);
-            TextBox.Focus();
         }
 
         private void ScrollToBar()              // from the scrollbar, scroll first line to value
@@ -284,18 +277,24 @@ namespace ExtendedControls
             //Console.WriteLine("Scroll Bar:" + scrollvalue + " FVL: " + firstVisibleLine + " delta " + delta);
             if (delta != 0)
             {
-                TextBox.SendMessage(EM.LINESCROLL, IntPtr.Zero, (IntPtr)(scrollvalue - firstVisibleLine));
+                TextBox.SendMessage(EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
             }
         }
 
-        protected virtual void MWheel(object sender, MouseEventArgs e)
+        protected virtual void MWheel(object sender, MouseEventArgs e)  // mouse, we move then scroll to bar
         {
-            if (e.Delta > 0 )
+            if (e.Delta > 0)
                 ScrollBar.ValueLimited--;                  // control takes care of end limits..
             else
                 ScrollBar.ValueLimited++;           // end is UserLimit, not maximum
 
             ScrollToBar();                          // go to scroll position
+        }
+
+        protected override void OnGotFocus(EventArgs e)             // Focus on us is given to the text box.
+        {
+            base.OnGotFocus(e);
+            TextBox.Focus();
         }
 
         protected void TextChangeEventHandler(object sender, EventArgs e)
@@ -305,8 +304,6 @@ namespace ExtendedControls
         }
 
         #endregion
-
-        private int lc = 1;
 
         private void TextBox_MouseLeave(object sender, EventArgs e)             // using the text box mouse actions, pass thru to ours so registered handlers work
         {
@@ -332,7 +329,6 @@ namespace ExtendedControls
         {
             base.OnMouseUp(e);
         }
-
 
     }
 }
