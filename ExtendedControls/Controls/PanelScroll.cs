@@ -30,7 +30,7 @@ namespace ExtendedControls
 
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
+        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }
 
         public ExtScrollBar ScrollBar;
 
