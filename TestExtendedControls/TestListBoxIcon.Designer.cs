@@ -108,7 +108,6 @@
             this.extRichTextBox1.ScrollBarBorderColor = System.Drawing.Color.White;
             this.extRichTextBox1.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extRichTextBox1.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.extRichTextBox1.ScrollBarLineTweak = 0;
             this.extRichTextBox1.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
             this.extRichTextBox1.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
             this.extRichTextBox1.ScrollBarSliderColor = System.Drawing.Color.DarkGray;

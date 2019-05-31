@@ -58,6 +58,12 @@
     <Compile Include="TestDateTime.Designer.cs">
       <DependentUpon>TestDateTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestTextBoxesRTF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestTextBoxesRTF.Designer.cs">
+      <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestVScroll.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -183,6 +189,9 @@
     <EmbeddedResource Include="TestDateTime.resx">
       <DependentUpon>TestDateTime.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestTextBoxesRTF.resx">
+      <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestVScroll.resx">
       <DependentUpon>TestVScroll.cs</DependentUpon>
     </EmbeddedResource>
@@ -263,6 +272,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\EDD License.rtf" />
     <None Include="Resources\Logo8bpp48.pspimage" />
     <None Include="Resources\Thumbs.db" />
   </ItemGroup>
