@@ -62,7 +62,7 @@ namespace ExtendedControls
         public override string Text { get { return TextBox.Text; } set { TextBox.Text = value; UpdateScrollBar(); } }                // return only textbox text
         public string[] Lines {  get { return TextBox.Lines; } }
 
-        public string Rtf { get { return TextBox.Rtf; } set { TextBox.Rtf = value; } }
+        public string Rtf { get { return TextBox.Rtf; } set { TextBox.Rtf = value; UpdateScrollBar(); } }
         public int LineCount { get { return TextBox.GetLineFromCharIndex(TextBox.Text.Length) + 1; } }
 
         public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
@@ -235,7 +235,7 @@ namespace ExtendedControls
             int textboxclienth = height - bordersize * 2;
             float fh = FontPixels();
             float fvs = (float)textboxclienth / fh;
-            System.Diagnostics.Debug.WriteLine("Visible lines " + ((int)fvs) + " h " + textboxclienth + " fract " + fvs);
+            //System.Diagnostics.Debug.WriteLine("Visible lines " + ((int)fvs) + " h " + textboxclienth + " fract " + fvs);
             return (int)fvs;
         }
 
