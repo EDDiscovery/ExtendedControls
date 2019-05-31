@@ -60,7 +60,7 @@ namespace ExtendedControls
 
         public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(textbox, text); } // only needed for dynamic changes..
 
-        public Action<ExtTextBox> ReturnPressed;                              // fires if return pressed
+        public Func<ExtTextBox,bool> ReturnPressed;                          // fires if return pressed. Return true if supress return
 
         public bool EndButtonVisible                                         // extra visual control added within the bounds of the textbox border at end
         {
@@ -346,7 +346,10 @@ namespace ExtendedControls
 
             if (e.KeyChar == '\r')
             {
-                ReturnPressed?.Invoke(this);
+                if (ReturnPressed != null)
+                {
+                    e.Handled = ReturnPressed.Invoke(this);
+                }
             }
 
             OnKeyPress(e);

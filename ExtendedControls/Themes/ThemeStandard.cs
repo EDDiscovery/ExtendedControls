@@ -298,10 +298,16 @@ namespace ExtendedControls
             }
 
             if (IsFontAvailable("Verdana"))
-                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana", "Verdana", 8F));
+            {
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana", "Verdana", 10F));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana High DPI", "Verdana", 20F));
+            }
 
             if (IsFontAvailable("Calisto MT"))
+            {
                 themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Calisto", "Calisto MT", 12F));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Calisto High DPI", "Calisto MT", 20F));
+            }
 
             themelist.Add(new Settings("Easy Dark", Color.FromArgb(255, 65, 65, 65), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 245, 120, 30), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
@@ -320,6 +326,8 @@ namespace ExtendedControls
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 false, 100, "Arial", 9.75F));
 
+            themelist.Add(new Settings(themelist[themelist.Count - 1], "Easy Dark High DPI", "Arial", 20F));
+
             themelist.Add(new Settings("EDSM", Color.FromArgb(255, 39, 43, 48), // form
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
                 Color.FromArgb(255, 62, 68, 77), Color.FromArgb(255, 200, 200, 200), // grid borderback, bordertext
@@ -336,6 +344,19 @@ namespace ExtendedControls
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56), Color.FromArgb(255, 41, 46, 51), // toolstrip, back, border
                 Color.FromArgb(255, 255, 0, 0), // spanel
                 false, 100, "Arial", 10.25F));
+
+            themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM High DPI", "Arial", 20F));
+
+            if (IsFontAvailable("Arial Narrow"))
+            {
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM Arial Narrow", "Arial Narrow", 10.25F, 95));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM Arial Narrow High DPI", "Arial Narrow", 20F, 95));
+            }
+            if (IsFontAvailable("Euro Caps"))
+            {
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM EuroCaps", "Euro Caps", 10.25F, 95));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM EuroCaps High DPI", "Euro Caps", 20F, 95));
+            }
 
             themelist.Add(new Settings("Material Dark", Color.FromArgb(255, 54, 57, 63), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
@@ -354,11 +375,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 false, 100, "Microsoft Sans Serif", 9.75F));
 
-
-            if (IsFontAvailable("Arial Narrow"))
-                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM Arial Narrow", "Arial Narrow", 10.25F, 95));
-            if (IsFontAvailable("Euro Caps"))
-                themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM EuroCaps", "Euro Caps", 10.25F, 95));
+            themelist.Add(new Settings(themelist[themelist.Count - 1], "Material Dark High DPI", "Microsoft Sans Serif", 20F));
 
             Color r1 = Color.FromArgb(255, 160, 0, 0);
             Color r2 = Color.FromArgb(255, 64, 0, 0);

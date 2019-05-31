@@ -26,12 +26,13 @@ namespace ExtendedControls
     {
         // returns dialog logical name, name of control (plus options), caller tag object
         // name of control on click for button / Checkbox / ComboBox
-        // name:Return for number box, textBox 
+        // name:Return for number box, textBox.  Set SwallowReturn to true before returning to swallow the return
         // name:Validity:true/false for Number boxes,
         // Cancel for ending dialog,
         // Escape for escape.
 
         public event Action<string, string, Object> Trigger;        
+        public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
 
         private List<Entry> entries;
         private Object callertag;
@@ -402,15 +403,13 @@ namespace ExtendedControls
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
             ExtPanelScroll outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle };
+            outer.MouseDown += FormMouseDown;
+            outer.MouseUp += FormMouseUp;
+            Controls.Add(outer);
 
             ExtScrollBar scr = new ExtScrollBar();
             scr.HideScrollBar = true;
             outer.Controls.Add(scr);
-
-            outer.MouseDown += FormMouseDown;
-            outer.MouseUp += FormMouseUp;
-
-            Controls.Add(outer);
 
             this.Text = caption;
 
@@ -461,11 +460,14 @@ namespace ExtendedControls
                         cb.Format = ent.numberboxformat;
                     cb.ReturnPressed += (box) =>
                     {
+                        SwallowReturn = false;
                         if (!ProgClose)
                         {
                             Entry en = (Entry)(box.Tag);
                             Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
+
+                        return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
@@ -487,11 +489,13 @@ namespace ExtendedControls
                         cb.Format = ent.numberboxformat;
                     cb.ReturnPressed += (box) =>
                     {
+                        SwallowReturn = false;
                         if (!ProgClose)
                         {
                             Entry en = (Entry)(box.Tag);
                             Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
+                        return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
@@ -510,11 +514,13 @@ namespace ExtendedControls
                     tb.ClearOnFirstChar = ent.clearonfirstchar;
                     tb.ReturnPressed += (box) =>
                     {
+                        SwallowReturn = false;
                         if (!ProgClose)
                         {
                             Entry en = (Entry)(box.Tag);
                             Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
+                        return SwallowReturn;
                     };
                 }
                 else if (c is ExtendedControls.ExtCheckBox)
@@ -596,9 +602,14 @@ namespace ExtendedControls
             Location = pos;
 
             this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height,false,64, centrecoords:posiscentrecoords);
+        }
 
-            //foreach( Control c in Controls[0].Controls )   System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
-
+        protected override void OnShown(EventArgs e)
+        {
+            Control firsttextbox = Controls[0].Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete) });
+            if (firsttextbox != null)
+                firsttextbox.Focus();       // focus on first text box
+            base.OnShown(e);
         }
 
         protected override void Dispose(bool disposing)

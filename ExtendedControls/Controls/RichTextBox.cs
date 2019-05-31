@@ -65,8 +65,6 @@ namespace ExtendedControls
         public string Rtf { get { return TextBox.Rtf; } set { TextBox.Rtf = value; } }
         public int LineCount { get { return TextBox.GetLineFromCharIndex(TextBox.Text.Length) + 1; } }
 
-        public int ScrollBarLineTweak { get; set; } = 0;            // cause or before layout
-
         public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
 
         public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(TextBox, text); } // only needed for dynamic changes..

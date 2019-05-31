@@ -93,7 +93,6 @@
             this.themeTextBox.ScrollBarBorderColor = System.Drawing.Color.White;
             this.themeTextBox.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
             this.themeTextBox.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.themeTextBox.ScrollBarLineTweak = 0;
             this.themeTextBox.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
             this.themeTextBox.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
             this.themeTextBox.ScrollBarSliderColor = System.Drawing.Color.DarkGray;

@@ -26,6 +26,11 @@ using System.Windows.Forms;
  * See http://www.codeproject.com/info/cpol10.aspx for details
  */
 
+/* 30-5-2019 during font rescaling, it won't fix the display rectangle of the tabpage until another one is clicked on.  this effs the border 
+ * computation up
+ * tried a few things, not the end of the world, try again later
+ */
+
 namespace ExtendedControls
 {
     public class ExtTabControl : TabControl

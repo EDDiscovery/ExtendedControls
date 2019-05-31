@@ -97,6 +97,11 @@ namespace ExtendedControls
             SetPin(false);
         }
 
+        protected override void OnHandleDestroyed(EventArgs e)      // seen it continuing to tick
+        {
+            timer.Stop();
+        }
+
         protected override void OnBackColorChanged(EventArgs e)
         {
             base.OnBackColorChanged(e);
@@ -309,7 +314,7 @@ namespace ExtendedControls
             double rollpercent = (double)(Environment.TickCount - targetrolltickstart) / RollUpAnimationTime;
             int rolldiff = unrolledheight - RolledUpHeight;
 
-            bool inarea = this.RectangleScreenCoords().Contains(MousePosition.X, MousePosition.Y);
+            bool inarea = this.IsHandleCreated && this.RectangleScreenCoords().Contains(MousePosition.X, MousePosition.Y);
 
             //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent + " mode " + mode + " inarea " + inarea);
 
