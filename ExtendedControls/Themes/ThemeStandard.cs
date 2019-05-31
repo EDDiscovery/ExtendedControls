@@ -913,6 +913,13 @@ namespace ExtendedControls
                 Chart ctrl = (Chart)myControl;
                 ctrl.BackColor = Color.Transparent;
             }
+            else if (myControl is PictureBox)
+            {
+                PictureBox ctrl = (PictureBox)myControl;
+
+                if (ctrl.ContextMenuStrip != null)       // propergate font onto any attached context menus
+                    ctrl.ContextMenuStrip.Font = fnt;
+            }
             else if (myControl is ExtDateTimePicker)
             {
                 ExtDateTimePicker ctrl = (ExtDateTimePicker)myControl;
