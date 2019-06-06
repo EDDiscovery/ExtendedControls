@@ -45,6 +45,9 @@
             this.extButton6 = new ExtendedControls.ExtButton();
             this.extButton5 = new ExtendedControls.ExtButton();
             this.extButton3 = new ExtendedControls.ExtButton();
+            this.extButton12 = new ExtendedControls.ExtButton();
+            this.extButton2 = new ExtendedControls.ExtButton();
+            this.extButton1 = new ExtendedControls.ExtButton();
             this.extButton4 = new ExtendedControls.ExtButton();
             this.upDown1 = new ExtendedControls.UpDown();
             this.extCheckBoxSys = new ExtendedControls.ExtCheckBox();
@@ -250,6 +253,51 @@
             this.extButton3.Text = "128x128";
             this.extButton3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.extButton3.UseVisualStyleBackColor = true;
+            // 
+            // extButton12
+            // 
+            this.extButton12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.extButton12.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.extButton12.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
+            this.extButton12.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.extButton12.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.extButton12.Location = new System.Drawing.Point(128, 8);
+            this.extButton12.Name = "extButton12";
+            this.extButton12.Size = new System.Drawing.Size(51, 23);
+            this.extButton12.TabIndex = 42;
+            this.extButton12.Text = "WD12";
+            this.extButton12.UseVisualStyleBackColor = false;
+            this.extButton12.Click += new System.EventHandler(this.extButton12_Click);
+            // 
+            // extButton2
+            // 
+            this.extButton2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.extButton2.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.extButton2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
+            this.extButton2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.extButton2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.extButton2.Location = new System.Drawing.Point(71, 8);
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(51, 23);
+            this.extButton2.TabIndex = 42;
+            this.extButton2.Text = "T15";
+            this.extButton2.UseVisualStyleBackColor = false;
+            this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
+            // 
+            // extButton1
+            // 
+            this.extButton1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.extButton1.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.extButton1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
+            this.extButton1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.extButton1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.extButton1.Location = new System.Drawing.Point(12, 8);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(51, 23);
+            this.extButton1.TabIndex = 42;
+            this.extButton1.Text = "T8.5";
+            this.extButton1.UseVisualStyleBackColor = false;
+            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
             // extButton4
             // 
@@ -566,6 +614,9 @@
             this.Controls.Add(this.extButton6);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton3);
+            this.Controls.Add(this.extButton12);
+            this.Controls.Add(this.extButton2);
+            this.Controls.Add(this.extButton1);
             this.Controls.Add(this.extButton4);
             this.Controls.Add(this.upDown1);
             this.Controls.Add(this.extCheckBoxSys);
@@ -617,5 +668,8 @@
         private ExtendedControls.ExtCheckBox extCheckBoxButtonText;
         private ExtendedControls.ExtCheckBox extCheckBox1;
         private ExtendedControls.ExtCheckBox extCheckBoxButtonIT;
+        private ExtendedControls.ExtButton extButton1;
+        private ExtendedControls.ExtButton extButton2;
+        private ExtendedControls.ExtButton extButton12;
     }
 }

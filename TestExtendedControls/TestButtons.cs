@@ -90,5 +90,26 @@ namespace DialogTest
 
             extCheckBoxSys.Enabled = extCheckBoxPopUpNormal.Enabled = extCheckBoxPopupNormalImage.Enabled = !extCheckBoxPopupNormalImage.Enabled;
         }
+
+        private void extButton12_Click(object sender, EventArgs e)
+        {
+            theme.SetThemeByName("Windows Default");
+            theme.FontSize = 12;
+            theme.ApplyStd(this);
+        }
+
+        private void extButton2_Click(object sender, EventArgs e)
+        {
+            theme.SetThemeByName("Elite EuroCaps");
+            theme.FontSize = 15f;
+            theme.ApplyStd(this);
+        }
+
+        private void extButton1_Click(object sender, EventArgs e)
+        {
+            theme.SetThemeByName("Elite EuroCaps");
+            theme.FontSize = 8.25f;
+            theme.ApplyStd(this);
+        }
     }
 }
