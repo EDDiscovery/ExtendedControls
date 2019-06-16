@@ -352,7 +352,7 @@ namespace ExtendedControls
         {
             int items = (Items != null) ? Items.Count() : 0;
 
-            if (items > 0)                                // if any items.. just to check
+            if (items > 0 && itemheight > 0 )       // if any items and we have done a calc layout.. just to check
             {
                 int index = firstindex + e.Location.Y / itemheight;
 

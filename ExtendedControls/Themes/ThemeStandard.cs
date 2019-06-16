@@ -783,6 +783,13 @@ namespace ExtendedControls
                     ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
                     ctrl.MouseOverColor = currentsettings.colors[Settings.CI.button_back].Multiply(mouseoverscaling);
                     ctrl.CheckColor = currentsettings.colors[Settings.CI.button_back].Multiply(0.9f);
+
+                    if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
+                        ctrl.FlatStyle = FlatStyle.Standard;
+                    else if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
+                        ctrl.FlatStyle = FlatStyle.Flat;
+                    else
+                        ctrl.FlatStyle = FlatStyle.Popup;
                 }
                 else
                 {
@@ -792,14 +799,14 @@ namespace ExtendedControls
                     ctrl.MouseOverColor = currentsettings.colors[Settings.CI.checkbox].Multiply(1.4F);
                     ctrl.TickBoxReductionRatio = 0.75f;
                     ctrl.CheckColor = currentsettings.colors[Settings.CI.checkbox_tick];
-                }
 
-                if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
-                    ctrl.FlatStyle = FlatStyle.System;
-                else if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
-                    ctrl.FlatStyle = FlatStyle.Flat;
-                else
-                    ctrl.FlatStyle = FlatStyle.Popup;
+                    if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
+                        ctrl.FlatStyle = FlatStyle.System;
+                    else if (currentsettings.buttonstyle.Equals(ButtonStyles[1])) // flat
+                        ctrl.FlatStyle = FlatStyle.Flat;
+                    else
+                        ctrl.FlatStyle = FlatStyle.Popup;
+                }
 
                 if (ctrl.Image != null)
                 {
