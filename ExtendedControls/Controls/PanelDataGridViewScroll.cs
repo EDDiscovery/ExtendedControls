@@ -289,14 +289,23 @@ namespace ExtendedControls
 
         private void MoveDGVToRow(int rowindex)                   // given row index, find it taking into account visibility
         {
-            if (dgv != null)
+            if (dgv != null )                      
             {
                 for (int rowi = 0; rowi < dgv.RowCount; rowi++)
                 {
                     if (dgv.Rows[rowi].Visible == true && rowindex-- == 0)
                     {
                         ignoredgvscroll = true; // don't fire the DGVScrolled.. as we can get into a cycle if rows are hidden
-                        dgv.FirstDisplayedScrollingRowIndex = rowi;
+
+                        try// # 2537 protect against a tiny dgv.  First DisplayedScrolling row index can moan if its not no height
+                        {
+                            dgv.FirstDisplayedScrollingRowIndex = rowi;
+                        }
+                        catch (Exception e)
+                        {
+                            System.Diagnostics.Debug.WriteLine("DGV exception FDR " + e);       // v.rare.
+                        }
+
                         dgv.Update();
                         vsc.Update();
                         ignoredgvscroll = false;
