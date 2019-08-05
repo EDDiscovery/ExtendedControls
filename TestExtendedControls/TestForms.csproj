@@ -58,6 +58,12 @@
     <Compile Include="TestDateTime.Designer.cs">
       <DependentUpon>TestDateTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestPanelScroll2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPanelScroll2.Designer.cs">
+      <DependentUpon>TestPanelScroll2.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestTextBoxesRTF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,6 +194,9 @@
     </Compile>
     <EmbeddedResource Include="TestDateTime.resx">
       <DependentUpon>TestDateTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestPanelScroll2.resx">
+      <DependentUpon>TestPanelScroll2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestTextBoxesRTF.resx">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>

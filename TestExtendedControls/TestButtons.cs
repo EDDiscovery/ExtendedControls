@@ -28,7 +28,7 @@ namespace DialogTest
             InitializeComponent();
 
             CompositeButton b = CompositeButton.QuickInit(Properties.Resources.Selector,
-                                                           "Quick Init", new Font("Verdana", 8.25f), Color.Yellow, Color.Transparent,
+                                                           "B1 Dyn", new Font("Verdana", 8.25f), Color.Yellow, Color.Transparent,
                                                            Properties.Resources.edsm32x32, new Size(32, 32),
                                                            new Image[] { Properties.Resources.edlogo24, Properties.Resources.galaxy_black }, new Size(24, 24),
                                                            3,
@@ -40,7 +40,7 @@ namespace DialogTest
             b.Size = new Size(128, b.FindMaxSubControlArea(0, 6).Height);
 
             b = CompositeButton.QuickInit(Properties.Resources.Selector,
-                                                           "Quick Init", new Font("Verdana", 8.25f), Color.Yellow, Color.Transparent,
+                                                           "B2 Dyn", new Font("Verdana", 8.25f), Color.Yellow, Color.Transparent,
                                                            Properties.Resources.ScreenShot, new Size(24, 24),
                                                            new Image[] { Properties.Resources.edlogo24, Properties.Resources.galaxy_black }, new Size(24, 24),
                                                            3,
