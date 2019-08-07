@@ -236,7 +236,7 @@ namespace ExtendedControls
                 return;
             }
 
-            if (backImageControlBitmap == null || RowCount != lastrowcount)    // First time, we have size.. or if multiline changes
+            if (backImageControlBitmap == null )    // First time, we have size.. or if multiline changes
             {
                 CleanUp();
 
@@ -434,7 +434,6 @@ namespace ExtendedControls
         private FlatStyle flatstyle = FlatStyle.System;
         private TabStyleCustom tabstyle = new TabStyleSquare();    // change for the shape of tabs.
         private int mouseover = -1;                                 // where the mouse if hovering
-        private int lastrowcount = -1;                            // tab row count - to see if its gone multiline
 
         #endregion
 
