@@ -241,16 +241,19 @@ namespace ExtendedControls
                 CleanUp();
 
                 backImageControlBitmap = new Bitmap(Width, Height);
-                Graphics backGraphics = Graphics.FromImage(backImageControlBitmap);
-                PaintTransparentBackground(backGraphics, ClientRectangle);    // force the paint of the background into this bitmap.
 
-                backImageBitmap = new Bitmap(Width, Height);
-                backImageGraphics = Graphics.FromImage(backImageBitmap);
+                using (Graphics backGraphics = Graphics.FromImage(backImageControlBitmap))
+                {
+                    PaintTransparentBackground(backGraphics, ClientRectangle);    // force the paint of the background into this bitmap.
 
-                tabImageBitmap = new Bitmap(this.Width, this.Height);
-                tabImageGraphics = Graphics.FromImage(this.tabImageBitmap);
+                    backImageBitmap = new Bitmap(Width, Height);
+                    backImageGraphics = Graphics.FromImage(backImageBitmap);
 
-                tabcontrolborder = new Rectangle(0, DisplayRectangle.Y - 2, ClientRectangle.Width - 1, DisplayRectangle.Height+4);
+                    tabImageBitmap = new Bitmap(this.Width, this.Height);
+                    tabImageGraphics = Graphics.FromImage(this.tabImageBitmap);
+
+                    tabcontrolborder = new Rectangle(0, DisplayRectangle.Y - 2, ClientRectangle.Width - 1, DisplayRectangle.Height + 4);
+                }
             }
 
             backImageGraphics.Clear(Color.Transparent);
