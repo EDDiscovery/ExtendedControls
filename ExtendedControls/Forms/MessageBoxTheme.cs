@@ -163,6 +163,7 @@ namespace ExtendedControls
             if (theme != null)  // paranoid
             {
                 framed = theme.ApplyStd(this);
+                themeTextBox.TextBoxBackColor = this.BackColor; // text box back is form back in this circumstance - we don't want it to stand out.
                 if (theme.MessageBoxWindowIcon != null)
                     this.Icon = theme.MessageBoxWindowIcon;
             }
@@ -177,13 +178,12 @@ namespace ExtendedControls
             if (iconselected != null)
             {
                 panelIcon.BackgroundImage = iconselected;
-
                 panelLeft.Width = panelIcon.Height + panelIcon.Padding.Left * 2 + 16;
                 panelIcon.Size = new Size(panelIcon.Height, panelIcon.Height);      // square it up, for some reason the flow changes the ratios
             }
             else
             {
-                panelLeft.Width = 2;
+                panelLeft.Width = 4;
             }
 
             themeTextBox.BorderStyle = BorderStyle.None;

@@ -54,6 +54,7 @@
             this.extButton6 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
             this.extButton19 = new ExtendedControls.ExtButton();
+            this.extButton20 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -292,6 +293,16 @@
             this.extButton19.UseVisualStyleBackColor = true;
             this.extButton19.Click += new System.EventHandler(this.extButton19_Click);
             // 
+            // extButton20
+            // 
+            this.extButton20.Location = new System.Drawing.Point(653, 128);
+            this.extButton20.Name = "extButton20";
+            this.extButton20.Size = new System.Drawing.Size(183, 23);
+            this.extButton20.TabIndex = 1;
+            this.extButton20.Text = "Messagebox-T12-noicon";
+            this.extButton20.UseVisualStyleBackColor = true;
+            this.extButton20.Click += new System.EventHandler(this.extButton20_Click);
+            // 
             // TestVariousForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -312,6 +323,7 @@
             this.Controls.Add(this.extButton15);
             this.Controls.Add(this.extButton14);
             this.Controls.Add(this.extButton13);
+            this.Controls.Add(this.extButton20);
             this.Controls.Add(this.extButton12);
             this.Controls.Add(this.extButton10);
             this.Controls.Add(this.extButton6);
@@ -349,5 +361,6 @@
         private ExtendedControls.ExtButton extButton17;
         private ExtendedControls.ExtButton extButton18;
         private ExtendedControls.ExtButton extButton19;
+        private ExtendedControls.ExtButton extButton20;
     }
 }

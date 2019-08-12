@@ -81,7 +81,7 @@
             this.themeTextBox.Controls.Add(this.button1);
             this.themeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.themeTextBox.HideScrollBar = true;
-            this.themeTextBox.Location = new System.Drawing.Point(54, 0);
+            this.themeTextBox.Location = new System.Drawing.Point(67, 0);
             this.themeTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.themeTextBox.Name = "themeTextBox";
             this.themeTextBox.ReadOnly = false;
@@ -99,7 +99,7 @@
             this.themeTextBox.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
             this.themeTextBox.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.themeTextBox.ShowLineCount = false;
-            this.themeTextBox.Size = new System.Drawing.Size(611, 384);
+            this.themeTextBox.Size = new System.Drawing.Size(598, 384);
             this.themeTextBox.TabIndex = 5;
             this.themeTextBox.TextBoxBackColor = System.Drawing.SystemColors.Control;
             this.themeTextBox.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
@@ -119,7 +119,7 @@
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(54, 384);
+            this.panelLeft.Size = new System.Drawing.Size(67, 384);
             this.panelLeft.TabIndex = 7;
             this.panelLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
             this.panelLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
@@ -127,7 +127,7 @@
             // panelIcon
             // 
             this.panelIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panelIcon.Location = new System.Drawing.Point(0, 0);
+            this.panelIcon.Location = new System.Drawing.Point(5, 5);
             this.panelIcon.Name = "panelIcon";
             this.panelIcon.Size = new System.Drawing.Size(48, 48);
             this.panelIcon.TabIndex = 6;
