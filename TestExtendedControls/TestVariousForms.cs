@@ -21,7 +21,8 @@ namespace DialogTest
             theme = new ThemeStandard();
             ThemeableFormsInstance.Instance = theme;
             theme.LoadBaseThemes();
-            theme.SetThemeByName("Elite EuroCaps");
+            //theme.SetThemeByName("Elite EuroCaps");
+            theme.SetThemeByName("EDSM");
             theme.FontSize = 12;
         }
 
@@ -185,6 +186,12 @@ namespace DialogTest
 
         }
 
+        private void extButton20_Click(object sender, EventArgs e)
+        {
+            theme.FontSize = 12;
+            MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+        }
+
         private void extButton16_Click(object sender, EventArgs e)
         {
             theme.FontSize = 12;
@@ -230,5 +237,6 @@ namespace DialogTest
 
 
         }
+
     }
 }

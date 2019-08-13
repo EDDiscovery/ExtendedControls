@@ -240,12 +240,15 @@ namespace ExtendedControls
         public Size DisplaySize()
         {
             int maxh = 0, maxw = 0;
-            foreach (ImageElement i in elements)
+            if (elements != null)
             {
-                if (i.pos.X + i.pos.Width > maxw)
-                    maxw = i.pos.X + i.pos.Width;
-                if (i.pos.Y + i.pos.Height > maxh)
-                    maxh = i.pos.Y + i.pos.Height;
+                foreach (ImageElement i in elements)
+                {
+                    if (i.pos.X + i.pos.Width > maxw)
+                        maxw = i.pos.X + i.pos.Width;
+                    if (i.pos.Y + i.pos.Height > maxh)
+                        maxh = i.pos.Y + i.pos.Height;
+                }
             }
 
             return new Size(maxw, maxh);
