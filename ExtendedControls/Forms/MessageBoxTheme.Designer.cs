@@ -127,9 +127,9 @@
             // panelIcon
             // 
             this.panelIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panelIcon.Location = new System.Drawing.Point(5, 5);
+            this.panelIcon.Location = new System.Drawing.Point(4, 4);
             this.panelIcon.Name = "panelIcon";
-            this.panelIcon.Size = new System.Drawing.Size(48, 48);
+            this.panelIcon.Size = new System.Drawing.Size(32, 32);
             this.panelIcon.TabIndex = 6;
             // 
             // panelButs

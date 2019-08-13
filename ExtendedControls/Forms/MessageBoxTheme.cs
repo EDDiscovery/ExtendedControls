@@ -157,6 +157,18 @@ namespace ExtendedControls
                     break;
             }
 
+            if (iconselected != null)
+            {
+                panelIcon.Width = iconselected.Width;
+                panelIcon.Height = iconselected.Height;
+                panelLeft.Width = panelIcon.Right+8;
+                panelIcon.BackgroundImage = iconselected;
+            }
+            else
+            {
+                panelLeft.Width = 4;
+            }
+
             ITheme theme = ThemeableFormsInstance.Instance;
             bool framed = true;
 
@@ -174,17 +186,6 @@ namespace ExtendedControls
             }
 
             labelCaption.Visible = !framed;
-
-            if (iconselected != null)
-            {
-                panelIcon.BackgroundImage = iconselected;
-                panelLeft.Width = panelIcon.Height + panelIcon.Padding.Left * 2 + 16;
-                panelIcon.Size = new Size(panelIcon.Height, panelIcon.Height);      // square it up, for some reason the flow changes the ratios
-            }
-            else
-            {
-                panelLeft.Width = 4;
-            }
 
             themeTextBox.BorderStyle = BorderStyle.None;
             themeTextBox.BorderColor = Color.Transparent;
@@ -221,7 +222,7 @@ namespace ExtendedControls
             Width = wantedw;        // changing width changes estimate vert size
 
             int wantedh = themeTextBox.EstimateVerticalSizeFromText();
-            wantedh = Math.Max(panelIcon.BackgroundImage != null ? panelIcon.Height : 0, wantedh);
+            wantedh = Math.Max(panelIcon.BackgroundImage != null ? panelIcon.Bottom : 0, wantedh);
 
             wantedh += panelButs.Height + panelGap.Height + (framed ? 50 : labelCaption.Height) + Font.ScalePixels(8);
 
