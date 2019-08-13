@@ -169,7 +169,7 @@
             this.textBoxKeys.ClearOnFirstChar = false;
             this.textBoxKeys.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxKeys.EndButtonEnable = true;
-            this.textBoxKeys.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxKeys.EndButtonImage")));
+            this.textBoxKeys.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxKeys.EndButtonVisible = false;
             this.textBoxKeys.InErrorCondition = false;
             this.textBoxKeys.Location = new System.Drawing.Point(87, 203);
@@ -222,7 +222,7 @@
             this.textBoxSendTo.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.textBoxSendTo.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.textBoxSendTo.EndButtonEnable = false;
-            this.textBoxSendTo.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxSendTo.EndButtonImage")));
+            this.textBoxSendTo.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxSendTo.EndButtonVisible = false;
             this.textBoxSendTo.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.textBoxSendTo.InErrorCondition = false;
@@ -402,7 +402,7 @@
             this.textBoxNextDelay.ClearOnFirstChar = false;
             this.textBoxNextDelay.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxNextDelay.EndButtonEnable = true;
-            this.textBoxNextDelay.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxNextDelay.EndButtonImage")));
+            this.textBoxNextDelay.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxNextDelay.EndButtonVisible = false;
             this.textBoxNextDelay.InErrorCondition = false;
             this.textBoxNextDelay.Location = new System.Drawing.Point(185, 148);
@@ -432,7 +432,7 @@
             this.textBoxDelay.ClearOnFirstChar = false;
             this.textBoxDelay.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxDelay.EndButtonEnable = true;
-            this.textBoxDelay.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxDelay.EndButtonImage")));
+            this.textBoxDelay.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxDelay.EndButtonVisible = false;
             this.textBoxDelay.InErrorCondition = false;
             this.textBoxDelay.Location = new System.Drawing.Point(185, 122);

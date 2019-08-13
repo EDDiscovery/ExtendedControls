@@ -77,7 +77,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderText.ClearOnFirstChar = false;
             this.textBoxBorderText.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderText.EndButtonEnable = true;
-            this.textBoxBorderText.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderText.EndButtonImage")));
+            this.textBoxBorderText.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxBorderText.EndButtonVisible = false;
             this.textBoxBorderText.InErrorCondition = false;
             this.textBoxBorderText.Location = new System.Drawing.Point(12, 37);
@@ -246,7 +246,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderStartTrigger.ClearOnFirstChar = false;
             this.textBoxBorderStartTrigger.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderStartTrigger.EndButtonEnable = true;
-            this.textBoxBorderStartTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderStartTrigger.EndButtonImage")));
+            this.textBoxBorderStartTrigger.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxBorderStartTrigger.EndButtonVisible = false;
             this.textBoxBorderStartTrigger.InErrorCondition = false;
             this.textBoxBorderStartTrigger.Location = new System.Drawing.Point(116, 116);
@@ -281,7 +281,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderEndTrigger.ClearOnFirstChar = false;
             this.textBoxBorderEndTrigger.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderEndTrigger.EndButtonEnable = true;
-            this.textBoxBorderEndTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderEndTrigger.EndButtonImage")));
+            this.textBoxBorderEndTrigger.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxBorderEndTrigger.EndButtonVisible = false;
             this.textBoxBorderEndTrigger.InErrorCondition = false;
             this.textBoxBorderEndTrigger.Location = new System.Drawing.Point(357, 116);

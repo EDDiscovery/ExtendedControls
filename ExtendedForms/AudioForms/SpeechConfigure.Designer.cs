@@ -111,7 +111,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderText.ClearOnFirstChar = false;
             this.textBoxBorderText.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderText.EndButtonEnable = true;
-            this.textBoxBorderText.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderText.EndButtonImage")));
+            this.textBoxBorderText.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxBorderText.EndButtonVisible = false;
             this.textBoxBorderText.InErrorCondition = false;
             this.textBoxBorderText.Location = new System.Drawing.Point(14, 42);
@@ -188,7 +188,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderEndTrigger.ClearOnFirstChar = false;
             this.textBoxBorderEndTrigger.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderEndTrigger.EndButtonEnable = true;
-            this.textBoxBorderEndTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderEndTrigger.EndButtonImage")));
+            this.textBoxBorderEndTrigger.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxBorderEndTrigger.EndButtonVisible = false;
             this.textBoxBorderEndTrigger.InErrorCondition = false;
             this.textBoxBorderEndTrigger.Location = new System.Drawing.Point(315, 165);
@@ -214,7 +214,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderStartTrigger.ClearOnFirstChar = false;
             this.textBoxBorderStartTrigger.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderStartTrigger.EndButtonEnable = true;
-            this.textBoxBorderStartTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderStartTrigger.EndButtonImage")));
+            this.textBoxBorderStartTrigger.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxBorderStartTrigger.EndButtonVisible = false;
             this.textBoxBorderStartTrigger.InErrorCondition = false;
             this.textBoxBorderStartTrigger.Location = new System.Drawing.Point(93, 165);
@@ -364,7 +364,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderTest.ClearOnFirstChar = false;
             this.textBoxBorderTest.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderTest.EndButtonEnable = true;
-            this.textBoxBorderTest.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderTest.EndButtonImage")));
+            this.textBoxBorderTest.EndButtonImage = global::ExtendedControls.Properties.Resources.ArrowDown;
             this.textBoxBorderTest.EndButtonVisible = false;
             this.textBoxBorderTest.InErrorCondition = false;
             this.textBoxBorderTest.Location = new System.Drawing.Point(11, 368);
