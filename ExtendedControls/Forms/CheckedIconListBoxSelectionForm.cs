@@ -203,8 +203,13 @@ namespace ExtendedControls
 
         private void FormClosed(Object sender, FormClosedEventArgs e)
         {
-            Closing?.Invoke(cc.GetChecked(groupoptions.Count,AllOrNoneBack),tagback);
-            cc = null;
+            if (cc != null)
+            {
+                Closing?.Invoke(cc.GetChecked(groupoptions.Count, AllOrNoneBack), tagback);
+                cc.FormClosed -= FormClosed;
+                cc.CheckedChanged -= checkboxchanged;
+                cc = null;
+            }
         }
     }
 }
