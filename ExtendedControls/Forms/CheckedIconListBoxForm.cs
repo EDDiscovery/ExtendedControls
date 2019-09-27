@@ -53,12 +53,15 @@ namespace ExtendedControls
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
-        public bool CloseOnDeactivate { get; set; } = true;
+
+        public bool CloseOnDeactivate { get; set; } = true;         // close on deactivate
+        public bool HideOnDeactivate { get; set; } = false;         // hide instead
+        public bool CloseOnChange { get; set; } = false;            // close when any is changed
+        public bool HideOnChange { get; set; } = false;             // hide when any is changed
 
         // if not set, each image sets its size. If no images, then use this to set alternate size 
         // if fonth > imageheight, then images are scaled to font size
         public Size ImageSize { get; set; } = new Size(0, 0);                       
-        public bool IsOpen { get; set; } = false;
 
         public int ItemCount { get { return controllist.Count; } }
 
@@ -66,7 +69,10 @@ namespace ExtendedControls
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
         public bool RightAlignedToLocation { get; set; } = false;
 
-        public Action<CheckedIconListBoxForm, ItemCheckEventArgs> CheckedChanged;       // called after save back to say fully changed.
+        public Action<CheckedIconListBoxForm, ItemCheckEventArgs,Object> CheckedChanged;       // called after save back to say fully changed.
+
+        public Action<string, Object> SaveSettings;                // Action on close or hide
+        public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported, else its all entries or empty list
 
         private Size defsize = new Size(24, 24);        // default size if no other sizes given by ImageSize/Icons etc
 
@@ -89,19 +95,38 @@ namespace ExtendedControls
             AddItems(tags,text,image);
         }
 
-        public void AddItems(IEnumerable<string> tags, IEnumerable<string> text, IEnumerable<Image> image = null)
+        public void AddItems(IEnumerable<string> tags, IEnumerable<string> text, IEnumerable<Image> image = null, bool attop = false)
         {
             string[] tg = tags.ToArray();
             string[] tx = text.ToArray();
             Image[] im = image?.ToArray();
+            ControlSet[] list = new ControlSet[tx.Count()];
 
-            for( int i = 0; i < tx.Count(); i++ )
+            for (int i = 0; i < tx.Count(); i++)
             {
-                AddItem(tg[i], tx[i], (im != null && i < im.Length) ? im[i] : null);
+                list[i] = AddItem(tg[i], tx[i], (im != null && i < im.Length) ? im[i] : null);
             }
+
+            if (attop)
+            {
+                for (int i = tx.Count() - 1; i >= 0; i--)
+                    controllist.Insert(0, list[i]);
+            }
+            else
+                controllist.AddRange(list);
         }
 
-        public void AddItem(string tag, string text, Image img = null)
+        public void AddItem(string tag, string text, Image img = null, bool attop = false)
+        {
+            ControlSet c = AddItem(tag, text, img);
+
+            if (attop)
+                controllist.Insert(0, c);
+            else
+                controllist.Add(c);
+        }
+
+        private ControlSet AddItem(string tag, string text, Image img = null)
         {
             ControlSet c = new ControlSet();
 
@@ -116,7 +141,6 @@ namespace ExtendedControls
             cb.FlatStyle = FlatStyle;
             cb.TickBoxReductionRatio = TickBoxReductionRatio;
             cb.CheckedChanged += CheckedIconListBoxForm_CheckedChanged;
-            cb.Tag = controllist.Count;
             c.checkbox = cb;
             panelscroll.Controls.Add(cb);
 
@@ -148,7 +172,7 @@ namespace ExtendedControls
                 panelscroll.Controls.Add(ipanel);
             }
 
-            controllist.Add(c);
+            return c;
         }
 
         class ControlSet
@@ -266,7 +290,6 @@ namespace ExtendedControls
             StartPosition = FormStartPosition.Manual;
             AutoSize = false;
             Padding = new Padding(0);
-            IsOpen = true;
             controllist = new List<ControlSet>();
             panelscroll = new ExtPanelScroll();
             panelscroll.Dock = DockStyle.Fill;
@@ -274,27 +297,17 @@ namespace ExtendedControls
             sb = new ExtScrollBar();
             panelscroll.Controls.Add(sb);
             panelscroll.ScrollBar.HideScrollBar = true;
-            //this.Activated += new System.EventHandler(this.FormActivated);
-            //this.Shown += new System.EventHandler(this.FormActivated);
         }
 
         #region Implementation
 
+        int maxw = 0;
+        int maxh = 0;
+
         protected override void OnLoad(EventArgs e)
         {
-            LayoutPosition();
-            base.OnShown(e);
-        }
-
-        private void LayoutPosition()
-        {
-            if (SetLocation.X != int.MinValue)
-            {
-                Location = SetLocation;
-            }
-
             int lpos = HorizontalSpacing;
-            int vpos = VerticalSpacing;
+            maxh = VerticalSpacing;
 
             foreach (var ce in controllist)
             {
@@ -315,8 +328,6 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("Chk " + chkboxsize + " " + imgsize);
 
-            int maxw = 0;
-
             for (int i = 0; i < controllist.Count; i++)
             {
                 if (controllist[i].icon != null)
@@ -328,10 +339,11 @@ namespace ExtendedControls
 
                 int vspacing = Math.Max(fonth, imgsize.Height);
 
-                int vcentre = vpos + vspacing / 2;
+                int vcentre = maxh + vspacing / 2;
 
                 controllist[i].checkbox.Location = new Point(lpos, vcentre - chkboxsize.Height / 2);
                 controllist[i].checkbox.Size = chkboxsize;
+                controllist[i].checkbox.Tag = i;        // store index of control when displayed
 
                 int tpos = controllist[i].checkbox.Right + HorizontalSpacing;
 
@@ -345,24 +357,28 @@ namespace ExtendedControls
                 }
 
                 controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - panelscroll.ScrollBarWidth - tpos, vspacing);
-                controllist[i].label.Location = new Point(tpos, vpos);
+                controllist[i].label.Location = new Point(tpos, maxh);
 
-                maxw = Math.Max(maxw,controllist[i].label.Right+1);
+                maxw = Math.Max(maxw, controllist[i].label.Right + 1);
 
-                vpos += vspacing + VerticalSpacing;
+                maxh += vspacing + VerticalSpacing;
             }
 
-            this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, vpos, true, 64, RightAlignedToLocation);    // keep it on the screen. 
+            System.Diagnostics.Debug.WriteLine("Load");
+
+            base.OnLoad(e);
         }
 
-        protected override void OnDeactivate(EventArgs e)
+        protected override void OnActivated(EventArgs e)
         {
-            if (CloseOnDeactivate)
-            {
-                base.OnDeactivate(e);
-                this.Close();
-                IsOpen = false;
-            }
+            base.OnActivated(e);
+
+            if (SetLocation.X != int.MinValue)
+                Location = SetLocation;
+
+            System.Diagnostics.Debug.WriteLine("Activated " + Location);
+
+            this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, maxh, true, 64, RightAlignedToLocation);    // keep it on the screen. 
         }
 
         private void Ipanel_MouseDown(object sender, MouseEventArgs e)
@@ -379,7 +395,7 @@ namespace ExtendedControls
             cb.CheckState = cb.CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
         }
 
-        // Sent after the change, different from the checkedlistboxform as its sent during the change before the item check changes. beware.
+        // Sent after the change, so cb.CheckState is the new state
         private void CheckedIconListBoxForm_CheckedChanged(object sender, EventArgs e)
         {
             if (CheckedChanged != null && !ignorechangeevent)
@@ -389,9 +405,44 @@ namespace ExtendedControls
 
                 var prevstate = cb.Checked ? CheckState.Unchecked : CheckState.Checked;
 
-                ItemCheckEventArgs i = new ItemCheckEventArgs((int)cb.Tag,cb.CheckState, prevstate);
-                CheckedChanged(this,i );
+                ItemCheckEventArgs i = new ItemCheckEventArgs(index,cb.CheckState, prevstate);
+                CheckChangedEvent(cb,i);       // derived classes first.
+                CheckedChanged(this,i,Tag);
+
+                if (CloseOnChange)
+                {
+                    Close();
+                }
+                else if (HideOnChange)
+                {
+                    Hide();
+                }
             }
+        }
+
+        protected virtual void CheckChangedEvent(ExtCheckBox cb, ItemCheckEventArgs e) { }
+
+        protected override void OnDeactivate(EventArgs e)
+        {
+            base.OnDeactivate(e);
+
+            System.Diagnostics.Debug.WriteLine("Deactivated " );
+
+            if (CloseOnDeactivate)
+            {
+                SaveSettingsEvent();
+                this.Close();
+            }
+            else if (HideOnDeactivate)
+            {
+                SaveSettingsEvent();
+                this.Hide();
+            }
+        }
+
+        protected virtual void SaveSettingsEvent()
+        {
+            SaveSettings?.Invoke(GetChecked(0, AllOrNoneBack), Tag);     // at this level, we return all items.
         }
 
         #endregion

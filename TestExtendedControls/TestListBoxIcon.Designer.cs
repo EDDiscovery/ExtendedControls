@@ -43,6 +43,8 @@
             this.extButton4 = new ExtendedControls.ExtButton();
             this.extButton3 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
+            this.extButton2 = new ExtendedControls.ExtButton();
+            this.extButton9 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,7 +99,7 @@
             this.extRichTextBox1.BorderColorScaling = 0.5F;
             this.extRichTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extRichTextBox1.HideScrollBar = true;
-            this.extRichTextBox1.Location = new System.Drawing.Point(12, 167);
+            this.extRichTextBox1.Location = new System.Drawing.Point(12, 262);
             this.extRichTextBox1.Name = "extRichTextBox1";
             this.extRichTextBox1.ReadOnly = false;
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 Microsoft S" +
@@ -189,6 +191,26 @@
             this.extButton1.UseVisualStyleBackColor = true;
             this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
+            // extButton2
+            // 
+            this.extButton2.Location = new System.Drawing.Point(12, 153);
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(183, 23);
+            this.extButton2.TabIndex = 1;
+            this.extButton2.Text = "CheckedIconListBoxForm-hide";
+            this.extButton2.UseVisualStyleBackColor = true;
+            this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
+            // 
+            // extButton9
+            // 
+            this.extButton9.Location = new System.Drawing.Point(211, 153);
+            this.extButton9.Name = "extButton9";
+            this.extButton9.Size = new System.Drawing.Size(264, 23);
+            this.extButton9.TabIndex = 1;
+            this.extButton9.Text = "CheckedIconListBoxSelectionForm-Grp-T12";
+            this.extButton9.UseVisualStyleBackColor = true;
+            this.extButton9.Click += new System.EventHandler(this.extButton9_Click);
+            // 
             // TestListBoxIcon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -198,7 +220,9 @@
             this.Controls.Add(this.extButton8);
             this.Controls.Add(this.extButton7);
             this.Controls.Add(this.extButton6);
+            this.Controls.Add(this.extButton9);
             this.Controls.Add(this.extButton5);
+            this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton4);
             this.Controls.Add(this.extButton3);
             this.Controls.Add(this.extButton1);
@@ -224,5 +248,7 @@
         private ExtendedControls.ExtButton extButton6;
         private ExtendedControls.ExtButton extButton7;
         private ExtendedControls.ExtButton extButton8;
+        private ExtendedControls.ExtButton extButton2;
+        private ExtendedControls.ExtButton extButton9;
     }
 }

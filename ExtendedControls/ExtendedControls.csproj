@@ -71,7 +71,9 @@
     <Compile Include="Controls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\CheckedIconListBoxSelectionForm.cs" />
+    <Compile Include="Forms\CheckedIconListBoxFormGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\CheckedIconListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageViewer.resx">
       <DependentUpon>ImageViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CheckedIconListBoxFormGroup.resx">
+      <DependentUpon>CheckedIconListBoxFormGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CheckedIconListBoxForm.resx">
       <DependentUpon>CheckedIconListBoxForm.cs</DependentUpon>
