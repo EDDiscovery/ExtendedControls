@@ -398,7 +398,7 @@ namespace ExtendedControls
         // Sent after the change, so cb.CheckState is the new state
         private void CheckedIconListBoxForm_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckedChanged != null && !ignorechangeevent)
+            if (!ignorechangeevent)
             {
                 ExtCheckBox cb = sender as ExtCheckBox;
                 int index = (int)cb.Tag;
@@ -407,7 +407,7 @@ namespace ExtendedControls
 
                 ItemCheckEventArgs i = new ItemCheckEventArgs(index,cb.CheckState, prevstate);
                 CheckChangedEvent(cb,i);       // derived classes first.
-                CheckedChanged(this,i,Tag);
+                CheckedChanged?.Invoke(this,i,Tag);
 
                 if (CloseOnChange)
                 {

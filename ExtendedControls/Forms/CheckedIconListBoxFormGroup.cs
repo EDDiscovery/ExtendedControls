@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    // Adds on group control. Must be made using these Add function and then create() is called, before show()
+    // Adds on group control. Must be made using these Add function and then create() is called, before show(), or use the show helpers.
 
     public class CheckedIconListBoxFormGroup : CheckedIconListBoxForm
     {
@@ -73,7 +73,7 @@ namespace ExtendedControls
             });
         }
 
-        public void Create(string settings, bool applytheme = true)         // create, set settings
+        public void Create(string settings, bool applytheme = true)         // create, set settings, theme.  Call show(parent) afterwards
         {
             foreach (var x in groupoptions)
                 AddItem(x.Tag, x.Text, x.Image);
@@ -93,6 +93,24 @@ namespace ExtendedControls
 
             if (applytheme)
                 ThemeableFormsInstance.Instance?.ApplyStd(this);
+        }
+
+        public void Show(string settings, Control ctr, Form parent, Object tag = null)         // quick form version
+        {
+            if (ItemCount == 0)     // if not created, create..
+                Create(settings);
+            Tag = tag;
+            PositionBelow(ctr);
+            Show(parent);
+        }
+
+        public void Show(string settings, Point point, Form parent, Object tag = null)         // quick form version
+        {
+            if (ItemCount == 0)     // if not created, create..
+                Create(settings);
+            Tag = tag;
+            SetLocation = point;
+            Show(parent);
         }
 
         private void SetGroupOptions()
@@ -168,5 +186,6 @@ namespace ExtendedControls
             System.Diagnostics.Debug.WriteLine("SF Deactivate save settings");
             SaveSettings?.Invoke(GetChecked(groupoptions.Count, AllOrNoneBack), Tag);
         }
+
     }
 }
