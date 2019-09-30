@@ -495,7 +495,8 @@ namespace ExtendedControls
             if (myControl is Form)
             {
                 Form f = myControl as Form;
-                f.FormBorderStyle = WindowsFrame ? FormBorderStyle.Sizable : FormBorderStyle.None;
+                if (!(f is CheckedIconListBoxForm))
+                    f.FormBorderStyle = WindowsFrame ? FormBorderStyle.Sizable : FormBorderStyle.None;
                 f.Opacity = currentsettings.formopacity / 100;
                 f.BackColor = currentsettings.colors[Settings.CI.form];
                 f.Font = fnt;
