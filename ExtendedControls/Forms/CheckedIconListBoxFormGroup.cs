@@ -92,7 +92,10 @@ namespace ExtendedControls
             LargeChange = ItemCount * Properties.Resources.All.Height / 40;   // 40 ish scroll movements
 
             if (applytheme)
+            {
                 ThemeableFormsInstance.Instance?.ApplyStd(this);
+                FormBorderStyle = FormBorderStyle.None;
+            }
         }
 
         public void Show(string settings, Control ctr, Form parent, Object tag = null)         // quick form version
