@@ -17,7 +17,6 @@
 using BaseUtils.Win32;
 using BaseUtils.Win32Constants;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -27,51 +26,21 @@ namespace ExtendedControls
 {
     public class DraggableForm : SmartSysMenuForm
     {
+        //The number of pixels from the top of the <see cref="SmartSysMenuForm"/> that will be interpreted as caption
+        // area when the <see cref="SmartSysMenuForm"/> is unframed. The default value is <c>28</c>.
+        public uint CaptionHeight { get; set; } = 28;
+
+        protected virtual bool WinLeftRightEnabledInBorderless { get; } = true;     // override to disable borderless intercept
+        protected virtual bool DraggableDisableResize { get; } = false;       // SET true to stop your form from resizing
+
         public DraggableForm()
         {
             dblClickTimer = new Timer();
             dblClickTimer.Tick += (o, e) => { ((Timer)o).Enabled = false; };
+            sc = new BaseUtils.WindowMovementControl(this);
         }
 
-        /// <summary>
-        /// The number of pixels from the top of the <see cref="SmartSysMenuForm"/> that will be interpreted as caption
-        /// area when the <see cref="SmartSysMenuForm"/> is unframed. The default value is <c>28</c>.
-        /// </summary>
-        /// <seealso cref="OnCaptionMouseDown"/>
-        /// <seealso cref="OnCaptionMouseUp"/>
-        [DefaultValue(28), Description("The number of pixels from the top of the Form that will be interpreted as the Form's caption area.")]
-        public uint CaptionHeight { get; set; } = 28;
-
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                // Allow minimize/restore operations to occur by clicking on the TaskBar icon, even when unframed.
-                if (MinimizeBox && ShowInTaskbar)
-                {
-                    cp.ClassStyle |= CS.DBLCLKS;
-                    cp.Style |= WS.MINIMIZEBOX;
-                }
-                return cp;
-            }
-        }
-
-        protected virtual bool DraggableDisableResize { get; } = false;       // SET true to stop your form from resizing
-
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && dblClickTimer != null)
-            {
-                dblClickTimer.Enabled = false;
-                dblClickTimer.Tag = null;
-                dblClickTimer.Dispose();
-            }
-            dblClickTimer = null;
-            base.Dispose(disposing);
-        }
+        // call this in a mouse down handler to make it move the window
 
         public void OnCaptionMouseDown(Control sender, MouseEventArgs e)
         {
@@ -116,6 +85,57 @@ namespace ExtendedControls
             }
         }
 
+        #region Private implementation
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+
+                // Allow minimize/restore operations to occur by clicking on the TaskBar icon, even when unframed.
+                if (MinimizeBox && ShowInTaskbar)
+                {
+                    cp.ClassStyle |= CS.DBLCLKS;
+                    cp.Style |= WS.MINIMIZEBOX; // using these turn on winkey - up/down functionality
+                }
+
+                if ((cp.Style & WS.SIZEBOX) == 0)     // with no size box, we can't make winkey left/right work.  If wanted, turn it on
+                {
+                    // you have to use hook since the left/right up down events are swallowed and don't appear in WndProc
+
+                    if (hookid == (IntPtr)0 && WinLeftRightEnabledInBorderless)
+                        hookid = UnsafeNativeMethods.SetWindowsHookEx(13, winhook, (IntPtr)0, (IntPtr)0);
+                }
+                else
+                {
+                    if (hookid != (IntPtr)0)
+                        UnsafeNativeMethods.UnhookWindowsHookEx(hookid);
+                }
+
+                return cp;
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (dblClickTimer != null)
+                {
+                    dblClickTimer.Enabled = false;
+                    dblClickTimer.Tag = null;
+                    dblClickTimer.Dispose();
+                }
+                dblClickTimer = null;
+
+                if (hookid != (IntPtr)0)
+                    UnsafeNativeMethods.UnhookWindowsHookEx(hookid);
+            }
+            base.Dispose(disposing);
+        }
+
+
         protected override void WndProc(ref Message m)
         {
             bool windowsborder = this.FormBorderStyle == FormBorderStyle.Sizable;
@@ -144,7 +164,7 @@ namespace ExtendedControls
                                 else
                                 {
                                     mmi.ptMaxSize.X = wa.Width;
-                                    mmi.ptMaxSize.Y = wa.Height;  
+                                    mmi.ptMaxSize.Y = wa.Height;
                                     //mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = wa.Width;
                                     //mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = wa.Height;
                                 }
@@ -159,7 +179,7 @@ namespace ExtendedControls
                                     mmi.ptMinTrackSize.X = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CXMINTRACK);
                                     mmi.ptMinTrackSize.Y = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CYMINTRACK);
                                 }
-                              //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
+                                //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
                             }
                             else
                             {
@@ -180,7 +200,7 @@ namespace ExtendedControls
                         if (!AllowResize)
                         {
                             m.Result = (IntPtr)HT.CAPTION;
-                        }   
+                        }
                         else
                         {
                             base.WndProc(ref m);
@@ -194,7 +214,7 @@ namespace ExtendedControls
 
                             int botarea = Controls.OfType<ExtStatusStrip>().FirstOrDefault()?.Height ?? Controls.OfType<StatusStrip>().FirstOrDefault()?.Height ?? CaptionHeight;
 
-                            if (SizeGripStyle != SizeGripStyle.Hide && WindowState != FormWindowState.Maximized && (p.X + p.Y >= ClientSize.Width + ClientSize.Height - botarea ))
+                            if (SizeGripStyle != SizeGripStyle.Hide && WindowState != FormWindowState.Maximized && (p.X + p.Y >= ClientSize.Width + ClientSize.Height - botarea))
                             {
                                 m.Result = (IntPtr)HT.BOTTOMRIGHT;
                             }
@@ -257,9 +277,55 @@ namespace ExtendedControls
             base.WndProc(ref m);
         }
 
-        #region Private implementation
+        // intercepts all keystrokes and implements left/right func
 
+        IntPtr winhook(int code, IntPtr wp, IntPtr lp)
+        {
+            var kbd = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lp, typeof(KBDLLHOOKSTRUCT));
+            if (Form.ActiveForm == this)
+            {
+                bool down = (kbd.flags & 128) == 0;
+
+                switch (kbd.vkCode)
+                {
+                    case NativeMethods.VK_LWIN:
+                        winkey_down = down;
+                        break;
+
+                    case NativeMethods.VK_LEFT:
+                        if (winkey_down && down)
+                        {
+                            sc.Align(true);
+                        }
+                        break;
+                    case NativeMethods.VK_RIGHT:
+                        if (winkey_down && down)
+                        {
+                            sc.Align(false);
+                        }
+                        break;
+
+                        // up/down not implemented, windows will do that.  
+                        // This does not work exactly as a border window since windows up/down functionality messes it up. 
+                        // later we could try and emulate the lot. but this is good for now.
+                }
+
+                //System.Diagnostics.Debug.WriteLine("winhook " + code + " " + wp + " " + lp + ":" + kbd.vkCode + " f " + kbd.flags + " wk " + winkey_down);
+            }
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine("Rejected winhook " + code + " " + wp + " " + lp + ":" + kbd.vkCode + " f " + kbd.flags + " wk " + winkey_down);
+            }
+
+            return UnsafeNativeMethods.CallNextHookEx(hookid, code, wp, lp);
+        }
+
+
+        private bool winkey_down = false;
         private System.Windows.Forms.Timer dblClickTimer = null;
+        private IntPtr hookid = (IntPtr)0;
+        private BaseUtils.WindowMovementControl sc;
+
 
         #endregion
     }
