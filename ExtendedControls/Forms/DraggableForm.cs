@@ -17,6 +17,7 @@
 using BaseUtils.Win32;
 using BaseUtils.Win32Constants;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -37,7 +38,6 @@ namespace ExtendedControls
         {
             dblClickTimer = new Timer();
             dblClickTimer.Tick += (o, e) => { ((Timer)o).Enabled = false; };
-            sc = new BaseUtils.WindowMovementControl(this);
         }
 
         // call this in a mouse down handler to make it move the window
@@ -104,18 +104,39 @@ namespace ExtendedControls
                 {
                     // you have to use hook since the left/right up down events are swallowed and don't appear in WndProc
 
-                    if (hookid == (IntPtr)0 && WinLeftRightEnabledInBorderless)
-                        hookid = UnsafeNativeMethods.SetWindowsHookEx(13, winhook, (IntPtr)0, (IntPtr)0);
+#if !__MonoCS__
+                    if (hookid == (IntPtr)0 && WinLeftRightEnabledInBorderless && AllowResize)
+                    {
+                        sc = new BaseUtils.WindowMovementControl(this);
+
+                        myHookCallback = new NativeMethods.HookProc(this.keyboard_hook);
+
+                        using (Process process = Process.GetCurrentProcess())
+                        using (ProcessModule module = process.MainModule)
+                        {
+                            IntPtr hModule = UnsafeNativeMethods.GetModuleHandle(module.ModuleName);
+
+                            hookid = UnsafeNativeMethods.SetWindowsHookEx(HookType.WH_KEYBOARD_LL, myHookCallback, hModule, 0);
+                        }
+                    }
+#endif
                 }
                 else
                 {
-                    if (hookid != (IntPtr)0)
+#if !__MonoCS__
+                    if (myHookCallback != null)
+                    {
                         UnsafeNativeMethods.UnhookWindowsHookEx(hookid);
+                        myHookCallback = null;
+                        sc = null;
+                    }
+#endif
                 }
 
                 return cp;
             }
         }
+        
 
         protected override void Dispose(bool disposing)
         {
@@ -129,8 +150,14 @@ namespace ExtendedControls
                 }
                 dblClickTimer = null;
 
-                if (hookid != (IntPtr)0)
+#if !__MonoCS__
+                if (myHookCallback != null)
+                {
                     UnsafeNativeMethods.UnhookWindowsHookEx(hookid);
+                    myHookCallback = null;
+                    sc = null;
+                }
+#endif
             }
             base.Dispose(disposing);
         }
@@ -279,7 +306,7 @@ namespace ExtendedControls
 
         // intercepts all keystrokes and implements left/right func
 
-        IntPtr winhook(int code, IntPtr wp, IntPtr lp)
+        int keyboard_hook(int code, IntPtr wp, IntPtr lp)
         {
             var kbd = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lp, typeof(KBDLLHOOKSTRUCT));
             if (Form.ActiveForm == this)
@@ -322,10 +349,11 @@ namespace ExtendedControls
 
 
         private bool winkey_down = false;
-        private System.Windows.Forms.Timer dblClickTimer = null;
         private IntPtr hookid = (IntPtr)0;
         private BaseUtils.WindowMovementControl sc;
+        NativeMethods.HookProc myHookCallback = null;
 
+        private System.Windows.Forms.Timer dblClickTimer = null;
 
         #endregion
     }
