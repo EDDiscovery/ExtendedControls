@@ -17,6 +17,7 @@
 using BaseUtils.Win32;
 using BaseUtils.Win32Constants;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -31,13 +32,13 @@ namespace ExtendedControls
         public uint CaptionHeight { get; set; } = 28;
 
         protected virtual bool WinLeftRightEnabledInBorderless { get; } = true;     // override to disable borderless intercept
-        protected virtual bool DraggableDisableResize { get; } = false;       // SET true to stop your form from resizing
 
         public DraggableForm()
         {
             dblClickTimer = new Timer();
             dblClickTimer.Tick += (o, e) => { ((Timer)o).Enabled = false; };
-            sc = new BaseUtils.WindowMovementControl(this);
+            screenmc = new BaseUtils.WindowMovementControl(this);
+            KeyPreview = true;
         }
 
         // call this in a mouse down handler to make it move the window
@@ -56,9 +57,9 @@ namespace ExtendedControls
 
                     switch (e.Button)
                     {
-                        case MouseButtons.Left:     SendMessage(WM.NCLBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Middle:   SendMessage(WM.NCMBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Right:    SendMessage(WM.NCRBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Left: SendMessage(WM.NCLBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Middle: SendMessage(WM.NCMBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Right: SendMessage(WM.NCRBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
                     }
                 }
             }
@@ -77,9 +78,9 @@ namespace ExtendedControls
 
                     switch (e.Button)
                     {
-                        case MouseButtons.Left:     SendMessage(WM.NCLBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Middle:   SendMessage(WM.NCMBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Right:    SendMessage(WM.NCRBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Left: SendMessage(WM.NCLBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Middle: SendMessage(WM.NCMBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Right: SendMessage(WM.NCRBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
                     }
                 }
             }
@@ -100,21 +101,48 @@ namespace ExtendedControls
                     cp.Style |= WS.MINIMIZEBOX; // using these turn on winkey - up/down functionality
                 }
 
-                if ((cp.Style & WS.SIZEBOX) == 0)     // with no size box, we can't make winkey left/right work.  If wanted, turn it on
-                {
-                    // you have to use hook since the left/right up down events are swallowed and don't appear in WndProc
-
-                    if (hookid == (IntPtr)0 && WinLeftRightEnabledInBorderless)
-                        hookid = UnsafeNativeMethods.SetWindowsHookEx(13, winhook, (IntPtr)0, (IntPtr)0);
-                }
-                else
-                {
-                    if (hookid != (IntPtr)0)
-                        UnsafeNativeMethods.UnhookWindowsHookEx(hookid);
-                }
-
                 return cp;
             }
+        }
+
+        // all keystrokes from child controls come here
+        protected override bool ProcessKeyPreview(ref Message m)
+        {
+            bool windowsborder = this.FormBorderStyle != FormBorderStyle.None;
+
+            if ( !windowsborder && WinLeftRightEnabledInBorderless && (m.Msg == WM.KEYDOWN || m.Msg == WM.KEYUP ))     // it also sends WM.CHAR
+            {
+                Keys key = (Keys)m.WParam;
+                bool keydown = m.Msg == WM.KEYDOWN;
+
+                //System.Diagnostics.Debug.WriteLine("Keypreview " + m.Msg + " " + m.LParam.ToString("x") + " " + m.WParam + " = " + keydown + " " + key.ToString());
+
+                switch (key)
+                {
+                    case Keys.LWin:
+                        winkey_down = keydown;
+                        break;
+
+                    case Keys.Left:
+                        if (winkey_down && !keydown)            // windows is not giving us the winkey + leftdown key, just the leftup.  So have to comprimise. 
+                        {
+                            screenmc.Align(true);
+                        }
+                        break;
+                    case Keys.Right:
+                        if (winkey_down && !keydown)
+                        {
+                            screenmc.Align(false);
+                        }
+                        break;
+
+                        // up/down not implemented, windows will do that.  
+                        // This does not work exactly as a border window since windows up/down functionality messes it up. 
+                        // later we could try and emulate the lot. but this is good for now.
+                }
+            }
+
+            return base.ProcessKeyPreview(ref m);
         }
 
         protected override void Dispose(bool disposing)
@@ -126,11 +154,8 @@ namespace ExtendedControls
                     dblClickTimer.Enabled = false;
                     dblClickTimer.Tag = null;
                     dblClickTimer.Dispose();
+                    dblClickTimer = null;
                 }
-                dblClickTimer = null;
-
-                if (hookid != (IntPtr)0)
-                    UnsafeNativeMethods.UnhookWindowsHookEx(hookid);
             }
             base.Dispose(disposing);
         }
@@ -138,7 +163,7 @@ namespace ExtendedControls
 
         protected override void WndProc(ref Message m)
         {
-            bool windowsborder = this.FormBorderStyle == FormBorderStyle.Sizable;
+            bool windowsborder = this.FormBorderStyle != FormBorderStyle.None;
 
             switch (m.Msg)
             {
@@ -277,55 +302,10 @@ namespace ExtendedControls
             base.WndProc(ref m);
         }
 
-        // intercepts all keystrokes and implements left/right func
+        private BaseUtils.WindowMovementControl screenmc;
+        static private bool winkey_down = false;
 
-        IntPtr winhook(int code, IntPtr wp, IntPtr lp)
-        {
-            var kbd = (KBDLLHOOKSTRUCT)Marshal.PtrToStructure(lp, typeof(KBDLLHOOKSTRUCT));
-            if (Form.ActiveForm == this)
-            {
-                bool down = (kbd.flags & 128) == 0;
-
-                switch (kbd.vkCode)
-                {
-                    case NativeMethods.VK_LWIN:
-                        winkey_down = down;
-                        break;
-
-                    case NativeMethods.VK_LEFT:
-                        if (winkey_down && down)
-                        {
-                            sc.Align(true);
-                        }
-                        break;
-                    case NativeMethods.VK_RIGHT:
-                        if (winkey_down && down)
-                        {
-                            sc.Align(false);
-                        }
-                        break;
-
-                        // up/down not implemented, windows will do that.  
-                        // This does not work exactly as a border window since windows up/down functionality messes it up. 
-                        // later we could try and emulate the lot. but this is good for now.
-                }
-
-                //System.Diagnostics.Debug.WriteLine("winhook " + code + " " + wp + " " + lp + ":" + kbd.vkCode + " f " + kbd.flags + " wk " + winkey_down);
-            }
-            else
-            {
-                //System.Diagnostics.Debug.WriteLine("Rejected winhook " + code + " " + wp + " " + lp + ":" + kbd.vkCode + " f " + kbd.flags + " wk " + winkey_down);
-            }
-
-            return UnsafeNativeMethods.CallNextHookEx(hookid, code, wp, lp);
-        }
-
-
-        private bool winkey_down = false;
         private System.Windows.Forms.Timer dblClickTimer = null;
-        private IntPtr hookid = (IntPtr)0;
-        private BaseUtils.WindowMovementControl sc;
-
 
         #endregion
     }

@@ -27,9 +27,8 @@ namespace DialogTest
 
             InitializeComponent();
 
-            theme.ApplyStd(this);
+       //     theme.ApplyStd(this);
             BackColor = Color.Black;
-
 
         }
 
@@ -54,9 +53,20 @@ namespace DialogTest
             extButton2.Text = Size.ToString();
         }
 
+        Form two;
         private void extButton3_Click(object sender, EventArgs e)
         {
-            extButton3.Text = "Kkwkw";
+            theme = new ThemeStandard();
+            ThemeableFormsInstance.Instance = theme;
+            theme.LoadBaseThemes();
+            theme.SetThemeByName("Elite EuroCaps");
+            theme.FontName = "Microsoft Sans Serif";
+            theme.FontSize = 8.25f;
+            theme.WindowsFrame = false;
+
+            two = new DraggableForm();
+            theme.ApplyStd(two);
+            two.Show(this);
         }
     }
 }
