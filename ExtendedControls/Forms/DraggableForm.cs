@@ -105,7 +105,6 @@ namespace ExtendedControls
             }
         }
 
-        // all keystrokes from child controls come here
         protected override bool ProcessKeyPreview(ref Message m)
         {
             bool windowsborder = this.FormBorderStyle != FormBorderStyle.None;
@@ -144,6 +143,7 @@ namespace ExtendedControls
 
             return base.ProcessKeyPreview(ref m);
         }
+        
 
         protected override void Dispose(bool disposing)
         {
@@ -303,8 +303,7 @@ namespace ExtendedControls
         }
 
         private BaseUtils.WindowMovementControl screenmc;
-        static private bool winkey_down = false;
-
+        private bool winkey_down = false;
         private System.Windows.Forms.Timer dblClickTimer = null;
 
         #endregion

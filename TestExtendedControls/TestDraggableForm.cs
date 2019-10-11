@@ -27,7 +27,7 @@ namespace DialogTest
 
             InitializeComponent();
 
-       //     theme.ApplyStd(this);
+            theme.ApplyStd(this);
             BackColor = Color.Black;
 
         }
