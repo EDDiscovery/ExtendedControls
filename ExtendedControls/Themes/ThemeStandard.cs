@@ -1015,6 +1015,15 @@ namespace ExtendedControls
                 else
                     ctrl.FlatStyle = FlatStyle.Popup;
             }
+            else if (myControl is CompassControl)
+            {
+                CompassControl compassControl = myControl as CompassControl;
+                compassControl.ForeColor = currentsettings.colors[Settings.CI.textbox_fore];
+                compassControl.StencilColor = currentsettings.colors[Settings.CI.textbox_fore];
+                compassControl.CentreTickColor = currentsettings.colors[Settings.CI.textbox_fore].Multiply(1.2F);
+                compassControl.BugColor = currentsettings.colors[Settings.CI.textbox_fore].Multiply(0.8F);
+                compassControl.BackColor = currentsettings.colors[Settings.CI.form];
+            }
             else
             {
                 if (!parentnamespace.Equals("ExtendedControls"))
