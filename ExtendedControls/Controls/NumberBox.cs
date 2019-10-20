@@ -185,6 +185,36 @@ namespace ExtendedControls
         #endregion
     }
 
+    public class NumberBoxFloat : NumberBox<float>
+    {
+        public NumberBoxFloat()
+        {
+            ValueNoChange = 0;
+            Minimum = float.MinValue;
+            Maximum = float.MaxValue;
+        }
+
+        protected override string ConvertToString(float v)
+        {
+            return v.ToString(Format, FormatCulture);
+        }
+        protected override bool ConvertFromString(string t, out float number)
+        {
+            bool ok = float.TryParse(t, System.Globalization.NumberStyles.Float, FormatCulture, out number) &&
+                      number >= Minimum && number <= Maximum;
+            if (ok && othernumber != null)
+                ok = number.CompareTo(othernumber.Value, othercomparision);
+            return ok;
+        }
+
+        protected override bool AllowedChar(char c)
+        {
+            return (char.IsDigit(c) || c == 8 ||
+                    (c == FormatCulture.NumberFormat.CurrencyDecimalSeparator[0] && Text.IndexOf(FormatCulture.NumberFormat.CurrencyDecimalSeparator, StringComparison.Ordinal) == -1) ||
+                    (c == FormatCulture.NumberFormat.NegativeSign[0] && SelectionStart == 0 && Minimum < 0));
+        }
+    }
+
     public class NumberBoxDouble : NumberBox<double>
     {
         public NumberBoxDouble()
