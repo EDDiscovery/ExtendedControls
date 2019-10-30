@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestButtons));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.extCheckBox5 = new ExtendedControls.ExtCheckBox();
+            this.extCheckBox4 = new ExtendedControls.ExtCheckBox();
             this.extButton11 = new ExtendedControls.ExtButton();
             this.compositeButton1 = new ExtendedControls.CompositeButton();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -73,9 +75,50 @@
             this.panel1.Size = new System.Drawing.Size(48, 48);
             this.panel1.TabIndex = 0;
             // 
+            // extCheckBox5
+            // 
+            this.extCheckBox5.BackColor = System.Drawing.Color.SkyBlue;
+            this.extCheckBox5.CheckBoxColor = System.Drawing.Color.Gray;
+            this.extCheckBox5.CheckBoxDisabledScaling = 0.5F;
+            this.extCheckBox5.CheckBoxInnerColor = System.Drawing.Color.White;
+            this.extCheckBox5.CheckColor = System.Drawing.Color.DarkBlue;
+            this.extCheckBox5.ImageButtonDisabledScaling = 0.5F;
+            this.extCheckBox5.ImageIndeterminate = null;
+            this.extCheckBox5.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.extCheckBox5.ImageUnchecked = null;
+            this.extCheckBox5.Location = new System.Drawing.Point(494, 447);
+            this.extCheckBox5.MouseOverColor = System.Drawing.Color.CornflowerBlue;
+            this.extCheckBox5.Name = "extCheckBox5";
+            this.extCheckBox5.Size = new System.Drawing.Size(138, 36);
+            this.extCheckBox5.TabIndex = 71;
+            this.extCheckBox5.Text = "extCheckBox4";
+            this.extCheckBox5.TickBoxReductionRatio = 0.75F;
+            this.extCheckBox5.UseVisualStyleBackColor = false;
+            // 
+            // extCheckBox4
+            // 
+            this.extCheckBox4.BackColor = System.Drawing.Color.CadetBlue;
+            this.extCheckBox4.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.extCheckBox4.CheckBoxColor = System.Drawing.Color.Gray;
+            this.extCheckBox4.CheckBoxDisabledScaling = 0.5F;
+            this.extCheckBox4.CheckBoxInnerColor = System.Drawing.Color.White;
+            this.extCheckBox4.CheckColor = System.Drawing.Color.DarkBlue;
+            this.extCheckBox4.ImageButtonDisabledScaling = 0.5F;
+            this.extCheckBox4.ImageIndeterminate = null;
+            this.extCheckBox4.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.extCheckBox4.ImageUnchecked = null;
+            this.extCheckBox4.Location = new System.Drawing.Point(494, 399);
+            this.extCheckBox4.MouseOverColor = System.Drawing.Color.CornflowerBlue;
+            this.extCheckBox4.Name = "extCheckBox4";
+            this.extCheckBox4.Size = new System.Drawing.Size(138, 36);
+            this.extCheckBox4.TabIndex = 71;
+            this.extCheckBox4.Text = "extCheckBox4";
+            this.extCheckBox4.TickBoxReductionRatio = 0.75F;
+            this.extCheckBox4.UseVisualStyleBackColor = false;
+            // 
             // extButton11
             // 
-            this.extButton11.Location = new System.Drawing.Point(701, 296);
+            this.extButton11.Location = new System.Drawing.Point(494, 194);
             this.extButton11.Name = "extButton11";
             this.extButton11.Size = new System.Drawing.Size(75, 23);
             this.extButton11.TabIndex = 70;
@@ -346,7 +389,7 @@
             this.extCheckBoxSys.ImageIndeterminate = null;
             this.extCheckBoxSys.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extCheckBoxSys.ImageUnchecked = null;
-            this.extCheckBoxSys.Location = new System.Drawing.Point(416, 297);
+            this.extCheckBoxSys.Location = new System.Drawing.Point(494, 241);
             this.extCheckBoxSys.MouseOverColor = System.Drawing.Color.Red;
             this.extCheckBoxSys.Name = "extCheckBoxSys";
             this.extCheckBoxSys.Size = new System.Drawing.Size(72, 42);
@@ -606,6 +649,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(1060, 623);
+            this.Controls.Add(this.extCheckBox5);
+            this.Controls.Add(this.extCheckBox4);
             this.Controls.Add(this.extButton11);
             this.Controls.Add(this.compositeButton1);
             this.Controls.Add(this.extButton10);
@@ -671,5 +716,7 @@
         private ExtendedControls.ExtButton extButton1;
         private ExtendedControls.ExtButton extButton2;
         private ExtendedControls.ExtButton extButton12;
+        private ExtendedControls.ExtCheckBox extCheckBox4;
+        private ExtendedControls.ExtCheckBox extCheckBox5;
     }
 }

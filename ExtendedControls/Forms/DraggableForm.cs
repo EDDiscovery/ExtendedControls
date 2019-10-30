@@ -17,7 +17,7 @@
 using BaseUtils.Win32;
 using BaseUtils.Win32Constants;
 using System;
-using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -27,51 +27,21 @@ namespace ExtendedControls
 {
     public class DraggableForm : SmartSysMenuForm
     {
+        //The number of pixels from the top of the <see cref="SmartSysMenuForm"/> that will be interpreted as caption
+        // area when the <see cref="SmartSysMenuForm"/> is unframed. The default value is <c>28</c>.
+        public uint CaptionHeight { get; set; } = 28;
+
+        protected virtual bool WinLeftRightEnabledInBorderless { get; } = true;     // override to disable borderless intercept
+
         public DraggableForm()
         {
             dblClickTimer = new Timer();
             dblClickTimer.Tick += (o, e) => { ((Timer)o).Enabled = false; };
+            screenmc = new BaseUtils.WindowMovementControl(this);
+            KeyPreview = true;
         }
 
-        /// <summary>
-        /// The number of pixels from the top of the <see cref="SmartSysMenuForm"/> that will be interpreted as caption
-        /// area when the <see cref="SmartSysMenuForm"/> is unframed. The default value is <c>28</c>.
-        /// </summary>
-        /// <seealso cref="OnCaptionMouseDown"/>
-        /// <seealso cref="OnCaptionMouseUp"/>
-        [DefaultValue(28), Description("The number of pixels from the top of the Form that will be interpreted as the Form's caption area.")]
-        public uint CaptionHeight { get; set; } = 28;
-
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                // Allow minimize/restore operations to occur by clicking on the TaskBar icon, even when unframed.
-                if (MinimizeBox && ShowInTaskbar)
-                {
-                    cp.ClassStyle |= CS.DBLCLKS;
-                    cp.Style |= WS.MINIMIZEBOX;
-                }
-                return cp;
-            }
-        }
-
-        protected virtual bool DraggableDisableResize { get; } = false;       // SET true to stop your form from resizing
-
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && dblClickTimer != null)
-            {
-                dblClickTimer.Enabled = false;
-                dblClickTimer.Tag = null;
-                dblClickTimer.Dispose();
-            }
-            dblClickTimer = null;
-            base.Dispose(disposing);
-        }
+        // call this in a mouse down handler to make it move the window
 
         public void OnCaptionMouseDown(Control sender, MouseEventArgs e)
         {
@@ -87,9 +57,9 @@ namespace ExtendedControls
 
                     switch (e.Button)
                     {
-                        case MouseButtons.Left:     SendMessage(WM.NCLBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Middle:   SendMessage(WM.NCMBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Right:    SendMessage(WM.NCRBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Left: SendMessage(WM.NCLBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Middle: SendMessage(WM.NCMBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Right: SendMessage(WM.NCRBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
                     }
                 }
             }
@@ -108,17 +78,92 @@ namespace ExtendedControls
 
                     switch (e.Button)
                     {
-                        case MouseButtons.Left:     SendMessage(WM.NCLBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Middle:   SendMessage(WM.NCMBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Right:    SendMessage(WM.NCRBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Left: SendMessage(WM.NCLBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Middle: SendMessage(WM.NCMBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
+                        case MouseButtons.Right: SendMessage(WM.NCRBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
                     }
                 }
             }
         }
 
+        #region Private implementation
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+
+                // Allow minimize/restore operations to occur by clicking on the TaskBar icon, even when unframed.
+                if (MinimizeBox && ShowInTaskbar)
+                {
+                    cp.ClassStyle |= CS.DBLCLKS;
+                    cp.Style |= WS.MINIMIZEBOX; // using these turn on winkey - up/down functionality
+                }
+
+                return cp;
+            }
+        }
+
+        protected override bool ProcessKeyPreview(ref Message m)
+        {
+            bool windowsborder = this.FormBorderStyle != FormBorderStyle.None;
+
+            if ( !windowsborder && WinLeftRightEnabledInBorderless && (m.Msg == WM.KEYDOWN || m.Msg == WM.KEYUP ))     // it also sends WM.CHAR
+            {
+                Keys key = (Keys)m.WParam;
+                bool keydown = m.Msg == WM.KEYDOWN;
+
+                //System.Diagnostics.Debug.WriteLine("Keypreview " + m.Msg + " " + m.LParam.ToString("x") + " " + m.WParam + " = " + keydown + " " + key.ToString());
+
+                switch (key)
+                {
+                    case Keys.LWin:
+                        winkey_down = keydown;
+                        break;
+
+                    case Keys.Left:
+                        if (winkey_down && !keydown)            // windows is not giving us the winkey + leftdown key, just the leftup.  So have to comprimise. 
+                        {
+                            screenmc.Align(true);
+                        }
+                        break;
+                    case Keys.Right:
+                        if (winkey_down && !keydown)
+                        {
+                            screenmc.Align(false);
+                        }
+                        break;
+
+                        // up/down not implemented, windows will do that.  
+                        // This does not work exactly as a border window since windows up/down functionality messes it up. 
+                        // later we could try and emulate the lot. but this is good for now.
+                }
+            }
+
+            return base.ProcessKeyPreview(ref m);
+        }
+        
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (dblClickTimer != null)
+                {
+                    dblClickTimer.Enabled = false;
+                    dblClickTimer.Tag = null;
+                    dblClickTimer.Dispose();
+                    dblClickTimer = null;
+                }
+            }
+            base.Dispose(disposing);
+        }
+
+
         protected override void WndProc(ref Message m)
         {
-            bool windowsborder = this.FormBorderStyle == FormBorderStyle.Sizable;
+            bool windowsborder = this.FormBorderStyle != FormBorderStyle.None;
 
             switch (m.Msg)
             {
@@ -144,7 +189,7 @@ namespace ExtendedControls
                                 else
                                 {
                                     mmi.ptMaxSize.X = wa.Width;
-                                    mmi.ptMaxSize.Y = wa.Height;  
+                                    mmi.ptMaxSize.Y = wa.Height;
                                     //mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = wa.Width;
                                     //mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = wa.Height;
                                 }
@@ -159,7 +204,7 @@ namespace ExtendedControls
                                     mmi.ptMinTrackSize.X = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CXMINTRACK);
                                     mmi.ptMinTrackSize.Y = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CYMINTRACK);
                                 }
-                              //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
+                                //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
                             }
                             else
                             {
@@ -180,7 +225,7 @@ namespace ExtendedControls
                         if (!AllowResize)
                         {
                             m.Result = (IntPtr)HT.CAPTION;
-                        }   
+                        }
                         else
                         {
                             base.WndProc(ref m);
@@ -194,7 +239,7 @@ namespace ExtendedControls
 
                             int botarea = Controls.OfType<ExtStatusStrip>().FirstOrDefault()?.Height ?? Controls.OfType<StatusStrip>().FirstOrDefault()?.Height ?? CaptionHeight;
 
-                            if (SizeGripStyle != SizeGripStyle.Hide && WindowState != FormWindowState.Maximized && (p.X + p.Y >= ClientSize.Width + ClientSize.Height - botarea ))
+                            if (SizeGripStyle != SizeGripStyle.Hide && WindowState != FormWindowState.Maximized && (p.X + p.Y >= ClientSize.Width + ClientSize.Height - botarea))
                             {
                                 m.Result = (IntPtr)HT.BOTTOMRIGHT;
                             }
@@ -257,8 +302,8 @@ namespace ExtendedControls
             base.WndProc(ref m);
         }
 
-        #region Private implementation
-
+        private BaseUtils.WindowMovementControl screenmc;
+        private bool winkey_down = false;
         private System.Windows.Forms.Timer dblClickTimer = null;
 
         #endregion

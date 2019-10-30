@@ -106,14 +106,23 @@ namespace ExtendedControls
                 else
                 {
                     Rectangle tickarea = ClientRectangle;
+                    Rectangle textarea = ClientRectangle;
+
                     int reduce = (int)(tickarea.Height * TickBoxReductionRatio);
                     tickarea.Y += (tickarea.Height - reduce) / 2;
                     tickarea.Height = reduce;
                     tickarea.Width = tickarea.Height;
 
-                    Rectangle textarea = ClientRectangle;
-                    textarea.X = tickarea.Width;
-                    textarea.Width -= tickarea.Width;
+                    if (CheckAlign == ContentAlignment.MiddleRight)
+                    {
+                        tickarea.X = ClientRectangle.Width - tickarea.Width;
+                        textarea.Width -= tickarea.Width;
+                    }
+                    else 
+                    {
+                        textarea.X = tickarea.Width;
+                        textarea.Width -= tickarea.Width;
+                    }
 
                     float discaling = Enabled ? 1.0f : CheckBoxDisabledScaling;
 
