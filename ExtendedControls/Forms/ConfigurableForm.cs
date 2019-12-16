@@ -136,9 +136,10 @@ namespace ExtendedControls
             Init(icon, pos, caption, lname, callertag, false, asm);
         }
 
-        public new void Close()     // program close.. allow it to close properly
+        public void ReturnResult(DialogResult result)
         {
             ProgClose = true;
+            DialogResult = result;
             base.Close();
         }
 

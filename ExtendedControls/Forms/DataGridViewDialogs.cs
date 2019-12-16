@@ -42,16 +42,14 @@ public static class DataGridViewDialogs
                 long? v3 = f.GetLong("Entry");
                 if (v3.HasValue)
                 {
-                    f.DialogResult = DialogResult.OK;
-                    f.Close();
+                    f.ReturnResult(DialogResult.OK);
                 }
                 else
                     ExtendedControls.MessageBoxTheme.Show(parent, "Value is not valid".Tx(t,"VNV"), "Warning".Tx(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (controlname == "Cancel")
             {
-                f.DialogResult = DialogResult.Cancel;
-                f.Close();
+                f.ReturnResult(DialogResult.Cancel);
             }
         };
 
