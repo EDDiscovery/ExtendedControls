@@ -217,6 +217,7 @@ namespace ExtendedControls
             bool framed = !(FormBorderStyle == FormBorderStyle.None);
 
             int cl = (from x in themeTextBox.Lines select x.Length).Max();
+            cl = Math.Max(cl, labelCaption.Text.Length);
             int wantedw = 16 + (int)(Font.GetHeight() * cl * 0.5) + panelLeft.Width;        // 0.5 is an estimate of avg ratio
 
             Width = wantedw;        // changing width changes estimate vert size
