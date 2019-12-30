@@ -81,8 +81,8 @@ namespace ExtendedConditionsForms
                 // tbd
                 y += titleHeight + ((panelTop.Enabled) ? (panelTop.Height + statusStripCustom.Height) : 8) + 16 + panelOK.Height;
 
-                this.MinimumSize = new Size(1000, y);
                 this.MaximumSize = new Size(Screen.FromControl(this).WorkingArea.Width - 100, Screen.FromControl(this).WorkingArea.Height - 100);
+                this.MinimumSize = new Size(1000, Math.Min(y,this.MaximumSize.Height));
 
                 if (Bottom > Screen.FromControl(this).WorkingArea.Height)
                     Top = Screen.FromControl(this).WorkingArea.Height - Height - 50;

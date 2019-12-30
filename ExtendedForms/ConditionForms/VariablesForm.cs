@@ -190,7 +190,6 @@ namespace ExtendedConditionsForms
 
                 g.value.Size = new Size(g.del.Left -g.value.Left-8, g.panel.Height - 8);
 
-
                 y += g.panel.Height + 6;
             }
 
@@ -204,8 +203,8 @@ namespace ExtendedConditionsForms
 
             if (minmax) // stop circular relationsship with resize
             {
-                this.MinimumSize = new Size(600, y);
                 this.MaximumSize = new Size(Screen.FromControl(this).WorkingArea.Width, Screen.FromControl(this).WorkingArea.Height-128);
+                this.MinimumSize = new Size(600, Math.Min(y,this.MaximumSize.Height));
             }
         }
 
