@@ -117,6 +117,7 @@ namespace ExtendedControls
                 c.Top = c.Top - scrollpos;      // account for scroll pos and move control to scroll pos offset
                 ScrollTo(scrollpos, true);    // check bar within bounds
                 ignorelocationchange--;
+                //System.Diagnostics.Debug.WriteLine("PS Move " + c.Name + " " + c.Location);
             }
         }
 
@@ -171,7 +172,7 @@ namespace ExtendedControls
 
             foreach (Control c in Controls)
             {
-                if (!(c is ExtScrollBar))
+                if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
                 {
                     if (FlowControlsLeftToRight)
                     {
@@ -203,7 +204,7 @@ namespace ExtendedControls
             else if (newscrollpos > maxscr)
                 newscrollpos = maxscr;
 
-            //   System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " maxscr " + maxscr + " new scr " + newscrollpos + " old scroll " + scrollpos);
+            //System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " maxscr " + maxscr + " new scr " + newscrollpos + " old scroll " + scrollpos);
 
             if (newscrollpos != scrollpos || (FlowControlsLeftToRight && forcereposition))  // only need forcereposition on flowing
             {
@@ -212,7 +213,7 @@ namespace ExtendedControls
                 int posi = 0;
                 foreach (Control c in Controls)
                 {
-                    if (!(c is ExtScrollBar))
+                    if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
                     {
                         c.Location = new Point(cposnorm[posi].X, cposnorm[posi].Y - newscrollpos);
                         posi++;
