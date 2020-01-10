@@ -233,7 +233,7 @@ namespace ExtendedControls
         private void DrawImage(Rectangle box, Graphics g)
         {
             Image image = CheckState == CheckState.Checked ? Image : ((CheckState == CheckState.Indeterminate && ImageIndeterminate != null) ? ImageIndeterminate : (ImageUnchecked!=null ?ImageUnchecked: Image));
-            Size isize = (imagelayout == ImageLayout.Stretch) ? box.Size : Image.Size;
+            Size isize = (imagelayout == ImageLayout.Stretch) ? box.Size : image.Size;
             Rectangle drawarea = ImageAlign.ImagePositionFromContentAlignment(box, isize);
 
             //System.Diagnostics.Debug.WriteLine("Image for " + Name + " " + Enabled + " " + DrawnImageAttributesEnabled);
