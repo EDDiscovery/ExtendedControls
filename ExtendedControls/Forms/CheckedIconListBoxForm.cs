@@ -436,7 +436,16 @@ namespace ExtendedControls
             else if (HideOnDeactivate)
             {
                 SaveSettingsEvent();
-                this.Hide();
+
+                if (Owner != null)
+                {
+                    bool otm = Owner.TopMost;
+                    Owner.TopMost = true;
+                    Hide();
+                    Owner.TopMost = otm;
+                }
+                else
+                    Hide();
             }
         }
 
