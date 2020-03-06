@@ -144,7 +144,7 @@ namespace ExtendedControls
 
         protected override void OnMouseLeave(EventArgs eventargs)
         {
-            base.OnMouseEnter(eventargs);
+            base.OnMouseLeave(eventargs);
             mouseover = MouseOver.MouseOverNone;
             mousedown = MouseOver.MouseOverNone;
             Invalidate();

@@ -521,7 +521,7 @@ namespace ExtendedConditionsForms
 
                 // pos the panel
 
-                g.panel.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
+                g.panel.Location = new Point(panelxmargin, y);
                 g.panel.Size = new Size(Math.Max(panelwidth - panelxmargin * 2, farx), Math.Max(vnextcond + panelyspacing, g.innercond.Bottom + panelyspacing));
                 g.panel.BorderStyle = (g.condlist.Count > 1) ? BorderStyle.FixedSingle : BorderStyle.None;
 
@@ -534,7 +534,7 @@ namespace ExtendedConditionsForms
 
             if (allowoutercond || groups.Count == 0)
             {
-                buttonMore.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
+                buttonMore.Location = new Point(panelxmargin, y);
                 buttonMore.Visible = true;
                 y = buttonMore.Bottom;
             }

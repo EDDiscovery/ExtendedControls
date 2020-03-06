@@ -76,7 +76,39 @@ namespace DialogTest
         { 
             ConditionFilterForm frm = new ConditionFilterForm();
 
-            List<ConditionEntry> ces = new List<ConditionEntry>() { new ConditionEntry("Fred", ConditionEntry.MatchType.NumericGreaterEqual, "20") };
+            List<ConditionEntry> ces = new List<ConditionEntry>()
+            {
+                new ConditionEntry("Fred", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred2", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred3", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred4", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred5", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred6", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred7", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred8", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred9", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred10", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred11", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred12", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred13", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred14", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred15", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred16", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred17", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred18", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred19", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred20", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred21", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred22", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred23", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred24", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred25", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred26", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred27", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred28", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred29", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                new ConditionEntry("Fred30", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+            };
 
             Condition conds = new Condition("", "", "", ces);
 
@@ -102,7 +134,7 @@ namespace DialogTest
         }
 
 
-        ConditionLists clist2;
+        ConditionLists clist2 = new ConditionLists();
 
         private void buttonExt3_Click(object sender, EventArgs e)
         {
@@ -113,6 +145,45 @@ namespace DialogTest
         private void CL(float s)
         {
             ConditionFilterForm frm = new ConditionFilterForm();
+
+            if ( clist2.Count == 0 )
+            {
+                List<ConditionEntry> ces = new List<ConditionEntry>()
+                {
+                    new ConditionEntry("Fred", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred2", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred3", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred4", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred5", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred6", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred7", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred8", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred9", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred10", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred11", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred12", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred13", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred14", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred15", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred16", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred17", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred18", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred19", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred20", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred21", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred22", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred23", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred24", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred25", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred26", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred27", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred28", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred29", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                    new ConditionEntry("Fred30", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
+                };
+
+                clist2.Add(new Condition("e1", "a", "ad", ces, ConditionEntry.LogicalCondition.Or, ConditionEntry.LogicalCondition.And));
+            }
 
             theme.FontSize = s;
             frm.InitCondition("Name", this.Icon, clist2);

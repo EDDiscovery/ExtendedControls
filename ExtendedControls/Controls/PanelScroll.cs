@@ -106,17 +106,18 @@ namespace ExtendedControls
             ScrollTo(scrollpos, true);
         }
 
-        bool ignorelocationchange = false;      // location changes triggered when we reposition controls to scroll, so we need to mask them 
+        int ignorelocationchange = 0;      // location changes triggered when we reposition controls to scroll, so we need to mask them 
 
         private void Control_LocationChanged(object sender, EventArgs e)
         {
-            if (!ignorelocationchange)
+            if (ignorelocationchange == 0)
             {
-                ignorelocationchange = true;        // stop recursioon
+                ignorelocationchange++;        // stop recursioon
                 Control c = sender as Control;
                 c.Top = c.Top - scrollpos;      // account for scroll pos and move control to scroll pos offset
-                ignorelocationchange = false;
                 ScrollTo(scrollpos, true);    // check bar within bounds
+                ignorelocationchange--;
+                //System.Diagnostics.Debug.WriteLine("PS Move " + c.Name + " " + c.Location);
             }
         }
 
@@ -171,7 +172,7 @@ namespace ExtendedControls
 
             foreach (Control c in Controls)
             {
-                if (!(c is ExtScrollBar))
+                if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
                 {
                     if (FlowControlsLeftToRight)
                     {
@@ -203,23 +204,23 @@ namespace ExtendedControls
             else if (newscrollpos > maxscr)
                 newscrollpos = maxscr;
 
-            //   System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " maxscr " + maxscr + " new scr " + newscrollpos + " old scroll " + scrollpos);
+            //System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " maxscr " + maxscr + " new scr " + newscrollpos + " old scroll " + scrollpos);
 
             if (newscrollpos != scrollpos || (FlowControlsLeftToRight && forcereposition))  // only need forcereposition on flowing
             {
                 SuspendLayout();
-                ignorelocationchange = true;
+                ignorelocationchange++;
                 int posi = 0;
                 foreach (Control c in Controls)
                 {
-                    if (!(c is ExtScrollBar))
+                    if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
                     {
                         c.Location = new Point(cposnorm[posi].X, cposnorm[posi].Y - newscrollpos);
                         posi++;
                     }
                 }
 
-                ignorelocationchange = false;
+                ignorelocationchange--;
                 ResumeLayout();
                 Update(); // force redisplay
             }
