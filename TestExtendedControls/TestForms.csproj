@@ -24,7 +24,11 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BaseUtilities\Audio.CSCore\Audio.CSCore.csproj" />
+    <ProjectReference Include="..\BaseUtilities\Audio.WindowsSpeech\Audio.WindowsSpeech.csproj" />
+    <ProjectReference Include="..\BaseUtilities\Audio\Audio.csproj" />
     <ProjectReference Include="..\BaseUtilities\BaseUtilities\BaseUtils.csproj" />
+    <ProjectReference Include="..\BaseUtilities\BaseUtils.WinForms\BaseUtils.WinForms.csproj" />
     <ProjectReference Include="..\ExtendedControls\ExtendedControls.csproj" />
     <ProjectReference Include="..\ExtendedForms\ExtendedForms.csproj" />
   </ItemGroup>
