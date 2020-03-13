@@ -1,320 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2049403F-F4C7-45E6-B777-6390C78E4D2B}</ProjectGuid>
-    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExtendedControls</RootNamespace>
     <AssemblyName>ExtendedControls</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
+    <TargetFrameworks>net461</TargetFrameworks>
+    <Company>EDDiscovery</Company>
+    <Version>1.1.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.DataVisualization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\DGVColumnAutoComplete.cs" />
-    <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TextBoxAutoComplete.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Button.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\CompassControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\CompositeButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\NumberBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\CheckBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\CheckedIconListBoxFormGroup.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\CheckedIconListBoxForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\ComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\Design\DrawnPanelDesigner.cs" />
-    <Compile Include="Controls\ImageViewer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ImageViewer.Designer.cs">
-      <DependentUpon>ImageViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PanelNoTheme.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TreeView.Designer.cs">
-      <DependentUpon>TreeView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ConfigurableForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DataGridViewDialogs.cs" />
-    <Compile Include="Forms\SmartSysMenuForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DraggableForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\KeyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\KeyForm.Designer.cs">
-      <DependentUpon>KeyForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PanelDropDown.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\PanelDropDown.Designer.cs">
-      <DependentUpon>PanelDropDown.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Themes\ITheme.cs" />
-    <Compile Include="Themes\ThemeStandardEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Themes\ThemeStandardEditor.Designer.cs">
-      <DependentUpon>ThemeStandardEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ToolStrips\ThemeToolStrip.cs" />
-    <Compile Include="Controls\DateTimePicker.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\ListBoxForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Controls\DataGridViewExtensions.cs" />
-    <Compile Include="Controls\PanelDataGridViewScroll.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ButtonDrawn.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\GroupBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\InfoForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\InfoForm.Designer.cs">
-      <DependentUpon>InfoForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Label.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ListBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\MessageBoxTheme.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MessageBoxTheme.Designer.cs">
-      <DependentUpon>MessageBoxTheme.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\NumericUpDown.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\PanelScroll.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\PictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\PromptDialogs.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\RadioButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\RichTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\PanelRollUp.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\StatusStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TabStrip.cs">
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Design" />
+  </ItemGroup>
+  <ItemGroup Label="Controls">
+    <Compile Update="Controls\ImageViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\TabStrip.Designer.cs">
-      <DependentUpon>TabStrip.cs</DependentUpon>
+    <Compile Update="Controls\PanelDropDown.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\TabStyleCustom.cs" />
-    <Compile Include="Controls\TextBox.cs">
-      <SubType>Component</SubType>
+    <Compile Update="Controls\TabStrip.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Themes\Theme.cs" />
-    <Compile Include="Themes\ThemeStandard.cs" />
-    <Compile Include="ToolStrips\ToolStripComboBoxCustom.cs" />
-    <Compile Include="Controls\UpDown.cs">
-      <SubType>Component</SubType>
+    <Compile Update="Controls\TreeView.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ScrollBar.cs">
-      <SubType>Component</SubType>
+  </ItemGroup>
+  <ItemGroup Label="Forms">
+    <Compile Update="Forms\InfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\KeyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MessageBoxTheme.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Themes\ThemeStandardEditor.cs">
+      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
-      <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ImageViewer.resx">
-      <DependentUpon>ImageViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CheckedIconListBoxFormGroup.resx">
-      <DependentUpon>CheckedIconListBoxFormGroup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CheckedIconListBoxForm.resx">
-      <DependentUpon>CheckedIconListBoxForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\InfoForm.resx">
-      <DependentUpon>InfoForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\KeyForm.resx">
-      <DependentUpon>KeyForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ListBoxForm.resx">
-      <DependentUpon>ListBoxForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MessageBoxTheme.resx">
-      <DependentUpon>MessageBoxTheme.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RichTextBox.resx">
-      <DependentUpon>RichTextBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\TabStrip.resx">
-      <DependentUpon>TabStrip.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Themes\ThemeStandardEditor.resx">
-      <DependentUpon>ThemeStandardEditor.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ArrowLeft.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ArrowRight.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\popout.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Calendar.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pindown.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pinup.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pindownred.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pinupred.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pinupwhite.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pindownwhite.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pindownwhite2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\pinupwhite2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Stop.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\panels.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj">
-      <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
-      <Name>BaseUtils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\None.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\All.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ArrowDown.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ArrowDown1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ArrowUp.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Selector.png" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
