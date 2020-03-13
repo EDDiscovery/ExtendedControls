@@ -8,6 +8,7 @@
     <TargetFrameworks>net461</TargetFrameworks>
     <Company>EDDiscovery</Company>
     <Version>1.1.0.0</Version>
+    <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
