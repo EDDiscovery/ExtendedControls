@@ -70,11 +70,11 @@
     <Compile Include="TestPanelScroll2.Designer.cs">
       <DependentUpon>TestPanelScroll2.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelScrollOutlining - Copy.cs">
+    <Compile Include="TestPanelScrollOutlining.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelScrollOutlining - Copy.Designer.cs">
-      <DependentUpon>TestPanelScrollOutlining - Copy.cs</DependentUpon>
+    <Compile Include="TestPanelScrollOutlining.Designer.cs">
+      <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
     </Compile>
     <Compile Include="TestTextBoxesRTF.cs">
       <SubType>Form</SubType>
@@ -213,8 +213,8 @@
     <EmbeddedResource Include="TestPanelScroll2.resx">
       <DependentUpon>TestPanelScroll2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelScrollOutlining - Copy.resx">
-      <DependentUpon>TestPanelScrollOutlining - Copy.cs</DependentUpon>
+    <EmbeddedResource Include="TestPanelScrollOutlining.resx">
+      <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestTextBoxesRTF.resx">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
