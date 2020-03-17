@@ -70,6 +70,12 @@
     <Compile Include="TestPanelScroll2.Designer.cs">
       <DependentUpon>TestPanelScroll2.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestPanelScrollOutlining - Copy.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPanelScrollOutlining - Copy.Designer.cs">
+      <DependentUpon>TestPanelScrollOutlining - Copy.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestTextBoxesRTF.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -136,11 +142,11 @@
     <Compile Include="TestMisc.Designer.cs">
       <DependentUpon>TestMisc.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelScrollOutlining.cs">
+    <Compile Include="TestPanelDGV.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelScrollOutlining.Designer.cs">
-      <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
+    <Compile Include="TestPanelDGV.Designer.cs">
+      <DependentUpon>TestPanelDGV.cs</DependentUpon>
     </Compile>
     <Compile Include="TestPanelScroll.cs">
       <SubType>Form</SubType>
@@ -207,6 +213,9 @@
     <EmbeddedResource Include="TestPanelScroll2.resx">
       <DependentUpon>TestPanelScroll2.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestPanelScrollOutlining - Copy.resx">
+      <DependentUpon>TestPanelScrollOutlining - Copy.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestTextBoxesRTF.resx">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
     </EmbeddedResource>
@@ -237,8 +246,8 @@
     <EmbeddedResource Include="TestMisc.resx">
       <DependentUpon>TestMisc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelScrollOutlining.resx">
-      <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
+    <EmbeddedResource Include="TestPanelDGV.resx">
+      <DependentUpon>TestPanelDGV.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestPanelScroll.resx">
       <DependentUpon>TestPanelScroll.cs</DependentUpon>
