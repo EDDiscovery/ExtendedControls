@@ -218,7 +218,17 @@ namespace ExtendedControls
 
             int cl = (from x in themeTextBox.Lines select x.Length).Max();
             cl = Math.Max(cl, labelCaption.Text.Length);
-            int wantedw = 16 + (int)(Font.GetHeight() * cl * 0.5) + panelLeft.Width;        // 0.5 is an estimate of avg ratio
+            int wantedw = 16 + (int)(Font.GetHeight() * cl * 0.5);
+
+            int butspacing = buttonExt1.Left - buttonExt2.Left;     // make sure we have enough space for the buttons!
+            if (buttonExt3.Visible)
+                wantedw = Math.Max(wantedw, butspacing*3);
+            else if (buttonExt2.Visible)
+                wantedw = Math.Max(wantedw, butspacing*2);
+            else
+                wantedw = Math.Max(wantedw, butspacing);
+
+            wantedw += panelLeft.Width;        // 0.5 is an estimate of avg ratio
 
             Width = wantedw;        // changing width changes estimate vert size
 
