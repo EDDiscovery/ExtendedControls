@@ -50,7 +50,9 @@ namespace ExtendedControls
 
         public void SetNonBlank()       // restores it to its last value
         {
+            ignorechange = true;
             base.Text = ConvertToString(Value);
+            ignorechange = false;
         }
 
         public event EventHandler ValueChanged              // fired (first) when value is changed to a new valid value. Can be delayed by DelayBeforeNotification
