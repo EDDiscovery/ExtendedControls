@@ -378,7 +378,7 @@ namespace ExtendedControls
 
             System.Diagnostics.Debug.WriteLine("Activated " + Location);
 
-            this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, maxh, true, 64, HorizontalAlignment.Right);    // keep it on the screen. 
+            this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, maxh, true, 64);    // keep it on the screen. 
         }
 
         private void Ipanel_MouseDown(object sender, MouseEventArgs e)
