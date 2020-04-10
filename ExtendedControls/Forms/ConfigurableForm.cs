@@ -543,6 +543,8 @@ namespace ExtendedControls
             StartPosition = FormStartPosition.Manual;
 
             // position with alignment
+            this.Location = pos;
+
             this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height,false, 64, halign, valign, outer.ScrollBarWidth);
             
             //System.Diagnostics.Debug.WriteLine("Bounds " + Bounds + " ClientRect " + ClientRectangle);
