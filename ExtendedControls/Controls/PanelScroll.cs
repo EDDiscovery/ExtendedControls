@@ -185,15 +185,15 @@ namespace ExtendedControls
                         cposnorm.Add(new Point(flowpos.X + c.Margin.Left, flowpos.Y + c.Margin.Top));
                         flowpos.X += c.Width + c.Margin.Horizontal;
                         rowymax = Math.Max(rowymax, c.Height + c.Margin.Vertical);
-                        maxy = flowpos.Y + c.Height + c.Margin.Vertical;
+                        maxy = flowpos.Y + c.Height - 1 + c.Margin.Vertical;
                     }
                     else
                     {
                         cposnorm.Add(new Point(c.Left, c.Top + scrollpos));
-                        maxy = Math.Max(maxy, c.Top + scrollpos + c.Height);
+                        maxy = Math.Max(maxy, c.Top + scrollpos + c.Height -1);     // -1 because top+height = 1 pixel beyond last displayed
                     }
 
-                    // System.Diagnostics.Debug.WriteLine("Control " + c.Text + " " + c.Size + " " + c.Location + " maxy " + maxy);
+                    //System.Diagnostics.Debug.WriteLine("Control " + c.Text + " " + c.Size + " " + c.Location + " maxy " + maxy);
                 }
             }
 
@@ -204,7 +204,8 @@ namespace ExtendedControls
             else if (newscrollpos > maxscr)
                 newscrollpos = maxscr;
 
-            //System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " maxscr " + maxscr + " new scr " + newscrollpos + " old scroll " + scrollpos);
+            //System.Diagnostics.Debug.WriteLine("scroll Bounds " + Bounds + " ClientRect " + ClientRectangle);
+            //System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " CH "+ ClientRectangle.Height + "  maxscr " + maxscr + " new scr " + newscrollpos + " old scroll " + scrollpos);
 
             if (newscrollpos != scrollpos || (FlowControlsLeftToRight && forcereposition))  // only need forcereposition on flowing
             {

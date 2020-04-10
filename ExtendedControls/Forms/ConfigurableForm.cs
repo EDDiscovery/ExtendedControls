@@ -34,6 +34,9 @@ namespace ExtendedControls
         public event Action<string, string, Object> Trigger;        
         public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
 
+        public int BottomMargin { get; set; } = 8;
+        public int RightMargin { get; set; } = 8;
+
         private List<Entry> entries;
         private Object callertag;
         private string logicalname;
@@ -65,7 +68,12 @@ namespace ExtendedControls
             // ButtonExt, TextBoxBorder, Label, CheckBoxCustom, DateTime (t=time)
             public Entry(string nam, Type c, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
             {
-                controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long";
+                controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long"; 
+            }
+
+            public Entry(string nam, Type c, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, float fontscale, ContentAlignment align = ContentAlignment.MiddleCenter)
+            {
+                controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long"; PostThemeFontScale = fontscale; textalign = align;
             }
 
             // ComboBoxCustom
@@ -75,6 +83,14 @@ namespace ExtendedControls
                 comboboxitems = string.Join(",", comboitems);
             }
 
+            // custom
+
+            public Entry(Control c, string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
+            {
+                controlname = nam; control = c;  text = t; pos = p; size = s; tooltip = tt; textalign = ContentAlignment.TopLeft;
+            }
+
+            public ContentAlignment? textalign;  // label,button. nominal not applied
             public bool checkboxchecked;        // fill in for checkbox
             public bool textboxmultiline;       // fill in for textbox
             public bool clearonfirstchar;       // fill in for textbox
@@ -85,6 +101,8 @@ namespace ExtendedControls
             public long numberboxlongminimum = long.MinValue;   // for long box
             public long numberboxlongmaximum = long.MaxValue;
             public string numberboxformat;      // for both number boxes
+
+            public float PostThemeFontScale = 1.0f;   // post theme font scaler
 
             public Control control; // if controltype is set, don't set.  If controltype=null, pass your control type.
         }
@@ -115,6 +133,7 @@ namespace ExtendedControls
             entries.Add(e);
         }
 
+
         public Entry Last { get { return entries.Last(); } }
 
         // pos.x <= -999 means autocentre to parent.
@@ -128,15 +147,17 @@ namespace ExtendedControls
 
         public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font)
         {
-            Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, true , asm);
+            Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
         }
 
         public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font)
         {
-            Init(icon, pos, caption, lname, callertag, false, asm);
+            Init(icon, pos, caption, lname, callertag, null,null, asm);
         }
 
-        public void ReturnResult(DialogResult result)
+        public new DialogResult DialogResult { get; private set; }        // stop users setting it, use ReturnResult
+
+        public void ReturnResult(DialogResult result)           // MUST call to return result and close.
         {
             ProgClose = true;
             DialogResult = result;
@@ -291,110 +312,8 @@ namespace ExtendedControls
 
         #region Implementation
 
-        static private string MakeEntry(string instr, out Entry entry, ref System.Drawing.Point lastpos)
-        {
-            entry = null;
-
-            BaseUtils.StringParser sp = new BaseUtils.StringParser(instr);
-
-            string name = sp.NextQuotedWordComma();
-
-            if (name == null)
-                return "Missing name";
-
-            string type = sp.NextWordCommaLCInvariant();
-
-            Type ctype = null;
-
-            if (type == null)
-                return "Missing type";
-            else if (type.Equals("button"))
-                ctype = typeof(ExtendedControls.ExtButton);
-            else if (type.Equals("textbox"))
-                ctype = typeof(ExtendedControls.ExtTextBox);
-            else if (type.Equals("checkbox"))
-                ctype = typeof(ExtendedControls.ExtCheckBox);
-            else if (type.Equals("label"))
-                ctype = typeof(System.Windows.Forms.Label);
-            else if (type.Equals("combobox"))
-                ctype = typeof(ExtendedControls.ExtComboBox);
-            else if (type.Equals("datetime"))
-                ctype = typeof(ExtendedControls.ExtDateTimePicker);
-            else if (type.Equals("numberboxlong"))
-                ctype = typeof(ExtendedControls.NumberBoxLong);
-            else if (type.Equals("numberboxdouble"))
-                ctype = typeof(ExtendedControls.NumberBoxDouble);
-            else
-                return "Unknown control type " + type;
-
-            string text = sp.NextQuotedWordComma();     // normally text..
-
-            if (text == null)
-                return "Missing text";
-
-            int? x = sp.NextWordComma().InvariantParseIntNullOffset(lastpos.X);
-            int? y = sp.NextWordComma().InvariantParseIntNullOffset(lastpos.Y);
-            int? w = sp.NextWordComma().InvariantParseIntNull();
-            int? h = sp.NextWordComma().InvariantParseIntNull();
-
-            if (x == null || y == null || w == null || h == null)
-                return "Missing position/size";
-
-            string tip = sp.NextQuotedWordComma();      // tip can be null
-
-            entry = new ConfigurableForm.Entry(name, ctype,
-                        text, new System.Drawing.Point(x.Value, y.Value), new System.Drawing.Size(w.Value, h.Value), tip);
-
-            if (type.Contains("textbox") && tip != null)
-            {
-                int? v = sp.NextWordComma().InvariantParseIntNull();
-                entry.textboxmultiline = v.HasValue && v.Value != 0;
-            }
-
-            if (type.Contains("checkbox") && tip != null)
-            {
-                int? v = sp.NextWordComma().InvariantParseIntNull();
-                entry.checkboxchecked = v.HasValue && v.Value != 0;
-
-                v = sp.NextWordComma().InvariantParseIntNull();
-                entry.clearonfirstchar = v.HasValue && v.Value != 0;
-            }
-
-            if (type.Contains("combobox"))
-            {
-                entry.comboboxitems = sp.LineLeft.Trim();
-                if (tip == null || entry.comboboxitems.Length == 0)
-                    return "Missing paramters for combobox";
-            }
-
-            if (type.Contains("datetime"))
-            {
-                entry.customdateformat = sp.NextWord();
-            }
-
-            if (type.Contains("numberboxdouble"))
-            {
-                double? min = sp.NextWordComma().InvariantParseDoubleNull();
-                double? max = sp.NextWordComma().InvariantParseDoubleNull();
-                entry.numberboxdoubleminimum = min.HasValue ? min.Value : double.MinValue;
-                entry.numberboxdoublemaximum = max.HasValue ? max.Value : double.MaxValue;
-                entry.numberboxformat = sp.NextWordComma();
-            }
-
-            if (type.Contains("numberboxlong"))
-            {
-                long? min = sp.NextWordComma().InvariantParseLongNull();
-                long? max = sp.NextWordComma().InvariantParseLongNull();
-                entry.numberboxlongminimum = min.HasValue ? min.Value : long.MinValue;
-                entry.numberboxlongmaximum = max.HasValue ? max.Value : long.MaxValue;
-                entry.numberboxformat = sp.NextWordComma();
-            }
-
-            lastpos = new System.Drawing.Point(x.Value, y.Value);
-            return null;
-        }
-
-        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, bool posiscentrecoords = false, AutoScaleMode asm = AutoScaleMode.Font)
+        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, 
+                                HorizontalAlignment? halign = null, ControlHelpersStaticFunc.VerticalAlignment? valign = null,  AutoScaleMode asm = AutoScaleMode.Font)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
@@ -403,7 +322,7 @@ namespace ExtendedControls
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            ExtPanelScroll outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle };
+            ExtPanelScroll outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
             outer.MouseDown += FormMouseDown;
             outer.MouseUp += FormMouseUp;
             Controls.Add(outer);
@@ -430,6 +349,7 @@ namespace ExtendedControls
                 ent.control = c;
                 c.Size = ent.size;
                 c.Location = ent.pos;
+                c.Name = ent.controlname;
                 //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
                 if (!(ent.controltype == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong ))        // everything but get text
                     c.Text = ent.text;
@@ -438,9 +358,17 @@ namespace ExtendedControls
                 if (ent.tooltip != null)
                     tt.SetToolTip(c, ent.tooltip);
 
-                if (c is ExtendedControls.ExtButton)
+                if ( c is Label )
+                {
+                    Label l = c as Label;
+                    if (ent.textalign.HasValue)
+                        l.TextAlign = ent.textalign.Value;
+                }
+                else if (c is ExtendedControls.ExtButton)
                 {
                     ExtendedControls.ExtButton b = c as ExtendedControls.ExtButton;
+                    if (ent.textalign.HasValue)
+                        b.TextAlign = ent.textalign.Value;
                     b.Click += (sender, ev) =>
                     {
                         if (!ProgClose)
@@ -593,16 +521,32 @@ namespace ExtendedControls
             theme.ApplyStd(this);
             //this.DumpTree(0);
 
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].PostThemeFontScale != 1.0f)
+                {
+                    entries[i].control.Font = new Font(entries[i].control.Font.Name, entries[i].control.Font.SizeInPoints * entries[i].PostThemeFontScale);
+                }
+            }
+
             int fh = (int)this.Font.GetHeight();        // use the FH to nerf the extra area so it scales with FH.. this helps keep the controls within a framed window
 
-            // measure the items after scaling. Exclude the scroll bar
-            Size measureitemsinwindow = outer.FindMaxSubControlArea(fh + 8, (theme.WindowsFrame ? 50 : 16) + fh, new Type[] { typeof(ExtScrollBar) });
+            int boundsh = Bounds.Height - ClientRectangle.Height;                   // allow for window border..
+            int boundsw = Bounds.Width - ClientRectangle.Width;
+            int outerh = ClientRectangle.Height - outer.ClientRectangle.Height;     // any border on outer panel
+            int outerw = ClientRectangle.Width - outer.ClientRectangle.Width;
+
+            // measure the items after scaling. Exclude the scroll bar. Add on bounds/outers/margin
+
+            Size measureitemsinwindow = outer.FindMaxSubControlArea(boundsw + outerw + RightMargin, boundsh + outerh + BottomMargin, new Type[] { typeof(ExtScrollBar) }, true);
 
             StartPosition = FormStartPosition.Manual;
 
-            Location = pos;
-
-            this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height,false,64, centrecoords:posiscentrecoords);
+            // position with alignment
+            this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height,false, 64, halign, valign, outer.ScrollBarWidth);
+            
+            //System.Diagnostics.Debug.WriteLine("Bounds " + Bounds + " ClientRect " + ClientRectangle);
+            //System.Diagnostics.Debug.WriteLine("Outer Bounds " + outer.Bounds + " ClientRect " + outer.ClientRectangle);
         }
 
         protected override void OnShown(EventArgs e)
@@ -653,6 +597,115 @@ namespace ExtendedControls
         {
             OnCaptionMouseUp((Control)sender, e);
         }
+
+        #endregion
+
+        #region Text creator
+
+        static private string MakeEntry(string instr, out Entry entry, ref System.Drawing.Point lastpos)
+        {
+            entry = null;
+
+            BaseUtils.StringParser sp = new BaseUtils.StringParser(instr);
+
+            string name = sp.NextQuotedWordComma();
+
+            if (name == null)
+                return "Missing name";
+
+            string type = sp.NextWordCommaLCInvariant();
+
+            Type ctype = null;
+
+            if (type == null)
+                return "Missing type";
+            else if (type.Equals("button"))
+                ctype = typeof(ExtendedControls.ExtButton);
+            else if (type.Equals("textbox"))
+                ctype = typeof(ExtendedControls.ExtTextBox);
+            else if (type.Equals("checkbox"))
+                ctype = typeof(ExtendedControls.ExtCheckBox);
+            else if (type.Equals("label"))
+                ctype = typeof(System.Windows.Forms.Label);
+            else if (type.Equals("combobox"))
+                ctype = typeof(ExtendedControls.ExtComboBox);
+            else if (type.Equals("datetime"))
+                ctype = typeof(ExtendedControls.ExtDateTimePicker);
+            else if (type.Equals("numberboxlong"))
+                ctype = typeof(ExtendedControls.NumberBoxLong);
+            else if (type.Equals("numberboxdouble"))
+                ctype = typeof(ExtendedControls.NumberBoxDouble);
+            else
+                return "Unknown control type " + type;
+
+            string text = sp.NextQuotedWordComma();     // normally text..
+
+            if (text == null)
+                return "Missing text";
+
+            int? x = sp.NextWordComma().InvariantParseIntNullOffset(lastpos.X);
+            int? y = sp.NextWordComma().InvariantParseIntNullOffset(lastpos.Y);
+            int? w = sp.NextWordComma().InvariantParseIntNull();
+            int? h = sp.NextWordComma().InvariantParseIntNull();
+
+            if (x == null || y == null || w == null || h == null)
+                return "Missing position/size";
+
+            string tip = sp.NextQuotedWordComma();      // tip can be null
+
+            entry = new ConfigurableForm.Entry(name, ctype,
+                        text, new System.Drawing.Point(x.Value, y.Value), new System.Drawing.Size(w.Value, h.Value), tip);
+
+            if (type.Contains("textbox") && tip != null)
+            {
+                int? v = sp.NextWordComma().InvariantParseIntNull();
+                entry.textboxmultiline = v.HasValue && v.Value != 0;
+            }
+
+            if (type.Contains("checkbox") && tip != null)
+            {
+                int? v = sp.NextWordComma().InvariantParseIntNull();
+                entry.checkboxchecked = v.HasValue && v.Value != 0;
+
+                v = sp.NextWordComma().InvariantParseIntNull();
+                entry.clearonfirstchar = v.HasValue && v.Value != 0;
+            }
+
+            if (type.Contains("combobox"))
+            {
+                entry.comboboxitems = sp.LineLeft.Trim();
+                if (tip == null || entry.comboboxitems.Length == 0)
+                    return "Missing paramters for combobox";
+            }
+
+            if (type.Contains("datetime"))
+            {
+                entry.customdateformat = sp.NextWord();
+            }
+
+            if (type.Contains("numberboxdouble"))
+            {
+                double? min = sp.NextWordComma().InvariantParseDoubleNull();
+                double? max = sp.NextWordComma().InvariantParseDoubleNull();
+                entry.numberboxdoubleminimum = min.HasValue ? min.Value : double.MinValue;
+                entry.numberboxdoublemaximum = max.HasValue ? max.Value : double.MaxValue;
+                entry.numberboxformat = sp.NextWordComma();
+            }
+
+            if (type.Contains("numberboxlong"))
+            {
+                long? min = sp.NextWordComma().InvariantParseLongNull();
+                long? max = sp.NextWordComma().InvariantParseLongNull();
+                entry.numberboxlongminimum = min.HasValue ? min.Value : long.MinValue;
+                entry.numberboxlongmaximum = max.HasValue ? max.Value : long.MaxValue;
+                entry.numberboxformat = sp.NextWordComma();
+            }
+
+            lastpos = new System.Drawing.Point(x.Value, y.Value);
+            return null;
+        }
+
+
 
         #endregion
 

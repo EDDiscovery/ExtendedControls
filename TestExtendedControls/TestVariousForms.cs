@@ -31,9 +31,42 @@ namespace DialogTest
 
         private void extButton1_Click(object sender, EventArgs e)
         {
-            CF(12,false);
+            ExtendedControls.ConfigurableForm f = new ExtendedControls.ConfigurableForm();
+
+            int width = 400;
+
+            var butl = new ExtendedControls.ExtButton();
+            butl.Image = Properties.Resources.LeftArrow;
+            f.Add(new ExtendedControls.ConfigurableForm.Entry(butl, "left", "", new Point(20, 64), new Size(32, 32), null));
+            var butr = new ExtendedControls.ExtButton();
+            butr.Image = Properties.Resources.RightArrow;
+            f.Add(new ExtendedControls.ConfigurableForm.Entry(butr, "right", "", new Point(width - 20 - 32, 64), new Size(32, 32), null));
+
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("olabel", typeof(Label), "Offer", new Point(20, 30), new Size(width-40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
+
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("offer", typeof(Label), "0/0", new Point(width / 2 - 12, 50), new Size(width/2-20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
+
+            var bar = new PictureBox();
+            bar.SizeMode = PictureBoxSizeMode.StretchImage;
+            bar.Image = Properties.Resources.TraderBar;
+            f.Add(new ExtendedControls.ConfigurableForm.Entry(bar, "bar", "", new Point(width / 2 - 32, 70), new Size(64, 16), null));
+
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("receive", typeof(Label), "0", new Point(width / 2 - 12, 90), new Size(width / 2-20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
+
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("rlabel", typeof(Label), "Receive", new Point(20, 110), new Size(width-40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
+
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 150), new Size(80, 24), null));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(20, 150), new Size(80, 24), null));
+
+            f.Trigger += (a, b, c) => { f.ReturnResult(DialogResult.OK); };
+
+            f.RightMargin = 20;
+
+            f.ShowDialogCentred(this, this.Icon, "Trader");
+
         }
 
+        
         void CF(float s, bool wf)
         {
             theme.FontSize = s;
@@ -62,16 +95,14 @@ namespace DialogTest
                     long? v3 = f.GetLong("Entry");
                     if (v3.HasValue)
                     {
-                        f.DialogResult = DialogResult.OK;
-                        f.Close();
+                        f.ReturnResult(DialogResult.OK);
                     }
                     else
                         ExtendedControls.MessageBoxTheme.Show(parent, "Value is not valid".Tx(t, "VNV"), "Warning".Tx(), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else if (controlname == "Cancel")
                 {
-                    f.DialogResult = DialogResult.Cancel;
-                    f.Close();
+                    f.ReturnResult(DialogResult.Cancel);
                 }
             };
 
@@ -84,7 +115,6 @@ namespace DialogTest
 
             }
         }
-
 
         private void extButton3_Click(object sender, EventArgs e)
         {

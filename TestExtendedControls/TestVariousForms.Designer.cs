@@ -305,9 +305,7 @@
             // 
             // TestVariousForms
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(873, 558);
+            this.ClientSize = new System.Drawing.Size(907, 320);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton4);
