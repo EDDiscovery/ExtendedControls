@@ -22,6 +22,7 @@ namespace ExtendedControls
     {
         bool ApplyStd(Control ctrl);    // apply to this and subs
         bool ApplyDialog(Control ctrl);
+        bool Apply(Control ctrl, Font fnt);
 
         Color ButtonBackColor { get; set; }
         Color ButtonTextColor { get; set; }

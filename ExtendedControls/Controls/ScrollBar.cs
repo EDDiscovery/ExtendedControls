@@ -46,7 +46,8 @@ namespace ExtendedControls
         public Color MouseOverButtonColor { get; set; } = Color.Green;
         public Color MousePressedButtonColor { get; set; } = Color.Red;
 
-        public bool HideScrollBar { get; set; } = false;                   // hide if no scroll needed
+        public bool HideScrollBar { get; set; } = false;                   // hide (make not visible) if no scroll needed
+
         public bool IsScrollBarOn { get { return thumbenable; } }           // is it on?
 
         public int Value { get { return thumbvalue; } set { SetValues(value, maximum, minimum, largechange, smallchange); } }
@@ -439,6 +440,7 @@ namespace ExtendedControls
 
                 thumbbuttonarea = new Rectangle(sliderarea.X, sliderarea.Y + thumboffsetpx, sliderarea.Width, thumbheight);
                 thumbenable = true;
+                Visible = true;
             }
             else
             {
@@ -446,6 +448,8 @@ namespace ExtendedControls
                 thumbmove = false;
                 mouseover = MouseOver.MouseOverNone;
                 mousepressed = MouseOver.MouseOverNone;
+                if (HideScrollBar)
+                    Visible = false;
             }
         }
                                                            // for a 0-100 scroll bar, with lc=10, positions are 0 to 91 inclusive.

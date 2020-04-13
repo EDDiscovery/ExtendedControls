@@ -164,6 +164,7 @@ namespace ExtendedControls
         protected override void WndProc(ref Message m)
         {
             bool windowsborder = this.FormBorderStyle != FormBorderStyle.None;
+            //System.Diagnostics.Debug.WriteLine("Message {0:x} {1} {2}", m.Msg, m.LParam, m.WParam);
 
             switch (m.Msg)
             {
@@ -249,14 +250,14 @@ namespace ExtendedControls
 
                                 if (WindowState != FormWindowState.Maximized)
                                 {
-                                    if (p.Y <= edgesz)
+                                    if (p.Y <= edgesz)                                      // top edge
                                         rw = 0;
-                                    else if (p.Y >= ClientSize.Height - edgesz)
+                                    else if (p.Y >= ClientSize.Height - edgesz)             // bottom edge
                                         rw = 2;
 
-                                    if (p.X <= edgesz)
+                                    if (p.X <= edgesz)                                      // left side
                                         col = 0;
-                                    else if (p.X >= ClientSize.Width - edgesz)
+                                    else if (p.X >= ClientSize.Width - edgesz)              // right side
                                         col = 2;
                                 }
                                 var htarr = new int[][]
@@ -266,6 +267,7 @@ namespace ExtendedControls
                                     new int[] { HT.BOTTOMLEFT, HT.BOTTOM, HT.BOTTOMRIGHT }
                                 };
                                 m.Result = (IntPtr)htarr[rw][col];
+                                System.Diagnostics.Debug.WriteLine("Result " + rw + " " + col + " " +m.Result);
                             }
                         }
 
@@ -296,6 +298,17 @@ namespace ExtendedControls
                                 dblClickTimer.Enabled = true;
                             }
                         }
+                        break;
+                    }
+
+                case WM.SIZING:     // do not do WINDOWPOSCHANGED as this is a programatic change, we want user interaction
+                    {
+                        screenmc.ResetCentre();     // resize, reset centre knowledge 
+                        break;
+                    }
+                case WM.MOVING:
+                    {
+                        screenmc.ResetCentre();     // moving, reset centre knowledge 
                         break;
                     }
             }

@@ -30,30 +30,23 @@ namespace ExtendedControls
         // name:Validity:true/false for Number boxes,
         // Cancel for ending dialog,
         // Escape for escape.
+        public event Action<string, string, Object> Trigger;
 
-        public event Action<string, string, Object> Trigger;        
+        // Lay the thing out like its in the normal dialog editor, with 8.25f font.
+
+        public int BottomMargin { get; set; } = 8;      // Extra space right/bot to allow for extra space past the controls
+        public int RightMargin { get; set; } = 8;       // Size this at 8.25f font size, it will be scaled to suit. 
+
         public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
 
-        public int BottomMargin { get; set; } = 8;
-        public int RightMargin { get; set; } = 8;
-
-        private List<Entry> entries;
-        private Object callertag;
-        private string logicalname;
-        private bool ProgClose = false;
-        private System.Drawing.Point lastpos; // used for dynamically making the list up
-
         // You give an array of Entries describing the controls
-        // either added programatically by Add(entry) or via a string descriptor Add(string)
+        // either added programatically by Add(entry) or via a string descriptor Add(string) (See action document for string descriptor format)
         // Directly Supported Types (string name/base type)
-        //      "button" ButtonExt, "textbox" TextBoxBorder, "checkbox" CheckBoxCustom, 
-        //      "label" Label, "datetime" CustomDateTimePicker, 
+        //      "button" ExtButton, "textbox" ExtTextBox, "checkbox" ExtCheckBox 
+        //      "label" Label, "datetime" ExtDateTimePicker,
         //      "numberboxdouble" NumberBoxDouble, "numberboxlong" NumberBoxLong, 
-        //      "combobox" ComboBoxCustom
-        // Or any type if you set controltype=null and set control field directly.
-        // Set controlname, text,pos,size, tooltip
-        // for specific type, set the other fields.
-        // See action document for string descriptor format
+        //      "combobox" ExtComboBox
+        // Or any type if you use Add(control, name..)
 
         public class Entry
         {
@@ -155,9 +148,7 @@ namespace ExtendedControls
             Init(icon, pos, caption, lname, callertag, null,null, asm);
         }
 
-        public new DialogResult DialogResult { get; private set; }        // stop users setting it, use ReturnResult
-
-        public void ReturnResult(DialogResult result)           // MUST call to return result and close.
+        public void ReturnResult(DialogResult result)           // MUST call to return result and close.  DO NOT USE DialogResult directly
         {
             ProgClose = true;
             DialogResult = result;
@@ -312,17 +303,20 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, 
+        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag,
                                 HorizontalAlignment? halign = null, ControlHelpersStaticFunc.VerticalAlignment? valign = null,  AutoScaleMode asm = AutoScaleMode.Font)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
 
+            this.halign = halign;
+            this.valign = valign;
+
             ITheme theme = ThemeableFormsInstance.Instance;
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            ExtPanelScroll outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
+            outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
             outer.MouseDown += FormMouseDown;
             outer.MouseUp += FormMouseUp;
             Controls.Add(outer);
@@ -333,7 +327,7 @@ namespace ExtendedControls
 
             this.Text = caption;
 
-            Label textLabel = new Label() { Left = 4, Top = 8, Width = Width - 50, Text = caption };
+            Label textLabel = new Label() { Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
             textLabel.MouseDown += FormMouseDown;
             textLabel.MouseUp += FormMouseUp;
 
@@ -519,9 +513,10 @@ namespace ExtendedControls
 
             //this.DumpTree(0);
             theme.ApplyStd(this);
+            //theme.Apply(this, new Font("ms Sans Serif", 12f));
             //this.DumpTree(0);
 
-            for (int i = 0; i < entries.Count; i++)
+            for (int i = 0; i < entries.Count; i++)     // post scale any controls which ask for different font ratio sizes
             {
                 if (entries[i].PostThemeFontScale != 1.0f)
                 {
@@ -529,26 +524,39 @@ namespace ExtendedControls
                 }
             }
 
-            int fh = (int)this.Font.GetHeight();        // use the FH to nerf the extra area so it scales with FH.. this helps keep the controls within a framed window
+            // position 
+            StartPosition = FormStartPosition.Manual;
+            this.Location = pos;
+           
+            //System.Diagnostics.Debug.WriteLine("Bounds " + Bounds + " ClientRect " + ClientRectangle);
+            //System.Diagnostics.Debug.WriteLine("Outer Bounds " + outer.Bounds + " ClientRect " + outer.ClientRectangle);
+        }
 
-            int boundsh = Bounds.Height - ClientRectangle.Height;                   // allow for window border..
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            int boundsh = Bounds.Height - ClientRectangle.Height;                   // allow for window border..  Only works after OnLoad.
             int boundsw = Bounds.Width - ClientRectangle.Width;
             int outerh = ClientRectangle.Height - outer.ClientRectangle.Height;     // any border on outer panel
             int outerw = ClientRectangle.Width - outer.ClientRectangle.Width;
 
+            // get the scaling factor, we adjust the right/bottom margins accordingly
+
+            var currentautocale = this.CurrentAutoScaleFactor();            // how much did we scale up?
+
             // measure the items after scaling. Exclude the scroll bar. Add on bounds/outers/margin
 
-            Size measureitemsinwindow = outer.FindMaxSubControlArea(boundsw + outerw + RightMargin, boundsh + outerh + BottomMargin, new Type[] { typeof(ExtScrollBar) }, true);
+            Size measureitemsinwindow = outer.FindMaxSubControlArea(boundsw + outerw + (int)(RightMargin * currentautocale.Width),
+                                                                   boundsh + outerh + (int)(BottomMargin * currentautocale.Height),
+                                                                   new Type[] { typeof(ExtScrollBar) }, true);
 
-            StartPosition = FormStartPosition.Manual;
 
-            // position with alignment
-            this.Location = pos;
+            // now position in the screen, allowing for a scroll bar if required due to height restricted
 
-            this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height,false, 64, halign, valign, outer.ScrollBarWidth);
-            
-            //System.Diagnostics.Debug.WriteLine("Bounds " + Bounds + " ClientRect " + ClientRectangle);
-            //System.Diagnostics.Debug.WriteLine("Outer Bounds " + outer.Bounds + " ClientRect " + outer.ClientRectangle);
+            this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height, false, 64, halign, valign, outer.ScrollBarWidth);
+
+            //System.Diagnostics.Debug.WriteLine("Form Load" + Bounds + " " + ClientRectangle);
         }
 
         protected override void OnShown(EventArgs e)
@@ -557,6 +565,8 @@ namespace ExtendedControls
             if (firsttextbox != null)
                 firsttextbox.Focus();       // focus on first text box
             base.OnShown(e);
+            //System.Diagnostics.Debug.WriteLine("Form Shown " + Bounds + " " + ClientRectangle);
+
         }
 
         protected override void Dispose(bool disposing)
@@ -710,6 +720,15 @@ namespace ExtendedControls
 
 
         #endregion
+
+        private List<Entry> entries;
+        private Object callertag;
+        private string logicalname;
+        private bool ProgClose = false;
+        private System.Drawing.Point lastpos; // used for dynamically making the list up
+        private ExtPanelScroll outer;
+        private HorizontalAlignment? halign;
+        private ControlHelpersStaticFunc.VerticalAlignment? valign;
 
     }
 }

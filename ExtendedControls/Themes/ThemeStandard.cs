@@ -461,15 +461,15 @@ namespace ExtendedControls
 
         public bool ApplyStd(Control ctrl)      // normally a form, but can be a control, applies to this and ones below
         {
-            return ApplyToForm(ctrl, GetFont);
+            return Apply(ctrl, GetFont);
         }
 
         public bool ApplyDialog(Control ctrl)
         {
-            return ApplyToForm(ctrl, GetDialogFont);
+            return Apply(ctrl, GetDialogFont);
         }
 
-        private bool ApplyToForm(Control form, Font fnt)
+        public bool Apply(Control form, Font fnt)
         {
             UpdateControls(form.Parent, form, fnt, 0);
             UpdateToolsStripRenderer();
