@@ -29,33 +29,38 @@
         private void InitializeComponent()
         {
             this.panel2 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelp2 = new System.Windows.Forms.Label();
             this.extButton1 = new ExtendedControls.ExtButton();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton3 = new ExtendedControls.ExtButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.labelp1 = new System.Windows.Forms.Label();
+            this.topresize = new ExtendedControls.ExtPanelResizer();
+            this.extPanelResizer1 = new ExtendedControls.ExtPanelResizer();
             this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Controls.Add(this.labelp2);
+            this.panel2.Location = new System.Drawing.Point(49, 44);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1060, 33);
+            this.panel2.Size = new System.Drawing.Size(171, 27);
             this.panel2.TabIndex = 0;
-            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
-            this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseUp);
+            this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CaptureDown);
+            this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CaptureUp);
             // 
-            // label1
+            // labelp2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(26, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Top";
+            this.labelp2.AutoSize = true;
+            this.labelp2.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            this.labelp2.Location = new System.Drawing.Point(12, 4);
+            this.labelp2.Name = "labelp2";
+            this.labelp2.Size = new System.Drawing.Size(67, 13);
+            this.labelp2.TabIndex = 0;
+            this.labelp2.Text = "MoveControl";
             // 
             // extButton1
             // 
@@ -87,31 +92,82 @@
             this.extButton3.UseVisualStyleBackColor = true;
             this.extButton3.Click += new System.EventHandler(this.extButton3_Click);
             // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.labelp1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 14);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(684, 27);
+            this.panel1.TabIndex = 1;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CaptureDown);
+            this.panel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.CaptureUp);
+            // 
+            // labelp1
+            // 
+            this.labelp1.AutoSize = true;
+            this.labelp1.Location = new System.Drawing.Point(12, 4);
+            this.labelp1.Name = "labelp1";
+            this.labelp1.Size = new System.Drawing.Size(19, 13);
+            this.labelp1.TabIndex = 0;
+            this.labelp1.Text = "p1";
+            // 
+            // topresize
+            // 
+            this.topresize.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            this.topresize.Dock = System.Windows.Forms.DockStyle.Top;
+            this.topresize.Location = new System.Drawing.Point(0, 0);
+            this.topresize.Movement = System.Windows.Forms.DockStyle.Top;
+            this.topresize.Name = "topresize";
+            this.topresize.Size = new System.Drawing.Size(684, 14);
+            this.topresize.TabIndex = 4;
+            // 
+            // extPanelResizer1
+            // 
+            this.extPanelResizer1.BackColor = System.Drawing.Color.BlueViolet;
+            this.extPanelResizer1.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            this.extPanelResizer1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.extPanelResizer1.Location = new System.Drawing.Point(0, 406);
+            this.extPanelResizer1.Movement = System.Windows.Forms.DockStyle.Bottom;
+            this.extPanelResizer1.Name = "extPanelResizer1";
+            this.extPanelResizer1.Size = new System.Drawing.Size(684, 55);
+            this.extPanelResizer1.TabIndex = 5;
+            // 
             // TestDraggableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Fuchsia;
-            this.ClientSize = new System.Drawing.Size(1060, 1161);
+            this.ClientSize = new System.Drawing.Size(684, 461);
+            this.Controls.Add(this.extPanelResizer1);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.topresize);
             this.Controls.Add(this.extButton3);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton1);
-            this.Controls.Add(this.panel2);
             this.Location = new System.Drawing.Point(200, 200);
             this.Name = "TestDraggableForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "TestCompositeButton";
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelp2;
         private ExtendedControls.ExtButton extButton1;
         private ExtendedControls.ExtButton extButton2;
         private ExtendedControls.ExtButton extButton3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label labelp1;
+        private ExtendedControls.ExtPanelResizer topresize;
+        private ExtendedControls.ExtPanelResizer extPanelResizer1;
     }
 }

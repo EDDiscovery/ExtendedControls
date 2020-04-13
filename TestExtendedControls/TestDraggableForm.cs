@@ -21,6 +21,7 @@ namespace DialogTest
             ThemeableFormsInstance.Instance = theme;
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
+            theme.Form = Color.FromArgb(50, 50, 0);
             theme.FontName = "Microsoft Sans Serif";
             theme.FontSize = 8.25f;
             theme.WindowsFrame = false;
@@ -28,16 +29,15 @@ namespace DialogTest
             InitializeComponent();
 
             theme.ApplyStd(this);
-            BackColor = Color.Black;
 
         }
 
-        private void panel2_MouseDown(object sender, MouseEventArgs e)
+        private void CaptureDown(object sender, MouseEventArgs e)
         {
             OnCaptionMouseDown((Control)sender, e);
         }
 
-        private void panel2_MouseUp(object sender, MouseEventArgs e)
+        private void CaptureUp(object sender, MouseEventArgs e)
         {
             OnCaptionMouseUp((Control)sender, e);
 
@@ -67,6 +67,17 @@ namespace DialogTest
             two = new DraggableForm();
             theme.ApplyStd(two);
             two.Show(this);
+        }
+
+        private void topresize_MouseDown(object sender, MouseEventArgs e)
+        {
+            PerformResizeMouseDown((Control)sender, e, DockStyle.Top);
+        }
+
+        private void topresize_MouseUp(object sender, MouseEventArgs e)
+        {
+            PerformResizeMouseUp((Control)sender, e, DockStyle.Top);
+
         }
     }
 }
