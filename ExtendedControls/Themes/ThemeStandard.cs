@@ -680,6 +680,10 @@ namespace ExtendedControls
 
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
             }
+            else if (myControl is ExtPanelResizer)      // Resizers only show when no frame is on
+            {
+                myControl.Visible = !WindowsFrame;
+            }
             else if (myControl is ExtPanelDropDown)
             {
                 ExtPanelDropDown ctrl = (ExtPanelDropDown)myControl;

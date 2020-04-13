@@ -270,7 +270,6 @@ namespace ExtendedControls
                                     new int[] { HT.BOTTOMLEFT, HT.BOTTOM, HT.BOTTOMRIGHT }
                                 };
                                 m.Result = (IntPtr)htarr[rw][col];
-                                System.Diagnostics.Debug.WriteLine("Result " + rw + " " + col + " " +m.Result);
                             }
                         }
 
