@@ -24,6 +24,8 @@ namespace DialogTest
             //theme.SetThemeByName("Elite EuroCaps");
             theme.SetThemeByName("EDSM");
             theme.FontSize = 12;
+
+           // extButton1_Click(null, null);
         }
 
 
@@ -55,14 +57,14 @@ namespace DialogTest
 
             f.Add(new ExtendedControls.ConfigurableForm.Entry("rlabel", typeof(Label), "Receive", new Point(20, 110), new Size(width-40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 150), new Size(80, 24), null));
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(20, 150), new Size(80, 24), null));
+            f.AddOK(new Point(width - 100, 150));
+            f.AddCancel(new Point(20, 150));
 
-            f.Trigger += (a, b, c) => { f.ReturnResult(DialogResult.OK); };
+            f.Trigger += (a, b, c) => { System.Diagnostics.Debug.WriteLine("Ret " + b); f.ReturnResult(DialogResult.OK); };
 
             f.RightMargin = 20;
 
-            f.ShowDialogCentred(this, this.Icon, "Trader");
+            f.ShowDialogCentred(this, this.Icon, "Trader",closeicon:true);
 
         }
 
@@ -100,14 +102,14 @@ namespace DialogTest
                     else
                         ExtendedControls.MessageBoxTheme.Show(parent, "Value is not valid".Tx(t, "VNV"), "Warning".Tx(), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else if (controlname == "Cancel")
+                else if (controlname == "Cancel" || controlname == "Close" )
                 {
                     f.ReturnResult(DialogResult.Cancel);
                 }
             };
 
 
-            DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Jump to Entry".Tx(t, "Title"));
+            DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Jump to Entry".Tx(t, "Title"), closeicon:true);
 
             if (res == DialogResult.OK)
             {

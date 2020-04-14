@@ -26,10 +26,11 @@ namespace ExtendedControls
     {
         // returns dialog logical name, name of control (plus options), caller tag object
         // name of control on click for button / Checkbox / ComboBox
-        // name:Return for number box, textBox.  Set SwallowReturn to true before returning to swallow the return
-        // name:Validity:true/false for Number boxes,
-        // Cancel for ending dialog,
-        // Escape for escape.
+        // name:Return for number box, textBox.  Set SwallowReturn to true before returning to swallow the return key
+        // name:Validity:true/false for Number boxes
+        // Close if the close button is pressed
+        // Escape if escape pressed
+
         public event Action<string, string, Object> Trigger;
 
         // Lay the thing out like its in the normal dialog editor, with 8.25f font.
@@ -126,26 +127,39 @@ namespace ExtendedControls
             entries.Add(e);
         }
 
+        public void AddOK(Point p, string tooltip = null, Size? sz = null)
+        {
+            if (sz == null)
+                sz = new Size(80, 24);
+            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), p, sz.Value, tooltip));
+        }
+
+        public void AddCancel(Point p, string tooltip = null, Size ? sz = null)
+        {
+            if (sz == null)
+                sz = new Size(80, 24);
+            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), p, sz.Value, tooltip));
+        }
 
         public Entry Last { get { return entries.Last(); } }
 
         // pos.x <= -999 means autocentre to parent.
 
-        public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null)
+        public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false)
         {
-            InitCentred(p, icon, caption, lname, callertag);
+            InitCentred(p, icon, caption, lname, callertag, closeicon:closeicon);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
-        public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font)
+        public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
         {
-            Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
+            Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon, HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
         }
 
-        public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font)
+        public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
         {
-            Init(icon, pos, caption, lname, callertag, null,null, asm);
+            Init(icon, pos, caption, lname, callertag, closeicon, null,null, asm);
         }
 
         public void ReturnResult(DialogResult result)           // MUST call to return result and close.  DO NOT USE DialogResult directly
@@ -303,8 +317,8 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag,
-                                HorizontalAlignment? halign = null, ControlHelpersStaticFunc.VerticalAlignment? valign = null,  AutoScaleMode asm = AutoScaleMode.Font)
+        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, bool closeicon,
+                                HorizontalAlignment? halign = null, ControlHelpersStaticFunc.VerticalAlignment? valign = null, AutoScaleMode asm = AutoScaleMode.Font)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
@@ -327,12 +341,32 @@ namespace ExtendedControls
 
             this.Text = caption;
 
-            Label textLabel = new Label() { Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
-            textLabel.MouseDown += FormMouseDown;
-            textLabel.MouseUp += FormMouseUp;
-
             if (!theme.WindowsFrame)
+            {
+                Label textLabel = new Label() { Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
+                textLabel.MouseDown += FormMouseDown;
+                textLabel.MouseUp += FormMouseUp;
+                textLabel.Name = "title";
                 outer.Controls.Add(textLabel);
+
+                if (closeicon)
+                {
+                    ExtButtonDrawn cls = new ExtButtonDrawn();
+                    cls.Size = new Size(20, 20);
+                    cls.Location = new Point(outer.Width-20, 0);
+                    cls.Anchor = AnchorStyles.Right | AnchorStyles.Top;     // order is vital
+                    cls.ImageSelected = ExtButtonDrawn.ImageType.Close;
+                    cls.Click += (sender, f) => 
+                    {
+                        if (!ProgClose)
+                        {
+                            Trigger?.Invoke(logicalname, "Close", callertag);
+                        }
+
+                    };
+                    outer.Controls.Add(cls);
+                }
+            }
 
             ToolTip tt = new ToolTip(components);
             tt.ShowAlways = true;
@@ -513,7 +547,7 @@ namespace ExtendedControls
 
             //this.DumpTree(0);
             theme.ApplyStd(this);
-            //theme.Apply(this, new Font("ms Sans Serif", 12f));
+            //theme.Apply(this, new Font("ms Sans Serif", 16f));
             //this.DumpTree(0);
 
             for (int i = 0; i < entries.Count; i++)     // post scale any controls which ask for different font ratio sizes
@@ -527,7 +561,7 @@ namespace ExtendedControls
             // position 
             StartPosition = FormStartPosition.Manual;
             this.Location = pos;
-           
+
             //System.Diagnostics.Debug.WriteLine("Bounds " + Bounds + " ClientRect " + ClientRectangle);
             //System.Diagnostics.Debug.WriteLine("Outer Bounds " + outer.Bounds + " ClientRect " + outer.ClientRectangle);
         }
@@ -582,11 +616,11 @@ namespace ExtendedControls
         {
             if (ProgClose == false)
             {
-                e.Cancel = true; // stop it working. program does the close
-                Trigger?.Invoke(logicalname, "Cancel", callertag);
+                Trigger?.Invoke(logicalname, "Close", callertag);
+                e.Cancel = ProgClose == false;     // if ProgClose is false, we don't want to close. Callback did not call ReturnResponse
             }
-            else
-                base.OnFormClosing(e);
+
+            base.OnFormClosing(e);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

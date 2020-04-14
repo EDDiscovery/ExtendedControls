@@ -305,7 +305,7 @@
             // 
             // TestVariousForms
             // 
-            this.ClientSize = new System.Drawing.Size(907, 320);
+            this.ClientSize = new System.Drawing.Size(854, 295);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton4);
