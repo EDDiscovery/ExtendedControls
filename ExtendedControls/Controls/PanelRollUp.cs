@@ -266,7 +266,7 @@ namespace ExtendedControls
             if (ClientRectangle.Width > 0)
             {
                 pinbutton.Left = ClientRectangle.Width - pinbutton.Width - 8;
-                pinbutton.Top = 3;
+                pinbutton.Top = 0;
 
                 int hmwidth = Math.Abs(HiddenMarkerWidth);
                 if (hmwidth == 0)

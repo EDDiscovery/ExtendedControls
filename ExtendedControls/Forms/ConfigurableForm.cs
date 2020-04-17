@@ -24,22 +24,6 @@ namespace ExtendedControls
 {
     public class ConfigurableForm : DraggableForm
     {
-        // returns dialog logical name, name of control (plus options), caller tag object
-        // name of control on click for button / Checkbox / ComboBox
-        // name:Return for number box, textBox.  Set SwallowReturn to true before returning to swallow the return key
-        // name:Validity:true/false for Number boxes
-        // Close if the close button is pressed
-        // Escape if escape pressed
-
-        public event Action<string, string, Object> Trigger;
-
-        // Lay the thing out like its in the normal dialog editor, with 8.25f font.
-
-        public int BottomMargin { get; set; } = 8;      // Extra space right/bot to allow for extra space past the controls
-        public int RightMargin { get; set; } = 8;       // Size this at 8.25f font size, it will be scaled to suit. 
-
-        public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
-
         // You give an array of Entries describing the controls
         // either added programatically by Add(entry) or via a string descriptor Add(string) (See action document for string descriptor format)
         // Directly Supported Types (string name/base type)
@@ -49,20 +33,36 @@ namespace ExtendedControls
         //      "combobox" ExtComboBox
         // Or any type if you use Add(control, name..)
 
+        // Lay the thing out like its in the normal dialog editor, with 8.25f font.  Leave space for the window less title bar/close icon.
+
+        // returns dialog logical name, name of control (plus options), caller tag object
+        // name of control on click for button / Checkbox / ComboBox
+        // name:Return for number box, textBox.  Set SwallowReturn to true before returning to swallow the return key
+        // name:Validity:true/false for Number boxes
+        // Close if the close button is pressed
+        // Escape if escape pressed
+
+        public event Action<string, string, Object> Trigger;
+
+        public int BottomMargin { get; set; } = 8;      // Extra space right/bot to allow for extra space past the controls
+        public int RightMargin { get; set; } = 8;       // Size this at 8.25f font size, it will be scaled to suit. 
+
+        public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
+
         public class Entry
         {
             public string controlname;                  // logical name of control
             public Type controltype;                    // if non null, activate this type.  Else if null, control should be filled up with your specific type
-                                                     
+
             public string text;                         // for certain types, the text
-            public System.Drawing.Point pos;           
+            public System.Drawing.Point pos;
             public System.Drawing.Size size;
             public string tooltip;                      // can be null.
 
             // ButtonExt, TextBoxBorder, Label, CheckBoxCustom, DateTime (t=time)
             public Entry(string nam, Type c, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
             {
-                controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long"; 
+                controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long";
             }
 
             public Entry(string nam, Type c, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, float fontscale, ContentAlignment align = ContentAlignment.MiddleCenter)
@@ -81,7 +81,7 @@ namespace ExtendedControls
 
             public Entry(Control c, string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
             {
-                controlname = nam; control = c;  text = t; pos = p; size = s; tooltip = tt; textalign = ContentAlignment.TopLeft;
+                controlname = nam; control = c; text = t; pos = p; size = s; tooltip = tt; textalign = ContentAlignment.TopLeft;
             }
 
             public ContentAlignment? textalign;  // label,button. nominal not applied
@@ -134,7 +134,7 @@ namespace ExtendedControls
             Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), p, sz.Value, tooltip));
         }
 
-        public void AddCancel(Point p, string tooltip = null, Size ? sz = null)
+        public void AddCancel(Point p, string tooltip = null, Size? sz = null)
         {
             if (sz == null)
                 sz = new Size(80, 24);
@@ -147,7 +147,7 @@ namespace ExtendedControls
 
         public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false)
         {
-            InitCentred(p, icon, caption, lname, callertag, closeicon:closeicon);
+            InitCentred(p, icon, caption, lname, callertag, closeicon: closeicon);
             callback?.Invoke();
             return ShowDialog(p);
         }
@@ -159,7 +159,7 @@ namespace ExtendedControls
 
         public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
         {
-            Init(icon, pos, caption, lname, callertag, closeicon, null,null, asm);
+            Init(icon, pos, caption, lname, callertag, closeicon, null, null, asm);
         }
 
         public void ReturnResult(DialogResult result)           // MUST call to return result and close.  DO NOT USE DialogResult directly
@@ -169,7 +169,7 @@ namespace ExtendedControls
             base.Close();
         }
 
-        public T GetControl<T>(string controlname) where T:Control      // return value of dialog control
+        public T GetControl<T>(string controlname) where T : Control      // return value of dialog control
         {
             Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
@@ -341,52 +341,63 @@ namespace ExtendedControls
 
             this.Text = caption;
 
-            if (!theme.WindowsFrame)
+            int yoffset = 0;                            // adjustment to move controls up if windows frame present.
+
+            if (theme.WindowsFrame)
             {
-                Label textLabel = new Label() { Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
-                textLabel.MouseDown += FormMouseDown;
-                textLabel.MouseUp += FormMouseUp;
-                textLabel.Name = "title";
-                outer.Controls.Add(textLabel);
+                yoffset = int.MaxValue;
+                for (int i = 0; i < entries.Count; i++)             // find minimum control Y
+                    yoffset = Math.Min(yoffset, entries[i].pos.Y);
+
+                yoffset -= 8;           // place X spaces below top
+            }
+            else
+            {
+                titlelabel = new Label() { Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
+                titlelabel.MouseDown += FormMouseDown;
+                titlelabel.MouseUp += FormMouseUp;
+                titlelabel.Name = "title";
+                outer.Controls.Add(titlelabel);
 
                 if (closeicon)
                 {
-                    ExtButtonDrawn cls = new ExtButtonDrawn();
-                    cls.Size = new Size(20, 20);
-                    cls.Location = new Point(outer.Width-20, 0);
-                    cls.Anchor = AnchorStyles.Right | AnchorStyles.Top;     // order is vital
-                    cls.ImageSelected = ExtButtonDrawn.ImageType.Close;
-                    cls.Click += (sender, f) => 
+                    closebutton = new ExtButtonDrawn();
+                    closebutton.Size = new Size(18, 18);
+                    closebutton.Location = new Point(0, 0);     // purposely at top left to make it not contribute to overall size
+
+                    closebutton.ImageSelected = ExtButtonDrawn.ImageType.Close;
+                    closebutton.Click += (sender, f) =>
                     {
                         if (!ProgClose)
                         {
                             Trigger?.Invoke(logicalname, "Close", callertag);
                         }
-
                     };
-                    outer.Controls.Add(cls);
+
+                    outer.Controls.Add(closebutton);            // add now so it gets themed
                 }
             }
 
             ToolTip tt = new ToolTip(components);
             tt.ShowAlways = true;
+
             for (int i = 0; i < entries.Count; i++)
             {
                 Entry ent = entries[i];
                 Control c = ent.controltype != null ? (Control)Activator.CreateInstance(ent.controltype) : ent.control;
                 ent.control = c;
                 c.Size = ent.size;
-                c.Location = ent.pos;
+                c.Location = new Point(ent.pos.X, ent.pos.Y - yoffset);
                 c.Name = ent.controlname;
                 //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
-                if (!(ent.controltype == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong ))        // everything but get text
+                if (!(ent.controltype == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong))        // everything but get text
                     c.Text = ent.text;
                 c.Tag = ent;     // point control tag at ent structure
                 outer.Controls.Add(c);
                 if (ent.tooltip != null)
                     tt.SetToolTip(c, ent.tooltip);
 
-                if ( c is Label )
+                if (c is Label)
                 {
                     Label l = c as Label;
                     if (ent.textalign.HasValue)
@@ -590,6 +601,9 @@ namespace ExtendedControls
 
             this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height, false, 64, halign, valign, outer.ScrollBarWidth);
 
+            if (closebutton != null)      // now position close at correct place, its not contributed to overall size
+                closebutton.Location = new Point(outer.Width - closebutton.Width - titlelabel.Left, titlelabel.Top + titlelabel.Height / 2 - closebutton.Height / 2);
+
             //System.Diagnostics.Debug.WriteLine("Form Load" + Bounds + " " + ClientRectangle);
         }
 
@@ -758,11 +772,17 @@ namespace ExtendedControls
         private List<Entry> entries;
         private Object callertag;
         private string logicalname;
+
         private bool ProgClose = false;
+
         private System.Drawing.Point lastpos; // used for dynamically making the list up
-        private ExtPanelScroll outer;
+
         private HorizontalAlignment? halign;
         private ControlHelpersStaticFunc.VerticalAlignment? valign;
+
+        private ExtPanelScroll outer;
+        private ExtButtonDrawn closebutton;
+        private Label titlelabel;
 
     }
 }

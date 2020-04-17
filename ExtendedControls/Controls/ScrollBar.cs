@@ -448,7 +448,7 @@ namespace ExtendedControls
                 thumbmove = false;
                 mouseover = MouseOver.MouseOverNone;
                 mousepressed = MouseOver.MouseOverNone;
-                if (HideScrollBar)
+                if (HideScrollBar && !DesignMode)
                     Visible = false;
             }
         }

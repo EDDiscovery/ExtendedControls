@@ -215,14 +215,15 @@ namespace ExtendedControls
             }
         }
 
-        public Font GetScaledFont(float scaling, FontStyle fs = FontStyle.Regular)
+        public Font GetScaledFont(float scaling, FontStyle fs = FontStyle.Regular, float max = 999)
         {
-            return GetFontSizeStyle(currentsettings.fontsize * scaling, fs);
+            return GetFontSizeStyle(Math.Min(currentsettings.fontsize * scaling,max), fs);
         }
 
-        public Font GetDialogScaledFont(float scaling, FontStyle fs = FontStyle.Regular)
+        public Font GetDialogScaledFont(float scaling, FontStyle fs = FontStyle.Regular, float max = 999)
         {
             float fsize = currentsettings.fontsize >= 12 ? (currentsettings.fontsize * dialogscaling) : currentsettings.fontsize;
+            fsize = Math.Min(fsize, max);
             return GetFontSizeStyle(fsize * scaling, fs);
         }
 
