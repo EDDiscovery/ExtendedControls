@@ -609,7 +609,7 @@ namespace ExtendedControls
 
         protected override void OnShown(EventArgs e)
         {
-            Control firsttextbox = Controls[0].Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete) });
+            Control firsttextbox = outer.Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete), typeof(NumberBoxDouble), typeof(NumberBoxFloat), typeof(NumberBoxLong) });
             if (firsttextbox != null)
                 firsttextbox.Focus();       // focus on first text box
             base.OnShown(e);
