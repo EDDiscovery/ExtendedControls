@@ -426,20 +426,29 @@ namespace ExtendedControls
                     imagepanels[tabno].Visible = false;
             }
 
+            panelStrip.SuspendLayout(); // important to suspend layout otherwise we get popping
+
             //System.Diagnostics.Debug.WriteLine(this.Name + " seli" + showselectionicon + " showp " + showpopouticon + " text" + showtext + " lists " + showlistselection);
-            panelArrowRight.Visible = panelArrowLeft.Visible = arrowson;
+            pimageListSelection.Size = pimagePopOutIcon.Size = pimageSelectedIcon.Size; // duplicate size across so panelstrip does not resize
+
             pimageSelectedIcon.Visible = showselectionicon;
-            pimagePopOutIcon.Visible = showpopouticon;
-            pimageListSelection.Visible = showlistselection;
-            labelTitle.Visible = showtext;
-            labelControlText.Visible = showtext;
 
             pimagePopOutIcon.Location = pimageSelectedIcon.Location;     // same position, mutually exclusive
-            pimageListSelection.Size = pimagePopOutIcon.Size = pimageSelectedIcon.Size; // duplicate size across so panelstrip does not resize
-            pimageListSelection.Location = new Point(pimageSelectedIcon.Right + tabfieldspacing, pimageSelectedIcon.Top);
-            labelTitle.Location = new Point(xpos + tabfieldspacing, labelTitle.Top);
-            labelControlText.Location = new Point(labelTitle.Right + tabfieldspacing, labelTitle.Top);
+            pimagePopOutIcon.Visible = showpopouticon;
 
+            pimageListSelection.Location = new Point(pimageSelectedIcon.Right + tabfieldspacing, pimageSelectedIcon.Top);
+            pimageListSelection.Visible = showlistselection;
+
+            labelTitle.Location = new Point(xpos + tabfieldspacing, labelTitle.Top);
+            labelTitle.Visible = showtext;
+
+            labelControlText.Location = new Point(labelTitle.Right + tabfieldspacing, labelTitle.Top);
+            labelControlText.Visible = showtext;
+            //System.Diagnostics.Debug.WriteLine("Panel " + panelStrip.Size + " " + pimageListSelection.Size + " " + pimagePopOutIcon.Size + " " + panelStrip.AutoSize);
+
+            panelArrowRight.Visible = panelArrowLeft.Visible = arrowson;
+
+            panelStrip.ResumeLayout();
         }
 
         public void TabIconClicked(object sender, EventArgs e)
