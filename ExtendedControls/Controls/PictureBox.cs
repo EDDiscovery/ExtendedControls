@@ -40,7 +40,7 @@ namespace ExtendedControls
 
             public bool MouseOver { get; set; }
 
-            public Action<Graphics, ImageElement> OwnerDraw { get; set; }
+            public Action<Graphics, ImageElement> OwnerDrawCallback { get; set; }
 
             public ImageElement()
             {
@@ -85,6 +85,14 @@ namespace ExtendedControls
                 Location = new Rectangle(topleft.X, topleft.Y, Image.Width, Image.Height);
                 Tag = t;
                 ToolTipText = tt;
+            }
+
+            public void OwnerDraw(Action<Graphics, ImageElement> callback, Rectangle p, Object tag = null, string tiptext = null)
+            {
+                Location = p;
+                OwnerDrawCallback = callback;
+                Tag = tag;
+                ToolTipText = tiptext;
             }
 
             public void SetAlternateImage(Image i, Rectangle p, bool mo = false, bool imgowned = true)
@@ -178,6 +186,11 @@ namespace ExtendedControls
             elements.Add(i);
         }
 
+        public void AddDrawFirst(ImageElement i)        // add to front of queue, draw first
+        {
+            elements.Insert(0,i);
+        }
+
         public void AddRange(List<ImageElement> list)
         {
             elements.AddRange(list);
@@ -218,9 +231,10 @@ namespace ExtendedControls
             return lab;
         }
 
-        public ImageElement AddOwnerDraw(Action<Graphics,ImageElement> callback , Rectangle p, Object tag = null, string tiptext = null)    // make sure pushes it in..
+        public ImageElement AddOwnerDraw(Action<Graphics, ImageElement> callback, Rectangle p, Object tag = null, string tiptext = null)    // make sure pushes it in..
         {
-            ImageElement lab = new ImageElement() { Location = p, OwnerDraw = callback, Tag = tag, ToolTipText = tiptext };
+            ImageElement lab = new ImageElement();
+            lab.OwnerDraw(callback, p, tag, tiptext);
             elements.Add(lab);
             return lab;
         }
@@ -300,7 +314,7 @@ namespace ExtendedControls
                         if ( i.Image != null )
                             gr.DrawImage(i.Image, i.Location);
 
-                        i.OwnerDraw?.Invoke(gr, i);
+                        i.OwnerDrawCallback?.Invoke(gr, i);
                     }
                 }
 
