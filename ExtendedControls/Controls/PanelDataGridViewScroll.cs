@@ -233,21 +233,50 @@ namespace ExtendedControls
             }
         }
 
+        private int suspendcount = 0;
+
+        public new void SuspendLayout()         // override these to count suspensions - crap there is not a OnResumeLayout exposed and SuspendCount
+        {
+            base.SuspendLayout();
+            suspendcount++;
+        }
+
+        public new void ResumeLayout(bool force)
+        {
+            if (suspendcount > 0)
+            {
+                base.ResumeLayout(force);
+                suspendcount--;
+
+                if (suspendcount == 0)          // on de-suspend, make sure scroll bar is good
+                    UpdateScrollBar();
+            }
+        }
+
+        public new void ResumeLayout()          // same as true, as per Control
+        {
+            ResumeLayout(true);
+        }
+
         protected void DGVRowsAdded(Object sender, DataGridViewRowsAddedEventArgs e)
         {
             int firstvisible = dgv.FirstDisplayedScrollingRowIndex;
 
             if (firstvisible >= 0)  // prevents updates while initially generating the dgv
             {
-                UpdateScrollBar();
-                outlining?.RowAdded(e.RowIndex);
+                if (suspendcount == 0)      // don't do scroll bar when suspended
+                    UpdateScrollBar();
+
+                outlining?.RowAdded(e.RowIndex,e.RowCount);
             }
         }
 
         protected void DGVRowsRemoved(Object sender, DataGridViewRowsRemovedEventArgs e)
         {
-            UpdateScrollBar();
-            outlining?.RowRemoved(e.RowIndex);
+            if (suspendcount == 0)      // don't do scroll bar when suspended
+                UpdateScrollBar();
+
+            outlining?.RowRemoved(e.RowIndex,e.RowCount);
         }
 
         protected virtual void DGVRowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)

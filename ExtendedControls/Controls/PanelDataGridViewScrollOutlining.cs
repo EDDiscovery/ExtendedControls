@@ -359,18 +359,18 @@ namespace ExtendedControls
             }
         }
 
-        public void RowAdded(int row)
+        public void RowAdded(int row, int count)
         {
             UpdateOutlines();
         }
 
-        public void RowRemoved(int row)
+        public void RowRemoved(int row, int count)
         {
             List<OutlineState> removelist = new List<OutlineState>();
 
             foreach (var rur in Outlines)     // double check they are not removing a start or end row..
             {
-                if (rur.r.start == row || rur.r.end == row)
+                if ((rur.r.start >= row && rur.r.start < row + count) || (rur.r.end >= row && rur.r.end < row + count) )
                     removelist.Add(rur);
             }
 
