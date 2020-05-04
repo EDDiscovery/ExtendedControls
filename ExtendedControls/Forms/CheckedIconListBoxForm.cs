@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -130,6 +131,8 @@ namespace ExtendedControls
         {
             ControlSet c = new ControlSet();
 
+            panelscroll.SuspendLayout();
+
             c.tag = tag;
 
             ExtCheckBox cb = new ExtCheckBox();
@@ -146,7 +149,7 @@ namespace ExtendedControls
 
             Label lb = new Label()
             {
-                AutoSize = true,
+                AutoSize = false,       // don't autosize here, it seems to take forever.
                 Text = (string)text,
                 Tag = controllist.Count,
                 ForeColor = this.ForeColor,
@@ -171,6 +174,8 @@ namespace ExtendedControls
                 c.icon = ipanel;
                 panelscroll.Controls.Add(ipanel);
             }
+
+            panelscroll.ResumeLayout();
 
             return c;
         }
@@ -306,6 +311,8 @@ namespace ExtendedControls
 
         protected override void OnLoad(EventArgs e)
         {
+            //Stopwatch sw = new Stopwatch(); sw.Start();
+
             int lpos = HorizontalSpacing;
             maxh = VerticalSpacing;
 
@@ -326,7 +333,7 @@ namespace ExtendedControls
             Size chkboxsize = (CheckBoxSize.Height < 1 || CheckBoxSize.Width < 1) ? imgsize : CheckBoxSize; // based on imagesize or checkboxsize
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
-            //System.Diagnostics.Debug.WriteLine("Chk " + chkboxsize + " " + imgsize);
+            panelscroll.SuspendLayout();    // double speed doing this
 
             for (int i = 0; i < controllist.Count; i++)
             {
@@ -350,21 +357,22 @@ namespace ExtendedControls
                 if (controllist[i].icon != null)
                 {
                     Size iconsize = (fonth > imgsize.Height) ? new Size((int)(imgsize.Width * (float)fonth / imgsize.Height), fonth) : imgsize;
-
                     controllist[i].icon.Size = iconsize;
                     controllist[i].icon.Location = new Point(tpos, vcentre - iconsize.Height / 2);
                     tpos += iconsize.Width + HorizontalSpacing;
                 }
 
-                controllist[i].label.Size = new Size(this.Width - HorizontalSpacing - panelscroll.ScrollBarWidth - tpos, vspacing);
-                controllist[i].label.Location = new Point(tpos, maxh);
-
+                controllist[i].label.AutoSize = true;       // now autosize
+                controllist[i].label.Location = new Point(tpos, vcentre-controllist[i].label.Height/2);     // and position
+                    
                 maxw = Math.Max(maxw, controllist[i].label.Right + 1);
 
                 maxh += vspacing + VerticalSpacing;
             }
 
-            System.Diagnostics.Debug.WriteLine("Load");
+            panelscroll.ResumeLayout();
+            
+            //System.Diagnostics.Debug.WriteLine("OnLoad in " + sw.ElapsedMilliseconds);
 
             base.OnLoad(e);
         }
@@ -375,8 +383,6 @@ namespace ExtendedControls
 
             if (SetLocation.X != int.MinValue)
                 Location = SetLocation;
-
-            System.Diagnostics.Debug.WriteLine("Activated " + Location);
 
             this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, maxh, true, 64);    // keep it on the screen. 
         }
