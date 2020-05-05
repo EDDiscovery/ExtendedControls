@@ -123,12 +123,13 @@ namespace ExtendedControls
             }
             else
             {
-                //Console.WriteLine("Draw " + Name + " slider " + SliderColor + " border " + BorderColor);
-                using (Brush br = new SolidBrush(this.SliderColor))
+                using (Brush br = new SolidBrush(SliderColor))
                     e.Graphics.FillRectangle(br, sliderarea);
+
                 using (Pen pr = new Pen(BorderColor))
                     e.Graphics.DrawRectangle(pr, borderrect);
 
+                //System.Diagnostics.Debug.WriteLine("Scroll bar redraw " + Parent.Parent.Name + " " + e.Graphics.ClipBounds +" " + ClientRectangle + " " + sliderarea + " " + upbuttonarea + " " + downbuttonarea + " " + thumbbuttonarea);
                 DrawButton(e.Graphics, upbuttonarea, MouseOver.MouseOverUp);
                 DrawButton(e.Graphics, downbuttonarea, MouseOver.MouseOverDown);
                 DrawButton(e.Graphics, thumbbuttonarea, MouseOver.MouseOverThumb);
@@ -392,6 +393,12 @@ namespace ExtendedControls
             }
         }
 
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            Invalidate();
+        }
+
         protected override void OnLayout(LayoutEventArgs levent)
         {
             base.OnLayout(levent);
@@ -416,6 +423,7 @@ namespace ExtendedControls
             borderrect.Width--; borderrect.Height--;
 
             CalculateThumb();
+         //   System.Diagnostics.Debug.WriteLine("Scroll bar layout " + Parent?.Parent?.Name + " " + ClientRectangle + " " + sliderarea + " " + upbuttonarea + " " + downbuttonarea + " " + thumbbuttonarea);
         }
 
         private void CalculateThumb()
