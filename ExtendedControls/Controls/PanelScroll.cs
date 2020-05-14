@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2020 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -163,7 +163,7 @@ namespace ExtendedControls
         // set forcereposition if the vscroll pos does not change but something like a control resize may have messed about with the positioning
         private void ScrollTo(int newscrollpos, bool forcereposition)
         {
-            System.Diagnostics.Debug.WriteLine("  Scroll panel " + Name + " is " + ClientRectangle + " curscrollpos " + scrollpos + " " + Controls.Count);
+            //System.Diagnostics.Debug.WriteLine("  Scroll panel " + Name + " is " + ClientRectangle + " curscrollpos " + scrollpos + " " + Controls.Count);
             //System.Diagnostics.Debug.WriteLine("From " + Environment.StackTrace.StackTrace("ScrollTo",5));
 
               int maxy =0;
