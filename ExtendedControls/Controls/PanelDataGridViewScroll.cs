@@ -327,14 +327,7 @@ namespace ExtendedControls
                     {
                         ignoredgvscroll = true; // don't fire the DGVScrolled.. as we can get into a cycle if rows are hidden
 
-                        try// # 2537 protect against a tiny dgv.  First DisplayedScrolling row index can moan if its not no height
-                        {
-                            dgv.FirstDisplayedScrollingRowIndex = rowi;
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.WriteLine("DGV exception FDR " + e);       // v.rare.
-                        }
+                        dgv.SafeFirstDisplayedScrollingRowIndex(rowi);
 
                         dgv.Update();
                         vsc.Update();
