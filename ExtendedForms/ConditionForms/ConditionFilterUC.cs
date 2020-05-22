@@ -87,7 +87,7 @@ namespace ExtendedConditionsForms
                 Condition fe = null;
                 for(int i = 0; (fe = clist.Get(i))!=null; i++)
                 {
-                    Group g = CreateGroupInternal(fe.eventname, fe.action, fe.actiondata, fe.innercondition.ToString(), fe.outercondition.ToString());
+                    Group g = CreateGroupInternal(fe.eventname, fe.action, fe.innercondition.ToString(), fe.outercondition.ToString());
 
                     foreach (ConditionEntry f in fe.fields)
                         CreateConditionInt(g, f.itemname, ConditionEntry.MatchNames[(int)f.matchtype], f.matchstring);
@@ -154,7 +154,7 @@ namespace ExtendedConditionsForms
 
             Group g;
 
-            g = CreateGroupInternal(null, null, null, null, null);
+            g = CreateGroupInternal(null, null, null, null);
 
             if (eventlist == null)      // if we don't have any event list, auto create a condition
                 CreateConditionInt(g, null, null, null);
@@ -173,8 +173,7 @@ namespace ExtendedConditionsForms
             onChangeInGroups?.Invoke(groups.Count);
         }
 
-        private Group CreateGroupInternal(string initialev, string initialaction, string initialactiondatastring,
-                                string initialcondinner, string initialcondouter)
+        private Group CreateGroupInternal(string initialev, string initialaction, string initialcondinner, string initialcondouter)
         {
             Group g = new Group();
 
@@ -713,3 +712,4 @@ namespace ExtendedConditionsForms
 
     }
 }
+

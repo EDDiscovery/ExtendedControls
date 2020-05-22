@@ -25,7 +25,6 @@ namespace ExtendedConditionsForms
     {
         public Variables result;      // only on OK
         public Dictionary<string, string> result_altops;
-        public bool result_refresh;
 
         public class Group
         {
@@ -56,16 +55,12 @@ namespace ExtendedConditionsForms
         public void Init(string t, Icon ic, Variables vbs , Dictionary<string, string> altops = null,
                                                                 bool showatleastoneentry = false ,
                                                                 bool showrunatrefreshcheckbox = false , 
-                                                                bool setrunatrefreshcheckboxstate = false,
                                                                 bool allowadd = false, 
                                                                 bool allownoexpand = false, 
                                                                 bool allowmultipleentries = true)
         {
 
             this.Icon = ic;
-
-            checkBoxCustomRefresh.Enabled = checkBoxCustomRefresh.Visible = showrunatrefreshcheckbox;
-            checkBoxCustomRefresh.Checked = setrunatrefreshcheckboxstate;
 
             bool winborder = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this) ?? true;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
@@ -176,9 +171,8 @@ namespace ExtendedConditionsForms
 
         void FixUpGroups(bool minmax = true)      // fixes and positions groups.
         {
-            int y = checkBoxCustomRefresh.Enabled ? (checkBoxCustomRefresh.Bottom + Font.ScalePixels(4)) : panelmargin;
+            int y = panelmargin;
 
-            System.Diagnostics.Debug.WriteLine("CR @ " + checkBoxCustomRefresh.Location + " " + checkBoxCustomRefresh.Size + " " + checkBoxCustomRefresh.Enabled + " "  + y);
             int panelwidth = Math.Max(panelVScroll1.Width - panelVScroll1.ScrollBarWidth, 10);
 
             foreach (Group g in groups)
@@ -223,8 +217,6 @@ namespace ExtendedConditionsForms
                         result_altops[g.var.Text] = g.op.Text;
                 }
             }
-
-            result_refresh = checkBoxCustomRefresh.Checked;
 
             DialogResult = DialogResult.OK;
             Close();

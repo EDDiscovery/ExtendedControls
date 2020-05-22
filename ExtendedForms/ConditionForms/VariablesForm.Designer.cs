@@ -54,7 +54,6 @@ namespace ExtendedConditionsForms
             this.panelOK = new System.Windows.Forms.Panel();
             this.panelOuter = new System.Windows.Forms.Panel();
             this.panelVScroll1 = new ExtendedControls.ExtPanelScroll();
-            this.checkBoxCustomRefresh = new ExtendedControls.ExtCheckBox();
             this.vScrollBarCustom2 = new ExtendedControls.ExtScrollBar();
             this.buttonMore = new ExtendedControls.ExtButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -185,33 +184,15 @@ namespace ExtendedConditionsForms
             // 
             // panelVScroll1
             // 
-            this.panelVScroll1.Controls.Add(this.checkBoxCustomRefresh);
             this.panelVScroll1.Controls.Add(this.vScrollBarCustom2);
             this.panelVScroll1.Controls.Add(this.buttonMore);
             this.panelVScroll1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelVScroll1.FlowControlsLeftToRight = false;
             this.panelVScroll1.Location = new System.Drawing.Point(0, 0);
             this.panelVScroll1.Name = "panelVScroll1";
             this.panelVScroll1.Size = new System.Drawing.Size(641, 290);
             this.panelVScroll1.TabIndex = 8;
             this.panelVScroll1.VerticalScrollBarDockRight = true;
-            // 
-            // checkBoxCustomRefresh
-            // 
-            this.checkBoxCustomRefresh.AutoSize = true;
-            this.checkBoxCustomRefresh.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomRefresh.CheckBoxInnerColor = System.Drawing.Color.White;
-            this.checkBoxCustomRefresh.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomRefresh.ImageButtonDisabledScaling = 0.5F;
-            this.checkBoxCustomRefresh.ImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.checkBoxCustomRefresh.Location = new System.Drawing.Point(3, 3);
-            this.checkBoxCustomRefresh.MouseOverColor = System.Drawing.Color.CornflowerBlue;
-            this.checkBoxCustomRefresh.Name = "checkBoxCustomRefresh";
-            this.checkBoxCustomRefresh.Size = new System.Drawing.Size(93, 17);
-            this.checkBoxCustomRefresh.TabIndex = 6;
-            this.checkBoxCustomRefresh.Text = "Run at refresh";
-            this.checkBoxCustomRefresh.TickBoxReductionRatio = 0.75F;
-            this.toolTip1.SetToolTip(this.checkBoxCustomRefresh, "Click to indicate that this event can run during the refresh cycle");
-            this.checkBoxCustomRefresh.UseVisualStyleBackColor = true;
             // 
             // vScrollBarCustom2
             // 
@@ -224,13 +205,13 @@ namespace ExtendedConditionsForms
             this.vScrollBarCustom2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.vScrollBarCustom2.HideScrollBar = false;
             this.vScrollBarCustom2.LargeChange = 10;
-            this.vScrollBarCustom2.Location = new System.Drawing.Point(628, 0);
-            this.vScrollBarCustom2.Maximum = -191;
+            this.vScrollBarCustom2.Location = new System.Drawing.Point(625, 0);
+            this.vScrollBarCustom2.Maximum = -192;
             this.vScrollBarCustom2.Minimum = 0;
             this.vScrollBarCustom2.MouseOverButtonColor = System.Drawing.Color.Green;
             this.vScrollBarCustom2.MousePressedButtonColor = System.Drawing.Color.Red;
             this.vScrollBarCustom2.Name = "vScrollBarCustom2";
-            this.vScrollBarCustom2.Size = new System.Drawing.Size(13, 290);
+            this.vScrollBarCustom2.Size = new System.Drawing.Size(16, 290);
             this.vScrollBarCustom2.SliderColor = System.Drawing.Color.DarkGray;
             this.vScrollBarCustom2.SmallChange = 1;
             this.vScrollBarCustom2.TabIndex = 0;
@@ -239,8 +220,8 @@ namespace ExtendedConditionsForms
             this.vScrollBarCustom2.ThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.vScrollBarCustom2.ThumbColorScaling = 0.5F;
             this.vScrollBarCustom2.ThumbDrawAngle = 0F;
-            this.vScrollBarCustom2.Value = -191;
-            this.vScrollBarCustom2.ValueLimited = -191;
+            this.vScrollBarCustom2.Value = -192;
+            this.vScrollBarCustom2.ValueLimited = -192;
             // 
             // buttonMore
             // 
@@ -277,7 +258,6 @@ namespace ExtendedConditionsForms
             this.panelOK.ResumeLayout(false);
             this.panelOuter.ResumeLayout(false);
             this.panelVScroll1.ResumeLayout(false);
-            this.panelVScroll1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -296,7 +276,6 @@ namespace ExtendedConditionsForms
         private ExtendedControls.ExtPanelScroll panelVScroll1;
         private ExtendedControls.ExtScrollBar vScrollBarCustom2;
         private ExtendedControls.ExtButton buttonMore;
-        private ExtendedControls.ExtCheckBox checkBoxCustomRefresh;
         private System.Windows.Forms.ToolTip toolTip1;
     }
 }
