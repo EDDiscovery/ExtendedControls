@@ -27,7 +27,7 @@ namespace ExtendedControls
             set { d = (value >= 0.1) ? d = value : d; UpdateProjection(); }
         }
 
-        public double F
+        public double Field
         {
             get { return f; }
             set { f = value; UpdateProjection(); }
@@ -54,7 +54,7 @@ namespace ExtendedControls
         public ScatterPlot()
         {
             InitializeComponent();
-            MouseWheelHandler.Add(this, MyOnMouseWheel);
+            ScatterMouseWheelHandler.Add(this, ScatterOnMouseWheel);
         }
 
         protected override CreateParams CreateParams
@@ -155,7 +155,7 @@ namespace ExtendedControls
                 leftMousePressed = false;
         }
 
-        private void MyOnMouseWheel(MouseEventArgs e)
+        private void ScatterOnMouseWheel(MouseEventArgs e)
         {
             Distance += -e.Delta / 500D;
         }

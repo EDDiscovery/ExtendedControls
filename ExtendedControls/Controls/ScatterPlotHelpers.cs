@@ -162,7 +162,7 @@ namespace ExtendedControls
         }
     }
 
-    public class MouseWheelHandler
+    public class ScatterMouseWheelHandler
     {
         public static void Add(Control ctrl, Action<MouseEventArgs> onMouseWheel)
         {
