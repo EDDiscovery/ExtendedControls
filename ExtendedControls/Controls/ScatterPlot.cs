@@ -12,14 +12,35 @@ namespace ExtendedControls
 {
     public partial class ScatterPlot : UserControl
     {
-        List<List<double[]>> Points = new List<List<double[]>>();
-        List<PointF[]> ProjPoints = new List<PointF[]>();
+        List<List<double[]>> Points = new List<List<double[]>>();        
+        List<PointF[]> ProjPoints = new List<PointF[]>();        
         private double f = 1000;
         private double d = 5;
         private double[] d_w = new double[3];
         private double last_azimuth, azimuth = 0, last_elevation, elevation = 0;
         private bool leftMousePressed = false;
         private PointF ptMouseClick;
+        private double xAxis = 250.0F;
+        private double yAxis = 250.0F;
+        private double zAxis = 250.0F;
+
+        public double AxisX
+        {
+            get { return xAxis; }
+            set { xAxis = (value >= 0.1) ? xAxis = value : xAxis; UpdateProjection(); }
+        }
+
+        public double AxisY
+        {
+            get { return yAxis; }
+            set { yAxis = (value >= 0.1) ? yAxis = value : yAxis; UpdateProjection(); }
+        }
+
+        public double AxisZ
+        {
+            get { return zAxis; }
+            set { zAxis = (value >= 0.1) ? zAxis = value : zAxis; UpdateProjection(); }
+        }
 
         public double Distance
         {
@@ -33,7 +54,7 @@ namespace ExtendedControls
             set { f = value; UpdateProjection(); }
         }
 
-        public double[] CameraPos
+        public double[] CameraPosition
         {
             get { return d_w; }
             set { d_w = value; UpdateProjection(); }
@@ -74,14 +95,18 @@ namespace ExtendedControls
             base.OnPaint(e);
 
             Graphics g = this.CreateGraphics();
+
+            Pen whitePen = new Pen(Color.White, 3);
+                        
             g.FillRectangle(Brushes.Black, new Rectangle(0, 0, this.Width, this.Height));
+
             if (ProjPoints != null)
             {
                 for (int i = 0; i < ProjPoints.Count; i++)
                 {
                     foreach (PointF p in ProjPoints[i])
                     {
-                        g.FillEllipse(new SolidBrush(colorIdx[i % colorIdx.Length]), new RectangleF(p.X, p.Y, 4, 4));
+                        g.FillEllipse(new SolidBrush(colorIdx[i % colorIdx.Length]), new RectangleF(p.X, p.Y, 7, 7));                                    
                     }
                 }
             }
@@ -111,9 +136,9 @@ namespace ExtendedControls
             List<double[]> _tmp = new List<double[]>(points);
             Points.Add(_tmp);
             ProjPoints.Add(ScatterProjection.ProjectVector(Points[Points.Count - 1], this.Width, this.Height, f, d_w, azimuth, elevation));
-            UpdateProjection();
+            UpdateProjection();            
         }
-
+                
         public void Clear()
         {
             ProjPoints.Clear();
@@ -128,14 +153,14 @@ namespace ExtendedControls
             {
                 azimuth = last_azimuth - (ptMouseClick.X - e.X) / 100;
                 elevation = last_elevation + (ptMouseClick.Y - e.Y) / 100;
-                UpdateProjection();
+                UpdateProjection();                
             }
         }
 
         private void ScatterPlot_SizeChanged(object sender, EventArgs e)
         {
             if (ProjPoints != null)
-                UpdateProjection();
+                UpdateProjection();            
         }
 
         private void ScatterPlot_MouseDown(object sender, MouseEventArgs e)
@@ -171,5 +196,6 @@ namespace ExtendedControls
             for (int i = 0; i < ProjPoints.Count; i++)
                 ProjPoints[i] = ScatterProjection.ProjectVector(Points[i], this.Width, this.Height, f, d_w, azimuth, elevation);
             this.Invalidate();
-        }   }
+        }           
+    }
 }

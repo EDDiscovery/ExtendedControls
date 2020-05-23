@@ -198,7 +198,7 @@ namespace ExtendedControls
                     if (_ctrl.ClientRectangle.Contains(clientPos)
                      && ReferenceEquals(_ctrl, parent.GetChildAtPoint(parent.PointToClient(pos))))
                     {
-                        var wParam = m.WParam.ToInt32();
+                        int wParam = m.WParam.ToInt32();
                         Func<int, MouseButtons, MouseButtons> getButton =
                             (flag, button) => ((wParam & flag) == flag) ? button : MouseButtons.None;
 

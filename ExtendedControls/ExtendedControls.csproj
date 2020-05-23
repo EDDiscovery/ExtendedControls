@@ -56,6 +56,13 @@
     <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ScatterPlot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ScatterPlot.Designer.cs">
+      <DependentUpon>ScatterPlot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScatterPlotHelpers.cs" />
     <Compile Include="Controls\TextBoxAutoComplete.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -215,6 +222,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\ScatterPlot.resx">
+      <DependentUpon>ScatterPlot.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
