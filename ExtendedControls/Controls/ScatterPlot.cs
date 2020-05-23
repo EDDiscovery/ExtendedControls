@@ -171,6 +171,5 @@ namespace ExtendedControls
             for (int i = 0; i < ProjPoints.Count; i++)
                 ProjPoints[i] = ScatterProjection.ProjectVector(Points[i], this.Width, this.Height, f, d_w, azimuth, elevation);
             this.Invalidate();
-        }
-    }
+        }   }
 }

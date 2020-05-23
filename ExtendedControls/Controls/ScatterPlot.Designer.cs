@@ -28,8 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // ScatterPlot
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Name = "ScatterPlot";
+            this.SizeChanged += new System.EventHandler(this.ScatterPlot_SizeChanged);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ScatterPlot_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ScatterPlot_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ScatterPlot_MouseUp);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
