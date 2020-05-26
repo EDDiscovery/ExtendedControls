@@ -37,8 +37,8 @@ namespace ExtendedControls.Controls
         List<List<double[]>> Coords = new List<List<double[]>>();
         List<PointF[]> AxesAnchors = new List<PointF[]>();
 
-        List<List<double[]>> Ellipses = new List<List<double[]>>();        
-        List<PointF[]> DataEllipses = new List<PointF[]>();
+        List<List<double[]>> Orbits = new List<List<double[]>>();        
+        List<PointF[]> OrbitsFrames = new List<PointF[]>();
 
         private double focalLength = 900;
         private double distance = 6;
@@ -127,14 +127,14 @@ namespace ExtendedControls.Controls
         }
 
         [Description("Set the thickness of each axis in the axes widget")]
-        public int AxisThickness
+        public int AxesThickness
         {
             get { return axesWidgetThickness; }
             set { axesWidgetThickness = value; UpdateProjection(); }
         }
 
         [Description("Set the length of each axis in the axes widget")]
-        public int AxisLength
+        public int AxesLength
         {
             get { return axesWidgetLength; }
             set { axesWidgetLength = value; UpdateProjection(); }
@@ -144,8 +144,7 @@ namespace ExtendedControls.Controls
         public ExtAstroPlot()
         {
             InitializeComponent();
-            ScatterPlotHelpers.MouseWheelHandler.Add(this, OnMouseWheel);
-            DrawAxesWidget();
+            ScatterPlotHelpers.MouseWheelHandler.Add(this, OnMouseWheel);            
         }
 
         protected override CreateParams CreateParams
@@ -191,23 +190,22 @@ namespace ExtendedControls.Controls
                     for (int c = 0; c < AxesAnchors[i].Length; c++)
                     {
                         PointF p = AxesAnchors[i][c];
-                        if (c == 0)
+                        if (c == 0) // x axis
                         {
                             axisAnchor.Color = Color.Red;
                             AxisPen.Color = Color.Red;
                         }
-                        if (c == 1)
+                        if (c == 1) // y axys
                         {
                             axisAnchor.Color = Color.Green;
                             AxisPen.Color = Color.Green;
                         }
-                        if (c == 2)
+                        if (c == 2) // x axis
                         {
                             axisAnchor.Color = Color.Blue;
                             AxisPen.Color = Color.Blue;
                         }
-
-                        g.FillEllipse(axisAnchor, new RectangleF(p.X, p.Y, 2, 2));
+                                                
                         var axisAnchorPoint = new PointF(p.X, p.Y);
                         g.DrawLine(AxisPen, center, axisAnchorPoint);
                     }
@@ -227,11 +225,11 @@ namespace ExtendedControls.Controls
             }
 
             // orbits
-            if (DataEllipses != null)
+            if (OrbitsFrames != null)
             {
-                for (int i = 0; i < DataEllipses.Count; i++)
+                for (int i = 0; i < OrbitsFrames.Count; i++)
                 {
-                    foreach (PointF p in DataEllipses[i])
+                    foreach (PointF p in OrbitsFrames[i])
                     {
                         var orreryCenter = new Point(this.Width / 2, this.Height / 2);
                         var bodyOrbitBoundary = new Point((int)(orreryCenter.X + (orreryCenter.X - p.X)), (int)(orreryCenter.Y + (orreryCenter.Y - p.Y)));
@@ -258,24 +256,7 @@ namespace ExtendedControls.Controls
                 }
             }
         }
-
-        private void DrawAxesWidget()
-        {
-            if (drawAxesWidget)
-            {
-                List<double[]> Coords = new List<double[]>();
-
-                Coords.Add(new double[] { AxisLength * 0.5, 0.0, 0.0, 0 });
-                Coords.Add(new double[] { 0.0, AxisLength * 0.5, 0.0, 1 });
-                Coords.Add(new double[] { 0.0, 0.0, AxisLength * 0.5, 2 });
-
-                // draw the anchors points
-                AddAnchors(Coords);
-                
-                Coords.Clear();                               
-            }
-        }
-
+        
         public void AddPoint(double x, double y, double z, int series)
         {
             if (Points.Count - 1 < series)
@@ -334,19 +315,19 @@ namespace ExtendedControls.Controls
 
         public void AddEllipse(double x, double y, double z, int series)
         {
-            if (Ellipses.Count - 1 < series)
+            if (Orbits.Count - 1 < series)
             {
-                Ellipses.Add(new List<double[]>());
+                Orbits.Add(new List<double[]>());
             }
 
-            Ellipses[series].Add(new double[] { x, y, z });            
+            Orbits[series].Add(new double[] { x, y, z });            
 
             foreach (List<double[]> ser in Points)
             {
-                if (DataEllipses.Count - 1 < series)
-                    DataEllipses.Add(ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                if (OrbitsFrames.Count - 1 < series)
+                    OrbitsFrames.Add(ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
                 else
-                    DataEllipses[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                    OrbitsFrames[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             this.Invalidate();
@@ -355,8 +336,8 @@ namespace ExtendedControls.Controls
         public void AddEllipses(List<double[]> points)
         {
             List<double[]> _tmp = new List<double[]>(points);
-            Ellipses.Add(_tmp);
-            DataEllipses.Add(ScatterPlotHelpers.Projection.ProjectVector(Ellipses[Ellipses.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            Orbits.Add(_tmp);
+            OrbitsFrames.Add(ScatterPlotHelpers.Projection.ProjectVector(Orbits[Orbits.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
 
@@ -374,7 +355,7 @@ namespace ExtendedControls.Controls
                     DataPoints[i] = ScatterPlotHelpers.Projection.ProjectVector(Points[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
             }
 
-            if (DataEllipses == null)
+            if (OrbitsFrames == null)
                 return;
             else
             {
@@ -382,8 +363,8 @@ namespace ExtendedControls.Controls
                 double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
                 double z = distance * Math.Sin(elevation);
                 cameraPosition = new double[3] { -y, z, -x };
-                for (int i = 0; i < DataEllipses.Count; i++)
-                    DataEllipses[i] = ScatterPlotHelpers.Projection.ProjectVector(Ellipses[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                for (int i = 0; i < OrbitsFrames.Count; i++)
+                    OrbitsFrames[i] = ScatterPlotHelpers.Projection.ProjectVector(Orbits[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             if (AxesAnchors == null)
@@ -447,6 +428,23 @@ namespace ExtendedControls.Controls
         private void OnMouseWheel(MouseEventArgs e)
         {
             Distance += -e.Delta / 500D;
+        }
+
+        public void DrawAxes(int length)
+        {
+            if (drawAxesWidget)
+            {
+                List<double[]> Coords = new List<double[]>();
+
+                Coords.Add(new double[] { length * 0.5, 0.0, 0.0, 0 });
+                Coords.Add(new double[] { 0.0, -(length * 0.5), 0.0, 1 });
+                Coords.Add(new double[] { 0.0, 0.0, length * 0.5, 2 });
+
+                // draw the anchors points
+                AddAnchors(Coords);
+
+                Coords.Clear();
+            }
         }
         #endregion
     }

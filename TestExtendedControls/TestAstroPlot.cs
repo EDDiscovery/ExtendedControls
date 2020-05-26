@@ -31,7 +31,10 @@ namespace DialogTest
             extAstroPlotTest.Distance = 8;
             extAstroPlotTest.Focus = 1300;
             extAstroPlotTest.Elevation = 0.7;
-            extAstroPlotTest.Azimuth = 0.3;
+            extAstroPlotTest.Azimuth = 0.4;
+            extAstroPlotTest.AxesLength = 3;
+
+            extAstroPlotTest.DrawAxes(extAstroPlotTest.AxesLength);
         }
 
         private void AddDemoStars()
@@ -64,9 +67,9 @@ namespace DialogTest
             List<double[]> Bodies = new List<double[]>();
 
             Bodies.Add(new double[] { 0.8, 0, 0 });
-            Bodies.Add(new double[] { 0.3, 0, 0 });
-            Bodies.Add(new double[] { 1.2, 0.1, 0 });
-            Bodies.Add(new double[] { 1.5, 0.2, 0 });
+            //Bodies.Add(new double[] { 0.3, 0, 0 });
+            //Bodies.Add(new double[] { 1.2, 0.1, 0 });
+            //Bodies.Add(new double[] { 1.5, 0.2, 0 });
 
             extAstroPlotTest.AddEllipses(Bodies);
         }

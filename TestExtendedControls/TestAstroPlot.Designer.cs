@@ -34,8 +34,8 @@
             // extAstroPlotTest
             // 
             this.extAstroPlotTest.AxesWidget = true;
-            this.extAstroPlotTest.AxisLength = 100;
-            this.extAstroPlotTest.AxisThickness = 1;
+            this.extAstroPlotTest.AxesLength = 100;
+            this.extAstroPlotTest.AxesThickness = 1;
             this.extAstroPlotTest.Azimuth = 0.3D;
             this.extAstroPlotTest.BackColor = System.Drawing.Color.Black;
             this.extAstroPlotTest.Camera = new double[] {
