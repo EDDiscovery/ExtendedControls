@@ -24,18 +24,22 @@ namespace DialogTest
             theme.FontSize = 8.25f;
             theme.WindowsFrame = true;
 
-            InitializeComponent();        
-            AddDemoContent();           
-            
+            InitializeComponent();
+            //AddDemoStars();           
+            AddDemoOrrery();
+
+            extAstroPlotTest.Distance = 8;
+            extAstroPlotTest.Focus = 1300;
+            extAstroPlotTest.Elevation = 0.7;
         }
-                
-        private void AddDemoContent()
+
+        private void AddDemoStars()
         {
-            extScatterPlot1.Clear();
+            extAstroPlotTest.Clear();
                         
             Random rand = new Random();
             double R = 1;
-            List<double[]> Points = new List<double[]>();
+            List<double[]> Stars = new List<double[]>();
 
             for (int j = 0; j < 7; j++)
             {
@@ -46,13 +50,26 @@ namespace DialogTest
                     double x = R * Math.Sin(theta) * Math.Cos(phi);
                     double y = R * Math.Sin(theta) * Math.Sin(phi);
                     double z = R * Math.Cos(theta);
-                    Points.Add(new double[] { x, y, z });
+                    Stars.Add(new double[] { x, y, z });
                 }
-                extScatterPlot1.AddPoints(Points);
+                extAstroPlotTest.AddPoints(Stars);
 
-                Points.Clear();
-            }
+                Stars.Clear();
+            }            
+        }
+
+        private void AddDemoOrrery()
+        {
+            List<double[]> Bodies = new List<double[]>();
+
+            Bodies.Add(new double[] { 0.8, 0, 0 });
+            Bodies.Add(new double[] { 0.3, 0, 0 });
+            Bodies.Add(new double[] { 1.2, 0.1, 0 });
+            Bodies.Add(new double[] { 1.5, 0.2, 0 });
+
+            extAstroPlotTest.AddEllipses(Bodies);
         }
     }
 }
+
 

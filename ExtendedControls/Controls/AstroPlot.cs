@@ -37,7 +37,7 @@ namespace ExtendedControls.Controls
         List<List<double[]>> Coords = new List<List<double[]>>();
         List<PointF[]> AxesAnchors = new List<PointF[]>();
 
-        List<List<double[]>> Ellipses = new List<List<double[]>>();
+        List<List<double[]>> Ellipses = new List<List<double[]>>();        
         List<PointF[]> DataEllipses = new List<PointF[]>();
 
         private double focalLength = 900;
@@ -150,9 +150,9 @@ namespace ExtendedControls.Controls
 
             // Pick the background color defined in the designer
             SolidBrush backColor = new SolidBrush(BackColor);
-            SolidBrush axisAnchor = new SolidBrush(Color.White);
+            SolidBrush axisAnchor = new SolidBrush(ForeColor);
 
-            Pen AxisPen = new Pen(new SolidBrush(Color.White));
+            Pen AxisPen = new Pen(new SolidBrush(ForeColor));
             AxisPen.Width = 1;
 
             // axes center point            
@@ -160,17 +160,52 @@ namespace ExtendedControls.Controls
             var dotDiameter = PointsSize;
 
             Graphics g = this.CreateGraphics();
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+
             g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
+
+            // dots
             if (DataPoints != null)
             {
                 for (int i = 0; i < DataPoints.Count; i++)
                 {
                     foreach (PointF p in DataPoints[i])
-                    {
+                    {                        
                         g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, dotDiameter, dotDiameter));                        
                     }
                 }
             }
+
+            // orbits
+            if (DataEllipses != null)
+            {
+                for (int i = 0; i < DataEllipses.Count; i++)
+                {
+                    foreach (PointF p in DataEllipses[i])
+                    {
+                        var orreryCenter = new Point(this.Width / 2, this.Height / 2);
+                        var bodyOrbitBoundary = new Point((int)(orreryCenter.X + (orreryCenter.X - p.X)), (int)(orreryCenter.Y + (orreryCenter.Y - p.Y)));
+                        var bodyOrbitMass = new Size((orreryCenter.X - bodyOrbitBoundary.X), (orreryCenter.Y - bodyOrbitBoundary.Y));
+
+                        var orbitBoundary = new Point(bodyOrbitBoundary.X, bodyOrbitBoundary.Y);
+                        var orbitSize = new Size(bodyOrbitMass.Width * 2, bodyOrbitMass.Height * 2);
+
+                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, dotDiameter * 2, dotDiameter * 2));
+                        //g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(bodyOrbitBoundary.X, bodyOrbitBoundary.Y, dotDiameter * 2, dotDiameter * 2));
+                                                
+                        //g.DrawLine(AxisPen, bodyOrbitBoundary, p);
+                        //g.DrawRectangle(AxisPen, new Rectangle(bodyOrbitBoundary, new Size(bodyOrbitMass.Width, bodyOrbitMass.Height)));
+                        //g.DrawRectangle(AxisPen, new Rectangle(orreryCenter, new Size(bodyOrbitMass.Width, bodyOrbitMass.Height)));
+
+                        g.DrawEllipse(AxisPen, new Rectangle(bodyOrbitBoundary, orbitSize));
+
+                    }
+                }
+            }
+
+            // axes
             if (AxesAnchors != null)
             {
                 for (int i = 0; i < AxesAnchors.Count; i++)
@@ -275,6 +310,34 @@ namespace ExtendedControls.Controls
             UpdateProjection();
         }
 
+        public void AddEllipse(double x, double y, double z, int series)
+        {
+            if (Ellipses.Count - 1 < series)
+            {
+                Ellipses.Add(new List<double[]>());
+            }
+
+            Ellipses[series].Add(new double[] { x, y, z });            
+
+            foreach (List<double[]> ser in Points)
+            {
+                if (DataEllipses.Count - 1 < series)
+                    DataEllipses.Add(ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                else
+                    DataEllipses[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+            }
+
+            this.Invalidate();
+        }
+
+        public void AddEllipses(List<double[]> points)
+        {
+            List<double[]> _tmp = new List<double[]>(points);
+            Ellipses.Add(_tmp);
+            DataEllipses.Add(ScatterPlotHelpers.Projection.ProjectVector(Ellipses[Ellipses.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            UpdateProjection();
+        }
+
         private void UpdateProjection()
         {
             if (DataPoints == null)
@@ -287,6 +350,18 @@ namespace ExtendedControls.Controls
                 cameraPosition = new double[3] { -y, z, -x };
                 for (int i = 0; i < DataPoints.Count; i++)
                     DataPoints[i] = ScatterPlotHelpers.Projection.ProjectVector(Points[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
+            }
+
+            if (DataEllipses == null)
+                return;
+            else
+            {
+                double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
+                double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
+                double z = distance * Math.Sin(elevation);
+                cameraPosition = new double[3] { -y, z, -x };
+                for (int i = 0; i < DataEllipses.Count; i++)
+                    DataEllipses[i] = ScatterPlotHelpers.Projection.ProjectVector(Ellipses[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             if (AxesAnchors == null)
@@ -317,8 +392,7 @@ namespace ExtendedControls.Controls
         public void Reset()
         {
             Azimuth = 0.3;
-            Elevation = 0.3;
-            Distance = distance;
+            Elevation = 0.3;            
         }
 
         #region Interaction

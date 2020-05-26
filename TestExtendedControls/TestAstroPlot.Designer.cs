@@ -28,36 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.extScatterPlot1 = new ExtendedControls.Controls.ExtAstroPlot();
+            this.extAstroPlotTest = new ExtendedControls.Controls.ExtAstroPlot();
             this.SuspendLayout();
             // 
             // extScatterPlot1
             // 
-            this.extScatterPlot1.AxesWidget = true;
-            this.extScatterPlot1.AxisLength = 100;
-            this.extScatterPlot1.AxisThickness = 1;
-            this.extScatterPlot1.Azimuth = 0.3D;
-            this.extScatterPlot1.BackColor = System.Drawing.Color.Black;
-            this.extScatterPlot1.Camera = new double[] {
+            this.extAstroPlotTest.AxesWidget = true;
+            this.extAstroPlotTest.AxisLength = 100;
+            this.extAstroPlotTest.AxisThickness = 1;
+            this.extAstroPlotTest.Azimuth = 0.3D;
+            this.extAstroPlotTest.BackColor = System.Drawing.Color.Black;
+            this.extAstroPlotTest.Camera = new double[] {
         -1.693927420185106D,
         1.7731212399680372D,
         -5.4760068447290351D};
-            this.extScatterPlot1.Distance = 6D;
-            this.extScatterPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extScatterPlot1.Elevation = 0.3D;
-            this.extScatterPlot1.Focus = 900D;
-            this.extScatterPlot1.Location = new System.Drawing.Point(0, 0);
-            this.extScatterPlot1.Name = "extScatterPlot1";
-            this.extScatterPlot1.PointsSize = 3;
-            this.extScatterPlot1.Size = new System.Drawing.Size(520, 494);
-            this.extScatterPlot1.TabIndex = 0;
+            this.extAstroPlotTest.Distance = 6D;
+            this.extAstroPlotTest.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extAstroPlotTest.Elevation = 0.3D;
+            this.extAstroPlotTest.Focus = 900D;
+            this.extAstroPlotTest.Location = new System.Drawing.Point(0, 0);
+            this.extAstroPlotTest.Name = "extScatterPlot1";
+            this.extAstroPlotTest.PointsSize = 3;
+            this.extAstroPlotTest.Size = new System.Drawing.Size(520, 494);
+            this.extAstroPlotTest.TabIndex = 0;
             // 
             // TestAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(520, 494);
-            this.Controls.Add(this.extScatterPlot1);
+            this.Controls.Add(this.extAstroPlotTest);
             this.Name = "TestAstroPlot";
             this.Text = "TestAstroPlot";
             this.ResumeLayout(false);
@@ -66,6 +66,6 @@
 
         #endregion
 
-        private ExtendedControls.Controls.ExtAstroPlot extScatterPlot1;
+        private ExtendedControls.Controls.ExtAstroPlot extAstroPlotTest;
     }
 }

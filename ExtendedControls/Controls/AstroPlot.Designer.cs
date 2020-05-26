@@ -32,12 +32,13 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
-            // ExtScatterPlot
+            // ExtAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.Name = "ExtScatterPlot";
+            this.ForeColor = System.Drawing.Color.White;
+            this.Name = "ExtAstroPlot";
             this.SizeChanged += new System.EventHandler(this.ExtScatterPlot_SizeChanged);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ExtScatterPlot_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ExtScatterPlot_MouseMove);
