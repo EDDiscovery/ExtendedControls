@@ -33,26 +33,30 @@
             // 
             // extScatterPlot1
             // 
+            this.extScatterPlot1.AxesWidget = true;
+            this.extScatterPlot1.AxisLength = 10;
+            this.extScatterPlot1.AxisThickness = 1;
             this.extScatterPlot1.Azimuth = 0D;
             this.extScatterPlot1.BackColor = System.Drawing.Color.Black;
             this.extScatterPlot1.Camera = new double[] {
         0D,
         0D,
-        -0.19999999999999751D};
-            this.extScatterPlot1.Distance = 0.19999999999999751D;
+        -6D};
+            this.extScatterPlot1.Distance = 6D;
             this.extScatterPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.extScatterPlot1.Elevation = 0D;
-            this.extScatterPlot1.Focus = 1000D;
+            this.extScatterPlot1.Focus = 900D;
             this.extScatterPlot1.Location = new System.Drawing.Point(0, 0);
             this.extScatterPlot1.Name = "extScatterPlot1";
-            this.extScatterPlot1.Size = new System.Drawing.Size(576, 533);
+            this.extScatterPlot1.PointsSize = 3;
+            this.extScatterPlot1.Size = new System.Drawing.Size(520, 494);
             this.extScatterPlot1.TabIndex = 0;
             // 
             // TestScatterPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 533);
+            this.ClientSize = new System.Drawing.Size(520, 494);
             this.Controls.Add(this.extScatterPlot1);
             this.Name = "TestScatterPlot";
             this.Text = "TestScatterPlot";

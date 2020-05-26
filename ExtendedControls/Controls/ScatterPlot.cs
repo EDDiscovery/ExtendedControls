@@ -23,6 +23,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Remoting.Messaging;
+using System.Windows.Forms.DataVisualization.Charting;
+using System.Diagnostics;
 
 namespace ExtendedControls.Controls
 {
@@ -30,60 +33,100 @@ namespace ExtendedControls.Controls
     {
         List<List<double[]>> Points = new List<List<double[]>>();
         List<PointF[]> DataPoints = new List<PointF[]>();
-        private double focalLength = 1000;
-        private double distance = 5;
+
+        List<List<double[]>> Coords = new List<List<double[]>>();
+        List<PointF[]> AxesAnchors = new List<PointF[]>();
+
+        private double focalLength = 900;
+        private double distance = 6;
+        private int dotSize = 5;
         private double[] cameraPosition = new double[3];
-        
+
         // Mouse 
-        private bool leftMousePressed = false;
-        private bool rightMousePressed = false;
+        private bool leftMousePressed = false;        
         private PointF ptMouseClick;
+
+        // Axes Widget
+        private bool drawAxesWidget = true;
+        private int axesWidgetThickness = 3;
+        private int axesWidgetLength = 50;        
 
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
         private double lastAzimuth, azimuth = 0;
         // Elevation is the angular distance of something (such as a celestial object) above the horizon
         private double lastElevation, elevation = 0;
-
-
-        [Description("Set the distance at which the camera stands from the plot"), Category("Scatter Plot")]
+                
+        #region Properties
+        
+        [Description("Set the distance at which the camera stands from the plot")]
         public double Distance
         {
             get { return distance; }
             set { distance = (value >= 0.1) ? distance = value : distance; UpdateProjection(); }
         }
 
-        [Description("Focal length of the camera"), Category("Scatter Plot")]
+        [Description("Focal length of the camera")]
         public new double Focus
         {
             get { return focalLength; }
             set { focalLength = value; UpdateProjection(); }
         }
 
-        [Description("Camera position"), Category("Scatter Plot")]
+        [Description("Camera position")]
         public double[] Camera
         {
             get { return cameraPosition; }
             set { cameraPosition = value; UpdateProjection(); }
         }
 
-        [Description("Horizontal direction of the camera expressed as the angular distance"), Category("Scatter Plot")]
+        [Description("Horizontal direction of the camera expressed as an angular distance")]
         public double Azimuth
         {
             get { return azimuth; }
             set { azimuth = value; UpdateProjection(); }
         }
 
-        [Description("Vertical direction of the camera expressed as the angular distance"), Category("Scatter Plot")]
+        [Description("Vertical direction of the camera expressed as an angular distance")]
         public double Elevation
         {
             get { return elevation; }
             set { elevation = value; UpdateProjection(); }
         }
 
+        [Description("Diameter of the dots")]
+        public int PointsSize
+        {
+            get { return dotSize; }
+            set { dotSize = value; UpdateProjection(); }
+        }
+
+        [Description("Toggle the axes widget display")]
+        public bool AxesWidget
+        {
+            get { return drawAxesWidget; }
+            set { drawAxesWidget = value; UpdateProjection(); }
+        }
+
+        [Description("Set the thickness of each axis in the axes widget")]
+        public int AxisThickness
+        {
+            get { return axesWidgetThickness; }
+            set { axesWidgetThickness = value; UpdateProjection(); }
+        }
+
+        [Description("Set the length of each axis in the axes widget")]
+        public int AxisLength
+        {
+            get { return axesWidgetLength; }
+            set { axesWidgetLength = value; UpdateProjection(); }
+        }
+        #endregion
+
         public ExtScatterPlot()
         {
             InitializeComponent();
             ScatterPlotHelpers.MouseWheelHandler.Add(this, OnMouseWheel);
+            DrawAxesWidget();
         }
 
         protected override CreateParams CreateParams
@@ -96,7 +139,7 @@ namespace ExtendedControls.Controls
             }
         }
 
-        Color[] colorIdx = new Color[] { Color.Blue, Color.Aqua, Color.White, Color.Yellow, Color.Orange, Color.DarkOrange, Color.Red, Color.Fuchsia, Color.Purple, Color.Gray, Color.DarkGray, Color.Black };
+        Color[] colors = new Color[] { Color.LightBlue, Color.Aqua,  Color.Yellow, Color.Orange, Color.DarkOrange, Color.White, Color.DarkViolet, Color.Gray, Color.DarkGray};
                 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -104,6 +147,8 @@ namespace ExtendedControls.Controls
 
             // Pick the background color defined in the designer
             SolidBrush backColor = new SolidBrush(BackColor);
+
+            var dotDiameter = PointsSize;
 
             Graphics g = this.CreateGraphics();
             g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
@@ -113,12 +158,65 @@ namespace ExtendedControls.Controls
                 {
                     foreach (PointF p in DataPoints[i])
                     {
-                        g.FillEllipse(new SolidBrush(colorIdx[i % colorIdx.Length]), new RectangleF(p.X, p.Y, 4, 4));
+                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, dotDiameter, dotDiameter));                        
                     }
                 }
             }
+            if (AxesAnchors != null)
+            {
+                for (int i = 0; i < AxesAnchors.Count; i++)
+                {
+                    foreach (PointF p in AxesAnchors[i])
+                    {
+                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, dotDiameter, dotDiameter));
+                    }
+                }
+            }            
         }
 
+        private void DrawAxesWidget()
+        {
+            if (drawAxesWidget)
+            {
+                List<double[]> Coords = new List<double[]>
+            {
+                new double[] { axesWidgetLength / 20, 0, 0 }, // x axis anchor
+                new double[] { 0, axesWidgetLength / 20, 0 }, // y axis anchor
+                new double[] { 0, 0, axesWidgetLength / 20 } // z axis anchor
+            };
+
+                AddAnchors(Coords);
+                Coords.Clear();
+
+                // draw the axes widget                
+                Pen XAxisPen = new Pen(new SolidBrush(Color.Red))
+                {
+                    Width = axesWidgetThickness                    
+                }; Pen YAxisPen = new Pen(new SolidBrush(Color.Green))
+                {
+                    Width = axesWidgetThickness
+                }; Pen ZAxisPen = new Pen(new SolidBrush(Color.Blue))
+                {
+                    Width = axesWidgetThickness
+                };
+
+                // axes center point
+                int hCenter = this.Width / 2;
+                int vCenter = this.Height / 2;
+                
+                Graphics g = this.CreateGraphics();
+
+                var center = new PointF(hCenter, vCenter);
+                var xAnchor = new PointF(AxesAnchors[0][0].X, AxesAnchors[0][0].Y);
+                var yAnchor = new PointF(AxesAnchors[0][1].X, AxesAnchors[0][1].Y);
+                var zAnchor = new PointF(AxesAnchors[0][2].X, AxesAnchors[0][2].Y);
+
+                g.DrawLine(XAxisPen, center, xAnchor);                               
+                g.DrawLine(YAxisPen, center, yAnchor);
+                g.DrawLine(ZAxisPen, center, zAnchor);
+            }
+        }
+                
         public void AddPoint(double x, double y, double z, int series)
         {
             if (Points.Count - 1 < series)
@@ -135,6 +233,7 @@ namespace ExtendedControls.Controls
                 else
                     DataPoints[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
+
             this.Invalidate();
         }
 
@@ -142,18 +241,86 @@ namespace ExtendedControls.Controls
         {
             List<double[]> _tmp = new List<double[]>(points);
             Points.Add(_tmp);
-            DataPoints.Add(ScatterPlotHelpers.Projection.ProjectVector(Points[Points.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            DataPoints.Add(ScatterPlotHelpers.Projection.ProjectVector(Points[Points.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));                       
             UpdateProjection();
+        }
+
+        public void AddCoords(double x, double y, double z, int series)
+        {
+            if (Coords.Count - 1 < series)
+            {
+                Coords.Add(new List<double[]>());
+            }
+
+            Coords[series].Add(new double[] { x, y, z });
+
+            foreach (List<double[]> ser in Coords)
+            {
+                if (AxesAnchors.Count - 1 < series)
+                    AxesAnchors.Add(ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                else
+                    AxesAnchors[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+            }
+
+            this.Invalidate();
+        }
+
+        public void AddAnchors(List<double[]> anchors)
+        {
+            List<double[]> _anchors = new List<double[]>(anchors);
+            Coords.Add(_anchors);
+            AxesAnchors.Add(ScatterPlotHelpers.Projection.ProjectVector(Coords[Coords.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            UpdateProjection();
+        }
+
+        private void UpdateProjection()
+        {
+            if (DataPoints == null)
+                return;
+            else
+            {
+                double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
+                double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
+                double z = distance * Math.Sin(elevation);
+                cameraPosition = new double[3] { -y, z, -x };
+                for (int i = 0; i < DataPoints.Count; i++)
+                    DataPoints[i] = ScatterPlotHelpers.Projection.ProjectVector(Points[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
+            }
+
+            if (AxesAnchors == null)
+                return;
+            else
+            {
+                if (drawAxesWidget)
+                {
+                    double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
+                    double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
+                    double z = distance * Math.Sin(elevation);
+                    cameraPosition = new double[3] { -y, z, -x };
+                    for (int i = 0; i < AxesAnchors.Count; i++)
+                    AxesAnchors[i] = ScatterPlotHelpers.Projection.ProjectVector(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
+                }
+
+            }
+
+            this.Invalidate();            
         }
 
         public void Clear()
         {
             DataPoints.Clear();
             Points.Clear();
+            Reset();
+        }
+
+        public void Reset()
+        {
             Azimuth = 0;
             Elevation = 0;
+            Distance = distance;
         }
-                
+
+        #region Interaction
         private void ExtScatterPlot_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
@@ -161,9 +328,12 @@ namespace ExtendedControls.Controls
                 leftMousePressed = true;
                 ptMouseClick = new PointF(e.X, e.Y);
                 lastAzimuth = azimuth;
-                lastElevation = elevation;
+                lastElevation = elevation;                
             }
-        }
+
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)                
+                Reset();
+        }               
 
         private void ExtScatterPlot_MouseMove(object sender, MouseEventArgs e)
         {
@@ -185,24 +355,12 @@ namespace ExtendedControls.Controls
         {
             if (DataPoints != null)
                 UpdateProjection();
-        }        
+        }
 
         private void OnMouseWheel(MouseEventArgs e)
         {
             Distance += -e.Delta / 500D;
         }
-
-        private void UpdateProjection()
-        {
-            if (DataPoints == null)
-                return;
-            double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
-            double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
-            double z = distance * Math.Sin(elevation);
-            cameraPosition = new double[3] { -y, z, -x };
-            for (int i = 0; i < DataPoints.Count; i++)
-                DataPoints[i] = ScatterPlotHelpers.Projection.ProjectVector(Points[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
-            this.Invalidate();
-        }
+        #endregion
     }
 }
