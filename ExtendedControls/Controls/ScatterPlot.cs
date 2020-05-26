@@ -147,19 +147,11 @@ namespace ExtendedControls.Controls
 
             // Pick the background color defined in the designer
             SolidBrush backColor = new SolidBrush(BackColor);
+            SolidBrush axisAnchorCoordinate = new SolidBrush(Color.White);
 
-            // draw the axes widget                
-            Pen XAxisPen = new Pen(new SolidBrush(Color.Red))
-            {
-                Width = axesWidgetThickness
-            }; Pen YAxisPen = new Pen(new SolidBrush(Color.Green))
-            {
-                Width = axesWidgetThickness
-            }; Pen ZAxisPen = new Pen(new SolidBrush(Color.Blue))
-            {
-                Width = axesWidgetThickness
-            };
-                        
+            Pen AxisPen = new Pen(new SolidBrush(Color.White));
+            AxisPen.Width = 1;
+
             // axes center point            
             var center = new PointF(this.Width / 2, this.Height / 2);            
             var dotDiameter = PointsSize;
@@ -180,11 +172,28 @@ namespace ExtendedControls.Controls
             {
                 for (int i = 0; i < AxesAnchors.Count; i++)
                 {
-                    foreach (PointF p in AxesAnchors[i])
+                    for (int c = 0; c < AxesAnchors[i].Length; c++)
                     {
-                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, 2, 2));
+                        PointF p = AxesAnchors[i][c];
+                        if (c == 0)
+                        {
+                            axisAnchorCoordinate.Color = Color.Red;
+                            AxisPen.Color = Color.Red;
+                        }
+                        if (c == 1)
+                        {
+                            axisAnchorCoordinate.Color = Color.Green;
+                            AxisPen.Color = Color.Green;
+                        }
+                        if (c == 2)
+                        {
+                            axisAnchorCoordinate.Color = Color.Blue;
+                            AxisPen.Color = Color.Blue;
+                        }
+
+                        g.FillEllipse(axisAnchorCoordinate, new RectangleF(p.X, p.Y, 2, 2));
                         var axisAnchor = new PointF(p.X, p.Y);
-                        g.DrawLine(XAxisPen, center, axisAnchor);
+                        g.DrawLine(AxisPen, center, axisAnchor);
                     }
                 }
             }
@@ -196,20 +205,15 @@ namespace ExtendedControls.Controls
             {
                 List<double[]> Coords = new List<double[]>();
 
-                Coords.Add(new double[] { AxisLength * 0.5, 0.0, 0.0 });
-                Coords.Add(new double[] { 0.0, AxisLength * 0.5, 0.0 });
-                Coords.Add(new double[] { 0.0, 0.0, AxisLength * 0.5 });
+                Coords.Add(new double[] { AxisLength * 0.5, 0.0, 0.0, 0 });
+                Coords.Add(new double[] { 0.0, AxisLength * 0.5, 0.0, 1 });
+                Coords.Add(new double[] { 0.0, 0.0, AxisLength * 0.5, 2 });
 
                 // draw the anchors points
                 AddAnchors(Coords);
                 
                 Coords.Clear();                               
             }
-        }
-                
-        private void UpdateAxesWidget()
-        {
-            // THIS DO NOT OUTPUT NOTHING!
         }
 
         public void AddPoint(double x, double y, double z, int series)
@@ -295,8 +299,6 @@ namespace ExtendedControls.Controls
                     for (int i = 0; i < AxesAnchors.Count; i++)
                     AxesAnchors[i] = ScatterPlotHelpers.Projection.ProjectVector(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
                 }
-
-                UpdateAxesWidget();
             }
 
             this.Invalidate();            

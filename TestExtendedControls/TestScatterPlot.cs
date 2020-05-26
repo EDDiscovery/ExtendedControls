@@ -37,9 +37,9 @@ namespace DialogTest
             double R = 1;
             List<double[]> Points = new List<double[]>();
 
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 7; j++)
             {
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 25; i++)
                 {
                     double theta = Math.PI * rand.NextDouble();
                     double phi = 2 * Math.PI * rand.NextDouble();
