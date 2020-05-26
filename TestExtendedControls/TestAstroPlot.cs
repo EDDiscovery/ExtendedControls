@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace DialogTest
 {
-    public partial class TestScatterPlot : Form
+    public partial class TestAstroPlot : Form
     {
         ThemeStandard theme;
 
-        public TestScatterPlot()
+        public TestAstroPlot()
         {
             theme = new ThemeStandard();
             ThemeableFormsInstance.Instance = theme;

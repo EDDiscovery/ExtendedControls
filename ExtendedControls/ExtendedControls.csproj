@@ -56,11 +56,11 @@
     <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ScatterPlot.cs">
+    <Compile Include="Controls\AstroPlot.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ScatterPlot.Designer.cs">
-      <DependentUpon>ScatterPlot.cs</DependentUpon>
+    <Compile Include="Controls\AstroPlot.Designer.cs">
+      <DependentUpon>AstroPlot.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScatterPlotHelpers.cs" />
     <Compile Include="Controls\TextBoxAutoComplete.cs">
@@ -222,8 +222,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\ScatterPlot.resx">
-      <DependentUpon>ScatterPlot.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\AstroPlot.resx">
+      <DependentUpon>AstroPlot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>

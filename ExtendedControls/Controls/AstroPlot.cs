@@ -29,13 +29,16 @@ using System.Diagnostics;
 
 namespace ExtendedControls.Controls
 {
-    public partial class ExtScatterPlot : UserControl
+    public partial class ExtAstroPlot : UserControl
     {
         List<List<double[]>> Points = new List<List<double[]>>();
         List<PointF[]> DataPoints = new List<PointF[]>();
 
         List<List<double[]>> Coords = new List<List<double[]>>();
         List<PointF[]> AxesAnchors = new List<PointF[]>();
+
+        List<List<double[]>> Ellipses = new List<List<double[]>>();
+        List<PointF[]> DataEllipses = new List<PointF[]>();
 
         private double focalLength = 900;
         private double distance = 6;
@@ -52,9 +55,9 @@ namespace ExtendedControls.Controls
         private int axesWidgetLength = 50;        
 
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
-        private double lastAzimuth, azimuth = 0;
+        private double lastAzimuth, azimuth = 0.3;
         // Elevation is the angular distance of something (such as a celestial object) above the horizon
-        private double lastElevation, elevation = 0;
+        private double lastElevation, elevation = 0.3;
                 
         #region Properties
         
@@ -122,7 +125,7 @@ namespace ExtendedControls.Controls
         }
         #endregion
 
-        public ExtScatterPlot()
+        public ExtAstroPlot()
         {
             InitializeComponent();
             ScatterPlotHelpers.MouseWheelHandler.Add(this, OnMouseWheel);
@@ -147,7 +150,7 @@ namespace ExtendedControls.Controls
 
             // Pick the background color defined in the designer
             SolidBrush backColor = new SolidBrush(BackColor);
-            SolidBrush axisAnchorCoordinate = new SolidBrush(Color.White);
+            SolidBrush axisAnchor = new SolidBrush(Color.White);
 
             Pen AxisPen = new Pen(new SolidBrush(Color.White));
             AxisPen.Width = 1;
@@ -177,23 +180,23 @@ namespace ExtendedControls.Controls
                         PointF p = AxesAnchors[i][c];
                         if (c == 0)
                         {
-                            axisAnchorCoordinate.Color = Color.Red;
+                            axisAnchor.Color = Color.Red;
                             AxisPen.Color = Color.Red;
                         }
                         if (c == 1)
                         {
-                            axisAnchorCoordinate.Color = Color.Green;
+                            axisAnchor.Color = Color.Green;
                             AxisPen.Color = Color.Green;
                         }
                         if (c == 2)
                         {
-                            axisAnchorCoordinate.Color = Color.Blue;
+                            axisAnchor.Color = Color.Blue;
                             AxisPen.Color = Color.Blue;
                         }
 
-                        g.FillEllipse(axisAnchorCoordinate, new RectangleF(p.X, p.Y, 2, 2));
-                        var axisAnchor = new PointF(p.X, p.Y);
-                        g.DrawLine(AxisPen, center, axisAnchor);
+                        g.FillEllipse(axisAnchor, new RectangleF(p.X, p.Y, 2, 2));
+                        var axisAnchorPoint = new PointF(p.X, p.Y);
+                        g.DrawLine(AxisPen, center, axisAnchorPoint);
                     }
                 }
             }
@@ -313,8 +316,8 @@ namespace ExtendedControls.Controls
 
         public void Reset()
         {
-            Azimuth = 0;
-            Elevation = 0;
+            Azimuth = 0.3;
+            Elevation = 0.3;
             Distance = distance;
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace DialogTest
 {
-    partial class TestScatterPlot
+    partial class TestAstroPlot
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.extScatterPlot1 = new ExtendedControls.Controls.ExtScatterPlot();
+            this.extScatterPlot1 = new ExtendedControls.Controls.ExtAstroPlot();
             this.SuspendLayout();
             // 
             // extScatterPlot1
@@ -36,15 +36,15 @@
             this.extScatterPlot1.AxesWidget = true;
             this.extScatterPlot1.AxisLength = 100;
             this.extScatterPlot1.AxisThickness = 1;
-            this.extScatterPlot1.Azimuth = 0D;
+            this.extScatterPlot1.Azimuth = 0.3D;
             this.extScatterPlot1.BackColor = System.Drawing.Color.Black;
             this.extScatterPlot1.Camera = new double[] {
-        0D,
-        0D,
-        -6D};
+        -1.693927420185106D,
+        1.7731212399680372D,
+        -5.4760068447290351D};
             this.extScatterPlot1.Distance = 6D;
             this.extScatterPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extScatterPlot1.Elevation = 0D;
+            this.extScatterPlot1.Elevation = 0.3D;
             this.extScatterPlot1.Focus = 900D;
             this.extScatterPlot1.Location = new System.Drawing.Point(0, 0);
             this.extScatterPlot1.Name = "extScatterPlot1";
@@ -52,20 +52,20 @@
             this.extScatterPlot1.Size = new System.Drawing.Size(520, 494);
             this.extScatterPlot1.TabIndex = 0;
             // 
-            // TestScatterPlot
+            // TestAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(520, 494);
             this.Controls.Add(this.extScatterPlot1);
-            this.Name = "TestScatterPlot";
-            this.Text = "TestScatterPlot";
+            this.Name = "TestAstroPlot";
+            this.Text = "TestAstroPlot";
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private ExtendedControls.Controls.ExtScatterPlot extScatterPlot1;
+        private ExtendedControls.Controls.ExtAstroPlot extScatterPlot1;
     }
 }

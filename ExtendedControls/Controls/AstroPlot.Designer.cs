@@ -1,6 +1,6 @@
 ﻿namespace ExtendedControls.Controls
 {
-    partial class ExtScatterPlot
+    partial class ExtAstroPlot
     {
         /// <summary> 
         /// Required designer variable.

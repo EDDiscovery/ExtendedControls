@@ -79,11 +79,11 @@
     <Compile Include="TestPanelScrollOutlining.Designer.cs">
       <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestScatterPlot.cs">
+    <Compile Include="TestAstroPlot.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestScatterPlot.Designer.cs">
-      <DependentUpon>TestScatterPlot.cs</DependentUpon>
+    <Compile Include="TestAstroPlot.Designer.cs">
+      <DependentUpon>TestAstroPlot.cs</DependentUpon>
     </Compile>
     <Compile Include="TestTextBoxesRTF.cs">
       <SubType>Form</SubType>
@@ -225,8 +225,8 @@
     <EmbeddedResource Include="TestPanelScrollOutlining.resx">
       <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestScatterPlot.resx">
-      <DependentUpon>TestScatterPlot.cs</DependentUpon>
+    <EmbeddedResource Include="TestAstroPlot.resx">
+      <DependentUpon>TestAstroPlot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestTextBoxesRTF.resx">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
