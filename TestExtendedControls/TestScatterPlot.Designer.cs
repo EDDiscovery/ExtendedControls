@@ -34,7 +34,7 @@
             // extScatterPlot1
             // 
             this.extScatterPlot1.AxesWidget = true;
-            this.extScatterPlot1.AxisLength = 10;
+            this.extScatterPlot1.AxisLength = 100;
             this.extScatterPlot1.AxisThickness = 1;
             this.extScatterPlot1.Azimuth = 0D;
             this.extScatterPlot1.BackColor = System.Drawing.Color.Black;

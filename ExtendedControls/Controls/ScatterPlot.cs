@@ -148,6 +148,20 @@ namespace ExtendedControls.Controls
             // Pick the background color defined in the designer
             SolidBrush backColor = new SolidBrush(BackColor);
 
+            // draw the axes widget                
+            Pen XAxisPen = new Pen(new SolidBrush(Color.Red))
+            {
+                Width = axesWidgetThickness
+            }; Pen YAxisPen = new Pen(new SolidBrush(Color.Green))
+            {
+                Width = axesWidgetThickness
+            }; Pen ZAxisPen = new Pen(new SolidBrush(Color.Blue))
+            {
+                Width = axesWidgetThickness
+            };
+                        
+            // axes center point            
+            var center = new PointF(this.Width / 2, this.Height / 2);            
             var dotDiameter = PointsSize;
 
             Graphics g = this.CreateGraphics();
@@ -168,55 +182,36 @@ namespace ExtendedControls.Controls
                 {
                     foreach (PointF p in AxesAnchors[i])
                     {
-                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, dotDiameter, dotDiameter));
+                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, 2, 2));
+                        var axisAnchor = new PointF(p.X, p.Y);
+                        g.DrawLine(XAxisPen, center, axisAnchor);
                     }
                 }
-            }            
+            }
         }
 
         private void DrawAxesWidget()
         {
             if (drawAxesWidget)
             {
-                List<double[]> Coords = new List<double[]>
-            {
-                new double[] { axesWidgetLength / 20, 0, 0 }, // x axis anchor
-                new double[] { 0, axesWidgetLength / 20, 0 }, // y axis anchor
-                new double[] { 0, 0, axesWidgetLength / 20 } // z axis anchor
-            };
+                List<double[]> Coords = new List<double[]>();
 
+                Coords.Add(new double[] { AxisLength * 0.5, 0.0, 0.0 });
+                Coords.Add(new double[] { 0.0, AxisLength * 0.5, 0.0 });
+                Coords.Add(new double[] { 0.0, 0.0, AxisLength * 0.5 });
+
+                // draw the anchors points
                 AddAnchors(Coords);
-                Coords.Clear();
-
-                // draw the axes widget                
-                Pen XAxisPen = new Pen(new SolidBrush(Color.Red))
-                {
-                    Width = axesWidgetThickness                    
-                }; Pen YAxisPen = new Pen(new SolidBrush(Color.Green))
-                {
-                    Width = axesWidgetThickness
-                }; Pen ZAxisPen = new Pen(new SolidBrush(Color.Blue))
-                {
-                    Width = axesWidgetThickness
-                };
-
-                // axes center point
-                int hCenter = this.Width / 2;
-                int vCenter = this.Height / 2;
                 
-                Graphics g = this.CreateGraphics();
-
-                var center = new PointF(hCenter, vCenter);
-                var xAnchor = new PointF(AxesAnchors[0][0].X, AxesAnchors[0][0].Y);
-                var yAnchor = new PointF(AxesAnchors[0][1].X, AxesAnchors[0][1].Y);
-                var zAnchor = new PointF(AxesAnchors[0][2].X, AxesAnchors[0][2].Y);
-
-                g.DrawLine(XAxisPen, center, xAnchor);                               
-                g.DrawLine(YAxisPen, center, yAnchor);
-                g.DrawLine(ZAxisPen, center, zAnchor);
+                Coords.Clear();                               
             }
         }
                 
+        private void UpdateAxesWidget()
+        {
+            // THIS DO NOT OUTPUT NOTHING!
+        }
+
         public void AddPoint(double x, double y, double z, int series)
         {
             if (Points.Count - 1 < series)
@@ -301,6 +296,7 @@ namespace ExtendedControls.Controls
                     AxesAnchors[i] = ScatterPlotHelpers.Projection.ProjectVector(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
                 }
 
+                UpdateAxesWidget();
             }
 
             this.Invalidate();            
@@ -348,7 +344,7 @@ namespace ExtendedControls.Controls
         private void ExtScatterPlot_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
-                leftMousePressed = false;
+                leftMousePressed = false;            
         }
 
         private void ExtScatterPlot_SizeChanged(object sender, EventArgs e)

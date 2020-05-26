@@ -25,7 +25,7 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();        
-            //AddDemoContent();           
+            AddDemoContent();           
             
         }
                 
