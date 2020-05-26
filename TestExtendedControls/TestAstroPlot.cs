@@ -25,15 +25,21 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();
+            
             //AddDemoStars();           
             AddDemoOrrery();
 
+            // define default projection view
             extAstroPlotTest.Distance = 8;
             extAstroPlotTest.Focus = 1300;
             extAstroPlotTest.Elevation = 0.7;
             extAstroPlotTest.Azimuth = 0.4;
             extAstroPlotTest.AxesLength = 3;
 
+            extAstroPlotTest.MouseSensitivity_Wheel = 250;
+            extAstroPlotTest.MouseSensitivity_Movement = 200;
+
+            // draw the axes widget
             extAstroPlotTest.DrawAxes(extAstroPlotTest.AxesLength);
         }
 
@@ -45,7 +51,7 @@ namespace DialogTest
             double R = 1;
             List<double[]> Stars = new List<double[]>();
 
-            for (int j = 0; j < 7; j++)
+            for (int j = 0; j < 8; j++)
             {
                 for (int i = 0; i < 25; i++)
                 {

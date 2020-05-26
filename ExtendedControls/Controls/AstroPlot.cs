@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Diagnostics;
+using System.Configuration;
 
 namespace ExtendedControls.Controls
 {
@@ -37,7 +38,7 @@ namespace ExtendedControls.Controls
         List<List<double[]>> Coords = new List<List<double[]>>();
         List<PointF[]> AxesAnchors = new List<PointF[]>();
 
-        List<List<double[]>> Orbits = new List<List<double[]>>();        
+        List<List<double[]>> Orbits = new List<List<double[]>>();
         List<PointF[]> OrbitsFrames = new List<PointF[]>();
 
         private double focalLength = 900;
@@ -48,21 +49,23 @@ namespace ExtendedControls.Controls
         private double[] cameraPosition = new double[3];
 
         // Mouse 
-        private bool leftMousePressed = false;        
+        private bool leftMousePressed = false;
         private PointF ptMouseClick;
+        private int mouseMovementSens = 150;
+        private double mouseWheelSens = 300;
 
         // Axes Widget
         private bool drawAxesWidget = true;
         private int axesWidgetThickness = 3;
-        private int axesWidgetLength = 50;        
+        private int axesWidgetLength = 50;
 
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
         private double lastAzimuth, azimuth = 0.3;
         // Elevation is the angular distance of something (such as a celestial object) above the horizon
         private double lastElevation, elevation = 0.3;
-                
+
         #region Properties
-        
+
         [Description("Set the distance at which the camera stands from the plot")]
         public double Distance
         {
@@ -138,6 +141,20 @@ namespace ExtendedControls.Controls
         {
             get { return axesWidgetLength; }
             set { axesWidgetLength = value; UpdateProjection(); }
+        }
+
+        [Description("Set the sensitivity of the mouse movement")]
+        public int MouseSensitivity_Movement
+        {
+            get { return mouseMovementSens; }
+            set { mouseMovementSens = value; UpdateProjection(); }
+        }
+
+        [Description("Set the sensisitivy of the mouse wheel")]
+        public double MouseSensitivity_Wheel
+        {
+            get { return mouseWheelSens; }
+            set { mouseWheelSens = value; UpdateProjection(); }
         }
         #endregion
 
@@ -407,8 +424,8 @@ namespace ExtendedControls.Controls
         {
             if (leftMousePressed)
             {
-                azimuth = lastAzimuth - (ptMouseClick.X - e.X) / 100;
-                elevation = lastElevation + (ptMouseClick.Y - e.Y) / 100;
+                azimuth = lastAzimuth - (ptMouseClick.X - e.X) / 150;
+                elevation = lastElevation + (ptMouseClick.Y - e.Y) / 150;
                 UpdateProjection();
             }
         }
@@ -427,7 +444,7 @@ namespace ExtendedControls.Controls
 
         private void OnMouseWheel(MouseEventArgs e)
         {
-            Distance += -e.Delta / 500D;
+            Distance += -e.Delta / MouseSensitivity_Wheel;
         }
 
         public void DrawAxes(int length)

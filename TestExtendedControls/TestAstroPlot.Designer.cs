@@ -33,9 +33,9 @@
             // 
             // extAstroPlotTest
             // 
-            this.extAstroPlotTest.AxesWidget = true;
             this.extAstroPlotTest.AxesLength = 100;
             this.extAstroPlotTest.AxesThickness = 1;
+            this.extAstroPlotTest.AxesWidget = true;
             this.extAstroPlotTest.Azimuth = 0.3D;
             this.extAstroPlotTest.BackColor = System.Drawing.Color.Black;
             this.extAstroPlotTest.Camera = new double[] {
@@ -47,10 +47,14 @@
             this.extAstroPlotTest.Elevation = 0.3D;
             this.extAstroPlotTest.Focus = 900D;
             this.extAstroPlotTest.ForeColor = System.Drawing.Color.White;
+            this.extAstroPlotTest.LargeDotSize = 9;
             this.extAstroPlotTest.Location = new System.Drawing.Point(0, 0);
+            this.extAstroPlotTest.MediumDotSize = 6;
+            this.extAstroPlotTest.MouseSensitivity_Movement = 150;
+            this.extAstroPlotTest.MouseSensitivity_Wheel = 300D;
             this.extAstroPlotTest.Name = "extAstroPlotTest";
-            this.extAstroPlotTest.SmallDotSize = 3;
             this.extAstroPlotTest.Size = new System.Drawing.Size(520, 494);
+            this.extAstroPlotTest.SmallDotSize = 3;
             this.extAstroPlotTest.TabIndex = 0;
             this.extAstroPlotTest.MouseDown += new System.Windows.Forms.MouseEventHandler(this.extAstroPlotTest_MouseDown);
             // 
