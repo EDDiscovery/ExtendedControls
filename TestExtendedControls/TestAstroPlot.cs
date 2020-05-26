@@ -31,6 +31,7 @@ namespace DialogTest
             extAstroPlotTest.Distance = 8;
             extAstroPlotTest.Focus = 1300;
             extAstroPlotTest.Elevation = 0.7;
+            extAstroPlotTest.Azimuth = 0.3;
         }
 
         private void AddDemoStars()
@@ -68,6 +69,17 @@ namespace DialogTest
             Bodies.Add(new double[] { 1.5, 0.2, 0 });
 
             extAstroPlotTest.AddEllipses(Bodies);
+        }
+
+        private void extAstroPlotTest_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                extAstroPlotTest.Distance = 8;
+                extAstroPlotTest.Focus = 1300;
+                extAstroPlotTest.Elevation = 0.7;
+                extAstroPlotTest.Azimuth = 0.3;
+            }
         }
     }
 }

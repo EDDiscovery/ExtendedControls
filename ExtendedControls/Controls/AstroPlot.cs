@@ -42,7 +42,9 @@ namespace ExtendedControls.Controls
 
         private double focalLength = 900;
         private double distance = 6;
-        private int dotSize = 5;
+        private int smallDotSize = 3;
+        private int mediumDotSize = 6;
+        private int largeDotSize = 9;
         private double[] cameraPosition = new double[3];
 
         // Mouse 
@@ -96,11 +98,25 @@ namespace ExtendedControls.Controls
             set { elevation = value; UpdateProjection(); }
         }
 
-        [Description("Diameter of the dots")]
-        public int PointsSize
+        [Description("Diameter of the smaller dots")]
+        public int SmallDotSize
         {
-            get { return dotSize; }
-            set { dotSize = value; UpdateProjection(); }
+            get { return smallDotSize; }
+            set { smallDotSize = value; UpdateProjection(); }
+        }
+
+        [Description("Diameter of the smaller dots")]
+        public int MediumDotSize
+        {
+            get { return mediumDotSize; }
+            set { mediumDotSize = value; UpdateProjection(); }
+        }
+
+        [Description("Diameter of the smaller dots")]
+        public int LargeDotSize
+        {
+            get { return largeDotSize; }
+            set { largeDotSize = value; UpdateProjection(); }
         }
 
         [Description("Toggle the axes widget display")]
@@ -157,53 +173,15 @@ namespace ExtendedControls.Controls
 
             // axes center point            
             var center = new PointF(this.Width / 2, this.Height / 2);            
-            var dotDiameter = PointsSize;
-
+            
             Graphics g = this.CreateGraphics();
 
+            // give some love to the renderint engine
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;            
 
             g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
-
-            // dots
-            if (DataPoints != null)
-            {
-                for (int i = 0; i < DataPoints.Count; i++)
-                {
-                    foreach (PointF p in DataPoints[i])
-                    {                        
-                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, dotDiameter, dotDiameter));                        
-                    }
-                }
-            }
-
-            // orbits
-            if (DataEllipses != null)
-            {
-                for (int i = 0; i < DataEllipses.Count; i++)
-                {
-                    foreach (PointF p in DataEllipses[i])
-                    {
-                        var orreryCenter = new Point(this.Width / 2, this.Height / 2);
-                        var bodyOrbitBoundary = new Point((int)(orreryCenter.X + (orreryCenter.X - p.X)), (int)(orreryCenter.Y + (orreryCenter.Y - p.Y)));
-                        var bodyOrbitMass = new Size((orreryCenter.X - bodyOrbitBoundary.X), (orreryCenter.Y - bodyOrbitBoundary.Y));
-
-                        var orbitBoundary = new Point(bodyOrbitBoundary.X, bodyOrbitBoundary.Y);
-                        var orbitSize = new Size(bodyOrbitMass.Width * 2, bodyOrbitMass.Height * 2);
-
-                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, dotDiameter * 2, dotDiameter * 2));
-                        //g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(bodyOrbitBoundary.X, bodyOrbitBoundary.Y, dotDiameter * 2, dotDiameter * 2));
-                                                
-                        //g.DrawLine(AxisPen, bodyOrbitBoundary, p);
-                        //g.DrawRectangle(AxisPen, new Rectangle(bodyOrbitBoundary, new Size(bodyOrbitMass.Width, bodyOrbitMass.Height)));
-                        //g.DrawRectangle(AxisPen, new Rectangle(orreryCenter, new Size(bodyOrbitMass.Width, bodyOrbitMass.Height)));
-
-                        g.DrawEllipse(AxisPen, new Rectangle(bodyOrbitBoundary, orbitSize));
-
-                    }
-                }
-            }
 
             // axes
             if (AxesAnchors != null)
@@ -232,6 +210,50 @@ namespace ExtendedControls.Controls
                         g.FillEllipse(axisAnchor, new RectangleF(p.X, p.Y, 2, 2));
                         var axisAnchorPoint = new PointF(p.X, p.Y);
                         g.DrawLine(AxisPen, center, axisAnchorPoint);
+                    }
+                }
+            }
+
+            // dots
+            if (DataPoints != null)
+            {
+                for (int i = 0; i < DataPoints.Count; i++)
+                {
+                    foreach (PointF p in DataPoints[i])
+                    {                        
+                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, SmallDotSize, SmallDotSize));                        
+                    }
+                }
+            }
+
+            // orbits
+            if (DataEllipses != null)
+            {
+                for (int i = 0; i < DataEllipses.Count; i++)
+                {
+                    foreach (PointF p in DataEllipses[i])
+                    {
+                        var orreryCenter = new Point(this.Width / 2, this.Height / 2);
+                        var bodyOrbitBoundary = new Point((int)(orreryCenter.X + (orreryCenter.X - p.X)), (int)(orreryCenter.Y + (orreryCenter.Y - p.Y)));
+                        var bodyOrbitMass = new Size((orreryCenter.X - bodyOrbitBoundary.X), (orreryCenter.Y - bodyOrbitBoundary.Y));
+
+                        var orbitBoundary = new Point(bodyOrbitBoundary.X, bodyOrbitBoundary.Y);
+                        var orbitSize = new Size(bodyOrbitMass.Width * 2, bodyOrbitMass.Height * 2);
+
+                        // draw a fake central star, just for fun - REALLY, IT'S JUST TEMPORARY!
+                        g.FillEllipse(new SolidBrush(Color.Yellow), new RectangleF(orreryCenter.X - LargeDotSize / 2, orreryCenter.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
+
+                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));
+                        
+                        //g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(bodyOrbitBoundary.X, bodyOrbitBoundary.Y, 2, 2));                        
+
+                        //g.DrawLine(AxisPen, bodyOrbitBoundary, p);
+
+                        //g.DrawRectangle(AxisPen, new Rectangle(bodyOrbitBoundary, new Size(bodyOrbitMass.Width, bodyOrbitMass.Height)));
+                        //g.DrawRectangle(AxisPen, new Rectangle(orreryCenter, new Size(bodyOrbitMass.Width, bodyOrbitMass.Height)));
+
+                        //g.DrawEllipse(AxisPen, new Rectangle(bodyOrbitBoundary, orbitSize));
+                        
                     }
                 }
             }
@@ -385,15 +407,8 @@ namespace ExtendedControls.Controls
         public void Clear()
         {
             DataPoints.Clear();
-            Points.Clear();
-            Reset();
-        }
-
-        public void Reset()
-        {
-            Azimuth = 0.3;
-            Elevation = 0.3;            
-        }
+            Points.Clear();            
+        }               
 
         #region Interaction
         private void ExtScatterPlot_MouseDown(object sender, MouseEventArgs e)
@@ -404,10 +419,7 @@ namespace ExtendedControls.Controls
                 ptMouseClick = new PointF(e.X, e.Y);
                 lastAzimuth = azimuth;
                 lastElevation = elevation;                
-            }
-
-            if (e.Button == System.Windows.Forms.MouseButtons.Right)                
-                Reset();
+            }                        
         }               
 
         private void ExtScatterPlot_MouseMove(object sender, MouseEventArgs e)

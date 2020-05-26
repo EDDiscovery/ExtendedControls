@@ -31,7 +31,7 @@
             this.extAstroPlotTest = new ExtendedControls.Controls.ExtAstroPlot();
             this.SuspendLayout();
             // 
-            // extScatterPlot1
+            // extAstroPlotTest
             // 
             this.extAstroPlotTest.AxesWidget = true;
             this.extAstroPlotTest.AxisLength = 100;
@@ -46,11 +46,13 @@
             this.extAstroPlotTest.Dock = System.Windows.Forms.DockStyle.Fill;
             this.extAstroPlotTest.Elevation = 0.3D;
             this.extAstroPlotTest.Focus = 900D;
+            this.extAstroPlotTest.ForeColor = System.Drawing.Color.White;
             this.extAstroPlotTest.Location = new System.Drawing.Point(0, 0);
-            this.extAstroPlotTest.Name = "extScatterPlot1";
-            this.extAstroPlotTest.PointsSize = 3;
+            this.extAstroPlotTest.Name = "extAstroPlotTest";
+            this.extAstroPlotTest.SmallDotSize = 3;
             this.extAstroPlotTest.Size = new System.Drawing.Size(520, 494);
             this.extAstroPlotTest.TabIndex = 0;
+            this.extAstroPlotTest.MouseDown += new System.Windows.Forms.MouseEventHandler(this.extAstroPlotTest_MouseDown);
             // 
             // TestAstroPlot
             // 
