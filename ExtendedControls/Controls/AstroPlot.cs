@@ -257,21 +257,23 @@ namespace ExtendedControls.Controls
 
                     // draw the orbit
 
-                    Point[] frameCorners = new Point[]
+                    if (OrreryOrbits[0].Length > 0)
+                    for (int o = 0; o < OrreryOrbits[0].Length ; o++)
                     {
-                        new Point { X = (int)OrreryOrbits[1][0].X, Y = (int)OrreryOrbits[1][0].Y },
-                        new Point { X = (int)OrreryOrbits[2][0].X, Y = (int)OrreryOrbits[2][0].Y },
-                        new Point { X = (int)OrreryOrbits[3][0].X, Y = (int)OrreryOrbits[3][0].Y },
-                        new Point { X = (int)OrreryOrbits[4][0].X, Y = (int)OrreryOrbits[4][0].Y }
-                    };
-                                        
-                    g.DrawClosedCurve(OrbitPen, frameCorners, (float)0.8, System.Drawing.Drawing2D.FillMode.Alternate);
-
+                        Point[] frameCorners = new Point[] {
+                        new Point { X = (int)OrreryOrbits[1][o].X, Y = (int)OrreryOrbits[1][o].Y },
+                        new Point { X = (int)OrreryOrbits[2][o].X, Y = (int)OrreryOrbits[2][o].Y },
+                        new Point { X = (int)OrreryOrbits[3][o].X, Y = (int)OrreryOrbits[3][o].Y },
+                        new Point { X = (int)OrreryOrbits[4][o].X, Y = (int)OrreryOrbits[4][o].Y }
+                        };
+                        g.DrawClosedCurve(OrbitPen, frameCorners, (float)0.8, System.Drawing.Drawing2D.FillMode.Alternate);
+                    }
+                    
                     foreach (PointF p in OrreryOrbits[i])
                     {               
                         if (i == 0)
                             g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));                        
-                        else g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, 3, 3));                            
+                        //else g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, 3, 3));                            
                     }
                 }
             }
@@ -392,11 +394,12 @@ namespace ExtendedControls.Controls
                 for (int i = 0; i < bodies.Count; i++)
                 {
                     double _fc = bodies[i][0];
+                    double _fi = bodies[i][1];
 
-                    _f1.Add(new double[] { _fc, bodies[i][1], _fc });
-                    _f2.Add(new double[] { _fc, bodies[i][1], _fc * -1 });
-                    _f3.Add(new double[] { _fc * -1, bodies[i][1], _fc * -1 });
-                    _f4.Add(new double[] { _fc * -1, bodies[i][1], _fc });
+                    _f1.Add(new double[] { _fc, _fi, _fc });
+                    _f2.Add(new double[] { _fc, _fi, _fc * -1 });
+                    _f3.Add(new double[] { _fc * -1, (_fi * -1), _fc * -1 });
+                    _f4.Add(new double[] { _fc * -1, (_fi * -1), _fc });
                 }
                 Orbits.Add(_f1);
                 Orbits.Add(_f2);
