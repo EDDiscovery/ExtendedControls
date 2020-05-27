@@ -335,21 +335,6 @@ namespace ExtendedControls.Controls
         }
 
         #region Axes Widget
-
-        private void AddCoords(double x, double y, double z, int series = 0)
-        {
-            if (Coords.Count - 1 < series)
-            {
-                Coords.Add(new List<double[]>());
-            }
-
-            Coords[series].Add(new double[] { x, y, z });
-
-            AxesAnchors.Add(AstroPlotHelpers.Projection.ProjectVector(Coords[0], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-            
-            this.Invalidate();
-        }
-
         private void AddAnchors(List<double[]> anchors)
         {
             List<double[]> _anchors = new List<double[]>(anchors);
@@ -376,21 +361,7 @@ namespace ExtendedControls.Controls
         }
         #endregion
 
-        #region Boundaries Frame
-        private void AddBoundariesCorner(double x, double y, double z, int series = 0)
-        {
-            if (BoundariesCorners.Count - 1 < series)
-            {
-                BoundariesCorners.Add(new List<double[]>());
-            }
-
-            BoundariesCorners[0].Add(new double[] { x, y, z });
-            
-            BoundariesFrame.Add(AstroPlotHelpers.Projection.ProjectVector(BoundariesCorners[0], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-
-            this.Invalidate();
-        }
-
+        #region Boundaries Frame        
         private void AddBoundaries(List<double[]> corners)
         {
             List<double[]> _corners = new List<double[]>(corners);
