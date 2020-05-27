@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls.Controls
 {
-    class ScatterPlotHelpers
+    class AstroPlotHelpers
     {
         public class Matrix<T>
         {

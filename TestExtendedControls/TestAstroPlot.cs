@@ -26,21 +26,26 @@ namespace DialogTest
 
             InitializeComponent();
             
-            //AddDemoStars();           
-            AddDemoOrrery();
+            AddDemoStars();           
+            //AddDemoOrrery();
 
             // define default projection view
             extAstroPlotTest.Distance = 8;
             extAstroPlotTest.Focus = 1300;
             extAstroPlotTest.Elevation = -0.7;
             extAstroPlotTest.Azimuth = 0.4;
+
+            extAstroPlotTest.AxesWidget = true;
             extAstroPlotTest.AxesLength = 3;
 
             extAstroPlotTest.MouseSensitivity_Wheel = 250;
             extAstroPlotTest.MouseSensitivity_Movement = 200;
 
             // draw the axes widget
-            extAstroPlotTest.DrawAxes(extAstroPlotTest.AxesLength);
+            extAstroPlotTest.DrawAxesWidget(extAstroPlotTest.AxesLength);
+
+            // draw the boundaries cube frame
+            extAstroPlotTest.DrawBoundariesWidget(1);
         }
 
         private void AddDemoStars()
@@ -51,18 +56,26 @@ namespace DialogTest
             double R = 1;
             List<double[]> Stars = new List<double[]>();
 
-            for (int j = 0; j < 8; j++)
+            for (int j = 0; j < 4; j++)
             {
                 for (int i = 0; i < 25; i++)
                 {
                     double theta = Math.PI * rand.NextDouble();
                     double phi = 2 * Math.PI * rand.NextDouble();
-                    double x = R * Math.Sin(theta) * Math.Cos(phi);
-                    double y = R * Math.Sin(theta) * Math.Sin(phi);
-                    double z = R * Math.Cos(theta);
+
+                    // Spherical distribution
+                    //double x = R * Math.Sin(theta) * Math.Cos(phi);
+                    //double y = R * Math.Sin(theta) * Math.Sin(phi);
+                    //double z = R * Math.Cos(theta);
+
+                    // Volume distribution
+                    double x = R * Math.Sin(theta) * Math.Sin(phi);
+                    double y = R * Math.Sin(theta) * Math.Cos(phi);
+                    double z = R * Math.Cos(theta) * Math.Sin(phi);
+
                     Stars.Add(new double[] { x, y, z });
                 }
-                extAstroPlotTest.AddPoints(Stars);
+                extAstroPlotTest.AddPointsToMap(Stars);
 
                 Stars.Clear();
             }            
@@ -79,7 +92,7 @@ namespace DialogTest
 
             Bodies.Add(new double[] { -1.2, 0, -1.2 });
 
-            extAstroPlotTest.AddOrreryBodies(Bodies);
+            extAstroPlotTest.AddBodiesToOrrery(Bodies);
         }
 
         private void extAstroPlotTest_MouseDown(object sender, MouseEventArgs e)

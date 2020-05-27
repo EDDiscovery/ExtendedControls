@@ -62,7 +62,7 @@
     <Compile Include="Controls\AstroPlot.Designer.cs">
       <DependentUpon>AstroPlot.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ScatterPlotHelpers.cs" />
+    <Compile Include="Controls\AstroPlotHelpers.cs" />
     <Compile Include="Controls\TextBoxAutoComplete.cs">
       <SubType>Component</SubType>
     </Compile>
