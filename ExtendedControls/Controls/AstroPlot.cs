@@ -214,15 +214,15 @@ namespace ExtendedControls.Controls
             Pen AxisPen = new Pen(new SolidBrush(ForeColor));
             AxisPen.Width = 1;
 
-            Pen FramePen = new Pen(new SolidBrush(ForeColor));
-            FramePen.Width = 1;
-            FramePen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;            
+            Pen BoundariesPen = new Pen(new SolidBrush(ForeColor));
+            BoundariesPen.Width = 1;
+            BoundariesPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;            
 
-            Pen OrbitPen = new Pen(new SolidBrush(Color.White));
-            OrbitPen.Width = 1;
-            OrbitPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            Pen OrreryOrbitsPen = new Pen(new SolidBrush(Color.White));
+            OrreryOrbitsPen.Width = 1;
+            OrreryOrbitsPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
 
-            // axes center point            
+            // center point            
             var center = new PointF(this.Width / 2, this.Height / 2);            
             
             Graphics g = this.CreateGraphics();
@@ -243,18 +243,15 @@ namespace ExtendedControls.Controls
                     {
                         PointF p = AxesAnchors[i][c];
                         if (c == 0) // x axis
-                        {
-                            axisAnchor.Color = Color.Red;
+                        {                            
                             AxisPen.Color = Color.Red;
                         }
                         if (c == 1) // y axys
-                        {
-                            axisAnchor.Color = Color.Green;
+                        {                         
                             AxisPen.Color = Color.Green;
                         }
                         if (c == 2) // x axis
-                        {
-                            axisAnchor.Color = Color.Blue;
+                        {                         
                             AxisPen.Color = Color.Blue;
                         }
                                                 
@@ -270,24 +267,24 @@ namespace ExtendedControls.Controls
                 if (BoundariesFrame.Count > 0)
                 {
                     // bottom
-                    g.DrawLine(FramePen, BoundariesFrame[0][0], BoundariesFrame[0][1]);
-                    g.DrawLine(FramePen, BoundariesFrame[0][1], BoundariesFrame[0][5]);
-                    g.DrawLine(FramePen, BoundariesFrame[0][5], BoundariesFrame[0][3]);
-                    g.DrawLine(FramePen, BoundariesFrame[0][3], BoundariesFrame[0][0]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][0], BoundariesFrame[0][1]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][1], BoundariesFrame[0][5]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][5], BoundariesFrame[0][3]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][3], BoundariesFrame[0][0]);
 
                     // left
-                    g.DrawLine(FramePen, BoundariesFrame[0][0], BoundariesFrame[0][2]);
-                    g.DrawLine(FramePen, BoundariesFrame[0][2], BoundariesFrame[0][4]);
-                    g.DrawLine(FramePen, BoundariesFrame[0][4], BoundariesFrame[0][3]);                    
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][0], BoundariesFrame[0][2]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][2], BoundariesFrame[0][4]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][4], BoundariesFrame[0][3]);                    
 
                     // right
-                    g.DrawLine(FramePen, BoundariesFrame[0][1], BoundariesFrame[0][6]);
-                    g.DrawLine(FramePen, BoundariesFrame[0][6], BoundariesFrame[0][7]);
-                    g.DrawLine(FramePen, BoundariesFrame[0][7], BoundariesFrame[0][5]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][1], BoundariesFrame[0][6]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][6], BoundariesFrame[0][7]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][7], BoundariesFrame[0][5]);
 
                     // top
-                    g.DrawLine(FramePen, BoundariesFrame[0][2], BoundariesFrame[0][6]);
-                    g.DrawLine(FramePen, BoundariesFrame[0][4], BoundariesFrame[0][7]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][2], BoundariesFrame[0][6]);
+                    g.DrawLine(BoundariesPen, BoundariesFrame[0][4], BoundariesFrame[0][7]);
                 }                
             }
 
@@ -324,7 +321,7 @@ namespace ExtendedControls.Controls
                         new Point { X = (int)OrreryOrbits[3][o].X, Y = (int)OrreryOrbits[3][o].Y },
                         new Point { X = (int)OrreryOrbits[4][o].X, Y = (int)OrreryOrbits[4][o].Y }
                         };
-                        g.DrawClosedCurve(OrbitPen, frameCorners, (float)0.8, System.Drawing.Drawing2D.FillMode.Alternate);
+                        g.DrawClosedCurve(OrreryOrbitsPen, frameCorners, (float)0.8, System.Drawing.Drawing2D.FillMode.Alternate);
                     }
                     
                     foreach (PointF p in OrreryOrbits[i])
