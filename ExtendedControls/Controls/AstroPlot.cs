@@ -288,17 +288,7 @@ namespace ExtendedControls.Controls
                     // top
                     g.DrawLine(FramePen, BoundariesFrame[0][2], BoundariesFrame[0][6]);
                     g.DrawLine(FramePen, BoundariesFrame[0][4], BoundariesFrame[0][7]);
-                }
-
-                //for (int p = 0; p < BoundariesFrame[0].Length; p++)
-                //{
-                //    PointF _bc = BoundariesFrame[0][p];
-                //    var _bCorner = new PointF(_bc.X, _bc.Y);
-
-                //    g.DrawLine(AxisPen, center, _bCorner);
-                //    g.DrawLine
-                //}                    
-
+                }                
             }
 
                 // map
@@ -531,14 +521,15 @@ namespace ExtendedControls.Controls
 
         private void UpdateProjection()
         {
+            double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
+            double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
+            double z = distance * Math.Sin(elevation);
+            cameraPosition = new double[3] { -y, z, -x };
+
             if (MapPoints == null)
                 return;
             else
             {
-                double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
-                double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
-                double z = distance * Math.Sin(elevation);
-                cameraPosition = new double[3] { -y, z, -x };
                 for (int i = 0; i < MapPoints.Count; i++)
                     MapPoints[i] = AstroPlotHelpers.Projection.ProjectVector(MapBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
             }
@@ -547,10 +538,6 @@ namespace ExtendedControls.Controls
                 return;
             else
             {
-                double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
-                double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
-                double z = distance * Math.Sin(elevation);
-                cameraPosition = new double[3] { -y, z, -x };
                 for (int i = 0; i < OrreryOrbits.Count; i++)
                     OrreryOrbits[i] = AstroPlotHelpers.Projection.ProjectVector(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
@@ -561,10 +548,6 @@ namespace ExtendedControls.Controls
             {
                 if (drawAxesWidget)
                 {
-                    double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
-                    double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
-                    double z = distance * Math.Sin(elevation);
-                    cameraPosition = new double[3] { -y, z, -x };
                     for (int i = 0; i < AxesAnchors.Count; i++)
                     AxesAnchors[i] = AstroPlotHelpers.Projection.ProjectVector(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
                 }
@@ -576,10 +559,6 @@ namespace ExtendedControls.Controls
             {
                 if (drawBoundariesWidget)
                 {
-                    double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
-                    double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
-                    double z = distance * Math.Sin(elevation);
-                    cameraPosition = new double[3] { -y, z, -x };
                     for (int i = 0; i < BoundariesFrame.Count; i++)
                         BoundariesFrame[i] = AstroPlotHelpers.Projection.ProjectVector(BoundariesCorners[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
                 }
