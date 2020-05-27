@@ -32,7 +32,7 @@ namespace DialogTest
             // define default projection view
             extAstroPlotTest.Distance = 8;
             extAstroPlotTest.Focus = 1300;
-            extAstroPlotTest.Elevation = 0.7;
+            extAstroPlotTest.Elevation = -0.7;
             extAstroPlotTest.Azimuth = 0.4;
             extAstroPlotTest.AxesLength = 3;
 
@@ -72,12 +72,14 @@ namespace DialogTest
         {
             List<double[]> Bodies = new List<double[]>();
 
-            Bodies.Add(new double[] { 0.8, 0, 0 });
-            //Bodies.Add(new double[] { 0.3, 0, 0 });
-            //Bodies.Add(new double[] { 1.2, 0.1, 0 });
-            //Bodies.Add(new double[] { 1.5, 0.2, 0 });
+            // in this situation, the arrya of values act differently, as they aren't coordinates:
+            // the first number will indicate the mean distance to the host star, or the orbital radius
+            // the second indicate the orbital inclination, or it's elevation from the orbital plane
+            Bodies.Add(new double[] { -0.8, 0, -0.8 });
 
-            extAstroPlotTest.AddEllipses(Bodies);
+            //Bodies.Add(new double[] { -1.2, 0, -1.2 });
+
+            extAstroPlotTest.AddOrreryBodies(Bodies);
         }
 
         private void extAstroPlotTest_MouseDown(object sender, MouseEventArgs e)

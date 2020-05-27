@@ -38,8 +38,8 @@ namespace ExtendedControls.Controls
         List<List<double[]>> Coords = new List<List<double[]>>();
         List<PointF[]> AxesAnchors = new List<PointF[]>();
 
-        List<List<double[]>> Orbits = new List<List<double[]>>();
-        List<PointF[]> OrbitsFrames = new List<PointF[]>();
+        List<List<double[]>> Orbits = new List<List<double[]>>();        
+        List<PointF[]> OrreryOrbits = new List<PointF[]>();
 
         private double focalLength = 900;
         private double distance = 6;
@@ -187,6 +187,10 @@ namespace ExtendedControls.Controls
             Pen AxisPen = new Pen(new SolidBrush(ForeColor));
             AxisPen.Width = 1;
 
+            Pen OrbitPen = new Pen(new SolidBrush(Color.White));
+            OrbitPen.Width = 1;
+            OrbitPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+
             // axes center point            
             var center = new PointF(this.Width / 2, this.Height / 2);            
             
@@ -242,65 +246,38 @@ namespace ExtendedControls.Controls
             }
 
             // orbits
-            if (OrbitsFrames != null)
+            if (OrreryOrbits != null)
             {
-                for (int i = 0; i < OrbitsFrames.Count; i++)
+                for (int i = 0; i < OrreryOrbits.Count; i++)
                 {
-                    foreach (PointF p in OrbitsFrames[i])
+                    var orreryCenter = new Point(this.Width / 2, this.Height / 2);
+
+                    // draw a fake central star, just for fun - REALLY, IT'S JUST TEMPORARY!
+                    g.FillEllipse(new SolidBrush(Color.Yellow), new RectangleF(orreryCenter.X - LargeDotSize / 2, orreryCenter.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
+
+                    // draw the orbit
+
+                    Point[] frameCorners = new Point[]
                     {
-                        var orreryCenter = new Point(this.Width / 2, this.Height / 2);
-                        var bodyOrbitBoundary = new Point((int)(orreryCenter.X + (orreryCenter.X - p.X)), (int)(orreryCenter.Y + (orreryCenter.Y - p.Y)));
-                        var bodyOrbitMass = new Size((orreryCenter.X - bodyOrbitBoundary.X), (orreryCenter.Y - bodyOrbitBoundary.Y));
+                        new Point { X = (int)OrreryOrbits[1][0].X, Y = (int)OrreryOrbits[1][0].Y },
+                        new Point { X = (int)OrreryOrbits[2][0].X, Y = (int)OrreryOrbits[2][0].Y },
+                        new Point { X = (int)OrreryOrbits[3][0].X, Y = (int)OrreryOrbits[3][0].Y },
+                        new Point { X = (int)OrreryOrbits[4][0].X, Y = (int)OrreryOrbits[4][0].Y }
+                    };
+                                        
+                    g.DrawClosedCurve(OrbitPen, frameCorners, (float)0.8, System.Drawing.Drawing2D.FillMode.Alternate);
 
-                        var orbitBoundary = new Point(bodyOrbitBoundary.X, bodyOrbitBoundary.Y);
-                        var orbitSize = new Size(bodyOrbitMass.Width * 2, bodyOrbitMass.Height * 2);
-
-                        // draw a fake central star, just for fun - REALLY, IT'S JUST TEMPORARY!
-                        g.FillEllipse(new SolidBrush(Color.Yellow), new RectangleF(orreryCenter.X - LargeDotSize / 2, orreryCenter.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
-
-                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));
-                        
-                        //g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(bodyOrbitBoundary.X, bodyOrbitBoundary.Y, 2, 2));                        
-
-                        //g.DrawLine(AxisPen, bodyOrbitBoundary, p);
-
-                        //g.DrawRectangle(AxisPen, new Rectangle(bodyOrbitBoundary, new Size(bodyOrbitMass.Width, bodyOrbitMass.Height)));
-                        //g.DrawRectangle(AxisPen, new Rectangle(orreryCenter, new Size(bodyOrbitMass.Width, bodyOrbitMass.Height)));
-
-                        //g.DrawEllipse(AxisPen, new Rectangle(bodyOrbitBoundary, orbitSize));
-                        
+                    foreach (PointF p in OrreryOrbits[i])
+                    {               
+                        if (i == 0)
+                            g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));                        
+                        else g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, 3, 3));                            
                     }
                 }
             }
         }
-        
-        public void AddPoint(double x, double y, double z, int series)
-        {
-            if (Points.Count - 1 < series)
-            {
-                Points.Add(new List<double[]>());
-            }
 
-            Points[series].Add(new double[] { x, y, z });
-
-            foreach (List<double[]> ser in Points)
-            {
-                if (DataPoints.Count - 1 < series)
-                    DataPoints.Add(ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-                else
-                    DataPoints[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
-            }
-
-            this.Invalidate();
-        }
-
-        public void AddPoints(List<double[]> points)
-        {
-            List<double[]> _tmp = new List<double[]>(points);
-            Points.Add(_tmp);
-            DataPoints.Add(ScatterPlotHelpers.Projection.ProjectVector(Points[Points.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));                       
-            UpdateProjection();
-        }
+        #region Axes Widget
 
         public void AddCoords(double x, double y, double z, int series)
         {
@@ -330,7 +307,53 @@ namespace ExtendedControls.Controls
             UpdateProjection();
         }
 
-        public void AddEllipse(double x, double y, double z, int series)
+        public void DrawAxes(int length)
+        {
+            if (drawAxesWidget)
+            {
+                List<double[]> Coords = new List<double[]>();
+
+                Coords.Add(new double[] { length * 0.5, 0.0, 0.0, 0 });
+                Coords.Add(new double[] { 0.0, -(length * 0.5), 0.0, 1 });
+                Coords.Add(new double[] { 0.0, 0.0, -(length * 0.5), 2 });
+
+                // draw the anchors points
+                AddAnchors(Coords);
+
+                Coords.Clear();
+            }
+        }
+        #endregion
+
+        public void AddPoint(double x, double y, double z, int series)
+        {
+            if (Points.Count - 1 < series)
+            {
+                Points.Add(new List<double[]>());
+            }
+
+            Points[series].Add(new double[] { x, y, z });
+
+            foreach (List<double[]> ser in Points)
+            {
+                if (DataPoints.Count - 1 < series)
+                    DataPoints.Add(ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                else
+                    DataPoints[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+            }
+
+            this.Invalidate();
+        }
+
+        public void AddPoints(List<double[]> points)
+        {
+            List<double[]> _tmp = new List<double[]>(points);
+            Points.Add(_tmp);
+            DataPoints.Add(ScatterPlotHelpers.Projection.ProjectVector(Points[Points.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));                       
+            UpdateProjection();
+        }
+                
+        public void AddBody(double x, double y, double z, int series)
         {
             if (Orbits.Count - 1 < series)
             {
@@ -341,21 +364,57 @@ namespace ExtendedControls.Controls
 
             foreach (List<double[]> ser in Points)
             {
-                if (OrbitsFrames.Count - 1 < series)
-                    OrbitsFrames.Add(ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                if (OrreryOrbits.Count - 1 < series)
+                    OrreryOrbits.Add(ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
                 else
-                    OrbitsFrames[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                    OrreryOrbits[series] = ScatterPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             this.Invalidate();
         }
 
-        public void AddEllipses(List<double[]> points)
+        public void AddOrreryBodies(List<double[]> bodies)
         {
-            List<double[]> _tmp = new List<double[]>(points);
-            Orbits.Add(_tmp);
-            OrbitsFrames.Add(ScatterPlotHelpers.Projection.ProjectVector(Orbits[Orbits.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            List<double[]> _orbits = new List<double[]>(bodies);
+            Orbits.Add(_orbits);
+
+            // create a frame to support the orbit drawing
+
+            // at first, initialize four empty series, one for each frame's corner
+            List<double[]> _f1 = new List<double[]>();
+            List<double[]> _f2 = new List<double[]>();
+            List<double[]> _f3 = new List<double[]>();
+            List<double[]> _f4 = new List<double[]>();
+
+            // then, add a translated copy of each body coordinates
+            if (bodies.Count > 0)
+            {
+                for (int i = 0; i < bodies.Count; i++)
+                {
+                    double _fc = bodies[i][0];
+
+                    _f1.Add(new double[] { _fc, bodies[i][1], _fc });
+                    _f2.Add(new double[] { _fc, bodies[i][1], _fc * -1 });
+                    _f3.Add(new double[] { _fc * -1, bodies[i][1], _fc * -1 });
+                    _f4.Add(new double[] { _fc * -1, bodies[i][1], _fc });
+                }
+                Orbits.Add(_f1);
+                Orbits.Add(_f2);
+                Orbits.Add(_f3);
+                Orbits.Add(_f4);
+            }
+
+            for (int i = 0; i < Orbits.Count; i++)
+            {
+                OrreryOrbits.Add(ScatterPlotHelpers.Projection.ProjectVector(Orbits[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            }
+            
             UpdateProjection();
+        }
+
+        private void AddOrreryBodies(object v)
+        {
+            throw new NotImplementedException();
         }
 
         private void UpdateProjection()
@@ -372,7 +431,7 @@ namespace ExtendedControls.Controls
                     DataPoints[i] = ScatterPlotHelpers.Projection.ProjectVector(Points[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
             }
 
-            if (OrbitsFrames == null)
+            if (OrreryOrbits == null)
                 return;
             else
             {
@@ -380,8 +439,8 @@ namespace ExtendedControls.Controls
                 double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
                 double z = distance * Math.Sin(elevation);
                 cameraPosition = new double[3] { -y, z, -x };
-                for (int i = 0; i < OrbitsFrames.Count; i++)
-                    OrbitsFrames[i] = ScatterPlotHelpers.Projection.ProjectVector(Orbits[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                for (int i = 0; i < OrreryOrbits.Count; i++)
+                    OrreryOrbits[i] = ScatterPlotHelpers.Projection.ProjectVector(Orbits[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             if (AxesAnchors == null)
@@ -446,23 +505,7 @@ namespace ExtendedControls.Controls
         {
             Distance += -e.Delta / MouseSensitivity_Wheel;
         }
-
-        public void DrawAxes(int length)
-        {
-            if (drawAxesWidget)
-            {
-                List<double[]> Coords = new List<double[]>();
-
-                Coords.Add(new double[] { length * 0.5, 0.0, 0.0, 0 });
-                Coords.Add(new double[] { 0.0, -(length * 0.5), 0.0, 1 });
-                Coords.Add(new double[] { 0.0, 0.0, length * 0.5, 2 });
-
-                // draw the anchors points
-                AddAnchors(Coords);
-
-                Coords.Clear();
-            }
-        }
+                
         #endregion
     }
 }
