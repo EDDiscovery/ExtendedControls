@@ -413,7 +413,14 @@ namespace ExtendedControls.Controls
         #region Orrery
         public void AddBodiesToOrrery(List<double[]> bodies)
         {
-            List<double[]> _orbits = new List<double[]>(bodies);
+            List<double[]> _bodies = new List<double[]>(bodies);
+            List<double[]> _orbits = new List<double[]>();
+
+            for (int i = 0; i < _bodies.Count; i++)
+            {
+                _orbits.Add(new double[] { _bodies[i][0], _bodies[i][1], _bodies[i][0] });
+            }
+            
             OrreryBodies.Add(_orbits);
 
             ///  

@@ -97,9 +97,9 @@ namespace DialogTest
             // in this situation, the array of values acts differently, as they aren't coordinates:
             // the first number will indicate the mean distance to the host star, or the orbital radius
             // the second indicate the orbital inclination, or it's elevation from the orbital plane
-            Bodies.Add(new double[] { -0.8, 0.2, -0.8 });
+            Bodies.Add(new double[] { -0.8, 0.2 });
 
-            Bodies.Add(new double[] { -1.2, 0, -1.2 });
+            Bodies.Add(new double[] { -1.2, 0 });
 
             extAstroPlotTest.AddBodiesToOrrery(Bodies);
         }
