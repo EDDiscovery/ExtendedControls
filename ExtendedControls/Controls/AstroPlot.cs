@@ -70,6 +70,7 @@ namespace ExtendedControls.Controls
 
         // Boundaries Cube
         private bool drawBoundariesWidget = true;
+        private double boundariesRadiusWidth = 0.8;
         private int boundariesWidgetThickness = 1;
 
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
@@ -161,6 +162,12 @@ namespace ExtendedControls.Controls
         {
             get { return drawBoundariesWidget; }
             set { drawBoundariesWidget = value; UpdateProjection(); }
+        }
+
+        public double BoundariesRadius
+        {
+            get { return boundariesRadiusWidth; }
+            set { boundariesRadiusWidth = value; UpdateProjection(); }
         }
 
         [Description("Set the boundaries cube frame thickness")]
@@ -370,20 +377,20 @@ namespace ExtendedControls.Controls
             UpdateProjection();
         }
 
-        public void DrawBoundariesWidget(int radius)
+        public void DrawBoundariesWidget(double BoundariesRadius)
         {
             if (drawBoundariesWidget)
             {
                 List<double[]> Corners = new List<double[]>();
 
-                Corners.Add(new double[] { radius, radius, radius });
-                Corners.Add(new double[] { radius, radius, -radius });
-                Corners.Add(new double[] { radius, -radius, radius });
-                Corners.Add(new double[] { -radius, radius, radius });
-                Corners.Add(new double[] { -radius, -radius, radius });
-                Corners.Add(new double[] { -radius, radius, -radius });
-                Corners.Add(new double[] { radius, -radius, -radius });
-                Corners.Add(new double[] { -radius, -radius, -radius });
+                Corners.Add(new double[] { BoundariesRadius, BoundariesRadius, BoundariesRadius });
+                Corners.Add(new double[] { BoundariesRadius, BoundariesRadius, -BoundariesRadius });
+                Corners.Add(new double[] { BoundariesRadius, -BoundariesRadius, BoundariesRadius });
+                Corners.Add(new double[] { -BoundariesRadius, BoundariesRadius, BoundariesRadius });
+                Corners.Add(new double[] { -BoundariesRadius, -BoundariesRadius, BoundariesRadius });
+                Corners.Add(new double[] { -BoundariesRadius, BoundariesRadius, -BoundariesRadius });
+                Corners.Add(new double[] { BoundariesRadius, -BoundariesRadius, -BoundariesRadius });
+                Corners.Add(new double[] { -BoundariesRadius, -BoundariesRadius, -BoundariesRadius });
 
                 AddBoundaries(Corners);
 
@@ -393,27 +400,7 @@ namespace ExtendedControls.Controls
 
         #endregion
 
-        #region Map
-        public void AddMapPoint(double x, double y, double z, int series)
-        {
-            if (MapBodies.Count - 1 < series)
-            {
-                MapBodies.Add(new List<double[]>());
-            }
-
-            MapBodies[series].Add(new double[] { x, y, z });
-
-            foreach (List<double[]> ser in MapBodies)
-            {
-                if (MapPoints.Count - 1 < series)
-                    MapPoints.Add(AstroPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-                else
-                    MapPoints[series] = AstroPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
-            }
-
-            this.Invalidate();
-        }
-
+        #region Map        
         public void AddPointsToMap(List<double[]> points)
         {
             List<double[]> _tmp = new List<double[]>(points);
@@ -424,26 +411,6 @@ namespace ExtendedControls.Controls
         #endregion
 
         #region Orrery
-        public void AddOrreryBody(double x, double y, double z, int series)
-        {
-            if (OrreryBodies.Count - 1 < series)
-            {
-                OrreryBodies.Add(new List<double[]>());
-            }
-
-            OrreryBodies[series].Add(new double[] { x, y, z });            
-
-            foreach (List<double[]> ser in MapBodies)
-            {
-                if (OrreryOrbits.Count - 1 < series)
-                    OrreryOrbits.Add(AstroPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-                else
-                    OrreryOrbits[series] = AstroPlotHelpers.Projection.ProjectVector(ser, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
-            }
-
-            this.Invalidate();
-        }
-
         public void AddBodiesToOrrery(List<double[]> bodies)
         {
             List<double[]> _orbits = new List<double[]>(bodies);
@@ -486,6 +453,8 @@ namespace ExtendedControls.Controls
             UpdateProjection();
         }
         #endregion
+
+        #region Functions
 
         private void UpdateProjection()
         {
@@ -541,7 +510,8 @@ namespace ExtendedControls.Controls
             MapBodies.Clear();
             OrreryBodies.Clear();
             OrreryOrbits.Clear();
-        }               
+        }
+        #endregion
 
         #region Interaction
         private void ExtScatterPlot_MouseDown(object sender, MouseEventArgs e)

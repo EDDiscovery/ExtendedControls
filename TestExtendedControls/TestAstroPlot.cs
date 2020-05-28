@@ -1,10 +1,12 @@
-﻿using ExtendedControls;
+﻿using BaseUtils;
+using ExtendedControls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,7 +16,7 @@ namespace DialogTest
     public partial class TestAstroPlot : Form
     {
         ThemeStandard theme;
-
+        
         public TestAstroPlot()
         {
             theme = new ThemeStandard();
@@ -25,27 +27,34 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();
+
+            DefineDefaults();
             
-            AddDemoStars();           
-            //AddDemoOrrery();
-
-            // define default projection view
-            extAstroPlotTest.Distance = 8;
-            extAstroPlotTest.Focus = 1300;
-            extAstroPlotTest.Elevation = -0.7;
-            extAstroPlotTest.Azimuth = 0.4;
-
-            extAstroPlotTest.AxesWidget = true;
-            extAstroPlotTest.AxesLength = 3;
-
-            extAstroPlotTest.MouseSensitivity_Wheel = 250;
-            extAstroPlotTest.MouseSensitivity_Movement = 200;
-
             // draw the axes widget
             extAstroPlotTest.DrawAxesWidget(extAstroPlotTest.AxesLength);
 
             // draw the boundaries cube frame
-            extAstroPlotTest.DrawBoundariesWidget(1);
+            extAstroPlotTest.DrawBoundariesWidget(extAstroPlotTest.BoundariesRadius);            
+
+            //AddDemoStars();           
+            AddDemoOrrery();
+
+        }
+
+        private void DefineDefaults()
+        {            
+            extAstroPlotTest.Distance = 9;
+            extAstroPlotTest.Focus = 1400;
+            extAstroPlotTest.Elevation = -0.3;
+            extAstroPlotTest.Azimuth = -0.3;
+            extAstroPlotTest.AxesWidget = true;
+            extAstroPlotTest.AxesLength = 2;
+
+            extAstroPlotTest.BoundariesRadius = 0.9;
+
+            extAstroPlotTest.MouseSensitivity_Wheel = 250;
+            extAstroPlotTest.MouseSensitivity_Movement = 200;
+
         }
 
         private void AddDemoStars()
@@ -56,7 +65,7 @@ namespace DialogTest
             double R = 1;
             List<double[]> Stars = new List<double[]>();
 
-            for (int j = 0; j < 4; j++)
+            for (int j = 0; j < 8; j++)
             {
                 for (int i = 0; i < 25; i++)
                 {
@@ -85,7 +94,7 @@ namespace DialogTest
         {
             List<double[]> Bodies = new List<double[]>();
 
-            // in this situation, the arrya of values act differently, as they aren't coordinates:
+            // in this situation, the array of values acts differently, as they aren't coordinates:
             // the first number will indicate the mean distance to the host star, or the orbital radius
             // the second indicate the orbital inclination, or it's elevation from the orbital plane
             Bodies.Add(new double[] { -0.8, 0.2, -0.8 });
@@ -98,12 +107,14 @@ namespace DialogTest
         private void extAstroPlotTest_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
-            {
-                extAstroPlotTest.Distance = 8;
-                extAstroPlotTest.Focus = 1300;
-                extAstroPlotTest.Elevation = 0.7;
-                extAstroPlotTest.Azimuth = 0.3;
+            {                               
+                contextMenuStrip1.Show(e.Location.X, e.Location.Y);
             }
+        }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DefineDefaults();
         }
     }
 }

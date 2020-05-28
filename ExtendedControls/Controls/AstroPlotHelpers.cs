@@ -130,8 +130,8 @@ namespace ExtendedControls.Controls
                     Pvec[i] = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
                 return Pvec;
-            }
-            
+            }                       
+
             static Matrix<double> GetMint(double s_x, double s_y, double f)
             {
                 Matrix<double> Mint = new Matrix<double>(3, 3);
