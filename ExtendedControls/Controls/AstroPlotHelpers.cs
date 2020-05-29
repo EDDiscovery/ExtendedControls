@@ -159,6 +159,17 @@ namespace ExtendedControls.Controls
                                        Math.Cos(elevation)*Math.Sin(azimuth), -Math.Sin(elevation), Math.Cos(azimuth)*Math.Cos(elevation) });
                 return R;
             }
+
+            internal static double FindOrbitalElevation(double distance, double inclination)
+            {
+                return inclination;
+            }
+
+            internal static double FindOrbitalRadius(double distance, double inclination)
+            {
+                var radius = Math.Sqrt((distance * distance) - (inclination * inclination));
+                return radius;
+            }
         }
 
         public static class MouseWheelHandler

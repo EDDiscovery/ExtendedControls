@@ -335,7 +335,7 @@ namespace ExtendedControls.Controls
                     {               
                         if (i == 0)
                             g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));                        
-                        //else g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, 3, 3));                            
+                        else g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, 3, 3));                            
                     }
                 }
             }
@@ -412,13 +412,14 @@ namespace ExtendedControls.Controls
 
         #region Orrery
         public void AddBodiesToOrrery(List<double[]> bodies)
-        {
-            List<double[]> _bodies = new List<double[]>(bodies);
+        {            
             List<double[]> _orbits = new List<double[]>();
 
-            for (int i = 0; i < _bodies.Count; i++)
+            for (int i = 0; i < bodies.Count; i++)
             {
-                _orbits.Add(new double[] { _bodies[i][0], _bodies[i][1], _bodies[i][0] });
+                var radius = AstroPlotHelpers.Projection.FindOrbitalRadius(bodies[i][0], bodies[i][1]);
+                var elevation = AstroPlotHelpers.Projection.FindOrbitalElevation(bodies[i][0], bodies[i][1]);
+                _orbits.Add(new double[] { radius, elevation, radius });
             }
             
             OrreryBodies.Add(_orbits);
@@ -436,10 +437,10 @@ namespace ExtendedControls.Controls
             // then, add a translated copy of each body coordinates
             if (bodies.Count > 0)
             {
-                for (int i = 0; i < bodies.Count; i++)
+                for (int i = 0; i < _orbits.Count; i++)
                 {
-                    double _fc = bodies[i][0];
-                    double _fi = bodies[i][1];
+                    double _fc = _orbits[i][0];
+                    double _fi = _orbits[i][1];
 
                     _f1.Add(new double[] { _fc, _fi, _fc });
                     _f2.Add(new double[] { _fc, _fi, _fc * -1 });

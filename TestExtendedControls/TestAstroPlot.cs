@@ -34,7 +34,7 @@ namespace DialogTest
             extAstroPlotTest.DrawAxesWidget(extAstroPlotTest.AxesLength);
 
             // draw the boundaries cube frame
-            extAstroPlotTest.DrawBoundariesWidget(extAstroPlotTest.BoundariesRadius);            
+            //extAstroPlotTest.DrawBoundariesWidget(extAstroPlotTest.BoundariesRadius);            
 
             //AddDemoStars();           
             AddDemoOrrery();
@@ -90,16 +90,78 @@ namespace DialogTest
             }            
         }
 
+        struct SystemBodies
+        {
+            public byte Level;
+            public string Name;
+            public string Class;
+            public double Distance;
+            public double Inclination;
+        }
+
         private void AddDemoOrrery()
         {
+            // Col 285 Sector JX-T d3-74 A 
+
+            // White Main Sequence F star(F1VI)
+            //Age: 2,264 my
+            //Solar Masses: 1.33
+            //Radius: 1.2SR
+            //Surface Temp: 7,238K
+            //Orbital Period: 36.9 days
+            //Semi Major Axis: 0.09AU
+            //Orbital Eccentricity: 0.041
+            //Orbital Inclination: 8.624°
+            //Arg Of Periapsis: 47.460°
+            //Absolute Magnitude: 3.45
+            //Axial tilt: 0.00°
+
+            //Distance from Arrival Point 140.0ls
+            //Surface Temp: 4,207K
+            //Orbital Period: 36.9 days
+            //Semi Major Axis: 0.18AU
+            //Orbital Eccentricity: 0.041
+            //Orbital Inclination: 8.624°
+            //Arg Of Periapsis: 227.460°
+            //Absolute Magnitude: 6.74
+            //Axial tilt: 0.00°
+
+            //Distance from Arrival Point 16,926.0ls
+            //Surface Temp: 66K
+            //Gravity: 1.59g
+            //Surface Pressure: 1.11 Atmospheres
+            //Volcanism: Water Geysers
+            //Orbital Period: 28,090.7 days
+            //Semi Major Axis: 22.83AU
+            //Orbital Eccentricity: 0.548
+            //Orbital Inclination: -74.060°
+            //Arg Of Periapsis: 271.141°
+            //Axial tilt: -0.26°
+
+            SystemBodies _A1 = new SystemBodies
+            {
+                Level = 1,
+                Distance = 1.0,
+                Inclination = 0.0
+            };
+
+            SystemBodies _B = new SystemBodies
+            {
+                Level = 0,
+                Distance = 1.0,
+                Inclination = 0.5
+            };            
+
             List<double[]> Bodies = new List<double[]>();
 
             // in this situation, the array of values acts differently, as they aren't coordinates:
             // the first number will indicate the mean distance to the host star, or the orbital radius
             // the second indicate the orbital inclination, or it's elevation from the orbital plane
-            Bodies.Add(new double[] { -0.8, 0.2 });
+            //Bodies.Add(new double[] { -0.8, 0.2 });
+            Bodies.Add(new double[] { _A1.Distance, _A1.Inclination });
+            Bodies.Add(new double[] { _B.Distance, _B.Inclination });
 
-            Bodies.Add(new double[] { -1.2, 0 });
+            //Bodies.Add(new double[] { -1.2, 0 });
 
             extAstroPlotTest.AddBodiesToOrrery(Bodies);
         }
