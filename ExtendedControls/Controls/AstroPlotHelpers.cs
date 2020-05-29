@@ -10,39 +10,39 @@ namespace ExtendedControls.Controls
 {
     static partial class AstroPlot
     {
-        static public PointF[] Translate(List<double[]> x, double s_x, double s_y, double f, double[] camera, double azimuth, double elevation)
+        static public PointF[] Translate(List<double[]> points, double x, double y, double f, double[] camera, double azimuth, double elevation)
         {
-            Matrix<double> Mext = InteractionMatrix(azimuth, elevation, camera);
-            Matrix<double> Mint = DataMatrix(s_x, s_y, f);
+            Matrix<double> _interaction = InteractionMatrix(azimuth, elevation, camera);
+            Matrix<double> _data = DataMatrix(x, y, f);
             Matrix<double> X_h = new Matrix<double>(4, 1);
 
-            PointF[] Pvec = new PointF[x.Count];
-            for (int i = 0; i < x.Count; i++)
+            PointF[] Coordinates = new PointF[points.Count];
+            for (int i = 0; i < points.Count; i++)
             {
-                X_h.SetMatrix(new double[] { x[i][0], x[i][1], x[i][2], 1.0 });
-                Matrix<double> P = Mint * Mext * X_h;
-                Pvec[i] = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                X_h.SetMatrix(new double[] { points[i][0], points[i][1], points[i][2], 1.0 });
+                Matrix<double> P = _data * _interaction * X_h;
+                Coordinates[i] = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
             }
-            return Pvec;
+            return Coordinates;
         }
 
-        static Matrix<double> DataMatrix(double s_x, double s_y, double f)
+        static Matrix<double> DataMatrix(double x, double y, double f)
         {
-            Matrix<double> Mint = new Matrix<double>(3, 3);
-            double o_x = s_x / 2;
-            double o_y = s_y / 2;
-            double a = 1;
-            Mint.SetMatrix(new double[] { f, 0, o_x, 0, f * a, o_y, 0, 0, 1 });
-            return Mint;
+            Matrix<double> _matrix = new Matrix<double>(3, 3);
+            double _x = x / 2;
+            double _y = y / 2;
+            double _a = 1;
+            _matrix.SetMatrix(new double[] { f, 0, _x, 0, f * _a, _y, 0, 0, 1 });
+            return _matrix;
         }
 
         static Matrix<double> InteractionMatrix(double azimuth, double elevation, double[] camera)
         {
             Matrix<double> R = RotationMatrix(azimuth, elevation);
-            Matrix<double> dw = new Matrix<double>(3, 1);
-            dw.SetMatrix(camera);
-            Matrix<double> Mext = R | (-R * dw);
-            return Mext;
+            Matrix<double> lens = new Matrix<double>(3, 1);
+            lens.SetMatrix(camera);
+            Matrix<double> _matrix = R | (-R * lens);
+            return _matrix;
         }
 
         static Matrix<double> RotationMatrix(double azimuth, double elevation)
