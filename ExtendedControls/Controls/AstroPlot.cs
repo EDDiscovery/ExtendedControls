@@ -358,7 +358,7 @@ namespace ExtendedControls.Controls
         {
             List<double[]> _anchors = new List<double[]>(anchors);
             Coords.Add(_anchors);
-            AxesAnchors.Add(AstroPlot.ProjectVector(Coords[Coords.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            AxesAnchors.Add(AstroPlot.Translate(Coords[Coords.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
 
@@ -385,7 +385,7 @@ namespace ExtendedControls.Controls
         {
             List<double[]> _corners = new List<double[]>(corners);
             BoundariesCorners.Add(_corners);
-            BoundariesFrame.Add(AstroPlot.ProjectVector(BoundariesCorners[0], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            BoundariesFrame.Add(AstroPlot.Translate(BoundariesCorners[0], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
 
@@ -417,7 +417,7 @@ namespace ExtendedControls.Controls
         {
             List<double[]> _tmp = new List<double[]>(points);
             MapBodies.Add(_tmp);
-            MapPoints.Add(AstroPlot.ProjectVector(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));                       
+            MapPoints.Add(AstroPlot.Translate(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));                       
             UpdateProjection();
         }
         #endregion
@@ -438,7 +438,7 @@ namespace ExtendedControls.Controls
 
             for (int i = 0; i < OrreryCenters.Count; i++)
             {
-                OrreryMassCenters.Add(AstroPlot.ProjectVector(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                OrreryMassCenters.Add(AstroPlot.Translate(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             }
             UpdateProjection();
         }
@@ -487,7 +487,7 @@ namespace ExtendedControls.Controls
 
             for (int i = 0; i < OrreryBodies.Count; i++)
             {
-                OrreryOrbits.Add(AstroPlot.ProjectVector(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                OrreryOrbits.Add(AstroPlot.Translate(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             }
             
             UpdateProjection();
@@ -508,7 +508,7 @@ namespace ExtendedControls.Controls
             else
             {
                 for (int i = 0; i < MapPoints.Count; i++)
-                    MapPoints[i] = AstroPlot.ProjectVector(MapBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
+                    MapPoints[i] = AstroPlot.Translate(MapBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
             }
 
             if (OrreryOrbits == null)
@@ -516,9 +516,9 @@ namespace ExtendedControls.Controls
             else
             {
                 for (int i = 0; i < OrreryOrbits.Count; i++)
-                    OrreryOrbits[i] = AstroPlot.ProjectVector(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                    OrreryOrbits[i] = AstroPlot.Translate(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
                 for (int i = 0; i < OrreryCenters.Count; i++)                
-                    OrreryMassCenters[i] = AstroPlot.ProjectVector(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
+                    OrreryMassCenters[i] = AstroPlot.Translate(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
             }
 
             if (AxesAnchors == null)
@@ -528,7 +528,7 @@ namespace ExtendedControls.Controls
                 if (drawAxesWidget)
                 {
                     for (int i = 0; i < AxesAnchors.Count; i++)
-                    AxesAnchors[i] = AstroPlot.ProjectVector(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
+                    AxesAnchors[i] = AstroPlot.Translate(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
                 }
             }
 
@@ -539,7 +539,7 @@ namespace ExtendedControls.Controls
                 if (drawBoundariesWidget)
                 {
                     for (int i = 0; i < BoundariesFrame.Count; i++)
-                        BoundariesFrame[i] = AstroPlot.ProjectVector(BoundariesCorners[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                        BoundariesFrame[i] = AstroPlot.Translate(BoundariesCorners[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
                 }
             }
 

@@ -10,22 +10,10 @@ namespace ExtendedControls.Controls
 {
     static partial class AstroPlot
     {
-
-        static public PointF Project(double[] x, double s_x, double s_y, double f, double[] camera, double azimuth, double elevation)
+        static public PointF[] Translate(List<double[]> x, double s_x, double s_y, double f, double[] camera, double azimuth, double elevation)
         {
-            Matrix<double> Mext = GetMext(azimuth, elevation, camera);
-            Matrix<double> Mint = GetMint(s_x, s_y, f);
-            Matrix<double> X_h = new Matrix<double>(4, 1);
-            X_h.SetMatrix(new double[] { x[0], x[1], x[2], 1.0 });
-            //Debug.Print((Mint * Mext).ToString());
-            Matrix<double> P = Mint * Mext * X_h;
-            return new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
-        }
-
-        static public PointF[] ProjectVector(List<double[]> x, double s_x, double s_y, double f, double[] camera, double azimuth, double elevation)
-        {
-            Matrix<double> Mext = GetMext(azimuth, elevation, camera);
-            Matrix<double> Mint = GetMint(s_x, s_y, f);
+            Matrix<double> Mext = InteractionMatrix(azimuth, elevation, camera);
+            Matrix<double> Mint = DataMatrix(s_x, s_y, f);
             Matrix<double> X_h = new Matrix<double>(4, 1);
 
             PointF[] Pvec = new PointF[x.Count];
@@ -38,7 +26,7 @@ namespace ExtendedControls.Controls
             return Pvec;
         }
 
-        static Matrix<double> GetMint(double s_x, double s_y, double f)
+        static Matrix<double> DataMatrix(double s_x, double s_y, double f)
         {
             Matrix<double> Mint = new Matrix<double>(3, 3);
             double o_x = s_x / 2;
@@ -48,7 +36,7 @@ namespace ExtendedControls.Controls
             return Mint;
         }
 
-        static Matrix<double> GetMext(double azimuth, double elevation, double[] camera)
+        static Matrix<double> InteractionMatrix(double azimuth, double elevation, double[] camera)
         {
             Matrix<double> R = RotationMatrix(azimuth, elevation);
             Matrix<double> dw = new Matrix<double>(3, 1);
@@ -67,16 +55,15 @@ namespace ExtendedControls.Controls
         }
 
         internal static double FindOrbitalElevation(double distance, double inclination)
-        {            
-            inclination = (inclination / 90) * distance;
-            var elevation = inclination;
+        {
+            var elevation = (inclination / 90) * distance;
             return elevation;
         }
 
         internal static double FindOrbitalRadius(double distance, double inclination)
         {         
-            inclination = (inclination / 90) * distance;
-            var radius = Math.Sqrt((distance * distance) - (inclination * inclination));
+            var angle = (inclination / 90) * distance;
+            var radius = Math.Sqrt((distance * distance) - (angle * angle));
             return radius;
         }
 
