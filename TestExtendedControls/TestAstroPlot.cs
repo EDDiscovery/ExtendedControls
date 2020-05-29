@@ -141,14 +141,14 @@ namespace DialogTest
             SystemBodies _A1 = new SystemBodies
             {
                 Level = 1,
-                Distance = 16926,
+                Distance = 22.83, // semi major axis
                 Inclination = -74.060
             };
 
             SystemBodies _B = new SystemBodies
             {
                 Level = 0,
-                Distance = 140,
+                Distance = 0.18, // semi major axis
                 Inclination = 8.624
             };            
 
@@ -159,11 +159,14 @@ namespace DialogTest
             // the second indicate the orbital inclination, or it's elevation from the orbital plane
             //Bodies.Add(new double[] { -0.8, 0.2 });
             Bodies.Add(new double[] { _A1.Distance, _A1.Inclination });
-            Bodies.Add(new double[] { _B.Distance, _B.Inclination });
+
+            List<double[]> Centers = new List<double[]>();
+            Centers.Add(new double[] { _B.Distance, _B.Inclination });
 
             //Bodies.Add(new double[] { -1.2, 0 });
 
             extAstroPlotTest.AddBodiesToOrrery(Bodies);
+            extAstroPlotTest.AddMassCentersToOrrery(Centers);
         }
 
         private void extAstroPlotTest_MouseDown(object sender, MouseEventArgs e)

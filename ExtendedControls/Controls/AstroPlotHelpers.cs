@@ -8,175 +8,79 @@ using System.Windows.Forms;
 
 namespace ExtendedControls.Controls
 {
-    class AstroPlotHelpers
+    static partial class AstroPlot
     {
-        public class Matrix<T>
+
+        static public PointF Project(double[] x, double s_x, double s_y, double f, double[] camera, double azimuth, double elevation)
         {
-            int rows;
-            int columns;
-
-            private T[,] matrix;
-
-            public Matrix(int n, int m)
-            {
-                matrix = new T[n, m];
-                rows = n;
-                columns = m;
-            }
-
-            public void SetValByIdx(int m, int n, T x)
-            {
-                matrix[n, m] = x;
-            }
-
-            public T GetValByIndex(int n, int m)
-            {
-                return matrix[n, m];
-            }
-
-            public void SetMatrix(T[] arr)
-            {
-                for (int r = 0; r < rows; r++)
-                    for (int c = 0; c < columns; c++)
-                        matrix[r, c] = arr[r * columns + c];
-            }
-
-            public static Matrix<T> operator |(Matrix<T> m1, Matrix<T> m2)
-            {
-                Matrix<T> m = new Matrix<T>(m1.rows, m1.columns + m2.columns);
-                for (int r = 0; r < m1.rows; r++)
-                {
-                    for (int c = 0; c < m1.columns; c++)
-                        m.matrix[r, c] = m1.matrix[r, c];
-                    for (int c = 0; c < m2.columns; c++)
-                        m.matrix[r, c + m1.columns] = m2.matrix[r, c];
-                }
-                return m;
-            }
-
-            public static Matrix<T> operator *(Matrix<T> m1, Matrix<T> m2)
-            {
-                Matrix<T> m = new Matrix<T>(m1.rows, m2.columns);
-                for (int r = 0; r < m.rows; r++)
-                    for (int c = 0; c < m.columns; c++)
-                    {
-                        T tmp = (dynamic)0;
-                        for (int i = 0; i < m2.rows; i++)
-                            tmp += (dynamic)m1.matrix[r, i] * (dynamic)m2.matrix[i, c];
-                        m.matrix[r, c] = tmp;
-                    }
-                return m;
-            }
-
-            public static Matrix<T> operator ~(Matrix<T> m)
-            {
-                Matrix<T> tmp = new Matrix<T>(m.columns, m.rows);
-                for (int r = 0; r < m.rows; r++)
-                    for (int c = 0; c < m.columns; c++)
-                        tmp.matrix[c, r] = m.matrix[r, c];
-                return tmp;
-            }
-
-            public static Matrix<T> operator -(Matrix<T> m)
-            {
-                Matrix<T> tmp = new Matrix<T>(m.columns, m.rows);
-                for (int r = 0; r < m.rows; r++)
-                    for (int c = 0; c < m.columns; c++)
-                        tmp.matrix[r, c] = -(dynamic)m.matrix[r, c];
-                return tmp;
-            }
-
-            public override string ToString()
-            {
-                String output = "";
-                for (int r = 0; r < rows; r++)
-                {
-                    output += "[\t";
-                    for (int c = 0; c < columns; c++)
-                    {
-                        output += matrix[r, c].ToString();
-                        if (c < columns - 1) output += ",\t";
-                    }
-                    output += "]\n";
-                }
-                return output;
-            }
+            Matrix<double> Mext = GetMext(azimuth, elevation, camera);
+            Matrix<double> Mint = GetMint(s_x, s_y, f);
+            Matrix<double> X_h = new Matrix<double>(4, 1);
+            X_h.SetMatrix(new double[] { x[0], x[1], x[2], 1.0 });
+            //Debug.Print((Mint * Mext).ToString());
+            Matrix<double> P = Mint * Mext * X_h;
+            return new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
         }
 
-        public static class Projection
+        static public PointF[] ProjectVector(List<double[]> x, double s_x, double s_y, double f, double[] camera, double azimuth, double elevation)
         {
-            static public PointF Project(double[] x, double s_x, double s_y, double f, double[] d_w, double azimuth, double elevation)
+            Matrix<double> Mext = GetMext(azimuth, elevation, camera);
+            Matrix<double> Mint = GetMint(s_x, s_y, f);
+            Matrix<double> X_h = new Matrix<double>(4, 1);
+
+            PointF[] Pvec = new PointF[x.Count];
+            for (int i = 0; i < x.Count; i++)
             {
-                Matrix<double> Mext = GetMext(azimuth, elevation, d_w);
-                Matrix<double> Mint = GetMint(s_x, s_y, f);
-                Matrix<double> X_h = new Matrix<double>(4, 1);
-                X_h.SetMatrix(new double[] { x[0], x[1], x[2], 1.0 });
-                //Debug.Print((Mint * Mext).ToString());
+                X_h.SetMatrix(new double[] { x[i][0], x[i][1], x[i][2], 1.0 });
                 Matrix<double> P = Mint * Mext * X_h;
-                return new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                Pvec[i] = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
             }
+            return Pvec;
+        }
 
-            static public PointF[] ProjectVector(List<double[]> x, double s_x, double s_y, double f, double[] d_w, double azimuth, double elevation)
-            {
-                Matrix<double> Mext = GetMext(azimuth, elevation, d_w);
-                Matrix<double> Mint = GetMint(s_x, s_y, f);
-                Matrix<double> X_h = new Matrix<double>(4, 1);
+        static Matrix<double> GetMint(double s_x, double s_y, double f)
+        {
+            Matrix<double> Mint = new Matrix<double>(3, 3);
+            double o_x = s_x / 2;
+            double o_y = s_y / 2;
+            double a = 1;
+            Mint.SetMatrix(new double[] { f, 0, o_x, 0, f * a, o_y, 0, 0, 1 });
+            return Mint;
+        }
 
-                PointF[] Pvec = new PointF[x.Count];
-                for (int i = 0; i < x.Count; i++)
-                {
-                    X_h.SetMatrix(new double[] { x[i][0], x[i][1], x[i][2], 1.0 });
-                    Matrix<double> P = Mint * Mext * X_h;
-                    Pvec[i] = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
-                }
-                return Pvec;
-            }                       
+        static Matrix<double> GetMext(double azimuth, double elevation, double[] camera)
+        {
+            Matrix<double> R = RotationMatrix(azimuth, elevation);
+            Matrix<double> dw = new Matrix<double>(3, 1);
+            dw.SetMatrix(camera);
+            Matrix<double> Mext = R | (-R * dw);
+            return Mext;
+        }
 
-            static Matrix<double> GetMint(double s_x, double s_y, double f)
-            {
-                Matrix<double> Mint = new Matrix<double>(3, 3);
-                double o_x = s_x / 2;
-                double o_y = s_y / 2;
-                double a = 1;
-                Mint.SetMatrix(new double[] { f, 0, o_x, 0, f * a, o_y, 0, 0, 1 });
-                return Mint;
-            }
-
-            static Matrix<double> GetMext(double azimuth, double elevation, double[] d_w)
-            {
-                Matrix<double> R = RotationMatrix(azimuth, elevation);
-                Matrix<double> dw = new Matrix<double>(3, 1);
-                dw.SetMatrix(d_w);
-                Matrix<double> Mext = R | (-R * dw);
-                return Mext;
-            }
-
-            static Matrix<double> RotationMatrix(double azimuth, double elevation)
-            {
-                Matrix<double> R = new Matrix<double>(3, 3);
-                R.SetMatrix(new double[] { Math.Cos(azimuth), 0, -Math.Sin(azimuth),
+        static Matrix<double> RotationMatrix(double azimuth, double elevation)
+        {
+            Matrix<double> R = new Matrix<double>(3, 3);
+            R.SetMatrix(new double[] { Math.Cos(azimuth), 0, -Math.Sin(azimuth),
                                        Math.Sin(azimuth)*Math.Sin(elevation),  Math.Cos(elevation), Math.Cos(azimuth)*Math.Sin(elevation),
                                        Math.Cos(elevation)*Math.Sin(azimuth), -Math.Sin(elevation), Math.Cos(azimuth)*Math.Cos(elevation) });
-                return R;
-            }
-
-            internal static double FindOrbitalElevation(double distance, double inclination)
-            {
-                distance = Math.Log(distance);
-                inclination = (inclination / 90) * distance;
-                var elevation = inclination;
-                return elevation;
-            }
-
-            internal static double FindOrbitalRadius(double distance, double inclination)
-            {
-                distance = Math.Log(distance);
-                inclination = (inclination / 90) * distance;
-                var radius = Math.Sqrt((distance * distance) - (inclination * inclination));
-                return radius;
-            }
+            return R;
         }
 
+        internal static double FindOrbitalElevation(double distance, double inclination)
+        {            
+            inclination = (inclination / 90) * distance;
+            var elevation = inclination;
+            return elevation;
+        }
+
+        internal static double FindOrbitalRadius(double distance, double inclination)
+        {         
+            inclination = (inclination / 90) * distance;
+            var radius = Math.Sqrt((distance * distance) - (inclination * inclination));
+            return radius;
+        }
+
+        // interaction
         public static class MouseWheelHandler
         {
             public static void Add(Control ctrl, Action<MouseEventArgs> onMouseWheel)
