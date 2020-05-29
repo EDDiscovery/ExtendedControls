@@ -162,11 +162,16 @@ namespace ExtendedControls.Controls
 
             internal static double FindOrbitalElevation(double distance, double inclination)
             {
-                return inclination;
+                distance = Math.Log(distance);
+                inclination = (inclination / 90) * distance;
+                var elevation = inclination;
+                return elevation;
             }
 
             internal static double FindOrbitalRadius(double distance, double inclination)
             {
+                distance = Math.Log(distance);
+                inclination = (inclination / 90) * distance;
                 var radius = Math.Sqrt((distance * distance) - (inclination * inclination));
                 return radius;
             }

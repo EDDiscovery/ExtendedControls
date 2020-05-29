@@ -141,15 +141,15 @@ namespace DialogTest
             SystemBodies _A1 = new SystemBodies
             {
                 Level = 1,
-                Distance = 1.0,
-                Inclination = 0.0
+                Distance = 16926,
+                Inclination = -74.060
             };
 
             SystemBodies _B = new SystemBodies
             {
                 Level = 0,
-                Distance = 1.0,
-                Inclination = 0.5
+                Distance = 140,
+                Inclination = 8.624
             };            
 
             List<double[]> Bodies = new List<double[]>();
