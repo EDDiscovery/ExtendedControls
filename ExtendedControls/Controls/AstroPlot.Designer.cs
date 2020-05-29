@@ -42,11 +42,11 @@
             this.plot.Size = new System.Drawing.Size(224, 224);
             this.plot.TabIndex = 0;
             this.plot.TabStop = false;
-            this.plot.SizeChanged += new System.EventHandler(this.picturePlot_SizeChanged);
-            this.plot.Paint += new System.Windows.Forms.PaintEventHandler(this.picturePlot_Paint);
-            this.plot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseDown);
-            this.plot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseMove);
-            this.plot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseUp);
+            this.plot.SizeChanged += new System.EventHandler(this.plot_SizeChanged);
+            this.plot.Paint += new System.Windows.Forms.PaintEventHandler(this.plot_Paint);
+            this.plot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.plot_MouseDown);
+            this.plot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.plot_MouseMove);
+            this.plot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.plot_MouseUp);
             // 
             // ExtAstroPlot
             // 

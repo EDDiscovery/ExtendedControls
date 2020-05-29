@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
 namespace ExtendedControls.Controls
@@ -8,6 +9,16 @@ namespace ExtendedControls.Controls
     static partial class AstroPlot
     {
         // interaction
+
+        public static class MouseDrag
+        {
+            public static void Add(Control ctrl, Action<MouseEventArgs> onMouseDrag)
+            {
+                if (ctrl == null || onMouseDrag == null)
+                    throw new ArgumentNullException();
+            }            
+        }
+
         public static class MouseWheel
         {
             public static void Add(Control ctrl, Action<MouseEventArgs> onMouseWheel)

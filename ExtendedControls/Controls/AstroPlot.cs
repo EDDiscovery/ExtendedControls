@@ -54,10 +54,14 @@ namespace ExtendedControls.Controls
 
         private double focalLength = 900;
         private double distance = 6;
+        private double[] cameraPosition = new double[3];
+
+        private int horizontalTranslation = 0;
+        private int verticalTranslation = 0;
+        
         private int smallDotSize = 4;
         private int mediumDotSize = 8;
         private int largeDotSize = 12;
-        private double[] cameraPosition = new double[3];
 
         // Mouse 
         private bool leftMousePressed = false;
@@ -87,6 +91,20 @@ namespace ExtendedControls.Controls
         private double lastVertical, vertical = 0.0;
 
         #region Properties
+
+        [Description("Set the distance at which the camera stands from the plot")]
+        public int HorizontalTranslation 
+        {
+            get { return horizontalTranslation; }
+            private set { horizontalTranslation = value; }
+        }
+
+        [Description("Set the distance at which the camera stands from the plot")]
+        public int VerticalTranslation
+        {
+            get { return verticalTranslation; }
+            private set { verticalTranslation = value; }
+        }
 
         [Description("Set the distance at which the camera stands from the plot")]
         public double Distance
@@ -218,7 +236,7 @@ namespace ExtendedControls.Controls
 
         Color[] colors = new Color[] { Color.LightBlue, Color.Aqua,  Color.Yellow, Color.Orange, Color.DarkOrange, Color.White, Color.DarkViolet, Color.Gray, Color.DarkGray};
 
-        private void picturePlot_Paint(object sender, PaintEventArgs e)
+        private void plot_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
                         
@@ -577,7 +595,7 @@ namespace ExtendedControls.Controls
 
         #region Interaction
 
-        private void picturePlot_MouseDown(object sender, MouseEventArgs e)
+        private void plot_MouseDown(object sender, MouseEventArgs e)
         {
 
             if (e.Button == MouseButtons.Left)
@@ -605,13 +623,13 @@ namespace ExtendedControls.Controls
             plot.Left = this.Left;            
         }
 
-        private void picturePlot_SizeChanged(object sender, EventArgs e)
+        private void plot_SizeChanged(object sender, EventArgs e)
         {
             if (MapPoints != null)
                 UpdateProjection();
         }
 
-        private void picturePlot_MouseUp(object sender, MouseEventArgs e)
+        private void plot_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
                 leftMousePressed = false;
@@ -619,7 +637,7 @@ namespace ExtendedControls.Controls
                 middleMousePressed = false;
         }
 
-        private void picturePlot_MouseMove(object sender, MouseEventArgs e)
+        private void plot_MouseMove(object sender, MouseEventArgs e)
         {
             if (leftMousePressed)
             {
@@ -632,6 +650,12 @@ namespace ExtendedControls.Controls
                 plot.Left = (int)(lastHorizontal - (ptMouseClick.X - e.X) * 0.9);
                 plot.Top = (int)(lastVertical - (ptMouseClick.Y - e.Y) * 0.9);
             }
+        }
+
+        private void OnMouseDrag(MouseEventArgs e)
+        {
+            HorizontalTranslation += -e.X;
+            VerticalTranslation += -e.Y;
         }
 
         private new void OnMouseWheel(MouseEventArgs e)
