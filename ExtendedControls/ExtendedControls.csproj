@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\AstroPlot.Handlers.cs" />
     <Compile Include="Controls\AstroPlotMatrix.cs" />
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">

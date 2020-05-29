@@ -29,43 +29,43 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.picturePlot = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.picturePlot)).BeginInit();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.plot = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.plot)).BeginInit();
             this.SuspendLayout();
             // 
-            // picturePlot
+            // plot
             // 
-            this.picturePlot.BackColor = System.Drawing.Color.Transparent;
-            this.picturePlot.Location = new System.Drawing.Point(17, 15);
-            this.picturePlot.Name = "picturePlot";
-            this.picturePlot.Size = new System.Drawing.Size(224, 224);
-            this.picturePlot.TabIndex = 0;
-            this.picturePlot.TabStop = false;
-            this.picturePlot.SizeChanged += new System.EventHandler(this.picturePlot_SizeChanged);
-            this.picturePlot.Paint += new System.Windows.Forms.PaintEventHandler(this.picturePlot_Paint);
-            this.picturePlot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseDown);
-            this.picturePlot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseMove);
-            this.picturePlot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseUp);
+            this.plot.BackColor = System.Drawing.Color.Transparent;
+            this.plot.Location = new System.Drawing.Point(17, 15);
+            this.plot.Name = "plot";
+            this.plot.Size = new System.Drawing.Size(224, 224);
+            this.plot.TabIndex = 0;
+            this.plot.TabStop = false;
+            this.plot.SizeChanged += new System.EventHandler(this.picturePlot_SizeChanged);
+            this.plot.Paint += new System.Windows.Forms.PaintEventHandler(this.picturePlot_Paint);
+            this.plot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseDown);
+            this.plot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseMove);
+            this.plot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picturePlot_MouseUp);
             // 
             // ExtAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.Controls.Add(this.picturePlot);
+            this.Controls.Add(this.plot);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "ExtAstroPlot";
             this.Size = new System.Drawing.Size(256, 256);
             this.SizeChanged += new System.EventHandler(this.ExtAstroPlot_SizeChanged);
-            ((System.ComponentModel.ISupportInitialize)(this.picturePlot)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.plot)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.PictureBox picturePlot;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.PictureBox plot;
     }
 }

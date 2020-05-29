@@ -203,7 +203,7 @@ namespace ExtendedControls.Controls
         public ExtAstroPlot()
         {
             InitializeComponent();
-            AstroPlot.MouseWheelHandler.Add(this, OnMouseWheel);            
+            AstroPlot.MouseWheel.Add(this, OnMouseWheel);            
         }
 
         protected override CreateParams CreateParams
@@ -516,7 +516,7 @@ namespace ExtendedControls.Controls
 
         private void UpdateProjection()
         {
-            picturePlot.Location = new Point((int)lastHorizontal, (int)lastVertical);
+            plot.Location = new Point((int)lastHorizontal, (int)lastVertical);
 
             double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
             double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
@@ -599,10 +599,10 @@ namespace ExtendedControls.Controls
 
         private void ExtAstroPlot_SizeChanged(object sender, EventArgs e)
         {
-            //picturePlot.Top = this.Top;
-            //picturePlot.Left = this.Left;
-            picturePlot.Height = this.Height;
-            picturePlot.Width = this.Width;
+            plot.Height = this.Height;
+            plot.Width = this.Width;
+            plot.Top = this.Top;
+            plot.Left = this.Left;            
         }
 
         private void picturePlot_SizeChanged(object sender, EventArgs e)
@@ -629,14 +629,14 @@ namespace ExtendedControls.Controls
             }
             if (middleMousePressed)
             {
-                picturePlot.Left = (int)(lastHorizontal - (ptMouseClick.X - e.X));
-                picturePlot.Top = (int)(lastVertical - (ptMouseClick.Y - e.Y));
+                plot.Left = (int)(lastHorizontal - (ptMouseClick.X - e.X) * 0.9);
+                plot.Top = (int)(lastVertical - (ptMouseClick.Y - e.Y) * 0.9);
             }
         }
 
         private new void OnMouseWheel(MouseEventArgs e)
         {
-            Distance += -e.Delta / MouseSensitivity_Wheel;
+            Distance += -e.Delta / MouseSensitivity_Wheel;            
         }
                 
         #endregion

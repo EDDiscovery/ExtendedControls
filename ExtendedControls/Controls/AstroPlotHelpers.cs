@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ExtendedControls.Controls
 {
@@ -12,8 +10,8 @@ namespace ExtendedControls.Controls
     {
         static public PointF[] Update(List<double[]> points, double x, double y, double f, double[] camera, double azimuth, double elevation)
         {
-            Matrix<double> _interaction = Rotate(azimuth, elevation, camera);
-            Matrix<double> _data = DataMatrix(x, y, f);
+            Matrix<double> _interaction = Interaction(azimuth, elevation, camera);
+            Matrix<double> _data = Coords(x, y, f);
             Matrix<double> X_h = new Matrix<double>(4, 1);
 
             PointF[] Coordinates = new PointF[points.Count];
@@ -26,7 +24,7 @@ namespace ExtendedControls.Controls
             return Coordinates;
         }
 
-        static Matrix<double> DataMatrix(double x, double y, double f)
+        static Matrix<double> Coords(double x, double y, double f)
         {
             Matrix<double> _matrix = new Matrix<double>(3, 3);
             double _x = x / 2;
@@ -36,25 +34,23 @@ namespace ExtendedControls.Controls
             return _matrix;
         }
 
-        static Matrix<double> Rotate(double azimuth, double elevation, double[] camera)
+        static Matrix<double> Interaction(double azimuth, double elevation, double[] camera)
         {
-            Matrix<double> R = Rotation(azimuth, elevation);
+            Matrix<double> R = Rotate(azimuth, elevation);
             Matrix<double> lens = new Matrix<double>(3, 1);
             lens.SetMatrix(camera);
             Matrix<double> _matrix = R | (-R * lens);
             return _matrix;
         }
 
-        static Matrix<double> Rotation(double azimuth, double elevation)
+        static Matrix<double> Rotate(double azimuth, double elevation)
         {
             Matrix<double> R = new Matrix<double>(3, 3);
             R.SetMatrix(new double[] { Math.Cos(azimuth), 0, -Math.Sin(azimuth),
                                        Math.Sin(azimuth)*Math.Sin(elevation),  Math.Cos(elevation), Math.Cos(azimuth)*Math.Sin(elevation),
                                        Math.Cos(elevation)*Math.Sin(azimuth), -Math.Sin(elevation), Math.Cos(azimuth)*Math.Cos(elevation) });
             return R;
-        }
-
-        
+        }        
 
         internal static double FindOrbitalElevation(double distance, double inclination)
         {
@@ -67,66 +63,6 @@ namespace ExtendedControls.Controls
             var angle = (inclination / 90) * distance;
             var radius = Math.Sqrt((distance * distance) - (angle * angle));
             return radius;
-        }
-
-        // interaction
-        public static class MouseWheelHandler
-        {
-            public static void Add(Control ctrl, Action<MouseEventArgs> onMouseWheel)
-            {
-                if (ctrl == null || onMouseWheel == null)
-                    throw new ArgumentNullException();
-
-                var filter = new MouseWheelMessageFilter(ctrl, onMouseWheel);
-                Application.AddMessageFilter(filter);
-                ctrl.Disposed += (s, e) => Application.RemoveMessageFilter(filter);
-            }
-
-            class MouseWheelMessageFilter
-                : IMessageFilter
-            {
-                private readonly Control _ctrl;
-                private readonly Action<MouseEventArgs> _onMouseWheel;
-
-                public MouseWheelMessageFilter(Control ctrl, Action<MouseEventArgs> onMouseWheel)
-                {
-                    _ctrl = ctrl;
-                    _onMouseWheel = onMouseWheel;
-                }
-
-                public bool PreFilterMessage(ref Message m)
-                {
-                    var parent = _ctrl.Parent;
-                    if (parent != null && m.Msg == 0x20a) // WM_MOUSEWHEEL, find the control at screen position m.LParam
-                    {
-                        var pos = new Point(m.LParam.ToInt32() & 0xffff, m.LParam.ToInt32() >> 16);
-
-                        var clientPos = _ctrl.PointToClient(pos);
-
-                        if (_ctrl.ClientRectangle.Contains(clientPos)
-                         && ReferenceEquals(_ctrl, parent.GetChildAtPoint(parent.PointToClient(pos))))
-                        {
-                            var wParam = m.WParam.ToInt32();
-                            Func<int, MouseButtons, MouseButtons> getButton =
-                                (flag, button) => ((wParam & flag) == flag) ? button : MouseButtons.None;
-
-                            var buttons = getButton(wParam & 0x0001, MouseButtons.Left)
-                                        | getButton(wParam & 0x0010, MouseButtons.Middle)
-                                        | getButton(wParam & 0x0002, MouseButtons.Right)
-                                        | getButton(wParam & 0x0020, MouseButtons.XButton1)
-                                        | getButton(wParam & 0x0040, MouseButtons.XButton2)
-                                        ; // Not matching for these /*MK_SHIFT=0x0004;MK_CONTROL=0x0008*/
-
-                            var delta = wParam >> 16;
-                            var e = new MouseEventArgs(buttons, 0, clientPos.X, clientPos.Y, delta);
-                            _onMouseWheel(e);
-
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-            }
         }
     }
 }
