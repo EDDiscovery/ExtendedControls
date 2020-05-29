@@ -1,5 +1,6 @@
 ﻿using BaseUtils;
 using ExtendedControls;
+using ExtendedControls.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,7 +35,7 @@ namespace DialogTest
             extAstroPlotTest.DrawAxesWidget(extAstroPlotTest.AxesLength);
 
             // draw the boundaries cube frame
-            //extAstroPlotTest.DrawBoundariesWidget(extAstroPlotTest.BoundariesRadius);            
+            extAstroPlotTest.DrawBoundariesWidget(extAstroPlotTest.BoundariesRadius);            
 
             AddDemoStars();           
             //AddDemoOrrery();
@@ -52,9 +53,10 @@ namespace DialogTest
 
             extAstroPlotTest.BoundariesRadius = 0.9;
 
-            extAstroPlotTest.MouseSensitivity_Wheel = 250;
+            extAstroPlotTest.MouseSensitivity_Wheel = 120;
             extAstroPlotTest.MouseSensitivity_Movement = 200;
 
+            extAstroPlotTest.SmallDotSize = 4;
         }
 
         private void AddDemoStars()
@@ -65,7 +67,7 @@ namespace DialogTest
             double R = 1;
             List<double[]> Stars = new List<double[]>();
 
-            for (int j = 0; j < 8; j++)
+            for (int j = 0; j < 5; j++)
             {
                 for (int i = 0; i < 25; i++)
                 {
@@ -90,6 +92,7 @@ namespace DialogTest
             }            
         }
 
+        #region Orrery
         struct SystemBodies
         {
             public byte Level;
@@ -98,7 +101,7 @@ namespace DialogTest
             public double Distance;
             public double Inclination;
         }
-
+        
         private void AddDemoOrrery()
         {
             // Col 285 Sector JX-T d3-74 A 
@@ -168,12 +171,13 @@ namespace DialogTest
             extAstroPlotTest.AddBodiesToOrrery(Bodies);
             extAstroPlotTest.AddMassCentersToOrrery(Centers);
         }
+        #endregion
 
         private void extAstroPlotTest_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {                               
-                contextMenuStrip1.Show(e.Location.X, e.Location.Y);
+                //contextMenuStrip1.Show(e.Location.X, e.Location.Y);
             }
         }
 

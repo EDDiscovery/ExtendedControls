@@ -10,9 +10,9 @@ namespace ExtendedControls.Controls
 {
     static partial class AstroPlot
     {
-        static public PointF[] Translate(List<double[]> points, double x, double y, double f, double[] camera, double azimuth, double elevation)
+        static public PointF[] Update(List<double[]> points, double x, double y, double f, double[] camera, double azimuth, double elevation)
         {
-            Matrix<double> _interaction = InteractionMatrix(azimuth, elevation, camera);
+            Matrix<double> _interaction = Rotate(azimuth, elevation, camera);
             Matrix<double> _data = DataMatrix(x, y, f);
             Matrix<double> X_h = new Matrix<double>(4, 1);
 
@@ -36,16 +36,16 @@ namespace ExtendedControls.Controls
             return _matrix;
         }
 
-        static Matrix<double> InteractionMatrix(double azimuth, double elevation, double[] camera)
+        static Matrix<double> Rotate(double azimuth, double elevation, double[] camera)
         {
-            Matrix<double> R = RotationMatrix(azimuth, elevation);
+            Matrix<double> R = Rotation(azimuth, elevation);
             Matrix<double> lens = new Matrix<double>(3, 1);
             lens.SetMatrix(camera);
             Matrix<double> _matrix = R | (-R * lens);
             return _matrix;
         }
 
-        static Matrix<double> RotationMatrix(double azimuth, double elevation)
+        static Matrix<double> Rotation(double azimuth, double elevation)
         {
             Matrix<double> R = new Matrix<double>(3, 3);
             R.SetMatrix(new double[] { Math.Cos(azimuth), 0, -Math.Sin(azimuth),
@@ -53,6 +53,8 @@ namespace ExtendedControls.Controls
                                        Math.Cos(elevation)*Math.Sin(azimuth), -Math.Sin(elevation), Math.Cos(azimuth)*Math.Cos(elevation) });
             return R;
         }
+
+        
 
         internal static double FindOrbitalElevation(double distance, double inclination)
         {

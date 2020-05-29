@@ -54,13 +54,15 @@ namespace ExtendedControls.Controls
 
         private double focalLength = 900;
         private double distance = 6;
-        private int smallDotSize = 3;
-        private int mediumDotSize = 6;
-        private int largeDotSize = 9;
+        private int smallDotSize = 4;
+        private int mediumDotSize = 8;
+        private int largeDotSize = 12;
         private double[] cameraPosition = new double[3];
 
         // Mouse 
         private bool leftMousePressed = false;
+        private bool rightMousePressed = false;
+        private bool middleMousePressed = false;
         private PointF ptMouseClick;
         private int mouseMovementSens = 150;
         private double mouseWheelSens = 300;
@@ -79,6 +81,10 @@ namespace ExtendedControls.Controls
         private double lastAzimuth, azimuth = 0.3;
         // Elevation is the angular distance of something (such as a celestial object) above the horizon
         private double lastElevation, elevation = 0.3;
+
+        // Translation
+        private double lastHorizontal, horizontal = 0.0;
+        private double lastVertical, vertical = 0.0;
 
         #region Properties
 
@@ -211,13 +217,12 @@ namespace ExtendedControls.Controls
         }
 
         Color[] colors = new Color[] { Color.LightBlue, Color.Aqua,  Color.Yellow, Color.Orange, Color.DarkOrange, Color.White, Color.DarkViolet, Color.Gray, Color.DarkGray};
-                
-        protected override void OnPaint(PaintEventArgs e)
+
+        private void picturePlot_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
-
-            // Pick the background color defined in the designer
-            SolidBrush backColor = new SolidBrush(BackColor);
+                        
+            // Pick the background color defined in the designer            
             SolidBrush axisAnchor = new SolidBrush(ForeColor);
 
             Pen AxisPen = new Pen(new SolidBrush(ForeColor));
@@ -225,23 +230,19 @@ namespace ExtendedControls.Controls
 
             Pen BoundariesPen = new Pen(new SolidBrush(ForeColor));
             BoundariesPen.Width = 1;
-            BoundariesPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;            
+            BoundariesPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
 
             Pen OrreryOrbitsPen = new Pen(new SolidBrush(Color.White));
             OrreryOrbitsPen.Width = 1;
             OrreryOrbitsPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
 
             // center point            
-            var center = new PointF(this.Width / 2, this.Height / 2);            
-            
-            Graphics g = this.CreateGraphics();
+            var center = new PointF((int)(this.Width / 2), (int)(this.Height / 2));
 
             // give some love to the renderint engine
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;            
-
-            g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 
             // axes
             if (AxesAnchors != null)
@@ -252,20 +253,20 @@ namespace ExtendedControls.Controls
                     {
                         PointF p = AxesAnchors[i][c];
                         if (c == 0) // x axis
-                        {                            
+                        {
                             AxisPen.Color = Color.Red;
                         }
                         if (c == 1) // y axys
-                        {                         
+                        {
                             AxisPen.Color = Color.Green;
                         }
                         if (c == 2) // x axis
-                        {                         
+                        {
                             AxisPen.Color = Color.Blue;
                         }
-                                                
+
                         var axisAnchorPoint = new PointF(p.X, p.Y);
-                        g.DrawLine(AxisPen, center, axisAnchorPoint);
+                        e.Graphics.DrawLine(AxisPen, center, axisAnchorPoint);
                     }
                 }
             }
@@ -276,35 +277,35 @@ namespace ExtendedControls.Controls
                 if (BoundariesFrame.Count > 0)
                 {
                     // bottom
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][0], BoundariesFrame[0][1]);
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][1], BoundariesFrame[0][5]);
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][5], BoundariesFrame[0][3]);
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][3], BoundariesFrame[0][0]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][0], BoundariesFrame[0][1]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][1], BoundariesFrame[0][5]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][5], BoundariesFrame[0][3]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][3], BoundariesFrame[0][0]);
 
                     // left
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][0], BoundariesFrame[0][2]);
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][2], BoundariesFrame[0][4]);
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][4], BoundariesFrame[0][3]);                    
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][0], BoundariesFrame[0][2]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][2], BoundariesFrame[0][4]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][4], BoundariesFrame[0][3]);
 
                     // right
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][1], BoundariesFrame[0][6]);
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][6], BoundariesFrame[0][7]);
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][7], BoundariesFrame[0][5]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][1], BoundariesFrame[0][6]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][6], BoundariesFrame[0][7]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][7], BoundariesFrame[0][5]);
 
                     // top
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][2], BoundariesFrame[0][6]);
-                    g.DrawLine(BoundariesPen, BoundariesFrame[0][4], BoundariesFrame[0][7]);
-                }                
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][2], BoundariesFrame[0][6]);
+                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][4], BoundariesFrame[0][7]);
+                }
             }
 
-                // map
-                if (MapPoints != null)
+            // map
+            if (MapPoints != null)
             {
                 for (int i = 0; i < MapPoints.Count; i++)
                 {
                     foreach (PointF p in MapPoints[i])
-                    {                        
-                        g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X, p.Y, SmallDotSize, SmallDotSize));                        
+                    {
+                        e.Graphics.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - SmallDotSize / 2, p.Y - SmallDotSize / 2, SmallDotSize, SmallDotSize));
                     }
                 }
             }
@@ -318,34 +319,34 @@ namespace ExtendedControls.Controls
                 {
                     foreach (PointF p in OrreryMassCenters[i])
                     {
-                        g.FillEllipse(new SolidBrush(Color.Orange), new RectangleF(p.X - LargeDotSize / 2, p.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
-                    }                    
+                        e.Graphics.FillEllipse(new SolidBrush(Color.Orange), new RectangleF(p.X - LargeDotSize / 2, p.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
+                    }
                 }
 
                 for (int i = 0; i < OrreryOrbits.Count; i++)
-                {                    
+                {
 
                     // draw a fake central star, just for fun - REALLY, IT'S JUST TEMPORARY!
-                    g.FillEllipse(new SolidBrush(Color.Yellow), new RectangleF(orreryCenter.X - LargeDotSize / 2, orreryCenter.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
+                    e.Graphics.FillEllipse(new SolidBrush(Color.Yellow), new RectangleF(orreryCenter.X - LargeDotSize / 2, orreryCenter.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
 
                     // draw the orbit
 
                     if (OrreryOrbits[0].Length > 0)
-                    for (int o = 0; o < OrreryOrbits[0].Length ; o++)
-                    {
-                        Point[] frameCorners = new Point[] {
+                        for (int o = 0; o < OrreryOrbits[0].Length; o++)
+                        {
+                            Point[] frameCorners = new Point[] {
                         new Point { X = (int)OrreryOrbits[1][o].X, Y = (int)OrreryOrbits[1][o].Y },
                         new Point { X = (int)OrreryOrbits[2][o].X, Y = (int)OrreryOrbits[2][o].Y },
                         new Point { X = (int)OrreryOrbits[3][o].X, Y = (int)OrreryOrbits[3][o].Y },
                         new Point { X = (int)OrreryOrbits[4][o].X, Y = (int)OrreryOrbits[4][o].Y }
                         };
-                        g.DrawClosedCurve(OrreryOrbitsPen, frameCorners, (float)0.8, System.Drawing.Drawing2D.FillMode.Alternate);
-                    }
-                    
+                            e.Graphics.DrawClosedCurve(OrreryOrbitsPen, frameCorners, (float)0.8, System.Drawing.Drawing2D.FillMode.Alternate);
+                        }
+
                     foreach (PointF p in OrreryOrbits[i])
-                    {               
+                    {
                         if (i == 0)
-                            g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));                        
+                            e.Graphics.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));
                         //debug only:
                         //else g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, 3, 3));                            
                     }
@@ -353,12 +354,23 @@ namespace ExtendedControls.Controls
             }
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            // Pick the background color defined in the designer
+            SolidBrush backColor = new SolidBrush(BackColor);            
+            
+            Graphics g = this.CreateGraphics();                       
+            g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
+        }
+
         #region Axes Widget
         private void AddAnchors(List<double[]> anchors)
         {
             List<double[]> _anchors = new List<double[]>(anchors);
             Coords.Add(_anchors);
-            AxesAnchors.Add(AstroPlot.Translate(Coords[Coords.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            AxesAnchors.Add(AstroPlot.Update(Coords[Coords.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
 
@@ -385,7 +397,7 @@ namespace ExtendedControls.Controls
         {
             List<double[]> _corners = new List<double[]>(corners);
             BoundariesCorners.Add(_corners);
-            BoundariesFrame.Add(AstroPlot.Translate(BoundariesCorners[0], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            BoundariesFrame.Add(AstroPlot.Update(BoundariesCorners[0], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
 
@@ -417,7 +429,7 @@ namespace ExtendedControls.Controls
         {
             List<double[]> _tmp = new List<double[]>(points);
             MapBodies.Add(_tmp);
-            MapPoints.Add(AstroPlot.Translate(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));                       
+            MapPoints.Add(AstroPlot.Update(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));                       
             UpdateProjection();
         }
         #endregion
@@ -438,7 +450,7 @@ namespace ExtendedControls.Controls
 
             for (int i = 0; i < OrreryCenters.Count; i++)
             {
-                OrreryMassCenters.Add(AstroPlot.Translate(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                OrreryMassCenters.Add(AstroPlot.Update(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             }
             UpdateProjection();
         }
@@ -487,28 +499,36 @@ namespace ExtendedControls.Controls
 
             for (int i = 0; i < OrreryBodies.Count; i++)
             {
-                OrreryOrbits.Add(AstroPlot.Translate(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+                OrreryOrbits.Add(AstroPlot.Update(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             }
             
             UpdateProjection();
         }
         #endregion
 
-        #region Functions
+        #region Projection
+
+        private void TranslatePlot(int moveY, int moveX)
+        {
+            //picturePlot.Top = moveY;
+            //picturePlot.Left = moveX;
+        }
 
         private void UpdateProjection()
         {
+            picturePlot.Location = new Point((int)lastHorizontal, (int)lastVertical);
+
             double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
             double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
             double z = distance * Math.Sin(elevation);
-            cameraPosition = new double[3] { -y, z, -x };
+            cameraPosition = new double[3] { -y, z, -x};
 
             if (MapPoints == null)
                 return;
             else
             {
                 for (int i = 0; i < MapPoints.Count; i++)
-                    MapPoints[i] = AstroPlot.Translate(MapBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
+                    MapPoints[i] = AstroPlot.Update(MapBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
             }
 
             if (OrreryOrbits == null)
@@ -516,9 +536,9 @@ namespace ExtendedControls.Controls
             else
             {
                 for (int i = 0; i < OrreryOrbits.Count; i++)
-                    OrreryOrbits[i] = AstroPlot.Translate(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                    OrreryOrbits[i] = AstroPlot.Update(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
                 for (int i = 0; i < OrreryCenters.Count; i++)                
-                    OrreryMassCenters[i] = AstroPlot.Translate(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
+                    OrreryMassCenters[i] = AstroPlot.Update(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
             }
 
             if (AxesAnchors == null)
@@ -528,7 +548,7 @@ namespace ExtendedControls.Controls
                 if (drawAxesWidget)
                 {
                     for (int i = 0; i < AxesAnchors.Count; i++)
-                    AxesAnchors[i] = AstroPlot.Translate(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
+                    AxesAnchors[i] = AstroPlot.Update(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
                 }
             }
 
@@ -539,7 +559,7 @@ namespace ExtendedControls.Controls
                 if (drawBoundariesWidget)
                 {
                     for (int i = 0; i < BoundariesFrame.Count; i++)
-                        BoundariesFrame[i] = AstroPlot.Translate(BoundariesCorners[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                        BoundariesFrame[i] = AstroPlot.Update(BoundariesCorners[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
                 }
             }
 
@@ -556,18 +576,50 @@ namespace ExtendedControls.Controls
         #endregion
 
         #region Interaction
-        private void ExtScatterPlot_MouseDown(object sender, MouseEventArgs e)
+
+        private void picturePlot_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+
+            if (e.Button == MouseButtons.Left)
             {
+                // rotate
                 leftMousePressed = true;
                 ptMouseClick = new PointF(e.X, e.Y);
                 lastAzimuth = azimuth;
-                lastElevation = elevation;                
-            }                        
-        }               
+                lastElevation = elevation;
+            }
+            if (e.Button == MouseButtons.Middle)
+            {
+                middleMousePressed = true;
+                ptMouseClick = new PointF(e.X, e.Y);
+                lastHorizontal = horizontal;
+                lastVertical = vertical;
+            }
+        }
 
-        private void ExtScatterPlot_MouseMove(object sender, MouseEventArgs e)
+        private void ExtAstroPlot_SizeChanged(object sender, EventArgs e)
+        {
+            //picturePlot.Top = this.Top;
+            //picturePlot.Left = this.Left;
+            picturePlot.Height = this.Height;
+            picturePlot.Width = this.Width;
+        }
+
+        private void picturePlot_SizeChanged(object sender, EventArgs e)
+        {
+            if (MapPoints != null)
+                UpdateProjection();
+        }
+
+        private void picturePlot_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                leftMousePressed = false;
+            if (e.Button == MouseButtons.Middle)
+                middleMousePressed = false;
+        }
+
+        private void picturePlot_MouseMove(object sender, MouseEventArgs e)
         {
             if (leftMousePressed)
             {
@@ -575,18 +627,11 @@ namespace ExtendedControls.Controls
                 elevation = lastElevation + (ptMouseClick.Y - e.Y) / 150;
                 UpdateProjection();
             }
-        }
-
-        private void ExtScatterPlot_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
-                leftMousePressed = false;            
-        }
-
-        private void ExtScatterPlot_SizeChanged(object sender, EventArgs e)
-        {
-            if (MapPoints != null)
-                UpdateProjection();
+            if (middleMousePressed)
+            {
+                picturePlot.Left = (int)(lastHorizontal - (ptMouseClick.X - e.X));
+                picturePlot.Top = (int)(lastVertical - (ptMouseClick.Y - e.Y));
+            }
         }
 
         private new void OnMouseWheel(MouseEventArgs e)
