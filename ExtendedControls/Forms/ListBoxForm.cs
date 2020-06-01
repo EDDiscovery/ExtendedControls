@@ -80,8 +80,10 @@ namespace ExtendedControls
                 Location = SetLocation;
             }
 
+            int border = Bounds.Height - ClientRectangle.Height;        // any windows border..
+
             int ih = (int)Font.GetHeight() + 2;
-            int hw = ih * Items.Count + 4;
+            int hw = ih * Items.Count + 4 + border;
 
           //  System.Diagnostics.Debug.WriteLine("Set LBF loc " + Location + " Font " + Font + " ih " + ih + " hw " + hw);
 

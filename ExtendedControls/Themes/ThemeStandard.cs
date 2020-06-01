@@ -460,24 +460,24 @@ namespace ExtendedControls
                                                false, 95, "Microsoft Sans Serif", 8.25F));
         }
 
-        public bool ApplyStd(Control ctrl)      // normally a form, but can be a control, applies to this and ones below
+        public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
         {
-            return Apply(ctrl, GetFont);
+            return Apply(ctrl, GetFont, nowindowsborderoverride);
         }
 
-        public bool ApplyDialog(Control ctrl)
+        public bool ApplyDialog(Control ctrl, bool nowindowsborderoverride = false)
         {
-            return Apply(ctrl, GetDialogFont);
+            return Apply(ctrl, GetDialogFont, nowindowsborderoverride);
         }
 
-        public bool Apply(Control form, Font fnt)
+        public bool Apply(Control form, Font fnt, bool nowindowsborderoverride = false)
         {
-            UpdateControls(form.Parent, form, fnt, 0);
+            UpdateControls(form.Parent, form, fnt, 0, nowindowsborderoverride);
             UpdateToolsStripRenderer();
             return WindowsFrame;
         }
         
-        private void UpdateControls(Control parent, Control myControl, Font fnt, int level)    // parent can be null
+        private void UpdateControls(Control parent, Control myControl, Font fnt, int level, bool noborderoverride = false)    // parent can be null
         {
 #if DEBUG
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
@@ -496,7 +496,7 @@ namespace ExtendedControls
             if (myControl is Form)
             {
                 Form f = myControl as Form;
-                f.FormBorderStyle = WindowsFrame ? FormBorderStyle.Sizable : FormBorderStyle.None;
+                f.FormBorderStyle = (WindowsFrame && !noborderoverride )? FormBorderStyle.Sizable : FormBorderStyle.None;
                 f.Opacity = currentsettings.formopacity / 100;
                 f.BackColor = currentsettings.colors[Settings.CI.form];
                 f.Font = fnt;

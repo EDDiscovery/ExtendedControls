@@ -20,9 +20,9 @@ namespace ExtendedControls
 {
     public interface ITheme                     // Extended controls use this if they want to be themed
     {
-        bool ApplyStd(Control ctrl);    // apply to this and subs
-        bool ApplyDialog(Control ctrl);
-        bool Apply(Control ctrl, Font fnt);
+        bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false);    // apply to this and subs
+        bool ApplyDialog(Control ctrl, bool nowindowsborderoverride = false);
+        bool Apply(Control ctrl, Font fnt, bool nowindowsborderoverride = false);
 
         Color ButtonBackColor { get; set; }
         Color ButtonTextColor { get; set; }

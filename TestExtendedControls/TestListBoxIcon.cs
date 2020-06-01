@@ -211,5 +211,52 @@ namespace DialogTest
             showhideselform1.PositionBelow(extButton9);
             showhideselform1.Show(this);
         }
+
+        private void extButton10_Click(object sender, EventArgs e)
+        {
+            DropDown(true);
+        }
+
+        private void extButton11_Click(object sender, EventArgs e)
+        {
+            DropDown(false);
+        }
+
+        private void DropDown(bool themeit)
+        { 
+            var dropdown = new ExtListBoxForm("", true);
+
+            Image[] imagelist = new Image[] {
+                Properties.Resources.galaxy_black,
+                Properties.Resources.galaxy_gray,
+                Properties.Resources.galaxy_red,
+                Properties.Resources.galaxy_white,
+            };
+
+            string[] textlist = new string[] { "256", "192", "128", "96"};
+
+            dropdown.Items = textlist.ToList();
+            dropdown.ImageItems = imagelist.ToList();
+            dropdown.FlatStyle = FlatStyle.Popup;
+            dropdown.PositionBelow(extButton11);
+
+            if (themeit)
+            {
+                theme.ApplyStd(dropdown);
+            }
+            else
+            { 
+                var stdtheme = new ThemeStandard();
+                stdtheme.LoadBaseThemes();
+                stdtheme.SetThemeByName("Windows Default");
+
+                stdtheme.ApplyStd(dropdown,true);
+            }
+
+
+            dropdown.Show(this.FindForm());
+
+
+        }
     }
 }
