@@ -447,17 +447,23 @@ namespace ExtendedControls
                 thumboffsetpx = Math.Min(thumboffsetpx, sliderrangepx);     // LIMIT, because we can go over slider range if value=maximum
 
                 thumbbuttonarea = new Rectangle(sliderarea.X, sliderarea.Y + thumboffsetpx, sliderarea.Width, thumbheight);
-                thumbenable = true;
-                Visible = true;
+                if (thumbenable == false)
+                {
+                    thumbenable = true;
+                    Visible = true;
+                }
             }
             else
             {
-                thumbenable = false;                        // else disable the thumb and scroll bar
-                thumbmove = false;
-                mouseover = MouseOver.MouseOverNone;
-                mousepressed = MouseOver.MouseOverNone;
-                if (HideScrollBar && !DesignMode)
-                    Visible = false;
+                if (thumbenable == true)        // if not already disabled..
+                {
+                    thumbenable = false;                        
+                    thumbmove = false;
+                    mouseover = MouseOver.MouseOverNone;
+                    mousepressed = MouseOver.MouseOverNone;
+                    if (HideScrollBar && !DesignMode)
+                        Visible = false;
+                }
             }
         }
                                                            // for a 0-100 scroll bar, with lc=10, positions are 0 to 91 inclusive.
