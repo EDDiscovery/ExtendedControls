@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\AstroPlot.Handlers.cs" />
+    <Compile Include="Controls\AstroPlotMatrix.cs" />
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
@@ -56,6 +58,13 @@
     <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\AstroPlot.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AstroPlot.Designer.cs">
+      <DependentUpon>AstroPlot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AstroPlotHelpers.cs" />
     <Compile Include="Controls\TextBoxAutoComplete.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -215,6 +224,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\AstroPlot.resx">
+      <DependentUpon>AstroPlot.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
     </EmbeddedResource>

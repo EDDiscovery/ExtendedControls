@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>DialogTest.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -75,6 +78,12 @@
     </Compile>
     <Compile Include="TestPanelScrollOutlining.Designer.cs">
       <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestAstroPlot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAstroPlot.Designer.cs">
+      <DependentUpon>TestAstroPlot.cs</DependentUpon>
     </Compile>
     <Compile Include="TestTextBoxesRTF.cs">
       <SubType>Form</SubType>
@@ -215,6 +224,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestPanelScrollOutlining.resx">
       <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestAstroPlot.resx">
+      <DependentUpon>TestAstroPlot.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestTextBoxesRTF.resx">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
