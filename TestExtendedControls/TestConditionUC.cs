@@ -110,7 +110,7 @@ namespace DialogTest
                 new ConditionEntry("Fred30", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
             };
 
-            Condition conds = new Condition("", "", "", ces);
+            Condition conds = new Condition("", "", new Variables(), ces);
 
             frm.VariableNames = new List<BaseUtils.TypeHelpers.PropertyNameInfo>();
             frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("defone", "String", ConditionEntry.MatchType.Contains));
@@ -182,7 +182,7 @@ namespace DialogTest
                     new ConditionEntry("Fred30", ConditionEntry.MatchType.NumericGreaterEqual, "20"),
                 };
 
-                clist2.Add(new Condition("e1", "a", "ad", ces, ConditionEntry.LogicalCondition.Or, ConditionEntry.LogicalCondition.And));
+                clist2.Add(new Condition("e1", "a", new Variables(), ces, ConditionEntry.LogicalCondition.Or, ConditionEntry.LogicalCondition.And));
             }
 
             theme.FontSize = s;
