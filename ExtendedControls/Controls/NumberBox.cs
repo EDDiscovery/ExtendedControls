@@ -22,7 +22,7 @@ namespace ExtendedControls
 {
     public abstract class NumberBox<T> : ExtTextBox
     {
-        public string Format { get { return format; } set { format = value; base.Text = ConvertToString(Value); } }
+        public string Format { get { return format; } set { format = value; ignorechange = true; base.Text = ConvertToString(Value); ignorechange = false;  } }
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public System.Globalization.CultureInfo FormatCulture { get { return culture; } set { culture = value; } }
@@ -50,7 +50,9 @@ namespace ExtendedControls
 
         public void SetNonBlank()       // restores it to its last value
         {
+            ignorechange = true;
             base.Text = ConvertToString(Value);
+            ignorechange = false;
         }
 
         public event EventHandler ValueChanged              // fired (first) when value is changed to a new valid value. Can be delayed by DelayBeforeNotification
@@ -119,6 +121,7 @@ namespace ExtendedControls
 
         protected override void OnTextChanged(EventArgs e)
         {
+            //System.Diagnostics.Debug.WriteLine("Text box " + Name + "  " + ignorechange);
             if (!ignorechange)
             {
                 T newvalue;

@@ -20,8 +20,9 @@ namespace ExtendedControls
 {
     public interface ITheme                     // Extended controls use this if they want to be themed
     {
-        bool ApplyStd(Control ctrl);    // apply to this and subs
-        bool ApplyDialog(Control ctrl);
+        bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false);    // apply to this and subs
+        bool ApplyDialog(Control ctrl, bool nowindowsborderoverride = false);
+        bool Apply(Control ctrl, Font fnt, bool nowindowsborderoverride = false);
 
         Color ButtonBackColor { get; set; }
         Color ButtonTextColor { get; set; }
@@ -39,8 +40,8 @@ namespace ExtendedControls
         Color LabelColor { get; set; }
 
         string FontName { get; set; }
-        Font GetScaledFont(float scaled, FontStyle fs = FontStyle.Regular);       // 1.0 = selected font size.
-        Font GetDialogScaledFont(float scaled, FontStyle fs = FontStyle.Regular);       // 1.0 = selected font size.
+        Font GetScaledFont(float scaled, FontStyle fs = FontStyle.Regular, float max = 999);       // 1.0 = selected font size.
+        Font GetDialogScaledFont(float scaled, FontStyle fs = FontStyle.Regular, float max = 999);       // 1.0 = selected font size.
 
         bool WindowsFrame { get; set; }
         Icon MessageBoxWindowIcon { get; set; }

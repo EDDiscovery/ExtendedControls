@@ -45,6 +45,8 @@
             this.extButton1 = new ExtendedControls.ExtButton();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton9 = new ExtendedControls.ExtButton();
+            this.extButton10 = new ExtendedControls.ExtButton();
+            this.extButton11 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -211,6 +213,26 @@
             this.extButton9.UseVisualStyleBackColor = true;
             this.extButton9.Click += new System.EventHandler(this.extButton9_Click);
             // 
+            // extButton10
+            // 
+            this.extButton10.Location = new System.Drawing.Point(497, 12);
+            this.extButton10.Name = "extButton10";
+            this.extButton10.Size = new System.Drawing.Size(264, 23);
+            this.extButton10.TabIndex = 1;
+            this.extButton10.Text = "ListBoxForm-T12";
+            this.extButton10.UseVisualStyleBackColor = true;
+            this.extButton10.Click += new System.EventHandler(this.extButton10_Click);
+            // 
+            // extButton11
+            // 
+            this.extButton11.Location = new System.Drawing.Point(497, 41);
+            this.extButton11.Name = "extButton11";
+            this.extButton11.Size = new System.Drawing.Size(264, 23);
+            this.extButton11.TabIndex = 1;
+            this.extButton11.Text = "ListBoxForm-NoTheme";
+            this.extButton11.UseVisualStyleBackColor = true;
+            this.extButton11.Click += new System.EventHandler(this.extButton11_Click);
+            // 
             // TestListBoxIcon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -221,6 +243,8 @@
             this.Controls.Add(this.extButton7);
             this.Controls.Add(this.extButton6);
             this.Controls.Add(this.extButton9);
+            this.Controls.Add(this.extButton11);
+            this.Controls.Add(this.extButton10);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton4);
@@ -250,5 +274,7 @@
         private ExtendedControls.ExtButton extButton8;
         private ExtendedControls.ExtButton extButton2;
         private ExtendedControls.ExtButton extButton9;
+        private ExtendedControls.ExtButton extButton10;
+        private ExtendedControls.ExtButton extButton11;
     }
 }

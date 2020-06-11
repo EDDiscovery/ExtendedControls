@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2020 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -76,13 +76,15 @@ namespace ExtendedControls
 
         protected override void OnResize(EventArgs eventargs)       // added in resize event - should have been in here
         {
+            base.OnResize(eventargs);       // call base class to let any hooks run
+
+            //System.Diagnostics.Debug.WriteLine("Panel Scroll Resize " + this.Name + " " + this.Bounds);
             if (ScrollBar != null)
             {
                 SetScrollBarLocationSize();
                 ScrollTo(scrollpos, true);
             }
 
-            base.OnResize(eventargs);       // call base class to let any hooks run
         }
 
         private void SetScrollBarLocationSize()
@@ -98,11 +100,13 @@ namespace ExtendedControls
 
         private void Control_SizeChanged(object sender, EventArgs e)
         {
+            //System.Diagnostics.Debug.WriteLine("CS size Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds);
             ScrollTo(scrollpos, true);
         }
 
         private void Control_VisibleChanged(object sender, EventArgs e)
         {
+            // Control c = sender as Control; System.Diagnostics.Debug.WriteLine("CS Visible Change " + c.Name + " " + c.Bounds + " " + c.Visible);
             ScrollTo(scrollpos, true);
         }
 
@@ -112,7 +116,8 @@ namespace ExtendedControls
         {
             if (ignorelocationchange == 0)
             {
-                ignorelocationchange++;        // stop recursioon
+               // System.Diagnostics.Debug.WriteLine("CS loc Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds);
+                ignorelocationchange++;        // stop recursion
                 Control c = sender as Control;
                 c.Top = c.Top - scrollpos;      // account for scroll pos and move control to scroll pos offset
                 ScrollTo(scrollpos, true);    // check bar within bounds
@@ -139,12 +144,14 @@ namespace ExtendedControls
                 else
                     ScrollBar.ValueLimited += ScrollBar.LargeChange;
 
+                //System.Diagnostics.Debug.WriteLine("CS Mouse Wheel ");
                 ScrollTo(ScrollBar.Value, false);
             }
         }
 
         protected virtual void OnScrollBarChanged(object sender, ScrollEventArgs e)
         {
+           // System.Diagnostics.Debug.WriteLine("CS Scroll bar ");
             ScrollTo(e.NewValue, false);
         }
 
@@ -153,26 +160,35 @@ namespace ExtendedControls
             ScrollTo(99999999, false);
         }
 
-        public void ToCurrent()
-        {
-            ScrollTo(scrollpos, false);
-        }
-
         // set forcereposition if the vscroll pos does not change but something like a control resize may have messed about with the positioning
-        private int ScrollTo(int newscrollpos, bool forcereposition)
+        private void ScrollTo(int newscrollpos, bool forcereposition)
         {
-            //System.Diagnostics.Debug.WriteLine("Scroll panel is " + ClientRectangle + " curscrollpos " + scrollpos);
+            //System.Diagnostics.Debug.WriteLine("  Scroll panel " + Name + " is " + ClientRectangle + " curscrollpos " + scrollpos + " " + Controls.Count);
             //System.Diagnostics.Debug.WriteLine("From " + Environment.StackTrace.StackTrace("ScrollTo",5));
-            int maxy = 0;
+
+              int maxy =0;
             List<Point> cposnorm = new List<Point>();
 
-            Point flowpos = new Point(0, 0);
+            Point flowpos = new Point(0, 0);            // for flow
             int dwidth = DisplayRectangle.Width;
             int rowymax = 0;
 
             foreach (Control c in Controls)
             {
-                if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
+                if (!(c is ExtScrollBar) && c.Visible)      // if in a tab, when tab is turned on, we get a call but will all things invisible (it comes thru resize)
+                {                                           // therefore setting scroll pos to zero. This stage double checks we do not have controls
+                    if ( -c.Top > scrollpos )               // below zero meaning we have lost scroll pos. If so, set it back
+                    {
+                        //System.Diagnostics.Debug.WriteLine("   Before Control " + c.Text + " " + c.Size + " " + c.Location + " " + c.Visible + " before " + scrollpos + " set to " + -c.Top);
+                        scrollpos = -c.Top;
+                        newscrollpos = scrollpos;
+                    }
+                }
+            }
+
+            foreach (Control c in Controls)
+            {
+                if (!(c is ExtScrollBar) && c.Visible)      
                 {
                     if (FlowControlsLeftToRight)
                     {
@@ -185,26 +201,30 @@ namespace ExtendedControls
                         cposnorm.Add(new Point(flowpos.X + c.Margin.Left, flowpos.Y + c.Margin.Top));
                         flowpos.X += c.Width + c.Margin.Horizontal;
                         rowymax = Math.Max(rowymax, c.Height + c.Margin.Vertical);
-                        maxy = flowpos.Y + c.Height + c.Margin.Vertical;
+                        maxy = flowpos.Y + c.Height - 1 + c.Margin.Vertical;
                     }
                     else
                     {
                         cposnorm.Add(new Point(c.Left, c.Top + scrollpos));
-                        maxy = Math.Max(maxy, c.Top + scrollpos + c.Height);
+                        maxy = Math.Max(maxy, c.Top + scrollpos + c.Height -1);     // -1 because top+height = 1 pixel beyond last displayed
                     }
 
-                    // System.Diagnostics.Debug.WriteLine("Control " + c.Text + " " + c.Size + " " + c.Location + " maxy " + maxy);
                 }
+
+                //System.Diagnostics.Debug.WriteLine("   Control " + c.Name + " " + c.Size + " " + c.Location + " " + c.Visible + " maxy " + maxy);
             }
 
             int maxscr = maxy - ClientRectangle.Height + (ScrollBar?.LargeChange ?? 0);       // large change is needed due to the way the scroll bar works (which matches the windows scroll bar)
 
             if (maxy <= ClientRectangle.Height)          // limit..
+            {
+                //System.Diagnostics.Debug.WriteLine("   Maxy <= Client Height, set to zero");
                 newscrollpos = 0;
+            }
             else if (newscrollpos > maxscr)
                 newscrollpos = maxscr;
 
-            //System.Diagnostics.Debug.WriteLine("Maxy " + maxy + " maxscr " + maxscr + " new scr " + newscrollpos + " old scroll " + scrollpos);
+            //System.Diagnostics.Debug.WriteLine("   Maxy " + maxy + " CH "+ ClientRectangle.Height + "  maxscr " + maxscr + " new scr " + newscrollpos + " old scroll " + scrollpos);
 
             if (newscrollpos != scrollpos || (FlowControlsLeftToRight && forcereposition))  // only need forcereposition on flowing
             {
@@ -232,8 +252,6 @@ namespace ExtendedControls
             }
 
             scrollpos = newscrollpos;
-
-            return maxy;
         }
 
         public void RemoveAllControls(List<Control> excluded = null)

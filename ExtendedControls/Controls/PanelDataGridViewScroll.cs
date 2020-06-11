@@ -26,6 +26,7 @@ namespace ExtendedControls
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
+        public int LimitLargeChange { get; set; } = int.MaxValue;       // set to limit large change, useful when we have very variable row sizes
 
         public int ScrollBarWidth { get { return Font.ScalePixels(24); } }       // if internal
 
@@ -228,7 +229,7 @@ namespace ExtendedControls
                 int totalvisible = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);             // this gives total visible - this is now the scroll bar range
                 int visibleonscreen = dgv.DisplayedRowCount(false);                                     // and the viewport size..
                 //System.Diagnostics.Debug.WriteLine("FDRow " + toprowindex + " Visible index " + visibleindex + " Total visible " + totalvisible + " On screen " + visibleonscreen);
-                vsc.SetValueMaximumLargeChange(visibleindex, totalvisible - 1, visibleonscreen );
+                vsc.SetValueMaximumLargeChange(visibleindex, totalvisible - 1, Math.Min(visibleonscreen,LimitLargeChange) );
             }
         }
 
@@ -239,14 +240,14 @@ namespace ExtendedControls
             if (firstvisible >= 0)  // prevents updates while initially generating the dgv
             {
                 UpdateScrollBar();
-                outlining?.RowAdded(e.RowIndex);
+                outlining?.RowAdded(e.RowIndex,e.RowCount);
             }
         }
 
         protected void DGVRowsRemoved(Object sender, DataGridViewRowsRemovedEventArgs e)
         {
             UpdateScrollBar();
-            outlining?.RowRemoved(e.RowIndex);
+            outlining?.RowRemoved(e.RowIndex,e.RowCount);
         }
 
         protected virtual void DGVRowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
@@ -297,14 +298,7 @@ namespace ExtendedControls
                     {
                         ignoredgvscroll = true; // don't fire the DGVScrolled.. as we can get into a cycle if rows are hidden
 
-                        try// # 2537 protect against a tiny dgv.  First DisplayedScrolling row index can moan if its not no height
-                        {
-                            dgv.FirstDisplayedScrollingRowIndex = rowi;
-                        }
-                        catch (Exception e)
-                        {
-                            System.Diagnostics.Debug.WriteLine("DGV exception FDR " + e);       // v.rare.
-                        }
+                        dgv.SafeFirstDisplayedScrollingRowIndex(rowi);
 
                         dgv.Update();
                         vsc.Update();

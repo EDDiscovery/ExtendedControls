@@ -41,47 +41,50 @@ namespace ExtendedControls
             KeyPreview = true;
         }
 
-        // call this in a mouse down handler to make it move the window
 
-        public void OnCaptionMouseDown(Control sender, MouseEventArgs e)
+        public void OnCaptionMouseDown(Control sender, MouseEventArgs e)        // call this in a mouse down handler to make it move the window
         {
-            sender.Capture = false;
-            if (FormBorderStyle == FormBorderStyle.None)
-            {
-                var ptScreen = sender.PointToScreen(e.Location);
-                var ptForm = this.PointToClient(ptScreen);
-
-                if (ptForm.Y >= 0 && ptForm.Y < this.CaptionHeight)
-                {
-                    var lParam = unchecked((IntPtr)((ushort)ptScreen.X | ((ushort)ptScreen.Y << 16)));
-
-                    switch (e.Button)
-                    {
-                        case MouseButtons.Left: SendMessage(WM.NCLBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Middle: SendMessage(WM.NCMBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Right: SendMessage(WM.NCRBUTTONDOWN, (IntPtr)HT.CAPTION, lParam); break;
-                    }
-                }
-            }
+            SendMovementCapture(sender, e, true, HT.CAPTION);
         }
 
         public void OnCaptionMouseUp(Control sender, MouseEventArgs e)
         {
+            SendMovementCapture(sender, e, false, HT.CAPTION);
+        }
+
+        public void PerformResizeMouseDown(Control sender, MouseEventArgs e, DockStyle s)        // call this in a mouse down handler to make it move the window
+        {
+            int ec = s == DockStyle.Top ? HT.TOP : s == DockStyle.Bottom ? HT.BOTTOM : s == DockStyle.Left ? HT.LEFT : HT.RIGHT;
+            SendMovementCapture(sender, e, true, ec);
+        }
+
+        public void PerformResizeMouseUp(Control sender, MouseEventArgs e, DockStyle s)        // call this in a mouse down handler to make it move the window
+        {
+            int ec = s == DockStyle.Top ? HT.TOP : s == DockStyle.Bottom ? HT.BOTTOM : s == DockStyle.Left ? HT.LEFT : HT.RIGHT;
+            SendMovementCapture(sender, e, false, ec);
+        }
+
+        public void SendMovementCapture(Control sender, MouseEventArgs e, bool keydown, int eventcode = HT.CAPTION)
+        {
             if (FormBorderStyle == FormBorderStyle.None)
             {
+                if (keydown)
+                    sender.Capture = false;
+
                 var ptScreen = sender.PointToScreen(e.Location);
-                var ptForm = this.PointToClient(ptScreen);
+                var lParam = unchecked((IntPtr)((ushort)ptScreen.X | ((ushort)ptScreen.Y << 16)));
 
-                if (ptForm.Y >= 0 && ptForm.Y < this.CaptionHeight)
+                switch (e.Button)
                 {
-                    var lParam = unchecked((IntPtr)((ushort)ptScreen.X | ((ushort)ptScreen.Y << 16)));
-
-                    switch (e.Button)
-                    {
-                        case MouseButtons.Left: SendMessage(WM.NCLBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Middle: SendMessage(WM.NCMBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
-                        case MouseButtons.Right: SendMessage(WM.NCRBUTTONUP, (IntPtr)HT.CAPTION, lParam); break;
-                    }
+                    case MouseButtons.Left:
+                        SendMessage(keydown ? WM.NCLBUTTONDOWN : WM.NCLBUTTONUP, (IntPtr)eventcode, lParam);
+                        break;
+                    case MouseButtons.Middle:
+                        SendMessage(keydown ? WM.NCMBUTTONDOWN : WM.NCMBUTTONUP, (IntPtr)eventcode, lParam);
+                        break;
+                    case MouseButtons.Right:
+                        SendMessage(keydown ? WM.NCRBUTTONDOWN : WM.NCRBUTTONUP, (IntPtr)eventcode, lParam);
+                        break;
                 }
             }
         }
@@ -164,6 +167,7 @@ namespace ExtendedControls
         protected override void WndProc(ref Message m)
         {
             bool windowsborder = this.FormBorderStyle != FormBorderStyle.None;
+            //System.Diagnostics.Debug.WriteLine("Message {0:x} {1} {2}", m.Msg, m.LParam, m.WParam);
 
             switch (m.Msg)
             {
@@ -249,14 +253,14 @@ namespace ExtendedControls
 
                                 if (WindowState != FormWindowState.Maximized)
                                 {
-                                    if (p.Y <= edgesz)
+                                    if (p.Y <= edgesz)                                      // top edge
                                         rw = 0;
-                                    else if (p.Y >= ClientSize.Height - edgesz)
+                                    else if (p.Y >= ClientSize.Height - edgesz)             // bottom edge
                                         rw = 2;
 
-                                    if (p.X <= edgesz)
+                                    if (p.X <= edgesz)                                      // left side
                                         col = 0;
-                                    else if (p.X >= ClientSize.Width - edgesz)
+                                    else if (p.X >= ClientSize.Width - edgesz)              // right side
                                         col = 2;
                                 }
                                 var htarr = new int[][]
@@ -271,6 +275,7 @@ namespace ExtendedControls
 
                         return;
                     }
+                        
 
                 case WM.NCLBUTTONDOWN:  // Monitor and intercept double-clicks, ignoring the fact that it may occur over multiple controls with/without capture.
                     {
@@ -296,6 +301,17 @@ namespace ExtendedControls
                                 dblClickTimer.Enabled = true;
                             }
                         }
+                        break;
+                    }
+
+                case WM.SIZING:     // do not do WINDOWPOSCHANGED as this is a programatic change, we want user interaction
+                    {
+                        screenmc.ResetCentre();     // resize, reset centre knowledge 
+                        break;
+                    }
+                case WM.MOVING:
+                    {
+                        screenmc.ResetCentre();     // moving, reset centre knowledge 
                         break;
                     }
             }

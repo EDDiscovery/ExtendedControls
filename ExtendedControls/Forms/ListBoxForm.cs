@@ -80,15 +80,17 @@ namespace ExtendedControls
                 Location = SetLocation;
             }
 
+            int border = Bounds.Height - ClientRectangle.Height;        // any windows border..
+
             int ih = (int)Font.GetHeight() + 2;
-            int hw = ih * Items.Count + 4;
+            int hw = ih * Items.Count + 4 + border;
 
           //  System.Diagnostics.Debug.WriteLine("Set LBF loc " + Location + " Font " + Font + " ih " + ih + " hw " + hw);
 
             using (Graphics g = this.CreateGraphics())
             {
                 Size max = listcontrol.MeasureItems(g);
-                this.PositionSizeWithinScreen(max.Width + 16 + listcontrol.ScrollBarWidth, hw, true, 64, RightAlignedToLocation);    // keep it on the screen. 
+                this.PositionSizeWithinScreen(max.Width + 16 + listcontrol.ScrollBarWidth, hw, true, 64);    // keep it on the screen. 
             }
 
             //            System.Diagnostics.Debug.WriteLine(".. now " + Location + " " + Size + " Items " + Items.Count + " ih "  + ih + " hw" + hw);

@@ -46,7 +46,8 @@ namespace ExtendedControls
         public Color MouseOverButtonColor { get; set; } = Color.Green;
         public Color MousePressedButtonColor { get; set; } = Color.Red;
 
-        public bool HideScrollBar { get; set; } = false;                   // hide if no scroll needed
+        public bool HideScrollBar { get; set; } = false;                   // hide (make not visible) if no scroll needed
+
         public bool IsScrollBarOn { get { return thumbenable; } }           // is it on?
 
         public int Value { get { return thumbvalue; } set { SetValues(value, maximum, minimum, largechange, smallchange); } }
@@ -122,12 +123,13 @@ namespace ExtendedControls
             }
             else
             {
-                //Console.WriteLine("Draw " + Name + " slider " + SliderColor + " border " + BorderColor);
-                using (Brush br = new SolidBrush(this.SliderColor))
+                using (Brush br = new SolidBrush(SliderColor))
                     e.Graphics.FillRectangle(br, sliderarea);
+
                 using (Pen pr = new Pen(BorderColor))
                     e.Graphics.DrawRectangle(pr, borderrect);
 
+                //System.Diagnostics.Debug.WriteLine("Scroll bar redraw " + Parent.Parent.Name + " " + e.Graphics.ClipBounds +" " + ClientRectangle + " " + sliderarea + " " + upbuttonarea + " " + downbuttonarea + " " + thumbbuttonarea);
                 DrawButton(e.Graphics, upbuttonarea, MouseOver.MouseOverUp);
                 DrawButton(e.Graphics, downbuttonarea, MouseOver.MouseOverDown);
                 DrawButton(e.Graphics, thumbbuttonarea, MouseOver.MouseOverThumb);
@@ -391,6 +393,12 @@ namespace ExtendedControls
             }
         }
 
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            Invalidate();
+        }
+
         protected override void OnLayout(LayoutEventArgs levent)
         {
             base.OnLayout(levent);
@@ -415,6 +423,7 @@ namespace ExtendedControls
             borderrect.Width--; borderrect.Height--;
 
             CalculateThumb();
+         //   System.Diagnostics.Debug.WriteLine("Scroll bar layout " + Parent?.Parent?.Name + " " + ClientRectangle + " " + sliderarea + " " + upbuttonarea + " " + downbuttonarea + " " + thumbbuttonarea);
         }
 
         private void CalculateThumb()
@@ -438,14 +447,23 @@ namespace ExtendedControls
                 thumboffsetpx = Math.Min(thumboffsetpx, sliderrangepx);     // LIMIT, because we can go over slider range if value=maximum
 
                 thumbbuttonarea = new Rectangle(sliderarea.X, sliderarea.Y + thumboffsetpx, sliderarea.Width, thumbheight);
-                thumbenable = true;
+                if (thumbenable == false)
+                {
+                    thumbenable = true;
+                    Visible = true;
+                }
             }
             else
             {
-                thumbenable = false;                        // else disable the thumb and scroll bar
-                thumbmove = false;
-                mouseover = MouseOver.MouseOverNone;
-                mousepressed = MouseOver.MouseOverNone;
+                if (thumbenable == true)        // if not already disabled..
+                {
+                    thumbenable = false;                        
+                    thumbmove = false;
+                    mouseover = MouseOver.MouseOverNone;
+                    mousepressed = MouseOver.MouseOverNone;
+                    if (HideScrollBar && !DesignMode)
+                        Visible = false;
+                }
             }
         }
                                                            // for a 0-100 scroll bar, with lc=10, positions are 0 to 91 inclusive.

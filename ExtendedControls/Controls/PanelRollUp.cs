@@ -130,9 +130,9 @@ namespace ExtendedControls
         public void SetToolTip(ToolTip t, string ttpin = null, string ttmarker = null)
         {
             if (ttpin == null)
-                ttpin = "Pin to stop this menu bar disappearing automatically".Tx("RUPPin");
+                ttpin = "Pin to stop this menu bar disappearing automatically".Tx(this,"RUPPin");
             if (ttmarker == null)
-                ttmarker = "Click or hover over this to unroll the menu bar".Tx("RUPMarker");
+                ttmarker = "Click or hover over this to unroll the menu bar".Tx(this,"RUPMarker");
             t.SetToolTip(pinbutton, ttpin);
             t.SetToolTip(hiddenmarker1, ttmarker);
             t.SetToolTip(hiddenmarker2, ttmarker);
@@ -266,7 +266,7 @@ namespace ExtendedControls
             if (ClientRectangle.Width > 0)
             {
                 pinbutton.Left = ClientRectangle.Width - pinbutton.Width - 8;
-                pinbutton.Top = 3;
+                pinbutton.Top = 0;
 
                 int hmwidth = Math.Abs(HiddenMarkerWidth);
                 if (hmwidth == 0)

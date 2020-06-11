@@ -31,7 +31,6 @@
             this.panelOuter = new System.Windows.Forms.Panel();
             this.panelIconText = new System.Windows.Forms.Panel();
             this.themeTextBox = new ExtendedControls.ExtRichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.panelIcon = new System.Windows.Forms.Panel();
             this.panelButs = new System.Windows.Forms.Panel();
@@ -42,7 +41,6 @@
             this.labelCaption = new System.Windows.Forms.Label();
             this.panelOuter.SuspendLayout();
             this.panelIconText.SuspendLayout();
-            this.themeTextBox.SuspendLayout();
             this.panelLeft.SuspendLayout();
             this.panelButs.SuspendLayout();
             this.SuspendLayout();
@@ -78,7 +76,6 @@
             // 
             this.themeTextBox.BorderColor = System.Drawing.Color.Transparent;
             this.themeTextBox.BorderColorScaling = 0.5F;
-            this.themeTextBox.Controls.Add(this.button1);
             this.themeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.themeTextBox.HideScrollBar = true;
             this.themeTextBox.Location = new System.Drawing.Point(67, 0);
@@ -103,15 +100,6 @@
             this.themeTextBox.TabIndex = 5;
             this.themeTextBox.TextBoxBackColor = System.Drawing.SystemColors.Control;
             this.themeTextBox.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(25, 209);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // panelLeft
             // 
@@ -147,9 +135,9 @@
             // buttonExt1
             // 
             this.buttonExt1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt1.Location = new System.Drawing.Point(576, 12);
+            this.buttonExt1.Location = new System.Drawing.Point(570, 12);
             this.buttonExt1.Name = "buttonExt1";
-            this.buttonExt1.Size = new System.Drawing.Size(75, 24);
+            this.buttonExt1.Size = new System.Drawing.Size(80, 24);
             this.buttonExt1.TabIndex = 2;
             this.buttonExt1.Text = "OK";
             this.buttonExt1.UseVisualStyleBackColor = true;
@@ -158,9 +146,9 @@
             // buttonExt2
             // 
             this.buttonExt2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt2.Location = new System.Drawing.Point(486, 12);
+            this.buttonExt2.Location = new System.Drawing.Point(470, 12);
             this.buttonExt2.Name = "buttonExt2";
-            this.buttonExt2.Size = new System.Drawing.Size(75, 24);
+            this.buttonExt2.Size = new System.Drawing.Size(80, 24);
             this.buttonExt2.TabIndex = 3;
             this.buttonExt2.Text = "Cancel";
             this.buttonExt2.UseVisualStyleBackColor = true;
@@ -169,9 +157,9 @@
             // buttonExt3
             // 
             this.buttonExt3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt3.Location = new System.Drawing.Point(395, 12);
+            this.buttonExt3.Location = new System.Drawing.Point(370, 12);
             this.buttonExt3.Name = "buttonExt3";
-            this.buttonExt3.Size = new System.Drawing.Size(75, 24);
+            this.buttonExt3.Size = new System.Drawing.Size(80, 24);
             this.buttonExt3.TabIndex = 4;
             this.buttonExt3.Text = "Retry";
             this.buttonExt3.UseVisualStyleBackColor = true;
@@ -215,7 +203,6 @@
             this.panelOuter.ResumeLayout(false);
             this.panelOuter.PerformLayout();
             this.panelIconText.ResumeLayout(false);
-            this.themeTextBox.ResumeLayout(false);
             this.panelLeft.ResumeLayout(false);
             this.panelButs.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -233,7 +220,6 @@
         private System.Windows.Forms.Label labelCaption;
         private System.Windows.Forms.Panel panelGap;
         private System.Windows.Forms.Panel panelIcon;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panelIconText;
         private System.Windows.Forms.Panel panelLeft;
     }

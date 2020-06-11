@@ -108,6 +108,9 @@ namespace ExtendedControls
         }
 
 
+        public int MinZoom { get; set; } = 10;
+        public int MaxZoom { get; set; } = 400;
+
         [DefaultValue(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public bool IsPanning
         {
@@ -156,10 +159,10 @@ namespace ExtendedControls
             get { return _zoom; }
             set
             {
-                if (value < ImageViewer.MinZoom)
-                    value = ImageViewer.MinZoom;
-                else if (value > ImageViewer.MaxZoom)
-                    value = ImageViewer.MaxZoom;
+                if (value < MinZoom)
+                    value = MinZoom;
+                else if (value > MaxZoom)
+                    value = MaxZoom;
 
                 if (_zoom != value)
                 {
@@ -321,7 +324,7 @@ namespace ExtendedControls
                     }
                 }
 
-                this.Zoom = (int)Math.Round(Math.Floor(zoom));
+                this.Zoom = (int)zoom;
             }
         }
 
@@ -382,9 +385,6 @@ namespace ExtendedControls
 
         #endregion  Overriden Properties  
 
-
-        private static readonly int MinZoom = 20;
-        private static readonly int MaxZoom = 400;
 
         private bool _autoCenter;
         private bool _autoPan;

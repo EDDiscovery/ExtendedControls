@@ -26,38 +26,54 @@ namespace ExtendedControls
 
         public class ImageElement
         {
+            public Rectangle Location { get; set; }
+            public Image Image { get; set; }
+            public bool ImageOwned { get; set; }
+
+            public Rectangle AltLocation { get; set; }
+            public Image AltImage { get; set; }
+            public bool AltImageOwned { get; set; }
+            public bool InAltImage { get; set; } = false;
+
+            public Object Tag { get; set; }
+            public string ToolTipText { get; set; }
+
+            public bool MouseOver { get; set; }
+
+            public Action<Graphics, ImageElement> OwnerDrawCallback { get; set; }
+
             public ImageElement()
             {
             }
 
             public ImageElement(Rectangle p, Image i, Object t = null, string tt = null, bool imgowned = true)
             {
-                pos = p; img = i; tag = t; tooltip = tt; this.imgowned = imgowned;
+                Location = p; Image = i; Tag = t; ToolTipText = tt; this.ImageOwned = imgowned;
             }
 
-            public void Image(Rectangle p, Image i, Object t = null, string tt = null, bool imgowned = true)
+            public void Bitmap(Rectangle p, Image i, Object t = null, string tt = null, bool imgowned = true)
             {
-                pos = p; img = i; tag = t; tooltip = tt; this.imgowned = imgowned;
+                Location = p; Image = i; Tag = t; ToolTipText = tt; this.ImageOwned = imgowned;
             }
 
             // centred, autosized
             public void TextCentreAutosize(Point poscentrehorz, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F, 
                                             Object t = null, string tt = null, StringFormat frmt = null)
             {
-                img = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
-                pos = new Rectangle(poscentrehorz.X - img.Width / 2, poscentrehorz.Y, img.Width, img.Height);
-                tag = t;
-                tooltip = tt;
+                Image = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
+                Location = new Rectangle(poscentrehorz.X - Image.Width / 2, poscentrehorz.Y, Image.Width, Image.Height);
+                Tag = t;
+                ToolTipText = tt;
             }
 
             // top left, autosized
             public void TextAutosize(Point topleft, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F, 
                                         Object t = null, string tt = null, StringFormat frmt = null)
             {
-                img = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
-                pos = new Rectangle(topleft.X, topleft.Y, img.Width, img.Height);
-                tag = t;
-                tooltip = tt;
+                Image = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
+                Location = new Rectangle(topleft.X, topleft.Y, Image.Width, Image.Height);
+                Tag = t;
+                ToolTipText = tt;
             }
 
             // top left, sized
@@ -65,84 +81,80 @@ namespace ExtendedControls
                                     float backscale = 1.0F, bool centertext = false,
                                     Object t = null, string tt = null, StringFormat frmt = null)
             {
-                img = BaseUtils.BitMapHelpers.DrawTextIntoFixedSizeBitmapC(text, size, dp, c, backcolour, backscale, centertext, frmt );
-                pos = new Rectangle(topleft.X, topleft.Y, img.Width, img.Height);
-                tag = t;
-                tooltip = tt;
+                Image = BaseUtils.BitMapHelpers.DrawTextIntoFixedSizeBitmapC(text, size, dp, c, backcolour, backscale, centertext, frmt );
+                Location = new Rectangle(topleft.X, topleft.Y, Image.Width, Image.Height);
+                Tag = t;
+                ToolTipText = tt;
+            }
+
+            public void OwnerDraw(Action<Graphics, ImageElement> callback, Rectangle p, Object tag = null, string tiptext = null)
+            {
+                Location = p;
+                OwnerDrawCallback = callback;
+                Tag = tag;
+                ToolTipText = tiptext;
             }
 
             public void SetAlternateImage(Image i, Rectangle p, bool mo = false, bool imgowned = true)
             {
-                altimg = i;
-                altpos = p;
-                mouseover = mo;
-                altimgowned = imgowned;
+                AltImage = i;
+                AltLocation = p;
+                MouseOver = mo;
+                AltImageOwned = imgowned;
             }
 
             public bool SwapImages(Image surface)           // swap to alternative, optionally, draw to surface
             {
-                if (altimg != null)
+                if (AltImage != null)
                 {
-                    Rectangle r = pos;
-                    pos = altpos;
-                    altpos = r;
+                    Rectangle r = Location;
+                    Location = AltLocation;
+                    AltLocation = r;
 
-                    Image i = img;
-                    img = altimg;
-                    altimg = i;
+                    Image i = Image;
+                    Image = AltImage;
+                    AltImage = i;
 
-                    bool io = imgowned;     // swap tags
-                    imgowned = altimgowned;
-                    altimgowned = io;
+                    bool io = ImageOwned;     // swap tags
+                    ImageOwned = AltImageOwned;
+                    AltImageOwned = io;
 
                     //System.Diagnostics.Debug.WriteLine("Element @ " + pos + " " + inaltimg);
                     if (surface != null)
                     {
                         using (Graphics gr = Graphics.FromImage(surface)) //restore
                         {
-                            gr.Clip = new Region(altpos);       // remove former
+                            gr.Clip = new Region(AltLocation);       // remove former
                             gr.Clear(Color.FromArgb(0, Color.Black));       // set area back to transparent before paint..
                         }
 
                         using (Graphics gr = Graphics.FromImage(surface)) //restore
-                            gr.DrawImage(img, pos);
+                            gr.DrawImage(Image, Location);
                     }
 
-                    inaltimg = !inaltimg;
+                    InAltImage = !InAltImage;
                     return true;
                 }
                 else
                     return false;
             }
-
-            public Rectangle pos;
-            public Image img;
-            public bool imgowned;
-            public Object tag;
-            public string tooltip;
-
-            public Image altimg;
-            public bool altimgowned;
-            public Rectangle altpos;
-            public bool inaltimg = false;
-
-            public bool mouseover;
+ 
 
             public void Translate(int x, int y, bool alt = true)
             {
-                pos = new Rectangle(pos.X + x, pos.Y + y, pos.Width, pos.Height);
+                Location = new Rectangle(Location.X + x, Location.Y + y, Location.Width, Location.Height);
                 if (alt)
-                    altpos = new Rectangle(altpos.X + x, altpos.Y + y, altpos.Width, altpos.Height);
+                    AltLocation = new Rectangle(AltLocation.X + x, AltLocation.Y + y, AltLocation.Width, AltLocation.Height);
             }
 
             public void TranslateAlt(int x, int y)
             {
-                altpos = new Rectangle(altpos.X + x, altpos.Y + y, altpos.Width, altpos.Height);
+                AltLocation = new Rectangle(AltLocation.X + x, AltLocation.Y + y, AltLocation.Width, AltLocation.Height);
             }
 
             public void Position(int x, int y)
             {
-                pos = new Rectangle(x, y, pos.Width, pos.Height);
+                Location = new Rectangle(x, y, Location.Width, Location.Height);
             }
         }
 
@@ -151,13 +163,12 @@ namespace ExtendedControls
         public event OnElement LeaveElement;
         public event OnElement ClickElement;
 
-        ImageElement elementin = null;
-
         public Color FillColor = Color.Transparent;         // fill the bitmap with this colour before pasting the bitmaps in
 
+        private ImageElement elementin = null;
         private Timer hovertimer = new Timer();
-        ToolTip hovertip = null;
-        Point hoverpos;
+        private ToolTip hovertip = null;
+        private Point hoverpos;
         private List<ImageElement> elements = new List<ImageElement>();
 
         #region Interface
@@ -173,6 +184,11 @@ namespace ExtendedControls
         public void Add(ImageElement i)
         {
             elements.Add(i);
+        }
+
+        public void AddDrawFirst(ImageElement i)        // add to front of queue, draw first
+        {
+            elements.Insert(0,i);
         }
 
         public void AddRange(List<ImageElement> list)
@@ -210,7 +226,15 @@ namespace ExtendedControls
         public ImageElement AddImage(Rectangle p, Image img, Object tag = null, string tiptext = null, bool imgowned = true)    // make sure pushes it in..
         {
             ImageElement lab = new ImageElement();
-            lab.Image(p,img,tag,tiptext,imgowned);
+            lab.Bitmap(p, img, tag, tiptext, imgowned);
+            elements.Add(lab);
+            return lab;
+        }
+
+        public ImageElement AddOwnerDraw(Action<Graphics, ImageElement> callback, Rectangle p, Object tag = null, string tiptext = null)    // make sure pushes it in..
+        {
+            ImageElement lab = new ImageElement();
+            lab.OwnerDraw(callback, p, tag, tiptext);
             elements.Add(lab);
             return lab;
         }
@@ -221,17 +245,17 @@ namespace ExtendedControls
             {
                 foreach (var e in elements)
                 {
-                    if (e.imgowned)
+                    if (e.ImageOwned)
                     {
-                        e.img?.Dispose();
+                        e.Image?.Dispose();
                     }
-                    e.img = null;
-                    if (e.altimgowned)
+                    e.Image = null;
+                    if (e.AltImageOwned)
                     {
-                        e.altimg?.Dispose();
+                        e.AltImage?.Dispose();
                     }
-                    e.altimg = null;
-                    e.tag = null;
+                    e.AltImage = null;
+                    e.Tag = null;
                 }
                 elements.Clear();
             }
@@ -244,10 +268,10 @@ namespace ExtendedControls
             {
                 foreach (ImageElement i in elements)
                 {
-                    if (i.pos.X + i.pos.Width > maxw)
-                        maxw = i.pos.X + i.pos.Width;
-                    if (i.pos.Y + i.pos.Height > maxh)
-                        maxh = i.pos.Y + i.pos.Height;
+                    if (i.Location.X + i.Location.Width > maxw)
+                        maxw = i.Location.X + i.Location.Width;
+                    if (i.Location.Y + i.Location.Height > maxh)
+                        maxh = i.Location.Y + i.Location.Height;
                 }
             }
 
@@ -287,7 +311,10 @@ namespace ExtendedControls
                 {
                     foreach (ImageElement i in elements)
                     {
-                        gr.DrawImage(i.img, i.pos);
+                        if ( i.Image != null )
+                            gr.DrawImage(i.Image, i.Location);
+
+                        i.OwnerDrawCallback?.Invoke(gr, i);
                     }
                 }
 
@@ -310,7 +337,7 @@ namespace ExtendedControls
         {
             if ( elementin != null )
             {
-                if (elementin.altimg != null && elementin.mouseover && elementin.inaltimg)
+                if (elementin.AltImage != null && elementin.MouseOver && elementin.InAltImage)
                 {
                     elementin.SwapImages(Image);
                     Invalidate();
@@ -341,31 +368,31 @@ namespace ExtendedControls
         {
             base.OnMouseMove(eventargs);
 
-            if (elementin != null && !elementin.pos.Contains(eventargs.Location))       // go out..
+            if (elementin != null && !elementin.Location.Contains(eventargs.Location))       // go out..
             {
                 LeaveCurrentElement();
                 if (LeaveElement != null)
-                    LeaveElement(this, eventargs, elementin, elementin.tag);
+                    LeaveElement(this, eventargs, elementin, elementin.Tag);
             }
 
             if (elementin == null)      // is in?
             {
                 foreach (ImageElement i in elements)
                 {
-                    if (i.pos.Contains(eventargs.Location))
+                    if (i.Location.Contains(eventargs.Location))
                     {
                         elementin = i;
 
                         //System.Diagnostics.Debug.WriteLine("Enter element " + elements.FindIndex(x=>x==i));
 
-                        if (elementin.altimg != null && elementin.mouseover && !elementin.inaltimg)
+                        if (elementin.AltImage != null && elementin.MouseOver && !elementin.InAltImage)
                         { 
                             elementin.SwapImages(Image);
                             Invalidate();
                         }
 
                         if (EnterElement != null)
-                            EnterElement(this, eventargs, elementin, elementin.tag );
+                            EnterElement(this, eventargs, elementin, elementin.Tag );
                     }
                 }
             }
@@ -397,7 +424,7 @@ namespace ExtendedControls
         {
             hovertimer.Stop();
 
-            if (elementin != null && elementin.tooltip != null && elementin.tooltip.Length>0)
+            if (elementin != null && elementin.ToolTipText != null && elementin.ToolTipText.Length>0)
             {
                 hovertip = new ToolTip();
 
@@ -406,7 +433,7 @@ namespace ExtendedControls
                 hovertip.ReshowDelay = 0;
                 hovertip.IsBalloon = true;
                 hovertip.ShowAlways = true;
-                hovertip.SetToolTip(this, elementin.tooltip);
+                hovertip.SetToolTip(this, elementin.ToolTipText);
             }
         }
 
@@ -419,7 +446,7 @@ namespace ExtendedControls
             ClearHoverTip();
 
             if (ClickElement != null)                   
-                ClickElement(this, e , elementin, elementin?.tag);          // null if no element clicked
+                ClickElement(this, e , elementin, elementin?.Tag);          // null if no element clicked
         }
 
     }

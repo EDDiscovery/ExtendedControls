@@ -94,9 +94,9 @@ namespace ExtendedControls
             autofadeinouttimer.Tick += AutoFadeInOutTick;
             autorepeat.Interval = 200;
             autorepeat.Tick += Autorepeat_Tick;
-            panelSelectedIcon.BackgroundImage = EmptyPanelIcon;
-            panelSelectedIcon.BackgroundImageLayout = ImageLayout.Stretch;
-            panelPopOutIcon.Visible = panelListSelection.Visible = false;
+            pimageSelectedIcon.BackgroundImage = EmptyPanelIcon;
+            pimageSelectedIcon.BackgroundImageLayout = ImageLayout.Stretch;
+            pimagePopOutIcon.Visible = pimageListSelection.Visible = false;
         }
 
         #region Public interface
@@ -133,7 +133,7 @@ namespace ExtendedControls
                 selectedindex = -1;
                 labelControlText.Text = "";
                 labelTitle.Text = "?";
-                panelSelectedIcon.BackgroundImage = EmptyPanelIcon;
+                pimageSelectedIcon.BackgroundImage = EmptyPanelIcon;
             }
         }
 
@@ -155,7 +155,7 @@ namespace ExtendedControls
                     //System.Diagnostics.Debug.WriteLine("Panel " + i + " post create " + CurrentControl.Name);
 
                     if (i < ImageList.Length)
-                        panelSelectedIcon.BackgroundImage = ImageList[i];   // paranoia..
+                        pimageSelectedIcon.BackgroundImage = ImageList[i];   // paranoia..
 
                     labelTitle.Text = CurrentControl.Name;
                 }
@@ -308,7 +308,7 @@ namespace ExtendedControls
                         Tag = inp,
                         BackgroundImageLayout = ImageLayout.Stretch,
                         Visible = false,
-                        Size = panelSelectedIcon.Size,
+                        Size = pimageSelectedIcon.Size,
                        
                     };
 
@@ -338,7 +338,7 @@ namespace ExtendedControls
 
             int tabfieldspacing = Font.ScalePixels(8);
 
-            int xpos = panelSelectedIcon.Width + tabfieldspacing;       // start here
+            int xpos = pimageSelectedIcon.Width + tabfieldspacing;       // start here
             bool arrowson = false;
 
             if (StripMode == StripModeType.ListSelection)               // in list mode
@@ -352,7 +352,7 @@ namespace ExtendedControls
                     }
 
                     showlistselection = true;
-                    xpos += panelListSelection.Width + tabfieldspacing; // space on for allowing panel selector
+                    xpos += pimageListSelection.Width + tabfieldspacing; // space on for allowing panel selector
                 }
             }
             else if (tdm != TabDisplayMode.Compressed)      // show icons..
@@ -426,19 +426,29 @@ namespace ExtendedControls
                     imagepanels[tabno].Visible = false;
             }
 
+            panelStrip.SuspendLayout(); // important to suspend layout otherwise we get popping
+
             //System.Diagnostics.Debug.WriteLine(this.Name + " seli" + showselectionicon + " showp " + showpopouticon + " text" + showtext + " lists " + showlistselection);
-            panelArrowRight.Visible = panelArrowLeft.Visible = arrowson;
-            panelSelectedIcon.Visible = showselectionicon;
-            panelPopOutIcon.Visible = showpopouticon;
-            panelListSelection.Visible = showlistselection;
-            labelTitle.Visible = showtext;
-            labelControlText.Visible = showtext;
+            pimageListSelection.Size = pimagePopOutIcon.Size = pimageSelectedIcon.Size; // duplicate size across so panelstrip does not resize
 
-            panelPopOutIcon.Location = panelSelectedIcon.Location;     // same position, mutually exclusive
-            panelListSelection.Location = new Point(panelSelectedIcon.Right + tabfieldspacing, panelSelectedIcon.Top);
+            pimageSelectedIcon.Visible = showselectionicon;
+
+            pimagePopOutIcon.Location = pimageSelectedIcon.Location;     // same position, mutually exclusive
+            pimagePopOutIcon.Visible = showpopouticon;
+
+            pimageListSelection.Location = new Point(pimageSelectedIcon.Right + tabfieldspacing, pimageSelectedIcon.Top);
+            pimageListSelection.Visible = showlistselection;
+
             labelTitle.Location = new Point(xpos + tabfieldspacing, labelTitle.Top);
-            labelControlText.Location = new Point(labelTitle.Right + tabfieldspacing, labelTitle.Top);
+            labelTitle.Visible = showtext;
 
+            labelControlText.Location = new Point(labelTitle.Right + tabfieldspacing, labelTitle.Top);
+            labelControlText.Visible = showtext;
+            //System.Diagnostics.Debug.WriteLine("Panel " + panelStrip.Size + " " + pimageListSelection.Size + " " + pimagePopOutIcon.Size + " " + panelStrip.AutoSize);
+
+            panelArrowRight.Visible = panelArrowLeft.Visible = arrowson;
+
+            panelStrip.ResumeLayout();
         }
 
         public void TabIconClicked(object sender, EventArgs e)
@@ -513,7 +523,7 @@ namespace ExtendedControls
             dropdown.ItemSeperators = ListSelectionItemSeparators;
             dropdown.ImageItems = ImageList.ToList();
             dropdown.FlatStyle = FlatStyle.Popup;
-            dropdown.PositionBelow(panelListSelection);
+            dropdown.PositionBelow(pimageListSelection);
 
             dropdown.SelectedIndexChanged += (s, ea) =>
             {

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -114,7 +115,7 @@ namespace DialogTest
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
 
             f.AddAllNone();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i <250; i++)
             {
                 f.AddStandardOption("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length]);
             }
@@ -134,9 +135,12 @@ namespace DialogTest
 
         private void CLBSF(float size, bool group)
         {
+            Stopwatch sw = new Stopwatch(); sw.Start();
             CheckedIconListBoxFormGroup f = MakeSelForm(size, group);
             f.PositionBelow(extButton5);
             f.Show(this);
+            System.Diagnostics.Debug.WriteLine("CLBSF in " + sw.ElapsedMilliseconds);
+
         }
 
         private void extButton5_Click(object sender, EventArgs e)
@@ -206,6 +210,53 @@ namespace DialogTest
 
             showhideselform1.PositionBelow(extButton9);
             showhideselform1.Show(this);
+        }
+
+        private void extButton10_Click(object sender, EventArgs e)
+        {
+            DropDown(true);
+        }
+
+        private void extButton11_Click(object sender, EventArgs e)
+        {
+            DropDown(false);
+        }
+
+        private void DropDown(bool themeit)
+        { 
+            var dropdown = new ExtListBoxForm("", true);
+
+            Image[] imagelist = new Image[] {
+                Properties.Resources.galaxy_black,
+                Properties.Resources.galaxy_gray,
+                Properties.Resources.galaxy_red,
+                Properties.Resources.galaxy_white,
+            };
+
+            string[] textlist = new string[] { "256", "192", "128", "96"};
+
+            dropdown.Items = textlist.ToList();
+            dropdown.ImageItems = imagelist.ToList();
+            dropdown.FlatStyle = FlatStyle.Popup;
+            dropdown.PositionBelow(extButton11);
+
+            if (themeit)
+            {
+                theme.ApplyStd(dropdown);
+            }
+            else
+            { 
+                var stdtheme = new ThemeStandard();
+                stdtheme.LoadBaseThemes();
+                stdtheme.SetThemeByName("Windows Default");
+
+                stdtheme.ApplyStd(dropdown,true);
+            }
+
+
+            dropdown.Show(this.FindForm());
+
+
         }
     }
 }

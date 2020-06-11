@@ -26,7 +26,7 @@ namespace ExtendedControls
         {
         }
 
-        public ExtLabel Label { get { return Controls.OfType<ExtLabel>().FirstOrDefault(); } }
+        public Label Label { get { return Controls.OfType<Label>().FirstOrDefault(); } }
         public ExtButton[] Buttons { get { return Controls.OfType<ExtButton>().ToArray(); } }
         public Panel[] Decals { get { return Controls.OfType<Panel>().ToArray(); } }
 
@@ -48,14 +48,6 @@ namespace ExtendedControls
                 butw += p.Width + p.Margin.Left + p.Margin.Right;
                 buthmax = Math.Max(buthmax, p.Height);
             }
-
-            if (Label != null)
-            {
-                Label.Dock = DockStyle.Top;
-                Label.AutoSize = false;
-                Label.TextAlign = ContentAlignment.MiddleCenter;
-            }
-
 
             int fonth = (int)Font.GetHeight() + 2;       // +2 is to allow for rounding and nerf
             int decalpos = Label.Top + fonth + Padding.Top;
@@ -99,12 +91,16 @@ namespace ExtendedControls
             but.BackgroundImage = backimage;
             but.BackgroundImageLayout = ImageLayout.Stretch;
 
-            ExtLabel l = new ExtLabel();
+            Label l = new Label();
             l.Text = text;
             l.Font = textfont;
             l.ForeColor = textfore;
             l.Margin = new Padding(0);
-            l.TextBackColor = l.BackColor = textbackgroundcol;
+            l.BackColor = textbackgroundcol;
+            l.AutoSize = false;
+            l.Dock = DockStyle.Top;
+            l.TextAlign = ContentAlignment.TopCenter;
+            l.AutoEllipsis = true;
 
             but.Controls.Add(l);
 
