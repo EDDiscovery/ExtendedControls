@@ -38,10 +38,9 @@ namespace DialogTest
             // draw the boundaries cube frame
             extAstroPlotTest.DrawBoundariesWidget(extAstroPlotTest.BoundariesRadius);
 
-            AddDemoStars();           
+            //AddDemoStars();           
             //AddDemoOrrery();
-            //DemoCluster();
-
+            DemoCluster();
         }
 
         private void DefineDefaults()
@@ -50,15 +49,21 @@ namespace DialogTest
             extAstroPlotTest.Focus = 1400;
             extAstroPlotTest.Elevation = -0.3;
             extAstroPlotTest.Azimuth = -0.3;
-            extAstroPlotTest.AxesWidget = true;
+            extAstroPlotTest.AxesWidget = false;
             extAstroPlotTest.AxesLength = 2;
+            
+            extAstroPlotTest.Center[0] = 0.0;
+            extAstroPlotTest.Center[1] = 0.0;
+            extAstroPlotTest.Center[2] = 0.0;
 
+            extAstroPlotTest.BoundariesWidget = false;
             extAstroPlotTest.BoundariesRadius = 0.9;
 
             extAstroPlotTest.MouseSensitivity_Wheel = 120;
             extAstroPlotTest.MouseSensitivity_Movement = 200;
 
             extAstroPlotTest.SmallDotSize = 4;
+            
         }
 
         public class systemsInCluster
@@ -83,34 +88,36 @@ namespace DialogTest
             systemsInCluster sys02 = new systemsInCluster { Name = "Synuefe VF-D d13-30", X = 875.38, Y = -467.38, Z = 127.72 };
             systemsInCluster sys03 = new systemsInCluster { Name = "Synuefe VF-D d13-6", X = 872.53, Y = -475.47, Z = 108.81 };
             systemsInCluster sys04 = new systemsInCluster { Name = "Synuefe OO-J b54-0", X = 876.50, Y = -464.50, Z = 117.53 };
-            systemsInCluster sys05 = new systemsInCluster { Name = "Synuefe RZ-H b55-0", X = 869.28, Y = -474.44, Z = 111.72 };
-            systemsInCluster sys06 = new systemsInCluster { Name = "Synuefe OO-J b54-1", X = 897.25, Y = -472.09, Z = 110.47 };
-            systemsInCluster sys07 = new systemsInCluster { Name = "Synuefe QO-J b54-1", X = 873.53, Y = -485.00, Z = 139.53 };
-            systemsInCluster sys08 = new systemsInCluster { Name = "Synuefe ZX-C c28-8", X = 879.25, Y = -479.47, Z = 100.03 };
-            systemsInCluster sys09 = new systemsInCluster { Name = "Synuefe PO-J b54-0", X = 860.34, Y = -480.59, Z = 126.47 };
-
+            systemsInCluster sys05 = new systemsInCluster { Name = "Synuefe RZ-H b55-0", X = 869.28, Y = -474.44, Z = 111.72 };            
+            
             double[] centerSystem = new double[3];
 
-            centerSystem = SetCenterSystem();
+            SetCenterSystem(sys00);
 
             List<double[]> Stars = new List<double[]>();
 
-            Stars.Add(new double[] { CalculateDistanceX(sys00, centerSystem[0]), CalculateDistanceY(sys00, centerSystem[1]), CalculateDistanceZ(sys00, centerSystem[2]) });
-            Stars.Add(new double[] { CalculateDistanceX(sys01, centerSystem[0]), CalculateDistanceY(sys01, centerSystem[1]), CalculateDistanceZ(sys01, centerSystem[2]) });
-            Stars.Add(new double[] { CalculateDistanceX(sys02, centerSystem[0]), CalculateDistanceY(sys02, centerSystem[1]), CalculateDistanceZ(sys02, centerSystem[2]) });
-            Stars.Add(new double[] { CalculateDistanceX(sys03, centerSystem[0]), CalculateDistanceY(sys03, centerSystem[1]), CalculateDistanceZ(sys03, centerSystem[2]) });
-            Stars.Add(new double[] { CalculateDistanceX(sys04, centerSystem[0]), CalculateDistanceY(sys04, centerSystem[1]), CalculateDistanceZ(sys04, centerSystem[2]) });
-            Stars.Add(new double[] { CalculateDistanceX(sys05, centerSystem[0]), CalculateDistanceY(sys05, centerSystem[1]), CalculateDistanceZ(sys05, centerSystem[2]) });
+            //Stars.Add(new double[] { CalculateDistanceX(sys00, centerSystem[0]), CalculateDistanceY(sys00, centerSystem[1]), CalculateDistanceZ(sys00, centerSystem[2]) });
+            //Stars.Add(new double[] { CalculateDistanceX(sys01, centerSystem[0]), CalculateDistanceY(sys01, centerSystem[1]), CalculateDistanceZ(sys01, centerSystem[2]) });
+            //Stars.Add(new double[] { CalculateDistanceX(sys02, centerSystem[0]), CalculateDistanceY(sys02, centerSystem[1]), CalculateDistanceZ(sys02, centerSystem[2]) });
+            //Stars.Add(new double[] { CalculateDistanceX(sys03, centerSystem[0]), CalculateDistanceY(sys03, centerSystem[1]), CalculateDistanceZ(sys03, centerSystem[2]) });
+            //Stars.Add(new double[] { CalculateDistanceX(sys04, centerSystem[0]), CalculateDistanceY(sys04, centerSystem[1]), CalculateDistanceZ(sys04, centerSystem[2]) });
+            //Stars.Add(new double[] { CalculateDistanceX(sys05, centerSystem[0]), CalculateDistanceY(sys05, centerSystem[1]), CalculateDistanceZ(sys05, centerSystem[2]) });
+            Stars.Add(new double[] { sys00.X - extAstroPlotTest.Center[0], sys00.Y - extAstroPlotTest.Center[1], sys00.Z - extAstroPlotTest.Center[2] });
+            Stars.Add(new double[] { sys01.X - extAstroPlotTest.Center[0], sys01.Y - extAstroPlotTest.Center[1], sys01.Z - extAstroPlotTest.Center[2] });
+            Stars.Add(new double[] { sys02.X - extAstroPlotTest.Center[0], sys02.Y - extAstroPlotTest.Center[1], sys02.Z - extAstroPlotTest.Center[2] });
+            Stars.Add(new double[] { sys03.X - extAstroPlotTest.Center[0], sys03.Y - extAstroPlotTest.Center[1], sys03.Z - extAstroPlotTest.Center[2] });
 
             extAstroPlotTest.AddPointsToMap(Stars); 
         }
-
-        private double[] SetCenterSystem()
+                
+        private void SetCenterSystem(systemsInCluster system)
         {
-            //return new double[] { sys00.X, sys00.Y, sys00.Z };
-            return new double[] { 0, 0, 0 };
+            extAstroPlotTest.Center[0] = system.X;
+            extAstroPlotTest.Center[1] = system.Y;
+            extAstroPlotTest.Center[2] = system.Z;
         }
 
+        
         private double CalculateDistanceX(systemsInCluster sys, double c)
         {
             var dx = c - sys.X;            

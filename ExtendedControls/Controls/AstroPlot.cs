@@ -33,7 +33,7 @@ namespace ExtendedControls.Controls
     public partial class ExtAstroPlot : UserControl
     {
         // points used to draw and orient the axes widget
-        public List<List<double[]>> Coords = new List<List<double[]>>();
+        private List<List<double[]>> Coords = new List<List<double[]>>();
         private List<PointF[]> AxesAnchors = new List<PointF[]>();
 
         // points used for the boundaries cube
@@ -129,7 +129,7 @@ namespace ExtendedControls.Controls
         }
 
         [Description("Set the coordinates of the center of the plot")]
-        public double[] PlotCenter
+        public double[] Center
         {
             get { return center; }
             set { center = value; UpdateProjection(); }
@@ -546,13 +546,15 @@ namespace ExtendedControls.Controls
         {
             plot.Location = new Point((int)lastHorizontal, (int)lastVertical);
 
-            double x = distance * Math.Cos(elevation) * Math.Cos(azimuth);
-            double y = distance * Math.Cos(elevation) * Math.Sin(azimuth);
-            double z = distance * Math.Sin(elevation);
+            double x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
+            double y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
+            double z = (distance * Math.Sin(elevation));
             cameraPosition = new double[3] { -y, z, -x};
 
             if (MapPoints == null)
+            {
                 return;
+            }
             else
             {
                 for (int i = 0; i < MapPoints.Count; i++)
@@ -560,7 +562,9 @@ namespace ExtendedControls.Controls
             }
 
             if (OrreryOrbits == null)
+            {
                 return;
+            }
             else
             {
                 for (int i = 0; i < OrreryOrbits.Count; i++)
@@ -570,7 +574,9 @@ namespace ExtendedControls.Controls
             }
 
             if (AxesAnchors == null)
+            {
                 return;
+            }
             else
             {
                 if (drawAxesWidget)
@@ -581,7 +587,9 @@ namespace ExtendedControls.Controls
             }
 
             if (BoundariesCorners == null)
+            {
                 return;
+            }
             else
             {
                 if (drawBoundariesWidget)
@@ -591,7 +599,7 @@ namespace ExtendedControls.Controls
                 }
             }
 
-            this.Invalidate();            
+            Invalidate();
         }
 
         public void Clear()
@@ -630,7 +638,7 @@ namespace ExtendedControls.Controls
             plot.Height = this.Height;
             plot.Width = this.Width;
             plot.Top = this.Top;
-            plot.Left = this.Left;            
+            plot.Left = this.Left;
         }
 
         private void plot_SizeChanged(object sender, EventArgs e)
@@ -658,13 +666,17 @@ namespace ExtendedControls.Controls
             if (middleMousePressed)
             {
                 // we want to be able to translate the camera
+                               
                 UpdateProjection();
             }
         }
 
         private new void OnMouseWheel(MouseEventArgs e)
         {
-            Distance += -e.Delta / MouseSensitivity_Wheel;            
+            if (!middleMousePressed)
+            {
+                Distance += -e.Delta / MouseSensitivity_Wheel;
+            }
         }
                 
         #endregion
