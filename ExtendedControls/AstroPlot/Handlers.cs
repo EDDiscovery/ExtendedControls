@@ -7,18 +7,7 @@ using System.Windows.Forms;
 namespace ExtendedControls.Controls
 {
     static partial class AstroPlot
-    {
-        // interaction
-
-        public static class MouseDrag
-        {
-            public static void Add(Control ctrl, Action<MouseEventArgs> onMouseDrag)
-            {
-                if (ctrl == null || onMouseDrag == null)
-                    throw new ArgumentNullException();
-            }            
-        }
-
+    {        
         public static class MouseWheel
         {
             public static void Add(Control ctrl, Action<MouseEventArgs> onMouseWheel)

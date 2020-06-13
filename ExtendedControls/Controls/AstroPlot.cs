@@ -33,32 +33,33 @@ namespace ExtendedControls.Controls
     public partial class ExtAstroPlot : UserControl
     {
         // points used to draw and orient the axes widget
-        List<List<double[]>> Coords = new List<List<double[]>>();
-        List<PointF[]> AxesAnchors = new List<PointF[]>();
+        public List<List<double[]>> Coords = new List<List<double[]>>();
+        private List<PointF[]> AxesAnchors = new List<PointF[]>();
 
         // points used for the boundaries cube
-        List<List<double[]>> BoundariesCorners = new List<List<double[]>>();
-        List<PointF[]> BoundariesFrame = new List<PointF[]>();
-
-        // Data points
+        public List<List<double[]>> BoundariesCorners = new List<List<double[]>>();
+        private List<PointF[]> BoundariesFrame = new List<PointF[]>();
 
         // MapPlot objects
-        List<List<double[]>> MapBodies = new List<List<double[]>>();
-        List<PointF[]> MapPoints = new List<PointF[]>();
+        private List<List<double[]>> MapBodies = new List<List<double[]>>();
+        private List<PointF[]> MapPoints = new List<PointF[]>();
             
         // Orrery objects
-        List<List<double[]>> OrreryBodies = new List<List<double[]>>();
-        List<List<double[]>> OrreryCenters = new List<List<double[]>>();
-        List<PointF[]> OrreryOrbits = new List<PointF[]>();
-        List<PointF[]> OrreryMassCenters = new List<PointF[]>();
+        private List<List<double[]>> OrreryBodies = new List<List<double[]>>();
+        private List<List<double[]>> OrreryCenters = new List<List<double[]>>();
+        private List<PointF[]> OrreryOrbits = new List<PointF[]>();
+        private List<PointF[]> OrreryMassCenters = new List<PointF[]>();
 
         private double focalLength = 900;
         private double distance = 6;
         private double[] cameraPosition = new double[3];
 
+        private double[] center = new double[3];
+
         private int horizontalTranslation = 0;
         private int verticalTranslation = 0;
         
+        // Objects
         private int smallDotSize = 4;
         private int mediumDotSize = 8;
         private int largeDotSize = 12;
@@ -105,7 +106,7 @@ namespace ExtendedControls.Controls
             get { return verticalTranslation; }
             private set { verticalTranslation = value; }
         }
-
+        
         [Description("Set the distance at which the camera stands from the plot")]
         public double Distance
         {
@@ -125,6 +126,13 @@ namespace ExtendedControls.Controls
         {
             get { return cameraPosition; }
             set { cameraPosition = value; UpdateProjection(); }
+        }
+
+        [Description("Set the coordinates of the center of the plot")]
+        public double[] PlotCenter
+        {
+            get { return center; }
+            set { center = value; UpdateProjection(); }
         }
 
         [Description("Horizontal direction of the camera expressed as an angular distance")]
@@ -221,7 +229,7 @@ namespace ExtendedControls.Controls
         public ExtAstroPlot()
         {
             InitializeComponent();
-            AstroPlot.MouseWheel.Add(this, OnMouseWheel);            
+            AstroPlot.MouseWheel.Add(this, OnMouseWheel);
         }
 
         protected override CreateParams CreateParams
@@ -239,20 +247,26 @@ namespace ExtendedControls.Controls
         private void plot_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
-                        
+
             // Pick the background color defined in the designer            
-            SolidBrush axisAnchor = new SolidBrush(ForeColor);
+            _ = new SolidBrush(ForeColor);
 
-            Pen AxisPen = new Pen(new SolidBrush(ForeColor));
-            AxisPen.Width = 1;
+            Pen AxisPen = new Pen(new SolidBrush(ForeColor))
+            {
+                Width = 1
+            };
 
-            Pen BoundariesPen = new Pen(new SolidBrush(ForeColor));
-            BoundariesPen.Width = 1;
-            BoundariesPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+            Pen BoundariesPen = new Pen(new SolidBrush(ForeColor))
+            {
+                Width = 1,
+                DashStyle = System.Drawing.Drawing2D.DashStyle.Dot
+            };
 
-            Pen OrreryOrbitsPen = new Pen(new SolidBrush(Color.White));
-            OrreryOrbitsPen.Width = 1;
-            OrreryOrbitsPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+            Pen OrreryOrbitsPen = new Pen(new SolidBrush(Color.White))
+            {
+                Width = 1,
+                DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
+            };
 
             // center point            
             var center = new PointF((int)(this.Width / 2), (int)(this.Height / 2));
@@ -377,8 +391,8 @@ namespace ExtendedControls.Controls
             base.OnPaint(e);
 
             // Pick the background color defined in the designer
-            SolidBrush backColor = new SolidBrush(BackColor);            
-            
+            var backColor = new SolidBrush(BackColor);            
+
             Graphics g = this.CreateGraphics();                       
             g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
         }
@@ -396,11 +410,12 @@ namespace ExtendedControls.Controls
         {
             if (drawAxesWidget)
             {
-                List<double[]> Coords = new List<double[]>();
-
-                Coords.Add(new double[] { length * 0.5, 0.0, 0.0, 0 });
-                Coords.Add(new double[] { 0.0, -(length * 0.5), 0.0, 1 });
-                Coords.Add(new double[] { 0.0, 0.0, -(length * 0.5), 2 });
+                List<double[]> Coords = new List<double[]>
+                {
+                    new double[] { length * 0.5, 0.0, 0.0, 0 },
+                    new double[] { 0.0, -(length * 0.5), 0.0, 1 },
+                    new double[] { 0.0, 0.0, -(length * 0.5), 2 }
+                };
 
                 // draw the anchors points
                 AddAnchors(Coords);
@@ -423,16 +438,17 @@ namespace ExtendedControls.Controls
         {
             if (drawBoundariesWidget)
             {
-                List<double[]> Corners = new List<double[]>();
-
-                Corners.Add(new double[] { BoundariesRadius, BoundariesRadius, BoundariesRadius });
-                Corners.Add(new double[] { BoundariesRadius, BoundariesRadius, -BoundariesRadius });
-                Corners.Add(new double[] { BoundariesRadius, -BoundariesRadius, BoundariesRadius });
-                Corners.Add(new double[] { -BoundariesRadius, BoundariesRadius, BoundariesRadius });
-                Corners.Add(new double[] { -BoundariesRadius, -BoundariesRadius, BoundariesRadius });
-                Corners.Add(new double[] { -BoundariesRadius, BoundariesRadius, -BoundariesRadius });
-                Corners.Add(new double[] { BoundariesRadius, -BoundariesRadius, -BoundariesRadius });
-                Corners.Add(new double[] { -BoundariesRadius, -BoundariesRadius, -BoundariesRadius });
+                List<double[]> Corners = new List<double[]>
+                {
+                    new double[] { BoundariesRadius, BoundariesRadius, BoundariesRadius },
+                    new double[] { BoundariesRadius, BoundariesRadius, -BoundariesRadius },
+                    new double[] { BoundariesRadius, -BoundariesRadius, BoundariesRadius },
+                    new double[] { -BoundariesRadius, BoundariesRadius, BoundariesRadius },
+                    new double[] { -BoundariesRadius, -BoundariesRadius, BoundariesRadius },
+                    new double[] { -BoundariesRadius, BoundariesRadius, -BoundariesRadius },
+                    new double[] { BoundariesRadius, -BoundariesRadius, -BoundariesRadius },
+                    new double[] { -BoundariesRadius, -BoundariesRadius, -BoundariesRadius }
+                };
 
                 AddBoundaries(Corners);
 
@@ -525,12 +541,6 @@ namespace ExtendedControls.Controls
         #endregion
 
         #region Projection
-
-        private void TranslatePlot(int moveY, int moveX)
-        {
-            //picturePlot.Top = moveY;
-            //picturePlot.Left = moveX;
-        }
 
         private void UpdateProjection()
         {
@@ -647,15 +657,9 @@ namespace ExtendedControls.Controls
             }
             if (middleMousePressed)
             {
-                plot.Left = (int)(lastHorizontal - (ptMouseClick.X - e.X) * 0.9);
-                plot.Top = (int)(lastVertical - (ptMouseClick.Y - e.Y) * 0.9);
+                // we want to be able to translate the camera
+                UpdateProjection();
             }
-        }
-
-        private void OnMouseDrag(MouseEventArgs e)
-        {
-            HorizontalTranslation += -e.X;
-            VerticalTranslation += -e.Y;
         }
 
         private new void OnMouseWheel(MouseEventArgs e)
