@@ -45,16 +45,16 @@ namespace DialogTest
 
         private void DefineDefaults()
         {
-            extAstroPlotTest.Distance = 9;
-            extAstroPlotTest.Focus = 1400;
+            extAstroPlotTest.Distance = 50;
+            extAstroPlotTest.Focus = 1000;
             extAstroPlotTest.Elevation = -0.3;
             extAstroPlotTest.Azimuth = -0.3;
-            extAstroPlotTest.AxesWidget = false;
-            extAstroPlotTest.AxesLength = 2;
+            extAstroPlotTest.AxesWidget = true;
+            extAstroPlotTest.AxesLength = 10;
             
-            extAstroPlotTest.Center[0] = 0.0;
-            extAstroPlotTest.Center[1] = 0.0;
-            extAstroPlotTest.Center[2] = 0.0;
+            extAstroPlotTest.CoordsCenter[0] = 0.0;
+            extAstroPlotTest.CoordsCenter[1] = 0.0;
+            extAstroPlotTest.CoordsCenter[2] = 0.0;
 
             extAstroPlotTest.BoundariesWidget = false;
             extAstroPlotTest.BoundariesRadius = 0.9;
@@ -62,8 +62,7 @@ namespace DialogTest
             extAstroPlotTest.MouseSensitivity_Wheel = 120;
             extAstroPlotTest.MouseSensitivity_Movement = 200;
 
-            extAstroPlotTest.SmallDotSize = 4;
-            
+            extAstroPlotTest.SmallDotSize = 4;            
         }
 
         public class systemsInCluster
@@ -78,43 +77,54 @@ namespace DialogTest
         private void DemoCluster()
         {
             extAstroPlotTest.Clear();
-            PopulateNearestSystems();            
+            PopulateNearestSystems();
+            CreateContextMenu();
+        }
+
+        private void CreateContextMenu()
+        {
+            
         }
 
         public void PopulateNearestSystems()
         {
             systemsInCluster sys00 = new systemsInCluster { Name = "Synuefe VR-E c27-6", X = 874.59, Y = -475.22, Z = 119.25 };
-            systemsInCluster sys01 = new systemsInCluster { Name = "Synuefe VF-D d13-7", X = 887.44, Y = -477.19, Z = 112.34 };
-            systemsInCluster sys02 = new systemsInCluster { Name = "Synuefe VF-D d13-30", X = 875.38, Y = -467.38, Z = 127.72 };
-            systemsInCluster sys03 = new systemsInCluster { Name = "Synuefe VF-D d13-6", X = 872.53, Y = -475.47, Z = 108.81 };
-            systemsInCluster sys04 = new systemsInCluster { Name = "Synuefe OO-J b54-0", X = 876.50, Y = -464.50, Z = 117.53 };
-            systemsInCluster sys05 = new systemsInCluster { Name = "Synuefe RZ-H b55-0", X = 869.28, Y = -474.44, Z = 111.72 };            
-            
-            double[] centerSystem = new double[3];
+            sys00ToolStripMenuItem.Tag = sys00;
 
-            SetCenterSystem(sys00);
+            systemsInCluster sys01 = new systemsInCluster { Name = "Synuefe VF-D d13-7", X = 887.44, Y = -477.19, Z = 112.34 };
+            sys01ToolStripMenuItem.Tag = sys01;
+
+            systemsInCluster sys02 = new systemsInCluster { Name = "Synuefe VF-D d13-30", X = 875.38, Y = -467.38, Z = 127.72 };
+            sys02ToolStripMenuItem.Tag = sys02;
+
+            systemsInCluster sys03 = new systemsInCluster { Name = "Synuefe VF-D d13-6", X = 872.53, Y = -475.47, Z = 108.81 };
+            sys03ToolStripMenuItem.Tag = sys03;
+
+            systemsInCluster sys04 = new systemsInCluster { Name = "Synuefe OO-J b54-0", X = 876.50, Y = -464.50, Z = 117.53 };
+            sys04ToolStripMenuItem.Tag = sys04;
+
+            systemsInCluster sys05 = new systemsInCluster { Name = "Synuefe RZ-H b55-0", X = 869.28, Y = -474.44, Z = 111.72 };
+            sys05ToolStripMenuItem.Tag = sys05;
+
+            SetCenterSystem(sys03);
 
             List<double[]> Stars = new List<double[]>();
-
-            //Stars.Add(new double[] { CalculateDistanceX(sys00, centerSystem[0]), CalculateDistanceY(sys00, centerSystem[1]), CalculateDistanceZ(sys00, centerSystem[2]) });
-            //Stars.Add(new double[] { CalculateDistanceX(sys01, centerSystem[0]), CalculateDistanceY(sys01, centerSystem[1]), CalculateDistanceZ(sys01, centerSystem[2]) });
-            //Stars.Add(new double[] { CalculateDistanceX(sys02, centerSystem[0]), CalculateDistanceY(sys02, centerSystem[1]), CalculateDistanceZ(sys02, centerSystem[2]) });
-            //Stars.Add(new double[] { CalculateDistanceX(sys03, centerSystem[0]), CalculateDistanceY(sys03, centerSystem[1]), CalculateDistanceZ(sys03, centerSystem[2]) });
-            //Stars.Add(new double[] { CalculateDistanceX(sys04, centerSystem[0]), CalculateDistanceY(sys04, centerSystem[1]), CalculateDistanceZ(sys04, centerSystem[2]) });
-            //Stars.Add(new double[] { CalculateDistanceX(sys05, centerSystem[0]), CalculateDistanceY(sys05, centerSystem[1]), CalculateDistanceZ(sys05, centerSystem[2]) });
-            Stars.Add(new double[] { sys00.X - extAstroPlotTest.Center[0], sys00.Y - extAstroPlotTest.Center[1], sys00.Z - extAstroPlotTest.Center[2] });
-            Stars.Add(new double[] { sys01.X - extAstroPlotTest.Center[0], sys01.Y - extAstroPlotTest.Center[1], sys01.Z - extAstroPlotTest.Center[2] });
-            Stars.Add(new double[] { sys02.X - extAstroPlotTest.Center[0], sys02.Y - extAstroPlotTest.Center[1], sys02.Z - extAstroPlotTest.Center[2] });
-            Stars.Add(new double[] { sys03.X - extAstroPlotTest.Center[0], sys03.Y - extAstroPlotTest.Center[1], sys03.Z - extAstroPlotTest.Center[2] });
+                        
+            Stars.Add(new double[] { sys00.X, sys00.Y, sys00.Z });
+            Stars.Add(new double[] { sys01.X, sys01.Y, sys01.Z });
+            Stars.Add(new double[] { sys02.X, sys02.Y, sys02.Z });
+            Stars.Add(new double[] { sys03.X, sys03.Y, sys03.Z });
+            Stars.Add(new double[] { sys04.X, sys04.Y, sys04.Z });
+            Stars.Add(new double[] { sys05.X, sys05.Y, sys05.Z });
 
             extAstroPlotTest.AddPointsToMap(Stars); 
         }
                 
         private void SetCenterSystem(systemsInCluster system)
         {
-            extAstroPlotTest.Center[0] = system.X;
-            extAstroPlotTest.Center[1] = system.Y;
-            extAstroPlotTest.Center[2] = system.Z;
+            extAstroPlotTest.CoordsCenter[0] = system.X;
+            extAstroPlotTest.CoordsCenter[1] = system.Y;
+            extAstroPlotTest.CoordsCenter[2] = system.Z;
         }
 
         
@@ -260,8 +270,7 @@ namespace DialogTest
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                //contextMenuStrip1.Show(e.Location.X, e.Location.Y);                
-                
+                contextMenuStrip.Show(e.X, e.Y);
             }
         }
 
@@ -269,7 +278,44 @@ namespace DialogTest
         {
             DefineDefaults();
         }
+
+        private void sys00ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetCenterSystem((systemsInCluster)sys00ToolStripMenuItem.Tag);
+        }
+
+        private void sys01ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetCenterSystem((systemsInCluster)sys01ToolStripMenuItem.Tag);
+        }
+
+        private void sys02ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetCenterSystem((systemsInCluster)sys02ToolStripMenuItem.Tag);
+        }
+
+
+        private void sys04ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetCenterSystem((systemsInCluster)sys04ToolStripMenuItem.Tag);
+        }
+
+        private void sys05ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetCenterSystem((systemsInCluster)sys05ToolStripMenuItem.Tag);
+        }
+
+        private void sys03ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetCenterSystem((systemsInCluster)sys03ToolStripMenuItem.Tag);
+        }
+
+        private void TestAstroPlot_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                contextMenuStrip.Show();
+            }
+        }
     }
 }
-
-

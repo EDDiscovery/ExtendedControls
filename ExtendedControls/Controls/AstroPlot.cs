@@ -54,7 +54,7 @@ namespace ExtendedControls.Controls
         private double distance = 6;
         private double[] cameraPosition = new double[3];
 
-        private double[] center = new double[3];
+        private double[] centerCoordinates = new double[3];
 
         private int horizontalTranslation = 0;
         private int verticalTranslation = 0;
@@ -129,10 +129,10 @@ namespace ExtendedControls.Controls
         }
 
         [Description("Set the coordinates of the center of the plot")]
-        public double[] Center
+        public double[] CoordsCenter
         {
-            get { return center; }
-            set { center = value; UpdateProjection(); }
+            get { return centerCoordinates; }
+            set { centerCoordinates = value; UpdateProjection(); }
         }
 
         [Description("Horizontal direction of the camera expressed as an angular distance")]
@@ -229,7 +229,7 @@ namespace ExtendedControls.Controls
         public ExtAstroPlot()
         {
             InitializeComponent();
-            AstroPlot.MouseWheel.Add(this, OnMouseWheel);
+            AstroPlot.MouseWheel.Add(this, OnMouseWheel);                        
         }
 
         protected override CreateParams CreateParams
@@ -461,9 +461,14 @@ namespace ExtendedControls.Controls
         #region Map        
         public void AddPointsToMap(List<double[]> points)
         {
-            List<double[]> _tmp = new List<double[]>(points);
+            List<double[]> _tmp = new List<double[]>();
+            for (int i = 0; i < points.Count; i++)
+            {
+                // normalize the coordinates to allow for center translation
+                _tmp.Add(new double[] { points[i][0] - centerCoordinates[0], points[i][1] - centerCoordinates[1], points[i][2] - centerCoordinates[2] });
+            }
             MapBodies.Add(_tmp);
-            MapPoints.Add(AstroPlot.Update(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));                       
+            MapPoints.Add(AstroPlot.Update(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
         #endregion
@@ -545,11 +550,16 @@ namespace ExtendedControls.Controls
         private void UpdateProjection()
         {
             plot.Location = new Point((int)lastHorizontal, (int)lastVertical);
+            
+            Debug.WriteLine("***");
+            Debug.WriteLine("Camera position: " + cameraPosition[0] + ", " + cameraPosition[1] + ", " + cameraPosition[2]);
+            Debug.WriteLine("Plot center: " + centerCoordinates[0] + ", " + centerCoordinates[1] + ", " + centerCoordinates[2]);
 
             double x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
             double y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
             double z = (distance * Math.Sin(elevation));
-            cameraPosition = new double[3] { -y, z, -x};
+
+            cameraPosition = new double[3] { -y, z, -x };
 
             if (MapPoints == null)
             {
@@ -615,7 +625,6 @@ namespace ExtendedControls.Controls
 
         private void plot_MouseDown(object sender, MouseEventArgs e)
         {
-
             if (e.Button == MouseButtons.Left)
             {
                 // rotate
@@ -623,6 +632,8 @@ namespace ExtendedControls.Controls
                 ptMouseClick = new PointF(e.X, e.Y);
                 lastAzimuth = azimuth;
                 lastElevation = elevation;
+
+                
             }
             if (e.Button == MouseButtons.Middle)
             {
@@ -666,16 +677,30 @@ namespace ExtendedControls.Controls
             if (middleMousePressed)
             {
                 // we want to be able to translate the camera
-                               
+                CoordsCenter[0] += -e.X;
+                CoordsCenter[1] += -e.Y;
+                UpdatePointsCoordinates();
                 UpdateProjection();
             }
+        }
+
+        private void UpdatePointsCoordinates()
+        {
+            List<double[]> Coordinates = new List<double[]>();
+
         }
 
         private new void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
             {
+                // zoom
                 Distance += -e.Delta / MouseSensitivity_Wheel;
+            }
+            else
+            {
+                // plot center z translation
+                CoordsCenter[2] -= -e.Delta / MouseSensitivity_Wheel;
             }
         }
                 

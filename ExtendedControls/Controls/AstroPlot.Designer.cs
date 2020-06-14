@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.plot = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.plot)).BeginInit();
             this.SuspendLayout();
@@ -64,8 +62,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.PictureBox plot;
     }
 }
