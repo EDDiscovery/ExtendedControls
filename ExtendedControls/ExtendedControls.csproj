@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="AstroPlot\Handlers.cs" />
     <Compile Include="AstroPlot\Matrix.cs" />
+    <Compile Include="AstroPlot\Widgets.cs" />
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>

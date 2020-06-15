@@ -33,7 +33,7 @@ namespace ExtendedControls.Controls
     public partial class ExtAstroPlot : UserControl
     {
         // points used to draw and orient the axes widget
-        private List<List<double[]>> Coords = new List<List<double[]>>();
+        public List<List<double[]>> Coords = new List<List<double[]>>();
         private List<PointF[]> AxesAnchors = new List<PointF[]>();
 
         // points used for the boundaries cube
@@ -55,10 +55,7 @@ namespace ExtendedControls.Controls
         private double[] cameraPosition = new double[3];
 
         private double[] centerCoordinates = new double[3];
-
-        private int horizontalTranslation = 0;
-        private int verticalTranslation = 0;
-        
+                
         // Objects
         private int smallDotSize = 4;
         private int mediumDotSize = 8;
@@ -92,21 +89,7 @@ namespace ExtendedControls.Controls
         private double lastVertical, vertical = 0.0;
 
         #region Properties
-
-        [Description("Set the distance at which the camera stands from the plot")]
-        public int HorizontalTranslation 
-        {
-            get { return horizontalTranslation; }
-            private set { horizontalTranslation = value; }
-        }
-
-        [Description("Set the distance at which the camera stands from the plot")]
-        public int VerticalTranslation
-        {
-            get { return verticalTranslation; }
-            private set { verticalTranslation = value; }
-        }
-        
+                
         [Description("Set the distance at which the camera stands from the plot")]
         public double Distance
         {
@@ -191,20 +174,21 @@ namespace ExtendedControls.Controls
             set { axesWidgetLength = value; UpdateProjection(); }
         }
                 
-        [Description("Toggle the boundaries cube")]
+        [Description("Toggle the boundaries frame")]
         public bool BoundariesWidget
         {
             get { return drawBoundariesWidget; }
             set { drawBoundariesWidget = value; UpdateProjection(); }
         }
 
+        [Description("Set the boundaries frame radius")]
         public double BoundariesRadius
         {
             get { return boundariesRadiusWidth; }
             set { boundariesRadiusWidth = value; UpdateProjection(); }
         }
 
-        [Description("Set the boundaries cube frame thickness")]
+        [Description("Set the boundaries frame thickness")]
         public int BoundariesFrameThickness
         {
             get { return boundariesWidgetThickness; }
@@ -229,7 +213,7 @@ namespace ExtendedControls.Controls
         public ExtAstroPlot()
         {
             InitializeComponent();
-            AstroPlot.MouseWheel.Add(this, OnMouseWheel);                        
+            AstroPlot.MouseWheel.Add(this, OnMouseWheel);
         }
 
         protected override CreateParams CreateParams
@@ -547,14 +531,10 @@ namespace ExtendedControls.Controls
 
         #region Projection
 
-        private void UpdateProjection()
+        public void UpdateProjection()
         {
             plot.Location = new Point((int)lastHorizontal, (int)lastVertical);
-            
-            Debug.WriteLine("***");
-            Debug.WriteLine("Camera position: " + cameraPosition[0] + ", " + cameraPosition[1] + ", " + cameraPosition[2]);
-            Debug.WriteLine("Plot center: " + centerCoordinates[0] + ", " + centerCoordinates[1] + ", " + centerCoordinates[2]);
-
+                        
             double x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
             double y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
             double z = (distance * Math.Sin(elevation));
@@ -678,18 +658,11 @@ namespace ExtendedControls.Controls
             {
                 // we want to be able to translate the camera
                 CoordsCenter[0] += -e.X;
-                CoordsCenter[1] += -e.Y;
-                UpdatePointsCoordinates();
+                CoordsCenter[1] += -e.Y;                
                 UpdateProjection();
             }
         }
-
-        private void UpdatePointsCoordinates()
-        {
-            List<double[]> Coordinates = new List<double[]>();
-
-        }
-
+                
         private new void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
