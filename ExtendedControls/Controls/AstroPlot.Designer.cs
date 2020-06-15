@@ -35,9 +35,10 @@
             // plot
             // 
             this.plot.BackColor = System.Drawing.Color.Transparent;
-            this.plot.Location = new System.Drawing.Point(17, 15);
+            this.plot.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plot.Location = new System.Drawing.Point(0, 0);
             this.plot.Name = "plot";
-            this.plot.Size = new System.Drawing.Size(224, 224);
+            this.plot.Size = new System.Drawing.Size(256, 256);
             this.plot.TabIndex = 0;
             this.plot.TabStop = false;
             this.plot.SizeChanged += new System.EventHandler(this.plot_SizeChanged);

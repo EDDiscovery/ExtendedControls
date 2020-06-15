@@ -71,6 +71,9 @@ namespace DialogTest
             this.Height = 600;
         }
 
+
+        #region Stars
+
         class localDemoCluster
         {
             public string Name { get; set; }
@@ -79,89 +82,80 @@ namespace DialogTest
             public double Z { get; set; }
         }
 
+        class localSystems
+        {
+            public string Name { get; set; }
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
+        }
+
+
         List<object[]> systems = new List<object[]>();
 
-        #region Stars
+        List<localSystems> systemsList = new List<localSystems>();
+
         private void DemoCluster()
         {
             extAstroPlotTest.Clear();
+                                    
             PopulateNearestSystems();
             CreateContextMenu();
-        }
-                        
-        private void CreateContextMenu()
-        {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[systems.Count];
 
-            for (int i = 0; i < systems.Count; i++)
-            {
-                items[i] = new ToolStripMenuItem
-                {
-                    Name = systems[i][1].ToString() + ", " + systems[i][2].ToString() + ", " + systems[i][3].ToString(),
-                    Text = systems[i][0].ToString()
-                };
-                items[i].Click += AstroPlotContextMenu_Click;
-            }
-
-            contextMenuStrip.Items.AddRange(items);
-        }
-
-        private void AstroPlotContextMenu_Click(object sender, EventArgs e)
-        {
-            Debug.WriteLine("Selected system: " + sender.ToString());
-
-            var selected = sender as ToolStripMenuItem;
-
-            string [] coordinates = selected.Name.Split(',');
-
-            Debug.WriteLine(selected.Text);
-            Debug.WriteLine(coordinates[0] + coordinates[1] + coordinates[2]);
-
-            SetCenterSystem(coordinates);
+            DrawSystems();
         }
 
         public void PopulateNearestSystems()
         {
-            localDemoCluster sys00 = new localDemoCluster { Name = "Synuefe VR-E c27-6", X = 874.59, Y = -475.22, Z = 119.25 };
-            systems.Add(new object[] { sys00.Name, sys00.X, sys00.Y, sys00.Z } );
-            localDemoCluster sys01 = new localDemoCluster { Name = "Synuefe VF-D d13-7", X = 887.44, Y = -477.19, Z = 112.34 };
-            systems.Add(new object[] { sys01.Name, sys01.X, sys01.Y, sys01.Z });
-            localDemoCluster sys02 = new localDemoCluster { Name = "Synuefe VF-D d13-30", X = 875.38, Y = -467.38, Z = 127.72 };
-            systems.Add(new object[] { sys02.Name, sys02.X, sys02.Y, sys02.Z });
-            localDemoCluster sys03 = new localDemoCluster { Name = "Synuefe VF-D d13-6", X = 872.53, Y = -475.47, Z = 108.81 };
-            systems.Add(new object[] { sys03.Name, sys03.X, sys03.Y, sys03.Z });
-            localDemoCluster sys04 = new localDemoCluster { Name = "Synuefe OO-J b54-0", X = 876.50, Y = -464.50, Z = 117.53 };
-            systems.Add(new object[] { sys04.Name, sys04.X, sys04.Y, sys04.Z });
-            localDemoCluster sys05 = new localDemoCluster { Name = "Synuefe RZ-H b55-0", X = 869.28, Y = -474.44, Z = 111.72 };
-            systems.Add(new object[] { sys05.Name, sys05.X, sys05.Y, sys05.Z });
-            
+            // create a hardcoded list of systems from DB
+            systemsList.Add(new localSystems { Name = "Synuefe VR-E c27-6", X = 874.59, Y = -475.22, Z = 119.25 });
+            systemsList.Add(new localSystems { Name = "Synuefe VF-D d13-7", X = 887.44, Y = -477.19, Z = 112.34 });
+            systemsList.Add(new localSystems { Name = "Synuefe VF-D d13-30", X = 875.38, Y = -467.38, Z = 127.72 });
+            systemsList.Add(new localSystems { Name = "Synuefe VF-D d13-6", X = 872.53, Y = -475.47, Z = 108.81 });
+            systemsList.Add(new localSystems { Name = "Synuefe OO-J b54-0", X = 876.50, Y = -464.50, Z = 117.53 });
+            systemsList.Add(new localSystems { Name = "Synuefe RZ-H b55-0", X = 869.28, Y = -474.44, Z = 111.72 });
+        }
+
+        public void DrawSystems()
+        {
             List<double[]> Stars = new List<double[]>();
 
-            for (int s = 0; s < systems.Count; s++)
+            for (int i = 0; i < systemsList.Count; i++)
             {
-                Stars.Add(new double[] { (double)systems[s][1], (double)systems[s][2], (double)systems[s][3] });
+                Stars.Add(new double[] { systemsList[i].X, systemsList[i].Y, systemsList[i].Z });
             }
-
             extAstroPlotTest.AddPointsToMap(Stars);
         }
-                
-        private void SetCenterSystem(localDemoCluster system)
+
+        private void CreateContextMenu()
         {
-            extAstroPlotTest.CoordsCenter[0] = system.X;
-            extAstroPlotTest.CoordsCenter[1] = system.Y;
-            extAstroPlotTest.CoordsCenter[2] = system.Z;
+            ToolStripMenuItem[] items = new ToolStripMenuItem[systemsList.Count];
+            for (int i = 0; i < systemsList.Count; i++)
+            {
+                items[i] = new ToolStripMenuItem
+                {
+                    Text = systemsList[i].Name,
+                    Name = systemsList[i].Name,
+                    Tag = new double[] { systemsList[i].X, systemsList[i].Y, systemsList[i].Z }
+                };
+                items[i].Click += TestAstroPlot_Click;
+            }
+            contextMenuStrip.Items.AddRange(items);
         }
 
-        private void SetCenterSystem(string[] coordinates)
+        private void TestAstroPlot_Click(object sender, EventArgs e)
         {
-            // recenter to new coordinates
-            extAstroPlotTest.CoordsCenter[0] = Convert.ToDouble(coordinates[0]);
-            extAstroPlotTest.CoordsCenter[1] = Convert.ToDouble(coordinates[1]);
-            extAstroPlotTest.CoordsCenter[2] = Convert.ToDouble(coordinates[2]);
-
+            var selected = sender as ToolStripMenuItem;
+            
+            SetCenterSystem((double[])selected.Tag);
+        }                        
+        
+        private void SetCenterSystem(double[] coords)
+        {
+            extAstroPlotTest.CoordsCenter = coords;
+                        
             extAstroPlotTest.Clear();
-            PopulateNearestSystems();
-            extAstroPlotTest.UpdateProjection();
+            DrawSystems();
         }
 
         #endregion
@@ -289,7 +283,18 @@ namespace DialogTest
             if (e.Button == MouseButtons.Right)
             {
                 contextMenuStrip.Show();
+                
             }
+            if (e.Button == MouseButtons.Middle)
+            {
+
+            }
+                
+        }
+
+        private void extAstroPlotTest_MouseMove(object sender, MouseEventArgs e)
+        {
+        
         }
     }
 }

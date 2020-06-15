@@ -39,7 +39,7 @@ namespace ExtendedControls.Controls
         // points used for the boundaries cube
         public List<List<double[]>> BoundariesCorners = new List<List<double[]>>();
         private List<PointF[]> BoundariesFrame = new List<PointF[]>();
-
+                
         // MapPlot objects
         private List<List<double[]>> MapBodies = new List<List<double[]>>();
         private List<PointF[]> MapPoints = new List<PointF[]>();
@@ -452,9 +452,11 @@ namespace ExtendedControls.Controls
                 _tmp.Add(new double[] { points[i][0] - centerCoordinates[0], points[i][1] - centerCoordinates[1], points[i][2] - centerCoordinates[2] });
             }
             MapBodies.Add(_tmp);
-            MapPoints.Add(AstroPlot.Update(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            
+            MapPoints.Add(AstroPlot.Update(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));            
             UpdateProjection();
         }
+                
         #endregion
 
         #region Orrery
@@ -530,11 +532,9 @@ namespace ExtendedControls.Controls
         #endregion
 
         #region Projection
-
-        public void UpdateProjection()
+                
+        private void UpdateProjection()
         {
-            plot.Location = new Point((int)lastHorizontal, (int)lastVertical);
-                        
             double x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
             double y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
             double z = (distance * Math.Sin(elevation));
@@ -602,28 +602,7 @@ namespace ExtendedControls.Controls
         #endregion
 
         #region Interaction
-
-        private void plot_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                // rotate
-                leftMousePressed = true;
-                ptMouseClick = new PointF(e.X, e.Y);
-                lastAzimuth = azimuth;
-                lastElevation = elevation;
-
                 
-            }
-            if (e.Button == MouseButtons.Middle)
-            {
-                middleMousePressed = true;
-                ptMouseClick = new PointF(e.X, e.Y);
-                lastHorizontal = horizontal;
-                lastVertical = vertical;
-            }
-        }
-
         private void ExtAstroPlot_SizeChanged(object sender, EventArgs e)
         {
             plot.Height = this.Height;
@@ -636,6 +615,30 @@ namespace ExtendedControls.Controls
         {
             if (MapPoints != null)
                 UpdateProjection();
+        }
+
+        private void plot_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                // rotate
+                leftMousePressed = true;
+                ptMouseClick = new PointF(e.X, e.Y);
+                lastAzimuth = azimuth;
+                lastElevation = elevation;
+            }
+            if (e.Button == MouseButtons.Middle)
+            {
+                middleMousePressed = true;
+
+                //ptMouseClick = new PointF(e.X, e.Y);
+                //lastHorizontal = horizontal;
+                //lastVertical = vertical;
+
+                //Debug.WriteLine("lastHorizontal: " + lastHorizontal.ToString() + ", lastVertical: " + lastVertical.ToString() + ": "
+                //    + (ptMouseClick.X - Width / 2) + ", " + (ptMouseClick.Y - Height / 2)
+                //    );
+            }
         }
 
         private void plot_MouseUp(object sender, MouseEventArgs e)
@@ -657,8 +660,9 @@ namespace ExtendedControls.Controls
             if (middleMousePressed)
             {
                 // we want to be able to translate the camera
-                CoordsCenter[0] += -e.X;
-                CoordsCenter[1] += -e.Y;                
+                //horizontal = lastHorizontal - (ptMouseClick.X - e.X) / 150;
+                //vertical = lastVertical - (ptMouseClick.Y - e.Y) / 150;
+                //UpdateProjection();                
                 UpdateProjection();
             }
         }
@@ -672,8 +676,7 @@ namespace ExtendedControls.Controls
             }
             else
             {
-                // plot center z translation
-                CoordsCenter[2] -= -e.Delta / MouseSensitivity_Wheel;
+                
             }
         }
                 

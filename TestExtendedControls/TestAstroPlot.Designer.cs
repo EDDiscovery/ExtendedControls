@@ -72,6 +72,7 @@
             this.extAstroPlotTest.SmallDotSize = 3;
             this.extAstroPlotTest.TabIndex = 0;
             this.extAstroPlotTest.MouseDown += new System.Windows.Forms.MouseEventHandler(this.extAstroPlotTest_MouseDown);
+            this.extAstroPlotTest.MouseMove += new System.Windows.Forms.MouseEventHandler(this.extAstroPlotTest_MouseMove);
             // 
             // TestAstroPlot
             // 
