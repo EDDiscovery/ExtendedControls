@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExtendedControls.Controls
 {
-    static partial class AstroPlot
+    internal static partial class AstroPlot
     {
-        static public PointF[] Update(List<double[]> points, double x, double y, double f, double[] camera, double azimuth, double elevation)
+        static public PointF[] Update(List<double[]> points, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
-            Matrix<double> _interaction = Interaction(azimuth, elevation, camera);
-            Matrix<double> _data = Coords(x, y, f);
+            Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
+            Matrix<double> _data = Coords(x, y, z);
             Matrix<double> X_h = new Matrix<double>(4, 1);
 
             PointF[] Coordinates = new PointF[points.Count];
@@ -24,17 +22,17 @@ namespace ExtendedControls.Controls
             return Coordinates;
         }
 
-        static Matrix<double> Coords(double x, double y, double f)
+        private static Matrix<double> Coords(double x, double y, double z)
         {
             Matrix<double> _matrix = new Matrix<double>(3, 3);
             double _x = x / 2;
             double _y = y / 2;
             double _a = 1;
-            _matrix.SetMatrix(new double[] { f, 0, _x, 0, f * _a, _y, 0, 0, 1 });
+            _matrix.SetMatrix(new double[] { z, 0, _x, 0, z * _a, _y, 0, 0, 1 });
             return _matrix;
         }
 
-        static Matrix<double> Interaction(double azimuth, double elevation, double[] camera)
+        private static Matrix<double> Interaction(double azimuth, double elevation, double[] camera)
         {
             Matrix<double> R = Rotate(azimuth, elevation);
             Matrix<double> lens = new Matrix<double>(3, 1);
@@ -43,7 +41,7 @@ namespace ExtendedControls.Controls
             return _matrix;
         }
 
-        static Matrix<double> Rotate(double azimuth, double elevation)
+        private static Matrix<double> Rotate(double azimuth, double elevation)
         {
             Matrix<double> R = new Matrix<double>(3, 3);
             R.SetMatrix(new double[] { Math.Cos(azimuth), 0, -Math.Sin(azimuth),

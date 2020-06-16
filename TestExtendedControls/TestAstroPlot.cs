@@ -40,15 +40,15 @@ namespace DialogTest
             extAstroPlotTest.DrawBoundariesWidget(extAstroPlotTest.BoundariesRadius);
 
             //AddDemoStars();           
-            //AddDemoOrrery();
-            DemoCluster();
+            //DemoOrrery();
+            //DemoCluster();
+            //DemoTravel();
         }
 
         private void DefineDefaults()
         {
             extAstroPlotTest.Distance = 50;
             extAstroPlotTest.Focus = 1000;
-
 
             extAstroPlotTest.Elevation = -0.3;
             extAstroPlotTest.Azimuth = -0.3;
@@ -62,7 +62,7 @@ namespace DialogTest
             extAstroPlotTest.BoundariesWidget = false;
             extAstroPlotTest.BoundariesRadius = 0.9;
 
-            extAstroPlotTest.MouseSensitivity_Wheel = 120;
+            extAstroPlotTest.MouseSensitivity_Wheel = 20;
             extAstroPlotTest.MouseSensitivity_Movement = 200;
 
             extAstroPlotTest.SmallDotSize = 4;
@@ -74,7 +74,17 @@ namespace DialogTest
 
         #region Stars
 
-        class localDemoCluster
+        private class LocalSystems
+        {
+            public string Name { get; set; }
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }            
+        }
+
+        private readonly List<LocalSystems> localSystemsList = new List<LocalSystems>();
+
+        private class TravelSystems
         {
             public string Name { get; set; }
             public double X { get; set; }
@@ -82,67 +92,125 @@ namespace DialogTest
             public double Z { get; set; }
         }
 
-        class localSystems
-        {
-            public string Name { get; set; }
-            public double X { get; set; }
-            public double Y { get; set; }
-            public double Z { get; set; }
-        }
-
-
-        List<object[]> systems = new List<object[]>();
-
-        List<localSystems> systemsList = new List<localSystems>();
+        private readonly List<TravelSystems> travelSystemsList = new List<TravelSystems>();
 
         private void DemoCluster()
         {
             extAstroPlotTest.Clear();
                                     
             PopulateNearestSystems();
-            CreateContextMenu();
+            CreateContextMenu(localSystemsList);
+                        
+            var centerTo = localSystemsList[0];
+
+            SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
 
             DrawSystems();
+        }
+
+        private void DemoTravel()
+        {
+            extAstroPlotTest.Clear();
+
+            PopulateTravelList();
+            CreateContextMenu(travelSystemsList);
+
+            var centerTo = travelSystemsList[2];
+
+            SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
+
+            DrawTravelMap();
         }
 
         public void PopulateNearestSystems()
         {
             // create a hardcoded list of systems from DB
-            systemsList.Add(new localSystems { Name = "Synuefe VR-E c27-6", X = 874.59, Y = -475.22, Z = 119.25 });
-            systemsList.Add(new localSystems { Name = "Synuefe VF-D d13-7", X = 887.44, Y = -477.19, Z = 112.34 });
-            systemsList.Add(new localSystems { Name = "Synuefe VF-D d13-30", X = 875.38, Y = -467.38, Z = 127.72 });
-            systemsList.Add(new localSystems { Name = "Synuefe VF-D d13-6", X = 872.53, Y = -475.47, Z = 108.81 });
-            systemsList.Add(new localSystems { Name = "Synuefe OO-J b54-0", X = 876.50, Y = -464.50, Z = 117.53 });
-            systemsList.Add(new localSystems { Name = "Synuefe RZ-H b55-0", X = 869.28, Y = -474.44, Z = 111.72 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe VR-E c27-6", X = 874.59, Y = -475.22, Z = 119.25 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe VF-D d13-7", X = 887.44, Y = -477.19, Z = 112.34 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe VF-D d13-6", X = 875.38, Y = -467.38, Z = 127.72 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe OO-J b54-0", X = 872.53, Y = -475.47, Z = 108.81 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe RZ-H b55-0", X = 876.50, Y = -464.50, Z = 117.53 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe RZ-H b55-0", X = 869.28, Y = -474.44, Z = 111.72 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe OO-J b54-1", X = 869.28, Y = -474.44, Z = 111.72 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe QO-J b54-1", X = 897.25, Y = -472.09, Z = 110.47 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe ZX-C c28-8", X = 873.53, Y = -485.00, Z = 139.53 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe PO-J b54-0", X = 879.25, Y = -479.47, Z = 100.03 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe VF-D d13-31", X = 860.34, Y = -480.59, Z = 126.47 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe ZL-B d14-21", X = 873.78, Y = -483.63, Z = 143.13 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe VF-D d13-15", X = 873.97, Y = -497.22, Z = 108.09 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe PO-J b54-1", X = 875.34, Y = -476.88, Z = 99.06 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe SZ-H b55-0", X = 900.06, Y = -464.44, Z = 115.22 });
+            localSystemsList.Add(new LocalSystems { Name = "Synuefe ZL-B d14-26", X = 866.31, Y = -476.22, Z = 139.31 });
+        }
+
+        public void PopulateTravelList()
+        {
+            travelSystemsList.Add(new TravelSystems { Name = "Fe 1 Sector NI-T d3 - 74", X = 3311.78125, Y = -29.625, Z = 1350.5625 });
+            travelSystemsList.Add(new TravelSystems { Name = "Fe 1 Sector XV-M c7-3", X = 3301.03125, Y = -28.75, Z = 1359.53125 });
+            travelSystemsList.Add(new TravelSystems { Name = "Fe 1 Sector MZ-X a30-3", X = 3299.21875, Y = -34.84375, Z = 1354.0625 });
+            travelSystemsList.Add(new TravelSystems { Name = "Swoiphs AF-M a103-4", X = 3244.4375, Y = -33.21875, Z = 1323.25 });
+            travelSystemsList.Add(new TravelSystems { Name = "Sifeae IC-D d12-99", X = 3186.71875, Y = -24.8125, Z = 1302 });
+            travelSystemsList.Add(new TravelSystems { Name = "Swoiphs MS-P a101-0", X = 3177.8125, Y = -32.09375, Z = 1296.40625 });
         }
 
         public void DrawSystems()
         {
+            extAstroPlotTest.Clear();
+
             List<double[]> Stars = new List<double[]>();
 
-            for (int i = 0; i < systemsList.Count; i++)
+            for (int i = 0; i < localSystemsList.Count; i++)
             {
-                Stars.Add(new double[] { systemsList[i].X, systemsList[i].Y, systemsList[i].Z });
+                Stars.Add(new double[] { localSystemsList[i].X, localSystemsList[i].Y, localSystemsList[i].Z });
             }
             extAstroPlotTest.AddPointsToMap(Stars);
         }
 
-        private void CreateContextMenu()
+        public void DrawTravelMap()
         {
-            ToolStripMenuItem[] items = new ToolStripMenuItem[systemsList.Count];
-            for (int i = 0; i < systemsList.Count; i++)
+            extAstroPlotTest.Clear();
+
+            List<double[]> Travel = new List<double[]>();
+
+            for (int i = 0; i < travelSystemsList.Count; i++)
             {
-                items[i] = new ToolStripMenuItem
-                {
-                    Text = systemsList[i].Name,
-                    Name = systemsList[i].Name,
-                    Tag = new double[] { systemsList[i].X, systemsList[i].Y, systemsList[i].Z }
-                };
-                items[i].Click += TestAstroPlot_Click;
+                Travel.Add(new double[] { travelSystemsList[i].X, travelSystemsList[i].Y, travelSystemsList[i].Z });
             }
-            contextMenuStrip.Items.AddRange(items);
+            extAstroPlotTest.DrawTravelToMap(Travel);
+        }
+        
+        private void CreateContextMenu(List<LocalSystems> localSystemsList)
+        {
+            ToolStripMenuItem[] localItems = new ToolStripMenuItem[localSystemsList.Count];
+            for (int i = 0; i < localSystemsList.Count; i++)
+            {
+                localItems[i] = new ToolStripMenuItem
+                {
+                    Text = localSystemsList[i].Name,
+                    Name = localSystemsList[i].Name,
+                    Tag = new double[] { localSystemsList[i].X, localSystemsList[i].Y, localSystemsList[i].Z }
+                };
+                localItems[i].Click += TestAstroPlot_Click;
+            }
+            contextMenuStrip.Items.AddRange(localItems);
         }
 
+        private void CreateContextMenu(List<TravelSystems> travelSystemsList)
+        {
+            ToolStripMenuItem[] travelItems = new ToolStripMenuItem[travelSystemsList.Count];
+            for (int i = 0; i < travelSystemsList.Count; i++)
+            {
+                travelItems[i] = new ToolStripMenuItem
+                {
+                    Text = travelSystemsList[i].Name,
+                    Name = travelSystemsList[i].Name,
+                    Tag = new double[] { travelSystemsList[i].X, travelSystemsList[i].Y, travelSystemsList[i].Z }
+                };
+                travelItems[i].Click += TestAstroPlot_Click;
+            }
+            contextMenuStrip.Items.AddRange(travelItems);
+        }
+        
         private void TestAstroPlot_Click(object sender, EventArgs e)
         {
             var selected = sender as ToolStripMenuItem;
@@ -155,7 +223,7 @@ namespace DialogTest
             extAstroPlotTest.CoordsCenter = coords;
                         
             extAstroPlotTest.Clear();
-            DrawSystems();
+            DrawTravelMap();
         }
 
         #endregion
@@ -205,7 +273,7 @@ namespace DialogTest
             public double Inclination;
         }
         
-        private void AddDemoOrrery()
+        private void DemoOrrery()
         {
             extAstroPlotTest.Clear();
 
@@ -291,10 +359,40 @@ namespace DialogTest
             }
                 
         }
-
-        private void extAstroPlotTest_MouseMove(object sender, MouseEventArgs e)
+                
+        private void extButtonLocal_Click(object sender, EventArgs e)
         {
-        
+            extAstroPlotTest.Invalidate();
+            extAstroPlotTest.Clear();
+            DemoCluster();
         }
+
+        private void extButtonTravel_Click(object sender, EventArgs e)
+        {
+            extAstroPlotTest.Invalidate();
+            extAstroPlotTest.Clear();
+            DemoTravel();
+        }
+
+        private void extButtonOrrery_Click(object sender, EventArgs e)
+        {
+            extAstroPlotTest.Invalidate();
+            extAstroPlotTest.Clear();
+            DemoOrrery();
+        }
+
+        private void extButtonClear_Click(object sender, EventArgs e)
+        {
+            extAstroPlotTest.Invalidate();
+            extAstroPlotTest.Clear();
+        }
+    }
+
+    internal class systems
+    {
+        public string Name { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
     }
 }

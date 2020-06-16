@@ -18,32 +18,28 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.Remoting.Messaging;
-using System.Windows.Forms.DataVisualization.Charting;
-using System.Diagnostics;
-using System.Configuration;
 
 namespace ExtendedControls.Controls
 {
     public partial class ExtAstroPlot : UserControl
     {
         // points used to draw and orient the axes widget
-        public List<List<double[]>> Coords = new List<List<double[]>>();
+        private List<List<double[]>> Coords = new List<List<double[]>>();
         private List<PointF[]> AxesAnchors = new List<PointF[]>();
 
         // points used for the boundaries cube
-        public List<List<double[]>> BoundariesCorners = new List<List<double[]>>();
+        private List<List<double[]>> BoundariesCorners = new List<List<double[]>>();
         private List<PointF[]> BoundariesFrame = new List<PointF[]>();
                 
         // MapPlot objects
         private List<List<double[]>> MapBodies = new List<List<double[]>>();
         private List<PointF[]> MapPoints = new List<PointF[]>();
-            
+
+        // TravelMap objects
+        private List<List<double[]>> TravelMap = new List<List<double[]>>();
+        private List<PointF[]> TravelMapWaypoints = new List<PointF[]>();
+
         // Orrery objects
         private List<List<double[]>> OrreryBodies = new List<List<double[]>>();
         private List<List<double[]>> OrreryCenters = new List<List<double[]>>();
@@ -53,7 +49,6 @@ namespace ExtendedControls.Controls
         private double focalLength = 900;
         private double distance = 6;
         private double[] cameraPosition = new double[3];
-
         private double[] centerCoordinates = new double[3];
                 
         // Objects
@@ -252,6 +247,12 @@ namespace ExtendedControls.Controls
                 DashStyle = System.Drawing.Drawing2D.DashStyle.Dash
             };
 
+            Pen TravelMapPen = new Pen(new SolidBrush(ForeColor))
+            {
+                Width = 1,
+                DashStyle = System.Drawing.Drawing2D.DashStyle.Solid
+            };
+
             // center point            
             var center = new PointF((int)(this.Width / 2), (int)(this.Height / 2));
 
@@ -322,6 +323,22 @@ namespace ExtendedControls.Controls
                     foreach (PointF p in MapPoints[i])
                     {
                         e.Graphics.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - SmallDotSize / 2, p.Y - SmallDotSize / 2, SmallDotSize, SmallDotSize));
+                    }
+                }
+            }
+
+            if (TravelMap != null)
+            {
+                for (int i = 0; i < TravelMapWaypoints.Count; i++)
+                {
+                    for (int ii = 0; ii < TravelMapWaypoints[i].Length; ii++)
+                    {
+                        e.Graphics.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(TravelMapWaypoints[i][ii].X - MediumDotSize / 2, TravelMapWaypoints[i][ii].Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));
+
+                            if (ii != TravelMapWaypoints[i].Length - 1)
+                                e.Graphics.DrawLine(TravelMapPen, TravelMapWaypoints[i][ii], TravelMapWaypoints[i][ii + 1]);
+                            else
+                            e.Graphics.DrawLine(TravelMapPen, TravelMapWaypoints[i][ii], TravelMapWaypoints[i][ii]);
                     }
                 }
             }
@@ -445,15 +462,30 @@ namespace ExtendedControls.Controls
         #region Map        
         public void AddPointsToMap(List<double[]> points)
         {
-            List<double[]> _tmp = new List<double[]>();
+            List<double[]> _points = new List<double[]>();
             for (int i = 0; i < points.Count; i++)
             {
                 // normalize the coordinates to allow for center translation
-                _tmp.Add(new double[] { points[i][0] - centerCoordinates[0], points[i][1] - centerCoordinates[1], points[i][2] - centerCoordinates[2] });
+                _points.Add(new double[] { points[i][0] - centerCoordinates[0], points[i][1] - centerCoordinates[1], points[i][2] - centerCoordinates[2] });
             }
-            MapBodies.Add(_tmp);
+            MapBodies.Add(_points);
             
             MapPoints.Add(AstroPlot.Update(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));            
+            UpdateProjection();
+        }
+
+
+        public void DrawTravelToMap(List<double[]> waypoints)
+        {
+            List<double[]> _travel = new List<double[]>();
+            for (int i = 0; i < waypoints.Count; i++)
+            {
+                // normalize the coordinates to allow for center translation
+                _travel.Add(new double[] { waypoints[i][0] - centerCoordinates[0], waypoints[i][1] - centerCoordinates[1], waypoints[i][2] - centerCoordinates[2] });
+            }
+            TravelMap.Add(_travel);
+
+            TravelMapWaypoints.Add(AstroPlot.Update(TravelMap[TravelMap.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
                 
@@ -548,7 +580,17 @@ namespace ExtendedControls.Controls
             else
             {
                 for (int i = 0; i < MapPoints.Count; i++)
-                    MapPoints[i] = AstroPlot.Update(MapBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
+                    MapPoints[i] = AstroPlot.Update(MapBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+            }
+
+            if (TravelMapWaypoints == null)
+            {
+                return;
+            }
+            else
+            {
+                for (int i = 0; i < TravelMapWaypoints.Count; i++)
+                    TravelMapWaypoints[i] = AstroPlot.Update(TravelMap[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             if (OrreryOrbits == null)
@@ -559,8 +601,8 @@ namespace ExtendedControls.Controls
             {
                 for (int i = 0; i < OrreryOrbits.Count; i++)
                     OrreryOrbits[i] = AstroPlot.Update(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
-                for (int i = 0; i < OrreryCenters.Count; i++)                
-                    OrreryMassCenters[i] = AstroPlot.Update(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                
+                for (int i = 0; i < OrreryCenters.Count; i++)
+                    OrreryMassCenters[i] = AstroPlot.Update(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             if (AxesAnchors == null)
@@ -572,7 +614,7 @@ namespace ExtendedControls.Controls
                 if (drawAxesWidget)
                 {
                     for (int i = 0; i < AxesAnchors.Count; i++)
-                    AxesAnchors[i] = AstroPlot.Update(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);                    
+                        AxesAnchors[i] = AstroPlot.Update(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
                 }
             }
 
@@ -596,6 +638,8 @@ namespace ExtendedControls.Controls
         {
             MapPoints.Clear();
             MapBodies.Clear();
+            TravelMap.Clear();
+            TravelMapWaypoints.Clear();
             OrreryBodies.Clear();
             OrreryOrbits.Clear();
         }
@@ -626,19 +670,7 @@ namespace ExtendedControls.Controls
                 ptMouseClick = new PointF(e.X, e.Y);
                 lastAzimuth = azimuth;
                 lastElevation = elevation;
-            }
-            if (e.Button == MouseButtons.Middle)
-            {
-                middleMousePressed = true;
-
-                //ptMouseClick = new PointF(e.X, e.Y);
-                //lastHorizontal = horizontal;
-                //lastVertical = vertical;
-
-                //Debug.WriteLine("lastHorizontal: " + lastHorizontal.ToString() + ", lastVertical: " + lastVertical.ToString() + ": "
-                //    + (ptMouseClick.X - Width / 2) + ", " + (ptMouseClick.Y - Height / 2)
-                //    );
-            }
+            }            
         }
 
         private void plot_MouseUp(object sender, MouseEventArgs e)
@@ -657,14 +689,6 @@ namespace ExtendedControls.Controls
                 elevation = lastElevation + (ptMouseClick.Y - e.Y) / 150;
                 UpdateProjection();
             }
-            if (middleMousePressed)
-            {
-                // we want to be able to translate the camera
-                //horizontal = lastHorizontal - (ptMouseClick.X - e.X) / 150;
-                //vertical = lastVertical - (ptMouseClick.Y - e.Y) / 150;
-                //UpdateProjection();                
-                UpdateProjection();
-            }
         }
                 
         private new void OnMouseWheel(MouseEventArgs e)
@@ -673,10 +697,6 @@ namespace ExtendedControls.Controls
             {
                 // zoom
                 Distance += -e.Delta / MouseSensitivity_Wheel;
-            }
-            else
-            {
-                
             }
         }
                 
