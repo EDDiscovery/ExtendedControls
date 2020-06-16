@@ -502,10 +502,11 @@ namespace ExtendedControls.Controls
 
         public void Clear()
         {
+            this.Invalidate();
             MapPoints.Clear();
             MapObjects.Clear();
             TravelMap.Clear();
-            TravelMapWaypoints.Clear();            
+            TravelMapWaypoints.Clear();
         }
         #endregion
 

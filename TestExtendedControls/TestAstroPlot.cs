@@ -3,15 +3,6 @@ using ExtendedControls;
 using ExtendedControls.Controls;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DialogTest
@@ -89,37 +80,8 @@ namespace DialogTest
 
         private readonly List<TravelSystems> travelSystemsList = new List<TravelSystems>();
 
-        private void DemoCluster()
-        {
-            extAstroPlotTest.Clear();
-                                    
-            PopulateNearestSystems();
-            CreateContextMenu(localSystemsList);
-                        
-            var centerTo = localSystemsList[0];
-
-            SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
-
-            DrawSystems();
-        }
-
-        private void DemoTravel()
-        {
-            extAstroPlotTest.Clear();
-
-            PopulateTravelList();
-            CreateContextMenu(travelSystemsList);
-
-            var centerTo = travelSystemsList[2];
-
-            SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
-
-            DrawTravelMap();
-        }
-
         public void PopulateNearestSystems()
         {
-            // create a hardcoded list of systems from DB
             localSystemsList.Add(new LocalSystems { Name = "Synuefe VR-E c27-6", X = 874.59, Y = -475.22, Z = 119.25 });
             localSystemsList.Add(new LocalSystems { Name = "Synuefe VF-D d13-7", X = 887.44, Y = -477.19, Z = 112.34 });
             localSystemsList.Add(new LocalSystems { Name = "Synuefe VF-D d13-6", X = 875.38, Y = -467.38, Z = 127.72 });
@@ -148,7 +110,79 @@ namespace DialogTest
             travelSystemsList.Add(new TravelSystems { Name = "Swoiphs MS-P a101-0", X = 3177.8125, Y = -32.09375, Z = 1296.40625 });
         }
 
-        public void DrawSystems()
+        public class ContextMenuEntries
+        {
+            public string Name { get; set; }
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
+        }
+
+        private readonly List<object[]> contextMenuList = new List<object[]>();
+
+        private void DemoCluster()
+        {
+            localSystemsList.Clear();
+            contextMenuList.Clear();
+            extAstroPlotTest.Clear();
+                                    
+            PopulateNearestSystems();
+
+            foreach (var item in localSystemsList)
+            {
+                contextMenuList.Add(new object[] { item.Name, item.X, item.Y, item.Z });
+            }
+
+            CreateContextMenu(contextMenuList);
+
+            var centerTo = localSystemsList[0];
+
+            SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
+
+            DrawLocalSystems();
+        }
+        
+        private void DemoTravel()
+        {
+            travelSystemsList.Clear();
+            contextMenuList.Clear();
+            extAstroPlotTest.Clear();
+
+            PopulateTravelList();
+
+            foreach (var item in travelSystemsList)
+            {
+                contextMenuList.Add(new object[] { item.Name, item.X, item.Y, item.Z });
+            }
+
+            CreateContextMenu(contextMenuList);
+
+            var centerTo = travelSystemsList[0];
+
+            SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
+
+            DrawTravelMap();
+        }
+
+        private void CreateContextMenu(List<object[]> contextMenuList)
+        {
+            contextMenuStrip.Items.Clear();
+
+            ToolStripMenuItem[] localItems = new ToolStripMenuItem[contextMenuList.Count];
+            for (int i = 0; i < contextMenuList.Count; i++)
+            {
+                localItems[i] = new ToolStripMenuItem
+                {
+                    Text = contextMenuList[i][0].ToString(),
+                    Name = contextMenuList[i][0].ToString(),
+                    Tag = new double[] { (double)contextMenuList[i][1], (double)contextMenuList[i][2], (double)contextMenuList[i][3] }
+                };
+                localItems[i].Click += TestAstroPlot_Click;
+            }
+            contextMenuStrip.Items.AddRange(localItems);
+        }
+
+        public void DrawLocalSystems()
         {
             extAstroPlotTest.Clear();
 
@@ -174,38 +208,6 @@ namespace DialogTest
             extAstroPlotTest.DrawTravelToMap(Travel);
         }
         
-        private void CreateContextMenu(List<LocalSystems> localSystemsList)
-        {
-            ToolStripMenuItem[] localItems = new ToolStripMenuItem[localSystemsList.Count];
-            for (int i = 0; i < localSystemsList.Count; i++)
-            {
-                localItems[i] = new ToolStripMenuItem
-                {
-                    Text = localSystemsList[i].Name,
-                    Name = localSystemsList[i].Name,
-                    Tag = new double[] { localSystemsList[i].X, localSystemsList[i].Y, localSystemsList[i].Z }
-                };
-                localItems[i].Click += TestAstroPlot_Click;
-            }
-            contextMenuStrip.Items.AddRange(localItems);
-        }
-
-        private void CreateContextMenu(List<TravelSystems> travelSystemsList)
-        {
-            ToolStripMenuItem[] travelItems = new ToolStripMenuItem[travelSystemsList.Count];
-            for (int i = 0; i < travelSystemsList.Count; i++)
-            {
-                travelItems[i] = new ToolStripMenuItem
-                {
-                    Text = travelSystemsList[i].Name,
-                    Name = travelSystemsList[i].Name,
-                    Tag = new double[] { travelSystemsList[i].X, travelSystemsList[i].Y, travelSystemsList[i].Z }
-                };
-                travelItems[i].Click += TestAstroPlot_Click;
-            }
-            contextMenuStrip.Items.AddRange(travelItems);
-        }
-        
         private void TestAstroPlot_Click(object sender, EventArgs e)
         {
             var selected = sender as ToolStripMenuItem;
@@ -216,9 +218,11 @@ namespace DialogTest
         private void SetCenterSystem(double[] coords)
         {
             extAstroPlotTest.CoordsCenter = coords;
-                        
             extAstroPlotTest.Clear();
-            DrawTravelMap();
+            if (travelSystemsList.Count > 0)
+                DrawTravelMap();
+            if (localSystemsList.Count > 0)
+                DrawLocalSystems();
         }
 
         #endregion
@@ -246,7 +250,7 @@ namespace DialogTest
         private void extButtonTravel_Click(object sender, EventArgs e)
         {
             extAstroPlotTest.Invalidate();
-            extAstroPlotTest.Clear();
+            extAstroPlotTest.Clear();            
             DemoTravel();
         }
     }
