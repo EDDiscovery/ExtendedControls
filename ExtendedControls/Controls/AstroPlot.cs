@@ -25,26 +25,26 @@ namespace ExtendedControls.Controls
     public partial class ExtAstroPlot : UserControl
     {
         // points used to draw and orient the axes widget
-        private List<List<double[]>> Coords = new List<List<double[]>>();
-        private List<PointF[]> AxesAnchors = new List<PointF[]>();
+        private readonly List<List<double[]>> AxesCoords = new List<List<double[]>>();
+        private readonly List<PointF[]> AxesAnchors = new List<PointF[]>();
 
         // points used for the boundaries cube
-        private List<List<double[]>> BoundariesCorners = new List<List<double[]>>();
-        private List<PointF[]> BoundariesFrame = new List<PointF[]>();
+        private readonly List<List<double[]>> FrameCorners = new List<List<double[]>>();
+        private readonly List<PointF[]> FrameLines = new List<PointF[]>();
                 
         // MapPlot objects
-        private List<List<double[]>> MapBodies = new List<List<double[]>>();
-        private List<PointF[]> MapPoints = new List<PointF[]>();
+        private readonly List<List<double[]>> MapObjects = new List<List<double[]>>();
+        private readonly List<PointF[]> MapPoints = new List<PointF[]>();
 
         // TravelMap objects
-        private List<List<double[]>> TravelMap = new List<List<double[]>>();
-        private List<PointF[]> TravelMapWaypoints = new List<PointF[]>();
+        private readonly List<List<double[]>> TravelMap = new List<List<double[]>>();
+        private readonly List<PointF[]> TravelMapWaypoints = new List<PointF[]>();
 
         // Orrery objects
-        private List<List<double[]>> OrreryBodies = new List<List<double[]>>();
-        private List<List<double[]>> OrreryCenters = new List<List<double[]>>();
-        private List<PointF[]> OrreryOrbits = new List<PointF[]>();
-        private List<PointF[]> OrreryMassCenters = new List<PointF[]>();
+        private readonly List<List<double[]>> OrreryBodies = new List<List<double[]>>();
+        private readonly List<List<double[]>> OrreryCenters = new List<List<double[]>>();
+        private readonly List<PointF[]> OrreryOrbits = new List<PointF[]>();
+        private readonly List<PointF[]> OrreryMassCenters = new List<PointF[]>();
 
         private double focalLength = 900;
         private double distance = 6;
@@ -235,7 +235,7 @@ namespace ExtendedControls.Controls
                 Width = 1
             };
 
-            Pen BoundariesPen = new Pen(new SolidBrush(ForeColor))
+            Pen FramePen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 1,
                 DashStyle = System.Drawing.Drawing2D.DashStyle.Dot
@@ -289,29 +289,29 @@ namespace ExtendedControls.Controls
             }
 
             // boundaries
-            if (BoundariesFrame != null)
+            if (FrameLines != null)
             {
-                if (BoundariesFrame.Count > 0)
+                if (FrameLines.Count > 0)
                 {
                     // bottom
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][0], BoundariesFrame[0][1]);
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][1], BoundariesFrame[0][5]);
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][5], BoundariesFrame[0][3]);
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][3], BoundariesFrame[0][0]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][0], FrameLines[0][1]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][1], FrameLines[0][5]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][5], FrameLines[0][3]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][3], FrameLines[0][0]);
 
                     // left
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][0], BoundariesFrame[0][2]);
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][2], BoundariesFrame[0][4]);
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][4], BoundariesFrame[0][3]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][0], FrameLines[0][2]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][2], FrameLines[0][4]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][4], FrameLines[0][3]);
 
                     // right
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][1], BoundariesFrame[0][6]);
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][6], BoundariesFrame[0][7]);
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][7], BoundariesFrame[0][5]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][1], FrameLines[0][6]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][6], FrameLines[0][7]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][7], FrameLines[0][5]);
 
                     // top
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][2], BoundariesFrame[0][6]);
-                    e.Graphics.DrawLine(BoundariesPen, BoundariesFrame[0][4], BoundariesFrame[0][7]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][2], FrameLines[0][6]);
+                    e.Graphics.DrawLine(FramePen, FrameLines[0][4], FrameLines[0][7]);
                 }
             }
 
@@ -398,12 +398,12 @@ namespace ExtendedControls.Controls
             g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
         }
 
-        #region Axes Widget
-        private void AddAnchors(List<double[]> anchors)
+        #region Axes
+        private void AddAxesAnchors(List<double[]> anchors)
         {
             List<double[]> _anchors = new List<double[]>(anchors);
-            Coords.Add(_anchors);
-            AxesAnchors.Add(AstroPlot.Update(Coords[Coords.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            AxesCoords.Add(_anchors);
+            AxesAnchors.Add(AstroPlot.Update(AxesCoords[AxesCoords.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
 
@@ -419,39 +419,39 @@ namespace ExtendedControls.Controls
                 };
 
                 // draw the anchors points
-                AddAnchors(Coords);
+                AddAxesAnchors(Coords);
 
                 Coords.Clear();
             }
         }
         #endregion
 
-        #region Boundaries Frame        
-        private void AddBoundaries(List<double[]> corners)
+        #region Frame        
+        private void AddFrameCorners(List<double[]> corners)
         {
             List<double[]> _corners = new List<double[]>(corners);
-            BoundariesCorners.Add(_corners);
-            BoundariesFrame.Add(AstroPlot.Update(BoundariesCorners[0], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            FrameCorners.Add(_corners);
+            FrameLines.Add(AstroPlot.Update(FrameCorners[0], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
             UpdateProjection();
         }
 
-        public void DrawBoundariesWidget(double BoundariesRadius)
+        public void DrawFrameWidget(double frameRadius)
         {
             if (drawBoundariesWidget)
             {
                 List<double[]> Corners = new List<double[]>
                 {
-                    new double[] { BoundariesRadius, BoundariesRadius, BoundariesRadius },
-                    new double[] { BoundariesRadius, BoundariesRadius, -BoundariesRadius },
-                    new double[] { BoundariesRadius, -BoundariesRadius, BoundariesRadius },
-                    new double[] { -BoundariesRadius, BoundariesRadius, BoundariesRadius },
-                    new double[] { -BoundariesRadius, -BoundariesRadius, BoundariesRadius },
-                    new double[] { -BoundariesRadius, BoundariesRadius, -BoundariesRadius },
-                    new double[] { BoundariesRadius, -BoundariesRadius, -BoundariesRadius },
-                    new double[] { -BoundariesRadius, -BoundariesRadius, -BoundariesRadius }
+                    new double[] { frameRadius, frameRadius, frameRadius },
+                    new double[] { frameRadius, frameRadius, -frameRadius },
+                    new double[] { frameRadius, -frameRadius, frameRadius },
+                    new double[] { -frameRadius, frameRadius, frameRadius },
+                    new double[] { -frameRadius, -frameRadius, frameRadius },
+                    new double[] { -frameRadius, frameRadius, -frameRadius },
+                    new double[] { frameRadius, -frameRadius, -frameRadius },
+                    new double[] { -frameRadius, -frameRadius, -frameRadius }
                 };
 
-                AddBoundaries(Corners);
+                AddFrameCorners(Corners);
 
                 Corners.Clear();
             }
@@ -468,9 +468,9 @@ namespace ExtendedControls.Controls
                 // normalize the coordinates to allow for center translation
                 _points.Add(new double[] { points[i][0] - centerCoordinates[0], points[i][1] - centerCoordinates[1], points[i][2] - centerCoordinates[2] });
             }
-            MapBodies.Add(_points);
+            MapObjects.Add(_points);
             
-            MapPoints.Add(AstroPlot.Update(MapBodies[MapBodies.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));            
+            MapPoints.Add(AstroPlot.Update(MapObjects[MapObjects.Count - 1], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));            
             UpdateProjection();
         }
 
@@ -580,7 +580,7 @@ namespace ExtendedControls.Controls
             else
             {
                 for (int i = 0; i < MapPoints.Count; i++)
-                    MapPoints[i] = AstroPlot.Update(MapBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                    MapPoints[i] = AstroPlot.Update(MapObjects[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             if (TravelMapWaypoints == null)
@@ -614,11 +614,11 @@ namespace ExtendedControls.Controls
                 if (drawAxesWidget)
                 {
                     for (int i = 0; i < AxesAnchors.Count; i++)
-                        AxesAnchors[i] = AstroPlot.Update(Coords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                        AxesAnchors[i] = AstroPlot.Update(AxesCoords[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
                 }
             }
 
-            if (BoundariesCorners == null)
+            if (FrameCorners == null)
             {
                 return;
             }
@@ -626,8 +626,8 @@ namespace ExtendedControls.Controls
             {
                 if (drawBoundariesWidget)
                 {
-                    for (int i = 0; i < BoundariesFrame.Count; i++)
-                        BoundariesFrame[i] = AstroPlot.Update(BoundariesCorners[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
+                    for (int i = 0; i < FrameLines.Count; i++)
+                        FrameLines[i] = AstroPlot.Update(FrameCorners[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
                 }
             }
 
@@ -637,7 +637,7 @@ namespace ExtendedControls.Controls
         public void Clear()
         {
             MapPoints.Clear();
-            MapBodies.Clear();
+            MapObjects.Clear();
             TravelMap.Clear();
             TravelMapWaypoints.Clear();
             OrreryBodies.Clear();
