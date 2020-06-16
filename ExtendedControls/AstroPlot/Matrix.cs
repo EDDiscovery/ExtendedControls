@@ -2,7 +2,7 @@
 
 namespace ExtendedControls.Controls
 {
-    static partial class AstroPlot
+    internal static partial class AstroPlot
     {
         public class Matrix<T>
         {

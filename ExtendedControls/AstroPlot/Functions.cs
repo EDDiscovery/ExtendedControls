@@ -4,9 +4,25 @@ using System.Drawing;
 
 namespace ExtendedControls.Controls
 {
-    internal static partial class AstroPlot
+    static partial class AstroPlot
     {
-        static public PointF[] Update(List<double[]> points, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
+        static public PointF[] UpdateObjects(List<object[]> lists, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
+        {
+            Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
+            Matrix<double> _data = Coords(x, y, z);
+            Matrix<double> X_h = new Matrix<double>(4, 1);
+
+            PointF[] Coordinates = new PointF[lists.Count];
+            for (int i = 0; i < lists.Count; i++)
+            {
+                X_h.SetMatrix(new double[] { (double)lists[i][1], (double)lists[i][2], (double)lists[i][3], 1.0 });
+                Matrix<double> P = _data * _interaction * X_h;
+                Coordinates[i] = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+            }
+            return Coordinates;
+        }
+
+        static public PointF[] UpdateWidgets(List<double[]> points, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);
