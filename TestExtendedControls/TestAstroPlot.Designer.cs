@@ -33,8 +33,6 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.extAstroPlotTest = new ExtendedControls.Controls.ExtAstroPlot();
             this.extPanelDropDown1 = new ExtendedControls.ExtPanelDropDown();
-            this.extButtonClear = new ExtendedControls.ExtButton();
-            this.extButtonOrrery = new ExtendedControls.ExtButton();
             this.extButtonTravel = new ExtendedControls.ExtButton();
             this.extButtonLocal = new ExtendedControls.ExtButton();
             this.extPanelDropDown1.SuspendLayout();
@@ -78,13 +76,11 @@
             this.extAstroPlotTest.Size = new System.Drawing.Size(406, 346);
             this.extAstroPlotTest.SmallDotSize = 3;
             this.extAstroPlotTest.TabIndex = 0;
-            this.extAstroPlotTest.MouseDown += new System.Windows.Forms.MouseEventHandler(this.extAstroPlotTest_MouseDown);            
+            this.extAstroPlotTest.MouseDown += new System.Windows.Forms.MouseEventHandler(this.extAstroPlotTest_MouseDown);
             // 
             // extPanelDropDown1
             // 
             this.extPanelDropDown1.BorderColor = System.Drawing.Color.Red;
-            this.extPanelDropDown1.Controls.Add(this.extButtonClear);
-            this.extPanelDropDown1.Controls.Add(this.extButtonOrrery);
             this.extPanelDropDown1.Controls.Add(this.extButtonTravel);
             this.extPanelDropDown1.Controls.Add(this.extButtonLocal);
             this.extPanelDropDown1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -103,26 +99,6 @@
             this.extPanelDropDown1.SelectionSize = 8;
             this.extPanelDropDown1.Size = new System.Drawing.Size(406, 45);
             this.extPanelDropDown1.TabIndex = 1;
-            // 
-            // extButtonClear
-            // 
-            this.extButtonClear.Location = new System.Drawing.Point(348, 3);
-            this.extButtonClear.Name = "extButtonClear";
-            this.extButtonClear.Size = new System.Drawing.Size(55, 39);
-            this.extButtonClear.TabIndex = 3;
-            this.extButtonClear.Text = "Clear";
-            this.extButtonClear.UseVisualStyleBackColor = true;
-            this.extButtonClear.Click += new System.EventHandler(this.extButtonClear_Click);
-            // 
-            // extButtonOrrery
-            // 
-            this.extButtonOrrery.Location = new System.Drawing.Point(178, 3);
-            this.extButtonOrrery.Name = "extButtonOrrery";
-            this.extButtonOrrery.Size = new System.Drawing.Size(75, 39);
-            this.extButtonOrrery.TabIndex = 2;
-            this.extButtonOrrery.Text = "Orrery";
-            this.extButtonOrrery.UseVisualStyleBackColor = true;
-            this.extButtonOrrery.Click += new System.EventHandler(this.extButtonOrrery_Click);
             // 
             // extButtonTravel
             // 
@@ -164,9 +140,7 @@
         private ExtendedControls.Controls.ExtAstroPlot extAstroPlotTest;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private ExtendedControls.ExtPanelDropDown extPanelDropDown1;
-        private ExtendedControls.ExtButton extButtonOrrery;
         private ExtendedControls.ExtButton extButtonTravel;
         private ExtendedControls.ExtButton extButtonLocal;
-        private ExtendedControls.ExtButton extButtonClear;
     }
 }

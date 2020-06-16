@@ -40,12 +40,6 @@ namespace ExtendedControls.Controls
         private readonly List<List<double[]>> TravelMap = new List<List<double[]>>();
         private readonly List<PointF[]> TravelMapWaypoints = new List<PointF[]>();
 
-        // Orrery objects
-        private readonly List<List<double[]>> OrreryBodies = new List<List<double[]>>();
-        private readonly List<List<double[]>> OrreryCenters = new List<List<double[]>>();
-        private readonly List<PointF[]> OrreryOrbits = new List<PointF[]>();
-        private readonly List<PointF[]> OrreryMassCenters = new List<PointF[]>();
-
         private double focalLength = 900;
         private double distance = 6;
         private double[] cameraPosition = new double[3];
@@ -342,49 +336,6 @@ namespace ExtendedControls.Controls
                     }
                 }
             }
-
-            // orrery
-            if (OrreryOrbits != null)
-            {
-                var orreryCenter = new Point(this.Width / 2, this.Height / 2);
-
-                for (int i = 0; i < OrreryMassCenters.Count; i++)
-                {
-                    foreach (PointF p in OrreryMassCenters[i])
-                    {
-                        e.Graphics.FillEllipse(new SolidBrush(Color.Orange), new RectangleF(p.X - LargeDotSize / 2, p.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
-                    }
-                }
-
-                for (int i = 0; i < OrreryOrbits.Count; i++)
-                {
-
-                    // draw a fake central star, just for fun - REALLY, IT'S JUST TEMPORARY!
-                    e.Graphics.FillEllipse(new SolidBrush(Color.Yellow), new RectangleF(orreryCenter.X - LargeDotSize / 2, orreryCenter.Y - LargeDotSize / 2, LargeDotSize, LargeDotSize));
-
-                    // draw the orbit
-
-                    if (OrreryOrbits[0].Length > 0)
-                        for (int o = 0; o < OrreryOrbits[0].Length; o++)
-                        {
-                            Point[] frameCorners = new Point[] {
-                        new Point { X = (int)OrreryOrbits[1][o].X, Y = (int)OrreryOrbits[1][o].Y },
-                        new Point { X = (int)OrreryOrbits[2][o].X, Y = (int)OrreryOrbits[2][o].Y },
-                        new Point { X = (int)OrreryOrbits[3][o].X, Y = (int)OrreryOrbits[3][o].Y },
-                        new Point { X = (int)OrreryOrbits[4][o].X, Y = (int)OrreryOrbits[4][o].Y }
-                        };
-                            e.Graphics.DrawClosedCurve(OrreryOrbitsPen, frameCorners, (float)0.8, System.Drawing.Drawing2D.FillMode.Alternate);
-                        }
-
-                    foreach (PointF p in OrreryOrbits[i])
-                    {
-                        if (i == 0)
-                            e.Graphics.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));
-                        //debug only:
-                        //else g.FillEllipse(new SolidBrush(colors[i % colors.Length]), new RectangleF(p.X - MediumDotSize / 2, p.Y - MediumDotSize / 2, 3, 3));                            
-                    }
-                }
-            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -491,80 +442,7 @@ namespace ExtendedControls.Controls
                 
         #endregion
 
-        #region Orrery
-        public void AddMassCentersToOrrery(List<double[]> centers)
-        {
-            List<double[]> _massCenters = new List<double[]>();
-
-            for (int i = 0; i < centers.Count; i++)
-            {
-                var radius = AstroPlot.FindOrbitalRadius(centers[i][0], centers[i][1]);
-                var elevation = AstroPlot.FindOrbitalElevation(centers[i][0], centers[i][1]);
-                _massCenters.Add(new double[] { radius, elevation, radius });
-            }
-
-            OrreryCenters.Add(_massCenters);
-
-            for (int i = 0; i < OrreryCenters.Count; i++)
-            {
-                OrreryMassCenters.Add(AstroPlot.Update(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-            }
-            UpdateProjection();
-        }
-
-        public void AddBodiesToOrrery(List<double[]> bodies)
-        {            
-            List<double[]> _orbits = new List<double[]>();
-
-            for (int i = 0; i < bodies.Count; i++)
-            {
-                var radius = AstroPlot.FindOrbitalRadius(bodies[i][0], bodies[i][1]);
-                var elevation = AstroPlot.FindOrbitalElevation(bodies[i][0], bodies[i][1]);
-                _orbits.Add(new double[] { radius, elevation, radius });
-            }
-            
-            OrreryBodies.Add(_orbits);
-
-            ///  
-            // create a frame to support the orbit drawing
-            ///
-
-            // initialize four empty series, one for each frame's corner
-            List<double[]> _f1 = new List<double[]>();
-            List<double[]> _f2 = new List<double[]>();
-            List<double[]> _f3 = new List<double[]>();
-            List<double[]> _f4 = new List<double[]>();
-
-            // then, add a translated copy of each body coordinates
-            if (bodies.Count > 0)
-            {
-                for (int i = 0; i < _orbits.Count; i++)
-                {
-                    double _fc = _orbits[i][0];
-                    double _fi = _orbits[i][1];
-
-                    _f1.Add(new double[] { _fc, _fi, _fc });
-                    _f2.Add(new double[] { _fc, _fi, _fc * -1 });
-                    _f3.Add(new double[] { _fc * -1, (_fi * -1), _fc * -1 });
-                    _f4.Add(new double[] { _fc * -1, (_fi * -1), _fc });
-                }
-                OrreryBodies.Add(_f1);
-                OrreryBodies.Add(_f2);
-                OrreryBodies.Add(_f3);
-                OrreryBodies.Add(_f4);
-            }
-
-            for (int i = 0; i < OrreryBodies.Count; i++)
-            {
-                OrreryOrbits.Add(AstroPlot.Update(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-            }
-            
-            UpdateProjection();
-        }
-        #endregion
-
-        #region Projection
-                
+        #region Projection                
         private void UpdateProjection()
         {
             double x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
@@ -592,19 +470,7 @@ namespace ExtendedControls.Controls
                 for (int i = 0; i < TravelMapWaypoints.Count; i++)
                     TravelMapWaypoints[i] = AstroPlot.Update(TravelMap[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
             }
-
-            if (OrreryOrbits == null)
-            {
-                return;
-            }
-            else
-            {
-                for (int i = 0; i < OrreryOrbits.Count; i++)
-                    OrreryOrbits[i] = AstroPlot.Update(OrreryBodies[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
-                for (int i = 0; i < OrreryCenters.Count; i++)
-                    OrreryMassCenters[i] = AstroPlot.Update(OrreryCenters[i], this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation);
-            }
-
+                        
             if (AxesAnchors == null)
             {
                 return;
@@ -639,9 +505,7 @@ namespace ExtendedControls.Controls
             MapPoints.Clear();
             MapObjects.Clear();
             TravelMap.Clear();
-            TravelMapWaypoints.Clear();
-            OrreryBodies.Clear();
-            OrreryOrbits.Clear();
+            TravelMapWaypoints.Clear();            
         }
         #endregion
 
