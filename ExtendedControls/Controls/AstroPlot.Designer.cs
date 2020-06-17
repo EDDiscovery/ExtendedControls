@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.plot = new System.Windows.Forms.PictureBox();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.plot)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,6 +46,9 @@
             this.plot.SizeChanged += new System.EventHandler(this.plot_SizeChanged);
             this.plot.Paint += new System.Windows.Forms.PaintEventHandler(this.plot_Paint);
             this.plot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.plot_MouseDown);
+            this.plot.MouseEnter += new System.EventHandler(this.plot_MouseEnter);
+            this.plot.MouseLeave += new System.EventHandler(this.plot_MouseLeave);
+            this.plot.MouseHover += new System.EventHandler(this.plot_MouseHover);
             this.plot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.plot_MouseMove);
             this.plot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.plot_MouseUp);
             // 
@@ -64,5 +69,6 @@
 
         #endregion
         private System.Windows.Forms.PictureBox plot;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

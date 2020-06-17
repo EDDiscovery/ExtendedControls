@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -42,6 +43,9 @@ namespace ExtendedControls.Controls
         private readonly List<object[]> TravelMap = new List<object[]>();
         private readonly List<PointF[]> TravelMapWaypoints = new List<PointF[]>();
 
+        // Tooltips        
+        private readonly List<PointF[]> MapTooltips = new List<PointF[]>();
+
         private double focalLength = 900;
         private double distance = 6;
         private double[] cameraPosition = new double[3];
@@ -53,12 +57,11 @@ namespace ExtendedControls.Controls
         private int largeDotSize = 12;
 
         // Mouse 
-        private bool leftMousePressed = false;
-        private bool rightMousePressed = false;
-        private bool middleMousePressed = false;
+        private bool leftMousePressed = false, rightMousePressed = false, middleMousePressed = false;
         private PointF ptMouseClick;
         private int mouseMovementSens = 150;
         private double mouseWheelSens = 300;
+        private Point mousePosition;
 
         // Axes Widget
         private bool drawAxesWidget = true;
@@ -74,9 +77,13 @@ namespace ExtendedControls.Controls
         private double lastAzimuth, azimuth = 0.3;
         // Elevation is the angular distance of something (such as a celestial object) above the horizon
         private double lastElevation, elevation = 0.3;
-                
+
+        private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer();
+
+        
+
         #region Properties
-                
+
         [Description("Set the distance at which the camera stands from the plot")]
         public double Distance
         {
@@ -201,18 +208,14 @@ namespace ExtendedControls.Controls
         {
             InitializeComponent();
             AstroPlot.MouseWheel.Add(this, OnMouseWheel);
-        }
 
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;    // Turn on WS_EX_COMPOSITED
-                return cp;
-            }
-        }
+            toolTip.AutoPopDelay = 1000;
 
+            _mouseIdleTimer.AutoReset = false;
+            _mouseIdleTimer.Interval = 300;
+            _mouseIdleTimer.Elapsed += _mouseIdleTimer_Elapsed;
+        }
+        
         private void plot_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -310,7 +313,7 @@ namespace ExtendedControls.Controls
                 for (int i = 0; i < MapSystemsVisited.Count; i++)
                 {
                     foreach (PointF p in MapSystemsVisited[i])
-                    {   
+                    {
                         e.Graphics.FillEllipse(new SolidBrush(Color.Blue), new RectangleF(p.X - SmallDotSize / 2, p.Y - SmallDotSize / 2, SmallDotSize, SmallDotSize));
                     }
                 }
@@ -332,6 +335,8 @@ namespace ExtendedControls.Controls
                 {
                     for (int ii = 0; ii < TravelMapWaypoints[i].Length; ii++)
                     {
+                        e.Graphics.DrawRectangle(FramePen, new Rectangle((int)MapTooltips[i][ii].X - 5, (int)MapTooltips[i][ii].Y - 5, 10, 10));
+
                         if (ii == 0)
                         {
                             e.Graphics.FillEllipse(new SolidBrush(Color.Red), new RectangleF(TravelMapWaypoints[i][ii].X - MediumDotSize / 2, TravelMapWaypoints[i][ii].Y - MediumDotSize / 2, MediumDotSize, MediumDotSize));
@@ -451,13 +456,15 @@ namespace ExtendedControls.Controls
             List<object[]> _travel = new List<object[]>();
 
             for (int i = 0; i < waypoints.Count; i++)
-            {             
+            {
                 _travel.Add(new object[] { waypoints[i][0], (double)waypoints[i][1] - centerCoordinates[0], (double)waypoints[i][2] - centerCoordinates[1], (double)waypoints[i][3] - centerCoordinates[2] });
             }
 
             TravelMap.AddRange(_travel);
 
             TravelMapWaypoints.Add(AstroPlot.UpdateObjects(TravelMap, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+            MapTooltips.Add(AstroPlot.UpdateObjects(TravelMap, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+
             UpdateProjection();
         }
                 
@@ -487,7 +494,10 @@ namespace ExtendedControls.Controls
             if (TravelMapWaypoints != null)
             {
                 for (int i = 0; i < TravelMapWaypoints.Count; i++)
+                {
                     TravelMapWaypoints[i] = AstroPlot.UpdateObjects(TravelMap, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+                    MapTooltips[i] = AstroPlot.UpdateObjects(TravelMap, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+                }
             }
 
             if (AxesAnchors != null && drawAxesWidget)
@@ -517,6 +527,8 @@ namespace ExtendedControls.Controls
 
             TravelMap.Clear();
             TravelMapWaypoints.Clear();
+
+            MapTooltips.Clear();
         }
         #endregion
 
@@ -531,10 +543,10 @@ namespace ExtendedControls.Controls
         }
 
         private void plot_SizeChanged(object sender, EventArgs e)
-        {            
+        {
                 UpdateProjection();
         }
-
+                
         private void plot_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -544,7 +556,7 @@ namespace ExtendedControls.Controls
                 ptMouseClick = new PointF(e.X, e.Y);
                 lastAzimuth = azimuth;
                 lastElevation = elevation;
-            }            
+            }
         }
 
         private void plot_MouseUp(object sender, MouseEventArgs e)
@@ -555,16 +567,93 @@ namespace ExtendedControls.Controls
                 middleMousePressed = false;
         }
 
+        private string toolTipText;
+
+        private void plot_MouseHover(object sender, EventArgs e)
+        {
+            
+        }
+
         private void plot_MouseMove(object sender, MouseEventArgs e)
         {
             if (leftMousePressed)
             {
-                azimuth = lastAzimuth - (ptMouseClick.X - e.X) / 150;
-                elevation = lastElevation + (ptMouseClick.Y - e.Y) / 150;
+                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / 150);
+                elevation = lastElevation + ((ptMouseClick.Y - e.Y) / 150);
                 UpdateProjection();
             }
+            
+            mousePosition = e.Location;
+
+            _mouseIdleTimer.Stop();
+            _mouseIdleTimer.Start();
+
+            Debug.WriteLine("Timer started");
         }
-                
+
+        private void _mouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Debug.WriteLine("Timer code running...");
+
+            string text = null;
+            if (mousePosition.X < 100 && mousePosition.Y < 100)
+                text = "Top Left";
+            else if (mousePosition.X < 100 && mousePosition.Y > Height - 100)
+                text = "Bottom Left";
+            else if (mousePosition.X > Width - 100 && mousePosition.Y < 100)
+                text = "Top Right";
+            else if (mousePosition.X > Width - 100 && mousePosition.Y > Height - 100)
+                text = "Bottom Right";
+
+            foreach (var item in MapTooltips[0])
+            {
+                Debug.WriteLine(item);
+                if (mousePosition.X == item.X && mousePosition.Y == item.Y)
+                {
+                    text = item.X.ToString();
+                    Debug.Write(text);
+                }
+                    
+            }
+
+            BeginInvoke(
+                (Action)(
+                    () =>
+                    {
+                        string currentText = toolTip.GetToolTip(this);
+                        if (currentText != text)
+                        {
+                            toolTipText = text;
+                            toolTip.SetToolTip(this, text);
+                            Debug.WriteLine(text);
+                        }
+                    }
+                )
+            );
+
+            //toolTip.SetToolTip(senderObject, toolTipText);
+        }
+
+        private void plot_MouseLeave(object sender, EventArgs e)
+        {
+            _mouseIdleTimer.Stop();
+            Debug.WriteLine("Timer stopped");
+        }
+
+        private void plot_MouseEnter(object sender, EventArgs e)
+        {
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;    // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
+        }
+
         private new void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
