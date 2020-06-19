@@ -28,7 +28,7 @@ namespace DialogTest
             extAstroPlotTest.DrawAxesWidget(extAstroPlotTest.AxesLength);
 
             // draw the boundaries cube frame
-            extAstroPlotTest.DrawFrameWidget(extAstroPlotTest.BoundariesRadius);
+            extAstroPlotTest.DrawFrameWidget(extAstroPlotTest.FramesExtension);
 
             DemoCluster();
         }
@@ -41,14 +41,14 @@ namespace DialogTest
             extAstroPlotTest.Elevation = -0.3;
             extAstroPlotTest.Azimuth = -0.3;
             extAstroPlotTest.AxesWidget = true;
-            extAstroPlotTest.AxesLength = 10;
+            extAstroPlotTest.AxesLength = 7;
             
             extAstroPlotTest.CoordsCenter[0] = 0.0;
             extAstroPlotTest.CoordsCenter[1] = 0.0;
             extAstroPlotTest.CoordsCenter[2] = 0.0;
 
-            extAstroPlotTest.BoundariesWidget = false;
-            extAstroPlotTest.BoundariesRadius = 0.9;
+            extAstroPlotTest.FramesWidget = true;
+            extAstroPlotTest.FramesExtension = 14;
 
             extAstroPlotTest.MouseSensitivity_Wheel = 20;
             extAstroPlotTest.MouseSensitivity_Movement = 200;

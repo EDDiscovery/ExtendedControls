@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace ExtendedControls.AstroPlot
 { 
-    internal static partial class Update
+    internal static class Update
     {
         internal static void MapSystems(List<ExtAstroPlot.MapObjects> mapSystems, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
@@ -21,7 +21,7 @@ namespace ExtendedControls.AstroPlot
             }
         }
 
-        internal static void MapWidgets(List<ExtAstroPlot.Axis> widgets, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
+        internal static void MapAxes(List<ExtAstroPlot.Axis> widgets, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);
@@ -35,43 +35,21 @@ namespace ExtendedControls.AstroPlot
             }
         }
 
-        static public PointF[] Objects(List<object[]> lists, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
+        internal static void MapFrames(List<ExtAstroPlot.Corner> frames, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);
             Matrix<double> X_h = new Matrix<double>(4, 1);
 
-            PointF[] Coordinates = new PointF[lists.Count];
-            for (int i = 0; i < lists.Count; i++)
+            for (int i = 0; i < frames.Count; i++)
             {
-                X_h.SetMatrix(new double[] { (double)lists[i][1], (double)lists[i][2], (double)lists[i][3], 1.0 });
+                X_h.SetMatrix(new double[] { (double)frames[i].X, (double)frames[i].Y, (double)frames[i].Z, 1.0 });
                 Matrix<double> P = _data * _interaction * X_h;
-                Coordinates[i] = new PointF(
-                    (float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)),
-                    (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                frames[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
             }
-            return Coordinates;
         }
 
-        static public PointF[] Widgets(List<double[]> points, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
-        {
-            Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
-            Matrix<double> _data = Coords(x, y, z);
-            Matrix<double> X_h = new Matrix<double>(4, 1);
-
-            PointF[] Coordinates = new PointF[points.Count];
-            for (int i = 0; i < points.Count; i++)
-            {
-                X_h.SetMatrix(new double[] { points[i][0], points[i][1], points[i][2], 1.0 });
-                Matrix<double> P = _data * _interaction * X_h;
-                Coordinates[i] = new PointF(
-                    (float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)),
-                    (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
-            }
-            return Coordinates;
-        }
-
-        private static Matrix<double> Coords(double x, double y, double z)
+        internal static Matrix<double> Coords(double x, double y, double z)
         {
             Matrix<double> _matrix = new Matrix<double>(3, 3);
             double _x = x / 2;
@@ -81,7 +59,7 @@ namespace ExtendedControls.AstroPlot
             return _matrix;
         }
 
-        private static Matrix<double> Interaction(double azimuth, double elevation, double[] camera)
+        internal static Matrix<double> Interaction(double azimuth, double elevation, double[] camera)
         {
             Matrix<double> R = Rotate(azimuth, elevation);
             Matrix<double> lens = new Matrix<double>(3, 1);
@@ -89,7 +67,7 @@ namespace ExtendedControls.AstroPlot
             return R | (-R * lens);
         }
 
-        private static Matrix<double> Rotate(double azimuth, double elevation)
+        internal static Matrix<double> Rotate(double azimuth, double elevation)
         {
             Matrix<double> R = new Matrix<double>(3, 3);
             R.SetMatrix(new double[] { Math.Cos(azimuth), 0, -Math.Sin(azimuth),
@@ -107,6 +85,6 @@ namespace ExtendedControls.AstroPlot
         {
             var angle = (inclination / 90) * distance;
             return (double)Math.Sqrt((distance * distance) - (angle * angle));
-        }                
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls.AstroPlot
 {
-    static partial class Handlers
+    static class Handlers
     {
         public static class MouseWheel
         {

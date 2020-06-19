@@ -47,8 +47,8 @@
             this.extAstroPlotTest.Azimuth = 0.3D;
             this.extAstroPlotTest.BackColor = System.Drawing.Color.Black;
             this.extAstroPlotTest.BoundariesFrameThickness = 1;
-            this.extAstroPlotTest.BoundariesRadius = 0.8D;
-            this.extAstroPlotTest.BoundariesWidget = true;
+            this.extAstroPlotTest.FramesExtension = 0.8D;
+            this.extAstroPlotTest.FramesWidget = true;
             this.extAstroPlotTest.Camera = new double[] {
         -1.0163564521110631D,
         1.063872743980822D,
