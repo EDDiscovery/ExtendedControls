@@ -84,9 +84,9 @@ namespace ExtendedControls.Controls
         private int axesWidgetLength = 50;
 
         // Boundaries Cube
-        private bool drawBoundariesWidget = true;
-        private double boundariesRadiusWidth = 0.8;
-        private int boundariesWidgetThickness = 1;
+        private bool drawFramesWidget = true;
+        private double framesRadiusWidth = 0.8;
+        private int framesWidgetThickness = 1;
 
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
         private double lastAzimuth, azimuth = 0.3;
@@ -194,22 +194,22 @@ namespace ExtendedControls.Controls
         [Description("Toggle the boundaries frame")]
         public bool FramesWidget
         {
-            get { return drawBoundariesWidget; }
-            set { drawBoundariesWidget = value; UpdateProjection(); }
+            get { return drawFramesWidget; }
+            set { drawFramesWidget = value; UpdateProjection(); }
         }
 
         [Description("Set the boundaries frame radius")]
-        public double FramesExtension
+        public double FramesRadius
         {
-            get { return boundariesRadiusWidth; }
-            set { boundariesRadiusWidth = value; UpdateProjection(); }
+            get { return framesRadiusWidth; }
+            set { framesRadiusWidth = value; UpdateProjection(); }
         }
 
         [Description("Set the boundaries frame thickness")]
-        public int BoundariesFrameThickness
+        public int FramesThickness
         {
-            get { return boundariesWidgetThickness; }
-            set { boundariesWidgetThickness = value; UpdateProjection(); }
+            get { return framesWidgetThickness; }
+            set { framesWidgetThickness = value; UpdateProjection(); }
         }
 
         [Description("Set the sensitivity of the mouse movement")]
@@ -303,7 +303,7 @@ namespace ExtendedControls.Controls
             }
 
             // boundaries
-            if (drawBoundariesWidget && Frames != null)
+            if (drawFramesWidget && Frames != null)
             {
                 // bottom
                 e.Graphics.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
@@ -411,7 +411,7 @@ namespace ExtendedControls.Controls
 
         public void DrawFrameWidget(double frameRadius)
         {
-            if (drawBoundariesWidget)
+            if (drawFramesWidget)
             {
 
                 Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = frameRadius });
