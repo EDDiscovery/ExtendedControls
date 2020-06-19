@@ -29,13 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestAstroPlot));
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.extAstroPlotTest = new ExtendedControls.Controls.ExtAstroPlot();
-            this.extPanelDropDown1 = new ExtendedControls.ExtPanelDropDown();
-            this.extButtonTravel = new ExtendedControls.ExtButton();
-            this.extButtonLocal = new ExtendedControls.ExtButton();
-            this.extPanelDropDown1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip
@@ -67,58 +63,18 @@
             this.extAstroPlotTest.Elevation = 0.3D;
             this.extAstroPlotTest.Focus = 900D;
             this.extAstroPlotTest.ForeColor = System.Drawing.Color.White;
+            this.extAstroPlotTest.HotSpotSize = 10;
             this.extAstroPlotTest.LargeDotSize = 9;
-            this.extAstroPlotTest.Location = new System.Drawing.Point(0, 45);
+            this.extAstroPlotTest.Location = new System.Drawing.Point(0, 0);
             this.extAstroPlotTest.MediumDotSize = 6;
             this.extAstroPlotTest.MouseSensitivity_Movement = 150;
             this.extAstroPlotTest.MouseSensitivity_Wheel = 300D;
             this.extAstroPlotTest.Name = "extAstroPlotTest";
-            this.extAstroPlotTest.Size = new System.Drawing.Size(406, 346);
+            this.extAstroPlotTest.Size = new System.Drawing.Size(406, 391);
             this.extAstroPlotTest.SmallDotSize = 3;
             this.extAstroPlotTest.TabIndex = 0;
             this.extAstroPlotTest.MouseDown += new System.Windows.Forms.MouseEventHandler(this.extAstroPlotTest_MouseDown);
-            // 
-            // extPanelDropDown1
-            // 
-            this.extPanelDropDown1.BorderColor = System.Drawing.Color.Red;
-            this.extPanelDropDown1.Controls.Add(this.extButtonTravel);
-            this.extPanelDropDown1.Controls.Add(this.extButtonLocal);
-            this.extPanelDropDown1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.extPanelDropDown1.FitToItemsHeight = false;
-            this.extPanelDropDown1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extPanelDropDown1.GradientColorScaling = 0.5F;
-            this.extPanelDropDown1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("extPanelDropDown1.Items")));
-            this.extPanelDropDown1.Location = new System.Drawing.Point(0, 0);
-            this.extPanelDropDown1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
-            this.extPanelDropDown1.Name = "extPanelDropDown1";
-            this.extPanelDropDown1.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.extPanelDropDown1.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.extPanelDropDown1.SelectedIndex = -1;
-            this.extPanelDropDown1.SelectionBackColor = System.Drawing.Color.Gray;
-            this.extPanelDropDown1.SelectionMarkColor = System.Drawing.Color.Yellow;
-            this.extPanelDropDown1.SelectionSize = 8;
-            this.extPanelDropDown1.Size = new System.Drawing.Size(406, 45);
-            this.extPanelDropDown1.TabIndex = 1;
-            // 
-            // extButtonTravel
-            // 
-            this.extButtonTravel.Location = new System.Drawing.Point(97, 3);
-            this.extButtonTravel.Name = "extButtonTravel";
-            this.extButtonTravel.Size = new System.Drawing.Size(75, 39);
-            this.extButtonTravel.TabIndex = 1;
-            this.extButtonTravel.Text = "Travel Map";
-            this.extButtonTravel.UseVisualStyleBackColor = true;
-            this.extButtonTravel.Click += new System.EventHandler(this.extButtonTravel_Click);
-            // 
-            // extButtonLocal
-            // 
-            this.extButtonLocal.Location = new System.Drawing.Point(3, 3);
-            this.extButtonLocal.Name = "extButtonLocal";
-            this.extButtonLocal.Size = new System.Drawing.Size(88, 39);
-            this.extButtonLocal.TabIndex = 0;
-            this.extButtonLocal.Text = "Local Systems";
-            this.extButtonLocal.UseVisualStyleBackColor = true;
-            this.extButtonLocal.Click += new System.EventHandler(this.extButtonLocal_Click);
+            this.extAstroPlotTest.MouseHover += new System.EventHandler(this.extAstroPlotTest_MouseHover);
             // 
             // TestAstroPlot
             // 
@@ -127,10 +83,8 @@
             this.ClientSize = new System.Drawing.Size(406, 391);
             this.ContextMenuStrip = this.contextMenuStrip;
             this.Controls.Add(this.extAstroPlotTest);
-            this.Controls.Add(this.extPanelDropDown1);
             this.Name = "TestAstroPlot";
             this.Text = "TestAstroPlot";
-            this.extPanelDropDown1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -139,8 +93,6 @@
 
         private ExtendedControls.Controls.ExtAstroPlot extAstroPlotTest;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
-        private ExtendedControls.ExtPanelDropDown extPanelDropDown1;
-        private ExtendedControls.ExtButton extButtonTravel;
-        private ExtendedControls.ExtButton extButtonLocal;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

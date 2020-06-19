@@ -28,7 +28,9 @@ namespace DialogTest
             extAstroPlotTest.DrawAxesWidget(extAstroPlotTest.AxesLength);
 
             // draw the boundaries cube frame
-            extAstroPlotTest.DrawFrameWidget(extAstroPlotTest.BoundariesRadius);                        
+            extAstroPlotTest.DrawFrameWidget(extAstroPlotTest.BoundariesRadius);
+
+            DemoTravel();
         }
 
         private void DefineDefaults()
@@ -60,23 +62,23 @@ namespace DialogTest
 
         #region Stars
 
-        private class LocalSystems
-        {
-            public string Name { get; set; }
-            public double X { get; set; }
-            public double Y { get; set; }
-            public double Z { get; set; }                        
-            public bool Visited { get; set; }            
-        }
-
-        private readonly List<LocalSystems> localSystemsList = new List<LocalSystems>();
-
-        private class TravelSystems
+        private class Systems
         {
             public string Name { get; set; }
             public double X { get; set; }
             public double Y { get; set; }
             public double Z { get; set; }
+        }
+
+        private class LocalSystems : Systems
+        {
+            public bool Visited { get; set; }
+        }
+
+        private readonly List<LocalSystems> localSystemsList = new List<LocalSystems>();
+
+        private class TravelSystems : Systems
+        {
             public bool IsCurrent { get; set; }
         }
 
@@ -193,7 +195,7 @@ namespace DialogTest
             for (int i = 0; i < localSystemsList.Count; i++)
             {
                 Stars.Add(new object[] { localSystemsList[i].Name, localSystemsList[i].X, localSystemsList[i].Y, localSystemsList[i].Z, localSystemsList[i].Visited });
-            }            
+            }
             extAstroPlotTest.AddPointsAndLabels(Stars);
         }
 
@@ -252,8 +254,13 @@ namespace DialogTest
         private void extButtonTravel_Click(object sender, EventArgs e)
         {
             extAstroPlotTest.Invalidate();
-            extAstroPlotTest.Clear();            
+            extAstroPlotTest.Clear();
             DemoTravel();
+        }
+
+        private void extAstroPlotTest_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.ShowAlways = true;
         }
     }
 }

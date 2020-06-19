@@ -43,14 +43,20 @@
             this.plot.Size = new System.Drawing.Size(256, 256);
             this.plot.TabIndex = 0;
             this.plot.TabStop = false;
-            this.plot.SizeChanged += new System.EventHandler(this.plot_SizeChanged);
-            this.plot.Paint += new System.Windows.Forms.PaintEventHandler(this.plot_Paint);
-            this.plot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.plot_MouseDown);
-            this.plot.MouseEnter += new System.EventHandler(this.plot_MouseEnter);
-            this.plot.MouseLeave += new System.EventHandler(this.plot_MouseLeave);
-            this.plot.MouseHover += new System.EventHandler(this.plot_MouseHover);
-            this.plot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.plot_MouseMove);
-            this.plot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.plot_MouseUp);
+            this.plot.SizeChanged += new System.EventHandler(this.Plot_SizeChanged);
+            this.plot.Paint += new System.Windows.Forms.PaintEventHandler(this.Plot_Paint);
+            this.plot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseDown);
+            this.plot.MouseEnter += new System.EventHandler(this.Plot_MouseEnter);
+            this.plot.MouseLeave += new System.EventHandler(this.Plot_MouseLeave);
+            this.plot.MouseHover += new System.EventHandler(this.Plot_MouseHover);
+            this.plot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseMove);
+            this.plot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseUp);
+            // 
+            // toolTip
+            // 
+            this.toolTip.Active = false;
+            this.toolTip.AutomaticDelay = 200;
+            this.toolTip.IsBalloon = true;
             // 
             // ExtAstroPlot
             // 

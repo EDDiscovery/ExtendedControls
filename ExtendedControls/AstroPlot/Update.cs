@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ExtendedControls.Controls;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace ExtendedControls.Controls
-{
-    static partial class AstroPlot
+namespace ExtendedControls.AstroPlot
+{ 
+    internal static partial class Update
     {
-        static public PointF[] UpdateObjects(List<object[]> lists, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
+        static public PointF[] Objects(List<object[]> lists, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);
@@ -17,12 +18,14 @@ namespace ExtendedControls.Controls
             {
                 X_h.SetMatrix(new double[] { (double)lists[i][1], (double)lists[i][2], (double)lists[i][3], 1.0 });
                 Matrix<double> P = _data * _interaction * X_h;
-                Coordinates[i] = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                Coordinates[i] = new PointF(
+                    (float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)),
+                    (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
             }
             return Coordinates;
         }
-
-        static public PointF[] UpdateWidgets(List<double[]> points, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
+                
+        static public PointF[] Widgets(List<double[]> points, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);
@@ -33,7 +36,9 @@ namespace ExtendedControls.Controls
             {
                 X_h.SetMatrix(new double[] { points[i][0], points[i][1], points[i][2], 1.0 });
                 Matrix<double> P = _data * _interaction * X_h;
-                Coordinates[i] = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                Coordinates[i] = new PointF(
+                    (float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)),
+                    (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
             }
             return Coordinates;
         }
@@ -43,7 +48,7 @@ namespace ExtendedControls.Controls
             Matrix<double> _matrix = new Matrix<double>(3, 3);
             double _x = x / 2;
             double _y = y / 2;
-            double _a = 1;
+            const double _a = 1;
             _matrix.SetMatrix(new double[] { z, 0, _x, 0, z * _a, _y, 0, 0, 1 });
             return _matrix;
         }
@@ -53,8 +58,7 @@ namespace ExtendedControls.Controls
             Matrix<double> R = Rotate(azimuth, elevation);
             Matrix<double> lens = new Matrix<double>(3, 1);
             lens.SetMatrix(camera);
-            Matrix<double> _matrix = R | (-R * lens);
-            return _matrix;
+            return R | (-R * lens);
         }
 
         private static Matrix<double> Rotate(double azimuth, double elevation)
@@ -64,19 +68,17 @@ namespace ExtendedControls.Controls
                                        Math.Sin(azimuth)*Math.Sin(elevation),  Math.Cos(elevation), Math.Cos(azimuth)*Math.Sin(elevation),
                                        Math.Cos(elevation)*Math.Sin(azimuth), -Math.Sin(elevation), Math.Cos(azimuth)*Math.Cos(elevation) });
             return R;
-        }        
+        }
 
         internal static double FindOrbitalElevation(double distance, double inclination)
         {
-            var elevation = (inclination / 90) * distance;
-            return elevation;
+            return (double)((inclination / 90) * distance);
         }
 
         internal static double FindOrbitalRadius(double distance, double inclination)
-        {         
+        {
             var angle = (inclination / 90) * distance;
-            var radius = Math.Sqrt((distance * distance) - (angle * angle));
-            return radius;
+            return (double)Math.Sqrt((distance * distance) - (angle * angle));
         }
     }
 }

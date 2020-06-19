@@ -5,9 +5,9 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
-namespace ExtendedControls.Controls
+namespace ExtendedControls.AstroPlot
 {
-    static partial class AstroPlot
+    static partial class Handlers
     {
         public static class MouseWheel
         {
