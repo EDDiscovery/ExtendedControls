@@ -30,7 +30,7 @@ namespace DialogTest
             // draw the boundaries cube frame
             extAstroPlotTest.DrawFrameWidget(extAstroPlotTest.BoundariesRadius);
 
-            DemoTravel();
+            DemoCluster();
         }
 
         private void DefineDefaults()

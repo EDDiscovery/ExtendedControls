@@ -652,35 +652,33 @@ namespace ExtendedControls.Controls
 
             string text = null;
 
-            //if (MapSystemsVisited != null)
-            //{
-            //    for (int i = 0; i < MapSystemsVisited.Count; i++)
-            //    {
-            //        for (int ii = 0; ii < MapSystemsVisited[i].Length; ii++)
-            //        {
-            //            PointF point = new PointF();
+            if (MapSystemsVisited != null)
+            {
+                for (int i = 0; i < MapSystemsVisited.Count; i++)
+                {
+                    for (int ii = 0; ii < MapSystemsVisited[i].Length; ii++)
+                    {
+                        if (mousePosition.X > (MapSystemsVisited[i][ii].X - hs) && mousePosition.X < (MapSystemsVisited[i][ii].X + hs) && mousePosition.Y > (MapSystemsVisited[i][ii].Y - hs) && mousePosition.Y < (MapSystemsVisited[i][ii].Y + hs))
+                        {
+                            text = ii.ToString() + " " + MapSystemsVisited[i][ii].ToString();
+                        }
+                    }
+                }
+            }
 
-            //            if (mousePosition.X > MapSystemsVisited[i][ii].X - hs) && mousePosition.X < (MapSystemsVisited[i][ii].X + hs) && mousePosition.Y > (MapSystemsVisited[i][ii].Y - hs) && mousePosition.Y < (MapSystemsVisited[i][ii].Y + hs))
-            //            {
-            //                text = ii.ToString() + " " + MapSystemsVisited[i][ii].ToString();
-            //            }
-            //        }
-            //    }
-            //}
-
-            //if (MapSystemsUnVisited != null)
-            //{
-            //    for (int i = 0; i < MapSystemsUnVisited.Count; i++)
-            //    {
-            //        for (int ii = 0; ii < MapSystemsUnVisited[i].Length; ii++)
-            //        {
-            //            if (mousePosition.X > (MapSystemsUnVisited[i][ii].X - hs) && mousePosition.X < (MapSystemsUnVisited[i][ii].X + hs) && mousePosition.Y > (MapSystemsUnVisited[i][ii].Y - hs) && mousePosition.Y < (MapSystemsUnVisited[i][ii].Y + hs))
-            //            {
-            //                text = ii.ToString() + " " + MapSystemsUnVisited[i][ii].ToString();
-            //            }
-            //        }
-            //    }
-            //}
+            if (MapSystemsUnVisited != null)
+            {
+                for (int i = 0; i < MapSystemsUnVisited.Count; i++)
+                {
+                    for (int ii = 0; ii < MapSystemsUnVisited[i].Length; ii++)
+                    {
+                        if (mousePosition.X > (MapSystemsUnVisited[i][ii].X - hs) && mousePosition.X < (MapSystemsUnVisited[i][ii].X + hs) && mousePosition.Y > (MapSystemsUnVisited[i][ii].Y - hs) && mousePosition.Y < (MapSystemsUnVisited[i][ii].Y + hs))
+                        {
+                            text = ii.ToString() + " " + MapSystemsUnVisited[i][ii].ToString();
+                        }
+                    }
+                }
+            }
 
             if (TravelMapWaypoints != null)
             {
