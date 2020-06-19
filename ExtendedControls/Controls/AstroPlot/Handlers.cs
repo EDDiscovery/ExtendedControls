@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
-namespace ExtendedControls.AstroPlot
+namespace ExtendedControls.Controls.AstroPlot
 {
     static class Handlers
     {
@@ -47,7 +47,7 @@ namespace ExtendedControls.AstroPlot
                         {
                             var wParam = m.WParam.ToInt32();
                             Func<int, MouseButtons, MouseButtons> getButton =
-                                (flag, button) => ((wParam & flag) == flag) ? button : MouseButtons.None;
+                                (flag, button) => (wParam & flag) == flag ? button : MouseButtons.None;
 
                             var buttons = getButton(wParam & 0x0001, MouseButtons.Left)
                                         | getButton(wParam & 0x0010, MouseButtons.Middle)

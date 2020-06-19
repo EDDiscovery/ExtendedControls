@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ExtendedControls.AstroPlot
+namespace ExtendedControls.Controls.AstroPlot
 {
     public class Matrix<T>
     {
@@ -80,7 +80,7 @@ namespace ExtendedControls.AstroPlot
 
         public override string ToString()
         {
-            String output = "";
+            string output = "";
             for (int r = 0; r < rows; r++)
             {
                 output += "[\t";

@@ -14,6 +14,7 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
+using ExtendedControls.Controls.AstroPlot;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -237,7 +238,7 @@ namespace ExtendedControls.Controls
         public ExtAstroPlot()
         {
             InitializeComponent();
-            AstroPlot.Handlers.MouseWheel.Add(this, OnMouseWheel);
+            Handlers.MouseWheel.Add(this, OnMouseWheel);
 
             systemLabel.Text = "";
             systemLabel.Visible = false;
