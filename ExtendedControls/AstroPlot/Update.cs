@@ -18,7 +18,21 @@ namespace ExtendedControls.AstroPlot
                 X_h.SetMatrix(new double[] { (double)mapSystems[i].X, (double)mapSystems[i].Y, (double)mapSystems[i].Z, 1.0 });
                 Matrix<double> P = _data * _interaction * X_h;
                 mapSystems[i].Coords = new PointF ((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
-            }         
+            }
+        }
+
+        internal static void MapWidgets(List<ExtAstroPlot.Axis> widgets, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
+        {
+            Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
+            Matrix<double> _data = Coords(x, y, z);
+            Matrix<double> X_h = new Matrix<double>(4, 1);
+
+            for (int i = 0; i < widgets.Count; i++)
+            {
+                X_h.SetMatrix(new double[] { (double)widgets[i].X, (double)widgets[i].Y, (double)widgets[i].Z, 1.0 });
+                Matrix<double> P = _data * _interaction * X_h;
+                widgets[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+            }
         }
 
         static public PointF[] Objects(List<object[]> lists, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
@@ -93,6 +107,6 @@ namespace ExtendedControls.AstroPlot
         {
             var angle = (inclination / 90) * distance;
             return (double)Math.Sqrt((distance * distance) - (angle * angle));
-        }
+        }                
     }
 }

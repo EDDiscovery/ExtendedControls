@@ -49,16 +49,15 @@ namespace ExtendedControls.Controls
         private readonly List<MapObjects> MapSystems = new List<MapObjects>();
         
         // Widgets
-        public class MapWidgets
+        public class Axis
         {
-            public bool Axes { get; set; }
-            public bool Frame { get; set; }
             public double X { get; set; }
             public double Y { get; set; }
             public double Z { get; set; }
+            public PointF Coords { get; set; } = new PointF(0, 0);
         }
 
-        private readonly List<MapWidgets> Widgets = new List<MapWidgets>();
+        private readonly List<Axis> Axes = new List<Axis>();
                         
         private double focalLength = 900;
         private double distance = 6;
@@ -254,8 +253,6 @@ namespace ExtendedControls.Controls
             // Pick the foreground color defined in the designer            
             _ = new SolidBrush(ForeColor);
 
-            var hs = HotSpotSize;
-
             Pen AxisPen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 1
@@ -273,39 +270,33 @@ namespace ExtendedControls.Controls
                 DashStyle = System.Drawing.Drawing2D.DashStyle.Solid
             };
 
-            Color Paint = Color.White;
-
-            // center point            
-            var center = new PointF((int)(this.Width / 2), (int)(this.Height / 2));
-
+            _ = Color.White;
+                        
             // give some love to the renderint engine
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
             e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 
             // axes
-            if (AxesAnchors != null)
+            if (drawAxesWidget && Axes != null)
             {
-                for (int i = 0; i < AxesAnchors.Count; i++)
+                for (int i = 0; i < Axes.Count; i++)
                 {
-                    for (int c = 0; c < AxesAnchors[i].Length; c++)
+                    if (i == 1)
                     {
-                        PointF p = AxesAnchors[i][c];
-                        if (c == 0) // x axis
-                        {
-                            AxisPen.Color = Color.Red;
-                        }
-                        if (c == 1) // y axys
-                        {
-                            AxisPen.Color = Color.Green;
-                        }
-                        if (c == 2) // x axis
-                        {
-                            AxisPen.Color = Color.Blue;
-                        }
+                        AxisPen.Color = Color.Red;
+                        e.Graphics.DrawLine(AxisPen, Axes[0].Coords, Axes[1].Coords);
+                    }                    
+                    if (i == 2)
+                    {
+                        AxisPen.Color = Color.Green;
+                        e.Graphics.DrawLine(AxisPen, Axes[0].Coords, Axes[2].Coords);
+                    }
 
-                        var axisAnchorPoint = new PointF(p.X, p.Y);
-                        e.Graphics.DrawLine(AxisPen, center, axisAnchorPoint);
+                    if (i == 3)
+                    {
+                        AxisPen.Color = Color.Blue;
+                        e.Graphics.DrawLine(AxisPen, Axes[0].Coords, Axes[3].Coords);
                     }
                 }
             }
@@ -338,6 +329,7 @@ namespace ExtendedControls.Controls
             {
                 for (int i = 0; i < MapSystems.Count; i++)
                 {
+                    Color Paint;
                     if (MapSystems[i].IsVisited)
                     {
                         if (MapSystems[i].IsCurrent)
@@ -383,18 +375,35 @@ namespace ExtendedControls.Controls
         }
 
         #region Widgets
-        private void AddAxesAnchors(List<double[]> anchors)
-        {
-            List<double[]> _anchors = new List<double[]>(anchors);
-            AxesCoords.AddRange(_anchors);
-            AxesAnchors.Add(AstroPlot.Update.Widgets(AxesCoords, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-            UpdateProjection();
-        }
-
         public void DrawAxesWidget(int length)
         {
             if (drawAxesWidget)
             {
+                Axes.Add(new Axis
+                {
+                    X = 0,
+                    Y = 0,
+                    Z = 0
+                });
+                Axes.Add(new Axis
+                {
+                    X = length,
+                    Y = 0,
+                    Z = 0
+                });
+                Axes.Add(new Axis
+                {
+                    X = 0,
+                    Y = length * -1,
+                    Z = 0
+                });
+                Axes.Add(new Axis
+                {
+                    X = 0,
+                    Y = 0,
+                    Z = length * -1
+                });
+
                 List<double[]> Coords = new List<double[]>
                 {
                     new double[] { length * 0.5, 0.0, 0.0, 0 },
@@ -403,19 +412,20 @@ namespace ExtendedControls.Controls
                 };
 
                 // draw the anchors points
-                AddAxesAnchors(Coords);
+                //AddAxesAnchors(Coords);
 
-                Coords.Clear();
+                //Coords.Clear();
             }
         }
 
-        private void AddFrameCorners(List<double[]> corners)
-        {
-            List<double[]> _corners = new List<double[]>(corners);
-            FrameCorners.AddRange(_corners);
-            FrameLines.Add(AstroPlot.Update.Widgets(FrameCorners, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
-            UpdateProjection();
-        }
+        //private void AddFrameCorners(List<double[]> corners)
+        //{
+        //    //List<double[]> _corners = new List<double[]>(corners);
+        //    //FrameCorners.AddRange(_corners);
+        //    //FrameLines.Add(AstroPlot.Update.Widgets(FrameCorners, this.Width, this.Height, focalLength, cameraPosition, azimuth, elevation));
+        //    //UpdateProjection();
+        //    UpdateProjection();
+        //}
 
         public void DrawFrameWidget(double frameRadius)
         {
@@ -433,7 +443,7 @@ namespace ExtendedControls.Controls
                     new double[] { -frameRadius, -frameRadius, -frameRadius }
                 };
 
-                AddFrameCorners(Corners);
+                //AddFrameCorners(Corners);
 
                 Corners.Clear();
             }
@@ -474,7 +484,12 @@ namespace ExtendedControls.Controls
             {
                 AstroPlot.Update.MapSystems(MapSystems, Width, Height, focalLength, cameraPosition, azimuth, elevation);
             }
-                                    
+
+            if (Axes != null)
+            {
+                AstroPlot.Update.MapWidgets(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+            }
+
             if (AxesAnchors != null && drawAxesWidget)
             {
                 for (int i = 0; i < AxesAnchors.Count; i++)

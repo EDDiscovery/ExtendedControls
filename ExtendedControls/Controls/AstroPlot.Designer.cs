@@ -49,14 +49,14 @@
             this.plot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseMove);
             this.plot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseUp);
             // 
-            // extLabel
+            // systemLabel
             // 
             this.systemLabel.AutoSize = true;
             this.systemLabel.Location = new System.Drawing.Point(8, 8);
-            this.systemLabel.Name = "extLabel";
-            this.systemLabel.Size = new System.Drawing.Size(47, 13);
+            this.systemLabel.Name = "systemLabel";
+            this.systemLabel.Size = new System.Drawing.Size(35, 13);
             this.systemLabel.TabIndex = 1;
-            this.systemLabel.Text = "extLabel";
+            this.systemLabel.Text = "tooltip";
             this.systemLabel.TextBackColor = System.Drawing.Color.Transparent;
             // 
             // ExtAstroPlot
