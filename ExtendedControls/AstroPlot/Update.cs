@@ -7,6 +7,20 @@ namespace ExtendedControls.AstroPlot
 { 
     internal static partial class Update
     {
+        internal static void MapSystems(List<ExtAstroPlot.MapObjects> mapSystems, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
+        {
+            Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
+            Matrix<double> _data = Coords(x, y, z);
+            Matrix<double> X_h = new Matrix<double>(4, 1);
+                        
+            for (int i = 0; i < mapSystems.Count; i++)
+            {
+                X_h.SetMatrix(new double[] { (double)mapSystems[i].X, (double)mapSystems[i].Y, (double)mapSystems[i].Z, 1.0 });
+                Matrix<double> P = _data * _interaction * X_h;
+                mapSystems[i].Coords = new PointF ((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+            }         
+        }
+
         static public PointF[] Objects(List<object[]> lists, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
@@ -24,7 +38,7 @@ namespace ExtendedControls.AstroPlot
             }
             return Coordinates;
         }
-                
+
         static public PointF[] Widgets(List<double[]> points, double x, double y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);

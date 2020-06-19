@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.plot = new System.Windows.Forms.PictureBox();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.systemLabel = new ExtendedControls.ExtLabel();
             ((System.ComponentModel.ISupportInitialize)(this.plot)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,23 +45,26 @@
             this.plot.SizeChanged += new System.EventHandler(this.Plot_SizeChanged);
             this.plot.Paint += new System.Windows.Forms.PaintEventHandler(this.Plot_Paint);
             this.plot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseDown);
-            this.plot.MouseEnter += new System.EventHandler(this.Plot_MouseEnter);
             this.plot.MouseLeave += new System.EventHandler(this.Plot_MouseLeave);
-            this.plot.MouseHover += new System.EventHandler(this.Plot_MouseHover);
             this.plot.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseMove);
             this.plot.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseUp);
             // 
-            // toolTip
+            // extLabel
             // 
-            this.toolTip.Active = false;
-            this.toolTip.AutomaticDelay = 200;
-            this.toolTip.IsBalloon = true;
+            this.systemLabel.AutoSize = true;
+            this.systemLabel.Location = new System.Drawing.Point(8, 8);
+            this.systemLabel.Name = "extLabel";
+            this.systemLabel.Size = new System.Drawing.Size(47, 13);
+            this.systemLabel.TabIndex = 1;
+            this.systemLabel.Text = "extLabel";
+            this.systemLabel.TextBackColor = System.Drawing.Color.Transparent;
             // 
             // ExtAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.systemLabel);
             this.Controls.Add(this.plot);
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "ExtAstroPlot";
@@ -70,11 +72,12 @@
             this.SizeChanged += new System.EventHandler(this.ExtAstroPlot_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.plot)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.PictureBox plot;
-        private System.Windows.Forms.ToolTip toolTip;
+        private ExtLabel systemLabel;
     }
 }

@@ -33,16 +33,33 @@ namespace ExtendedControls.Controls
         private readonly List<double[]> FrameCorners = new List<double[]>();
         private readonly List<PointF[]> FrameLines = new List<PointF[]>();
 
-        // Map Systems
-        private readonly List<object[]> MapVisited = new List<object[]>();
-        private readonly List<object[]> MapUnVisited = new List<object[]>();
-        private readonly List<PointF[]> MapSystemsVisited = new List<PointF[]>();
-        private readonly List<PointF[]> MapSystemsUnVisited = new List<PointF[]>();
+        // Map Elements
+        public class MapObjects
+        {
+            public string Name { get; set; }
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
+            public bool IsVisited { get; set; }
+            public PointF Coords { get; set; }
+            public bool IsWaypoint { get; internal set; }
+            public bool IsCurrent { get; internal set; }
+        }
 
-        // Travel Map
-        private readonly List<object[]> TravelMap = new List<object[]>();
-        private readonly List<PointF[]> TravelMapWaypoints = new List<PointF[]>();
-                
+        private readonly List<MapObjects> MapSystems = new List<MapObjects>();
+        
+        // Widgets
+        public class MapWidgets
+        {
+            public bool Axes { get; set; }
+            public bool Frame { get; set; }
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
+        }
+
+        private readonly List<MapWidgets> Widgets = new List<MapWidgets>();
+                        
         private double focalLength = 900;
         private double distance = 6;
         private double[] cameraPosition = new double[3];
@@ -222,8 +239,8 @@ namespace ExtendedControls.Controls
             InitializeComponent();
             AstroPlot.Handlers.MouseWheel.Add(this, OnMouseWheel);
 
-            toolTip.AutoPopDelay = 1000;
-            toolTip.ShowAlways = true;
+            systemLabel.Text = "";
+            systemLabel.Visible = false;
 
             _mouseIdleTimer.AutoReset = false;
             _mouseIdleTimer.Interval = 300;
@@ -234,7 +251,7 @@ namespace ExtendedControls.Controls
         {
             base.OnPaint(e);
 
-            // Pick the background color defined in the designer            
+            // Pick the foreground color defined in the designer            
             _ = new SolidBrush(ForeColor);
 
             var hs = HotSpotSize;
@@ -255,6 +272,8 @@ namespace ExtendedControls.Controls
                 Width = 1,
                 DashStyle = System.Drawing.Drawing2D.DashStyle.Solid
             };
+
+            Color Paint = Color.White;
 
             // center point            
             var center = new PointF((int)(this.Width / 2), (int)(this.Height / 2));
@@ -315,95 +334,38 @@ namespace ExtendedControls.Controls
                 e.Graphics.DrawLine(FramePen, FrameLines[0][4], FrameLines[0][7]);
             }
 
-            if (MapSystemsVisited != null)
+            if (MapSystems != null)
             {
-                for (int i = 0; i < MapSystemsVisited.Count; i++)
+                for (int i = 0; i < MapSystems.Count; i++)
                 {
-                    for (int ii = 0; ii < MapSystemsVisited[i].Length; ii++)
+                    if (MapSystems[i].IsVisited)
                     {
-                        //Debug.WriteLine(MapSystemsVisited[i][ii].ToString());
-
-
-                                                
-                    }
-                }
-
-                for (int i = 0; i < MapSystemsVisited.Count; i++)
-                {
-                    foreach (PointF p in MapSystemsVisited[i])
-                    {
-                        e.Graphics.FillEllipse(new SolidBrush(Color.Blue), new RectangleF(
-                            p.X - (SmallDotSize / 2),
-                            p.Y - (SmallDotSize / 2),
-                            SmallDotSize,
-                            SmallDotSize));
-                    }
-                }
-            }
-
-            if (MapSystemsUnVisited != null)
-            {
-                for (int i = 0; i < MapSystemsUnVisited.Count; i++)
-                {
-                    for (int ii = 0; ii < MapSystemsUnVisited[i].Length; ii++)
-                    {
-                        Debug.WriteLine(MapSystemsUnVisited[i][ii].ToString());                                                
-                    }
-
-                }
-                for (int i = 0; i < MapSystemsUnVisited.Count; i++)
-                {
-                    foreach (PointF p in MapSystemsUnVisited[i])
-                    {
-                        e.Graphics.FillEllipse(new SolidBrush(Color.Yellow), new RectangleF(
-                            p.X - (SmallDotSize / 2),
-                            p.Y - (SmallDotSize / 2),
-                            SmallDotSize,
-                            SmallDotSize));
-                    }
-                }
-            }
-
-            if (TravelMap != null)
-            {
-                for (int i = 0; i < TravelMapWaypoints.Count; i++)
-                {
-                    for (int ii = 0; ii < TravelMapWaypoints[i].Length; ii++)
-                    {
-                        Debug.WriteLine(ii.ToString());
-
-
-                        if (ii == 0)
+                        if (MapSystems[i].IsCurrent)
                         {
-                            e.Graphics.FillEllipse(new SolidBrush(Color.Red), new RectangleF(
-                                TravelMapWaypoints[i][ii].X - (MediumDotSize / 2),
-                                TravelMapWaypoints[i][ii].Y - (MediumDotSize / 2),
-                                MediumDotSize,
-                                MediumDotSize));
+                            Paint = Color.Red;
                         }
                         else
                         {
-                            e.Graphics.FillEllipse(new SolidBrush(Color.BlueViolet), new RectangleF(
-                                TravelMapWaypoints[i][ii].X - (MediumDotSize / 2),
-                                TravelMapWaypoints[i][ii].Y - (MediumDotSize / 2),
-                                MediumDotSize,
-                                MediumDotSize));
+                            Paint = Color.Aqua;
                         }
+                    }
+                    else
+                    {
+                        Paint = Color.Yellow;
+                    }
 
-                        if (ii != TravelMapWaypoints[i].Length - 1)
-                        {
-                            e.Graphics.DrawLine(
-                               TravelMapPen,
-                               TravelMapWaypoints[i][ii],
-                               TravelMapWaypoints[i][ii + 1]);
-                        }
-                        else
-                        {
-                            e.Graphics.DrawLine(
-                               TravelMapPen,
-                               TravelMapWaypoints[i][ii],
-                               TravelMapWaypoints[i][ii]);
-                        }
+                    e.Graphics.FillEllipse(new SolidBrush(Paint), new RectangleF(
+                        MapSystems[i].Coords.X - (SmallDotSize / 2),
+                        MapSystems[i].Coords.Y - (SmallDotSize / 2),
+                        SmallDotSize,
+                        SmallDotSize));
+
+                    if (MapSystems[i].IsWaypoint && i != MapSystems.Count - 1)
+                    {
+                        e.Graphics.DrawLine(
+                           TravelMapPen,
+                           MapSystems[i].Coords,
+                           MapSystems[i + 1].Coords);
                     }
                 }
             }
@@ -478,51 +440,25 @@ namespace ExtendedControls.Controls
         }
         #endregion
 
-        #region Map                
-        public void AddPointsAndLabels(List<object[]> mapSystems)
+        #region Add objects to map
+        public void AddSystemsToMap(List<object[]> mapSystems)
         {
-            List<object[]> _visited = new List<object[]>();
-            List<object[]> _unvisited = new List<object[]>();
-            List<object[]> _hotspots = new List<object[]>();
-
             for (int i = 0; i < mapSystems.Count; i++)
             {
-                // 0 = Name, 1 = X, 2 = Y, 3 = Z, 4 = visited, 5 = current
-                if ((bool)mapSystems[i][4])
+                MapSystems.Add(new MapObjects
                 {
-                    _visited.Add(new object[] { mapSystems[i][0], (double)mapSystems[i][1] - centerCoordinates[0], (double)mapSystems[i][2] - centerCoordinates[1], (double)mapSystems[i][3] - centerCoordinates[2], mapSystems[i][4] });
-                }
-                else
-                {
-                    _unvisited.Add(new object[] { mapSystems[i][0], (double)mapSystems[i][1] - centerCoordinates[0], (double)mapSystems[i][2] - centerCoordinates[1], (double)mapSystems[i][3] - centerCoordinates[2], mapSystems[i][4] });
-                }
+                    Name = mapSystems[i][0].ToString(),
+                    X = (double)mapSystems[i][1] - centerCoordinates[0],
+                    Y = (double)mapSystems[i][2] - centerCoordinates[1],
+                    Z = (double)mapSystems[i][3] - centerCoordinates[2],
+                    IsVisited = (bool)mapSystems[i][4],
+                    IsWaypoint = (bool)mapSystems[i][5],
+                    IsCurrent = (bool)mapSystems[i][6],
+                    Coords = new PointF(0, 0)
+                });
             }
-
-            MapVisited.AddRange(_visited);
-            MapUnVisited.AddRange(_unvisited);
-
-            MapSystemsVisited.Add(AstroPlot.Update.Objects(MapVisited, Width, Height, focalLength, cameraPosition, azimuth, elevation));
-            MapSystemsUnVisited.Add(AstroPlot.Update.Objects(MapUnVisited, Width, Height, focalLength, cameraPosition, azimuth, elevation));
-
             UpdateProjection();
         }
-                
-        public void AddTravelMapPoints(List<object[]> waypoints)
-        {
-            List<object[]> _travel = new List<object[]>();
-
-            for (int i = 0; i < waypoints.Count; i++)
-            {
-                _travel.Add(new object[] { waypoints[i][0], (double)waypoints[i][1] - centerCoordinates[0], (double)waypoints[i][2] - centerCoordinates[1], (double)waypoints[i][3] - centerCoordinates[2] });
-            }
-
-            TravelMap.AddRange(_travel);
-
-            TravelMapWaypoints.Add(AstroPlot.Update.Objects(TravelMap, Width, Height, focalLength, cameraPosition, azimuth, elevation));
-
-            UpdateProjection();
-        }
-                
         #endregion
 
         #region Projection                
@@ -533,31 +469,12 @@ namespace ExtendedControls.Controls
             double z = (distance * Math.Sin(elevation));
 
             cameraPosition = new double[3] { -y, z, -x };
-                        
-            if (MapSystemsVisited != null)
-            {
-                for (int i = 0; i < MapSystemsVisited.Count; i++)
-                {
-                    MapSystemsVisited[i] = AstroPlot.Update.Objects(MapVisited, Width, Height, focalLength, cameraPosition, azimuth, elevation);
-                }
-            }
 
-            if (MapSystemsUnVisited != null)
+            if (MapSystems != null)
             {
-                for (int i = 0; i < MapSystemsUnVisited.Count; i++)
-                {
-                    MapSystemsUnVisited[i] = AstroPlot.Update.Objects(MapUnVisited, Width, Height, focalLength, cameraPosition, azimuth, elevation);
-                }
+                AstroPlot.Update.MapSystems(MapSystems, Width, Height, focalLength, cameraPosition, azimuth, elevation);
             }
-
-            if (TravelMapWaypoints != null)
-            {
-                for (int i = 0; i < TravelMapWaypoints.Count; i++)
-                {
-                    TravelMapWaypoints[i] = AstroPlot.Update.Objects(TravelMap, Width, Height, focalLength, cameraPosition, azimuth, elevation);
-                }
-            }
-                        
+                                    
             if (AxesAnchors != null && drawAxesWidget)
             {
                 for (int i = 0; i < AxesAnchors.Count; i++)
@@ -576,15 +493,7 @@ namespace ExtendedControls.Controls
         public void Clear()
         {
             Invalidate();
-
-            MapVisited.Clear();
-            MapSystemsVisited.Clear();
-            
-            MapUnVisited.Clear();            
-            MapSystemsUnVisited.Clear();
-            
-            TravelMap.Clear();
-            TravelMapWaypoints.Clear();
+            MapSystems.Clear();
         }
         #endregion
 
@@ -610,6 +519,8 @@ namespace ExtendedControls.Controls
                 // rotate
                 leftMousePressed = true;
                 ptMouseClick = new PointF(e.X, e.Y);
+                systemLabel.Text = "";
+                systemLabel.Visible = false;
                 lastAzimuth = azimuth;
                 lastElevation = elevation;
             }
@@ -622,11 +533,7 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Middle)
                 middleMousePressed = false;
         }
-
-        private void Plot_MouseHover(object sender, EventArgs e)
-        {            
-        }
-
+                        
         private void Plot_MouseMove(object sender, MouseEventArgs e)
         {
             if (leftMousePressed)
@@ -650,46 +557,19 @@ namespace ExtendedControls.Controls
 
             var hs = HotSpotSize;
 
+            var labelPosition = new Point();
+
             string text = null;
-
-            if (MapSystemsVisited != null)
+            
+            if (MapSystems != null)
             {
-                for (int i = 0; i < MapSystemsVisited.Count; i++)
+                for (int i = 0; i < MapSystems.Count; i++)
                 {
-                    for (int ii = 0; ii < MapSystemsVisited[i].Length; ii++)
+                    if (mousePosition.X > (MapSystems[i].Coords.X - hs) && mousePosition.X < (MapSystems[i].Coords.X + hs) &&
+                        mousePosition.Y > (MapSystems[i].Coords.Y - hs) && mousePosition.Y > (MapSystems[i].Coords.Y - hs))
                     {
-                        if (mousePosition.X > (MapSystemsVisited[i][ii].X - hs) && mousePosition.X < (MapSystemsVisited[i][ii].X + hs) && mousePosition.Y > (MapSystemsVisited[i][ii].Y - hs) && mousePosition.Y < (MapSystemsVisited[i][ii].Y + hs))
-                        {
-                            text = ii.ToString() + " " + MapSystemsVisited[i][ii].ToString();
-                        }
-                    }
-                }
-            }
-
-            if (MapSystemsUnVisited != null)
-            {
-                for (int i = 0; i < MapSystemsUnVisited.Count; i++)
-                {
-                    for (int ii = 0; ii < MapSystemsUnVisited[i].Length; ii++)
-                    {
-                        if (mousePosition.X > (MapSystemsUnVisited[i][ii].X - hs) && mousePosition.X < (MapSystemsUnVisited[i][ii].X + hs) && mousePosition.Y > (MapSystemsUnVisited[i][ii].Y - hs) && mousePosition.Y < (MapSystemsUnVisited[i][ii].Y + hs))
-                        {
-                            text = ii.ToString() + " " + MapSystemsUnVisited[i][ii].ToString();
-                        }
-                    }
-                }
-            }
-
-            if (TravelMapWaypoints != null)
-            {
-                for (int i = 0; i < TravelMapWaypoints.Count; i++)
-                {
-                    for (int ii = 0; ii < TravelMapWaypoints[i].Length; ii++)
-                    {
-                        if (mousePosition.X > (TravelMapWaypoints[i][ii].X - hs) && mousePosition.X < (TravelMapWaypoints[i][ii].X + hs) && mousePosition.Y > (TravelMapWaypoints[i][ii].Y - hs) && mousePosition.Y < (TravelMapWaypoints[i][ii].Y + hs))
-                        {
-                            text = ii.ToString() + " " + TravelMapWaypoints[i][ii].ToString();
-                        }
+                        text = MapSystems[i].Name;
+                        labelPosition = new Point((int)MapSystems[i].Coords.X - (smallDotSize * 4), (int)MapSystems[i].Coords.Y - (smallDotSize * 3));
                     }
                 }
             }
@@ -698,12 +578,10 @@ namespace ExtendedControls.Controls
                 (Action)(
                     () =>
                     {
-                        string currentText = toolTip.GetToolTip(this);
-                        if (currentText != text)
-                        {
-                            toolTip.SetToolTip(this, text);
-                            Debug.WriteLine("Tooltip at point: " + text);
-                        }
+                        string currentText = systemLabel.Text;
+                        systemLabel.Text = text;
+                        systemLabel.Visible = true;
+                        systemLabel.Location = labelPosition;                        
                     }
                 )
             );
@@ -714,21 +592,16 @@ namespace ExtendedControls.Controls
             _mouseIdleTimer.Stop();
             //Debug.WriteLine("Timer stopped");
         }
-
-        private void Plot_MouseEnter(object sender, EventArgs e)
-        {
-        }
-                
+                        
         private new void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
             {
+                systemLabel.Visible = false;
                 // zoom
                 Distance += -e.Delta / MouseSensitivity_Wheel;
             }
         }
-
         #endregion
     }
 }
-
