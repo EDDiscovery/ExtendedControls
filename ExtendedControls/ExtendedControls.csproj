@@ -58,7 +58,7 @@
     <Compile Include="Controls\AstroPlot\Widgets\Frames.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\ExtAstroPlot.MapObjects.cs">
+    <Compile Include="Controls\AstroPlot\Widgets\PlotObjects.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">

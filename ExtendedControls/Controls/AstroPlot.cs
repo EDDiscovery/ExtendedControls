@@ -28,7 +28,7 @@ namespace ExtendedControls.Controls
     {
         private readonly List<Axis> Axes = new List<Axis>();
         private readonly List<Corner> Frames = new List<Corner>();
-        private readonly List<MapObjects> MapSystems = new List<MapObjects>();
+        private readonly List<PlotObjects> MapSystems = new List<PlotObjects>();
         
         // Projection
         private double focalLength = 900;
@@ -40,6 +40,9 @@ namespace ExtendedControls.Controls
         private int smallDotSize = 8;
         private int mediumDotSize = 12;
         private int largeDotSize = 16;
+        private Color visitedColor = Color.Yellow;
+        private Color unvisitedColor = Color.Aqua;
+        private Color currentColor = Color.Red;        
 
         // Mouse 
         private bool leftMousePressed = false, rightMousePressed = false, middleMousePressed = false;
@@ -220,7 +223,26 @@ namespace ExtendedControls.Controls
             _mouseIdleTimer.Interval = 300;
             _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
         }
-        
+
+        public void AddSystemsToMap(List<object[]> mapSystems)
+        {
+            for (int i = 0; i < mapSystems.Count; i++)
+            {
+                MapSystems.Add(new PlotObjects
+                {
+                    Name = mapSystems[i][0].ToString(),
+                    X = (double)mapSystems[i][1] - centerCoordinates[0],
+                    Y = (double)mapSystems[i][2] - centerCoordinates[1],
+                    Z = (double)mapSystems[i][3] - centerCoordinates[2],
+                    IsVisited = (bool)mapSystems[i][4],
+                    IsWaypoint = (bool)mapSystems[i][5],
+                    IsCurrent = (bool)mapSystems[i][6],
+                    Coords = new PointF(0, 0)
+                });
+            }
+            UpdateProjection();
+        }
+
         private void Plot_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -279,7 +301,7 @@ namespace ExtendedControls.Controls
             // boundaries
             if (drawFramesWidget && Frames != null)
             {
-                // bottom
+                // bottom                
                 e.Graphics.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
                 e.Graphics.DrawLine(FramePen, Frames[1].Coords, Frames[5].Coords);
                 e.Graphics.DrawLine(FramePen, Frames[5].Coords, Frames[3].Coords);
@@ -348,27 +370,7 @@ namespace ExtendedControls.Controls
             Graphics g = this.CreateGraphics();
             g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
         }
-                
-        
-        public void AddSystemsToMap(List<object[]> mapSystems)
-        {
-            for (int i = 0; i < mapSystems.Count; i++)
-            {
-                MapSystems.Add(new MapObjects
-                {
-                    Name = mapSystems[i][0].ToString(),
-                    X = (double)mapSystems[i][1] - centerCoordinates[0],
-                    Y = (double)mapSystems[i][2] - centerCoordinates[1],
-                    Z = (double)mapSystems[i][3] - centerCoordinates[2],
-                    IsVisited = (bool)mapSystems[i][4],
-                    IsWaypoint = (bool)mapSystems[i][5],
-                    IsCurrent = (bool)mapSystems[i][6],
-                    Coords = new PointF(0, 0)
-                });
-            }
-            UpdateProjection();
-        }
-        
+
         private void UpdateProjection()
         {
             double x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));

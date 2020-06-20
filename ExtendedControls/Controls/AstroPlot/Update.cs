@@ -7,7 +7,7 @@ namespace ExtendedControls.Controls.AstroPlot
 {
     internal static class Update
     {
-        internal static void PlotObjects(List<ExtAstroPlot.MapObjects> mapSystems, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
+        internal static void PlotObjects(List<ExtAstroPlot.PlotObjects> mapSystems, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);

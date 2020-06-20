@@ -21,7 +21,7 @@ namespace ExtendedControls.Controls
     public partial class ExtAstroPlot
     {
         // Map Elements
-        public class MapObjects
+        public class PlotObjects
         {
             public string Name { get; set; }
             public double X { get; set; }
@@ -31,6 +31,6 @@ namespace ExtendedControls.Controls
             public PointF Coords { get; set; }
             public bool IsWaypoint { get; internal set; }
             public bool IsCurrent { get; internal set; }
-        }        
+        }
     }
 }
