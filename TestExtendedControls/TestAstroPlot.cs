@@ -202,7 +202,7 @@ namespace DialogTest
         {
             contextMenuStrip.Items.Clear();
 
-            ToolStripMenuItem[] localItems = new ToolStripMenuItem[contextMenuList.Count];
+            var localItems = new ToolStripMenuItem[contextMenuList.Count];
             for (int i = 0; i < contextMenuList.Count; i++)
             {
                 localItems[i] = new ToolStripMenuItem
@@ -220,7 +220,7 @@ namespace DialogTest
         {
             extAstroPlotTest.Clear();
 
-            List<object[]> List = new List<object[]>();
+            var List = new List<object[]>();
 
             for (int i = 0; i < list.Count; i++)
             {
