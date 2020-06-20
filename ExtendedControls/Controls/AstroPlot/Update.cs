@@ -7,7 +7,7 @@ namespace ExtendedControls.Controls.AstroPlot
 {
     internal static class Update
     {
-        internal static void MapSystems(List<ExtAstroPlot.MapObjects> mapSystems, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
+        internal static void PlotObjects(List<ExtAstroPlot.MapObjects> mapSystems, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);
@@ -21,7 +21,7 @@ namespace ExtendedControls.Controls.AstroPlot
             }
         }
 
-        internal static void MapAxes(List<ExtAstroPlot.Axis> widgets, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
+        internal static void AxesWidget(List<ExtAstroPlot.Axis> widgets, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);
@@ -35,7 +35,7 @@ namespace ExtendedControls.Controls.AstroPlot
             }
         }
 
-        internal static void MapFrames(List<ExtAstroPlot.Corner> frames, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
+        internal static void FrameWidget(List<ExtAstroPlot.Corner> frames, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation)
         {
             Matrix<double> _interaction = Interaction(azimuth, elevation, cameraPosition);
             Matrix<double> _data = Coords(x, y, z);

@@ -26,41 +26,11 @@ namespace ExtendedControls.Controls
 {
     public partial class ExtAstroPlot : UserControl
     {
-        // Axes Widget
-        public class Axis
-        {
-            public double X { get; set; }
-            public double Y { get; set; }
-            public double Z { get; set; }
-            public PointF Coords { get; set; } = new PointF(0, 0);
-        }
         private readonly List<Axis> Axes = new List<Axis>();
-
-        // Frame Widget
-        public class Corner
-        {
-            public double X { get; set; }
-            public double Y { get; set; }
-            public double Z { get; set; }
-            public PointF Coords { get; set; } = new PointF(0, 0);
-        }
         private readonly List<Corner> Frames = new List<Corner>();
-
-
-        // Map Elements
-        public class MapObjects
-        {
-            public string Name { get; set; }
-            public double X { get; set; }
-            public double Y { get; set; }
-            public double Z { get; set; }
-            public bool IsVisited { get; set; }
-            public PointF Coords { get; set; }
-            public bool IsWaypoint { get; internal set; }
-            public bool IsCurrent { get; internal set; }
-        }
         private readonly List<MapObjects> MapSystems = new List<MapObjects>();
-                
+        
+        // Projection
         private double focalLength = 900;
         private double distance = 6;
         private double[] cameraPosition = new double[3];
@@ -82,20 +52,23 @@ namespace ExtendedControls.Controls
         // Axes Widget
         private bool drawAxesWidget = true;
         private int axesWidgetThickness = 3;
-        private int axesWidgetLength = 50;
+        private int axesWidgetLength = 10;
 
-        // Boundaries Cube
+        // Frame Widget
         private bool drawFramesWidget = true;
-        private double framesRadiusWidth = 0.8;
+        private double framesRadiusWidth = 20;
         private int framesWidgetThickness = 1;
 
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
         private double lastAzimuth, azimuth = 0.3;
+
         // Elevation is the angular distance of something (such as a celestial object) above the horizon
         private double lastElevation, elevation = 0.3;
 
+        // Timer
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer();
 
+        // Avoid flickering during redraw
         protected override CreateParams CreateParams
         {
             get
@@ -375,59 +348,8 @@ namespace ExtendedControls.Controls
             Graphics g = this.CreateGraphics();
             g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
         }
-
-        #region Widgets
-        public void DrawAxesWidget(int length)
-        {
-            if (drawAxesWidget)
-            {
-                Axes.Add(new Axis
-                {
-                    X = 0,
-                    Y = 0,
-                    Z = 0
-                });
-                Axes.Add(new Axis
-                {
-                    X = length,
-                    Y = 0,
-                    Z = 0
-                });
-                Axes.Add(new Axis
-                {
-                    X = 0,
-                    Y = length * -1,
-                    Z = 0
-                });
-                Axes.Add(new Axis
-                {
-                    X = 0,
-                    Y = 0,
-                    Z = length * -1
-                });
-                                
-                UpdateProjection();
-            }
-        }
-
-        public void DrawFrameWidget(double frameRadius)
-        {
-            if (drawFramesWidget)
-            {
-
-                Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = frameRadius });
-                Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = -frameRadius });
-                Frames.Add(new Corner { X = frameRadius, Y = -frameRadius, Z = frameRadius });
-                Frames.Add(new Corner { X = -frameRadius, Y = frameRadius, Z = frameRadius });
-                Frames.Add(new Corner { X = -frameRadius, Y = -frameRadius, Z = frameRadius });
-                Frames.Add(new Corner { X = -frameRadius, Y = frameRadius, Z = -frameRadius });
-                Frames.Add(new Corner { X = frameRadius, Y = -frameRadius, Z = -frameRadius });
-                Frames.Add(new Corner { X = -frameRadius, Y = -frameRadius, Z = -frameRadius });
-            }
-        }
-        #endregion
-
-        #region Add objects to map
+                
+        
         public void AddSystemsToMap(List<object[]> mapSystems)
         {
             for (int i = 0; i < mapSystems.Count; i++)
@@ -446,9 +368,7 @@ namespace ExtendedControls.Controls
             }
             UpdateProjection();
         }
-        #endregion
-
-        #region Projection                
+        
         private void UpdateProjection()
         {
             double x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
@@ -459,17 +379,17 @@ namespace ExtendedControls.Controls
 
             if (MapSystems != null)
             {
-                AstroPlot.Update.MapSystems(MapSystems, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+                AstroPlot.Update.PlotObjects(MapSystems, Width, Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             if (Axes != null)
             {
-                AstroPlot.Update.MapAxes(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+                AstroPlot.Update.AxesWidget(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             if (Frames != null)
             {
-                AstroPlot.Update.MapFrames(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+                AstroPlot.Update.FrameWidget(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation);
             }
 
             Invalidate();
@@ -480,8 +400,7 @@ namespace ExtendedControls.Controls
             Invalidate();
             MapSystems.Clear();
         }
-        #endregion
-
+        
         #region Interaction
                 
         private void ExtAstroPlot_SizeChanged(object sender, EventArgs e)

@@ -25,10 +25,10 @@ namespace DialogTest
             DefineDefaults();
             
             // draw the axes widget
-            extAstroPlotTest.DrawAxesWidget(extAstroPlotTest.AxesLength);
+            extAstroPlotTest.SetAxesCoordinates(extAstroPlotTest.AxesLength);
 
             // draw the boundaries cube frame
-            extAstroPlotTest.DrawFrameWidget(extAstroPlotTest.FramesRadius);
+            extAstroPlotTest.SetFrameCoordinates(extAstroPlotTest.FramesRadius);
 
             DemoCluster();
         }

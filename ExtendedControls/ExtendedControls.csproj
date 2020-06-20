@@ -52,6 +52,15 @@
     <Compile Include="Controls\AstroPlot\Handlers.cs" />
     <Compile Include="Controls\AstroPlot\Matrix.cs" />
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
+    <Compile Include="Controls\AstroPlot\Widgets\Axes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\AstroPlot\Widgets\Frames.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ExtAstroPlot.MapObjects.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
     </Compile>
