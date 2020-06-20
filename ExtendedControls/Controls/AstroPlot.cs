@@ -40,9 +40,9 @@ namespace ExtendedControls.Controls
         private int smallDotSize = 8;
         private int mediumDotSize = 12;
         private int largeDotSize = 16;
-        private Color visitedColor = Color.Yellow;
-        private Color unvisitedColor = Color.Aqua;
-        private Color currentColor = Color.Red;        
+        private Color visitedColor = Color.Aqua;
+        private Color unvisitedColor = Color.Yellow;
+        private Color currentColor = Color.Red;
 
         // Mouse 
         private bool leftMousePressed = false, rightMousePressed = false, middleMousePressed = false;
@@ -209,6 +209,24 @@ namespace ExtendedControls.Controls
             get { return hotspotSize; }
             set { hotspotSize = value; UpdateProjection(); }
         }
+
+        public Color VisitedColor
+        {
+            get { return visitedColor; }
+            set { visitedColor = value; }
+        }
+
+        public Color UnVisitedColor
+        {
+            get { return unvisitedColor; }
+            set { unvisitedColor = value; }
+        }
+
+        public Color CurrentColor
+        {
+            get { return currentColor; }
+            set { currentColor = value; }
+        }
         #endregion
 
         public ExtAstroPlot()
@@ -331,16 +349,16 @@ namespace ExtendedControls.Controls
                     {
                         if (MapSystems[i].IsCurrent)
                         {
-                            Paint = Color.Red;
+                            Paint = CurrentColor;
                         }
                         else
                         {
-                            Paint = Color.Aqua;
+                            Paint = VisitedColor;
                         }
                     }
                     else
                     {
-                        Paint = Color.Yellow;
+                        Paint = UnVisitedColor;
                     }
 
                     e.Graphics.FillEllipse(new SolidBrush(Paint), new RectangleF(
