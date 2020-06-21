@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\AstroPlot\Handlers.cs" />
-    <Compile Include="Controls\AstroPlot\Matrix.cs" />
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
     <Compile Include="Controls\AstroPlot\Widgets\Axes.cs">
       <SubType>UserControl</SubType>
