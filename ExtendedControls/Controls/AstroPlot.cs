@@ -40,9 +40,6 @@ namespace ExtendedControls.Controls
         private int smallDotSize = 8;
         private int mediumDotSize = 12;
         private int largeDotSize = 16;
-        private Color visitedColor = Color.Aqua;
-        private Color unvisitedColor = Color.Yellow;
-        private Color currentColor = Color.Red;
 
         // Mouse 
         private bool leftMousePressed = false, rightMousePressed = false, middleMousePressed = false;
@@ -210,23 +207,11 @@ namespace ExtendedControls.Controls
             set { hotspotSize = value; UpdateProjection(); }
         }
 
-        public Color VisitedColor
-        {
-            get { return visitedColor; }
-            set { visitedColor = value; }
-        }
+        public Color VisitedColor { get; set; } = Color.Aqua;
 
-        public Color UnVisitedColor
-        {
-            get { return unvisitedColor; }
-            set { unvisitedColor = value; }
-        }
+        public Color UnVisitedColor { get; set; } = Color.Yellow;
 
-        public Color CurrentColor
-        {
-            get { return currentColor; }
-            set { currentColor = value; }
-        }
+        public Color CurrentColor { get; set; } = Color.Red;
         #endregion
 
         public ExtAstroPlot()
@@ -260,33 +245,128 @@ namespace ExtendedControls.Controls
             }
             UpdateProjection();
         }
+                
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            // Pick the background color defined in the designer
+            var backColor = new SolidBrush(BackColor);
+
+            using (Graphics g = CreateGraphics())
+            {
+                g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
+            }
+        }
+
+        private void UpdateProjection()
+        {
+            var x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
+            var y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
+            var z = (distance * Math.Sin(elevation));
+
+            cameraPosition = new double[3] { -y, z, -x };
+
+            if (MapSystems != null)
+            {
+                AstroPlot.Update.PlotObjects(MapSystems, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+            }
+
+            if (Axes != null)
+            {
+                AstroPlot.Update.AxesWidget(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+            }
+
+            if (Frames != null)
+            {
+                AstroPlot.Update.FrameWidget(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation);
+            }
+
+            Invalidate();
+        }
+
+        public void Clear()
+        {
+            Invalidate();
+            MapSystems.Clear();
+        }
+        #region Interaction               
+        
+        private void Plot_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                // rotate
+                leftMousePressed = true;
+                ptMouseClick = new PointF(e.X, e.Y);
+                systemLabel.Text = "";
+                systemLabel.Visible = false;
+                lastAzimuth = azimuth;
+                lastElevation = elevation;
+            }
+        }
+
+        private void Plot_MouseLeave(object sender, EventArgs e)
+        {
+            _mouseIdleTimer.Stop();
+#if DEBUG
+Debug.WriteLine("Timer stopped");
+#endif
+        }
+
+        private void Plot_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (leftMousePressed)
+            {
+                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / 150);
+                elevation = lastElevation + ((ptMouseClick.Y - e.Y) / 150);
+                UpdateProjection();
+            }
+
+            mousePosition = e.Location;
+
+            _mouseIdleTimer.Stop();
+            _mouseIdleTimer.Start();
+
+#if DEBUG
+Debug.WriteLine("Timer started");
+#endif
+        }
+
+        private void Plot_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                leftMousePressed = false;
+            if (e.Button == MouseButtons.Middle)
+                middleMousePressed = false;
+        }
 
         private void Plot_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
 
-            // Pick the foreground color defined in the designer            
+            // Pick the foreground color defined in the designer
             _ = new SolidBrush(ForeColor);
 
-            Pen AxisPen = new Pen(new SolidBrush(ForeColor))
+            var AxisPen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 1
             };
 
-            Pen FramePen = new Pen(new SolidBrush(ForeColor))
+            var FramePen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 1,
                 DashStyle = System.Drawing.Drawing2D.DashStyle.Dot
             };
-                        
-            Pen TravelMapPen = new Pen(new SolidBrush(ForeColor))
+
+            var TravelMapPen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 1,
                 DashStyle = System.Drawing.Drawing2D.DashStyle.Solid
             };
 
             _ = Color.White;
-                        
+
             // give some love to the renderint engine
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
@@ -301,7 +381,7 @@ namespace ExtendedControls.Controls
                     {
                         AxisPen.Color = Color.Red;
                         e.Graphics.DrawLine(AxisPen, Axes[0].Coords, Axes[1].Coords);
-                    }                    
+                    }
                     if (i == 2)
                     {
                         AxisPen.Color = Color.Green;
@@ -342,30 +422,18 @@ namespace ExtendedControls.Controls
 
             if (MapSystems != null)
             {
-                for (int i = 0; i < MapSystems.Count; i++)
+                for (int i = MapSystems.Count - 1; i >= 0; i--)
                 {
-                    Color Paint;
-                    if (MapSystems[i].IsVisited)
-                    {
-                        if (MapSystems[i].IsCurrent)
-                        {
-                            Paint = CurrentColor;
-                        }
-                        else
-                        {
-                            Paint = VisitedColor;
-                        }
-                    }
-                    else
-                    {
-                        Paint = UnVisitedColor;
-                    }
+                    var Paint = MapSystems[i].IsVisited ? MapSystems[i].IsCurrent ? CurrentColor : VisitedColor : UnVisitedColor;
 
-                    e.Graphics.FillEllipse(new SolidBrush(Paint), new RectangleF(
-                        MapSystems[i].Coords.X - (SmallDotSize / 2),
-                        MapSystems[i].Coords.Y - (SmallDotSize / 2),
-                        SmallDotSize,
-                        SmallDotSize));
+                    using (var solidBrush = new SolidBrush(Paint))
+                    {
+                        e.Graphics.FillEllipse(solidBrush, new RectangleF(
+                            MapSystems[i].Coords.X - (SmallDotSize / 2),
+                            MapSystems[i].Coords.Y - (SmallDotSize / 2),
+                            SmallDotSize,
+                            SmallDotSize));
+                    }
 
                     if (MapSystems[i].IsWaypoint && i != MapSystems.Count - 1)
                     {
@@ -378,113 +446,24 @@ namespace ExtendedControls.Controls
             }
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        private void plot_SizeChanged_1(object sender, EventArgs e)
         {
-            base.OnPaint(e);
-
-            // Pick the background color defined in the designer
-            var backColor = new SolidBrush(BackColor);
-
-            Graphics g = this.CreateGraphics();
-            g.FillRectangle(backColor, new Rectangle(0, 0, this.Width, this.Height));
+            UpdateProjection();
         }
 
-        private void UpdateProjection()
-        {
-            double x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
-            double y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
-            double z = (distance * Math.Sin(elevation));
-
-            cameraPosition = new double[3] { -y, z, -x };
-
-            if (MapSystems != null)
-            {
-                AstroPlot.Update.PlotObjects(MapSystems, Width, Height, focalLength, cameraPosition, azimuth, elevation);
-            }
-
-            if (Axes != null)
-            {
-                AstroPlot.Update.AxesWidget(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation);
-            }
-
-            if (Frames != null)
-            {
-                AstroPlot.Update.FrameWidget(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation);
-            }
-
-            Invalidate();
-        }
-
-        public void Clear()
-        {
-            Invalidate();
-            MapSystems.Clear();
-        }
-        
-        #region Interaction
-                
-        private void ExtAstroPlot_SizeChanged(object sender, EventArgs e)
-        {
-            plot.Height = this.Height;
-            plot.Width = this.Width;
-            plot.Top = this.Top;
-            plot.Left = this.Left;
-        }
-
-        private void Plot_SizeChanged(object sender, EventArgs e)
-        {
-                UpdateProjection();
-        }
-                
-        private void Plot_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                // rotate
-                leftMousePressed = true;
-                ptMouseClick = new PointF(e.X, e.Y);
-                systemLabel.Text = "";
-                systemLabel.Visible = false;
-                lastAzimuth = azimuth;
-                lastElevation = elevation;
-            }
-        }
-
-        private void Plot_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-                leftMousePressed = false;
-            if (e.Button == MouseButtons.Middle)
-                middleMousePressed = false;
-        }
-                        
-        private void Plot_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (leftMousePressed)
-            {
-                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / 150);
-                elevation = lastElevation + ((ptMouseClick.Y - e.Y) / 150);
-                UpdateProjection();
-            }
-            
-            mousePosition = e.Location;
-
-            _mouseIdleTimer.Stop();
-            _mouseIdleTimer.Start();
-
-            //Debug.WriteLine("Timer started");
-        }
-        
         private void MouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            //Debug.WriteLine("Timer code running...");
+
+#if DEBUG
+Debug.WriteLine("Timer code running...");
+#endif
 
             var hs = HotSpotSize;
 
             var labelPosition = new Point();
 
             string text = null;
-            
+
             if (MapSystems != null)
             {
                 for (int i = 0; i < MapSystems.Count; i++)
@@ -502,21 +481,15 @@ namespace ExtendedControls.Controls
                 (Action)(
                     () =>
                     {
-                        string currentText = systemLabel.Text;
+                        var currentText = systemLabel.Text;
                         systemLabel.Text = text;
                         systemLabel.Visible = true;
-                        systemLabel.Location = labelPosition;                        
+                        systemLabel.Location = labelPosition;
                     }
                 )
             );
         }
 
-        private void Plot_MouseLeave(object sender, EventArgs e)
-        {
-            _mouseIdleTimer.Stop();
-            //Debug.WriteLine("Timer stopped");
-        }
-                        
         private new void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)

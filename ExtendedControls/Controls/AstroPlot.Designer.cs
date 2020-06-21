@@ -28,21 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.plot = new System.Windows.Forms.PictureBox();
+            this.plot = new ExtendedControls.ExtPictureBox();
             this.systemLabel = new ExtendedControls.ExtLabel();
             ((System.ComponentModel.ISupportInitialize)(this.plot)).BeginInit();
             this.SuspendLayout();
             // 
             // plot
             // 
-            this.plot.BackColor = System.Drawing.Color.Transparent;
             this.plot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.plot.Location = new System.Drawing.Point(0, 0);
             this.plot.Name = "plot";
             this.plot.Size = new System.Drawing.Size(256, 256);
-            this.plot.TabIndex = 0;
-            this.plot.TabStop = false;
-            this.plot.SizeChanged += new System.EventHandler(this.Plot_SizeChanged);
+            this.plot.TabIndex = 2;
+            this.plot.SizeChanged += new System.EventHandler(this.plot_SizeChanged_1);
             this.plot.Paint += new System.Windows.Forms.PaintEventHandler(this.Plot_Paint);
             this.plot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Plot_MouseDown);
             this.plot.MouseLeave += new System.EventHandler(this.Plot_MouseLeave);
@@ -69,7 +67,6 @@
             this.ForeColor = System.Drawing.Color.White;
             this.Name = "ExtAstroPlot";
             this.Size = new System.Drawing.Size(256, 256);
-            this.SizeChanged += new System.EventHandler(this.ExtAstroPlot_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.plot)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -77,7 +74,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox plot;
         private ExtLabel systemLabel;
+        private ExtPictureBox plot;
     }
 }
