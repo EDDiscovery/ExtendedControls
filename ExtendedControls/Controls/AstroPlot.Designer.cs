@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.systemLabel = new ExtendedControls.ExtLabel();
             this.plotCanvas = new ExtendedControls.ExtPictureBox();
-            this.plotObjectsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.plotCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,7 +49,7 @@
             this.plotCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
             this.plotCanvas.Location = new System.Drawing.Point(0, 0);
             this.plotCanvas.Name = "plotCanvas";
-            this.plotCanvas.Size = new System.Drawing.Size(0, 0);
+            this.plotCanvas.Size = new System.Drawing.Size(1906, 887);
             this.plotCanvas.TabIndex = 0;
             this.plotCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotCanvas_Paint);
             this.plotCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseDown);
@@ -59,15 +57,12 @@
             this.plotCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseMove);
             this.plotCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseUp);
             // 
-            // plotObjectsMenu
-            // 
-            this.plotObjectsMenu.Name = "plotObjectsMenu";
-            this.plotObjectsMenu.Size = new System.Drawing.Size(61, 4);
-            // 
             // AstroPlot
             // 
             this.Controls.Add(this.systemLabel);
             this.Controls.Add(this.plotCanvas);
+            this.ForeColor = System.Drawing.Color.White;
+            this.Size = new System.Drawing.Size(1906, 887);
             ((System.ComponentModel.ISupportInitialize)(this.plotCanvas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -78,6 +73,5 @@
 
         private ExtPictureBox plotCanvas;
         private ExtLabel systemLabel;
-        private System.Windows.Forms.ContextMenuStrip plotObjectsMenu;
     }
 }

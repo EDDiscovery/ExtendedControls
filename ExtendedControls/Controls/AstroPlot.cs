@@ -62,6 +62,12 @@ namespace ExtendedControls.Controls
         private double framesRadiusWidth = 20;
         private int framesWidgetThickness = 1;
 
+        // Output
+        private string selectedObjectName;
+        private double selectedObjectX;
+        private double selectedObjectY;
+        private double selectedObjectZ;
+        
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
         private double lastAzimuth, azimuth = 0.3;
 
@@ -215,6 +221,29 @@ namespace ExtendedControls.Controls
 
         public Color CurrentColor { get; set; } = Color.Red;
 
+        public string SelectedObjectName
+        {
+            get { return selectedObjectName; }
+            set { selectedObjectName = value; }
+        }
+        public double SelectedObjectX
+        {
+            get { return selectedObjectX; }
+            set { selectedObjectX = value; }
+        }
+
+        public double SelectedObjectY
+        {
+            get { return selectedObjectY; }
+            set { selectedObjectY = value; }
+        }
+
+        public double SelectedObjectZ
+        {
+            get { return selectedObjectZ; }
+            set { selectedObjectZ = value; }
+        }
+
         #endregion
 
         public AstroPlot()
@@ -228,6 +257,12 @@ namespace ExtendedControls.Controls
             _mouseIdleTimer.AutoReset = false;
             _mouseIdleTimer.Interval = 300;
             _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
+
+            if (drawAxesWidget)
+                SetAxesCoordinates(this.axesWidgetLength);
+
+            if (drawFramesWidget)
+                SetFrameCoordinates(this.framesRadiusWidth);
         }
 
         private void PlotCanvas_MouseDown(object sender, MouseEventArgs e)
@@ -288,7 +323,32 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Right)
                 rightMousePressed = false;
         }
-        
+
+        public void AddSystemsToMap(List<object[]> mapObjects)
+        {
+            for (int i = 0; i < mapObjects.Count; i++)
+            {
+                MapObjects.Add(new PlotObjects
+                {
+                    Name = mapObjects[i][0].ToString(),
+                    X = (double)mapObjects[i][1] - centerCoordinates[0],
+                    Y = (double)mapObjects[i][2] - centerCoordinates[1],
+                    Z = (double)mapObjects[i][3] - centerCoordinates[2],
+                    IsVisited = (bool)mapObjects[i][4],
+                    IsWaypoint = (bool)mapObjects[i][5],
+                    IsCurrent = (bool)mapObjects[i][6],
+                    Coords = new PointF(0, 0)
+                });
+            }
+            UpdateProjection();
+        }
+
+        public void Clear()
+        {
+            Invalidate();
+            MapObjects.Clear();
+        }
+
         private void UpdateProjection()
         {
             var x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
@@ -414,13 +474,7 @@ namespace ExtendedControls.Controls
                 }
             }
         }
-
-        public void Clear()
-        {
-            Invalidate();
-            MapObjects.Clear();
-        }
-
+                
         #region Interaction               
 
         private void Plot_MouseDown(object sender, MouseEventArgs e)
