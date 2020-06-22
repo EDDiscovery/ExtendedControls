@@ -3,6 +3,8 @@ using ExtendedControls;
 using ExtendedControls.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace DialogTest
@@ -21,7 +23,7 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();
-
+                        
             astroPlot.AxesWidget = true;
             astroPlot.FramesWidget = false;
 
@@ -52,7 +54,7 @@ namespace DialogTest
             testSystemsList.Add(new TestSystem { Name = "Magellan's Star", X = 40503.8125, Y = 25.96875, Z = 17678 });
             testSystemsList.Add(new TestSystem { Name = "Star One", X = -35413.03125, Y = -14.75, Z = 3821.46875 });
         }
-
+        
         private void TestOrientation()
         {
             testSystemsList.Clear();

@@ -63,9 +63,9 @@ namespace ExtendedControls.Controls
         private int framesWidgetThickness = 1;
 
         // Output
-        private string selectedObjectName;
-        private PointF selectedObjectCoords;
-        
+        protected string selectedObjectName;
+        protected PointF selectedObjectCoords;
+                
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
         private double lastAzimuth, azimuth = 0.3;
 
@@ -222,12 +222,14 @@ namespace ExtendedControls.Controls
         public string SelectedObjectName
         {
             get { return selectedObjectName; }
-            set { selectedObjectName = value; }
+            private set
+            { selectedObjectName = value; }
         }
         public PointF SelectedObjectCoords
         {
             get { return selectedObjectCoords; }
-            set { selectedObjectCoords = value; }
+            private set
+            { selectedObjectCoords = value; }
         }
 
         #endregion
@@ -497,10 +499,11 @@ namespace ExtendedControls.Controls
             var hs = HotSpotSize;
             var text = "";
             var coords = new PointF();
+            var lastText = text;
 
             if (MapObjects != null)
             {
-                for (int i = 0; i < MapObjects.Count; i++)
+                for (int i = MapObjects.Count - 1; i >= 0; i--)
                 {
                     if (mousePosition.X > (MapObjects[i].Coords.X - hs) && mousePosition.X < (MapObjects[i].Coords.X + hs) &&
                         mousePosition.Y > (MapObjects[i].Coords.Y - hs) && mousePosition.Y > (MapObjects[i].Coords.Y - hs))
@@ -515,9 +518,15 @@ namespace ExtendedControls.Controls
                 (Action)(
                     () =>
                     {
-                        var currentText = selectedObjectName;
-                        selectedObjectName = text;
-                        selectedObjectCoords = coords;
+                        if (text != "" && text != lastText)
+                        {
+                            selectedObjectName = text;
+                            selectedObjectCoords = coords;
+                            lastText = text;
+#if DEBUG                            
+                            Debug.WriteLine(selectedObjectName + ", " + selectedObjectCoords.ToString());
+#endif
+                        }
                     }
                 )
             );

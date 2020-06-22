@@ -75,6 +75,9 @@
     <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AstroPlot\SelectedObject.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TextBoxAutoComplete.cs">
       <SubType>Component</SubType>
     </Compile>

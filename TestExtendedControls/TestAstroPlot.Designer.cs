@@ -65,8 +65,6 @@
             this.astroPlot.MouseSensitivity_Movement = 150;
             this.astroPlot.MouseSensitivity_Wheel = 300D;
             this.astroPlot.Name = "astroPlot";
-            this.astroPlot.SelectedObjectCoords = ((System.Drawing.PointF)(resources.GetObject("astroPlot.SelectedObjectCoords")));
-            this.astroPlot.SelectedObjectName = null;
             this.astroPlot.Size = new System.Drawing.Size(484, 461);
             this.astroPlot.SmallDotSize = 8;
             this.astroPlot.TabIndex = 0;
