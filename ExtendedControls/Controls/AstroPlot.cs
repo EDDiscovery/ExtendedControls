@@ -27,7 +27,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls.Controls
 {
-    public partial class AstroPlot : UserControl
+    public partial class AstroPlot : Control
     {
         private readonly List<Axis> Axes = new List<Axis>();
         private readonly List<Corner> Frames = new List<Corner>();
@@ -48,7 +48,7 @@ namespace ExtendedControls.Controls
         private bool leftMousePressed = false, rightMousePressed = false, middleMousePressed = false;
         private PointF ptMouseClick;
         private int mouseMovementSens = 150;
-        private double mouseWheelSens = 300;
+        private double mouseWheelSens = 100;
         private Point mousePosition;
         private int hotspotSize = 10;
 
@@ -283,8 +283,8 @@ namespace ExtendedControls.Controls
         {
             if (leftMousePressed)
             {
-                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / 150);
-                elevation = lastElevation + ((ptMouseClick.Y - e.Y) / 150);
+                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / mouseMovementSens);
+                elevation = lastElevation + ((ptMouseClick.Y - e.Y) / mouseMovementSens);
                 UpdateProjection();
             }
 
@@ -466,7 +466,7 @@ namespace ExtendedControls.Controls
                 
         #region Interaction               
 
-        private void Plot_MouseDown(object sender, MouseEventArgs e)
+        internal void Plot_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -479,24 +479,24 @@ namespace ExtendedControls.Controls
             }
 
             if (e.Button == MouseButtons.Middle)
+            {
                 middleMousePressed = true;
+            }
 
             if (e.Button == MouseButtons.Right)
+            {
                 rightMousePressed = true;
+            }
         }
 
         private void MouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-
 #if DEBUG
             Debug.WriteLine("Timer code running...");
 #endif
-
             var hs = HotSpotSize;
-
-            var labelPosition = new Point();
-
-            string text = null;
+            var text = "";
+            var coords = new PointF();
 
             if (MapObjects != null)
             {
@@ -506,7 +506,7 @@ namespace ExtendedControls.Controls
                         mousePosition.Y > (MapObjects[i].Coords.Y - hs) && mousePosition.Y > (MapObjects[i].Coords.Y - hs))
                     {
                         text = MapObjects[i].Name;
-                        labelPosition = new Point((int)MapObjects[i].Coords.X - (smallDotSize * 4), (int)MapObjects[i].Coords.Y - (smallDotSize * 3));
+                        coords = MapObjects[i].Coords;
                     }
                 }
             }
@@ -517,7 +517,7 @@ namespace ExtendedControls.Controls
                     {
                         var currentText = selectedObjectName;
                         selectedObjectName = text;
-                        selectedObjectCoords = labelPosition;
+                        selectedObjectCoords = coords;
                     }
                 )
             );
@@ -528,7 +528,14 @@ namespace ExtendedControls.Controls
             if (!middleMousePressed)
             {
                 // zoom
-                Distance += -e.Delta / MouseSensitivity_Wheel;
+                if (MouseSensitivity_Wheel != 0)
+                {
+                    Distance += -e.Delta * MouseSensitivity_Wheel;
+                }
+                else
+                {
+                    Distance += -e.Delta;
+                }
             }
         }
         #endregion

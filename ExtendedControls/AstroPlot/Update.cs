@@ -8,10 +8,10 @@ namespace ExtendedControls.Controls
 {
     public partial class AstroPlot
     {
-        internal static class Update
+        new internal static class Update
         {
             internal static void PlotObjects(
-                List<AstroPlot.PlotObjects> mapSystems,
+                List<PlotObjects> mapSystems,
                 int x,
                 int y,
                 double z,
@@ -32,7 +32,7 @@ namespace ExtendedControls.Controls
             }
 
             internal static void AxesWidget(
-                List<AstroPlot.Axis> widgets,
+                List<Axis> widgets,
                 int x,
                 int y,
                 double z,
@@ -53,7 +53,7 @@ namespace ExtendedControls.Controls
             }
 
             internal static void FrameWidget(
-                List<AstroPlot.Corner> frames,
+                List<Corner> frames,
                 int x,
                 int y,
                 double z,
