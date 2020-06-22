@@ -49,6 +49,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AstroPlot\Axes.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AstroPlot\Frames.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AstroPlot\Handlers.cs" />
+    <Compile Include="AstroPlot\PlotObjects.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AstroPlot\Update.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\AstroPlot.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\AstroPlot.Designer.cs">
+      <DependentUpon>AstroPlot.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
@@ -215,6 +234,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Controls\AstroPlot.resx">
+      <DependentUpon>AstroPlot.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
@@ -319,5 +341,6 @@
   <ItemGroup>
     <None Include="Resources\Selector.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
