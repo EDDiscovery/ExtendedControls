@@ -27,7 +27,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls.Controls
 {
-    public partial class AstroPlot : Control
+    public partial class AstroPlot : UserControl
     {
         private readonly List<Axis> Axes = new List<Axis>();
         private readonly List<Corner> Frames = new List<Corner>();
@@ -64,9 +64,7 @@ namespace ExtendedControls.Controls
 
         // Output
         private string selectedObjectName;
-        private double selectedObjectX;
-        private double selectedObjectY;
-        private double selectedObjectZ;
+        private PointF selectedObjectCoords;
         
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
         private double lastAzimuth, azimuth = 0.3;
@@ -226,22 +224,10 @@ namespace ExtendedControls.Controls
             get { return selectedObjectName; }
             set { selectedObjectName = value; }
         }
-        public double SelectedObjectX
+        public PointF SelectedObjectCoords
         {
-            get { return selectedObjectX; }
-            set { selectedObjectX = value; }
-        }
-
-        public double SelectedObjectY
-        {
-            get { return selectedObjectY; }
-            set { selectedObjectY = value; }
-        }
-
-        public double SelectedObjectZ
-        {
-            get { return selectedObjectZ; }
-            set { selectedObjectZ = value; }
+            get { return selectedObjectCoords; }
+            set { selectedObjectCoords = value; }
         }
 
         #endregion
@@ -251,9 +237,8 @@ namespace ExtendedControls.Controls
             InitializeComponent();
             Handlers.MouseWheel.Add(this, OnMouseWheel);
 
-            systemLabel.Text = "";
-            systemLabel.Visible = false;
-
+            selectedObjectName = "";
+            
             _mouseIdleTimer.AutoReset = false;
             _mouseIdleTimer.Interval = 300;
             _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
@@ -272,8 +257,7 @@ namespace ExtendedControls.Controls
                 // rotate
                 leftMousePressed = true;
                 ptMouseClick = new PointF(e.X, e.Y);
-                systemLabel.Text = "";
-                systemLabel.Visible = false;
+                selectedObjectName = "";
                 lastAzimuth = azimuth;
                 lastElevation = elevation;
             }
@@ -373,6 +357,11 @@ namespace ExtendedControls.Controls
             }
 
             Invalidate();
+        }
+
+        private void PlotCanvas_Resize(object sender, EventArgs e)
+        {
+            UpdateProjection();
         }
 
         private void PlotCanvas_Paint(object sender, PaintEventArgs e)
@@ -484,11 +473,16 @@ namespace ExtendedControls.Controls
                 // rotate
                 leftMousePressed = true;
                 ptMouseClick = new PointF(e.X, e.Y);
-                systemLabel.Text = "";
-                systemLabel.Visible = false;
+                selectedObjectName = "";
                 lastAzimuth = azimuth;
                 lastElevation = elevation;
             }
+
+            if (e.Button == MouseButtons.Middle)
+                middleMousePressed = true;
+
+            if (e.Button == MouseButtons.Right)
+                rightMousePressed = true;
         }
 
         private void MouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -521,10 +515,9 @@ namespace ExtendedControls.Controls
                 (Action)(
                     () =>
                     {
-                        var currentText = systemLabel.Text;
-                        systemLabel.Text = text;
-                        systemLabel.Visible = true;
-                        systemLabel.Location = labelPosition;
+                        var currentText = selectedObjectName;
+                        selectedObjectName = text;
+                        selectedObjectCoords = labelPosition;
                     }
                 )
             );
@@ -534,8 +527,6 @@ namespace ExtendedControls.Controls
         {
             if (!middleMousePressed)
             {
-                systemLabel.Visible = false;
-
                 // zoom
                 Distance += -e.Delta / MouseSensitivity_Wheel;
             }

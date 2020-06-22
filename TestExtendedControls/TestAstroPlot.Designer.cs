@@ -28,7 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestAstroPlot));
             this.astroPlot = new ExtendedControls.Controls.AstroPlot();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.extLabel1 = new ExtendedControls.ExtLabel();
             this.SuspendLayout();
             // 
             // astroPlot
@@ -61,30 +65,42 @@
             this.astroPlot.MouseSensitivity_Movement = 150;
             this.astroPlot.MouseSensitivity_Wheel = 300D;
             this.astroPlot.Name = "astroPlot";
+            this.astroPlot.SelectedObjectCoords = ((System.Drawing.PointF)(resources.GetObject("astroPlot.SelectedObjectCoords")));
             this.astroPlot.SelectedObjectName = null;
-            this.astroPlot.SelectedObjectX = 0D;
-            this.astroPlot.SelectedObjectY = 0D;
-            this.astroPlot.SelectedObjectZ = 0D;
-            this.astroPlot.Size = new System.Drawing.Size(1401, 820);
+            this.astroPlot.Size = new System.Drawing.Size(484, 461);
             this.astroPlot.SmallDotSize = 8;
             this.astroPlot.TabIndex = 0;
             this.astroPlot.UnVisitedColor = System.Drawing.Color.Yellow;
             this.astroPlot.VisitedColor = System.Drawing.Color.Aqua;
             // 
+            // extLabel1
+            // 
+            this.extLabel1.AutoSize = true;
+            this.extLabel1.Location = new System.Drawing.Point(0, 0);
+            this.extLabel1.Name = "extLabel1";
+            this.extLabel1.Size = new System.Drawing.Size(53, 13);
+            this.extLabel1.TabIndex = 1;
+            this.extLabel1.Text = "extLabel1";
+            this.extLabel1.TextBackColor = System.Drawing.Color.Transparent;
+            // 
             // TestAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1401, 820);
+            this.ClientSize = new System.Drawing.Size(484, 461);
+            this.Controls.Add(this.extLabel1);
             this.Controls.Add(this.astroPlot);
             this.Name = "TestAstroPlot";
             this.Text = "TestAstroPlot";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private ExtendedControls.Controls.AstroPlot astroPlot;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private ExtendedControls.ExtLabel extLabel1;
     }
 }

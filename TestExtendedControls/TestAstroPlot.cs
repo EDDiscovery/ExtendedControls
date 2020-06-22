@@ -13,7 +13,7 @@ namespace DialogTest
 {
     public partial class TestAstroPlot : Form
     {
-        private ThemeStandard theme;
+        private readonly ThemeStandard theme;
 
         public TestAstroPlot()
         {

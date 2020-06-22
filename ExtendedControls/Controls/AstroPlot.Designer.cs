@@ -28,20 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.systemLabel = new ExtendedControls.ExtLabel();
             this.plotCanvas = new ExtendedControls.ExtPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.plotCanvas)).BeginInit();
             this.SuspendLayout();
-            // 
-            // systemLabel
-            // 
-            this.systemLabel.AutoSize = true;
-            this.systemLabel.Location = new System.Drawing.Point(8, 8);
-            this.systemLabel.Name = "systemLabel";
-            this.systemLabel.Size = new System.Drawing.Size(53, 13);
-            this.systemLabel.TabIndex = 1;
-            this.systemLabel.Text = "extLabel1";
-            this.systemLabel.TextBackColor = System.Drawing.Color.Transparent;
             // 
             // plotCanvas
             // 
@@ -56,22 +45,20 @@
             this.plotCanvas.MouseLeave += new System.EventHandler(this.PlotCanvas_MouseLeave);
             this.plotCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseMove);
             this.plotCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseUp);
+            this.plotCanvas.Resize += new System.EventHandler(this.PlotCanvas_Resize);
             // 
             // AstroPlot
             // 
-            this.Controls.Add(this.systemLabel);
             this.Controls.Add(this.plotCanvas);
             this.ForeColor = System.Drawing.Color.White;
             this.Size = new System.Drawing.Size(1906, 887);
             ((System.ComponentModel.ISupportInitialize)(this.plotCanvas)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private ExtPictureBox plotCanvas;
-        private ExtLabel systemLabel;
     }
 }
