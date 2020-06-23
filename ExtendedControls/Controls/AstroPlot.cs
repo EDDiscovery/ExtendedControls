@@ -368,12 +368,12 @@ namespace ExtendedControls.Controls
 
         private void PlotCanvas_Paint(object sender, PaintEventArgs e)
         {
-            base.OnPaint(e);
+            Graphics g = e.Graphics;
 
             // give some love to the renderint engine
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-            e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
 
             using (var AxisPen = new Pen(new SolidBrush(ForeColor))
             {
@@ -388,18 +388,18 @@ namespace ExtendedControls.Controls
                         if (i == 1)
                         {
                             AxisPen.Color = Color.Red;
-                            e.Graphics.DrawLine(AxisPen, Axes[0].Coords, Axes[1].Coords);
+                            g.DrawLine(AxisPen, Axes[0].Coords, Axes[1].Coords);
                         }
                         if (i == 2)
                         {
                             AxisPen.Color = Color.Green;
-                            e.Graphics.DrawLine(AxisPen, Axes[0].Coords, Axes[2].Coords);
+                            g.DrawLine(AxisPen, Axes[0].Coords, Axes[2].Coords);
                         }
 
                         if (i == 3)
                         {
                             AxisPen.Color = Color.Blue;
-                            e.Graphics.DrawLine(AxisPen, Axes[0].Coords, Axes[3].Coords);
+                            g.DrawLine(AxisPen, Axes[0].Coords, Axes[3].Coords);
                         }
                     }
                 }
@@ -415,24 +415,24 @@ namespace ExtendedControls.Controls
                 if (drawFramesWidget && Frames.Count > 0)
                 {
                     // bottom                
-                    e.Graphics.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
-                    e.Graphics.DrawLine(FramePen, Frames[1].Coords, Frames[5].Coords);
-                    e.Graphics.DrawLine(FramePen, Frames[5].Coords, Frames[3].Coords);
-                    e.Graphics.DrawLine(FramePen, Frames[3].Coords, Frames[0].Coords);
+                    g.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
+                    g.DrawLine(FramePen, Frames[1].Coords, Frames[5].Coords);
+                    g.DrawLine(FramePen, Frames[5].Coords, Frames[3].Coords);
+                    g.DrawLine(FramePen, Frames[3].Coords, Frames[0].Coords);
 
                     // left
-                    e.Graphics.DrawLine(FramePen, Frames[0].Coords, Frames[2].Coords);
-                    e.Graphics.DrawLine(FramePen, Frames[2].Coords, Frames[4].Coords);
-                    e.Graphics.DrawLine(FramePen, Frames[4].Coords, Frames[3].Coords);
+                    g.DrawLine(FramePen, Frames[0].Coords, Frames[2].Coords);
+                    g.DrawLine(FramePen, Frames[2].Coords, Frames[4].Coords);
+                    g.DrawLine(FramePen, Frames[4].Coords, Frames[3].Coords);
 
                     // right
-                    e.Graphics.DrawLine(FramePen, Frames[1].Coords, Frames[6].Coords);
-                    e.Graphics.DrawLine(FramePen, Frames[6].Coords, Frames[7].Coords);
-                    e.Graphics.DrawLine(FramePen, Frames[7].Coords, Frames[5].Coords);
+                    g.DrawLine(FramePen, Frames[1].Coords, Frames[6].Coords);
+                    g.DrawLine(FramePen, Frames[6].Coords, Frames[7].Coords);
+                    g.DrawLine(FramePen, Frames[7].Coords, Frames[5].Coords);
 
                     // top
-                    e.Graphics.DrawLine(FramePen, Frames[2].Coords, Frames[6].Coords);
-                    e.Graphics.DrawLine(FramePen, Frames[4].Coords, Frames[7].Coords);
+                    g.DrawLine(FramePen, Frames[2].Coords, Frames[6].Coords);
+                    g.DrawLine(FramePen, Frames[4].Coords, Frames[7].Coords);
                 }
 
                 if (MapObjects != null)
@@ -443,7 +443,7 @@ namespace ExtendedControls.Controls
 
                         using (var objectBrush = new SolidBrush(FillColor))
                         {
-                            e.Graphics.FillEllipse(objectBrush, new RectangleF(
+                            g.FillEllipse(objectBrush, new RectangleF(
                                 MapObjects[i].Coords.X - (SmallDotSize / 2),
                                 MapObjects[i].Coords.Y - (SmallDotSize / 2),
                                 SmallDotSize,
@@ -458,12 +458,13 @@ namespace ExtendedControls.Controls
                                 DashStyle = System.Drawing.Drawing2D.DashStyle.Solid
                             })
                             {
-                                e.Graphics.DrawLine(TravelMapPen, MapObjects[i].Coords, MapObjects[i + 1].Coords);
+                                g.DrawLine(TravelMapPen, MapObjects[i].Coords, MapObjects[i + 1].Coords);
                             }
                         }
                     }
                 }
             }
+            base.OnPaint(e);
         }
                 
         #region Interaction               

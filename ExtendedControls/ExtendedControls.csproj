@@ -72,6 +72,9 @@
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\PanelMinimal.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -236,6 +239,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\AstroPlot.resx">
       <DependentUpon>AstroPlot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PanelMinimal.resx">
+      <DependentUpon>PanelMinimal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
