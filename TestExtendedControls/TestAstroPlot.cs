@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace DialogTest
@@ -23,7 +24,10 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();
-                        
+        }
+
+        private void TestAstroPlot_Load(object sender, EventArgs e)
+        {
             astroPlot.AxesWidget = true;
             astroPlot.FramesWidget = false;
 

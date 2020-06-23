@@ -64,7 +64,7 @@ namespace ExtendedControls.Controls
 
         // Output
         protected string selectedObjectName;
-        protected PointF selectedObjectCoords;
+        protected Point selectedObjectCoords;
                 
         // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
         private double lastAzimuth, azimuth = 0.3;
@@ -225,7 +225,7 @@ namespace ExtendedControls.Controls
             private set
             { selectedObjectName = value; }
         }
-        public PointF SelectedObjectCoords
+        public Point SelectedObjectCoords
         {
             get { return selectedObjectCoords; }
             private set
@@ -521,7 +521,7 @@ namespace ExtendedControls.Controls
                         if (text != "" && text != lastText)
                         {
                             selectedObjectName = text;
-                            selectedObjectCoords = coords;
+                            selectedObjectCoords = new Point((int)coords.X, (int)coords.Y);
                             lastText = text;
 #if DEBUG                            
                             Debug.WriteLine(selectedObjectName + ", " + selectedObjectCoords.ToString());

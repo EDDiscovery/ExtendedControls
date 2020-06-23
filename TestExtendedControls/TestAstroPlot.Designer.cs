@@ -28,11 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestAstroPlot));
             this.astroPlot = new ExtendedControls.Controls.AstroPlot();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.extLabel1 = new ExtendedControls.ExtLabel();
             this.SuspendLayout();
             // 
             // astroPlot
@@ -71,34 +67,21 @@
             this.astroPlot.UnVisitedColor = System.Drawing.Color.Yellow;
             this.astroPlot.VisitedColor = System.Drawing.Color.Aqua;
             // 
-            // extLabel1
-            // 
-            this.extLabel1.AutoSize = true;
-            this.extLabel1.Location = new System.Drawing.Point(0, 0);
-            this.extLabel1.Name = "extLabel1";
-            this.extLabel1.Size = new System.Drawing.Size(53, 13);
-            this.extLabel1.TabIndex = 1;
-            this.extLabel1.Text = "extLabel1";
-            this.extLabel1.TextBackColor = System.Drawing.Color.Transparent;
-            // 
             // TestAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 461);
-            this.Controls.Add(this.extLabel1);
             this.Controls.Add(this.astroPlot);
             this.Name = "TestAstroPlot";
             this.Text = "TestAstroPlot";
+            this.Load += new System.EventHandler(this.TestAstroPlot_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private ExtendedControls.Controls.AstroPlot astroPlot;
-        private System.Windows.Forms.ToolTip toolTip1;
-        private ExtendedControls.ExtLabel extLabel1;
     }
 }
