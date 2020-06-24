@@ -95,7 +95,7 @@ namespace ExtendedControls.Controls
 
         private double distance = 6;
         private double[] cameraPosition = new double[3];
-        private double[] centerCoordinates = new double[3];
+        private double[] centerCoordinates = new double[] { 0, 0, 0, };
 
         // Objects
         private int smallDotSize = 8;
@@ -328,6 +328,14 @@ namespace ExtendedControls.Controls
             if (drawFramesWidget)
                 SetFrameCoordinates(this.framesRadiusWidth);
         }
+
+        public void SetCenterOfMap(double[] coords)
+        {
+            if (coords != null)
+            {
+                centerCoordinates = new double[] { coords[0], coords[1], coords[2] };
+            }
+        }
                 
         public void AddSystemsToMap(List<object[]> mapObjects)
         {
@@ -345,9 +353,7 @@ namespace ExtendedControls.Controls
                     Coords = new PointF(0, 0)
                 });
             }
-
-            centerCoordinates = new double[] { MapObjects[0].X, MapObjects[0].Y, MapObjects[0].Z };
-
+            
             UpdateProjection();
         }
 

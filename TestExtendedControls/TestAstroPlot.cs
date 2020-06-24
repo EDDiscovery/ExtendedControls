@@ -73,9 +73,9 @@ namespace DialogTest
 
             PopulateOrientationTest();
 
-            //var centerTo = testSystemsList[1];
-
-            //SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
+            var centerTo = testSystemsList[1];
+                    
+            astroPlot.SetCenterOfMap(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
 
             PlotObjects(testSystemsList);
         }
@@ -90,12 +90,7 @@ namespace DialogTest
             }
             astroPlot.AddSystemsToMap(List);
         }
-
-        private void SetCenterSystem(double[] coords)
-        {
-            //astroPlot.CoordsCenter = coords;
-        }
-
+                
         private void TestAstroPlot_MouseEnter(object sender, EventArgs e)
         {
             _mouseIdleTimer.Start();
