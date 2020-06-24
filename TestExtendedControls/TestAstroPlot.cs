@@ -26,6 +26,9 @@ namespace DialogTest
             InitializeComponent();
         }
 
+        // Timer
+        private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
+
         private void TestAstroPlot_Load(object sender, EventArgs e)
         {
             astroPlot.AxesWidget = true;
@@ -69,10 +72,10 @@ namespace DialogTest
             astroPlot.MouseSensitivity_Wheel = 50;
 
             PopulateOrientationTest();
-                        
-            var centerTo = testSystemsList[0];
 
-            SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
+            //var centerTo = testSystemsList[1];
+
+            //SetCenterSystem(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
 
             PlotObjects(testSystemsList);
         }
@@ -90,7 +93,25 @@ namespace DialogTest
 
         private void SetCenterSystem(double[] coords)
         {
-            astroPlot.CoordsCenter = coords;
+            //astroPlot.CoordsCenter = coords;
+        }
+
+        private void TestAstroPlot_MouseEnter(object sender, EventArgs e)
+        {
+            _mouseIdleTimer.Start();
+
+#if DEBUG
+            Debug.WriteLine("Form timer started");
+#endif
+        }
+
+        private void TestAstroPlot_MouseLeave(object sender, EventArgs e)
+        {
+            _mouseIdleTimer.Stop();
+
+#if DEBUG
+            Debug.WriteLine("Form timer stopped");
+#endif
         }
     }
 }

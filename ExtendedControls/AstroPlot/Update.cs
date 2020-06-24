@@ -3,6 +3,7 @@ using ExtendedControls.Controls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 
 namespace ExtendedControls.Controls
 {
@@ -17,7 +18,8 @@ namespace ExtendedControls.Controls
                 double z,
                 double[] cameraPosition,
                 double azimuth,
-                double elevation)
+                double elevation,
+                double[] centerCoords)
             {
                 var _interaction = Interaction(azimuth, elevation, cameraPosition);
                 var _data = Coords(x, y, z);
@@ -25,7 +27,7 @@ namespace ExtendedControls.Controls
 
                 for (int i = 0; i < mapSystems.Count; i++)
                 {
-                    X_h.SetMatrix(new double[] { mapSystems[i].X, mapSystems[i].Y, mapSystems[i].Z, 1.0 });
+                    X_h.SetMatrix(new double[] { mapSystems[i].X - centerCoords[0], mapSystems[i].Y - centerCoords[1], mapSystems[i].Z - centerCoords[2], 1.0 });
                     var P = _data * _interaction * X_h;
                     mapSystems[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
@@ -38,7 +40,8 @@ namespace ExtendedControls.Controls
                 double z,
                 double[] cameraPosition,
                 double azimuth,
-                double elevation)
+                double elevation,
+                double[] centerCoords)
             {
                 var _interaction = Interaction(azimuth, elevation, cameraPosition);
                 var _data = Coords(x, y, z);
@@ -46,7 +49,7 @@ namespace ExtendedControls.Controls
 
                 for (int i = 0; i < widgets.Count; i++)
                 {
-                    X_h.SetMatrix(new double[] { widgets[i].X, widgets[i].Y, widgets[i].Z, 1.0 });
+                    X_h.SetMatrix(new double[] { widgets[i].X - centerCoords[0], widgets[i].Y - centerCoords[1], widgets[i].Z - centerCoords[2], 1.0 });
                     var P = _data * _interaction * X_h;
                     widgets[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
@@ -59,7 +62,8 @@ namespace ExtendedControls.Controls
                 double z,
                 double[] cameraPosition,
                 double azimuth,
-                double elevation)
+                double elevation,
+                double[] centerCoords)
             {
                 var _interaction = Interaction(azimuth, elevation, cameraPosition);
                 var _data = Coords(x, y, z);
@@ -67,7 +71,7 @@ namespace ExtendedControls.Controls
 
                 for (int i = 0; i < frames.Count; i++)
                 {
-                    X_h.SetMatrix(new double[] { frames[i].X, frames[i].Y, frames[i].Z, 1.0 });
+                    X_h.SetMatrix(new double[] { frames[i].X - centerCoords[0], frames[i].Y - centerCoords[1], frames[i].Z - centerCoords[2], 1.0 });
                     var P = _data * _interaction * X_h;
                     frames[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
