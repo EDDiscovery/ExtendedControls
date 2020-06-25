@@ -41,27 +41,27 @@ namespace ExtendedControls.Controls
 
                 Axes.Add(new Axis
                 {
-                    X = 0 - CenterCoordinates[0],
-                    Y = 0 - CenterCoordinates[1],
-                    Z = 0 - CenterCoordinates[2]
+                    X = CenterCoordinates[0],
+                    Y = CenterCoordinates[1],
+                    Z = CenterCoordinates[2]
                 });
                 Axes.Add(new Axis
                 {
-                    X = length - CenterCoordinates[0],
-                    Y = 0 - CenterCoordinates[1],
-                    Z = 0 - CenterCoordinates[2]
+                    X = CenterCoordinates[0] + length,
+                    Y = CenterCoordinates[1],
+                    Z = CenterCoordinates[2]
                 });
                 Axes.Add(new Axis
                 {
-                    X = 0 - CenterCoordinates[0],
-                    Y = (length * -1) - CenterCoordinates[1],
-                    Z = 0 - CenterCoordinates[2]
+                    X = CenterCoordinates[0],
+                    Y = CenterCoordinates[1] + (length * -1),
+                    Z = CenterCoordinates[2]
                 });
                 Axes.Add(new Axis
                 {
-                    X = 0 - CenterCoordinates[0],
-                    Y = 0 - CenterCoordinates[1],
-                    Z = (length * -1) - CenterCoordinates[2]
+                    X = CenterCoordinates[0],
+                    Y = CenterCoordinates[1],
+                    Z = CenterCoordinates[2] + (length * -1)
                 });
 
                 ShowAxesWidget = true;

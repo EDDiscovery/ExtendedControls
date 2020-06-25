@@ -37,14 +37,14 @@ namespace ExtendedControls.Controls
 
             ShowFrameWidget = false;
             Frames.Clear();
-            Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = frameRadius });
-            Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = -frameRadius });
-            Frames.Add(new Corner { X = frameRadius, Y = -frameRadius, Z = frameRadius });
-            Frames.Add(new Corner { X = -frameRadius, Y = frameRadius, Z = frameRadius });
-            Frames.Add(new Corner { X = -frameRadius, Y = -frameRadius, Z = frameRadius });
-            Frames.Add(new Corner { X = -frameRadius, Y = frameRadius, Z = -frameRadius });
-            Frames.Add(new Corner { X = frameRadius, Y = -frameRadius, Z = -frameRadius });
-            Frames.Add(new Corner { X = -frameRadius, Y = -frameRadius, Z = -frameRadius });
+            Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + frameRadius });
+            Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + -frameRadius });
+            Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + frameRadius });
+            Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + frameRadius }); 
+            Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + frameRadius });
+            Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + -frameRadius });
+            Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + -frameRadius });
+            Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + -frameRadius });
             ShowFrameWidget = true;
         }
     }

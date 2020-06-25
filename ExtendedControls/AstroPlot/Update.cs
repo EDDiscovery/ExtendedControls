@@ -57,7 +57,7 @@ namespace ExtendedControls.Controls
 
                 foreach (var anchor in widgets)
                 {
-                    X_h.SetMatrix(new double[] { anchor.X, anchor.Y, anchor.Z, 1.0 });
+                    X_h.SetMatrix(new double[] { anchor.X - centerCoords[0], anchor.Y - centerCoords[1], anchor.Z - centerCoords[2], 1.0 });
                     var P = _data * _interaction * X_h;
                     anchor.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
@@ -79,7 +79,7 @@ namespace ExtendedControls.Controls
 
                 foreach (var corner in frames)
                 {
-                    X_h.SetMatrix(new double[] { corner.X, corner.Y, corner.Z, 1.0 });
+                    X_h.SetMatrix(new double[] { corner.X - centerCoords[0], corner.Y - centerCoords[1], corner.Z - centerCoords[2], 1.0 });
                     var P = _data * _interaction * X_h;
                     corner.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }

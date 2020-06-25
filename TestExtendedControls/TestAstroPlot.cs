@@ -33,7 +33,9 @@ namespace DialogTest
         {
             astroPlot.Distance = 100000;
             astroPlot.ShowAxesWidget = true;
-            astroPlot.AxesLength = 100000;
+            astroPlot.AxesLength = 10000;
+            astroPlot.ShowFrameWidget = true;
+            astroPlot.FramesLength = 10000;
             astroPlot.MouseWheel_Resistance = 0.4;
             astroPlot.MouseWheel_Multiply = 100;
 
@@ -63,19 +65,17 @@ namespace DialogTest
             testSystemsList.Add(new TestSystem { Name = "Point Decision", X = -7684.75, Y = 13.46875, Z = -14373.46875 });
             testSystemsList.Add(new TestSystem { Name = "Magellan's Star", X = 40503.8125, Y = 25.96875, Z = 17678 });
             testSystemsList.Add(new TestSystem { Name = "Star One", X = -35413.03125, Y = -14.75, Z = 3821.46875 });
+            
+            var centerTo = testSystemsList[3];
+            astroPlot.SetCenterOfMap(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
         }
-        
+
         private void TestOrientation()
         {
             testSystemsList.Clear();
             astroPlot.Clear();
 
             PopulateOrientationTest();
-
-            var centerTo = testSystemsList[1];
-                    
-            astroPlot.SetCenterOfMap(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
-
             PlotObjects(testSystemsList);
         }
 

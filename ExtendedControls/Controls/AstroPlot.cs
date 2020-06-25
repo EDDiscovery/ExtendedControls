@@ -99,7 +99,7 @@ namespace ExtendedControls.Controls
         public double[] CenterCoordinates
         {
             get => centerCoordinates;
-            set { centerCoordinates = value; SetFrameCoordinates(FramesLength); SetAxesCoordinates(AxesLength); UpdateProjection(); }
+            set { centerCoordinates = value; SetFrameCoordinates(FramesLength); SetAxesCoordinates(AxesLength); }
         }
 
         private double distance;
@@ -326,7 +326,9 @@ namespace ExtendedControls.Controls
         {
             if (coords != null)
             {
-                centerCoordinates = new double[] { coords[0], coords[1], coords[2] };                
+                centerCoordinates = new double[] { coords[0], coords[1], coords[2] };
+                SetAxesCoordinates(AxesLength);
+                SetFrameCoordinates(FramesLength);
             }
         }
                 
