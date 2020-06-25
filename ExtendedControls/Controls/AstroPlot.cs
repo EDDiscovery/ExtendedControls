@@ -291,8 +291,8 @@ namespace ExtendedControls.Controls
             ShowFrameWidget = true;
             FramesLength = 20;
             FramesThickness = 1;
-            Distance = 100;
-            Focus = 900;
+            Distance = 150;
+            Focus = 1000;
             Azimuth = -0.4;
             Elevation = -0.3;
             SmallDotSize = 5;

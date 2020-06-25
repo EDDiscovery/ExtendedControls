@@ -34,7 +34,7 @@ namespace DialogTest
             astroPlot.Distance = 100000;
             astroPlot.ShowAxesWidget = true;
             astroPlot.AxesLength = 10000;
-            astroPlot.ShowFrameWidget = true;
+            astroPlot.ShowFrameWidget = false;
             astroPlot.FramesLength = 10000;
             astroPlot.MouseWheel_Resistance = 0.4;
             astroPlot.MouseWheel_Multiply = 100;
