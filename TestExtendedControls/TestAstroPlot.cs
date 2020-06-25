@@ -31,8 +31,8 @@ namespace DialogTest
 
         private void TestAstroPlot_Load(object sender, EventArgs e)
         {
-            astroPlot.AxesWidget = true;
-            astroPlot.FramesWidget = false;
+            astroPlot.ShowAxesWidget = true;
+            astroPlot.ShowFrameWidget = false;
 
             TestOrientation();
         }
@@ -66,10 +66,9 @@ namespace DialogTest
         {
             testSystemsList.Clear();
             astroPlot.Clear();
-
-            astroPlot.Distance = 100000;
+                        
             astroPlot.AxesLength = 100000;
-            astroPlot.MouseSensitivity_Wheel = 50;
+            astroPlot.MouseWheel_Resistance = 50;
 
             PopulateOrientationTest();
 

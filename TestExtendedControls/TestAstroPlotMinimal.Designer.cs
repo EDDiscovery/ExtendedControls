@@ -34,35 +34,31 @@
             // astroPlot1
             // 
             this.astroPlot1.AxesLength = 10;
-            this.astroPlot1.AxesThickness = 3;
-            this.astroPlot1.AxesWidget = true;
-            this.astroPlot1.Azimuth = 0.3D;
-            this.astroPlot1.Camera = new double[] {
-        -1.693927420185106D,
-        1.7731212399680372D,
-        -5.4760068447290351D};
-            this.astroPlot1.CoordsCenter = new double[] {
+            this.astroPlot1.AxesThickness = 1;
+            this.astroPlot1.Azimuth = -0.4D;
+            this.astroPlot1.CenterCoordinates = new double[] {
         0D,
         0D,
         0D};
             this.astroPlot1.CurrentColor = System.Drawing.Color.Red;
-            this.astroPlot1.Distance = 6D;
+            this.astroPlot1.Distance = 100D;
             this.astroPlot1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.astroPlot1.Elevation = 0.3D;
+            this.astroPlot1.Elevation = -0.3D;
             this.astroPlot1.Focus = 900D;
             this.astroPlot1.ForeColor = System.Drawing.Color.White;
-            this.astroPlot1.FramesRadius = 20D;
+            this.astroPlot1.FramesLength = 20D;
             this.astroPlot1.FramesThickness = 1;
-            this.astroPlot1.FramesWidget = true;
-            this.astroPlot1.HotSpotSize = 10;
-            this.astroPlot1.LargeDotSize = 16;
+            this.astroPlot1.HotSpotSize = 0;
+            this.astroPlot1.LargeDotSize = 15;
             this.astroPlot1.Location = new System.Drawing.Point(0, 0);
-            this.astroPlot1.MediumDotSize = 12;
-            this.astroPlot1.MouseSensitivity_Movement = 150;
-            this.astroPlot1.MouseSensitivity_Wheel = 100D;
+            this.astroPlot1.MediumDotSize = 10;
+            this.astroPlot1.Mouse_Sensitivity = 0;
+            this.astroPlot1.MouseWheel_Resistance = 0D;
             this.astroPlot1.Name = "astroPlot1";
+            this.astroPlot1.ShowAxesWidget = true;
+            this.astroPlot1.ShowFrameWidget = true;
             this.astroPlot1.Size = new System.Drawing.Size(484, 461);
-            this.astroPlot1.SmallDotSize = 8;
+            this.astroPlot1.SmallDotSize = 5;
             this.astroPlot1.TabIndex = 0;
             this.astroPlot1.Text = "astroPlot1";
             this.astroPlot1.UnVisitedColor = System.Drawing.Color.Yellow;

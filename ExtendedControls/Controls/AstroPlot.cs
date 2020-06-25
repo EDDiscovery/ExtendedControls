@@ -91,49 +91,166 @@ namespace ExtendedControls.Controls
         private readonly List<PlotObjects> MapObjects = new List<PlotObjects>();
 
         // Projection
-        private double focalLength = 900;
-        private double distance = 6;
-        private double[] cameraPosition = new double[3];
-        private double[] centerCoordinates = new double[] { 0, 0, 0, };
+        internal double[] cameraPosition = new double[3];
+
+        internal double[] centerCoordinates = new double[3];
+
+        [Description("Set the coordinates of the center of the plot")]
+        public double[] CenterCoordinates
+        {
+            get => centerCoordinates;
+            set { centerCoordinates = value; UpdateProjection(); }
+        }
+
+        private double distance;
+        [Description("Set the distance at which the camera stands from the plot")]
+        public double Distance
+        {
+            get => distance;
+            set { distance = (value >= 0.1) ? distance = value : distance; UpdateProjection(); }
+        }
+
+        internal double lastAzimuth, azimuth;
+        [Description("Horizontal position of the camera expressed as an angular distance")]
+        public double Azimuth
+        {
+            get => azimuth;
+            set { azimuth = value; UpdateProjection(); }
+        }
+
+        internal double lastElevation, elevation;
+        [Description("Vertical position of the camera expressed as an angular distance")]
+        public double Elevation
+        {
+            get => elevation;
+            set { elevation = value; UpdateProjection(); }
+        }
+
+        private double focalLength;
+        [Description("Focal length of the camera")]
+        public new double Focus
+        {
+            get => focalLength;
+            set { focalLength = value; UpdateProjection(); }
+        }
 
         // Look'n'Feel
-        private int smallDotSize = 8;
-        private int mediumDotSize = 12;
-        private int largeDotSize = 16;        
+        public int SmallDotSize { get; set; }
+        public int MediumDotSize { get; set; }
+        public int LargeDotSize { get; set; }
+        public Color VisitedColor { get; set; }
+        public Color UnVisitedColor { get; set; }
+        public Color CurrentColor { get; set; }
 
         // Mouse
         private bool leftMousePressed = false;
         private bool rightMousePressed = false;
         private bool middleMousePressed = false;
 
-        private PointF ptMouseClick;
-        private int mouseMovementSens = 150;
-        private double mouseWheelSens = 100;
-        private Point mousePosition;
-        private int hotspotSize = 10;
+        internal PointF ptMouseClick;
+        internal Point mousePosition;
+        
+        private int mouseSensitivity;
+        [Description("Set the sensitivity of the mouse movement")]
+        public int Mouse_Sensitivity
+        {
+            get => mouseSensitivity;
+            set { mouseSensitivity = value; UpdateProjection(); }
+        }
+
+        private double mouseWheelResistance;
+        [Description("Set the sensisitivy of the mouse wheel")]
+        public double MouseWheel_Resistance
+        {
+            get => mouseWheelResistance;
+            set { mouseWheelResistance = value; UpdateProjection(); }
+        }
+
+        private int hotspotSize;
+        [Description("Define the size of the hotspot area for the map points")]
+        public int HotSpotSize
+        {
+            get => hotspotSize;
+            set { hotspotSize = value; UpdateProjection(); }
+        }
 
         // Axes Widget
-        private bool ShowAxesWidget = true;
+        private bool showAxesWidget;
+        public bool ShowAxesWidget
+        {
+            get => showAxesWidget;
+            set
+            {
+                showAxesWidget = value; UpdateProjection();
+            }
+        }
 
-        private int axesWidgetThickness = 3;
-        private int axesWidgetLength = 10;
+        private int axesThickness;
+        [Description("Set the thickness of each axis in the axes widget")]
+        public int AxesThickness
+        {
+            get => axesThickness;
+            set { axesThickness = value; UpdateProjection(); }
+        }
+
+        private int axesLength;
+        [Description("Set the length of each axis in the axes widget")]
+        public int AxesLength
+        {
+            get => axesLength;
+            set { axesLength = value; UpdateProjection(); }
+        }
 
         // Frame Widget
-        private bool ShowFrameWidget = true;
+        private bool showFrameWidget;
+        public bool ShowFrameWidget
+        {
+            get => showFrameWidget; set
+            {
+                showFrameWidget = value; UpdateProjection();
+            }
+        }
 
-        private double framesRadiusWidth = 20;
-        private int framesWidgetThickness = 1;
+        private double framesLength;
+        [Description("Set the boundaries frame radius")]
+        public double FramesLength
+        {
+            get => framesLength;
+            set { framesLength = value; UpdateProjection(); }
+        }
+
+        private int framesThickness = 1;
+        [Description("Set the boundaries frame thickness")]
+        public int FramesThickness
+        {
+            get => framesThickness;
+            set { framesThickness = value; UpdateProjection(); }
+        }
 
         // Output
         protected string selectedObjectName;
+        public string SelectedObjectName
+        {
+            get => selectedObjectName;
+            private set
+            { selectedObjectName = value; }
+        }
+
         protected Point selectedObjectPoint;
+        public Point SelectedObjectPoint
+        {
+            get => selectedObjectPoint;
+            private set
+            { selectedObjectPoint = value; }
+        }
+
         protected double[] selectedObjectCoords;
-
-        // Azymuth is the horizontal direction expressed as the angular distance between the direction of a fixed point (such as the observer's heading) and the direction of the object
-        private double lastAzimuth, azimuth = 0.3;
-
-        // Elevation is the angular distance of something (such as a celestial object) above the horizon
-        private double lastElevation, elevation = 0.3;
+        public double[] SelectedObjectCoords
+        {
+            get => selectedObjectCoords;
+            private set
+            { selectedObjectCoords = value; }
+        }
 
         // Timer
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
@@ -148,185 +265,51 @@ namespace ExtendedControls.Controls
                 return cp;
             }
         }
-
-        #region Public Interface
-
-        [Description("Set the distance at which the camera stands from the plot")]
-        public double Distance
-        {
-            get { return distance; }
-            set { distance = (value >= 0.1) ? distance = value : distance; UpdateProjection(); }
-        }
-
-        [Description("Focal length of the camera")]
-        public new double Focus
-        {
-            get { return focalLength; }
-            set { focalLength = value; UpdateProjection(); }
-        }
-
-        [Description("Camera position")]
-        public double[] Camera
-        {
-            get { return cameraPosition; }
-            set { cameraPosition = value; UpdateProjection(); }
-        }
-
-        [Description("Set the coordinates of the center of the plot")]
-        public double[] CoordsCenter
-        {
-            get { return centerCoordinates; }
-            set { centerCoordinates = value; UpdateProjection(); }
-        }
-
-        [Description("Horizontal direction of the camera expressed as an angular distance")]
-        public double Azimuth
-        {
-            get { return azimuth; }
-            set { azimuth = value; UpdateProjection(); }
-        }
-
-        [Description("Vertical direction of the camera expressed as an angular distance")]
-        public double Elevation
-        {
-            get { return elevation; }
-            set { elevation = value; UpdateProjection(); }
-        }
-
-        [Description("Diameter of the smaller dots")]
-        public int SmallDotSize
-        {
-            get { return smallDotSize; }
-            set { smallDotSize = value; UpdateProjection(); }
-        }
-
-        [Description("Diameter of the medium dots")]
-        public int MediumDotSize
-        {
-            get { return mediumDotSize; }
-            set { mediumDotSize = value; UpdateProjection(); }
-        }
-
-        [Description("Diameter of the large dots")]
-        public int LargeDotSize
-        {
-            get { return largeDotSize; }
-            set { largeDotSize = value; UpdateProjection(); }
-        }
-
-        [Description("Toggle the axes widget display")]
-        public bool AxesWidget
-        {
-            get { return ShowAxesWidget; }
-            set { ShowAxesWidget = value; UpdateProjection(); }
-        }
-
-        [Description("Set the thickness of each axis in the axes widget")]
-        public int AxesThickness
-        {
-            get { return axesWidgetThickness; }
-            set { axesWidgetThickness = value; UpdateProjection(); }
-        }
-
-        [Description("Set the length of each axis in the axes widget")]
-        public int AxesLength
-        {
-            get { return axesWidgetLength; }
-            set { axesWidgetLength = value; UpdateProjection(); }
-        }
-
-        [Description("Toggle the boundaries frame")]
-        public bool FramesWidget
-        {
-            get { return ShowFrameWidget; }
-            set { ShowFrameWidget = value; UpdateProjection(); }
-        }
-
-        [Description("Set the boundaries frame radius")]
-        public double FramesRadius
-        {
-            get { return framesRadiusWidth; }
-            set { framesRadiusWidth = value; UpdateProjection(); }
-        }
-
-        [Description("Set the boundaries frame thickness")]
-        public int FramesThickness
-        {
-            get { return framesWidgetThickness; }
-            set { framesWidgetThickness = value; UpdateProjection(); }
-        }
-
-        [Description("Set the sensitivity of the mouse movement")]
-        public int MouseSensitivity_Movement
-        {
-            get { return mouseMovementSens; }
-            set { mouseMovementSens = value; UpdateProjection(); }
-        }
-
-        [Description("Set the sensisitivy of the mouse wheel")]
-        public double MouseSensitivity_Wheel
-        {
-            get { return mouseWheelSens; }
-            set { mouseWheelSens = value; UpdateProjection(); }
-        }
-
-        [Description("Define the size of the hotspot area for the map points")]
-        public int HotSpotSize
-        {
-            get { return hotspotSize; }
-            set { hotspotSize = value; UpdateProjection(); }
-        }
-
-        public Color VisitedColor { get; set; } = Color.Aqua;
-
-        public Color UnVisitedColor { get; set; } = Color.Yellow;
-
-        public Color CurrentColor { get; set; } = Color.Red;
-
-        public string SelectedObjectName
-        {
-            get { return selectedObjectName; }
-            private set
-            { selectedObjectName = value; }
-        }
-
-        public Point SelectedObjectPoint
-        {
-            get { return selectedObjectPoint; }
-            private set
-            { selectedObjectPoint = value; }
-        }
-
-        public double[] SelectedObjectCoords
-        {
-            get { return selectedObjectCoords; }
-            private set
-            { selectedObjectCoords = value; }
-        }
                 
-        #endregion Public Interface
-
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
         }
 
-        public AstroPlot()
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            base.Dock = DockStyle.Fill;
+            AxesLength = 10;
+            AxesThickness = 1;
+            ShowAxesWidget = true;
+            FramesLength = 20;
+            FramesThickness = 1;
+            ShowFrameWidget = true;
+            Distance = 100;
+            Focus = 900;
+            Azimuth = -0.4;
+            Elevation = -0.3;
+            SmallDotSize = 5;
+            MediumDotSize = 10;
+            LargeDotSize = 15;
+            VisitedColor = Color.Aqua;
+            UnVisitedColor = Color.Yellow;
+            CurrentColor = Color.Red;
+    }
+
+    public AstroPlot()
         {
             InitializeComponent();
+
             Handlers.MouseWheel.Add(this, OnMouseWheel);
 
             selectedObjectName = "";
 
             _mouseIdleTimer.AutoReset = false;
-            _mouseIdleTimer.Interval = 300;
+            _mouseIdleTimer.Interval = 200;
             _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
 
             if (ShowAxesWidget)
-                SetAxesCoordinates(this.axesWidgetLength);
+                SetAxesCoordinates(this.axesLength);
 
             if (ShowFrameWidget)
-                SetFrameCoordinates(this.framesRadiusWidth);
+                SetFrameCoordinates(this.framesLength);
         }
 
         public void SetCenterOfMap(double[] coords)
@@ -384,7 +367,7 @@ namespace ExtendedControls.Controls
         private void CenterTo_Click(object sender, EventArgs e)
         {
             var selected = sender as ToolStripMenuItem;
-            CoordsCenter = (double[])selected.Tag;
+            CenterCoordinates = (double[])selected.Tag;
         }
 
         private void UpdateProjection()
@@ -536,8 +519,8 @@ namespace ExtendedControls.Controls
         {
             if (leftMousePressed)
             {
-                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / mouseMovementSens);
-                elevation = lastElevation + ((ptMouseClick.Y - e.Y) / mouseMovementSens);
+                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / mouseSensitivity);
+                elevation = lastElevation + ((ptMouseClick.Y - e.Y) / mouseSensitivity);
                 UpdateProjection();
             }
 
@@ -630,7 +613,7 @@ namespace ExtendedControls.Controls
 
                             extPlotLabel.Visible = true;
                             extPlotLabel.Text = selectedObjectName;
-                            extPlotLabel.Location = new Point(point.X - smallDotSize, point.Y - (smallDotSize * 3));
+                            extPlotLabel.Location = new Point(point.X - SmallDotSize, point.Y - (SmallDotSize * 3));
 #if DEBUG
                             Debug.WriteLine("AstroPlot - Mouse on: " + selectedObjectName + ", " + selectedObjectCoords[0] + ", " + selectedObjectCoords[1] + ", " + selectedObjectCoords[2]);
 #endif
@@ -672,9 +655,9 @@ namespace ExtendedControls.Controls
                 extPlotLabel.Visible = false;
 
                 // zoom
-                if (MouseSensitivity_Wheel != 0)
+                if (MouseWheel_Resistance != 0)
                 {
-                    Distance += -e.Delta * MouseSensitivity_Wheel;
+                    Distance += -e.Delta / MouseWheel_Resistance;
                 }
                 else
                 {
