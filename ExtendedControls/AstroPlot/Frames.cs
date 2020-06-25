@@ -30,17 +30,22 @@ namespace ExtendedControls.Controls
 
         public void SetFrameCoordinates(double frameRadius)
         {
-            if (ShowFrameWidget)
+            if (!ShowFrameWidget)
             {
-                Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = frameRadius });
-                Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = -frameRadius });
-                Frames.Add(new Corner { X = frameRadius, Y = -frameRadius, Z = frameRadius });
-                Frames.Add(new Corner { X = -frameRadius, Y = frameRadius, Z = frameRadius });
-                Frames.Add(new Corner { X = -frameRadius, Y = -frameRadius, Z = frameRadius });
-                Frames.Add(new Corner { X = -frameRadius, Y = frameRadius, Z = -frameRadius });
-                Frames.Add(new Corner { X = frameRadius, Y = -frameRadius, Z = -frameRadius });
-                Frames.Add(new Corner { X = -frameRadius, Y = -frameRadius, Z = -frameRadius });
+                return;
             }
+
+            ShowFrameWidget = false;
+            Frames.Clear();
+            Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = frameRadius });
+            Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = -frameRadius });
+            Frames.Add(new Corner { X = frameRadius, Y = -frameRadius, Z = frameRadius });
+            Frames.Add(new Corner { X = -frameRadius, Y = frameRadius, Z = frameRadius });
+            Frames.Add(new Corner { X = -frameRadius, Y = -frameRadius, Z = frameRadius });
+            Frames.Add(new Corner { X = -frameRadius, Y = frameRadius, Z = -frameRadius });
+            Frames.Add(new Corner { X = frameRadius, Y = -frameRadius, Z = -frameRadius });
+            Frames.Add(new Corner { X = -frameRadius, Y = -frameRadius, Z = -frameRadius });
+            ShowFrameWidget = true;
         }
     }
 }

@@ -99,7 +99,7 @@ namespace ExtendedControls.Controls
         public double[] CenterCoordinates
         {
             get => centerCoordinates;
-            set { centerCoordinates = value; UpdateProjection(); }
+            set { centerCoordinates = value; SetFrameCoordinates(FramesLength); SetAxesCoordinates(AxesLength); UpdateProjection(); }
         }
 
         private double distance;
@@ -159,11 +159,19 @@ namespace ExtendedControls.Controls
         }
 
         private double mouseWheelResistance;
-        [Description("Set the sensisitivy of the mouse wheel")]
+        [Description("Set the resistance of the mouse wheel")]
         public double MouseWheel_Resistance
         {
             get => mouseWheelResistance;
             set { mouseWheelResistance = value; UpdateProjection(); }
+        }
+
+        private double mouseWheelMultiply;
+        [Description("Set the multiply of the mouse wheel")]
+        public double MouseWheel_Multiply
+        {
+            get => mouseWheelMultiply;
+            set { mouseWheelMultiply = value; UpdateProjection(); }
         }
 
         private int hotspotSize;
@@ -198,7 +206,7 @@ namespace ExtendedControls.Controls
         public int AxesLength
         {
             get => axesLength;
-            set { axesLength = value; UpdateProjection(); }
+            set { axesLength = value; SetAxesCoordinates(AxesLength); UpdateProjection(); }
         }
 
         // Frame Widget
@@ -216,10 +224,10 @@ namespace ExtendedControls.Controls
         public double FramesLength
         {
             get => framesLength;
-            set { framesLength = value; UpdateProjection(); }
+            set { framesLength = value; SetFrameCoordinates(FramesLength); UpdateProjection(); }
         }
 
-        private int framesThickness = 1;
+        private int framesThickness;
         [Description("Set the boundaries frame thickness")]
         public int FramesThickness
         {
@@ -275,12 +283,14 @@ namespace ExtendedControls.Controls
         {
             base.OnHandleCreated(e);
             base.Dock = DockStyle.Fill;
+            MouseWheel_Multiply = 2;
+            MouseWheel_Resistance = 100;
+            ShowAxesWidget = true;
             AxesLength = 10;
             AxesThickness = 1;
-            ShowAxesWidget = true;
+            ShowFrameWidget = true;
             FramesLength = 20;
             FramesThickness = 1;
-            ShowFrameWidget = true;
             Distance = 100;
             Focus = 900;
             Azimuth = -0.4;
@@ -316,7 +326,7 @@ namespace ExtendedControls.Controls
         {
             if (coords != null)
             {
-                centerCoordinates = new double[] { coords[0], coords[1], coords[2] };
+                centerCoordinates = new double[] { coords[0], coords[1], coords[2] };                
             }
         }
                 
@@ -657,11 +667,11 @@ namespace ExtendedControls.Controls
                 // zoom
                 if (MouseWheel_Resistance != 0)
                 {
-                    Distance += -e.Delta / MouseWheel_Resistance;
+                    Distance += (-e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
                 }
                 else
                 {
-                    Distance += -e.Delta;
+                    Distance += (-e.Delta * MouseWheel_Multiply);
                 }
             }
         }

@@ -36,31 +36,34 @@
             // 
             // astroPlot
             // 
-            this.astroPlot.AxesLength = 2;
+            this.astroPlot.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.astroPlot.AxesLength = 10;
             this.astroPlot.AxesThickness = 1;
-            this.astroPlot.ShowAxesWidget = true;
-            this.astroPlot.Azimuth = -0.4D;            
+            this.astroPlot.Azimuth = -0.4D;
             this.astroPlot.CenterCoordinates = new double[] {
         0D,
         0D,
         0D};
-            this.astroPlot.CurrentColor = System.Drawing.Color.Red;            
+            this.astroPlot.CurrentColor = System.Drawing.Color.Red;
+            this.astroPlot.Distance = 100D;
             this.astroPlot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.astroPlot.Elevation = -0.3D;
-            this.astroPlot.Focus = 1000D;
+            this.astroPlot.Focus = 900D;
             this.astroPlot.ForeColor = System.Drawing.Color.White;
             this.astroPlot.FramesLength = 20D;
             this.astroPlot.FramesThickness = 1;
-            this.astroPlot.ShowFrameWidget = true;
             this.astroPlot.HotSpotSize = 10;
-            this.astroPlot.LargeDotSize = 16;
+            this.astroPlot.LargeDotSize = 15;
             this.astroPlot.Location = new System.Drawing.Point(0, 0);
-            this.astroPlot.MediumDotSize = 12;
+            this.astroPlot.MediumDotSize = 10;
             this.astroPlot.Mouse_Sensitivity = 150;
-            this.astroPlot.MouseWheel_Resistance = 300D;
+            this.astroPlot.MouseWheel_Multiply = 2D;
+            this.astroPlot.MouseWheel_Resistance = 100D;
             this.astroPlot.Name = "astroPlot";
+            this.astroPlot.ShowAxesWidget = true;
+            this.astroPlot.ShowFrameWidget = false;
             this.astroPlot.Size = new System.Drawing.Size(484, 461);
-            this.astroPlot.SmallDotSize = 8;
+            this.astroPlot.SmallDotSize = 5;
             this.astroPlot.TabIndex = 0;
             this.astroPlot.UnVisitedColor = System.Drawing.Color.Yellow;
             this.astroPlot.VisitedColor = System.Drawing.Color.Aqua;

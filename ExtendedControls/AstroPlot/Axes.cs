@@ -28,36 +28,43 @@ namespace ExtendedControls.Controls
             public PointF Coords { get; set; } = new PointF(0, 0);
         }
 
-        public void SetAxesCoordinates(int length)
+        internal void SetAxesCoordinates(int length)
         {
-            if (ShowAxesWidget)
+            if (!ShowAxesWidget)
             {
+                return;
+            }
+            else if (centerCoordinates != null)
+            {
+                ShowAxesWidget = false;
+                Axes.Clear();
+
                 Axes.Add(new Axis
                 {
-                    X = 0,
-                    Y = 0,
-                    Z = 0
+                    X = 0 - CenterCoordinates[0],
+                    Y = 0 - CenterCoordinates[1],
+                    Z = 0 - CenterCoordinates[2]
                 });
                 Axes.Add(new Axis
                 {
-                    X = length,
-                    Y = 0,
-                    Z = 0
+                    X = length - CenterCoordinates[0],
+                    Y = 0 - CenterCoordinates[1],
+                    Z = 0 - CenterCoordinates[2]
                 });
                 Axes.Add(new Axis
                 {
-                    X = 0,
-                    Y = length * -1,
-                    Z = 0
+                    X = 0 - CenterCoordinates[0],
+                    Y = (length * -1) - CenterCoordinates[1],
+                    Z = 0 - CenterCoordinates[2]
                 });
                 Axes.Add(new Axis
                 {
-                    X = 0,
-                    Y = 0,
-                    Z = length * -1
+                    X = 0 - CenterCoordinates[0],
+                    Y = 0 - CenterCoordinates[1],
+                    Z = (length * -1) - CenterCoordinates[2]
                 });
 
-                UpdateProjection();
+                ShowAxesWidget = true;
             }
         }
     }
