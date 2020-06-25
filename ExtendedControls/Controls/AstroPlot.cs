@@ -92,8 +92,12 @@ namespace ExtendedControls.Controls
 
         // Projection
         internal double[] cameraPosition = new double[3];
-
         internal double[] centerCoordinates = new double[3];
+        internal double[] offsetCoordinates = new double[2];
+        internal double lateralDrag;
+        internal double longitudinalDrag;
+        internal double[] dragCoords = new double[2];
+
 
         [Description("Set the coordinates of the center of the plot")]
         public double[] CenterCoordinates
@@ -148,7 +152,6 @@ namespace ExtendedControls.Controls
         private bool middleMousePressed = false;
 
         internal PointF ptMouseClick;
-        internal PointF ptMouseClick2;
         internal Point mousePosition;
         
         private int mouseSensitivity;
@@ -261,6 +264,7 @@ namespace ExtendedControls.Controls
         }
 
         protected double[] selectedObjectCoords;
+        
         public double[] SelectedObjectCoords
         {
             get => selectedObjectCoords;
@@ -292,7 +296,7 @@ namespace ExtendedControls.Controls
             base.OnHandleCreated(e);
             base.Dock = DockStyle.Fill;
             MouseWheel_Multiply = 2;
-            MouseDragSensitivity = 50;
+            MouseDragSensitivity = 5;
             MouseWheel_Resistance = 100;
             ShowAxesWidget = true;
             AxesLength = 10;
@@ -407,7 +411,7 @@ namespace ExtendedControls.Controls
                 Update.PlotObjects(MapObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
-            if (ShowAxesWidget && Axes != null)
+            if (Axes != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
             {
                 Update.AxesWidget(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
@@ -536,6 +540,7 @@ namespace ExtendedControls.Controls
 #endif
         }
 
+
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (leftMousePressed)
@@ -547,9 +552,14 @@ namespace ExtendedControls.Controls
 
             if (middleMousePressed)
             {
-                centerCoordinates[0] -= centerCoordinates[0] + (((ptMouseClick2.X + e.X) * mouseDragSensitivity));                
-                centerCoordinates[2] -= centerCoordinates[2] + (((ptMouseClick2.Y - e.Y) * mouseDragSensitivity));
+                lateralDrag = -((e.Location.X) - ptMouseClick.X) * 0.5;
+                longitudinalDrag = ((e.Location.Y) - ptMouseClick.Y) * 0.5;
                 UpdateProjection();
+                                
+                Debug.WriteLine(lateralDrag + ", " + longitudinalDrag);
+
+                CenterCoordinates[0] += lateralDrag * mouseDragSensitivity;
+                CenterCoordinates[2] += longitudinalDrag * mouseDragSensitivity;
             }
 
             mousePosition = e.Location;
@@ -576,6 +586,9 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Middle)
             {
                 middleMousePressed = true;
+                lastAzimuth = azimuth;
+                lastElevation = elevation;                
+                ptMouseClick = new PointF(e.X, e.Y);
             }
             if (e.Button == MouseButtons.Right)
             {
@@ -651,32 +664,6 @@ namespace ExtendedControls.Controls
             );
         }
 
-        #region Interaction
-
-        internal void Plot_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                // rotate
-                leftMousePressed = true;
-                ptMouseClick = new PointF(e.X, e.Y);
-                selectedObjectName = "";
-                lastAzimuth = azimuth;
-                lastElevation = elevation;
-            }
-
-            if (e.Button == MouseButtons.Middle)
-            {
-                middleMousePressed = true;
-                ptMouseClick = new PointF(e.X, e.Y);
-            }
-
-            if (e.Button == MouseButtons.Right)
-            {
-                rightMousePressed = true;
-            }
-        }
-                
         private new void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
@@ -694,7 +681,5 @@ namespace ExtendedControls.Controls
                 }
             }
         }
-
-        #endregion Interaction
     }
 }

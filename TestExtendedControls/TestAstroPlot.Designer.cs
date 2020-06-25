@@ -37,7 +37,7 @@
             // astroPlot
             // 
             this.astroPlot.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.astroPlot.AxesLength = 10;
+            this.astroPlot.AxesLength = 1000;
             this.astroPlot.AxesThickness = 1;
             this.astroPlot.Azimuth = -0.4D;
             this.astroPlot.CenterCoordinates = new double[] {
@@ -45,23 +45,24 @@
         0D,
         0D};
             this.astroPlot.CurrentColor = System.Drawing.Color.Red;
-            this.astroPlot.Distance = 100D;
+            this.astroPlot.Distance = 100000D;
             this.astroPlot.Dock = System.Windows.Forms.DockStyle.Fill;
             this.astroPlot.Elevation = -0.3D;
-            this.astroPlot.Focus = 900D;
+            this.astroPlot.Focus = 1000D;
             this.astroPlot.ForeColor = System.Drawing.Color.White;
-            this.astroPlot.FramesLength = 20D;
+            this.astroPlot.FramesLength = 10000D;
             this.astroPlot.FramesThickness = 1;
             this.astroPlot.HotSpotSize = 10;
             this.astroPlot.LargeDotSize = 15;
             this.astroPlot.Location = new System.Drawing.Point(0, 0);
             this.astroPlot.MediumDotSize = 10;
             this.astroPlot.Mouse_Sensitivity = 150;
+            this.astroPlot.MouseDragSensitivity = 50D;
             this.astroPlot.MouseWheel_Multiply = 2D;
             this.astroPlot.MouseWheel_Resistance = 100D;
             this.astroPlot.Name = "astroPlot";
             this.astroPlot.ShowAxesWidget = true;
-            this.astroPlot.ShowFrameWidget = false;
+            this.astroPlot.ShowFrameWidget = true;
             this.astroPlot.Size = new System.Drawing.Size(484, 461);
             this.astroPlot.SmallDotSize = 5;
             this.astroPlot.TabIndex = 0;
