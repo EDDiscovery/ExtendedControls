@@ -148,6 +148,7 @@ namespace ExtendedControls.Controls
         private bool middleMousePressed = false;
 
         internal PointF ptMouseClick;
+        internal PointF ptMouseClick2;
         internal Point mousePosition;
         
         private int mouseSensitivity;
@@ -155,7 +156,7 @@ namespace ExtendedControls.Controls
         public int Mouse_Sensitivity
         {
             get => mouseSensitivity;
-            set { mouseSensitivity = value; UpdateProjection(); }
+            set { mouseSensitivity = value;}
         }
 
         private double mouseWheelResistance;
@@ -163,7 +164,7 @@ namespace ExtendedControls.Controls
         public double MouseWheel_Resistance
         {
             get => mouseWheelResistance;
-            set { mouseWheelResistance = value; UpdateProjection(); }
+            set { mouseWheelResistance = value;}
         }
 
         private double mouseWheelMultiply;
@@ -171,7 +172,14 @@ namespace ExtendedControls.Controls
         public double MouseWheel_Multiply
         {
             get => mouseWheelMultiply;
-            set { mouseWheelMultiply = value; UpdateProjection(); }
+            set { mouseWheelMultiply = value; }
+        }
+
+        private double mouseDragSensitivity;
+        public double MouseDragSensitivity
+        {
+            get => mouseDragSensitivity;
+            set { mouseDragSensitivity = value; }
         }
 
         private int hotspotSize;
@@ -284,6 +292,7 @@ namespace ExtendedControls.Controls
             base.OnHandleCreated(e);
             base.Dock = DockStyle.Fill;
             MouseWheel_Multiply = 2;
+            MouseDragSensitivity = 50;
             MouseWheel_Resistance = 100;
             ShowAxesWidget = true;
             AxesLength = 10;
@@ -536,6 +545,13 @@ namespace ExtendedControls.Controls
                 UpdateProjection();
             }
 
+            if (middleMousePressed)
+            {
+                centerCoordinates[0] -= centerCoordinates[0] + (((ptMouseClick2.X + e.X) * mouseDragSensitivity));                
+                centerCoordinates[2] -= centerCoordinates[2] + (((ptMouseClick2.Y - e.Y) * mouseDragSensitivity));
+                UpdateProjection();
+            }
+
             mousePosition = e.Location;
 
             _mouseIdleTimer.Stop();
@@ -652,6 +668,7 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Middle)
             {
                 middleMousePressed = true;
+                ptMouseClick = new PointF(e.X, e.Y);
             }
 
             if (e.Button == MouseButtons.Right)
