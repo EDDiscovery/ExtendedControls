@@ -30,7 +30,7 @@ namespace ExtendedControls.Controls
 
         public void SetFrameCoordinates(double frameRadius)
         {
-            if (drawFramesWidget)
+            if (ShowFrameWidget)
             {
                 Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = frameRadius });
                 Frames.Add(new Corner { X = frameRadius, Y = frameRadius, Z = -frameRadius });

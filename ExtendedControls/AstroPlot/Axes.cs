@@ -30,7 +30,7 @@ namespace ExtendedControls.Controls
 
         public void SetAxesCoordinates(int length)
         {
-            if (drawAxesWidget)
+            if (ShowAxesWidget)
             {
                 Axes.Add(new Axis
                 {

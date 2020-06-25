@@ -25,11 +25,11 @@ namespace ExtendedControls.Controls
                 var _data = Coords(x, y, z);
                 var X_h = new Matrices<double>(4, 1);
 
-                for (int i = 0; i < mapSystems.Count; i++)
+                foreach (var item in mapSystems)
                 {
-                    X_h.SetMatrix(new double[] { mapSystems[i].X - centerCoords[0], mapSystems[i].Y - centerCoords[1], mapSystems[i].Z - centerCoords[2], 1.0 });
+                    X_h.SetMatrix(new double[] { item.X - centerCoords[0], item.Y - centerCoords[1], item.Z - centerCoords[2], 1.0 });
                     var P = _data * _interaction * X_h;
-                    mapSystems[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                    item.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
             }
 
@@ -47,11 +47,11 @@ namespace ExtendedControls.Controls
                 var _data = Coords(x, y, z);
                 var X_h = new Matrices<double>(4, 1);
 
-                for (int i = 0; i < widgets.Count; i++)
+                foreach (var anchor in widgets)
                 {
-                    X_h.SetMatrix(new double[] { widgets[i].X - centerCoords[0], widgets[i].Y - centerCoords[1], widgets[i].Z - centerCoords[2], 1.0 });
+                    X_h.SetMatrix(new double[] { anchor.X - centerCoords[0], anchor.Y - centerCoords[1], anchor.Z - centerCoords[2], 1.0 });
                     var P = _data * _interaction * X_h;
-                    widgets[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                    anchor.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
             }
 
@@ -69,11 +69,11 @@ namespace ExtendedControls.Controls
                 var _data = Coords(x, y, z);
                 var X_h = new Matrices<double>(4, 1);
 
-                for (int i = 0; i < frames.Count; i++)
+                foreach (var corner in frames)
                 {
-                    X_h.SetMatrix(new double[] { frames[i].X - centerCoords[0], frames[i].Y - centerCoords[1], frames[i].Z - centerCoords[2], 1.0 });
+                    X_h.SetMatrix(new double[] { corner.X - centerCoords[0], corner.Y - centerCoords[1], corner.Z - centerCoords[2], 1.0 });
                     var P = _data * _interaction * X_h;
-                    frames[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                    corner.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
             }
 

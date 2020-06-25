@@ -23,6 +23,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Linq;
+using System.Drawing.Drawing2D;
 
 namespace ExtendedControls.Controls
 {
@@ -88,23 +89,22 @@ namespace ExtendedControls.Controls
         private readonly List<Axis> Axes = new List<Axis>();
         private readonly List<Corner> Frames = new List<Corner>();
         private readonly List<PlotObjects> MapObjects = new List<PlotObjects>();
-        private List<object[]> _tmp = new List<object[]>();
 
         // Projection
         private double focalLength = 900;
-
         private double distance = 6;
         private double[] cameraPosition = new double[3];
         private double[] centerCoordinates = new double[] { 0, 0, 0, };
 
-        // Objects
+        // Look'n'Feel
         private int smallDotSize = 8;
-
         private int mediumDotSize = 12;
-        private int largeDotSize = 16;
+        private int largeDotSize = 16;        
 
         // Mouse
-        private bool leftMousePressed = false, rightMousePressed = false, middleMousePressed = false;
+        private bool leftMousePressed = false;
+        private bool rightMousePressed = false;
+        private bool middleMousePressed = false;
 
         private PointF ptMouseClick;
         private int mouseMovementSens = 150;
@@ -113,13 +113,13 @@ namespace ExtendedControls.Controls
         private int hotspotSize = 10;
 
         // Axes Widget
-        private bool drawAxesWidget = true;
+        private bool ShowAxesWidget = true;
 
         private int axesWidgetThickness = 3;
         private int axesWidgetLength = 10;
 
         // Frame Widget
-        private bool drawFramesWidget = true;
+        private bool ShowFrameWidget = true;
 
         private double framesRadiusWidth = 20;
         private int framesWidgetThickness = 1;
@@ -217,8 +217,8 @@ namespace ExtendedControls.Controls
         [Description("Toggle the axes widget display")]
         public bool AxesWidget
         {
-            get { return drawAxesWidget; }
-            set { drawAxesWidget = value; UpdateProjection(); }
+            get { return ShowAxesWidget; }
+            set { ShowAxesWidget = value; UpdateProjection(); }
         }
 
         [Description("Set the thickness of each axis in the axes widget")]
@@ -238,8 +238,8 @@ namespace ExtendedControls.Controls
         [Description("Toggle the boundaries frame")]
         public bool FramesWidget
         {
-            get { return drawFramesWidget; }
-            set { drawFramesWidget = value; UpdateProjection(); }
+            get { return ShowFrameWidget; }
+            set { ShowFrameWidget = value; UpdateProjection(); }
         }
 
         [Description("Set the boundaries frame radius")]
@@ -322,10 +322,10 @@ namespace ExtendedControls.Controls
             _mouseIdleTimer.Interval = 300;
             _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
 
-            if (drawAxesWidget)
+            if (ShowAxesWidget)
                 SetAxesCoordinates(this.axesWidgetLength);
 
-            if (drawFramesWidget)
+            if (ShowFrameWidget)
                 SetFrameCoordinates(this.framesRadiusWidth);
         }
 
@@ -403,12 +403,12 @@ namespace ExtendedControls.Controls
                 Update.PlotObjects(MapObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
-            if (drawAxesWidget && Axes != null)
+            if (ShowAxesWidget && Axes != null)
             {
                 Update.AxesWidget(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
-            if (drawFramesWidget && Frames != null)
+            if (ShowFrameWidget && Frames != null)
             {
                 Update.FrameWidget(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
@@ -426,17 +426,18 @@ namespace ExtendedControls.Controls
             var g = e.Graphics;
 
             // give some love to the renderint engine
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-            g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.CompositingQuality = CompositingQuality.HighSpeed;
+            g.CompositingMode = CompositingMode.SourceCopy;
 
             using (var AxisPen = new Pen(new SolidBrush(ForeColor))
             {
-                Width = 1
+                Width = 1,
+                DashStyle = DashStyle.Solid
             })
             {
                 // axes
-                if (drawAxesWidget && Axes != null)
+                if (ShowAxesWidget && Axes != null)
                 {
                     for (int i = 0; i < Axes.Count; i++)
                     {
@@ -463,11 +464,11 @@ namespace ExtendedControls.Controls
             using (var FramePen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 1,
-                DashStyle = System.Drawing.Drawing2D.DashStyle.Dot
+                DashStyle = DashStyle.Solid
             })
             {
                 // Frame
-                if (drawFramesWidget && Frames.Count > 0)
+                if (ShowFrameWidget && Frames.Count > 0)
                 {
                     // bottom
                     g.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
