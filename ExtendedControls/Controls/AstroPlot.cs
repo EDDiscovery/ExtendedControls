@@ -241,9 +241,11 @@ namespace ExtendedControls.Controls
         }
         public void SetFrameShape(Shape value)
         {
+            ShowFrameWidget = false;
             FrameShape = value;
+            ShowFrameWidget = true;
         }
-                
+
         private double framesLength;
         [Description("Set the boundaries frame radius")]
         public double FramesLength

@@ -130,9 +130,7 @@ namespace DialogTest
             if (extCube.Checked)
             {
                 extSphere.Checked = false;
-                astroPlot.ShowAxesWidget = false;
                 astroPlot.SetFrameShape(AstroPlot.Shape.Cube);
-                astroPlot.ShowAxesWidget = true;
             }
             else
             {
@@ -142,12 +140,9 @@ namespace DialogTest
 
         private void extSphere_CheckedChanged(object sender, EventArgs e)
         {
-            if (extSphere.Checked)
-            {
+            if (extSphere.Checked)            {
                 extCube.Checked = false;
-                astroPlot.ShowAxesWidget = false;
                 astroPlot.SetFrameShape(AstroPlot.Shape.Sphere);
-                astroPlot.ShowAxesWidget = true;
             }
             else
             {
