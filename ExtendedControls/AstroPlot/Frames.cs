@@ -34,18 +34,30 @@ namespace ExtendedControls.Controls
             {
                 return;
             }
+            else
+            {
+                ShowFrameWidget = false;
 
-            ShowFrameWidget = false;
-            Frames.Clear();
-            Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + frameRadius });
-            Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + -frameRadius });
-            Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + frameRadius });
-            Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + frameRadius }); 
-            Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + frameRadius });
-            Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + -frameRadius });
-            Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + -frameRadius });
-            Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + -frameRadius });
-            ShowFrameWidget = true;
+                Frames.Clear();
+                Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + frameRadius });
+                Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + -frameRadius });
+                Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + frameRadius });
+                Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + frameRadius });
+                Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + frameRadius });
+                Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + frameRadius, Z = CenterCoordinates[2] + -frameRadius });
+                Frames.Add(new Corner { X = CenterCoordinates[0] + frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + -frameRadius });
+                Frames.Add(new Corner { X = CenterCoordinates[0] + -frameRadius, Y = CenterCoordinates[1] + -frameRadius, Z = CenterCoordinates[2] + -frameRadius });
+
+                Planes.Clear();
+                Planes.Add(new Corner { X = CenterCoordinates[0] + (frameRadius * 2), Y = CenterCoordinates[1], Z = CenterCoordinates[2] });
+                Planes.Add(new Corner { X = CenterCoordinates[0] - (frameRadius * 2), Y = CenterCoordinates[1], Z = CenterCoordinates[2] });
+                Planes.Add(new Corner { X = CenterCoordinates[0], Y = CenterCoordinates[1], Z = CenterCoordinates[2] + (frameRadius * 2) });
+                Planes.Add(new Corner { X = CenterCoordinates[0], Y = CenterCoordinates[1], Z = CenterCoordinates[2] - (frameRadius * 2) });
+                Planes.Add(new Corner { X = CenterCoordinates[0], Y = CenterCoordinates[1] + (frameRadius * 2), Z = CenterCoordinates[2] });
+                Planes.Add(new Corner { X = CenterCoordinates[0], Y = CenterCoordinates[1] - (frameRadius * 2), Z = CenterCoordinates[2] });
+
+                ShowFrameWidget = true;
+            }
         }
     }
 }

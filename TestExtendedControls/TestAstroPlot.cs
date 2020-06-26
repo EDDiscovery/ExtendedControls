@@ -24,6 +24,9 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();
+                        
+            astroPlot.ShowAxesWidget = true;
+            astroPlot.ShowFrameWidget = false;
         }
 
         // Timer
@@ -31,10 +34,11 @@ namespace DialogTest
 
         private void TestAstroPlot_Load(object sender, EventArgs e)
         {
+            extAzes.Checked = astroPlot.ShowAxesWidget;
+            extShowFrame.Checked = astroPlot.ShowFrameWidget;
+
             astroPlot.Distance = 100000;
-            astroPlot.ShowAxesWidget = true;
             astroPlot.AxesLength = 10000;
-            astroPlot.ShowFrameWidget = false;
             astroPlot.FramesLength = 10000;
             astroPlot.MouseWheel_Resistance = 0.4;
             astroPlot.MouseWheel_Multiply = 100;
@@ -106,6 +110,54 @@ namespace DialogTest
 #if DEBUG
             Debug.WriteLine("Form timer stopped");
 #endif
+        }
+
+        private void extShowFrame_CheckedChanged(object sender, EventArgs e)
+        {
+            if (extShowFrame.Checked)
+            {
+                astroPlot.ShowFrameWidget = true;
+                astroPlot.SetFrameCoordinates(astroPlot.FramesLength);
+            }
+            else
+            {
+                astroPlot.ShowFrameWidget = false;
+            }
+        }
+
+        private void extCube_CheckedChanged(object sender, EventArgs e)
+        {
+            if (extCube.Checked)
+            {
+                extSphere.Checked = false;
+                astroPlot.ShowAxesWidget = false;
+                astroPlot.SetFrameShape(AstroPlot.Shape.Cube);
+                astroPlot.ShowAxesWidget = true;
+            }
+            else
+            {
+                extSphere.Checked = true;
+            }
+        }
+
+        private void extSphere_CheckedChanged(object sender, EventArgs e)
+        {
+            if (extSphere.Checked)
+            {
+                extCube.Checked = false;
+                astroPlot.ShowAxesWidget = false;
+                astroPlot.SetFrameShape(AstroPlot.Shape.Sphere);
+                astroPlot.ShowAxesWidget = true;
+            }
+            else
+            {
+                extCube.Checked = true;
+            }
+        }
+
+        private void extAzes_CheckedChanged(object sender, EventArgs e)
+        {
+            astroPlot.ShowAxesWidget = extAzes.Checked;
         }
     }
 }

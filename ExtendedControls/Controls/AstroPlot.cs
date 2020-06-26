@@ -24,6 +24,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using System.Linq;
 using System.Drawing.Drawing2D;
+using BaseUtils;
 
 namespace ExtendedControls.Controls
 {
@@ -87,7 +88,8 @@ namespace ExtendedControls.Controls
         }
 
         private readonly List<Axis> Axes = new List<Axis>();
-        private readonly List<Corner> Frames = new List<Corner>();
+        private readonly List<Corner> Planes = new List<Corner>();
+        private readonly List<Corner> Frames = new List<Corner>();        
         private readonly List<PlotObjects> MapObjects = new List<PlotObjects>();
 
         // Projection
@@ -97,7 +99,6 @@ namespace ExtendedControls.Controls
         internal double lateralDrag;
         internal double longitudinalDrag;
         internal double[] dragCoords = new double[2];
-
 
         [Description("Set the coordinates of the center of the plot")]
         public double[] CenterCoordinates
@@ -145,7 +146,7 @@ namespace ExtendedControls.Controls
         public Color VisitedColor { get; set; }
         public Color UnVisitedColor { get; set; }
         public Color CurrentColor { get; set; }
-
+        
         // Mouse
         private bool leftMousePressed = false;
         private bool rightMousePressed = false;
@@ -230,6 +231,19 @@ namespace ExtendedControls.Controls
             }
         }
 
+        public enum Shape { Cube = 0, Sphere = 1 };
+
+        public Shape FrameShape;
+        
+        public Shape GetFrameShape()
+        {
+            return FrameShape;
+        }
+        public void SetFrameShape(Shape value)
+        {
+            FrameShape = value;
+        }
+                
         private double framesLength;
         [Description("Set the boundaries frame radius")]
         public double FramesLength
@@ -285,7 +299,7 @@ namespace ExtendedControls.Controls
                 return cp;
             }
         }
-                
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -302,6 +316,7 @@ namespace ExtendedControls.Controls
             AxesLength = 10;
             AxesThickness = 1;
             ShowFrameWidget = true;
+            FrameShape = Shape.Cube;
             FramesLength = 20;
             FramesThickness = 1;
             Distance = 150;
@@ -419,6 +434,7 @@ namespace ExtendedControls.Controls
             if (ShowFrameWidget && Frames != null)
             {
                 Update.FrameWidget(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Update.FrameWidget(Planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
             Invalidate();
@@ -428,7 +444,7 @@ namespace ExtendedControls.Controls
         {
             UpdateProjection();
         }
-        
+
         private void PlotCanvas_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
@@ -469,34 +485,58 @@ namespace ExtendedControls.Controls
                 }
             }
 
+            /// Frame
             using (var FramePen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 1,
                 DashStyle = DashStyle.Solid
             })
             {
-                // Frame
-                if (ShowFrameWidget && Frames.Count > 0)
+                /// Cubical frame
+                if (ShowFrameWidget && GetFrameShape() == Shape.Cube && Frames.Count > 0)
                 {
-                    // bottom
+                    /// bottom
                     g.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
                     g.DrawLine(FramePen, Frames[1].Coords, Frames[5].Coords);
                     g.DrawLine(FramePen, Frames[5].Coords, Frames[3].Coords);
                     g.DrawLine(FramePen, Frames[3].Coords, Frames[0].Coords);
 
-                    // left
+                    /// left
                     g.DrawLine(FramePen, Frames[0].Coords, Frames[2].Coords);
                     g.DrawLine(FramePen, Frames[2].Coords, Frames[4].Coords);
                     g.DrawLine(FramePen, Frames[4].Coords, Frames[3].Coords);
 
-                    // right
+                    /// right
                     g.DrawLine(FramePen, Frames[1].Coords, Frames[6].Coords);
                     g.DrawLine(FramePen, Frames[6].Coords, Frames[7].Coords);
                     g.DrawLine(FramePen, Frames[7].Coords, Frames[5].Coords);
 
-                    // top
+                    /// top
                     g.DrawLine(FramePen, Frames[2].Coords, Frames[6].Coords);
                     g.DrawLine(FramePen, Frames[4].Coords, Frames[7].Coords);
+                }
+            }
+
+            /// Frame
+            using (var PlanePen = new Pen(new SolidBrush(ForeColor))
+            {
+                Width = 1,
+                DashStyle = DashStyle.Solid
+            })
+            {
+                /// Spherical frame
+                if (ShowFrameWidget && GetFrameShape() == Shape.Sphere && Frames.Count > 0)
+                {
+                    var horizontalPlane = new PointF[] { Planes[0].Coords, Planes[2].Coords, Planes[1].Coords, Planes[3].Coords };
+                    var verticalPlane = new PointF[] { Planes[0].Coords, Planes[4].Coords, Planes[1].Coords, Planes[5].Coords };
+                    var longitudinalPlane = new PointF[] { Planes[2].Coords, Planes[4].Coords, Planes[3].Coords, Planes[5].Coords };
+                    
+                    PlanePen.Color = Color.Red;
+                    g.DrawClosedCurve(PlanePen, horizontalPlane, (float)0.85, FillMode.Winding);
+                    PlanePen.Color = Color.Green;
+                    g.DrawClosedCurve(PlanePen, verticalPlane, (float)0.85, FillMode.Winding);
+                    PlanePen.Color = Color.Blue;
+                    g.DrawClosedCurve(PlanePen, longitudinalPlane, (float)0.85, FillMode.Winding);
                 }
             }
 
@@ -539,7 +579,6 @@ namespace ExtendedControls.Controls
             //Debug.WriteLine("AstroPlot timer stopped");
 #endif
         }
-
 
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
         {

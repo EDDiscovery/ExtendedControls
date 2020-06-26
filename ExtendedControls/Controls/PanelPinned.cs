@@ -14,6 +14,7 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -21,38 +22,48 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class ExtPanelMinimal : Panel
+    public partial class ExtPanelPinned : Panel
     {
-        private bool dockedState;
+        private bool docked;
 
         public int PinSize { get; set; }
 
-        public ExtPanelMinimal()
+        public ExtPanelPinned()
         {
             SuspendLayout();
 
-            AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            Size = new System.Drawing.Size(PinSize, PinSize);
-
             ResumeLayout(false);
-
-            dockedState = false;
-            PinSize = 32;
+            docked = false;
         }
 
-        private void UnDockPanel()
+        private void InitializeComponent()
         {
-            this.Size = new System.Drawing.Size(PinSize, PinSize);
+            this.SuspendLayout();
+            // 
+            // ExtPanelPinned
+            //
+            Dock = DockStyle.None;
+            this.PinSize = 24;
+            this.Size = new Size(24, 24);
+            this.ResumeLayout(false);
+            this.Location = new Point(0, 0);
         }
 
-        private void DockPanel()
-        {
-            this.Size = new System.Drawing.Size(this.Parent.Width, PinSize);
-        }
-
-        public ExtPanelMinimal(IContainer container)
+        public ExtPanelPinned(IContainer container)
         {
             container.Add(this);
+        }
+
+        protected override Size DefaultSize
+        {
+            get { return new Size(24, 24); }
+        }
+
+        [Browsable(false)]
+        public override bool AutoSize
+        {
+            get { return false; }
+            set { base.AutoSize = false; }
         }
 
         protected override void Dispose(bool disposing)
@@ -60,6 +71,26 @@ namespace ExtendedControls
             base.Dispose(disposing);
         }
 
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            Dock = DockStyle.None;
+            PinSize = 24;
+            ResumeLayout(false);
+            this.Size = new System.Drawing.Size(24, 24);
+            this.Location = new Point(0, 0);
+            base.OnHandleCreated(e);
+        }
+        
+        private void UnDockPanel()
+        {
+            this.Size = new System.Drawing.Size(PinSize, PinSize);            
+        }
+
+        private void DockPanel()
+        {
+            this.Size = new System.Drawing.Size(this.Parent.Width, PinSize);            
+        }
+                
         protected override void OnPaint(PaintEventArgs e)
         {
             using (var g = e.Graphics)
@@ -78,15 +109,24 @@ namespace ExtendedControls
                 g.FillRectangle(undockedFill, undockedBounds);
                 g.DrawRectangle(dockedLine, dockedBounds);
 
-                var path = new GraphicsPath();
-                path.AddArc(5, 5, 21, 21, 0, 360);
-                using (var pen = new Pen(Color.Red, 2))
+                if (!docked)
                 {
-                    g.DrawPath(pen, path);
+                    g.FillEllipse(new SolidBrush(Color.Red), new RectangleF(new PointF(PinSize / 8, PinSize / 8), new Size(PinSize / 4, PinSize / 4)));
                 }
+                else
+                {
+                    g.FillEllipse(new SolidBrush(Color.Blue), new RectangleF(new PointF(PinSize / 6, PinSize / 6), new Size(PinSize - PinSize / 4, PinSize - PinSize / 4)));
+                    g.FillEllipse(new SolidBrush(Color.Orange), new RectangleF(new PointF(PinSize / 4, PinSize / 4), new Size(PinSize / 2, PinSize / 2)));
+                }
+                    
             }
 
             base.OnPaint(e);
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            base.OnPaintBackground(e);
         }
 
         protected override void OnMouseClick(MouseEventArgs e)
@@ -95,15 +135,17 @@ namespace ExtendedControls
             {
                 if (e.Location.X < PinSize)
                 {
-                    if (dockedState)
+                    if (docked)
                     {
-                        dockedState = false;
+                        docked = false;
                         UnDockPanel();
+                        this.Invalidate();
                     }
                     else
                     {
-                        dockedState = true;
+                        docked = true;
                         DockPanel();
+                        this.Invalidate();
                     }
                 }
             }
