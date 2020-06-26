@@ -83,14 +83,14 @@ namespace ExtendedControls
         
         private void UnDockPanel()
         {
-            this.Size = new System.Drawing.Size(PinSize, PinSize);            
+            this.Size = new System.Drawing.Size(PinSize, PinSize);
         }
 
         private void DockPanel()
         {
             this.Size = new System.Drawing.Size(this.Parent.Width, PinSize);            
         }
-                
+        
         protected override void OnPaint(PaintEventArgs e)
         {
             using (var g = e.Graphics)
@@ -102,8 +102,8 @@ namespace ExtendedControls
 
                 var undockedFill = new SolidBrush(Color.Orange);
                 var dockedFill = new SolidBrush(Color.Black);
-                var undockedBounds = new Rectangle(0, 0, PinSize, PinSize);
-                var dockedBounds = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
+                var undockedBounds = new Rectangle(0, 0, PinSize / 3, PinSize);
+                var dockedBounds = new Rectangle(0, -1, this.Width, this.Height + 1);
 
                 g.FillRectangle(dockedFill, dockedBounds);
                 g.FillRectangle(undockedFill, undockedBounds);
@@ -111,16 +111,14 @@ namespace ExtendedControls
 
                 if (!docked)
                 {
-                    g.FillEllipse(new SolidBrush(Color.Red), new RectangleF(new PointF(PinSize / 8, PinSize / 8), new Size(PinSize / 4, PinSize / 4)));
+                    g.FillEllipse(new SolidBrush(Color.Red), new RectangleF(new PointF(PinSize / 9, PinSize / 9), new Size(PinSize / 5, PinSize / 5)));
                 }
                 else
                 {
                     g.FillEllipse(new SolidBrush(Color.Blue), new RectangleF(new PointF(PinSize / 6, PinSize / 6), new Size(PinSize - PinSize / 4, PinSize - PinSize / 4)));
                     g.FillEllipse(new SolidBrush(Color.Orange), new RectangleF(new PointF(PinSize / 4, PinSize / 4), new Size(PinSize / 2, PinSize / 2)));
                 }
-                    
             }
-
             base.OnPaint(e);
         }
 
@@ -129,24 +127,27 @@ namespace ExtendedControls
             base.OnPaintBackground(e);
         }
 
+        public void Reload()
+        {
+            Dock = DockStyle.None;
+            Invalidate();
+        }
+
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && e.Location.X < PinSize)
             {
-                if (e.Location.X < PinSize)
+                if (docked)
                 {
-                    if (docked)
-                    {
-                        docked = false;
-                        UnDockPanel();
-                        this.Invalidate();
-                    }
-                    else
-                    {
-                        docked = true;
-                        DockPanel();
-                        this.Invalidate();
-                    }
+                    docked = false;
+                    UnDockPanel();
+                    this.Invalidate();
+                }
+                else
+                {
+                    docked = true;
+                    DockPanel();
+                    this.Invalidate();
                 }
             }
         }

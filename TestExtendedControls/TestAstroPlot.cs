@@ -24,9 +24,13 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();
-                        
+
             astroPlot.ShowAxesWidget = true;
             astroPlot.ShowFrameWidget = false;
+
+            extComboBox1.Items.Add("24");
+            extComboBox1.Items.Add("32");
+            extComboBox1.Items.Add("48");
         }
 
         // Timer
@@ -42,6 +46,8 @@ namespace DialogTest
             astroPlot.FramesLength = 10000;
             astroPlot.MouseWheel_Resistance = 0.4;
             astroPlot.MouseWheel_Multiply = 100;
+
+            extPanelPinned1.PinSize = 24;
 
             TestOrientation();
         }
@@ -153,6 +159,30 @@ namespace DialogTest
         private void extAzes_CheckedChanged(object sender, EventArgs e)
         {
             astroPlot.ShowAxesWidget = extAzes.Checked;
+        }
+
+        private void extComboBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (extComboBox1.Text == "24")
+            {
+                extPanelPinned1.PinSize = 24;
+                extPanelPinned1.Reload();
+                extPanelPinned1.Dock = DockStyle.None;
+            }
+
+            if (extComboBox1.Text == "32")
+            {
+                extPanelPinned1.PinSize = 32;
+                extPanelPinned1.Reload();
+                extPanelPinned1.Dock = DockStyle.None;
+            }
+
+            if (extComboBox1.Text == "48")
+            {
+                extPanelPinned1.PinSize = 48;
+                extPanelPinned1.Reload();
+                extPanelPinned1.Dock = DockStyle.None;
+            }
         }
     }
 }

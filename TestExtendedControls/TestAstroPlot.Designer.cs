@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestAstroPlot));
             this.extPanelPinned1 = new ExtendedControls.ExtPanelPinned(this.components);
+            this.extComboBox1 = new ExtendedControls.ExtComboBox();
             this.extCube = new ExtendedControls.ExtRadioButton();
             this.extSphere = new ExtendedControls.ExtRadioButton();
             this.extAzes = new ExtendedControls.ExtCheckBox();
@@ -43,6 +44,7 @@
             // 
             // extPanelPinned1
             // 
+            this.extPanelPinned1.Controls.Add(this.extComboBox1);
             this.extPanelPinned1.Controls.Add(this.extCube);
             this.extPanelPinned1.Controls.Add(this.extSphere);
             this.extPanelPinned1.Controls.Add(this.extAzes);
@@ -52,6 +54,31 @@
             this.extPanelPinned1.PinSize = 24;
             this.extPanelPinned1.Size = new System.Drawing.Size(24, 24);
             this.extPanelPinned1.TabIndex = 1;
+            // 
+            // extComboBox1
+            // 
+            this.extComboBox1.BackColor = System.Drawing.Color.Black;
+            this.extComboBox1.BorderColor = System.Drawing.Color.Transparent;
+            this.extComboBox1.ButtonColorScaling = 0.5F;
+            this.extComboBox1.DataSource = null;
+            this.extComboBox1.DisableBackgroundDisabledShadingGradient = false;
+            this.extComboBox1.DisplayMember = "";
+            this.extComboBox1.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.extComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extComboBox1.Location = new System.Drawing.Point(432, 1);
+            this.extComboBox1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
+            this.extComboBox1.Name = "extComboBox1";
+            this.extComboBox1.ScrollBarButtonColor = System.Drawing.Color.LightGray;
+            this.extComboBox1.ScrollBarColor = System.Drawing.Color.LightGray;
+            this.extComboBox1.SelectedIndex = -1;
+            this.extComboBox1.SelectedItem = null;
+            this.extComboBox1.SelectedValue = null;
+            this.extComboBox1.Size = new System.Drawing.Size(52, 21);
+            this.extComboBox1.TabIndex = 6;
+            this.extComboBox1.Text = "extComboBox1";
+            this.extComboBox1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.extComboBox1.ValueMember = "";
+            this.extComboBox1.TextChanged += new System.EventHandler(this.extComboBox1_TextChanged);
             // 
             // extCube
             // 
@@ -233,5 +260,6 @@
         private ExtendedControls.ExtCheckBox extAzes;
         private ExtendedControls.ExtRadioButton extCube;
         private ExtendedControls.ExtRadioButton extSphere;
+        private ExtendedControls.ExtComboBox extComboBox1;
     }
 }
