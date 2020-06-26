@@ -23,7 +23,7 @@ namespace ExtendedControls.Controls
             {
                 var _interaction = Interaction(azimuth, elevation, cameraPosition);
                 var _data = Coords(x, y, z);
-                var X_h = new Matrices<double>(4, 1);
+                var X_h = new Tranform<double>(4, 1);
 
                 foreach (var item in mapSystems)
                 {
@@ -53,7 +53,7 @@ namespace ExtendedControls.Controls
             {
                 var _interaction = Interaction(azimuth, elevation, cameraPosition);
                 var _data = Coords(x, y, z);
-                var X_h = new Matrices<double>(4, 1);
+                var X_h = new Tranform<double>(4, 1);
 
                 foreach (var anchor in widgets)
                 {
@@ -75,7 +75,7 @@ namespace ExtendedControls.Controls
             {
                 var _interaction = Interaction(azimuth, elevation, cameraPosition);
                 var _data = Coords(x, y, z);
-                var X_h = new Matrices<double>(4, 1);
+                var X_h = new Tranform<double>(4, 1);
 
                 foreach (var corner in frames)
                 {
@@ -85,9 +85,9 @@ namespace ExtendedControls.Controls
                 }
             }
 
-            internal static Matrices<double> Coords(double x, double y, double z)
+            internal static Tranform<double> Coords(double x, double y, double z)
             {
-                var _matrix = new Matrices<double>(3, 3);
+                var _matrix = new Tranform<double>(3, 3);
                 var _x = x / 2;
                 var _y = y / 2;
                 const double _a = 1;
@@ -95,17 +95,17 @@ namespace ExtendedControls.Controls
                 return _matrix;
             }
 
-            internal static Matrices<double> Interaction(double azimuth, double elevation, double[] camera)
+            internal static Tranform<double> Interaction(double azimuth, double elevation, double[] camera)
             {
                 var R = Rotate(azimuth, elevation);
-                var lens = new Matrices<double>(3, 1);
+                var lens = new Tranform<double>(3, 1);
                 lens.SetMatrix(camera);
                 return R | -R * lens;
             }
 
-            internal static Matrices<double> Rotate(double azimuth, double elevation)
+            internal static Tranform<double> Rotate(double azimuth, double elevation)
             {
-                var R = new Matrices<double>(3, 3);
+                var R = new Tranform<double>(3, 3);
                 R.SetMatrix(new double[] { Math.Cos(azimuth), 0, -Math.Sin(azimuth),
                                        Math.Sin(azimuth)*Math.Sin(elevation),  Math.Cos(elevation), Math.Cos(azimuth)*Math.Sin(elevation),
                                        Math.Cos(elevation)*Math.Sin(azimuth), -Math.Sin(elevation), Math.Cos(azimuth)*Math.Cos(elevation) });

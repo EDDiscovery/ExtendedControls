@@ -37,9 +37,10 @@ namespace ExtendedControls.Controls
 
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.plotCanvas = new ExtendedControls.ExtPictureBox();
             this.extPlotLabel = new ExtendedControls.ExtLabel();
-            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.plotCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -291,13 +292,15 @@ namespace ExtendedControls.Controls
         // Timer
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
 
-        // Avoid flickering during redraw
+        private const int WS_EX_COMPOSITED = 0x02000000;
+        private const int WS_EX_TRANSPARENT = 0x20;
         protected override CreateParams CreateParams
         {
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle |= 0x02000000;    // Turn on WS_EX_COMPOSITED
+                cp.ExStyle |= WS_EX_COMPOSITED;    // Turn on double buffering
+                cp.ExStyle |= WS_EX_TRANSPARENT;    // Turn on transparencies
                 return cp;
             }
         }
@@ -309,8 +312,7 @@ namespace ExtendedControls.Controls
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            base.OnHandleCreated(e);
-            base.Dock = DockStyle.Fill;
+            base.OnHandleCreated(e);            
             MouseWheel_Multiply = 2;
             MouseDragSensitivity = 5;
             MouseWheel_Resistance = 100;

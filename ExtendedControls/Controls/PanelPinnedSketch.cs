@@ -22,13 +22,21 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class ExtPanelPinned : Panel
+    public partial class ExtPanelPinnedSketch : Panel
     {
         private bool docked;
+                
+        public enum PinDirection { Left, Right };
+        public PinDirection Direction;
+
+        public PinDirection GetDirection()
+        {
+            return Direction;
+        }
 
         public int PinSize { get; set; }
 
-        public ExtPanelPinned()
+        public ExtPanelPinnedSketch()
         {
             SuspendLayout();
 
@@ -41,15 +49,12 @@ namespace ExtendedControls
             this.SuspendLayout();
             // 
             // ExtPanelPinned
-            //
-            Dock = DockStyle.None;
-            this.PinSize = 24;
-            this.Size = new Size(24, 24);
+            // 
+            this.Size = new System.Drawing.Size(24, 24);
             this.ResumeLayout(false);
-            this.Location = new Point(0, 0);
         }
 
-        public ExtPanelPinned(IContainer container)
+        public ExtPanelPinnedSketch(IContainer container)
         {
             container.Add(this);
         }
@@ -77,8 +82,9 @@ namespace ExtendedControls
             PinSize = 24;
             ResumeLayout(false);
             this.Size = new System.Drawing.Size(24, 24);
-            this.Location = new Point(0, 0);
             base.OnHandleCreated(e);
+            this.Location = new Point(0, 0);
+            this.Direction = PinDirection.Left;
         }
         
         private void UnDockPanel()
@@ -88,7 +94,7 @@ namespace ExtendedControls
 
         private void DockPanel()
         {
-            this.Size = new System.Drawing.Size(this.Parent.Width, PinSize);            
+            this.Size = new System.Drawing.Size(this.Parent.Width, PinSize);
         }
         
         protected override void OnPaint(PaintEventArgs e)
@@ -129,7 +135,6 @@ namespace ExtendedControls
 
         public void Reload()
         {
-            Dock = DockStyle.None;
             Invalidate();
         }
 
@@ -150,6 +155,6 @@ namespace ExtendedControls
                     this.Invalidate();
                 }
             }
-        }
+        }        
     }
 }

@@ -27,28 +27,19 @@ namespace DialogTest
 
             astroPlot.ShowAxesWidget = true;
             astroPlot.ShowFrameWidget = false;
-
-            extComboBox1.Items.Add("24");
-            extComboBox1.Items.Add("32");
-            extComboBox1.Items.Add("48");
+            astroPlot.SendToBack();            
         }
 
         // Timer
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
 
         private void TestAstroPlot_Load(object sender, EventArgs e)
-        {
-            extAzes.Checked = astroPlot.ShowAxesWidget;
-            extShowFrame.Checked = astroPlot.ShowFrameWidget;
-
+        {            
             astroPlot.Distance = 100000;
             astroPlot.AxesLength = 10000;
             astroPlot.FramesLength = 10000;
             astroPlot.MouseWheel_Resistance = 0.4;
             astroPlot.MouseWheel_Multiply = 100;
-
-            extPanelPinned1.PinSize = 24;
-
             TestOrientation();
         }
 
@@ -120,69 +111,74 @@ namespace DialogTest
 
         private void extShowFrame_CheckedChanged(object sender, EventArgs e)
         {
-            if (extShowFrame.Checked)
-            {
-                astroPlot.ShowFrameWidget = true;
-                astroPlot.SetFrameCoordinates(astroPlot.FramesLength);
-            }
-            else
-            {
-                astroPlot.ShowFrameWidget = false;
-            }
+            //if (extShowFrame.Checked)
+            //{
+            //    astroPlot.ShowFrameWidget = true;
+            //    astroPlot.SetFrameCoordinates(astroPlot.FramesLength);
+            //}
+            //else
+            //{
+            //    astroPlot.ShowFrameWidget = false;
+            //}
         }
 
         private void extCube_CheckedChanged(object sender, EventArgs e)
         {
-            if (extCube.Checked)
-            {
-                extSphere.Checked = false;
-                astroPlot.SetFrameShape(AstroPlot.Shape.Cube);
-            }
-            else
-            {
-                extSphere.Checked = true;
-            }
+            //if (extCube.Checked)
+            //{
+            //    extSphere.Checked = false;
+            //    astroPlot.SetFrameShape(AstroPlot.Shape.Cube);
+            //}
+            //else
+            //{
+            //    extSphere.Checked = true;
+            //}
         }
 
         private void extSphere_CheckedChanged(object sender, EventArgs e)
         {
-            if (extSphere.Checked)            {
-                extCube.Checked = false;
-                astroPlot.SetFrameShape(AstroPlot.Shape.Sphere);
-            }
-            else
-            {
-                extCube.Checked = true;
-            }
+        //    if (extSphere.Checked)            {
+        //        extCube.Checked = false;
+        //        astroPlot.SetFrameShape(AstroPlot.Shape.Sphere);
+        //    }
+        //    else
+        //    {
+        //        extCube.Checked = true;
+        //    }
         }
 
         private void extAzes_CheckedChanged(object sender, EventArgs e)
         {
-            astroPlot.ShowAxesWidget = extAzes.Checked;
+            //astroPlot.ShowAxesWidget = extAzes.Checked;
         }
 
         private void extComboBox1_TextChanged(object sender, EventArgs e)
         {
-            if (extComboBox1.Text == "24")
-            {
-                extPanelPinned1.PinSize = 24;
-                extPanelPinned1.Reload();
-                extPanelPinned1.Dock = DockStyle.None;
-            }
+            //if (extComboBox1.Text == "24")
+            //{
+            //    extPanelPinned1.PinSize = 24;
+            //    extPanelPinned1.Reload();
+            //    extPanelPinned1.Dock = DockStyle.None;
+            //}
 
-            if (extComboBox1.Text == "32")
-            {
-                extPanelPinned1.PinSize = 32;
-                extPanelPinned1.Reload();
-                extPanelPinned1.Dock = DockStyle.None;
-            }
+            //if (extComboBox1.Text == "32")
+            //{
+            //    extPanelPinned1.PinSize = 32;
+            //    extPanelPinned1.Reload();
+            //    extPanelPinned1.Dock = DockStyle.None;
+            //}
 
-            if (extComboBox1.Text == "48")
-            {
-                extPanelPinned1.PinSize = 48;
-                extPanelPinned1.Reload();
-                extPanelPinned1.Dock = DockStyle.None;
-            }
+            //if (extComboBox1.Text == "48")
+            //{
+            //    extPanelPinned1.PinSize = 48;
+            //    extPanelPinned1.Reload();
+            //    extPanelPinned1.Dock = DockStyle.None;
+            //}
+        }
+
+        private void extPanelPinned1_ParentChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
