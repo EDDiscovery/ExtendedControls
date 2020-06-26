@@ -69,9 +69,6 @@
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelPinnedSketch.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -139,12 +136,6 @@
     </Compile>
     <Compile Include="Controls\PanelDropDown.Designer.cs">
       <DependentUpon>PanelDropDown.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ExtPanelPin.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\ExtPanelPin.Designer.cs">
-      <DependentUpon>ExtPanelPin.cs</DependentUpon>
     </Compile>
     <Compile Include="Themes\ITheme.cs" />
     <Compile Include="Themes\ThemeStandardEditor.cs">
@@ -242,9 +233,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Controls\AstroPlot.resx">
       <DependentUpon>AstroPlot.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PanelPinnedSketch.resx">
-      <DependentUpon>PanelPinnedSketch.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>

@@ -58,12 +58,6 @@
     <Compile Include="TestAstroPlot.Designer.cs">
       <DependentUpon>TestAstroPlot.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestAstroPlotMinimal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TestAstroPlotMinimal.Designer.cs">
-      <DependentUpon>TestAstroPlotMinimal.cs</DependentUpon>
-    </Compile>
     <Compile Include="TestDraggableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,12 +69,6 @@
     </Compile>
     <Compile Include="TestDateTime.Designer.cs">
       <DependentUpon>TestDateTime.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestPanelPin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TestPanelPin.Designer.cs">
-      <DependentUpon>TestPanelPin.cs</DependentUpon>
     </Compile>
     <Compile Include="TestPanelScroll2.cs">
       <SubType>Form</SubType>
@@ -219,17 +207,11 @@
     <EmbeddedResource Include="TestAstroPlot.resx">
       <DependentUpon>TestAstroPlot.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestAstroPlotMinimal.resx">
-      <DependentUpon>TestAstroPlotMinimal.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="TestDraggableForm.resx">
       <DependentUpon>TestDraggableForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestDateTime.resx">
       <DependentUpon>TestDateTime.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelPin.resx">
-      <DependentUpon>TestPanelPin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestPanelScroll2.resx">
       <DependentUpon>TestPanelScroll2.cs</DependentUpon>
