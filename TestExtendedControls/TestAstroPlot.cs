@@ -24,22 +24,22 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();
-
-            astroPlot.ShowAxesWidget = true;
-            astroPlot.ShowFrameWidget = false;
-            astroPlot.SendToBack();            
+            astroPlot.SendToBack();
         }
 
         // Timer
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
 
         private void TestAstroPlot_Load(object sender, EventArgs e)
-        {            
+        {
             astroPlot.Distance = 100000;
             astroPlot.AxesLength = 10000;
             astroPlot.FramesLength = 10000;
             astroPlot.MouseWheel_Resistance = 0.4;
             astroPlot.MouseWheel_Multiply = 100;
+            astroPlot.MouseDragSensitivity = 40;
+            astroPlot.ShowAxesWidget = true;
+            astroPlot.ShowFrameWidget = false;
             TestOrientation();
         }
 

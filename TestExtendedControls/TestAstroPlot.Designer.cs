@@ -40,10 +40,6 @@
             this.astroPlot.AxesLength = 10;
             this.astroPlot.AxesThickness = 1;
             this.astroPlot.Azimuth = -0.4D;
-            this.astroPlot.CenterCoordinates = new double[] {
-        0D,
-        0D,
-        0D};
             this.astroPlot.CurrentColor = System.Drawing.Color.Red;
             this.astroPlot.Distance = 150D;
             this.astroPlot.Dock = System.Windows.Forms.DockStyle.Fill;

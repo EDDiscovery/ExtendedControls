@@ -25,6 +25,9 @@ using System.Windows.Forms.VisualStyles;
 using System.Linq;
 using System.Drawing.Drawing2D;
 using BaseUtils;
+using EDDiscovery.Controls;
+using System.Security.Cryptography;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ExtendedControls.Controls
 {
@@ -88,56 +91,53 @@ namespace ExtendedControls.Controls
 
         }
 
-        private readonly List<Axis> Axes = new List<Axis>();
+        private readonly List<Axis> Axes = new List<Axis>();        
         private readonly List<Corner> Planes = new List<Corner>();
-        private readonly List<Corner> Frames = new List<Corner>();        
+        private readonly List<Corner> Frames = new List<Corner>();
         private readonly List<PlotObjects> MapObjects = new List<PlotObjects>();
 
         // Projection
         internal double[] cameraPosition = new double[3];
         internal double[] centerCoordinates = new double[3];
-        internal double[] offsetCoordinates = new double[2];
+        
         internal double lateralDrag;
         internal double longitudinalDrag;
         internal double[] dragCoords = new double[2];
 
-        [Description("Set the coordinates of the center of the plot")]
-        public double[] CenterCoordinates
+        public double[] GetCenterCoordinates()
         {
-            get => centerCoordinates;
-            set { centerCoordinates = value; SetFrameCoordinates(FramesLength); SetAxesCoordinates(AxesLength); }
+            return centerCoordinates;
         }
+
+        public void SetCenterCoordinates(double[] value)
+        { centerCoordinates = value; SetFrameCoordinates(FramesLength); SetAxesCoordinates(AxesLength); }
 
         private double distance;
         [Description("Set the distance at which the camera stands from the plot")]
         public double Distance
         {
-            get => distance;
-            set { distance = (value >= 0.1) ? distance = value : distance; UpdateProjection(); }
+            get => distance; set { distance = (value >= 0.1) ? distance = value : distance; UpdateProjection(); }
         }
 
         internal double lastAzimuth, azimuth;
         [Description("Horizontal position of the camera expressed as an angular distance")]
         public double Azimuth
         {
-            get => azimuth;
-            set { azimuth = value; UpdateProjection(); }
+            get => azimuth; set { azimuth = value; UpdateProjection(); }
         }
 
         internal double lastElevation, elevation;
         [Description("Vertical position of the camera expressed as an angular distance")]
         public double Elevation
         {
-            get => elevation;
-            set { elevation = value; UpdateProjection(); }
+            get => elevation; set { elevation = value; UpdateProjection(); }
         }
 
         private double focalLength;
         [Description("Focal length of the camera")]
         public new double Focus
         {
-            get => focalLength;
-            set { focalLength = value; UpdateProjection(); }
+            get => focalLength; set { focalLength = value; UpdateProjection(); }
         }
 
         // Look'n'Feel
@@ -160,76 +160,62 @@ namespace ExtendedControls.Controls
         [Description("Set the sensitivity of the mouse movement")]
         public int Mouse_Sensitivity
         {
-            get => mouseSensitivity;
-            set { mouseSensitivity = value;}
+            get => mouseSensitivity; set { mouseSensitivity = value;}
         }
 
         private double mouseWheelResistance;
         [Description("Set the resistance of the mouse wheel")]
         public double MouseWheel_Resistance
         {
-            get => mouseWheelResistance;
-            set { mouseWheelResistance = value;}
+            get => mouseWheelResistance; set { mouseWheelResistance = value;}
         }
 
         private double mouseWheelMultiply;
         [Description("Set the multiply of the mouse wheel")]
         public double MouseWheel_Multiply
         {
-            get => mouseWheelMultiply;
-            set { mouseWheelMultiply = value; }
+            get => mouseWheelMultiply; set { mouseWheelMultiply = value; }
         }
 
         private double mouseDragSensitivity;
         public double MouseDragSensitivity
         {
-            get => mouseDragSensitivity;
-            set { mouseDragSensitivity = value; }
+            get => mouseDragSensitivity; set { mouseDragSensitivity = value; }
         }
 
         private int hotspotSize;
         [Description("Define the size of the hotspot area for the map points")]
         public int HotSpotSize
         {
-            get => hotspotSize;
-            set { hotspotSize = value; UpdateProjection(); }
+            get => hotspotSize; set { hotspotSize = value; UpdateProjection(); }
         }
-
+                
         // Axes Widget
         private bool showAxesWidget;
         public bool ShowAxesWidget
         {
-            get => showAxesWidget;
-            set
-            {
-                showAxesWidget = value; UpdateProjection();
-            }
+            get => showAxesWidget; set { showAxesWidget = value; UpdateProjection(); }
         }
 
         private int axesThickness;
         [Description("Set the thickness of each axis in the axes widget")]
         public int AxesThickness
         {
-            get => axesThickness;
-            set { axesThickness = value; UpdateProjection(); }
+            get => axesThickness; set { axesThickness = value; UpdateProjection(); }
         }
 
         private int axesLength;
         [Description("Set the length of each axis in the axes widget")]
         public int AxesLength
         {
-            get => axesLength;
-            set { axesLength = value; SetAxesCoordinates(AxesLength); UpdateProjection(); }
+            get => axesLength; set { axesLength = value; SetAxesCoordinates(AxesLength); UpdateProjection(); }
         }
 
         // Frame Widget
         private bool showFrameWidget;
         public bool ShowFrameWidget
         {
-            get => showFrameWidget; set
-            {
-                showFrameWidget = value; UpdateProjection();
-            }
+            get => showFrameWidget; set { showFrameWidget = value; UpdateProjection(); }
         }
 
         public enum Shape { Cube = 0, Sphere = 1 };
@@ -251,42 +237,34 @@ namespace ExtendedControls.Controls
         [Description("Set the boundaries frame radius")]
         public double FramesLength
         {
-            get => framesLength;
-            set { framesLength = value; SetFrameCoordinates(FramesLength); UpdateProjection(); }
+            get => framesLength; set { framesLength = value; SetFrameCoordinates(FramesLength); UpdateProjection(); }
         }
 
         private int framesThickness;
         [Description("Set the boundaries frame thickness")]
         public int FramesThickness
         {
-            get => framesThickness;
-            set { framesThickness = value; UpdateProjection(); }
+            get => framesThickness; set { framesThickness = value; UpdateProjection(); }
         }
 
         // Output
         protected string selectedObjectName;
         public string SelectedObjectName
         {
-            get => selectedObjectName;
-            private set
-            { selectedObjectName = value; }
+            get => selectedObjectName; private set { selectedObjectName = value; }
         }
 
         protected Point selectedObjectPoint;
         public Point SelectedObjectPoint
         {
-            get => selectedObjectPoint;
-            private set
-            { selectedObjectPoint = value; }
+            get => selectedObjectPoint; private set { selectedObjectPoint = value; }
         }
 
         protected double[] selectedObjectCoords;
         
         public double[] SelectedObjectCoords
         {
-            get => selectedObjectCoords;
-            private set
-            { selectedObjectCoords = value; }
+            get => selectedObjectCoords; private set { selectedObjectCoords = value; }
         }
 
         // Timer
@@ -304,7 +282,7 @@ namespace ExtendedControls.Controls
                 return cp;
             }
         }
-
+                
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
@@ -411,7 +389,7 @@ namespace ExtendedControls.Controls
         private void CenterTo_Click(object sender, EventArgs e)
         {
             var selected = sender as ToolStripMenuItem;
-            CenterCoordinates = (double[])selected.Tag;
+            SetCenterCoordinates((double[])selected.Tag);
         }
 
         private void UpdateProjection()
@@ -425,20 +403,20 @@ namespace ExtendedControls.Controls
 
             cameraPosition = new double[3] { -y, z, -x };
 
-            if (MapObjects != null)
-            {
-                Update.PlotObjects(MapObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
-            }
-
             if (Axes != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
             {
                 Update.AxesWidget(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
-
+                        
             if (ShowFrameWidget && Frames != null)
             {
                 Update.FrameWidget(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
-                Update.FrameWidget(Planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Update.FrameWidget(Planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
+            }
+                        
+            if (MapObjects != null)
+            {
+                Update.PlotObjects(MapObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
             Invalidate();
@@ -457,14 +435,14 @@ namespace ExtendedControls.Controls
             g.SmoothingMode = SmoothingMode.HighQuality;
             g.CompositingQuality = CompositingQuality.HighSpeed;
             g.CompositingMode = CompositingMode.SourceCopy;
-
+                        
+            /// axes
             using (var AxisPen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 1,
                 DashStyle = DashStyle.Solid
             })
             {
-                // axes
                 if (ShowAxesWidget && Axes != null)
                 {
                     for (int i = 0; i < Axes.Count; i++)
@@ -488,7 +466,7 @@ namespace ExtendedControls.Controls
                     }
                 }
             }
-
+                        
             /// Frame
             using (var FramePen = new Pen(new SolidBrush(ForeColor))
             {
@@ -601,8 +579,8 @@ namespace ExtendedControls.Controls
                                 
                 Debug.WriteLine(lateralDrag + ", " + longitudinalDrag);
 
-                CenterCoordinates[0] += lateralDrag * mouseDragSensitivity;
-                CenterCoordinates[2] += longitudinalDrag * mouseDragSensitivity;
+                GetCenterCoordinates()[0] += lateralDrag * mouseDragSensitivity;
+                GetCenterCoordinates()[2] += longitudinalDrag * mouseDragSensitivity;
             }
 
             mousePosition = e.Location;

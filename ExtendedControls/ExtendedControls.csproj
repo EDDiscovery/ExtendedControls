@@ -49,10 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AstroPlot\Axes.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AstroPlot\Frames.cs">
+    <Compile Include="AstroPlot\Widgets.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AstroPlot\Handlers.cs" />
