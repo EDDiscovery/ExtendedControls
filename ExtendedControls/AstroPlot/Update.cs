@@ -85,6 +85,28 @@ namespace ExtendedControls.Controls
                 }
             }
 
+            internal static void GridWidget(
+                List<Corner> grid,
+                int x,
+                int y,
+                double z,
+                double[] cameraPosition,
+                double azimuth,
+                double elevation,
+                double[] centerCoords)
+            {
+                var _interaction = Interaction(azimuth, elevation, cameraPosition);
+                var _data = Coords(x, y, z);
+                var X_h = new Tranform<double>(4, 1);
+
+                foreach (var corner in grid)
+                {
+                    X_h.SetMatrix(new double[] { corner.X - centerCoords[0], corner.Y - centerCoords[1], corner.Z - centerCoords[2], 1.0 });
+                    var P = _data * _interaction * X_h;
+                    corner.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                }
+            }
+
             internal static Tranform<double> Coords(double x, double y, double z)
             {
                 var _matrix = new Tranform<double>(3, 3);

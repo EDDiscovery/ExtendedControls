@@ -113,5 +113,21 @@ namespace ExtendedControls.Controls
             }
         }
 
+        public void SetGridCoordinates(int radius)
+        {
+            if (ShowGridWidget)
+            {
+                var gridRadius = radius;
+
+                ShowGridWidget = false;
+                Grids.Clear();
+
+                //Grids.Add(new Corner { X = GetCenterCoordinates()[0] + gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gridRadius });
+                //Grids.Add(new Corner { X = GetCenterCoordinates()[0] + gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - gridRadius });
+                Grids.Add(new Corner { X = GetCenterCoordinates()[0] - gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gridRadius });
+                Grids.Add(new Corner { X = GetCenterCoordinates()[0] - gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - gridRadius });
+                ShowGridWidget = true;
+            }
+        }
     }
 }

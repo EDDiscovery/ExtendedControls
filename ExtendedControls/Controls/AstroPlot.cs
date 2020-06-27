@@ -91,7 +91,8 @@ namespace ExtendedControls.Controls
 
         }
 
-        private readonly List<Axis> Axes = new List<Axis>();        
+        private readonly List<Axis> Axes = new List<Axis>();
+        private readonly List<Corner> Grids = new List<Corner>();
         private readonly List<Corner> Planes = new List<Corner>();
         private readonly List<Corner> Frames = new List<Corner>();
         private readonly List<PlotObjects> MapObjects = new List<PlotObjects>();
@@ -211,6 +212,12 @@ namespace ExtendedControls.Controls
             get => axesLength; set { axesLength = value; SetAxesCoordinates(AxesLength); UpdateProjection(); }
         }
 
+        private bool showGridWidget;
+        public bool ShowGridWidget
+        {
+            get => showGridWidget; set { showGridWidget = value; UpdateProjection(); }
+        }
+
         // Frame Widget
         private bool showFrameWidget;
         public bool ShowFrameWidget
@@ -271,26 +278,20 @@ namespace ExtendedControls.Controls
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
 
         private const int WS_EX_COMPOSITED = 0x02000000;
-        private const int WS_EX_TRANSPARENT = 0x20;
+        //private const int WS_EX_TRANSPARENT = 0x20;
         protected override CreateParams CreateParams
         {
             get
             {
                 var cp = base.CreateParams;
                 cp.ExStyle |= WS_EX_COMPOSITED;    // Turn on double buffering
-                cp.ExStyle |= WS_EX_TRANSPARENT;    // Turn on transparencies
+                //cp.ExStyle |= WS_EX_TRANSPARENT;    // Turn on transparencies
                 return cp;
             }
         }
-                
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
-
+                        
         protected override void OnHandleCreated(EventArgs e)
         {
-            base.OnHandleCreated(e);            
             MouseWheel_Multiply = 2;
             MouseDragSensitivity = 5;
             MouseWheel_Resistance = 100;
@@ -311,9 +312,10 @@ namespace ExtendedControls.Controls
             VisitedColor = Color.Aqua;
             UnVisitedColor = Color.Yellow;
             CurrentColor = Color.Red;
-    }
+            base.OnHandleCreated(e);
+        }
 
-    public AstroPlot()
+        public AstroPlot()
         {
             InitializeComponent();
 
@@ -326,10 +328,19 @@ namespace ExtendedControls.Controls
             _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
 
             if (ShowAxesWidget)
+            {
                 SetAxesCoordinates(this.axesLength);
+            }
 
             if (ShowFrameWidget)
+            {
                 SetFrameCoordinates(this.framesLength);
+            }
+
+            if (showGridWidget)
+            {
+                SetGridCoordinates(10000);
+            }
         }
 
         public void SetCenterOfMap(double[] coords)
@@ -413,7 +424,12 @@ namespace ExtendedControls.Controls
                 Update.FrameWidget(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
                 Update.FrameWidget(Planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
             }
-                        
+
+            if (ShowGridWidget && Grids != null)
+            {
+                Update.GridWidget(Grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+            }
+
             if (MapObjects != null)
             {
                 Update.PlotObjects(MapObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
@@ -466,7 +482,15 @@ namespace ExtendedControls.Controls
                     }
                 }
             }
-                        
+
+            using (var GridPen = new Pen(new SolidBrush(Color.Aqua)) { Width = 1 })
+            {
+                foreach (var point in Grids)
+                {
+                    g.DrawLine(GridPen, point.Coords, Axes[0].Coords);
+                }
+            }
+
             /// Frame
             using (var FramePen = new Pen(new SolidBrush(ForeColor))
             {
