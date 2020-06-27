@@ -278,14 +278,14 @@ namespace ExtendedControls.Controls
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
 
         private const int WS_EX_COMPOSITED = 0x02000000;
-        //private const int WS_EX_TRANSPARENT = 0x20;
+        private const int WS_EX_TRANSPARENT = 0x20;
         protected override CreateParams CreateParams
         {
             get
             {
                 var cp = base.CreateParams;
                 cp.ExStyle |= WS_EX_COMPOSITED;    // Turn on double buffering
-                //cp.ExStyle |= WS_EX_TRANSPARENT;    // Turn on transparencies
+                cp.ExStyle |= WS_EX_TRANSPARENT;    // Turn on transparencies
                 return cp;
             }
         }
@@ -442,10 +442,10 @@ namespace ExtendedControls.Controls
         {
             var g = e.Graphics;
 
-            // give some love to the renderint engine
+            // give some love to the rendering engine
             g.SmoothingMode = SmoothingMode.HighQuality;
             g.CompositingQuality = CompositingQuality.HighSpeed;
-            g.CompositingMode = CompositingMode.SourceCopy;
+            g.CompositingMode = CompositingMode.SourceOver;
 
             /// axes
             using (var AxisPen = new Pen(new SolidBrush(ForeColor))
