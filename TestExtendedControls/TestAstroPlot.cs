@@ -39,8 +39,8 @@ namespace DialogTest
             astroPlot.MouseWheel_Multiply = 100;
             astroPlot.MouseDragSensitivity = 40;
             astroPlot.ShowAxesWidget = true;
-            astroPlot.ShowFrameWidget = false;
-            astroPlot.ShowGridWidget = true;
+            astroPlot.ShowFrameWidget = true;
+            astroPlot.ShowGridWidget = false;
             TestOrientation();
         }
 

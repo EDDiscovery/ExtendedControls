@@ -22,7 +22,7 @@ namespace ExtendedControls.Controls
 {
     public partial class AstroPlot
     {
-        internal class Axis
+        internal class AnchorPoint
         {
             public double X { get; set; }
             public double Y { get; set; }
@@ -39,25 +39,25 @@ namespace ExtendedControls.Controls
                     ShowAxesWidget = false;
                     Axes.Clear();
 
-                    Axes.Add(new Axis
+                    Axes.Add(new AnchorPoint
                     {
                         X = GetCenterCoordinates()[0],
                         Y = GetCenterCoordinates()[1],
                         Z = GetCenterCoordinates()[2]
                     });
-                    Axes.Add(new Axis
+                    Axes.Add(new AnchorPoint
                     {
                         X = GetCenterCoordinates()[0] + length,
                         Y = GetCenterCoordinates()[1],
                         Z = GetCenterCoordinates()[2]
                     });
-                    Axes.Add(new Axis
+                    Axes.Add(new AnchorPoint
                     {
                         X = GetCenterCoordinates()[0],
                         Y = GetCenterCoordinates()[1] + (length * -1),
                         Z = GetCenterCoordinates()[2]
                     });
-                    Axes.Add(new Axis
+                    Axes.Add(new AnchorPoint
                     {
                         X = GetCenterCoordinates()[0],
                         Y = GetCenterCoordinates()[1],
@@ -72,15 +72,7 @@ namespace ExtendedControls.Controls
                 return;
             }
         }
-
-        internal class Corner
-        {
-            public double X { get; set; }
-            public double Y { get; set; }
-            public double Z { get; set; }
-            public PointF Coords { get; set; } = new PointF(0, 0);
-        }
-
+               
         public void SetFrameCoordinates(double frameRadius)
         {
             if (ShowFrameWidget)
@@ -88,22 +80,22 @@ namespace ExtendedControls.Controls
                 ShowFrameWidget = false;
 
                 Frames.Clear();
-                Frames.Add(new Corner { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
-                Frames.Add(new Corner { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
-                Frames.Add(new Corner { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
-                Frames.Add(new Corner { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
-                Frames.Add(new Corner { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
-                Frames.Add(new Corner { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
-                Frames.Add(new Corner { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
-                Frames.Add(new Corner { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
+                Frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
+                Frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
+                Frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
+                Frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
+                Frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
+                Frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
+                Frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
+                Frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
 
                 Planes.Clear();
-                Planes.Add(new Corner { X = GetCenterCoordinates()[0] + (frameRadius * 2), Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] });
-                Planes.Add(new Corner { X = GetCenterCoordinates()[0] - (frameRadius * 2), Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] });
-                Planes.Add(new Corner { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (frameRadius * 2) });
-                Planes.Add(new Corner { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - (frameRadius * 2) });
-                Planes.Add(new Corner { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1] + (frameRadius * 2), Z = GetCenterCoordinates()[2] });
-                Planes.Add(new Corner { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1] - (frameRadius * 2), Z = GetCenterCoordinates()[2] });
+                Planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + (frameRadius * 2), Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] });
+                Planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0] - (frameRadius * 2), Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] });
+                Planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (frameRadius * 2) });
+                Planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - (frameRadius * 2) });
+                Planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1] + (frameRadius * 2), Z = GetCenterCoordinates()[2] });
+                Planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1] - (frameRadius * 2), Z = GetCenterCoordinates()[2] });
 
                 ShowFrameWidget = true;
             }
@@ -124,8 +116,8 @@ namespace ExtendedControls.Controls
 
                 //Grids.Add(new Corner { X = GetCenterCoordinates()[0] + gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gridRadius });
                 //Grids.Add(new Corner { X = GetCenterCoordinates()[0] + gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - gridRadius });
-                Grids.Add(new Corner { X = GetCenterCoordinates()[0] - gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gridRadius });
-                Grids.Add(new Corner { X = GetCenterCoordinates()[0] - gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - gridRadius });
+                Grids.Add(new AnchorPoint { X = GetCenterCoordinates()[0] - gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gridRadius });
+                Grids.Add(new AnchorPoint { X = GetCenterCoordinates()[0] - gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - gridRadius });
                 ShowGridWidget = true;
             }
         }

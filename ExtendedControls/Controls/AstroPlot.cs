@@ -91,10 +91,10 @@ namespace ExtendedControls.Controls
 
         }
 
-        private readonly List<Axis> Axes = new List<Axis>();
-        private readonly List<Corner> Grids = new List<Corner>();
-        private readonly List<Corner> Planes = new List<Corner>();
-        private readonly List<Corner> Frames = new List<Corner>();
+        private readonly List<AnchorPoint> Axes = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> Grids = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> Planes = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> Frames = new List<AnchorPoint>();
         private readonly List<PlotObjects> MapObjects = new List<PlotObjects>();
 
         // Projection
@@ -415,24 +415,24 @@ namespace ExtendedControls.Controls
             cameraPosition = new double[3] { -y, z, -x };
 
             if (Axes != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
-            {
-                Update.AxesWidget(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+            {                
+                Update.Projection(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
                         
             if (ShowFrameWidget && Frames != null)
             {
-                Update.FrameWidget(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
-                Update.FrameWidget(Planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
+                Update.Projection(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
+                Update.Projection(Planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
             if (ShowGridWidget && Grids != null)
             {
-                Update.GridWidget(Grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Update.Projection(Grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
             if (MapObjects != null)
             {
-                Update.PlotObjects(MapObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Update.Projection(MapObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
             Invalidate();
@@ -451,7 +451,7 @@ namespace ExtendedControls.Controls
             g.SmoothingMode = SmoothingMode.HighQuality;
             g.CompositingQuality = CompositingQuality.HighSpeed;
             g.CompositingMode = CompositingMode.SourceCopy;
-                        
+
             /// axes
             using (var AxisPen = new Pen(new SolidBrush(ForeColor))
             {
@@ -483,66 +483,72 @@ namespace ExtendedControls.Controls
                 }
             }
 
-            using (var GridPen = new Pen(new SolidBrush(Color.Aqua)) { Width = 1 })
+            if (ShowGridWidget)
             {
-                foreach (var point in Grids)
+                using (var GridPen = new Pen(new SolidBrush(Color.Aqua)) { Width = 1 })
                 {
-                    g.DrawLine(GridPen, point.Coords, Axes[0].Coords);
+                    foreach (var point in Grids)
+                    {
+                        g.DrawLine(GridPen, point.Coords, Axes[0].Coords);
+                    }
                 }
             }
 
             /// Frame
-            using (var FramePen = new Pen(new SolidBrush(ForeColor))
+            if (ShowFrameWidget)
             {
-                Width = 1,
-                DashStyle = DashStyle.Solid
-            })
-            {
-                /// Cubical frame
-                if (ShowFrameWidget && GetFrameShape() == Shape.Cube && Frames.Count > 0)
+                using (var FramePen = new Pen(new SolidBrush(ForeColor))
                 {
-                    /// bottom
-                    g.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
-                    g.DrawLine(FramePen, Frames[1].Coords, Frames[5].Coords);
-                    g.DrawLine(FramePen, Frames[5].Coords, Frames[3].Coords);
-                    g.DrawLine(FramePen, Frames[3].Coords, Frames[0].Coords);
+                    Width = 1,
+                    DashStyle = DashStyle.Solid
+                })
+                {
+                    /// Cubical frame
+                    if (GetFrameShape() == Shape.Cube && Frames.Count > 0)
+                    {
+                        /// bottom
+                        g.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
+                        g.DrawLine(FramePen, Frames[1].Coords, Frames[5].Coords);
+                        g.DrawLine(FramePen, Frames[5].Coords, Frames[3].Coords);
+                        g.DrawLine(FramePen, Frames[3].Coords, Frames[0].Coords);
 
-                    /// left
-                    g.DrawLine(FramePen, Frames[0].Coords, Frames[2].Coords);
-                    g.DrawLine(FramePen, Frames[2].Coords, Frames[4].Coords);
-                    g.DrawLine(FramePen, Frames[4].Coords, Frames[3].Coords);
+                        /// left
+                        g.DrawLine(FramePen, Frames[0].Coords, Frames[2].Coords);
+                        g.DrawLine(FramePen, Frames[2].Coords, Frames[4].Coords);
+                        g.DrawLine(FramePen, Frames[4].Coords, Frames[3].Coords);
 
-                    /// right
-                    g.DrawLine(FramePen, Frames[1].Coords, Frames[6].Coords);
-                    g.DrawLine(FramePen, Frames[6].Coords, Frames[7].Coords);
-                    g.DrawLine(FramePen, Frames[7].Coords, Frames[5].Coords);
+                        /// right
+                        g.DrawLine(FramePen, Frames[1].Coords, Frames[6].Coords);
+                        g.DrawLine(FramePen, Frames[6].Coords, Frames[7].Coords);
+                        g.DrawLine(FramePen, Frames[7].Coords, Frames[5].Coords);
 
-                    /// top
-                    g.DrawLine(FramePen, Frames[2].Coords, Frames[6].Coords);
-                    g.DrawLine(FramePen, Frames[4].Coords, Frames[7].Coords);
+                        /// top
+                        g.DrawLine(FramePen, Frames[2].Coords, Frames[6].Coords);
+                        g.DrawLine(FramePen, Frames[4].Coords, Frames[7].Coords);
+                    }
                 }
-            }
 
-            /// Frame
-            using (var PlanePen = new Pen(new SolidBrush(ForeColor))
-            {
-                Width = 1,
-                DashStyle = DashStyle.Solid
-            })
-            {
-                /// Spherical frame
-                if (ShowFrameWidget && GetFrameShape() == Shape.Sphere && Frames.Count > 0)
+                /// Frame
+                using (var PlanePen = new Pen(new SolidBrush(ForeColor))
                 {
-                    var horizontalPlane = new PointF[] { Planes[0].Coords, Planes[2].Coords, Planes[1].Coords, Planes[3].Coords };
-                    var verticalPlane = new PointF[] { Planes[0].Coords, Planes[4].Coords, Planes[1].Coords, Planes[5].Coords };
-                    var longitudinalPlane = new PointF[] { Planes[2].Coords, Planes[4].Coords, Planes[3].Coords, Planes[5].Coords };
-                    
-                    PlanePen.Color = Color.Red;
-                    g.DrawClosedCurve(PlanePen, horizontalPlane, (float)0.85, FillMode.Winding);
-                    PlanePen.Color = Color.Green;
-                    g.DrawClosedCurve(PlanePen, verticalPlane, (float)0.85, FillMode.Winding);
-                    PlanePen.Color = Color.Blue;
-                    g.DrawClosedCurve(PlanePen, longitudinalPlane, (float)0.85, FillMode.Winding);
+                    Width = 1,
+                    DashStyle = DashStyle.Solid
+                })
+                {
+                    /// Spherical frame
+                    if (GetFrameShape() == Shape.Sphere && Frames.Count > 0)
+                    {
+                        var horizontalPlane = new PointF[] { Planes[0].Coords, Planes[2].Coords, Planes[1].Coords, Planes[3].Coords };
+                        var verticalPlane = new PointF[] { Planes[0].Coords, Planes[4].Coords, Planes[1].Coords, Planes[5].Coords };
+                        var longitudinalPlane = new PointF[] { Planes[2].Coords, Planes[4].Coords, Planes[3].Coords, Planes[5].Coords };
+
+                        PlanePen.Color = Color.Red;
+                        g.DrawClosedCurve(PlanePen, horizontalPlane, (float)0.85, FillMode.Winding);
+                        PlanePen.Color = Color.Green;
+                        g.DrawClosedCurve(PlanePen, verticalPlane, (float)0.85, FillMode.Winding);
+                        PlanePen.Color = Color.Blue;
+                        g.DrawClosedCurve(PlanePen, longitudinalPlane, (float)0.85, FillMode.Winding);
+                    }
                 }
             }
 
