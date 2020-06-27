@@ -16,7 +16,6 @@
 
 using System.Diagnostics;
 using System.Drawing;
-using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ExtendedControls.Controls
 {
@@ -102,23 +101,6 @@ namespace ExtendedControls.Controls
             else
             {
                 return;
-            }
-        }
-
-        public void SetGridCoordinates(int radius)
-        {
-            if (ShowGridWidget)
-            {
-                var gridRadius = radius;
-
-                ShowGridWidget = false;
-                Grids.Clear();
-
-                //Grids.Add(new Corner { X = GetCenterCoordinates()[0] + gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gridRadius });
-                //Grids.Add(new Corner { X = GetCenterCoordinates()[0] + gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - gridRadius });
-                Grids.Add(new AnchorPoint { X = GetCenterCoordinates()[0] - gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gridRadius });
-                Grids.Add(new AnchorPoint { X = GetCenterCoordinates()[0] - gridRadius, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - gridRadius });
-                ShowGridWidget = true;
             }
         }
     }

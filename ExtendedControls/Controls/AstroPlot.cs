@@ -336,11 +336,6 @@ namespace ExtendedControls.Controls
             {
                 SetFrameCoordinates(this.framesLength);
             }
-
-            if (showGridWidget)
-            {
-                SetGridCoordinates(10000);
-            }
         }
 
         public void SetCenterOfMap(double[] coords)
@@ -415,7 +410,7 @@ namespace ExtendedControls.Controls
             cameraPosition = new double[3] { -y, z, -x };
 
             if (Axes != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
-            {                
+            {
                 Update.Projection(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
                         

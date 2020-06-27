@@ -1,16 +1,15 @@
 ﻿using BaseUtils;
-using ExtendedControls.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 
 namespace ExtendedControls.Controls
 {
     public partial class AstroPlot
     {
         new internal static class Update
-        {            
+        {
             internal static void Projection(List<AnchorPoint> corners, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
             {
                 var _interaction = Interaction(azimuth, elevation, cameraPosition);
@@ -72,7 +71,7 @@ namespace ExtendedControls.Controls
                                        Math.Sin(azimuth)*Math.Sin(elevation),  Math.Cos(elevation), Math.Cos(azimuth)*Math.Sin(elevation),
                                        Math.Cos(elevation)*Math.Sin(azimuth), -Math.Sin(elevation), Math.Cos(azimuth)*Math.Cos(elevation) });
                 return R;
-            }        
+            }
         }
     }
 }
