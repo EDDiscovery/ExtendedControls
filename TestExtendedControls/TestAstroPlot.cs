@@ -35,11 +35,11 @@ namespace DialogTest
             astroPlot.Distance = 100000;
             astroPlot.AxesLength = 10000;
             astroPlot.FramesLength = 10000;
-            astroPlot.GridUnit = 1000;
-            astroPlot.GridCount = 20;
-            astroPlot.MouseWheel_Resistance = 0.4;
-            astroPlot.MouseWheel_Multiply = 100;
-            astroPlot.MouseDragSensitivity = 30;
+            astroPlot.GridUnit = 10000;
+            astroPlot.GridCount = 10;
+            astroPlot.MouseWheel_Resistance = 0.5;
+            astroPlot.MouseWheel_Multiply = 50;
+            astroPlot.MouseDragSensitivity = 10;
             astroPlot.ShowAxesWidget = true;
             astroPlot.ShowFrameWidget = false;
             astroPlot.ShowGridWidget = true;

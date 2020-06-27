@@ -48,8 +48,9 @@
             this.astroPlot.ForeColor = System.Drawing.Color.White;
             this.astroPlot.FramesLength = 20D;
             this.astroPlot.FramesThickness = 1;
-            this.astroPlot.GridCount = 20;
-            this.astroPlot.GridUnit = 1000;
+            this.astroPlot.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(30)))), ((int)(((byte)(190)))), ((int)(((byte)(240)))));
+            this.astroPlot.GridCount = 5;
+            this.astroPlot.GridUnit = 10;
             this.astroPlot.HotSpotSize = 10;
             this.astroPlot.LargeDotSize = 15;
             this.astroPlot.Location = new System.Drawing.Point(0, 0);

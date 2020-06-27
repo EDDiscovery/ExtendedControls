@@ -28,6 +28,7 @@ using BaseUtils;
 using EDDiscovery.Controls;
 using System.Security.Cryptography;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Runtime.Remoting.Messaging;
 
 namespace ExtendedControls.Controls
 {
@@ -160,7 +161,8 @@ namespace ExtendedControls.Controls
 
         internal PointF ptMouseClick;
         internal Point mousePosition;
-        
+        internal Point lastMousePosition;
+
         private int mouseSensitivity;
         [Description("Set the sensitivity of the mouse movement")]
         public int Mouse_Sensitivity
@@ -233,6 +235,12 @@ namespace ExtendedControls.Controls
         public int GridCount
         {
             get => gridCount; set { gridCount = value; UpdateProjection(); }
+        }
+
+        private Color gridColor;
+        public Color GridColor
+        {
+            get => gridColor; set { gridColor = value; UpdateProjection(); }
         }
         
         // Frame Widget
@@ -322,7 +330,7 @@ namespace ExtendedControls.Controls
             ShowGridWidget = true;
             GridCount = 5;
             GridUnit = 10;
-            Distance = 150;
+            Distance = 300;
             Focus = 1000;
             Azimuth = -0.4;
             Elevation = -0.3;
@@ -332,6 +340,7 @@ namespace ExtendedControls.Controls
             VisitedColor = Color.Aqua;
             UnVisitedColor = Color.Yellow;
             CurrentColor = Color.Red;
+            GridColor = Color.FromArgb(80, 30, 190, 240);
             base.OnHandleCreated(e);
         }
 
@@ -339,29 +348,11 @@ namespace ExtendedControls.Controls
         {
             InitializeComponent();
 
-            Handlers.MouseWheel.Add(this, OnMouseWheel);
-
             selectedObjectName = "";
 
             _mouseIdleTimer.AutoReset = false;
-            _mouseIdleTimer.Interval = 200;
+            _mouseIdleTimer.Interval = 100;
             _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
-
-            //if (ShowAxesWidget)
-            //{
-            //    SetAxesCoordinates(this.axesLength);
-            //}
-
-            //if (ShowFrameWidget)
-            //{
-            //    SetFrameCoordinates(this.framesLength);
-            //}
-
-            //if (ShowGridWidget)
-            //{
-            //    SetGridCoordinates(this.gridCount, this.gridUnit);
-            //    //SetGridCoordinates(10, 1000);
-            //}
         }
 
         public void SetCenterOfMap(double[] coords)
@@ -404,7 +395,7 @@ namespace ExtendedControls.Controls
         private void ShowContextMenu()
         {
 #if DEBUG
-            Debug.WriteLine("Show context menu");
+            //Debug.WriteLine("Show context menu");
 #endif
             contextMenuStrip.Items.Clear();
 
@@ -508,7 +499,7 @@ namespace ExtendedControls.Controls
             /// Grid
             if (ShowGridWidget)
             {
-                using (var GridPen = new Pen(new SolidBrush(Color.DarkCyan)) { Width = 1 })
+                using (var GridPen = new Pen(new SolidBrush(Color.FromArgb(80, 40, 160, 220))) { Width = 1 })
                 {
                     for (int i = 0; i < Grids.Count; i++)
                     {
@@ -617,6 +608,10 @@ namespace ExtendedControls.Controls
 
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+            _mouseIdleTimer.Stop();
+
+            mousePosition = e.Location;
+
             if (leftMousePressed)
             {
                 azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / mouseSensitivity);
@@ -626,24 +621,31 @@ namespace ExtendedControls.Controls
 
             if (middleMousePressed)
             {
-                lateralDrag = -((e.Location.X) - ptMouseClick.X) * 0.5;
-                longitudinalDrag = ((e.Location.Y) - ptMouseClick.Y) * 0.5;
-                UpdateProjection();
-                                
-                Debug.WriteLine(lateralDrag + ", " + longitudinalDrag);
+                var dragPosition = GetMouseDelta(mousePosition, ptMouseClick);
 
-                GetCenterCoordinates()[0] += lateralDrag * mouseDragSensitivity;
-                GetCenterCoordinates()[2] += longitudinalDrag * mouseDragSensitivity;
+                Debug.WriteLine(dragPosition);
+
+                GetCenterCoordinates()[0] += dragPosition.X * mouseDragSensitivity;
+                GetCenterCoordinates()[2] += dragPosition.Y * mouseDragSensitivity;
+                SetCenterCoordinates(GetCenterCoordinates());
+            }
+                        
+            _mouseIdleTimer.Start();
+        }
+
+        private Point GetMouseDelta(Point mousePosition, PointF ptMouseClick)
+        {
+            var delta = new Point();
+
+            if (mousePosition != lastMousePosition)
+            {
+                delta.X = (int)(mousePosition.X - ptMouseClick.X);
+                delta.Y = -(int)(mousePosition.Y - ptMouseClick.Y);
             }
 
-            mousePosition = e.Location;
+            lastMousePosition = mousePosition;
 
-            _mouseIdleTimer.Stop();
-            _mouseIdleTimer.Start();
-
-#if DEBUG
-            //Debug.WriteLine("AstroPlot timer started");
-#endif
+            return delta;
         }
 
         private void PlotCanvas_MouseDown(object sender, MouseEventArgs e)
@@ -661,7 +663,7 @@ namespace ExtendedControls.Controls
             {
                 middleMousePressed = true;
                 lastAzimuth = azimuth;
-                lastElevation = elevation;                
+                lastElevation = elevation;
                 ptMouseClick = new PointF(e.X, e.Y);
             }
             if (e.Button == MouseButtons.Right)
@@ -687,6 +689,11 @@ namespace ExtendedControls.Controls
                 extPlotLabel.Text = "";
                 extPlotLabel.Visible = false;
             }
+            if (e.Button == MouseButtons.Middle)
+            {
+                extPlotLabel.Text = "";
+                extPlotLabel.Visible = false;
+            }
             if (e.Button == MouseButtons.Right)
             {
                 ShowContextMenu();
@@ -700,7 +707,7 @@ namespace ExtendedControls.Controls
             var point = new Point();
             var coords = new double[3];
             var lastText = text;
-
+                        
             if (MapObjects != null)
             {
                 for (int i = MapObjects.Count - 1; i >= 0; i--)
@@ -738,7 +745,7 @@ namespace ExtendedControls.Controls
             );
         }
 
-        private new void OnMouseWheel(MouseEventArgs e)
+        protected override void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
             {
@@ -754,6 +761,6 @@ namespace ExtendedControls.Controls
                     Distance += (-e.Delta * MouseWheel_Multiply);
                 }
             }
-        }
+        }        
     }
 }
