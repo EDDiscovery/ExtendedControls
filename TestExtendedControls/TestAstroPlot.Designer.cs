@@ -48,6 +48,8 @@
             this.astroPlot.ForeColor = System.Drawing.Color.White;
             this.astroPlot.FramesLength = 20D;
             this.astroPlot.FramesThickness = 1;
+            this.astroPlot.GridCount = 20;
+            this.astroPlot.GridUnit = 1000;
             this.astroPlot.HotSpotSize = 10;
             this.astroPlot.LargeDotSize = 15;
             this.astroPlot.Location = new System.Drawing.Point(0, 0);
@@ -59,6 +61,7 @@
             this.astroPlot.Name = "astroPlot";
             this.astroPlot.ShowAxesWidget = true;
             this.astroPlot.ShowFrameWidget = true;
+            this.astroPlot.ShowGridWidget = true;
             this.astroPlot.Size = new System.Drawing.Size(484, 461);
             this.astroPlot.SmallDotSize = 5;
             this.astroPlot.TabIndex = 0;

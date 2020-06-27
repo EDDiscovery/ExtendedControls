@@ -29,7 +29,7 @@ namespace ExtendedControls.Controls
             public PointF Coords { get; set; } = new PointF(0, 0);
         }
 
-        internal void SetAxesCoordinates(int length)
+        internal void SetAxesAnchors(int length)
         {
             if (ShowAxesWidget)
             {
@@ -72,7 +72,7 @@ namespace ExtendedControls.Controls
             }
         }
                
-        public void SetFrameCoordinates(double frameRadius)
+        public void SetFrameAnchors(double frameRadius)
         {
             if (ShowFrameWidget)
             {
@@ -102,6 +102,32 @@ namespace ExtendedControls.Controls
             {
                 return;
             }
+        }
+
+        public void SetGridAnchors(int gc, int gu)
+        {
+            var gcd = (int)gc * 2;
+            var go = (int)gc * gu;
+
+            ShowGridWidget = false;
+
+            Grids.Clear();
+
+            for (int i = 0; i < (gcd); i++)
+            {
+                Grids.Add(new AnchorPoint[]
+                {
+                    new AnchorPoint { X = GetCenterCoordinates()[0] + gcd - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (gu * i) - go },
+                    new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * gcd) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (gu * i) - go}
+                });
+                Grids.Add(new AnchorPoint[]
+                {                    
+                    new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * i) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (gu * gcd) - go},
+                    new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * i) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gcd - go}
+                });
+            }
+
+            ShowGridWidget = true;
         }
     }
 }

@@ -92,7 +92,11 @@ namespace ExtendedControls.Controls
         }
 
         private readonly List<AnchorPoint> Axes = new List<AnchorPoint>();
-        private readonly List<AnchorPoint> Grids = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> GridHp = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> GridHm = new List<AnchorPoint>();
+
+        private readonly List<AnchorPoint[]> Grids = new List<AnchorPoint[]>();
+
         private readonly List<AnchorPoint> Planes = new List<AnchorPoint>();
         private readonly List<AnchorPoint> Frames = new List<AnchorPoint>();
         private readonly List<PlotObjects> MapObjects = new List<PlotObjects>();
@@ -111,7 +115,7 @@ namespace ExtendedControls.Controls
         }
 
         public void SetCenterCoordinates(double[] value)
-        { centerCoordinates = value; SetFrameCoordinates(FramesLength); SetAxesCoordinates(AxesLength); }
+        { centerCoordinates = value; SetFrameAnchors(FramesLength); SetAxesAnchors(AxesLength); SetGridAnchors(GridCount, GridUnit); }
 
         private double distance;
         [Description("Set the distance at which the camera stands from the plot")]
@@ -209,15 +213,28 @@ namespace ExtendedControls.Controls
         [Description("Set the length of each axis in the axes widget")]
         public int AxesLength
         {
-            get => axesLength; set { axesLength = value; SetAxesCoordinates(AxesLength); UpdateProjection(); }
+            get => axesLength; set { axesLength = value; SetAxesAnchors(AxesLength); UpdateProjection(); }
         }
 
+        // Grid Widget
         private bool showGridWidget;
         public bool ShowGridWidget
         {
             get => showGridWidget; set { showGridWidget = value; UpdateProjection(); }
         }
 
+        private int gridUnit;
+        public int GridUnit
+        {
+            get => gridUnit; set { gridUnit = value; UpdateProjection(); }
+        }
+
+        private int gridCount;
+        public int GridCount
+        {
+            get => gridCount; set { gridCount = value; UpdateProjection(); }
+        }
+        
         // Frame Widget
         private bool showFrameWidget;
         public bool ShowFrameWidget
@@ -244,7 +261,7 @@ namespace ExtendedControls.Controls
         [Description("Set the boundaries frame radius")]
         public double FramesLength
         {
-            get => framesLength; set { framesLength = value; SetFrameCoordinates(FramesLength); UpdateProjection(); }
+            get => framesLength; set { framesLength = value; SetFrameAnchors(FramesLength); UpdateProjection(); }
         }
 
         private int framesThickness;
@@ -302,6 +319,9 @@ namespace ExtendedControls.Controls
             FrameShape = Shape.Cube;
             FramesLength = 20;
             FramesThickness = 1;
+            ShowGridWidget = true;
+            GridCount = 5;
+            GridUnit = 10;
             Distance = 150;
             Focus = 1000;
             Azimuth = -0.4;
@@ -327,15 +347,21 @@ namespace ExtendedControls.Controls
             _mouseIdleTimer.Interval = 200;
             _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
 
-            if (ShowAxesWidget)
-            {
-                SetAxesCoordinates(this.axesLength);
-            }
+            //if (ShowAxesWidget)
+            //{
+            //    SetAxesCoordinates(this.axesLength);
+            //}
 
-            if (ShowFrameWidget)
-            {
-                SetFrameCoordinates(this.framesLength);
-            }
+            //if (ShowFrameWidget)
+            //{
+            //    SetFrameCoordinates(this.framesLength);
+            //}
+
+            //if (ShowGridWidget)
+            //{
+            //    SetGridCoordinates(this.gridCount, this.gridUnit);
+            //    //SetGridCoordinates(10, 1000);
+            //}
         }
 
         public void SetCenterOfMap(double[] coords)
@@ -343,8 +369,9 @@ namespace ExtendedControls.Controls
             if (coords != null)
             {
                 centerCoordinates = new double[] { coords[0], coords[1], coords[2] };
-                SetAxesCoordinates(AxesLength);
-                SetFrameCoordinates(FramesLength);
+                SetAxesAnchors(AxesLength);
+                SetFrameAnchors(FramesLength);
+                SetGridAnchors(GridCount, GridUnit);
             }
         }
                 
@@ -420,7 +447,7 @@ namespace ExtendedControls.Controls
                 Update.Projection(Planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
-            if (ShowGridWidget && Grids != null)
+            if (ShowGridWidget && GridHp != null && GridHm != null)
             {
                 Update.Projection(Grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
@@ -450,7 +477,7 @@ namespace ExtendedControls.Controls
             /// axes
             using (var AxisPen = new Pen(new SolidBrush(ForeColor))
             {
-                Width = 1,
+                Width = 2,
                 DashStyle = DashStyle.Solid
             })
             {
@@ -478,13 +505,14 @@ namespace ExtendedControls.Controls
                 }
             }
 
+            /// Grid
             if (ShowGridWidget)
             {
-                using (var GridPen = new Pen(new SolidBrush(Color.Aqua)) { Width = 1 })
+                using (var GridPen = new Pen(new SolidBrush(Color.DarkCyan)) { Width = 1 })
                 {
-                    foreach (var point in Grids)
+                    for (int i = 0; i < Grids.Count; i++)
                     {
-                        g.DrawLine(GridPen, point.Coords, Axes[0].Coords);
+                        g.DrawLine(GridPen, Grids[i][0].Coords, Grids[i][1].Coords);
                     }
                 }
             }

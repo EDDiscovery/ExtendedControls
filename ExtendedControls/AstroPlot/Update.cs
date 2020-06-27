@@ -10,17 +10,34 @@ namespace ExtendedControls.Controls
     {
         new internal static class Update
         {
-            internal static void Projection(List<AnchorPoint> corners, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
+            internal static void Projection(List<AnchorPoint> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
             {
                 var _interaction = Interaction(azimuth, elevation, cameraPosition);
                 var _data = Coords(x, y, z);
                 var X_h = new Tranform<double>(4, 1);
 
-                foreach (var corner in corners)
+                foreach (var anchor in anchors)
                 {
-                    X_h.SetMatrix(new double[] { corner.X - centerCoordinates[0], corner.Y - centerCoordinates[1], corner.Z - centerCoordinates[2], 1.0 });
+                    X_h.SetMatrix(new double[] { anchor.X - centerCoordinates[0], anchor.Y - centerCoordinates[1], anchor.Z - centerCoordinates[2], 1.0 });
                     var P = _data * _interaction * X_h;
-                    corner.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                    anchor.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                }
+            }
+
+            internal static void Projection(List<AnchorPoint[]> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
+            {
+                var _interaction = Interaction(azimuth, elevation, cameraPosition);
+                var _data = Coords(x, y, z);
+                var X_h = new Tranform<double>(4, 1);
+
+                foreach (var anchor in anchors)
+                {
+                    for (int i = 0; i < anchor.Length; i++)
+                    {
+                        X_h.SetMatrix(new double[] { anchor[i].X - centerCoordinates[0], anchor[i].Y - centerCoordinates[1], anchor[i].Z - centerCoordinates[2], 1.0 });
+                        var P = _data * _interaction * X_h;
+                        anchor[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                    }
                 }
             }
 
