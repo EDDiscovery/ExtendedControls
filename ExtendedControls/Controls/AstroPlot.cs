@@ -29,6 +29,7 @@ using EDDiscovery.Controls;
 using System.Security.Cryptography;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Runtime.Remoting.Messaging;
+using System.Text;
 
 namespace ExtendedControls.Controls
 {
@@ -280,6 +281,13 @@ namespace ExtendedControls.Controls
         }
 
         // Output
+
+        protected bool isObjectSelected;
+        public bool IsObjectSelected
+        {
+            get => isObjectSelected; set { isObjectSelected = value; }
+        }
+
         protected string selectedObjectName;
         public string SelectedObjectName
         {
@@ -349,6 +357,7 @@ namespace ExtendedControls.Controls
             InitializeComponent();
 
             selectedObjectName = "";
+            isObjectSelected = false;
 
             _mouseIdleTimer.AutoReset = false;
             _mouseIdleTimer.Interval = 100;
@@ -623,7 +632,7 @@ namespace ExtendedControls.Controls
             {
                 var dragPosition = GetMouseDelta(mousePosition, ptMouseClick);
 
-                Debug.WriteLine(dragPosition);
+                //Debug.WriteLine(dragPosition);
 
                 GetCenterCoordinates()[0] += dragPosition.X * mouseDragSensitivity;
                 GetCenterCoordinates()[2] += dragPosition.Y * mouseDragSensitivity;
@@ -696,7 +705,10 @@ namespace ExtendedControls.Controls
             }
             if (e.Button == MouseButtons.Right)
             {
-                ShowContextMenu();
+                if (isObjectSelected)
+                {                    
+                    ShowContextMenu();
+                }
             }
         }
 
@@ -707,7 +719,8 @@ namespace ExtendedControls.Controls
             var point = new Point();
             var coords = new double[3];
             var lastText = text;
-                        
+            isObjectSelected = false;
+
             if (MapObjects != null)
             {
                 for (int i = MapObjects.Count - 1; i >= 0; i--)
@@ -715,6 +728,7 @@ namespace ExtendedControls.Controls
                     if (mousePosition.X > (MapObjects[i].Coords.X - hs) && mousePosition.X < (MapObjects[i].Coords.X + hs) &&
                         mousePosition.Y > (MapObjects[i].Coords.Y - hs) && mousePosition.Y > (MapObjects[i].Coords.Y - hs))
                     {
+                        isObjectSelected = true;
                         text = MapObjects[i].Name;
                         point = new Point((int)MapObjects[i].Coords.X, (int)MapObjects[i].Coords.Y);
                         coords = new double[] { MapObjects[i].X, MapObjects[i].Y, MapObjects[i].Z };
@@ -737,7 +751,7 @@ namespace ExtendedControls.Controls
                             extPlotLabel.Text = selectedObjectName;
                             extPlotLabel.Location = new Point(point.X - SmallDotSize, point.Y - (SmallDotSize * 3));
 #if DEBUG
-                            Debug.WriteLine("AstroPlot - Mouse on: " + selectedObjectName + ", " + selectedObjectCoords[0] + ", " + selectedObjectCoords[1] + ", " + selectedObjectCoords[2]);
+                            //Debug.WriteLine("AstroPlot - Mouse on: " + selectedObjectName + ", " + selectedObjectCoords[0] + ", " + selectedObjectCoords[1] + ", " + selectedObjectCoords[2]);
 #endif
                         }
                     }
@@ -755,10 +769,12 @@ namespace ExtendedControls.Controls
                 if (MouseWheel_Resistance != 0)
                 {
                     Distance += (-e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
+                    Debug.WriteLine(Distance);
                 }
                 else
                 {
                     Distance += (-e.Delta * MouseWheel_Multiply);
+                    Debug.WriteLine(Distance);
                 }
             }
         }        

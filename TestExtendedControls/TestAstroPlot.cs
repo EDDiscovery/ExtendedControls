@@ -38,7 +38,7 @@ namespace DialogTest
             astroPlot.GridUnit = 10000;
             astroPlot.GridCount = 10;
             astroPlot.MouseWheel_Resistance = 0.5;
-            astroPlot.MouseWheel_Multiply = 50;
+            astroPlot.MouseWheel_Multiply = 15;
             astroPlot.MouseDragSensitivity = 10;
             astroPlot.ShowAxesWidget = true;
             astroPlot.ShowFrameWidget = false;
@@ -69,7 +69,7 @@ namespace DialogTest
             testSystemsList.Add(new TestSystem { Name = "Point Decision", X = -7684.75, Y = 13.46875, Z = -14373.46875 });
             testSystemsList.Add(new TestSystem { Name = "Magellan's Star", X = 40503.8125, Y = 25.96875, Z = 17678 });
             testSystemsList.Add(new TestSystem { Name = "Star One", X = -35413.03125, Y = -14.75, Z = 3821.46875 });
-            
+
             var centerTo = testSystemsList[3];
             astroPlot.SetCenterOfMap(new double[] { centerTo.X, centerTo.Y, centerTo.Z });
         }
@@ -92,96 +92,6 @@ namespace DialogTest
                 List.Add(new object[] { list[i].Name, list[i].X, list[i].Y, list[i].Z, list[i].IsVisited, list[i].IsWaypoint, list[i].IsCurrent });
             }
             astroPlot.AddSystemsToMap(List);
-        }
-                
-        private void TestAstroPlot_MouseEnter(object sender, EventArgs e)
-        {
-            _mouseIdleTimer.Start();
-
-#if DEBUG
-            Debug.WriteLine("Form timer started");
-#endif
-        }
-
-        private void TestAstroPlot_MouseLeave(object sender, EventArgs e)
-        {
-            _mouseIdleTimer.Stop();
-
-#if DEBUG
-            Debug.WriteLine("Form timer stopped");
-#endif
-        }
-
-        private void extShowFrame_CheckedChanged(object sender, EventArgs e)
-        {
-            //if (extShowFrame.Checked)
-            //{
-            //    astroPlot.ShowFrameWidget = true;
-            //    astroPlot.SetFrameCoordinates(astroPlot.FramesLength);
-            //}
-            //else
-            //{
-            //    astroPlot.ShowFrameWidget = false;
-            //}
-        }
-
-        private void extCube_CheckedChanged(object sender, EventArgs e)
-        {
-            //if (extCube.Checked)
-            //{
-            //    extSphere.Checked = false;
-            //    astroPlot.SetFrameShape(AstroPlot.Shape.Cube);
-            //}
-            //else
-            //{
-            //    extSphere.Checked = true;
-            //}
-        }
-
-        private void extSphere_CheckedChanged(object sender, EventArgs e)
-        {
-        //    if (extSphere.Checked)            {
-        //        extCube.Checked = false;
-        //        astroPlot.SetFrameShape(AstroPlot.Shape.Sphere);
-        //    }
-        //    else
-        //    {
-        //        extCube.Checked = true;
-        //    }
-        }
-
-        private void extAzes_CheckedChanged(object sender, EventArgs e)
-        {
-            //astroPlot.ShowAxesWidget = extAzes.Checked;
-        }
-
-        private void extComboBox1_TextChanged(object sender, EventArgs e)
-        {
-            //if (extComboBox1.Text == "24")
-            //{
-            //    extPanelPinned1.PinSize = 24;
-            //    extPanelPinned1.Reload();
-            //    extPanelPinned1.Dock = DockStyle.None;
-            //}
-
-            //if (extComboBox1.Text == "32")
-            //{
-            //    extPanelPinned1.PinSize = 32;
-            //    extPanelPinned1.Reload();
-            //    extPanelPinned1.Dock = DockStyle.None;
-            //}
-
-            //if (extComboBox1.Text == "48")
-            //{
-            //    extPanelPinned1.PinSize = 48;
-            //    extPanelPinned1.Reload();
-            //    extPanelPinned1.Dock = DockStyle.None;
-            //}
-        }
-
-        private void extPanelPinned1_ParentChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
