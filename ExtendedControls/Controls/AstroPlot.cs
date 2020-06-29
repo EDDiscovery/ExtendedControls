@@ -53,13 +53,13 @@ namespace ExtendedControls.Controls
             this.plotCanvas.Name = "plotCanvas";
             this.plotCanvas.Size = new System.Drawing.Size(400, 400);
             this.plotCanvas.TabIndex = 0;
-            this.plotCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.PlotCanvas_Paint);
-            this.plotCanvas.MouseClick += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseClick);
-            this.plotCanvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseDown);
-            this.plotCanvas.MouseLeave += new System.EventHandler(this.PlotCanvas_MouseLeave);
-            this.plotCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseMove);
-            this.plotCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseUp);
-            this.plotCanvas.Resize += new System.EventHandler(this.PlotCanvas_Resize);
+            this.plotCanvas.Paint += this.PlotCanvas_Paint;
+            this.plotCanvas.MouseClick += this.PlotCanvas_MouseClick;
+            this.plotCanvas.MouseDown += this.PlotCanvas_MouseDown;
+            this.plotCanvas.MouseLeave += this.PlotCanvas_MouseLeave;
+            this.plotCanvas.MouseMove += this.PlotCanvas_MouseMove;
+            this.plotCanvas.MouseUp += this.PlotCanvas_MouseUp;
+            this.plotCanvas.Resize += this.PlotCanvas_Resize;
             // 
             // AstroPlot
             // 
@@ -116,6 +116,10 @@ namespace ExtendedControls.Controls
             return propertyValue;
         }
 
+        /// <summary>
+        /// Properties
+        /// </summary>
+
         // Projection
         internal double[] cameraPosition = new double[3];
         internal double[] centerCoordinates = new double[3];
@@ -143,14 +147,41 @@ namespace ExtendedControls.Controls
         [Description("Horizontal position of the camera expressed as an angular distance")]
         public double Azimuth
         {
-            get => azimuth; set { azimuth = value; UpdateProjection(); }
+            get => azimuth;
+
+            set
+            {
+                if (PlotType == PlotProjection.Perspective)
+                {
+                    azimuth = value;
+                }
+                else
+                {
+                    azimuth = 0;
+                }
+                UpdateProjection(); 
+            }
         }
 
         internal double lastElevation, elevation;
         [Description("Vertical position of the camera expressed as an angular distance")]
         public double Elevation
         {
-            get => elevation; set { elevation = value; UpdateProjection(); }
+            get => elevation;
+
+            set
+            {
+                if (PlotType == PlotProjection.Perspective)
+                {
+                    elevation = value;
+                }
+                else
+                {
+                    elevation = -1.59;
+                }
+
+                UpdateProjection();
+            }
         }
 
         private double focalLength;
@@ -161,6 +192,11 @@ namespace ExtendedControls.Controls
         }
 
         // Look'n'Feel
+        public enum PlotProjection { Plain = 0, Perspective = 1 };
+
+        private PlotProjection plotType;
+        public PlotProjection PlotType { get => plotType; set => plotType = value; }
+
         public int SmallDotSize { get; set; }
         public int MediumDotSize { get; set; }
         public int LargeDotSize { get; set; }
@@ -391,9 +427,10 @@ namespace ExtendedControls.Controls
                 return cp;
             }
         }
-                        
+
         protected override void OnHandleCreated(EventArgs e)
         {
+            PlotType = PlotProjection.Plain;
             MouseRotation_Resistance = 75;
             MouseRotation_Multiply = 1;
             MouseDrag_Resistance = 12;
@@ -692,8 +729,15 @@ namespace ExtendedControls.Controls
 
             if (leftMousePressed)
             {
-                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;
-                elevation = lastElevation + ((ptMouseClick.Y - e.Y) * (MouseRotation_Multiply * 0.2)) / MouseRotation_Resistance;
+                if (PlotType == PlotProjection.Perspective)
+                {
+                    azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;
+                    elevation = lastElevation + ((ptMouseClick.Y - e.Y) * (MouseRotation_Multiply * 0.2)) / MouseRotation_Resistance;
+                }
+                else if (PlotType == PlotProjection.Plain)
+                {
+                    azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;                    
+                }
                 UpdateProjection();
             }
 
