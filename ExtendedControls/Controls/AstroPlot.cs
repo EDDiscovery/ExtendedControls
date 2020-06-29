@@ -123,7 +123,8 @@ namespace ExtendedControls.Controls
         // Projection
         internal double[] cameraPosition = new double[3];
         internal double[] centerCoordinates = new double[3];
-        
+        internal double[] lastCenterCoordinates = new double[3];
+
         internal double lateralDrag;
         internal double longitudinalDrag;
         internal double[] dragCoords = new double[2];
@@ -612,7 +613,7 @@ namespace ExtendedControls.Controls
             }
 
             /// Grid
-            if (ShowGridWidget)
+            if (ShowGridWidget && PlotType == PlotProjection.Plain)
             {
                 using (var GridPen = new Pen(new SolidBrush(Color.FromArgb(80, 40, 160, 220))) { Width = 1 })
                 {
@@ -736,22 +737,20 @@ namespace ExtendedControls.Controls
                 }
                 else if (PlotType == PlotProjection.Plain)
                 {
-                    azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;                    
+                    azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;
                 }
-                UpdateProjection();
+                
             }
 
             if (middleMousePressed)
             {
-                var dragPosition = GetMouseDelta(mousePosition, ptMouseClick);
-
-                //Debug.WriteLine(dragPosition);
-
-                GetCenterCoordinates()[0] += (dragPosition.X * MouseDrag_Multiply) / MouseDrag_Resistance;
-                GetCenterCoordinates()[2] += (dragPosition.Y * MouseDrag_Multiply) / MouseDrag_Resistance;
+                centerCoordinates[0] = lastCenterCoordinates[0] - ((ptMouseClick.X - e.X) * MouseDrag_Multiply) / MouseDrag_Resistance;
+                centerCoordinates[2] = lastCenterCoordinates[2] - ((ptMouseClick.Y - e.Y) * MouseDrag_Multiply) / MouseDrag_Resistance;
                 SetCenterCoordinates(GetCenterCoordinates());
             }
-                        
+
+            UpdateProjection();
+
             _mouseIdleTimer.Start();
         }
 
@@ -772,21 +771,21 @@ namespace ExtendedControls.Controls
 
         private void PlotCanvas_MouseDown(object sender, MouseEventArgs e)
         {
+            ptMouseClick = new PointF(e.X, e.Y);
+            lastAzimuth = azimuth;
+            lastElevation = elevation;
+            lastCenterCoordinates = centerCoordinates;
+
             if (e.Button == MouseButtons.Left)
             {
                 // rotate
                 leftMousePressed = true;
-                ptMouseClick = new PointF(e.X, e.Y);
                 selectedObjectName = "";
-                lastAzimuth = azimuth;
-                lastElevation = elevation;
             }
             if (e.Button == MouseButtons.Middle)
             {
                 middleMousePressed = true;
-                lastAzimuth = azimuth;
-                lastElevation = elevation;
-                ptMouseClick = new PointF(e.X, e.Y);
+                
             }
             if (e.Button == MouseButtons.Right)
             {
@@ -877,7 +876,6 @@ namespace ExtendedControls.Controls
 
                 // zoom
                 Distance += (-e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
-                Debug.WriteLine(Distance);
             }
         }
     }
