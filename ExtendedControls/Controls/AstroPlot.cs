@@ -718,8 +718,8 @@ namespace ExtendedControls.Controls
 
             if (leftMousePressed)
             {
-                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.5)) / MouseRotation_Resistance;
-                elevation = lastElevation + ((ptMouseClick.Y - e.Y) * (MouseRotation_Multiply * 0.5)) / MouseRotation_Resistance;
+                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;
+                elevation = lastElevation + ((ptMouseClick.Y - e.Y) * (MouseRotation_Multiply * 0.2)) / MouseRotation_Resistance;
                 UpdateProjection();
             }
 
