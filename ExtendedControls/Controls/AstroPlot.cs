@@ -116,6 +116,8 @@ namespace ExtendedControls.Controls
             return propertyValue;
         }
 
+        #region Properties
+
         /// <summary>
         /// Properties
         /// </summary>
@@ -357,7 +359,7 @@ namespace ExtendedControls.Controls
             get => showFrameWidget; set { showFrameWidget = value; UpdateProjection(); }
         }
 
-        public enum Shape { Cube = 0, Sphere = 1 };
+        public enum Shape { Cube = 0, Planes = 1 };
 
         public Shape FrameShape;
         
@@ -413,6 +415,8 @@ namespace ExtendedControls.Controls
             get => selectedObjectCoords; private set { selectedObjectCoords = value; }
         }
 
+        #endregion
+
         // Timer
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
 
@@ -431,7 +435,7 @@ namespace ExtendedControls.Controls
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            PlotType = PlotProjection.Plain;
+            PlotType = PlotProjection.Perspective;
             MouseRotation_Resistance = 75;
             MouseRotation_Multiply = 1;
             MouseDrag_Resistance = 12;
@@ -485,19 +489,19 @@ namespace ExtendedControls.Controls
             }
         }
                 
-        public void AddSystemsToMap(List<object[]> mapObjects)
+        public void AddSystemsToMap(List<object[]> plotObjects)
         {
-            for (int i = 0; i < mapObjects.Count; i++)
+            for (int i = 0; i < plotObjects.Count; i++)
             {
                 _plotObjects.Add(new PlotObject
                 {
-                    Name = mapObjects[i][0].ToString(),
-                    X = (double)mapObjects[i][1],
-                    Y = (double)mapObjects[i][2],
-                    Z = (double)mapObjects[i][3],
-                    IsVisited = (bool)mapObjects[i][4],
-                    IsWaypoint = (bool)mapObjects[i][5],
-                    IsCurrent = (bool)mapObjects[i][6],
+                    Name = plotObjects[i][0].ToString(),
+                    X = (double)plotObjects[i][1],
+                    Y = (double)plotObjects[i][2],
+                    Z = (double)plotObjects[i][3],
+                    IsVisited = (bool)plotObjects[i][4],
+                    IsWaypoint = (bool)plotObjects[i][5],
+                    IsCurrent = (bool)plotObjects[i][6],
                     Coords = new PointF(0, 0)
                 });
             }
@@ -625,7 +629,7 @@ namespace ExtendedControls.Controls
             }
 
             /// Frame
-            if (ShowFrameWidget)
+            if (ShowFrameWidget && PlotType == PlotProjection.Perspective)
             {
                 using (var FramePen = new Pen(new SolidBrush(ForeColor))
                 {
@@ -656,28 +660,20 @@ namespace ExtendedControls.Controls
                         g.DrawLine(FramePen, _frames[2].Coords, _frames[6].Coords);
                         g.DrawLine(FramePen, _frames[4].Coords, _frames[7].Coords);
                     }
-                }
 
-                /// Frame
-                using (var PlanePen = new Pen(new SolidBrush(ForeColor))
-                {
-                    Width = 1,
-                    DashStyle = DashStyle.Solid
-                })
-                {
                     /// Spherical frame
-                    if (GetFrameShape() == Shape.Sphere && _frames.Count > 0)
+                    if (GetFrameShape() == Shape.Planes && _frames.Count > 0)
                     {
                         var horizontalPlane = new PointF[] { _planes[0].Coords, _planes[2].Coords, _planes[1].Coords, _planes[3].Coords };
                         var verticalPlane = new PointF[] { _planes[0].Coords, _planes[4].Coords, _planes[1].Coords, _planes[5].Coords };
                         var longitudinalPlane = new PointF[] { _planes[2].Coords, _planes[4].Coords, _planes[3].Coords, _planes[5].Coords };
 
-                        PlanePen.Color = Color.Red;
-                        g.DrawClosedCurve(PlanePen, horizontalPlane, (float)0.85, FillMode.Winding);
-                        PlanePen.Color = Color.Green;
-                        g.DrawClosedCurve(PlanePen, verticalPlane, (float)0.85, FillMode.Winding);
-                        PlanePen.Color = Color.Blue;
-                        g.DrawClosedCurve(PlanePen, longitudinalPlane, (float)0.85, FillMode.Winding);
+                        FramePen.Color = Color.Red;
+                        g.DrawClosedCurve(FramePen, horizontalPlane, (float)0.85, FillMode.Winding);
+                        FramePen.Color = Color.Green;
+                        g.DrawClosedCurve(FramePen, verticalPlane, (float)0.85, FillMode.Winding);
+                        FramePen.Color = Color.Blue;
+                        g.DrawClosedCurve(FramePen, longitudinalPlane, (float)0.85, FillMode.Winding);
                     }
                 }
             }
@@ -717,9 +713,6 @@ namespace ExtendedControls.Controls
         private void PlotCanvas_MouseLeave(object sender, EventArgs e)
         {
             _mouseIdleTimer.Stop();
-#if DEBUG
-            //Debug.WriteLine("AstroPlot timer stopped");
-#endif
         }
 
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
@@ -872,8 +865,6 @@ namespace ExtendedControls.Controls
         {
             if (!middleMousePressed)
             {
-                //extPlotLabel.Visible = false;
-
                 // zoom
                 Distance += (-e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
             }

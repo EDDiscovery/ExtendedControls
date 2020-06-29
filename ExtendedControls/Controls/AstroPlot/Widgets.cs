@@ -106,7 +106,7 @@ namespace ExtendedControls.Controls
 
             _grids.Clear();
 
-            for (int i = 0; i < (gcd); i++)
+            for (int i = 0; i < gcd; i++)
             {
                 _grids.Add(new AnchorPoint[]
                 {
@@ -114,7 +114,7 @@ namespace ExtendedControls.Controls
                     new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * gcd) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (gu * i) - go}
                 });
                 _grids.Add(new AnchorPoint[]
-                {                    
+                {
                     new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * i) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (gu * gcd) - go},
                     new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * i) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gcd - go}
                 });
