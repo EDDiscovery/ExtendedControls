@@ -25,8 +25,14 @@ using static ExtendedControls.Controls.AstroPlot;
 
 namespace ExtendedControls.AstroPlot
 {
-    internal static class Projection
+    internal class Projection
     {
+        public class HotSpot
+        {
+            public object Tag { get; set; }
+            public PointF Coords { get; set; }
+        }        
+
         internal static void Update(List<AnchorPoint> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
             var _interaction = Interaction(azimuth, elevation, cameraPosition);
@@ -58,28 +64,30 @@ namespace ExtendedControls.AstroPlot
             }
         }
 
-        internal static void Update(List<PlotObject> mapObjects, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
+        internal static void Update(List<PlotObject> mapObjects, List<object[]> hotSpotMap, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
             var _interaction = Interaction(azimuth, elevation, cameraPosition);
             var _data = Coords(x, y, z);
             var X_h = new Matrix<double>(4, 1);
 
-            foreach (var item in mapObjects)
+            for (int i = 0; i < mapObjects.Count; i++)
             {
                 if (centerCoordinates != null)
                 {
-                    X_h.SetMatrix(new double[] { item.X - centerCoordinates[0], item.Y - centerCoordinates[1], item.Z - centerCoordinates[2], 1.0 });
+                    X_h.SetMatrix(new double[] { mapObjects[i].X - centerCoordinates[0], mapObjects[i].Y - centerCoordinates[1], mapObjects[i].Z - centerCoordinates[2], 1.0 });
                 }
                 else
                 {
-                    X_h.SetMatrix(new double[] { item.X, item.Y, item.Z, 1.0 });
+                    X_h.SetMatrix(new double[] { mapObjects[i].X, mapObjects[i].Y, mapObjects[i].Z, 1.0 });
                 }
 
                 var P = _data * _interaction * X_h;
-                item.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
+                mapObjects[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));                
+                hotSpotMap[i][1] = (int)mapObjects[i].Coords.X;
+                hotSpotMap[i][2] = (int)mapObjects[i].Coords.Y;
             }
         }
-
+                
         internal static Matrix<double> Coords(double x, double y, double z)
         {
             var _matrix = new Matrix<double>(3, 3);
@@ -105,6 +113,6 @@ namespace ExtendedControls.AstroPlot
                                        Math.Sin(azimuth)*Math.Sin(elevation),  Math.Cos(elevation), Math.Cos(azimuth)*Math.Sin(elevation),
                                        Math.Cos(elevation)*Math.Sin(azimuth), -Math.Sin(elevation), Math.Cos(azimuth)*Math.Cos(elevation) });
             return R;
-        }        
+        }
     }
 }

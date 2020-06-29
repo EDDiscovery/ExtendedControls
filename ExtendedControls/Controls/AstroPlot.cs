@@ -31,6 +31,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using ExtendedControls.AstroPlot;
+using System.Runtime.CompilerServices;
 
 namespace ExtendedControls.Controls
 {
@@ -76,6 +77,8 @@ namespace ExtendedControls.Controls
         private readonly List<AnchorPoint> _frames = new List<AnchorPoint>();
         private readonly List<AnchorPoint[]> _grids = new List<AnchorPoint[]>();
         private readonly List<PlotObject> _plotObjects = new List<PlotObject>();
+
+        internal List<object[]> _hotSpotMap = new List<object[]>();
 
         // Values normalization
         public class MaxValue : Attribute
@@ -504,6 +507,11 @@ namespace ExtendedControls.Controls
                     IsCurrent = (bool)plotObjects[i][6],
                     Coords = new PointF(0, 0)
                 });
+
+                _hotSpotMap.Add(new object[]
+                {
+                    plotObjects[i][0].ToString(), 0, 0, false
+                });
             }
             
             UpdateProjection();
@@ -513,6 +521,7 @@ namespace ExtendedControls.Controls
         {
             Invalidate();
             _plotObjects.Clear();
+            _hotSpotMap.Clear();
         }
 
         private void ShowContextMenu()
@@ -565,7 +574,7 @@ namespace ExtendedControls.Controls
 
             if (_plotObjects != null)
             {
-                Projection.Update(_plotObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Projection.Update(_plotObjects, _hotSpotMap, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
             }
 
             Invalidate();
@@ -820,42 +829,28 @@ namespace ExtendedControls.Controls
         private void MouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var hs = HotSpotSize;
-            var text = "";
-            var point = new Point();
-            var coords = new double[3];
-            var lastText = text;
-            isObjectSelected = false;
+            //var text = "";
+            //var point = new Point();
+            //var coords = new double[3];
+            //var lastText = text;
+            //isObjectSelected = false;
 
-            if (_plotObjects != null)
-            {
-                for (int i = _plotObjects.Count - 1; i >= 0; i--)
-                {
-                    if (mousePosition.X > (_plotObjects[i].Coords.X - hs) && mousePosition.X < (_plotObjects[i].Coords.X + hs) &&
-                        mousePosition.Y > (_plotObjects[i].Coords.Y - hs) && mousePosition.Y > (_plotObjects[i].Coords.Y - hs))
-                    {
-                        isObjectSelected = true;
-                        text = _plotObjects[i].Name;
-                        point = new Point((int)_plotObjects[i].Coords.X, (int)_plotObjects[i].Coords.Y);
-                        coords = new double[] { _plotObjects[i].X, _plotObjects[i].Y, _plotObjects[i].Z };
-                    }
-                }
-            }
+            Debug.WriteLine("");
+            Debug.WriteLine("");
+
+            HotSpotMap.CreateHotSpotMap(_hotSpotMap, mousePosition, hs);
 
             BeginInvoke(
                 (Action)(
                     () =>
                     {
-                        if (text != "" && text != lastText)
-                        {
-                            selectedObjectName = text;
-                            selectedObjectPoint = point;
-                            selectedObjectCoords = coords;
-                            lastText = text;
-
-                            //extPlotLabel.Visible = true;
-                            //extPlotLabel.Text = selectedObjectName;
-                            //extPlotLabel.Location = new Point(point.X - SmallDotSize, point.Y - (SmallDotSize * 3));
-                        }
+                        //if (text != "" && text != lastText)
+                        //{
+                        //    selectedObjectName = text;
+                        //    selectedObjectPoint = point;
+                        //    selectedObjectCoords = coords;
+                        //    lastText = text;
+                        //}
                     }
                 )
             );
