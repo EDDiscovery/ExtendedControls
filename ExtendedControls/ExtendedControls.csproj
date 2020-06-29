@@ -55,7 +55,6 @@
     <Compile Include="Controls\AstroPlot\Widgets.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\AstroPlot\Handlers.cs" />
     <Compile Include="Controls\AstroPlot.cs">
       <SubType>Component</SubType>
     </Compile>

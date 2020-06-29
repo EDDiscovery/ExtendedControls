@@ -55,8 +55,8 @@
             this.astroPlot.LargeDotSize = 15;
             this.astroPlot.Location = new System.Drawing.Point(0, 0);
             this.astroPlot.MediumDotSize = 10;
-            this.astroPlot.Mouse_Sensitivity = 150;
-            this.astroPlot.MouseDragSensitivity = 5D;
+            this.astroPlot.MouseRotation_Resistance = 150;
+            this.astroPlot.MouseDrag_Resistance = 5D;
             this.astroPlot.MouseWheel_Multiply = 2D;
             this.astroPlot.MouseWheel_Resistance = 100D;
             this.astroPlot.Name = "astroPlot";

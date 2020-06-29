@@ -39,7 +39,7 @@ namespace DialogTest
             astroPlot.GridCount = 10;
             astroPlot.MouseWheel_Resistance = 0.5;
             astroPlot.MouseWheel_Multiply = 15;
-            astroPlot.MouseDragSensitivity = 10;
+            astroPlot.MouseDrag_Resistance = 10;
             astroPlot.ShowAxesWidget = true;
             astroPlot.ShowFrameWidget = false;
             astroPlot.ShowGridWidget = true;

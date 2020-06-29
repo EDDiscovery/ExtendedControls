@@ -100,6 +100,45 @@ namespace ExtendedControls.Controls
         private readonly List<AnchorPoint[]> _grids = new List<AnchorPoint[]>();
         private readonly List<PlotObject> _plotObjects = new List<PlotObject>();
 
+        // Values normalization
+        public class MaxValue : Attribute
+        {
+            public double Max;
+
+            public MaxValue(double max)
+            {
+                Max = max;
+            }
+        }
+
+        public class MinValue : Attribute
+        {
+            public double Min;
+
+            public MinValue(double min)
+            {
+                Min = min;
+            }
+        }
+
+        private double NormalizePropertyValue(string propertyName, double propertyValue)
+        {
+            var memberInfo = this.GetType().GetMember(propertyName);
+            if (memberInfo.Length > 0)
+            {
+                var _attr = this.GetType().GetMember(propertyName)[0];
+                var attributes = Attribute.GetCustomAttributes(_attr);
+                if (attributes.Length > 0)
+                {
+                    var minValueAttribute = (MinValue)attributes[0];
+                    var maxValueAttribute = (MaxValue)attributes[1];
+                    if (propertyValue > minValueAttribute.Min) { propertyValue = minValueAttribute.Min; }
+                    if (propertyValue < maxValueAttribute.Max) { propertyValue = maxValueAttribute.Max; }
+                }
+            }
+            return propertyValue;
+        }
+
         // Projection
         internal double[] cameraPosition = new double[3];
         internal double[] centerCoordinates = new double[3];
@@ -161,38 +200,94 @@ namespace ExtendedControls.Controls
         internal Point mousePosition;
         internal Point lastMousePosition;
 
-        private int mouseSensitivity;
-        [Description("Set the sensitivity of the mouse movement")]
-        public int Mouse_Sensitivity
+        [MinValue(1.0), MaxValue(100.0)]
+        private double mouseRotationResistance;
+        [Description("Set the resistance of the mouse rotation (0.1 to 1.0)")]
+        public double MouseRotation_Resistance
         {
-            get => mouseSensitivity; set { mouseSensitivity = value;}
+            get => mouseRotationResistance;
+
+            set
+            {
+                mouseRotationResistance = NormalizePropertyValue(MouseRotation_Resistance.ToString(), value);
+            }
         }
 
+        [MinValue(1.0), MaxValue(100)]
+        private double mouseRotationMultiply;
+        [Description("Set the multiplier of the mouse rotation (1.0 to 100.0)")]
+        public double MouseRotation_Multiply
+        {
+            get => mouseRotationMultiply;
+
+            set
+            {
+                mouseRotationMultiply = NormalizePropertyValue(MouseRotation_Multiply.ToString(), value);
+            }
+        }
+
+        [MinValue(1.0), MaxValue(100)]
         private double mouseWheelResistance;
-        [Description("Set the resistance of the mouse wheel")]
+        [Description("Set the resistance of the mouse wheel (0.1 to 1.0)")]
         public double MouseWheel_Resistance
         {
-            get => mouseWheelResistance; set { mouseWheelResistance = value;}
+            get => mouseWheelResistance; set
+            {
+                mouseWheelResistance = NormalizePropertyValue(MouseWheel_Resistance.ToString(), value);
+            }
         }
 
+        [MinValue(1), MaxValue(10)]
         private double mouseWheelMultiply;
-        [Description("Set the multiply of the mouse wheel")]
+        [Description("Set the multiply of the mouse wheel (1.0 to 100.0)")]
         public double MouseWheel_Multiply
         {
-            get => mouseWheelMultiply; set { mouseWheelMultiply = value; }
+            get => mouseWheelMultiply;
+
+            set
+            {
+                mouseWheelMultiply = NormalizePropertyValue(MouseWheel_Multiply.ToString(), value);
+            }
         }
 
-        private double mouseDragSensitivity;
-        public double MouseDragSensitivity
+        [MinValue(1.0), MaxValue(100)]
+        private double mouseDragResistance;
+        [Description("Set the resistance of the mouse drag (0.1 to 1.0)")]
+        public double MouseDrag_Resistance
         {
-            get => mouseDragSensitivity; set { mouseDragSensitivity = value; }
+            get => mouseDragResistance;
+            
+            set
+            {
+                mouseDragResistance = NormalizePropertyValue(MouseDrag_Resistance.ToString(), value);
+            }
         }
 
-        private int hotspotSize;
+        [MinValue(1), MaxValue(10)]
+        private double mouseDragMultiply;
+        [Description("Set the multiply of the mouse drag (1.0 to 10.0)")]
+        public double MouseDrag_Multiply
+        {
+            get => mouseDragMultiply;
+            
+            set
+            {
+                mouseDragMultiply = NormalizePropertyValue(MouseDrag_Multiply.ToString(), value);
+            }
+        }
+
+        [MinValue(5), MaxValue(50)]
+        private double hotspotSize;
+
         [Description("Define the size of the hotspot area for the map points")]
-        public int HotSpotSize
+        public double HotSpotSize
         {
-            get => hotspotSize; set { hotspotSize = value; UpdateProjection(); }
+            get => hotspotSize;
+
+            set
+            {
+                hotspotSize = NormalizePropertyValue(HotSpotSize.ToString(), value); UpdateProjection();
+            }
         }
                 
         // Axes Widget
@@ -322,9 +417,12 @@ namespace ExtendedControls.Controls
                         
         protected override void OnHandleCreated(EventArgs e)
         {
-            MouseWheel_Multiply = 2;
-            MouseDragSensitivity = 5;
-            MouseWheel_Resistance = 100;
+            MouseRotation_Resistance = 75;
+            MouseRotation_Multiply = 1;
+            MouseDrag_Resistance = 12;
+            MouseDrag_Multiply = 20;
+            MouseWheel_Resistance = 2;
+            MouseWheel_Multiply = 7;
             ShowAxesWidget = true;
             AxesLength = 10;
             AxesThickness = 1;
@@ -620,8 +718,8 @@ namespace ExtendedControls.Controls
 
             if (leftMousePressed)
             {
-                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) / mouseSensitivity);
-                elevation = lastElevation + ((ptMouseClick.Y - e.Y) / mouseSensitivity);
+                azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.5)) / MouseRotation_Resistance;
+                elevation = lastElevation + ((ptMouseClick.Y - e.Y) * (MouseRotation_Multiply * 0.5)) / MouseRotation_Resistance;
                 UpdateProjection();
             }
 
@@ -631,8 +729,8 @@ namespace ExtendedControls.Controls
 
                 //Debug.WriteLine(dragPosition);
 
-                GetCenterCoordinates()[0] += dragPosition.X * mouseDragSensitivity;
-                GetCenterCoordinates()[2] += dragPosition.Y * mouseDragSensitivity;
+                GetCenterCoordinates()[0] += (dragPosition.X * MouseDrag_Multiply) / MouseDrag_Resistance;
+                GetCenterCoordinates()[2] += (dragPosition.Y * MouseDrag_Multiply) / MouseDrag_Resistance;
                 SetCenterCoordinates(GetCenterCoordinates());
             }
                         
@@ -703,7 +801,7 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Right)
             {
                 if (isObjectSelected)
-                {                    
+                {
                     ShowContextMenu();
                 }
             }
@@ -761,18 +859,10 @@ namespace ExtendedControls.Controls
             if (!middleMousePressed)
             {
                 extPlotLabel.Visible = false;
-
+                
                 // zoom
-                if (MouseWheel_Resistance != 0)
-                {
-                    Distance += (-e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
-                    Debug.WriteLine(Distance);
-                }
-                else
-                {
-                    Distance += (-e.Delta * MouseWheel_Multiply);
-                    Debug.WriteLine(Distance);
-                }
+                Distance += (-e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
+                Debug.WriteLine(Distance);
             }
         }        
     }
