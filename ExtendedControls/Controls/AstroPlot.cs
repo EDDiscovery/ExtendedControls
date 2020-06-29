@@ -37,16 +37,11 @@ namespace ExtendedControls.Controls
     public partial class AstroPlot : Control
     {
         private ExtPictureBox plotCanvas;
-        private ContextMenuStrip contextMenuStrip;
         private IContainer components;
-        private ExtLabel extPlotLabel;
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.plotCanvas = new ExtendedControls.ExtPictureBox();
-            this.extPlotLabel = new ExtendedControls.ExtLabel();
-            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.plotCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -66,31 +61,13 @@ namespace ExtendedControls.Controls
             this.plotCanvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PlotCanvas_MouseUp);
             this.plotCanvas.Resize += new System.EventHandler(this.PlotCanvas_Resize);
             // 
-            // extPlotLabel
-            // 
-            this.extPlotLabel.AutoSize = true;
-            this.extPlotLabel.BackColor = System.Drawing.Color.Black;
-            this.extPlotLabel.ForeColor = System.Drawing.Color.White;
-            this.extPlotLabel.Location = new System.Drawing.Point(8, 8);
-            this.extPlotLabel.Name = "extPlotLabel";
-            this.extPlotLabel.Size = new System.Drawing.Size(0, 13);
-            this.extPlotLabel.TabIndex = 1;
-            this.extPlotLabel.TextBackColor = System.Drawing.Color.Black;
-            // 
-            // contextMenuStrip
-            // 
-            this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(61, 4);
-            // 
             // AstroPlot
             // 
-            this.Controls.Add(this.extPlotLabel);
             this.Controls.Add(this.plotCanvas);
             this.ForeColor = System.Drawing.Color.White;
             this.Size = new System.Drawing.Size(400, 400);
             ((System.ComponentModel.ISupportInitialize)(this.plotCanvas)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -498,20 +475,17 @@ namespace ExtendedControls.Controls
 
         private void ShowContextMenu()
         {
-#if DEBUG
-            //Debug.WriteLine("Show context menu");
-#endif
-            contextMenuStrip.Items.Clear();
+            //contextMenuStrip.Items.Clear();
 
-            var CenterTo = new ToolStripMenuItem
-            {
-                Text = "Center to " + SelectedObjectName,
-                Tag = SelectedObjectCoords
-            };
-            CenterTo.Click += CenterTo_Click;
-            contextMenuStrip.Items.Add(CenterTo);
+            //var CenterTo = new ToolStripMenuItem
+            //{
+            //    Text = "Center to " + SelectedObjectName,
+            //    Tag = SelectedObjectCoords
+            //};
+            //CenterTo.Click += CenterTo_Click;
+            //contextMenuStrip.Items.Add(CenterTo);
 
-            contextMenuStrip.Show(this, mousePosition);
+            //contextMenuStrip.Show(this, mousePosition);
         }
 
         private void CenterTo_Click(object sender, EventArgs e)
@@ -522,8 +496,8 @@ namespace ExtendedControls.Controls
 
         private void UpdateProjection()
         {
-            extPlotLabel.Text = "";
-            extPlotLabel.Visible = false;
+            //extPlotLabel.Text = "";
+            //extPlotLabel.Visible = false;
 
             var x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
             var y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
@@ -790,13 +764,13 @@ namespace ExtendedControls.Controls
         {
             if (e.Button == MouseButtons.Left)
             {
-                extPlotLabel.Text = "";
-                extPlotLabel.Visible = false;
+                //extPlotLabel.Text = "";
+                //extPlotLabel.Visible = false;
             }
             if (e.Button == MouseButtons.Middle)
             {
-                extPlotLabel.Text = "";
-                extPlotLabel.Visible = false;
+                //extPlotLabel.Text = "";
+                //extPlotLabel.Visible = false;
             }
             if (e.Button == MouseButtons.Right)
             {
@@ -842,12 +816,9 @@ namespace ExtendedControls.Controls
                             selectedObjectCoords = coords;
                             lastText = text;
 
-                            extPlotLabel.Visible = true;
-                            extPlotLabel.Text = selectedObjectName;
-                            extPlotLabel.Location = new Point(point.X - SmallDotSize, point.Y - (SmallDotSize * 3));
-#if DEBUG
-                            //Debug.WriteLine("AstroPlot - Mouse on: " + selectedObjectName + ", " + selectedObjectCoords[0] + ", " + selectedObjectCoords[1] + ", " + selectedObjectCoords[2]);
-#endif
+                            //extPlotLabel.Visible = true;
+                            //extPlotLabel.Text = selectedObjectName;
+                            //extPlotLabel.Location = new Point(point.X - SmallDotSize, point.Y - (SmallDotSize * 3));
                         }
                     }
                 )
@@ -858,12 +829,12 @@ namespace ExtendedControls.Controls
         {
             if (!middleMousePressed)
             {
-                extPlotLabel.Visible = false;
-                
+                //extPlotLabel.Visible = false;
+
                 // zoom
                 Distance += (-e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
                 Debug.WriteLine(Distance);
             }
-        }        
+        }
     }
 }
