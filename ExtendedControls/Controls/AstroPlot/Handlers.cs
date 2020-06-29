@@ -21,7 +21,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
-namespace ExtendedControls.Controls
+namespace ExtendedControls.AstroPlot
 {
     internal static class Handlers
     {
@@ -37,7 +37,7 @@ namespace ExtendedControls.Controls
                 ctrl.Disposed += (s, e) => Application.RemoveMessageFilter(filter);
             }
 
-            class MouseWheelMessageFilter
+            private class MouseWheelMessageFilter
                 : IMessageFilter
             {
                 private readonly Control _ctrl;

@@ -16,22 +16,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ExtendedControls.Controls
+namespace ExtendedControls.AstroPlot
 {
-    public partial class AstroPlot
+    internal class AnchorPoint
     {
-        internal class PlotObjects
-        {
-            public string Name { get; set; }
-            public double X { get; set; }
-            public double Y { get; set; }
-            public double Z { get; set; }
-            public bool IsVisited { get; set; }
-            public PointF Coords { get; set; }
-            public bool IsWaypoint { get; internal set; }
-            public bool IsCurrent { get; internal set; }
-        }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+        public System.Drawing.PointF Coords { get; set; } = new System.Drawing.PointF(0, 0);
     }
 }

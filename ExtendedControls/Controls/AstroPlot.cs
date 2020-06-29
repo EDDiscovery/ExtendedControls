@@ -30,6 +30,7 @@ using System.Security.Cryptography;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
+using ExtendedControls.AstroPlot;
 
 namespace ExtendedControls.Controls
 {
@@ -93,15 +94,11 @@ namespace ExtendedControls.Controls
 
         }
 
-        private readonly List<AnchorPoint> Axes = new List<AnchorPoint>();
-        private readonly List<AnchorPoint> GridHp = new List<AnchorPoint>();
-        private readonly List<AnchorPoint> GridHm = new List<AnchorPoint>();
-
-        private readonly List<AnchorPoint[]> Grids = new List<AnchorPoint[]>();
-
-        private readonly List<AnchorPoint> Planes = new List<AnchorPoint>();
-        private readonly List<AnchorPoint> Frames = new List<AnchorPoint>();
-        private readonly List<PlotObjects> MapObjects = new List<PlotObjects>();
+        private readonly List<AnchorPoint> _axes = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> _planes = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> _frames = new List<AnchorPoint>();
+        private readonly List<AnchorPoint[]> _grids = new List<AnchorPoint[]>();
+        private readonly List<PlotObject> _plotObjects = new List<PlotObject>();
 
         // Projection
         internal double[] cameraPosition = new double[3];
@@ -379,7 +376,7 @@ namespace ExtendedControls.Controls
         {
             for (int i = 0; i < mapObjects.Count; i++)
             {
-                MapObjects.Add(new PlotObjects
+                _plotObjects.Add(new PlotObject
                 {
                     Name = mapObjects[i][0].ToString(),
                     X = (double)mapObjects[i][1],
@@ -398,7 +395,7 @@ namespace ExtendedControls.Controls
         public void Clear()
         {
             Invalidate();
-            MapObjects.Clear();
+            _plotObjects.Clear();
         }
 
         private void ShowContextMenu()
@@ -436,25 +433,25 @@ namespace ExtendedControls.Controls
 
             cameraPosition = new double[3] { -y, z, -x };
 
-            if (Axes != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
+            if (_axes != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
             {
-                Update.Projection(Axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Projection.Update(_axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
                         
-            if (ShowFrameWidget && Frames != null)
+            if (ShowFrameWidget && _frames != null)
             {
-                Update.Projection(Frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
-                Update.Projection(Planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Projection.Update(_frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Projection.Update(_planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
-            if (ShowGridWidget && GridHp != null && GridHm != null)
+            if (ShowGridWidget && _grids != null)
             {
-                Update.Projection(Grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Projection.Update(_grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
-            if (MapObjects != null)
+            if (_plotObjects != null)
             {
-                Update.Projection(MapObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                Projection.Update(_plotObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
             Invalidate();
@@ -481,25 +478,25 @@ namespace ExtendedControls.Controls
                 DashStyle = DashStyle.Solid
             })
             {
-                if (ShowAxesWidget && Axes != null)
+                if (ShowAxesWidget && _axes != null)
                 {
-                    for (int i = 0; i < Axes.Count; i++)
+                    for (int i = 0; i < _axes.Count; i++)
                     {
                         if (i == 1)
                         {
                             AxisPen.Color = Color.Red;
-                            g.DrawLine(AxisPen, Axes[0].Coords, Axes[1].Coords);
+                            g.DrawLine(AxisPen, _axes[0].Coords, _axes[1].Coords);
                         }
                         if (i == 2)
                         {
                             AxisPen.Color = Color.Green;
-                            g.DrawLine(AxisPen, Axes[0].Coords, Axes[2].Coords);
+                            g.DrawLine(AxisPen, _axes[0].Coords, _axes[2].Coords);
                         }
 
                         if (i == 3)
                         {
                             AxisPen.Color = Color.Blue;
-                            g.DrawLine(AxisPen, Axes[0].Coords, Axes[3].Coords);
+                            g.DrawLine(AxisPen, _axes[0].Coords, _axes[3].Coords);
                         }
                     }
                 }
@@ -510,9 +507,9 @@ namespace ExtendedControls.Controls
             {
                 using (var GridPen = new Pen(new SolidBrush(Color.FromArgb(80, 40, 160, 220))) { Width = 1 })
                 {
-                    for (int i = 0; i < Grids.Count; i++)
+                    for (int i = 0; i < _grids.Count; i++)
                     {
-                        g.DrawLine(GridPen, Grids[i][0].Coords, Grids[i][1].Coords);
+                        g.DrawLine(GridPen, _grids[i][0].Coords, _grids[i][1].Coords);
                     }
                 }
             }
@@ -527,27 +524,27 @@ namespace ExtendedControls.Controls
                 })
                 {
                     /// Cubical frame
-                    if (GetFrameShape() == Shape.Cube && Frames.Count > 0)
+                    if (GetFrameShape() == Shape.Cube && _frames.Count > 0)
                     {
                         /// bottom
-                        g.DrawLine(FramePen, Frames[0].Coords, Frames[1].Coords);
-                        g.DrawLine(FramePen, Frames[1].Coords, Frames[5].Coords);
-                        g.DrawLine(FramePen, Frames[5].Coords, Frames[3].Coords);
-                        g.DrawLine(FramePen, Frames[3].Coords, Frames[0].Coords);
+                        g.DrawLine(FramePen, _frames[0].Coords, _frames[1].Coords);
+                        g.DrawLine(FramePen, _frames[1].Coords, _frames[5].Coords);
+                        g.DrawLine(FramePen, _frames[5].Coords, _frames[3].Coords);
+                        g.DrawLine(FramePen, _frames[3].Coords, _frames[0].Coords);
 
                         /// left
-                        g.DrawLine(FramePen, Frames[0].Coords, Frames[2].Coords);
-                        g.DrawLine(FramePen, Frames[2].Coords, Frames[4].Coords);
-                        g.DrawLine(FramePen, Frames[4].Coords, Frames[3].Coords);
+                        g.DrawLine(FramePen, _frames[0].Coords, _frames[2].Coords);
+                        g.DrawLine(FramePen, _frames[2].Coords, _frames[4].Coords);
+                        g.DrawLine(FramePen, _frames[4].Coords, _frames[3].Coords);
 
                         /// right
-                        g.DrawLine(FramePen, Frames[1].Coords, Frames[6].Coords);
-                        g.DrawLine(FramePen, Frames[6].Coords, Frames[7].Coords);
-                        g.DrawLine(FramePen, Frames[7].Coords, Frames[5].Coords);
+                        g.DrawLine(FramePen, _frames[1].Coords, _frames[6].Coords);
+                        g.DrawLine(FramePen, _frames[6].Coords, _frames[7].Coords);
+                        g.DrawLine(FramePen, _frames[7].Coords, _frames[5].Coords);
 
                         /// top
-                        g.DrawLine(FramePen, Frames[2].Coords, Frames[6].Coords);
-                        g.DrawLine(FramePen, Frames[4].Coords, Frames[7].Coords);
+                        g.DrawLine(FramePen, _frames[2].Coords, _frames[6].Coords);
+                        g.DrawLine(FramePen, _frames[4].Coords, _frames[7].Coords);
                     }
                 }
 
@@ -559,11 +556,11 @@ namespace ExtendedControls.Controls
                 })
                 {
                     /// Spherical frame
-                    if (GetFrameShape() == Shape.Sphere && Frames.Count > 0)
+                    if (GetFrameShape() == Shape.Sphere && _frames.Count > 0)
                     {
-                        var horizontalPlane = new PointF[] { Planes[0].Coords, Planes[2].Coords, Planes[1].Coords, Planes[3].Coords };
-                        var verticalPlane = new PointF[] { Planes[0].Coords, Planes[4].Coords, Planes[1].Coords, Planes[5].Coords };
-                        var longitudinalPlane = new PointF[] { Planes[2].Coords, Planes[4].Coords, Planes[3].Coords, Planes[5].Coords };
+                        var horizontalPlane = new PointF[] { _planes[0].Coords, _planes[2].Coords, _planes[1].Coords, _planes[3].Coords };
+                        var verticalPlane = new PointF[] { _planes[0].Coords, _planes[4].Coords, _planes[1].Coords, _planes[5].Coords };
+                        var longitudinalPlane = new PointF[] { _planes[2].Coords, _planes[4].Coords, _planes[3].Coords, _planes[5].Coords };
 
                         PlanePen.Color = Color.Red;
                         g.DrawClosedCurve(PlanePen, horizontalPlane, (float)0.85, FillMode.Winding);
@@ -575,22 +572,22 @@ namespace ExtendedControls.Controls
                 }
             }
 
-            if (MapObjects != null)
+            if (_plotObjects != null)
             {
-                for (int i = MapObjects.Count - 1; i >= 0; i--)
+                for (int i = _plotObjects.Count - 1; i >= 0; i--)
                 {
-                    var FillColor = MapObjects[i].IsVisited ? MapObjects[i].IsCurrent ? CurrentColor : VisitedColor : UnVisitedColor;
+                    var FillColor = _plotObjects[i].IsVisited ? _plotObjects[i].IsCurrent ? CurrentColor : VisitedColor : UnVisitedColor;
 
                     using (var objectBrush = new SolidBrush(FillColor))
                     {
                         g.FillEllipse(objectBrush, new RectangleF(
-                            MapObjects[i].Coords.X - (SmallDotSize / 2),
-                            MapObjects[i].Coords.Y - (SmallDotSize / 2),
+                            _plotObjects[i].Coords.X - (SmallDotSize / 2),
+                            _plotObjects[i].Coords.Y - (SmallDotSize / 2),
                             SmallDotSize,
                             SmallDotSize));
                     }
 
-                    if (MapObjects[i].IsWaypoint && i != MapObjects.Count - 1)
+                    if (_plotObjects[i].IsWaypoint && i != _plotObjects.Count - 1)
                     {
                         using (var TravelMapPen = new Pen(new SolidBrush(ForeColor))
                         {
@@ -598,7 +595,7 @@ namespace ExtendedControls.Controls
                             DashStyle = System.Drawing.Drawing2D.DashStyle.Solid
                         })
                         {
-                            g.DrawLine(TravelMapPen, MapObjects[i].Coords, MapObjects[i + 1].Coords);
+                            g.DrawLine(TravelMapPen, _plotObjects[i].Coords, _plotObjects[i + 1].Coords);
                         }
                     }
                 }
@@ -721,17 +718,17 @@ namespace ExtendedControls.Controls
             var lastText = text;
             isObjectSelected = false;
 
-            if (MapObjects != null)
+            if (_plotObjects != null)
             {
-                for (int i = MapObjects.Count - 1; i >= 0; i--)
+                for (int i = _plotObjects.Count - 1; i >= 0; i--)
                 {
-                    if (mousePosition.X > (MapObjects[i].Coords.X - hs) && mousePosition.X < (MapObjects[i].Coords.X + hs) &&
-                        mousePosition.Y > (MapObjects[i].Coords.Y - hs) && mousePosition.Y > (MapObjects[i].Coords.Y - hs))
+                    if (mousePosition.X > (_plotObjects[i].Coords.X - hs) && mousePosition.X < (_plotObjects[i].Coords.X + hs) &&
+                        mousePosition.Y > (_plotObjects[i].Coords.Y - hs) && mousePosition.Y > (_plotObjects[i].Coords.Y - hs))
                     {
                         isObjectSelected = true;
-                        text = MapObjects[i].Name;
-                        point = new Point((int)MapObjects[i].Coords.X, (int)MapObjects[i].Coords.Y);
-                        coords = new double[] { MapObjects[i].X, MapObjects[i].Y, MapObjects[i].Z };
+                        text = _plotObjects[i].Name;
+                        point = new Point((int)_plotObjects[i].Coords.X, (int)_plotObjects[i].Coords.Y);
+                        coords = new double[] { _plotObjects[i].X, _plotObjects[i].Y, _plotObjects[i].Z };
                     }
                 }
             }
