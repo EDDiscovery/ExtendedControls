@@ -19,19 +19,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using System.Linq;
 using System.Drawing.Drawing2D;
 using BaseUtils;
-using EDDiscovery.Controls;
-using System.Security.Cryptography;
-using System.Windows.Forms.DataVisualization.Charting;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using ExtendedControls.AstroPlot;
-using System.Runtime.CompilerServices;
 
 namespace ExtendedControls.Controls
 {
