@@ -54,8 +54,7 @@ namespace ExtendedControls.Controls
             this.plotCanvas.Name = "plotCanvas";
             this.plotCanvas.Size = new System.Drawing.Size(400, 400);
             this.plotCanvas.TabIndex = 0;
-            this.plotCanvas.Paint += this.PlotCanvas_Paint;
-            this.plotCanvas.MouseClick += this.PlotCanvas_MouseClick;
+            this.plotCanvas.Paint += this.PlotCanvas_Paint;            
             this.plotCanvas.MouseDown += this.PlotCanvas_MouseDown;
             this.plotCanvas.MouseLeave += this.PlotCanvas_MouseLeave;
             this.plotCanvas.MouseMove += this.PlotCanvas_MouseMove;
@@ -524,21 +523,6 @@ namespace ExtendedControls.Controls
             _hotSpotMap.Clear();
         }
 
-        private void ShowContextMenu()
-        {
-            //contextMenuStrip.Items.Clear();
-
-            //var CenterTo = new ToolStripMenuItem
-            //{
-            //    Text = "Center to " + SelectedObjectName,
-            //    Tag = SelectedObjectCoords
-            //};
-            //CenterTo.Click += CenterTo_Click;
-            //contextMenuStrip.Items.Add(CenterTo);
-
-            //contextMenuStrip.Show(this, mousePosition);
-        }
-
         private void CenterTo_Click(object sender, EventArgs e)
         {
             var selected = sender as ToolStripMenuItem;
@@ -546,10 +530,7 @@ namespace ExtendedControls.Controls
         }
 
         private void UpdateProjection()
-        {
-            //extPlotLabel.Text = "";
-            //extPlotLabel.Visible = false;
-
+        {        
             var x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
             var y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
             var z = (distance * Math.Sin(elevation));
@@ -756,21 +737,6 @@ namespace ExtendedControls.Controls
             _mouseIdleTimer.Start();
         }
 
-        private Point GetMouseDelta(Point mousePosition, PointF ptMouseClick)
-        {
-            var delta = new Point();
-
-            if (mousePosition != lastMousePosition)
-            {
-                delta.X = (int)(mousePosition.X - ptMouseClick.X);
-                delta.Y = -(int)(mousePosition.Y - ptMouseClick.Y);
-            }
-
-            lastMousePosition = mousePosition;
-
-            return delta;
-        }
-
         private void PlotCanvas_MouseDown(object sender, MouseEventArgs e)
         {
             ptMouseClick = new PointF(e.X, e.Y);
@@ -781,13 +747,12 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Left)
             {
                 // rotate
-                leftMousePressed = true;
-                selectedObjectName = "";
+                leftMousePressed = true;                
             }
             if (e.Button == MouseButtons.Middle)
             {
+                // drag
                 middleMousePressed = true;
-                
             }
             if (e.Button == MouseButtons.Right)
             {
@@ -803,27 +768,6 @@ namespace ExtendedControls.Controls
                 middleMousePressed = false;
             if (e.Button == MouseButtons.Right)
                 rightMousePressed = false;
-        }
-
-        private void PlotCanvas_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                //extPlotLabel.Text = "";
-                //extPlotLabel.Visible = false;
-            }
-            if (e.Button == MouseButtons.Middle)
-            {
-                //extPlotLabel.Text = "";
-                //extPlotLabel.Visible = false;
-            }
-            if (e.Button == MouseButtons.Right)
-            {
-                if (isObjectSelected)
-                {
-                    ShowContextMenu();
-                }
-            }
         }
 
         private void MouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
