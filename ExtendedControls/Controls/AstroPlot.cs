@@ -829,31 +829,7 @@ namespace ExtendedControls.Controls
         private void MouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var hs = HotSpotSize;
-            //var text = "";
-            //var point = new Point();
-            //var coords = new double[3];
-            //var lastText = text;
-            //isObjectSelected = false;
-
-            Debug.WriteLine("");
-            Debug.WriteLine("");
-
-            HotSpotMap.CreateHotSpotMap(_hotSpotMap, mousePosition, hs);
-
-            BeginInvoke(
-                (Action)(
-                    () =>
-                    {
-                        //if (text != "" && text != lastText)
-                        //{
-                        //    selectedObjectName = text;
-                        //    selectedObjectPoint = point;
-                        //    selectedObjectCoords = coords;
-                        //    lastText = text;
-                        //}
-                    }
-                )
-            );
+            HotSpotMap.CheckHotSpotMap(_hotSpotMap, mousePosition, hs);
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
