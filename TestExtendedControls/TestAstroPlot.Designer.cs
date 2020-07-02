@@ -33,6 +33,7 @@
             this.astroPlot = new ExtendedControls.Controls.AstroPlot();
             this.extLabel1 = new ExtendedControls.ExtLabel();
             this.extTextBox1 = new ExtendedControls.ExtTextBox();
+            this.extButtonProjection = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // extLabel2
@@ -75,7 +76,7 @@
             this.astroPlot.MouseWheel_Multiply = 7D;
             this.astroPlot.MouseWheel_Resistance = 2D;
             this.astroPlot.Name = "astroPlot";
-            this.astroPlot.PlotType = ExtendedControls.Controls.AstroPlot.PlotProjection.Perspective;
+            this.astroPlot.Projection = ExtendedControls.Controls.AstroPlot.PlotProjection.Free;
             this.astroPlot.ShowAxesWidget = true;
             this.astroPlot.ShowFrameWidget = true;
             this.astroPlot.ShowGridWidget = true;
@@ -120,11 +121,22 @@
             this.extTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.extTextBox1.WordWrap = true;
             // 
+            // extButtonProjection
+            // 
+            this.extButtonProjection.Location = new System.Drawing.Point(397, 426);
+            this.extButtonProjection.Name = "extButtonProjection";
+            this.extButtonProjection.Size = new System.Drawing.Size(75, 23);
+            this.extButtonProjection.TabIndex = 2;
+            this.extButtonProjection.Text = "projection";
+            this.extButtonProjection.UseVisualStyleBackColor = true;
+            this.extButtonProjection.Click += new System.EventHandler(this.extButtonProjection_Click);
+            // 
             // TestAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 461);
+            this.Controls.Add(this.extButtonProjection);
             this.Controls.Add(this.extLabel2);
             this.Controls.Add(this.astroPlot);
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
@@ -143,5 +155,6 @@
         private ExtendedControls.ExtTextBox extTextBox1;
         private ExtendedControls.ExtLabel extLabel1;
         private ExtendedControls.ExtLabel extLabel2;
+        private ExtendedControls.ExtButton extButtonProjection;
     }
 }

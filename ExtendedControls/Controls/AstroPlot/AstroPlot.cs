@@ -149,7 +149,7 @@ namespace ExtendedControls.Controls
 
             set
             {
-                if (PlotType == PlotProjection.Perspective)
+                if (Projection == PlotProjection.Free)
                 {
                     azimuth = value;
                 }
@@ -157,7 +157,8 @@ namespace ExtendedControls.Controls
                 {
                     azimuth = 0;
                 }
-                UpdateProjection(); 
+
+                UpdateProjection();
             }
         }
 
@@ -169,13 +170,20 @@ namespace ExtendedControls.Controls
 
             set
             {
-                if (PlotType == PlotProjection.Perspective)
+                if (Projection == PlotProjection.Free)
                 {
                     elevation = value;
                 }
                 else
                 {
-                    elevation = -1.59;
+                    if (View == PlotPlainView.Perspective)
+                    {
+                        elevation = -0.4;
+                    }
+                    else
+                    {
+                        elevation = -1.59;
+                    }
                 }
 
                 UpdateProjection();
@@ -190,10 +198,13 @@ namespace ExtendedControls.Controls
         }
 
         // Look'n'Feel
-        public enum PlotProjection { Plain = 0, Perspective = 1 };
+        public enum PlotProjection { Free = 0, Fixed = 1 };
+        private PlotProjection plotProjection;
+        public PlotProjection Projection { get => plotProjection; set => plotProjection = value; }
 
-        private PlotProjection plotType;
-        public PlotProjection PlotType { get => plotType; set => plotType = value; }
+        public enum PlotPlainView { Perspective = 0, Top = 1}
+        private PlotPlainView plotView;
+        public PlotPlainView View { get => plotView; set => plotView = value; }
 
         public int SmallDotSize { get; set; }
         public int MediumDotSize { get; set; }
@@ -412,9 +423,6 @@ namespace ExtendedControls.Controls
 
         #endregion
 
-        // Timer
-        //private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
-
         private const int WS_EX_COMPOSITED = 0x02000000;
         private const int WS_EX_TRANSPARENT = 0x20;
         protected override CreateParams CreateParams
@@ -430,7 +438,8 @@ namespace ExtendedControls.Controls
 
         protected override void OnHandleCreated(EventArgs e)
         {
-            PlotType = PlotProjection.Perspective;
+            // sane defaults
+            //Projection = PlotProjection.Perspective;
             MouseRotation_Resistance = 75;
             MouseRotation_Multiply = 1;
             MouseDrag_Resistance = 12;
@@ -449,8 +458,6 @@ namespace ExtendedControls.Controls
             GridUnit = 10;
             Distance = 300;
             Focus = 1000;
-            Azimuth = -0.4;
-            Elevation = -0.3;
             SmallDotSize = 5;
             MediumDotSize = 10;
             LargeDotSize = 15;
@@ -471,14 +478,9 @@ namespace ExtendedControls.Controls
             this.SetStyle(ControlStyles.ResizeRedraw, true);
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            this.SetStyle(ControlStyles.ContainerControl, true);
 
             selectedObjectName = "";
             isObjectSelected = false;
-
-            //_mouseIdleTimer.AutoReset = false;
-            //_mouseIdleTimer.Interval = 100;
-            //_mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
         }
 
         public void SetCenterOfMap(double[] coords)
@@ -488,7 +490,10 @@ namespace ExtendedControls.Controls
                 centerCoordinates = new double[] { coords[0], coords[1], coords[2] };
                 SetAxesAnchors(AxesLength);
                 SetFrameAnchors(FramesLength);
-                SetGridAnchors(GridCount, GridUnit);
+                if (View == PlotPlainView.Perspective)
+                    SetGridAnchors((int)GridCount / 3, GridUnit);
+                else
+                    SetGridAnchors(GridCount, GridUnit);
             }
         }
                 
@@ -531,6 +536,18 @@ namespace ExtendedControls.Controls
 
         private void UpdateProjection()
         {
+            if (Projection == PlotProjection.Fixed)
+            {
+                if (View == PlotPlainView.Perspective)
+                {
+                    elevation = -0.4;
+                }
+                else
+                {
+                    elevation = -1.59;
+                }
+            }
+
             var x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
             var y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
             var z = (distance * Math.Sin(elevation));
@@ -608,7 +625,7 @@ namespace ExtendedControls.Controls
             }
 
             /// Grid
-            if (ShowGridWidget && PlotType == PlotProjection.Plain)
+            if (ShowGridWidget && Projection == PlotProjection.Fixed)
             {
                 using (var GridPen = new Pen(new SolidBrush(Color.FromArgb(80, 40, 160, 220))) { Width = 1 })
                 {
@@ -620,7 +637,7 @@ namespace ExtendedControls.Controls
             }
 
             /// Frame
-            if (ShowFrameWidget && PlotType == PlotProjection.Perspective)
+            if (ShowFrameWidget && Projection == PlotProjection.Free)
             {
                 using (var FramePen = new Pen(new SolidBrush(ForeColor))
                 {
@@ -706,15 +723,15 @@ namespace ExtendedControls.Controls
         }
 
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
-        {         
+        {
             if (leftMousePressed)
             {
-                if (PlotType == PlotProjection.Perspective)
+                if (Projection == PlotProjection.Free)
                 {
                     azimuth = lastAzimuth - (ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3) / MouseRotation_Resistance;
                     elevation = lastElevation + (ptMouseClick.Y - e.Y) * (MouseRotation_Multiply * 0.2) / MouseRotation_Resistance;
                 }
-                else if (PlotType == PlotProjection.Plain)
+                else if (Projection == PlotProjection.Fixed)
                 {
                     azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;
                 }

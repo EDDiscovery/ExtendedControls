@@ -40,9 +40,9 @@ namespace DialogTest
         private HotSpotMap hotSpotMap = new HotSpotMap();
         
         private void TestAstroPlot_Load(object sender, EventArgs e)
-        {
-            
-
+        {            
+            astroPlot.Projection = AstroPlot.PlotProjection.Fixed;
+            astroPlot.View = AstroPlot.PlotPlainView.Top;
             astroPlot.Distance = 100000;
             astroPlot.AxesLength = 10000;
             astroPlot.FramesLength = 10000;
@@ -123,6 +123,20 @@ namespace DialogTest
         private void TestAstroPlot_MouseHover(object sender, EventArgs e)
         {
             Debug.WriteLine("Hovering...");
+        }
+
+        private void extButtonProjection_Click(object sender, EventArgs e)
+        {
+            if (astroPlot.Projection == AstroPlot.PlotProjection.Fixed)
+            {
+                extButtonProjection.Text = "3D";
+                astroPlot.Projection = AstroPlot.PlotProjection.Free;
+            }
+            else
+            {
+                extButtonProjection.Text = "2D";
+                astroPlot.Projection = AstroPlot.PlotProjection.Fixed;
+            }
         }
     }
 }

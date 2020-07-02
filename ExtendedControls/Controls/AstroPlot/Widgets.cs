@@ -99,12 +99,12 @@ namespace ExtendedControls.Controls
 
         public void SetGridAnchors(int gc, int gu)
         {
-            var gcd = (int)gc * 2;
-            var go = (int)gc * gu;
-
             ShowGridWidget = false;
 
             _grids.Clear();
+
+            var gcd = (int)gc * 2;
+            var go = (int)gc * gu;
 
             for (int i = 0; i < gcd; i++)
             {
