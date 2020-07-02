@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace DialogTest
@@ -13,6 +14,10 @@ namespace DialogTest
     public partial class TestAstroPlot : Form
     {
         private readonly ThemeStandard theme;
+        // Timer
+        private System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
+
+        private Point mp = new Point(MousePosition.X, MousePosition.Y);
 
         public TestAstroPlot()
         {
@@ -24,14 +29,20 @@ namespace DialogTest
             theme.WindowsFrame = true;
 
             InitializeComponent();
+
+            _mouseIdleTimer.AutoReset = true;
+            _mouseIdleTimer.Interval = 100;
+            _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
+
             astroPlot.SendToBack();
         }
 
-        // Timer
-        private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
-
+        private HotSpotMap hotSpotMap = new HotSpotMap();
+        
         private void TestAstroPlot_Load(object sender, EventArgs e)
         {
+            
+
             astroPlot.Distance = 100000;
             astroPlot.AxesLength = 10000;
             astroPlot.FramesLength = 10000;
@@ -43,7 +54,17 @@ namespace DialogTest
             astroPlot.ShowAxesWidget = true;
             astroPlot.ShowFrameWidget = true;
             astroPlot.ShowGridWidget = true;
+                        
             TestOrientation();
+
+            hotSpotMap.CheckForMouseInHotSpot(mp);
+        }
+
+        private void MouseIdleTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            hotSpotMap.CheckForMouseInHotSpot(mp);
+
+            extLabel2.Text = hotSpotMap.CheckForMouseInHotSpot(mp);
         }
 
         private class TestSystem

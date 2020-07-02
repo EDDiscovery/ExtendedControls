@@ -31,6 +31,8 @@ namespace ExtendedControls.Controls
         private ExtPictureBox plotCanvas;
         private IContainer components;
 
+        private HotSpotMap hotSpotMap = new HotSpotMap();
+
         private void InitializeComponent()
         {
             this.plotCanvas = new ExtendedControls.ExtPictureBox();
@@ -67,6 +69,8 @@ namespace ExtendedControls.Controls
         private readonly List<AnchorPoint> _frames = new List<AnchorPoint>();
         private readonly List<AnchorPoint[]> _grids = new List<AnchorPoint[]>();
         private readonly List<PlotObject> _plotObjects = new List<PlotObject>();
+
+        private List<object[]> _plotHotSpot = new List<object[]>();
 
         // Values normalization
         public class MaxValue : Attribute
@@ -409,7 +413,7 @@ namespace ExtendedControls.Controls
         #endregion
 
         // Timer
-        private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
+        //private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer(); //add _mouseIdleTimer.Dispose(); to the Dispose method on another file.
 
         private const int WS_EX_COMPOSITED = 0x02000000;
         private const int WS_EX_TRANSPARENT = 0x20;
@@ -472,9 +476,9 @@ namespace ExtendedControls.Controls
             selectedObjectName = "";
             isObjectSelected = false;
 
-            _mouseIdleTimer.AutoReset = false;
-            _mouseIdleTimer.Interval = 100;
-            _mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
+            //_mouseIdleTimer.AutoReset = false;
+            //_mouseIdleTimer.Interval = 100;
+            //_mouseIdleTimer.Elapsed += MouseIdleTimer_Elapsed;
         }
 
         public void SetCenterOfMap(double[] coords)
@@ -503,6 +507,11 @@ namespace ExtendedControls.Controls
                     IsCurrent = (bool)plotObjects[i][6],
                     Coords = new PointF(0, 0)
                 });
+
+                _plotHotSpot.Add(new object[]
+                {
+                    plotObjects[i][0].ToString(), 0, 0
+                });
             }
             
             UpdateProjection();
@@ -521,7 +530,7 @@ namespace ExtendedControls.Controls
         }
 
         private void UpdateProjection()
-        {        
+        {
             var x = (distance * Math.Cos(elevation) * Math.Cos(azimuth));
             var y = (distance * Math.Cos(elevation) * Math.Sin(azimuth));
             var z = (distance * Math.Sin(elevation));
@@ -546,7 +555,8 @@ namespace ExtendedControls.Controls
 
             if (_plotObjects != null)
             {
-                ExtendedControls.AstroPlot.View.Update(_plotObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
+                ExtendedControls.AstroPlot.View.Update(_plotObjects, _plotHotSpot, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                hotSpotMap.CalculateHotSpotRegions(_plotHotSpot, hotspotSize);
             }
 
             Invalidate();
@@ -693,13 +703,10 @@ namespace ExtendedControls.Controls
                 
         private void PlotCanvas_MouseLeave(object sender, EventArgs e)
         {
-            _mouseIdleTimer.Stop();
         }
 
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            _mouseIdleTimer.Stop();
-
+        {         
             if (leftMousePressed)
             {
                 if (PlotType == PlotProjection.Perspective)
@@ -722,8 +729,6 @@ namespace ExtendedControls.Controls
             }
 
             UpdateProjection();
-
-            _mouseIdleTimer.Start();
         }
 
         private void PlotCanvas_MouseDown(object sender, MouseEventArgs e)
@@ -758,38 +763,7 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Right)
                 rightMousePressed = false;
         }
-
-        private void MouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            var hs = HotSpotSize;
-
-            var labelPosition = new Point();
-
-            string text = null;
-
-            if (_plotObjects != null)
-            {
-                for (int i = 0; i < _plotObjects.Count; i++)
-                {
-                    if (mousePosition.X > (_plotObjects[i].Coords.X - hs) && mousePosition.X < (_plotObjects[i].Coords.X + hs) &&
-                        mousePosition.Y > (_plotObjects[i].Coords.Y - hs) && mousePosition.Y > (_plotObjects[i].Coords.Y - hs))
-                    {
-                        text = _plotObjects[i].Name;
-                        labelPosition = new Point((int)_plotObjects[i].Coords.X - (SmallDotSize * 4), (int)_plotObjects[i].Coords.Y - (SmallDotSize * 3));
-                    }
-                }
-            }
-
-            BeginInvoke(
-                (Action)(
-                    () =>
-                    {
-                        
-                    }
-                )
-            );
-        }
-    
+   
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
