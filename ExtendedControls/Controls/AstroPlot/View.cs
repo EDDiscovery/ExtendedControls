@@ -58,7 +58,7 @@ namespace ExtendedControls.AstroPlot
             }
         }
 
-        internal static void Update(List<PlotObject> mapObjects, List<object[]> hotSpotMap, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
+        internal static void Update(List<PlotObject> mapObjects, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
             var _interaction = Interaction(azimuth, elevation, cameraPosition);
             var _data = Coords(x, y, z);
@@ -76,9 +76,7 @@ namespace ExtendedControls.AstroPlot
                 }
 
                 var P = _data * _interaction * X_h;
-                mapObjects[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));                
-                hotSpotMap[i][1] = (int)mapObjects[i].Coords.X;
-                hotSpotMap[i][2] = (int)mapObjects[i].Coords.Y;
+                mapObjects[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));                                
             }
         }
                 

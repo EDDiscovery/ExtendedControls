@@ -68,8 +68,6 @@ namespace ExtendedControls.Controls
         private readonly List<AnchorPoint[]> _grids = new List<AnchorPoint[]>();
         private readonly List<PlotObject> _plotObjects = new List<PlotObject>();
 
-        internal List<object[]> _hotSpotMap = new List<object[]>();
-
         // Values normalization
         public class MaxValue : Attribute
         {
@@ -463,6 +461,14 @@ namespace ExtendedControls.Controls
         {
             InitializeComponent();
 
+            DoubleBuffered = true;
+
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.ContainerControl, true);
+
             selectedObjectName = "";
             isObjectSelected = false;
 
@@ -497,11 +503,6 @@ namespace ExtendedControls.Controls
                     IsCurrent = (bool)plotObjects[i][6],
                     Coords = new PointF(0, 0)
                 });
-
-                _hotSpotMap.Add(new object[]
-                {
-                    plotObjects[i][0].ToString(), 0, 0, false
-                });
             }
             
             UpdateProjection();
@@ -511,7 +512,6 @@ namespace ExtendedControls.Controls
         {
             Invalidate();
             _plotObjects.Clear();
-            _hotSpotMap.Clear();
         }
 
         private void CenterTo_Click(object sender, EventArgs e)
@@ -546,7 +546,7 @@ namespace ExtendedControls.Controls
 
             if (_plotObjects != null)
             {
-                ExtendedControls.AstroPlot.View.Update(_plotObjects, _hotSpotMap, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
+                ExtendedControls.AstroPlot.View.Update(_plotObjects, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
             }
 
             Invalidate();
@@ -700,14 +700,12 @@ namespace ExtendedControls.Controls
         {
             _mouseIdleTimer.Stop();
 
-            mousePosition = e.Location;
-
             if (leftMousePressed)
             {
                 if (PlotType == PlotProjection.Perspective)
                 {
-                    azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;
-                    elevation = lastElevation + ((ptMouseClick.Y - e.Y) * (MouseRotation_Multiply * 0.2)) / MouseRotation_Resistance;
+                    azimuth = lastAzimuth - (ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3) / MouseRotation_Resistance;
+                    elevation = lastElevation + (ptMouseClick.Y - e.Y) * (MouseRotation_Multiply * 0.2) / MouseRotation_Resistance;
                 }
                 else if (PlotType == PlotProjection.Plain)
                 {
@@ -718,8 +716,8 @@ namespace ExtendedControls.Controls
 
             if (middleMousePressed)
             {
-                centerCoordinates[0] = lastCenterCoordinates[0] - ((ptMouseClick.X - e.X) * MouseDrag_Multiply) / MouseDrag_Resistance;
-                centerCoordinates[2] = lastCenterCoordinates[2] - ((ptMouseClick.Y - e.Y) * MouseDrag_Multiply) / MouseDrag_Resistance;
+                centerCoordinates[0] = lastCenterCoordinates[0] + (ptMouseClick.X - e.X) * MouseDrag_Multiply / MouseDrag_Resistance;                
+                centerCoordinates[2] = lastCenterCoordinates[2] - (ptMouseClick.Y - e.Y) * MouseDrag_Multiply / MouseDrag_Resistance;
                 SetCenterCoordinates(GetCenterCoordinates());
             }
 
@@ -738,7 +736,7 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Left)
             {
                 // rotate
-                leftMousePressed = true;                
+                leftMousePressed = true;
             }
             if (e.Button == MouseButtons.Middle)
             {
@@ -798,6 +796,11 @@ namespace ExtendedControls.Controls
             {
                 // zoom
                 Distance += (-e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
+            }
+            else
+            {
+                centerCoordinates[1] = lastCenterCoordinates[1] - (e.Delta * MouseWheel_Multiply) / MouseWheel_Resistance;
+                SetCenterCoordinates(GetCenterCoordinates());
             }
         }
     }
