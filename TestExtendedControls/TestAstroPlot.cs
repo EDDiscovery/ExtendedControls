@@ -114,5 +114,15 @@ namespace DialogTest
             }
             astroPlot.AddSystemsToMap(List);
         }
+
+        private void astroPlot_MouseHover(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Hovering...");
+        }
+
+        private void TestAstroPlot_MouseHover(object sender, EventArgs e)
+        {
+            Debug.WriteLine("Hovering...");
+        }
     }
 }

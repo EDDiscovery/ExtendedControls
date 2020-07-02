@@ -29,11 +29,22 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestAstroPlot));
+            this.extLabel2 = new ExtendedControls.ExtLabel();
             this.astroPlot = new ExtendedControls.Controls.AstroPlot();
             this.extLabel1 = new ExtendedControls.ExtLabel();
             this.extTextBox1 = new ExtendedControls.ExtTextBox();
-            this.extLabel2 = new ExtendedControls.ExtLabel();
             this.SuspendLayout();
+            // 
+            // extLabel2
+            // 
+            this.extLabel2.AutoSize = true;
+            this.extLabel2.BackColor = System.Drawing.Color.Black;
+            this.extLabel2.Location = new System.Drawing.Point(8, 8);
+            this.extLabel2.Name = "extLabel2";
+            this.extLabel2.Size = new System.Drawing.Size(29, 13);
+            this.extLabel2.TabIndex = 1;
+            this.extLabel2.Text = "label";
+            this.extLabel2.TextBackColor = System.Drawing.Color.Transparent;
             // 
             // astroPlot
             // 
@@ -73,6 +84,7 @@
             this.astroPlot.TabIndex = 0;
             this.astroPlot.UnVisitedColor = System.Drawing.Color.Yellow;
             this.astroPlot.VisitedColor = System.Drawing.Color.Aqua;
+            this.astroPlot.MouseHover += new System.EventHandler(this.astroPlot_MouseHover);
             // 
             // extLabel1
             // 
@@ -108,17 +120,6 @@
             this.extTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.extTextBox1.WordWrap = true;
             // 
-            // extLabel2
-            // 
-            this.extLabel2.AutoSize = true;
-            this.extLabel2.BackColor = System.Drawing.Color.Black;
-            this.extLabel2.Location = new System.Drawing.Point(8, 8);
-            this.extLabel2.Name = "extLabel2";
-            this.extLabel2.Size = new System.Drawing.Size(29, 13);
-            this.extLabel2.TabIndex = 1;
-            this.extLabel2.Text = "label";
-            this.extLabel2.TextBackColor = System.Drawing.Color.Transparent;
-            // 
             // TestAstroPlot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -130,6 +131,7 @@
             this.Name = "TestAstroPlot";
             this.Text = "TestAstroPlot";
             this.Load += new System.EventHandler(this.TestAstroPlot_Load);
+            this.MouseHover += new System.EventHandler(this.TestAstroPlot_MouseHover);
             this.ResumeLayout(false);
             this.PerformLayout();
 
