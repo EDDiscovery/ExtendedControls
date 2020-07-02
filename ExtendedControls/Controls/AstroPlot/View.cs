@@ -25,26 +25,26 @@ using static ExtendedControls.Controls.AstroPlot;
 
 namespace ExtendedControls.AstroPlot
 {
-    internal class View
+    internal static class View
     {
         internal static void Update(List<AnchorPoint> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
-            var _interaction = Rotation(azimuth, elevation, cameraPosition);
-            var _points = Points(x, y, z);
+            var _interaction = Interaction(azimuth, elevation, cameraPosition);
+            var _data = Coords(x, y, z);
             var X_h = new Matrix<double>(4, 1);
 
             foreach (var anchor in anchors)
             {
                 X_h.SetMatrix(new double[] { anchor.X - centerCoordinates[0], anchor.Y - centerCoordinates[1], anchor.Z - centerCoordinates[2], 1.0 });
-                var P = _points * _interaction * X_h;
+                var P = _data * _interaction * X_h;
                 anchor.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
             }
         }
 
         internal static void Update(List<AnchorPoint[]> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
-            var _interaction = Rotation(azimuth, elevation, cameraPosition);
-            var _points = Points(x, y, z);
+            var _interaction = Interaction(azimuth, elevation, cameraPosition);
+            var _data = Coords(x, y, z);
             var X_h = new Matrix<double>(4, 1);
 
             foreach (var anchor in anchors)
@@ -52,7 +52,7 @@ namespace ExtendedControls.AstroPlot
                 for (int i = 0; i < anchor.Length; i++)
                 {
                     X_h.SetMatrix(new double[] { anchor[i].X - centerCoordinates[0], anchor[i].Y - centerCoordinates[1], anchor[i].Z - centerCoordinates[2], 1.0 });
-                    var P = _points * _interaction * X_h;
+                    var P = _data * _interaction * X_h;
                     anchor[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
             }
@@ -60,8 +60,8 @@ namespace ExtendedControls.AstroPlot
 
         internal static void Update(List<PlotObject> mapObjects, List<object[]> hotSpotMap, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
-            var _interaction = Rotation(azimuth, elevation, cameraPosition);
-            var _points = Points(x, y, z);
+            var _interaction = Interaction(azimuth, elevation, cameraPosition);
+            var _data = Coords(x, y, z);
             var X_h = new Matrix<double>(4, 1);
 
             for (int i = 0; i < mapObjects.Count; i++)
@@ -75,12 +75,14 @@ namespace ExtendedControls.AstroPlot
                     X_h.SetMatrix(new double[] { mapObjects[i].X, mapObjects[i].Y, mapObjects[i].Z, 1.0 });
                 }
 
-                var P = _points * _interaction * X_h;
-                mapObjects[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));                                
+                var P = _data * _interaction * X_h;
+                mapObjects[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));                
+                hotSpotMap[i][1] = (int)mapObjects[i].Coords.X;
+                hotSpotMap[i][2] = (int)mapObjects[i].Coords.Y;
             }
         }
                 
-        internal static Matrix<double> Points(double x, double y, double z)
+        internal static Matrix<double> Coords(double x, double y, double z)
         {
             var _matrix = new Matrix<double>(3, 3);
             var _x = x / 2;
@@ -90,7 +92,7 @@ namespace ExtendedControls.AstroPlot
             return _matrix;
         }
 
-        internal static Matrix<double> Rotation(double azimuth, double elevation, double[] camera)
+        internal static Matrix<double> Interaction(double azimuth, double elevation, double[] camera)
         {
             var R = Rotate(azimuth, elevation);
             var lens = new Matrix<double>(3, 1);

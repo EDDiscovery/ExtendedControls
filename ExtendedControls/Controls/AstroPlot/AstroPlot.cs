@@ -530,23 +530,23 @@ namespace ExtendedControls.Controls
 
             if (_axes != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
             {
-                Projection.Update(_axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                ExtendedControls.AstroPlot.View.Update(_axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
                         
             if (ShowFrameWidget && _frames != null)
             {
-                Projection.Update(_frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
-                Projection.Update(_planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                ExtendedControls.AstroPlot.View.Update(_frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                ExtendedControls.AstroPlot.View.Update(_planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
             if (ShowGridWidget && _grids != null)
             {
-                Projection.Update(_grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                ExtendedControls.AstroPlot.View.Update(_grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
             if (_plotObjects != null)
             {
-                Projection.Update(_plotObjects, _hotSpotMap, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
+                ExtendedControls.AstroPlot.View.Update(_plotObjects, _hotSpotMap, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);                
             }
 
             Invalidate();
@@ -764,9 +764,34 @@ namespace ExtendedControls.Controls
         private void MouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var hs = HotSpotSize;
-            HotSpotMap.CheckHotSpotMap(_hotSpotMap, mousePosition, hs);
-        }
 
+            var labelPosition = new Point();
+
+            string text = null;
+
+            if (_plotObjects != null)
+            {
+                for (int i = 0; i < _plotObjects.Count; i++)
+                {
+                    if (mousePosition.X > (_plotObjects[i].Coords.X - hs) && mousePosition.X < (_plotObjects[i].Coords.X + hs) &&
+                        mousePosition.Y > (_plotObjects[i].Coords.Y - hs) && mousePosition.Y > (_plotObjects[i].Coords.Y - hs))
+                    {
+                        text = _plotObjects[i].Name;
+                        labelPosition = new Point((int)_plotObjects[i].Coords.X - (SmallDotSize * 4), (int)_plotObjects[i].Coords.Y - (SmallDotSize * 3));
+                    }
+                }
+            }
+
+            BeginInvoke(
+                (Action)(
+                    () =>
+                    {
+                        
+                    }
+                )
+            );
+        }
+    
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
