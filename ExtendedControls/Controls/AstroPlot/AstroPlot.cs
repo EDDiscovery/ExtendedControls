@@ -32,6 +32,7 @@ namespace ExtendedControls.Controls
         private IContainer components;
 
         private HotSpotMap hotSpotMap = new HotSpotMap();
+        private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer();
 
         private void InitializeComponent()
         {
@@ -47,12 +48,13 @@ namespace ExtendedControls.Controls
             this.plotCanvas.Name = "plotCanvas";
             this.plotCanvas.Size = new System.Drawing.Size(400, 400);
             this.plotCanvas.TabIndex = 0;
-            this.plotCanvas.Paint += this.PlotCanvas_Paint;            
+            this.plotCanvas.Paint += this.PlotCanvas_Paint;
             this.plotCanvas.MouseDown += this.PlotCanvas_MouseDown;
-            this.plotCanvas.MouseLeave += this.PlotCanvas_MouseLeave;
             this.plotCanvas.MouseMove += this.PlotCanvas_MouseMove;
             this.plotCanvas.MouseUp += this.PlotCanvas_MouseUp;
             this.plotCanvas.Resize += this.PlotCanvas_Resize;
+            this.plotCanvas.MouseEnter += PlotCanvas_MouseEnter;
+            this.plotCanvas.MouseLeave += PlotCanvas_MouseLeave;
             // 
             // AstroPlot
             // 
@@ -63,7 +65,7 @@ namespace ExtendedControls.Controls
             this.ResumeLayout(false);
 
         }
-
+        
         private readonly List<AnchorPoint> _axes = new List<AnchorPoint>();
         private readonly List<AnchorPoint> _planes = new List<AnchorPoint>();
         private readonly List<AnchorPoint> _frames = new List<AnchorPoint>();
@@ -132,7 +134,15 @@ namespace ExtendedControls.Controls
         }
 
         public void SetCenterCoordinates(double[] value)
-        { centerCoordinates = value; SetFrameAnchors(FramesLength); SetAxesAnchors(AxesLength); SetGridAnchors(GridCount, GridUnit); }
+        {
+            centerCoordinates = value; SetFrameAnchors(FramesLength); SetAxesAnchors(AxesLength); SetGridAnchors(GridCount, GridUnit);
+        }
+
+        public void SetCenterCoordinates(double x, double y, double z)
+        {
+            var newcenter = new double[] { centerCoordinates[0] = x, centerCoordinates[1] = y, centerCoordinates[2] = z };
+            SetCenterCoordinates(newcenter);
+        }
 
         private double distance;
         [Description("Set the distance at which the camera stands from the plot")]
@@ -395,32 +405,26 @@ namespace ExtendedControls.Controls
         }
 
         // Output
-
         protected bool isObjectSelected;
         public bool IsObjectSelected
         {
             get => isObjectSelected; set { isObjectSelected = value; }
         }
 
+        public delegate void SystemSelected();
+        public event SystemSelected OnSystemSelected;
+
         protected string selectedObjectName;
         public string SelectedObjectName
         {
-            get => selectedObjectName; private set { selectedObjectName = value; }
+            get => selectedObjectName; private set { selectedObjectName = value; { OnSystemSelected(); } }
         }
 
         protected Point selectedObjectPoint;
-        public Point SelectedObjectPoint
+        public Point SelectedObjectLocation
         {
             get => selectedObjectPoint; private set { selectedObjectPoint = value; }
-        }
-
-        protected double[] selectedObjectCoords;
-        
-        public double[] SelectedObjectCoords
-        {
-            get => selectedObjectCoords; private set { selectedObjectCoords = value; }
-        }
-
+        }                
         #endregion
 
         private const int WS_EX_COMPOSITED = 0x02000000;
@@ -436,10 +440,21 @@ namespace ExtendedControls.Controls
             }
         }
 
-        protected override void OnHandleCreated(EventArgs e)
+        public AstroPlot()
         {
-            // sane defaults
-            //Projection = PlotProjection.Perspective;
+            InitializeComponent();
+
+            DoubleBuffered = true;
+
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.ResizeRedraw, true);
+            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
+            _mouseIdleTimer.AutoReset = false;
+            _mouseIdleTimer.Interval = 300;
+            _mouseIdleTimer.Elapsed += _mouseIdleTimer_Elapsed;
+
             MouseRotation_Resistance = 75;
             MouseRotation_Multiply = 1;
             MouseDrag_Resistance = 12;
@@ -449,7 +464,7 @@ namespace ExtendedControls.Controls
             ShowAxesWidget = true;
             AxesLength = 10;
             AxesThickness = 1;
-            ShowFrameWidget = true;
+            ShowFrameWidget = false;
             FrameShape = Shape.Cube;
             FramesLength = 20;
             FramesThickness = 1;
@@ -465,22 +480,18 @@ namespace ExtendedControls.Controls
             UnVisitedColor = Color.Yellow;
             CurrentColor = Color.Red;
             GridColor = Color.FromArgb(80, 30, 190, 240);
-            base.OnHandleCreated(e);
-        }
-
-        public AstroPlot()
-        {
-            InitializeComponent();
-
-            DoubleBuffered = true;
-
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.ResizeRedraw, true);
-            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
             selectedObjectName = "";
             isObjectSelected = false;
+
+            hotSpotMap.OnHotSpot += HotSpotMap_OnHotSpot;
+        }
+
+        private void HotSpotMap_OnHotSpot()
+        {
+            SelectedObjectName = hotSpotMap.GetHotSpotName();
+            SelectedObjectLocation = hotSpotMap.GetHotSpotLocation();
+            Debug.WriteLine(SelectedObjectName + SelectedObjectLocation);
         }
 
         public void SetCenterOfMap(double[] coords)
@@ -526,6 +537,7 @@ namespace ExtendedControls.Controls
         {
             Invalidate();
             _plotObjects.Clear();
+            _plotHotSpot.Clear();
         }
 
         private void CenterTo_Click(object sender, EventArgs e)
@@ -573,7 +585,7 @@ namespace ExtendedControls.Controls
             if (_plotObjects != null)
             {
                 ExtendedControls.AstroPlot.View.Update(_plotObjects, _plotHotSpot, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
-                hotSpotMap.CalculateHotSpotRegions(_plotHotSpot, hotspotSize);
+                hotSpotMap.CalculateHotSpotRegions(_plotHotSpot, HotSpotSize);
             }
 
             Invalidate();
@@ -706,7 +718,7 @@ namespace ExtendedControls.Controls
                         using (var TravelMapPen = new Pen(new SolidBrush(ForeColor))
                         {
                             Width = 1,
-                            DashStyle = System.Drawing.Drawing2D.DashStyle.Solid
+                            DashStyle = DashStyle.Solid
                         })
                         {
                             g.DrawLine(TravelMapPen, _plotObjects[i].Coords, _plotObjects[i + 1].Coords);
@@ -717,13 +729,28 @@ namespace ExtendedControls.Controls
             }
             base.OnPaint(e);
         }
-                
+
         private void PlotCanvas_MouseLeave(object sender, EventArgs e)
         {
+            _mouseIdleTimer.Stop();
+        }
+
+        private void PlotCanvas_MouseEnter(object sender, EventArgs e)
+        {
+            _mouseIdleTimer.Start();
+        }
+
+        private void _mouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            hotSpotMap.CheckForMouseInHotSpot(mousePosition);
         }
 
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+            _mouseIdleTimer.Stop();
+            
+            mousePosition = e.Location;
+
             if (leftMousePressed)
             {
                 if (Projection == PlotProjection.Free)
@@ -735,7 +762,6 @@ namespace ExtendedControls.Controls
                 {
                     azimuth = lastAzimuth - ((ptMouseClick.X - e.X) * (MouseRotation_Multiply * 0.3)) / MouseRotation_Resistance;
                 }
-                
             }
 
             if (middleMousePressed)
@@ -746,6 +772,8 @@ namespace ExtendedControls.Controls
             }
 
             UpdateProjection();
+
+            _mouseIdleTimer.Start();
         }
 
         private void PlotCanvas_MouseDown(object sender, MouseEventArgs e)
@@ -774,9 +802,19 @@ namespace ExtendedControls.Controls
         private void PlotCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
+            {
                 leftMousePressed = false;
+                // refresh the hotspot region map
+                hotSpotMap.CalculateHotSpotRegions(_plotHotSpot, HotSpotSize);
+            }
+
             if (e.Button == MouseButtons.Middle)
+            {
                 middleMousePressed = false;
+                // refresh the hotspot region map
+                hotSpotMap.CalculateHotSpotRegions(_plotHotSpot, HotSpotSize);
+            }
+
             if (e.Button == MouseButtons.Right)
                 rightMousePressed = false;
         }

@@ -15,6 +15,7 @@
  */
 
 using ExtendedControls.AstroPlot;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 
