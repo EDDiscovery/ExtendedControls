@@ -34,6 +34,9 @@ namespace ExtendedControls.Controls
         private HotSpotMap hotSpotMap = new HotSpotMap();
         private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer();
 
+        /// <summary>
+        /// Initialize the control
+        /// </summary>
         private void InitializeComponent()
         {
             this.plotCanvas = new ExtendedControls.ExtPictureBox();
@@ -66,14 +69,27 @@ namespace ExtendedControls.Controls
 
         }
         
+        /// <summary>
+        /// Create needed lists for anchor points
+        /// </summary>
         private readonly List<AnchorPoint> _axes = new List<AnchorPoint>();
         private readonly List<AnchorPoint> _planes = new List<AnchorPoint>();
         private readonly List<AnchorPoint> _frames = new List<AnchorPoint>();
         private readonly List<AnchorPoint[]> _grids = new List<AnchorPoint[]>();
+
+        /// <summary>
+        /// Create a list for plot objects
+        /// </summary>
         private readonly List<PlotObject> _plotObjects = new List<PlotObject>();
 
+        /// <summary>
+        /// It create an additional list for hotspot map creation
+        /// </summary>
         private List<object[]> _plotHotSpot = new List<object[]>();
 
+        /// <summary>
+        /// Define additional attributes for properties
+        /// </summary>
         // Values normalization
         public class MaxValue : Attribute
         {
@@ -234,7 +250,7 @@ namespace ExtendedControls.Controls
 
         [MinValue(1.0), MaxValue(100.0)]
         private double mouseRotationResistance;
-        [Description("Set the resistance of the mouse rotation (0.1 to 1.0)")]
+        [Description("Set the resistance of the mouse rotation (1.0 to 100.0)")]
         public double MouseRotation_Resistance
         {
             get => mouseRotationResistance;
@@ -260,7 +276,7 @@ namespace ExtendedControls.Controls
 
         [MinValue(1.0), MaxValue(100)]
         private double mouseWheelResistance;
-        [Description("Set the resistance of the mouse wheel (0.1 to 1.0)")]
+        [Description("Set the resistance of the mouse wheel (1.0 to 100.0)")]
         public double MouseWheel_Resistance
         {
             get => mouseWheelResistance; set
@@ -271,7 +287,7 @@ namespace ExtendedControls.Controls
 
         [MinValue(1), MaxValue(10)]
         private double mouseWheelMultiply;
-        [Description("Set the multiply of the mouse wheel (1.0 to 100.0)")]
+        [Description("Set the multiply of the mouse wheel (1.0 to 10.0)")]
         public double MouseWheel_Multiply
         {
             get => mouseWheelMultiply;
@@ -308,7 +324,7 @@ namespace ExtendedControls.Controls
             }
         }
 
-        [MinValue(5), MaxValue(50)]
+        [MinValue(5), MaxValue(30)]
         private double hotspotSize;
 
         [Description("Define the size of the hotspot area for the map points")]
@@ -487,6 +503,9 @@ namespace ExtendedControls.Controls
             hotSpotMap.OnHotSpot += HotSpotMap_OnHotSpot;
         }
 
+        /// <summary>
+        /// Changes SelectedObject Name and Loction when OnHotSpot event from HotSpotMap is triggered
+        /// </summary>
         private void HotSpotMap_OnHotSpot()
         {
             SelectedObjectName = hotSpotMap.GetHotSpotName();
@@ -494,6 +513,10 @@ namespace ExtendedControls.Controls
             Debug.WriteLine(SelectedObjectName + SelectedObjectLocation);
         }
 
+        /// <summary>
+        /// Set a new center of the plot
+        /// </summary>
+        /// <param name="coords"></param>
         public void SetCenterOfMap(double[] coords)
         {
             if (coords != null)
@@ -508,6 +531,10 @@ namespace ExtendedControls.Controls
             }
         }
                 
+        /// <summary>
+        /// Add given list to the object list to be plotted
+        /// </summary>
+        /// <param name="plotObjects"></param>
         public void AddSystemsToMap(List<object[]> plotObjects)
         {
             for (int i = 0; i < plotObjects.Count; i++)
@@ -546,6 +573,9 @@ namespace ExtendedControls.Controls
             SetCenterCoordinates((double[])selected.Tag);
         }
 
+        /// <summary>
+        /// Update coordinates according to user interaction
+        /// </summary>
         private void UpdateProjection()
         {
             if (Projection == PlotProjection.Fixed)
@@ -596,6 +626,11 @@ namespace ExtendedControls.Controls
             UpdateProjection();
         }
 
+        /// <summary>
+        /// Paint the plot
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlotCanvas_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
@@ -730,21 +765,41 @@ namespace ExtendedControls.Controls
             base.OnPaint(e);
         }
 
+        /// <summary>
+        /// Stop timer when mouse leave the control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlotCanvas_MouseLeave(object sender, EventArgs e)
         {
             _mouseIdleTimer.Stop();
         }
 
+        /// <summary>
+        /// Start the timer when mouse enter the control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlotCanvas_MouseEnter(object sender, EventArgs e)
         {
             _mouseIdleTimer.Start();
         }
 
+        /// <summary>
+        /// Do somethign when the timer tick passed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void _mouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             hotSpotMap.CheckForMouseInHotSpot(mousePosition);
         }
 
+        /// <summary>
+        /// Actiosn taken when mouse moves
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             _mouseIdleTimer.Stop();
@@ -776,6 +831,11 @@ namespace ExtendedControls.Controls
             _mouseIdleTimer.Start();
         }
 
+        /// <summary>
+        /// When mouse is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlotCanvas_MouseDown(object sender, MouseEventArgs e)
         {
             ptMouseClick = new PointF(e.X, e.Y);
@@ -799,6 +859,11 @@ namespace ExtendedControls.Controls
             }
         }
 
+        /// <summary>
+        /// When mouse is released
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlotCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -819,6 +884,10 @@ namespace ExtendedControls.Controls
                 rightMousePressed = false;
         }
    
+        /// <summary>
+        /// On mouse wheel
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)

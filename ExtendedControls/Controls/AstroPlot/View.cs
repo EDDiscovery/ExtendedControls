@@ -25,8 +25,22 @@ using static ExtendedControls.Controls.AstroPlot;
 
 namespace ExtendedControls.AstroPlot
 {
+    /// <summary>
+    /// Update coordinates
+    /// </summary>
     internal static class View
     {
+        /// <summary>
+        /// Used to update coordinates of axes and frames
+        /// </summary>
+        /// <param name="anchors"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="cameraPosition"></param>
+        /// <param name="azimuth"></param>
+        /// <param name="elevation"></param>
+        /// <param name="centerCoordinates"></param>
         internal static void Update(List<AnchorPoint> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
             var _interaction = Interaction(azimuth, elevation, cameraPosition);
@@ -41,6 +55,17 @@ namespace ExtendedControls.AstroPlot
             }
         }
 
+        /// <summary>
+        /// Used to update grids corodinates, which are created as a list of array
+        /// </summary>
+        /// <param name="anchors"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="cameraPosition"></param>
+        /// <param name="azimuth"></param>
+        /// <param name="elevation"></param>
+        /// <param name="centerCoordinates"></param>
         internal static void Update(List<AnchorPoint[]> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
             var _interaction = Interaction(azimuth, elevation, cameraPosition);
@@ -58,6 +83,18 @@ namespace ExtendedControls.AstroPlot
             }
         }
 
+        /// <summary>
+        /// Update plot objects coordinates and hotspot list
+        /// </summary>
+        /// <param name="mapObjects"></param>
+        /// <param name="plotHotSpot"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="cameraPosition"></param>
+        /// <param name="azimuth"></param>
+        /// <param name="elevation"></param>
+        /// <param name="centerCoordinates"></param>
         internal static void Update(List<PlotObject> mapObjects, List<object[]> plotHotSpot, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
             var _interaction = Interaction(azimuth, elevation, cameraPosition);
@@ -81,7 +118,14 @@ namespace ExtendedControls.AstroPlot
                 plotHotSpot[i][2] = (double)mapObjects[i].Coords.Y;
             }
         }
-                
+
+        /// <summary>
+        /// Create a matrix with plot object coordinates
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <returns></returns>
         internal static Matrix<double> Coords(double x, double y, double z)
         {
             var _matrix = new Matrix<double>(3, 3);
@@ -92,6 +136,13 @@ namespace ExtendedControls.AstroPlot
             return _matrix;
         }
 
+        /// <summary>
+        /// Create a matrix with interaction coordinates
+        /// </summary>
+        /// <param name="azimuth"></param>
+        /// <param name="elevation"></param>
+        /// <param name="camera"></param>
+        /// <returns></returns>
         internal static Matrix<double> Interaction(double azimuth, double elevation, double[] camera)
         {
             var R = Rotate(azimuth, elevation);
@@ -100,6 +151,12 @@ namespace ExtendedControls.AstroPlot
             return R | -R * lens;
         }
 
+        /// <summary>
+        /// Matrix rotation parameters
+        /// </summary>
+        /// <param name="azimuth"></param>
+        /// <param name="elevation"></param>
+        /// <returns></returns>
         internal static Matrix<double> Rotate(double azimuth, double elevation)
         {
             var R = new Matrix<double>(3, 3);

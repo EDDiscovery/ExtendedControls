@@ -23,6 +23,10 @@ namespace ExtendedControls.Controls
 {
     public partial class AstroPlot
     {
+        /// <summary>
+        /// Set the axes widget anchors point
+        /// </summary>
+        /// <param name="length"></param>
         internal void SetAxesAnchors(int length)
         {
             if (ShowAxesWidget)
@@ -66,6 +70,10 @@ namespace ExtendedControls.Controls
             }
         }
                
+        /// <summary>
+        /// Set the frame boundaries anchors points
+        /// </summary>
+        /// <param name="frameRadius"></param>
         public void SetFrameAnchors(double frameRadius)
         {
             if (ShowFrameWidget)
@@ -98,6 +106,11 @@ namespace ExtendedControls.Controls
             }
         }
 
+        /// <summary>
+        /// Set grid anchors points
+        /// </summary>
+        /// <param name="gc"></param>
+        /// <param name="gu"></param>
         public void SetGridAnchors(int gc, int gu)
         {
             ShowGridWidget = false;
