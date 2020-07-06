@@ -32,7 +32,7 @@ namespace ExtendedControls.Controls
         private IContainer components;
 
         private HotSpotMap hotSpotMap = new HotSpotMap();
-        private readonly System.Timers.Timer _mouseIdleTimer = new System.Timers.Timer();
+        private readonly System.Timers.Timer mouseIdleTimer = new System.Timers.Timer();
 
         /// <summary>
         /// Initialize the control
@@ -72,20 +72,20 @@ namespace ExtendedControls.Controls
         /// <summary>
         /// Create needed lists for anchor points
         /// </summary>
-        private readonly List<AnchorPoint> _axes = new List<AnchorPoint>();
-        private readonly List<AnchorPoint> _planes = new List<AnchorPoint>();
-        private readonly List<AnchorPoint> _frames = new List<AnchorPoint>();
-        private readonly List<AnchorPoint[]> _grids = new List<AnchorPoint[]>();
+        private readonly List<AnchorPoint> axesAnchors = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> planesAnchors = new List<AnchorPoint>();
+        private readonly List<AnchorPoint> framesAnchors = new List<AnchorPoint>();
+        private readonly List<AnchorPoint[]> gridsAnchors = new List<AnchorPoint[]>();
 
         /// <summary>
         /// Create a list for plot objects
         /// </summary>
-        private readonly List<PlotObject> _plotObjects = new List<PlotObject>();
+        private readonly List<PlotObject> plotObjects = new List<PlotObject>();
 
         /// <summary>
         /// It create an additional list for hotspot map creation
         /// </summary>
-        private List<object[]> _plotHotSpot = new List<object[]>();
+        private List<object[]> plotHotSpots = new List<object[]>();
 
         /// <summary>
         /// Define additional attributes for properties
@@ -467,9 +467,9 @@ namespace ExtendedControls.Controls
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            _mouseIdleTimer.AutoReset = false;
-            _mouseIdleTimer.Interval = 300;
-            _mouseIdleTimer.Elapsed += _mouseIdleTimer_Elapsed;
+            mouseIdleTimer.AutoReset = false;
+            mouseIdleTimer.Interval = 300;
+            mouseIdleTimer.Elapsed += mouseIdleTimer_Elapsed;
 
             MouseRotation_Resistance = 75;
             MouseRotation_Multiply = 1;
@@ -539,7 +539,7 @@ namespace ExtendedControls.Controls
         {
             for (int i = 0; i < plotObjects.Count; i++)
             {
-                _plotObjects.Add(new PlotObject
+                this.plotObjects.Add(new PlotObject
                 {
                     Name = plotObjects[i][0].ToString(),
                     X = (double)plotObjects[i][1],
@@ -551,7 +551,7 @@ namespace ExtendedControls.Controls
                     Coords = new PointF(0, 0)
                 });
 
-                _plotHotSpot.Add(new object[]
+                plotHotSpots.Add(new object[]
                 {
                     plotObjects[i][0].ToString(), 0, 0
                 });
@@ -563,8 +563,8 @@ namespace ExtendedControls.Controls
         public void Clear()
         {
             Invalidate();
-            _plotObjects.Clear();
-            _plotHotSpot.Clear();
+            plotObjects.Clear();
+            plotHotSpots.Clear();
         }
 
         private void CenterTo_Click(object sender, EventArgs e)
@@ -596,26 +596,26 @@ namespace ExtendedControls.Controls
 
             cameraPosition = new double[3] { -y, z, -x };
 
-            if (_axes != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
+            if (axesAnchors != null) // we calculate that even if the axes widget is hidden, because its center coordinates are used for other calculations
             {
-                ExtendedControls.AstroPlot.View.Update(_axes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                ExtendedControls.AstroPlot.View.Update(axesAnchors, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
                         
-            if (ShowFrameWidget && _frames != null)
+            if (ShowFrameWidget && framesAnchors != null)
             {
-                ExtendedControls.AstroPlot.View.Update(_frames, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
-                ExtendedControls.AstroPlot.View.Update(_planes, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                ExtendedControls.AstroPlot.View.Update(framesAnchors, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                ExtendedControls.AstroPlot.View.Update(planesAnchors, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
-            if (ShowGridWidget && _grids != null)
+            if (ShowGridWidget && gridsAnchors != null)
             {
-                ExtendedControls.AstroPlot.View.Update(_grids, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                ExtendedControls.AstroPlot.View.Update(gridsAnchors, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
 
-            if (_plotObjects != null)
+            if (plotObjects != null)
             {
-                ExtendedControls.AstroPlot.View.Update(_plotObjects, _plotHotSpot, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
-                hotSpotMap.CalculateHotSpotRegions(_plotHotSpot, HotSpotSize);
+                ExtendedControls.AstroPlot.View.Update(plotObjects, plotHotSpots, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
+                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, HotSpotSize);
             }
 
             Invalidate();
@@ -647,25 +647,25 @@ namespace ExtendedControls.Controls
                 DashStyle = DashStyle.Solid
             })
             {
-                if (ShowAxesWidget && _axes != null)
+                if (ShowAxesWidget && axesAnchors != null)
                 {
-                    for (int i = 0; i < _axes.Count; i++)
+                    for (int i = 0; i < axesAnchors.Count; i++)
                     {
                         if (i == 1)
                         {
                             AxisPen.Color = Color.Red;
-                            g.DrawLine(AxisPen, _axes[0].Coords, _axes[1].Coords);
+                            g.DrawLine(AxisPen, axesAnchors[0].Coords, axesAnchors[1].Coords);
                         }
                         if (i == 2)
                         {
                             AxisPen.Color = Color.Green;
-                            g.DrawLine(AxisPen, _axes[0].Coords, _axes[2].Coords);
+                            g.DrawLine(AxisPen, axesAnchors[0].Coords, axesAnchors[2].Coords);
                         }
 
                         if (i == 3)
                         {
                             AxisPen.Color = Color.Blue;
-                            g.DrawLine(AxisPen, _axes[0].Coords, _axes[3].Coords);
+                            g.DrawLine(AxisPen, axesAnchors[0].Coords, axesAnchors[3].Coords);
                         }
                     }
                 }
@@ -676,9 +676,9 @@ namespace ExtendedControls.Controls
             {
                 using (var GridPen = new Pen(new SolidBrush(Color.FromArgb(80, 40, 160, 220))) { Width = 1 })
                 {
-                    for (int i = 0; i < _grids.Count; i++)
+                    for (int i = 0; i < gridsAnchors.Count; i++)
                     {
-                        g.DrawLine(GridPen, _grids[i][0].Coords, _grids[i][1].Coords);
+                        g.DrawLine(GridPen, gridsAnchors[i][0].Coords, gridsAnchors[i][1].Coords);
                     }
                 }
             }
@@ -693,35 +693,35 @@ namespace ExtendedControls.Controls
                 })
                 {
                     /// Cubical frame
-                    if (GetFrameShape() == Shape.Cube && _frames.Count > 0)
+                    if (GetFrameShape() == Shape.Cube && framesAnchors.Count > 0)
                     {
                         /// bottom
-                        g.DrawLine(FramePen, _frames[0].Coords, _frames[1].Coords);
-                        g.DrawLine(FramePen, _frames[1].Coords, _frames[5].Coords);
-                        g.DrawLine(FramePen, _frames[5].Coords, _frames[3].Coords);
-                        g.DrawLine(FramePen, _frames[3].Coords, _frames[0].Coords);
+                        g.DrawLine(FramePen, framesAnchors[0].Coords, framesAnchors[1].Coords);
+                        g.DrawLine(FramePen, framesAnchors[1].Coords, framesAnchors[5].Coords);
+                        g.DrawLine(FramePen, framesAnchors[5].Coords, framesAnchors[3].Coords);
+                        g.DrawLine(FramePen, framesAnchors[3].Coords, framesAnchors[0].Coords);
 
                         /// left
-                        g.DrawLine(FramePen, _frames[0].Coords, _frames[2].Coords);
-                        g.DrawLine(FramePen, _frames[2].Coords, _frames[4].Coords);
-                        g.DrawLine(FramePen, _frames[4].Coords, _frames[3].Coords);
+                        g.DrawLine(FramePen, framesAnchors[0].Coords, framesAnchors[2].Coords);
+                        g.DrawLine(FramePen, framesAnchors[2].Coords, framesAnchors[4].Coords);
+                        g.DrawLine(FramePen, framesAnchors[4].Coords, framesAnchors[3].Coords);
 
                         /// right
-                        g.DrawLine(FramePen, _frames[1].Coords, _frames[6].Coords);
-                        g.DrawLine(FramePen, _frames[6].Coords, _frames[7].Coords);
-                        g.DrawLine(FramePen, _frames[7].Coords, _frames[5].Coords);
+                        g.DrawLine(FramePen, framesAnchors[1].Coords, framesAnchors[6].Coords);
+                        g.DrawLine(FramePen, framesAnchors[6].Coords, framesAnchors[7].Coords);
+                        g.DrawLine(FramePen, framesAnchors[7].Coords, framesAnchors[5].Coords);
 
                         /// top
-                        g.DrawLine(FramePen, _frames[2].Coords, _frames[6].Coords);
-                        g.DrawLine(FramePen, _frames[4].Coords, _frames[7].Coords);
+                        g.DrawLine(FramePen, framesAnchors[2].Coords, framesAnchors[6].Coords);
+                        g.DrawLine(FramePen, framesAnchors[4].Coords, framesAnchors[7].Coords);
                     }
 
                     /// Spherical frame
-                    if (GetFrameShape() == Shape.Planes && _frames.Count > 0)
+                    if (GetFrameShape() == Shape.Planes && framesAnchors.Count > 0)
                     {
-                        var horizontalPlane = new PointF[] { _planes[0].Coords, _planes[2].Coords, _planes[1].Coords, _planes[3].Coords };
-                        var verticalPlane = new PointF[] { _planes[0].Coords, _planes[4].Coords, _planes[1].Coords, _planes[5].Coords };
-                        var longitudinalPlane = new PointF[] { _planes[2].Coords, _planes[4].Coords, _planes[3].Coords, _planes[5].Coords };
+                        var horizontalPlane = new PointF[] { planesAnchors[0].Coords, planesAnchors[2].Coords, planesAnchors[1].Coords, planesAnchors[3].Coords };
+                        var verticalPlane = new PointF[] { planesAnchors[0].Coords, planesAnchors[4].Coords, planesAnchors[1].Coords, planesAnchors[5].Coords };
+                        var longitudinalPlane = new PointF[] { planesAnchors[2].Coords, planesAnchors[4].Coords, planesAnchors[3].Coords, planesAnchors[5].Coords };
 
                         FramePen.Color = Color.Red;
                         g.DrawClosedCurve(FramePen, horizontalPlane, (float)0.85, FillMode.Winding);
@@ -733,22 +733,22 @@ namespace ExtendedControls.Controls
                 }
             }
 
-            if (_plotObjects != null)
+            if (plotObjects != null)
             {
-                for (int i = _plotObjects.Count - 1; i >= 0; i--)
+                for (int i = plotObjects.Count - 1; i >= 0; i--)
                 {
-                    var FillColor = _plotObjects[i].IsVisited ? _plotObjects[i].IsCurrent ? CurrentColor : VisitedColor : UnVisitedColor;
+                    var FillColor = plotObjects[i].IsVisited ? plotObjects[i].IsCurrent ? CurrentColor : VisitedColor : UnVisitedColor;
 
                     using (var objectBrush = new SolidBrush(FillColor))
                     {
                         g.FillEllipse(objectBrush, new RectangleF(
-                            _plotObjects[i].Coords.X - (SmallDotSize / 2),
-                            _plotObjects[i].Coords.Y - (SmallDotSize / 2),
+                            plotObjects[i].Coords.X - (SmallDotSize / 2),
+                            plotObjects[i].Coords.Y - (SmallDotSize / 2),
                             SmallDotSize,
                             SmallDotSize));
                     }
 
-                    if (_plotObjects[i].IsWaypoint && i != _plotObjects.Count - 1)
+                    if (plotObjects[i].IsWaypoint && i != plotObjects.Count - 1)
                     {
                         using (var TravelMapPen = new Pen(new SolidBrush(ForeColor))
                         {
@@ -756,7 +756,7 @@ namespace ExtendedControls.Controls
                             DashStyle = DashStyle.Solid
                         })
                         {
-                            g.DrawLine(TravelMapPen, _plotObjects[i].Coords, _plotObjects[i + 1].Coords);
+                            g.DrawLine(TravelMapPen, plotObjects[i].Coords, plotObjects[i + 1].Coords);
                         }
                     }
                 }
@@ -772,7 +772,7 @@ namespace ExtendedControls.Controls
         /// <param name="e"></param>
         private void PlotCanvas_MouseLeave(object sender, EventArgs e)
         {
-            _mouseIdleTimer.Stop();
+            mouseIdleTimer.Stop();
         }
 
         /// <summary>
@@ -782,7 +782,7 @@ namespace ExtendedControls.Controls
         /// <param name="e"></param>
         private void PlotCanvas_MouseEnter(object sender, EventArgs e)
         {
-            _mouseIdleTimer.Start();
+            mouseIdleTimer.Start();
         }
 
         /// <summary>
@@ -790,7 +790,7 @@ namespace ExtendedControls.Controls
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void _mouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void mouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             hotSpotMap.CheckForMouseInHotSpot(mousePosition);
         }
@@ -802,7 +802,7 @@ namespace ExtendedControls.Controls
         /// <param name="e"></param>
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            _mouseIdleTimer.Stop();
+            mouseIdleTimer.Stop();
             
             mousePosition = e.Location;
 
@@ -828,7 +828,7 @@ namespace ExtendedControls.Controls
 
             UpdateProjection();
 
-            _mouseIdleTimer.Start();
+            mouseIdleTimer.Start();
         }
 
         /// <summary>
@@ -870,14 +870,14 @@ namespace ExtendedControls.Controls
             {
                 leftMousePressed = false;
                 // refresh the hotspot region map
-                hotSpotMap.CalculateHotSpotRegions(_plotHotSpot, HotSpotSize);
+                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, HotSpotSize);
             }
 
             if (e.Button == MouseButtons.Middle)
             {
                 middleMousePressed = false;
                 // refresh the hotspot region map
-                hotSpotMap.CalculateHotSpotRegions(_plotHotSpot, HotSpotSize);
+                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, HotSpotSize);
             }
 
             if (e.Button == MouseButtons.Right)

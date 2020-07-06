@@ -43,14 +43,14 @@ namespace ExtendedControls.AstroPlot
         /// <param name="centerCoordinates"></param>
         internal static void Update(List<AnchorPoint> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
-            var _interaction = Interaction(azimuth, elevation, cameraPosition);
-            var _data = Coords(x, y, z);
+            var interaction = Interaction(azimuth, elevation, cameraPosition);
+            var data = Coords(x, y, z);
             var X_h = new Matrix<double>(4, 1);
 
             foreach (var anchor in anchors)
             {
                 X_h.SetMatrix(new double[] { anchor.X - centerCoordinates[0], anchor.Y - centerCoordinates[1], anchor.Z - centerCoordinates[2], 1.0 });
-                var P = _data * _interaction * X_h;
+                var P = data * interaction * X_h;
                 anchor.Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
             }
         }
@@ -68,8 +68,8 @@ namespace ExtendedControls.AstroPlot
         /// <param name="centerCoordinates"></param>
         internal static void Update(List<AnchorPoint[]> anchors, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
-            var _interaction = Interaction(azimuth, elevation, cameraPosition);
-            var _data = Coords(x, y, z);
+            var interaction = Interaction(azimuth, elevation, cameraPosition);
+            var data = Coords(x, y, z);
             var X_h = new Matrix<double>(4, 1);
 
             foreach (var anchor in anchors)
@@ -77,7 +77,7 @@ namespace ExtendedControls.AstroPlot
                 for (int i = 0; i < anchor.Length; i++)
                 {
                     X_h.SetMatrix(new double[] { anchor[i].X - centerCoordinates[0], anchor[i].Y - centerCoordinates[1], anchor[i].Z - centerCoordinates[2], 1.0 });
-                    var P = _data * _interaction * X_h;
+                    var P = data * interaction * X_h;
                     anchor[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 }
             }
@@ -97,8 +97,8 @@ namespace ExtendedControls.AstroPlot
         /// <param name="centerCoordinates"></param>
         internal static void Update(List<PlotObject> mapObjects, List<object[]> plotHotSpot, int x, int y, double z, double[] cameraPosition, double azimuth, double elevation, double[] centerCoordinates)
         {
-            var _interaction = Interaction(azimuth, elevation, cameraPosition);
-            var _data = Coords(x, y, z);
+            var interaction = Interaction(azimuth, elevation, cameraPosition);
+            var data = Coords(x, y, z);
             var X_h = new Matrix<double>(4, 1);
 
             for (int i = 0; i < mapObjects.Count; i++)
@@ -112,7 +112,7 @@ namespace ExtendedControls.AstroPlot
                     X_h.SetMatrix(new double[] { mapObjects[i].X, mapObjects[i].Y, mapObjects[i].Z, 1.0 });
                 }
 
-                var P = _data * _interaction * X_h;
+                var P = data * interaction * X_h;
                 mapObjects[i].Coords = new PointF((float)(P.GetValByIndex(0, 0) / P.GetValByIndex(2, 0)), (float)(P.GetValByIndex(1, 0) / P.GetValByIndex(2, 0)));
                 plotHotSpot[i][1] = (double)mapObjects[i].Coords.X;
                 plotHotSpot[i][2] = (double)mapObjects[i].Coords.Y;
@@ -128,12 +128,12 @@ namespace ExtendedControls.AstroPlot
         /// <returns></returns>
         internal static Matrix<double> Coords(double x, double y, double z)
         {
-            var _matrix = new Matrix<double>(3, 3);
-            var _x = x / 2;
-            var _y = y / 2;
+            var matrix = new Matrix<double>(3, 3);
+            var nx = x / 2;
+            var ny = y / 2;
             const double _a = 1;
-            _matrix.SetMatrix(new double[] { z, 0, _x, 0, z * _a, _y, 0, 0, 1 });
-            return _matrix;
+            matrix.SetMatrix(new double[] { z, 0, nx, 0, z * _a, ny, 0, 0, 1 });
+            return matrix;
         }
 
         /// <summary>

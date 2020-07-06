@@ -34,27 +34,27 @@ namespace ExtendedControls.Controls
                 if (centerCoordinates != null)
                 {
                     ShowAxesWidget = false;
-                    _axes.Clear();
+                    axesAnchors.Clear();
 
-                    _axes.Add(new AnchorPoint
+                    axesAnchors.Add(new AnchorPoint
                     {
                         X = GetCenterCoordinates()[0],
                         Y = GetCenterCoordinates()[1],
                         Z = GetCenterCoordinates()[2]
                     });
-                    _axes.Add(new AnchorPoint
+                    axesAnchors.Add(new AnchorPoint
                     {
                         X = GetCenterCoordinates()[0] + length,
                         Y = GetCenterCoordinates()[1],
                         Z = GetCenterCoordinates()[2]
                     });
-                    _axes.Add(new AnchorPoint
+                    axesAnchors.Add(new AnchorPoint
                     {
                         X = GetCenterCoordinates()[0],
                         Y = GetCenterCoordinates()[1] + (length * -1),
                         Z = GetCenterCoordinates()[2]
                     });
-                    _axes.Add(new AnchorPoint
+                    axesAnchors.Add(new AnchorPoint
                     {
                         X = GetCenterCoordinates()[0],
                         Y = GetCenterCoordinates()[1],
@@ -80,23 +80,23 @@ namespace ExtendedControls.Controls
             {
                 ShowFrameWidget = false;
 
-                _frames.Clear();
-                _frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
-                _frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
-                _frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
-                _frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
-                _frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
-                _frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
-                _frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
-                _frames.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
+                framesAnchors.Clear();
+                framesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
+                framesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
+                framesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
+                framesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
+                framesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + frameRadius });
+                framesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
+                framesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
+                framesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + -frameRadius, Y = GetCenterCoordinates()[1] + -frameRadius, Z = GetCenterCoordinates()[2] + -frameRadius });
 
-                _planes.Clear();
-                _planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + (frameRadius * 2), Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] });
-                _planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0] - (frameRadius * 2), Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] });
-                _planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (frameRadius * 2) });
-                _planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - (frameRadius * 2) });
-                _planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1] + (frameRadius * 2), Z = GetCenterCoordinates()[2] });
-                _planes.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1] - (frameRadius * 2), Z = GetCenterCoordinates()[2] });
+                planesAnchors.Clear();
+                planesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] + (frameRadius * 2), Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] });
+                planesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0] - (frameRadius * 2), Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] });
+                planesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (frameRadius * 2) });
+                planesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] - (frameRadius * 2) });
+                planesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1] + (frameRadius * 2), Z = GetCenterCoordinates()[2] });
+                planesAnchors.Add(new AnchorPoint { X = GetCenterCoordinates()[0], Y = GetCenterCoordinates()[1] - (frameRadius * 2), Z = GetCenterCoordinates()[2] });
 
                 ShowFrameWidget = true;
             }
@@ -115,19 +115,19 @@ namespace ExtendedControls.Controls
         {
             ShowGridWidget = false;
 
-            _grids.Clear();
+            gridsAnchors.Clear();
 
             var gcd = (int)gc * 2;
             var go = (int)gc * gu;
 
             for (int i = 0; i < gcd; i++)
             {
-                _grids.Add(new AnchorPoint[]
+                gridsAnchors.Add(new AnchorPoint[]
                 {
                     new AnchorPoint { X = GetCenterCoordinates()[0] + gcd - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (gu * i) - go },
                     new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * gcd) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (gu * i) - go}
                 });
-                _grids.Add(new AnchorPoint[]
+                gridsAnchors.Add(new AnchorPoint[]
                 {
                     new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * i) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + (gu * gcd) - go},
                     new AnchorPoint { X = GetCenterCoordinates()[0] + (gu * i) - go, Y = GetCenterCoordinates()[1], Z = GetCenterCoordinates()[2] + gcd - go}
