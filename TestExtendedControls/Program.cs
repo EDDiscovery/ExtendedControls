@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DialogTest
+namespace TestExtendedControls
 {
     static class Program
     {
@@ -20,12 +20,14 @@ namespace DialogTest
 
             CommandArgs args = new CommandArgs(stringargs);
             string arg1 = args.Next();
-            Type t = Type.GetType("DialogTest." + arg1);
+            Type t = Type.GetType("TestExtendedControls." + arg1);
 
             if (t != null)
             {
                 Application.Run((Form)Activator.CreateInstance(t));
             }
+            else
+                Application.Run(new TestButtons());
         }
 
     }

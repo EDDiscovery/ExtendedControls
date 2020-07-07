@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DialogTest
+namespace TestExtendedControls
 {
     public partial class TestTextBoxesRTF : Form
     {

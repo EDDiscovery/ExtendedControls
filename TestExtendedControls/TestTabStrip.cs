@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DialogTest
+namespace TestExtendedControls
 {
     public partial class TestTabStrip : Form
     {
@@ -25,18 +25,18 @@ namespace DialogTest
             
             InitializeComponent();
             tabStrip1.ImageList = new Bitmap[] {
-                DialogTest.Properties.Resources.galaxy_red, DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_black, DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_black, DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_black, DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_black, DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_black, DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white, DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_gray,DialogTest.Properties.Resources.galaxy,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_red, TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_black, TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_black, TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_black, TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_black, TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_black, TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white, TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_gray,TestExtendedControls.Properties.Resources.galaxy,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
                                             };
             tabStrip1.TextList = new string[] { "icon 0", "icon 1",
                 "icon 2", "icon 3",
@@ -58,12 +58,12 @@ namespace DialogTest
             tabStrip1.SelectedBackColor = Color.Green;
 
             tabStrip2.ImageList = new Bitmap[] {
-                DialogTest.Properties.Resources.galaxy_red,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_red,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
                                             };
             tabStrip2.TextList = new string[] { "icon 0", "icon 1",
                 "icon 2", "icon 3",
@@ -76,12 +76,12 @@ namespace DialogTest
             tabStrip2.OnCreateTab += OnCreateTab;
 
             tabStrip3.ImageList = new Bitmap[] {
-                DialogTest.Properties.Resources.galaxy_red,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_red,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
                                             };
             tabStrip3.TextList = new string[] { "3icon 0", "3icon 1",
                 "3icon 2", "3icon 3",
@@ -94,12 +94,12 @@ namespace DialogTest
             tabStrip3.OnCreateTab += OnCreateTab;
 
             tabStrip4.ImageList = new Bitmap[] {
-                DialogTest.Properties.Resources.galaxy_red,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_red,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
                                             };
             tabStrip4.TextList = new string[] { "4icon 0", "4icon 1",
                 "4icon 2", "4icon 3",
@@ -146,10 +146,10 @@ namespace DialogTest
             ImageList imageListLarge = new ImageList();
 
             // Initialize the ImageList objects with bitmaps.
-            imageListSmall.Images.Add(DialogTest.Properties.Resources.galaxy_gray);
-            imageListSmall.Images.Add(DialogTest.Properties.Resources.galaxy_black);
-            imageListLarge.Images.Add(DialogTest.Properties.Resources.galaxy_gray);
-            imageListLarge.Images.Add(DialogTest.Properties.Resources.galaxy_gray);
+            imageListSmall.Images.Add(TestExtendedControls.Properties.Resources.galaxy_gray);
+            imageListSmall.Images.Add(TestExtendedControls.Properties.Resources.galaxy_black);
+            imageListLarge.Images.Add(TestExtendedControls.Properties.Resources.galaxy_gray);
+            imageListLarge.Images.Add(TestExtendedControls.Properties.Resources.galaxy_gray);
 
             //Assign the ImageList objects to the ListView.
             listView1.LargeImageList = imageListLarge;
@@ -157,7 +157,7 @@ namespace DialogTest
 
             // Add the ListView to the control
             List<string> lv = new List<string>() { "one", "two", "three", "four" };
-            List<Image> lvimages = new List<Image>() { DialogTest.Properties.Resources.galaxy_gray, DialogTest.Properties.Resources.galaxy_black, DialogTest.Properties.Resources.galaxy_gray, DialogTest.Properties.Resources.galaxy_black };
+            List<Image> lvimages = new List<Image>() { TestExtendedControls.Properties.Resources.galaxy_gray, TestExtendedControls.Properties.Resources.galaxy_black, TestExtendedControls.Properties.Resources.galaxy_gray, TestExtendedControls.Properties.Resources.galaxy_black };
 
             listControlCustom1.Items = lv;
             listControlCustom1.BackColor = Color.Black;
@@ -212,7 +212,7 @@ namespace DialogTest
                     myBrush = Brushes.Purple;
                     break;
             }
-            Bitmap bmp = DialogTest.Properties.Resources.galaxy_gray;
+            Bitmap bmp = TestExtendedControls.Properties.Resources.galaxy_gray;
 
             e.Graphics.DrawImage(bmp, new Point(0, e.Bounds.Top));
 

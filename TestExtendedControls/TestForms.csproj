@@ -7,8 +7,8 @@
     <ProjectGuid>{00AA0CC9-BF55-4051-B6CD-849526AE8FAA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DialogTest</RootNamespace>
-    <AssemblyName>DialogTest</AssemblyName>
+    <RootNamespace>TestExtendedControls</RootNamespace>
+    <AssemblyName>TestExtendedControls</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
