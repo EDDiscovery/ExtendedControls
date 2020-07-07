@@ -615,7 +615,9 @@ namespace ExtendedControls
                         ctrl.ImageLayout = ImageLayout.Stretch;
                     }
 
-                    if (ctrl.Image != null && ctrl.Text.Length == 0)        // if no text, just image, background is form to make the back disappear
+
+                    // if image, and no text or text over image centred (so over the image), background is form to make the back disappear
+                    if (ctrl.Image != null && (ctrl.Text.Length == 0 || (ctrl.TextAlign == ContentAlignment.MiddleCenter && ctrl.ImageAlign == ContentAlignment.MiddleCenter)))
                     {
                         ctrl.BackColor = currentsettings.colors[Settings.CI.form];
                     }
