@@ -22,6 +22,7 @@ namespace TestExtendedControls
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
             theme.FontName = "Microsoft Sans Serif";
+
             theme.FontSize = 8.25f;
             theme.WindowsFrame = true;
 
@@ -51,6 +52,12 @@ namespace TestExtendedControls
             b.Size = new Size(128, b.FindMaxSubControlArea(0, 6).Height);
 
             theme.ApplyStd(this);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            extButton4.Text = "!" + this.WindowState.ToString();
         }
 
         private void extButton5_Click(object sender, EventArgs e)

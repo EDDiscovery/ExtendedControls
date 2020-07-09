@@ -64,7 +64,7 @@ namespace DialogTest
         {
             hotSpotMap.CheckForMouseInHotSpot(mp);
 
-            extLabel2.Text = hotSpotMap.CheckForMouseInHotSpot(mp);
+            extLabel2.Text = hotSpotMap.CheckForMouseInHotSpot(mp).Item1 as string;
         }
 
         private class TestSystem

@@ -29,7 +29,6 @@ namespace ExtendedControls.Controls
     public partial class AstroPlot : Control
     {
         private ExtPictureBox plotCanvas;
-        private IContainer components;
 
         private HotSpotMap hotSpotMap = new HotSpotMap();
         private readonly System.Timers.Timer mouseIdleTimer = new System.Timers.Timer();
@@ -85,7 +84,7 @@ namespace ExtendedControls.Controls
         /// <summary>
         /// It create an additional list for hotspot map creation
         /// </summary>
-        private List<object[]> plotHotSpots = new List<object[]>();
+        private List<Tuple<Object, PointF>> plotHotSpots = new List<Tuple<Object, PointF>>();
 
         /// <summary>
         /// Define additional attributes for properties
@@ -140,8 +139,6 @@ namespace ExtendedControls.Controls
         internal double[] centerCoordinates = new double[3];
         internal double[] lastCenterCoordinates = new double[3];
 
-        internal double lateralDrag;
-        internal double longitudinalDrag;
         internal double[] dragCoords = new double[2];
 
         public double[] GetCenterCoordinates()
@@ -246,7 +243,6 @@ namespace ExtendedControls.Controls
 
         internal PointF ptMouseClick;
         internal Point mousePosition;
-        internal Point lastMousePosition;
 
         [MinValue(1.0), MaxValue(100.0)]
         private double mouseRotationResistance;
@@ -506,10 +502,10 @@ namespace ExtendedControls.Controls
         /// <summary>
         /// Changes SelectedObject Name and Loction when OnHotSpot event from HotSpotMap is triggered
         /// </summary>
-        private void HotSpotMap_OnHotSpot()
+        private void HotSpotMap_OnHotSpot(Object o,PointF p)
         {
-            SelectedObjectName = hotSpotMap.GetHotSpotName();
-            SelectedObjectLocation = hotSpotMap.GetHotSpotLocation();
+            SelectedObjectName = (string)o;
+            SelectedObjectLocation = new Point((int)p.X,(int)p.Y);
             Debug.WriteLine(SelectedObjectName + SelectedObjectLocation);
         }
 
@@ -551,10 +547,7 @@ namespace ExtendedControls.Controls
                     Coords = new PointF(0, 0)
                 });
 
-                plotHotSpots.Add(new object[]
-                {
-                    plotObjects[i][0].ToString(), 0, 0
-                });
+                plotHotSpots.Add(new Tuple<Object, PointF>(plotObjects[i][0].ToString(), new PointF(0, 0)));
             }
             
             UpdateProjection();
@@ -615,7 +608,7 @@ namespace ExtendedControls.Controls
             if (plotObjects != null)
             {
                 ExtendedControls.AstroPlot.View.Update(plotObjects, plotHotSpots, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
-                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, HotSpotSize);
+                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, (int)HotSpotSize);
             }
 
             Invalidate();
@@ -870,14 +863,14 @@ namespace ExtendedControls.Controls
             {
                 leftMousePressed = false;
                 // refresh the hotspot region map
-                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, HotSpotSize);
+                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, (int)HotSpotSize);
             }
 
             if (e.Button == MouseButtons.Middle)
             {
                 middleMousePressed = false;
                 // refresh the hotspot region map
-                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, HotSpotSize);
+                hotSpotMap.CalculateHotSpotRegions(plotHotSpots, (int)HotSpotSize);
             }
 
             if (e.Button == MouseButtons.Right)

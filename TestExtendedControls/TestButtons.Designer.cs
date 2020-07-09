@@ -351,7 +351,7 @@
             this.extButton4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.extButton4.Location = new System.Drawing.Point(12, 145);
             this.extButton4.Name = "extButton4";
-            this.extButton4.Size = new System.Drawing.Size(75, 23);
+            this.extButton4.Size = new System.Drawing.Size(233, 23);
             this.extButton4.TabIndex = 42;
             this.extButton4.Text = "buttonExt1";
             this.extButton4.UseVisualStyleBackColor = false;
