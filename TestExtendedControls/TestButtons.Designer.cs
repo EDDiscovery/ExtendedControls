@@ -1,4 +1,4 @@
-﻿namespace DialogTest
+﻿namespace TestExtendedControls
 {
     partial class TestButtons
     {
@@ -69,7 +69,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackgroundImage = global::DialogTest.Properties.Resources.edsm32x32;
+            this.panel1.BackgroundImage = global::TestExtendedControls.Properties.Resources.edsm32x32;
             this.panel1.Location = new System.Drawing.Point(86, 79);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(48, 48);
@@ -143,7 +143,7 @@
             // 
             // panel3
             // 
-            this.panel3.BackgroundImage = global::DialogTest.Properties.Resources.Logo8bpp48rot;
+            this.panel3.BackgroundImage = global::TestExtendedControls.Properties.Resources.Logo8bpp48rot;
             this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel3.Location = new System.Drawing.Point(21, 14);
             this.panel3.Name = "panel3";
@@ -152,7 +152,7 @@
             // 
             // panel2
             // 
-            this.panel2.BackgroundImage = global::DialogTest.Properties.Resources.edsm32x32;
+            this.panel2.BackgroundImage = global::TestExtendedControls.Properties.Resources.edsm32x32;
             this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.panel2.Location = new System.Drawing.Point(75, 14);
             this.panel2.Name = "panel2";
@@ -161,7 +161,7 @@
             // 
             // extButton9
             // 
-            this.extButton9.Image = global::DialogTest.Properties.Resources.galaxy_red;
+            this.extButton9.Image = global::TestExtendedControls.Properties.Resources.galaxy_red;
             this.extButton9.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extButton9.Location = new System.Drawing.Point(37, 62);
             this.extButton9.Name = "extButton9";
@@ -171,7 +171,7 @@
             // 
             // extButton8
             // 
-            this.extButton8.Image = global::DialogTest.Properties.Resources.edlogo24;
+            this.extButton8.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
             this.extButton8.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extButton8.Location = new System.Drawing.Point(67, 62);
             this.extButton8.Name = "extButton8";
@@ -196,7 +196,7 @@
             // extButton10
             // 
             this.extButton10.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.extButton10.Image = global::DialogTest.Properties.Resources.CursorToTop;
+            this.extButton10.Image = global::TestExtendedControls.Properties.Resources.CursorToTop;
             this.extButton10.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extButton10.Location = new System.Drawing.Point(46, 189);
             this.extButton10.Name = "extButton10";
@@ -206,7 +206,7 @@
             // 
             // extButton7
             // 
-            this.extButton7.Image = global::DialogTest.Properties.Resources.CursorToTop;
+            this.extButton7.Image = global::TestExtendedControls.Properties.Resources.CursorToTop;
             this.extButton7.Location = new System.Drawing.Point(12, 189);
             this.extButton7.Name = "extButton7";
             this.extButton7.Size = new System.Drawing.Size(28, 28);
@@ -286,7 +286,7 @@
             // extButton3
             // 
             this.extButton3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.extButton3.Image = global::DialogTest.Properties.Resources.galaxy;
+            this.extButton3.Image = global::TestExtendedControls.Properties.Resources.galaxy;
             this.extButton3.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.extButton3.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extButton3.Location = new System.Drawing.Point(12, 74);
@@ -351,7 +351,7 @@
             this.extButton4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.extButton4.Location = new System.Drawing.Point(12, 145);
             this.extButton4.Name = "extButton4";
-            this.extButton4.Size = new System.Drawing.Size(75, 23);
+            this.extButton4.Size = new System.Drawing.Size(233, 23);
             this.extButton4.TabIndex = 42;
             this.extButton4.Text = "buttonExt1";
             this.extButton4.UseVisualStyleBackColor = false;
@@ -384,7 +384,7 @@
             this.extCheckBoxSys.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.extCheckBoxSys.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extCheckBoxSys.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extCheckBoxSys.Image = global::DialogTest.Properties.Resources.CursorToTop;
+            this.extCheckBoxSys.Image = global::TestExtendedControls.Properties.Resources.CursorToTop;
             this.extCheckBoxSys.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBoxSys.ImageIndeterminate = null;
             this.extCheckBoxSys.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -439,11 +439,11 @@
             this.extCheckBoxPopupNormalImage.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.extCheckBoxPopupNormalImage.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
             this.extCheckBoxPopupNormalImage.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.extCheckBoxPopupNormalImage.Image = global::DialogTest.Properties.Resources.CursorToTop;
+            this.extCheckBoxPopupNormalImage.Image = global::TestExtendedControls.Properties.Resources.CursorToTop;
             this.extCheckBoxPopupNormalImage.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBoxPopupNormalImage.ImageIndeterminate = null;
             this.extCheckBoxPopupNormalImage.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.extCheckBoxPopupNormalImage.ImageUnchecked = global::DialogTest.Properties.Resources.edlogo24;
+            this.extCheckBoxPopupNormalImage.ImageUnchecked = global::TestExtendedControls.Properties.Resources.edlogo24;
             this.extCheckBoxPopupNormalImage.Location = new System.Drawing.Point(264, 296);
             this.extCheckBoxPopupNormalImage.MouseOverColor = System.Drawing.Color.Red;
             this.extCheckBoxPopupNormalImage.Name = "extCheckBoxPopupNormalImage";
@@ -466,7 +466,7 @@
             this.extCheckBox2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.extCheckBox2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.extCheckBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.extCheckBox2.Image = global::DialogTest.Properties.Resources.CursorToTop;
+            this.extCheckBox2.Image = global::TestExtendedControls.Properties.Resources.CursorToTop;
             this.extCheckBox2.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBox2.ImageIndeterminate = null;
             this.extCheckBox2.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -492,11 +492,11 @@
             this.extCheckBox3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.extCheckBox3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.extCheckBox3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.extCheckBox3.Image = global::DialogTest.Properties.Resources.edsm32x32;
+            this.extCheckBox3.Image = global::TestExtendedControls.Properties.Resources.edsm32x32;
             this.extCheckBox3.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBox3.ImageIndeterminate = null;
             this.extCheckBox3.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.extCheckBox3.ImageUnchecked = global::DialogTest.Properties.Resources.CursorToTop;
+            this.extCheckBox3.ImageUnchecked = global::TestExtendedControls.Properties.Resources.CursorToTop;
             this.extCheckBox3.Location = new System.Drawing.Point(94, 297);
             this.extCheckBox3.MouseOverColor = System.Drawing.Color.Red;
             this.extCheckBox3.Name = "extCheckBox3";
@@ -518,12 +518,12 @@
             this.extCheckBoxButtonIT.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.extCheckBoxButtonIT.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.extCheckBoxButtonIT.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.extCheckBoxButtonIT.Image = global::DialogTest.Properties.Resources.CursorToTop;
+            this.extCheckBoxButtonIT.Image = global::TestExtendedControls.Properties.Resources.CursorToTop;
             this.extCheckBoxButtonIT.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.extCheckBoxButtonIT.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBoxButtonIT.ImageIndeterminate = null;
             this.extCheckBoxButtonIT.ImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.extCheckBoxButtonIT.ImageUnchecked = global::DialogTest.Properties.Resources.edlogo24;
+            this.extCheckBoxButtonIT.ImageUnchecked = global::TestExtendedControls.Properties.Resources.edlogo24;
             this.extCheckBoxButtonIT.Location = new System.Drawing.Point(180, 252);
             this.extCheckBoxButtonIT.MouseOverColor = System.Drawing.Color.White;
             this.extCheckBoxButtonIT.Name = "extCheckBoxButtonIT";
@@ -544,7 +544,7 @@
             this.extCheckBox1.FlatAppearance.CheckedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.extCheckBox1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.extCheckBox1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.extCheckBox1.Image = global::DialogTest.Properties.Resources.CursorToTop;
+            this.extCheckBox1.Image = global::TestExtendedControls.Properties.Resources.CursorToTop;
             this.extCheckBox1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.extCheckBox1.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBox1.ImageIndeterminate = null;
@@ -598,7 +598,7 @@
             this.extCheckBoxEDSMSmall.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Lime;
             this.extCheckBoxEDSMSmall.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.extCheckBoxEDSMSmall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.extCheckBoxEDSMSmall.Image = global::DialogTest.Properties.Resources.edsm32x32;
+            this.extCheckBoxEDSMSmall.Image = global::TestExtendedControls.Properties.Resources.edsm32x32;
             this.extCheckBoxEDSMSmall.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBoxEDSMSmall.ImageIndeterminate = null;
             this.extCheckBoxEDSMSmall.ImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -618,7 +618,7 @@
             this.buttonExt1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.buttonExt1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.buttonExt1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonExt1.Image = global::DialogTest.Properties.Resources.galaxy;
+            this.buttonExt1.Image = global::TestExtendedControls.Properties.Resources.galaxy;
             this.buttonExt1.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonExt1.Location = new System.Drawing.Point(82, 173);
             this.buttonExt1.Name = "buttonExt1";
@@ -633,7 +633,7 @@
             this.buttonExt2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
             this.buttonExt2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.buttonExt2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonExt2.Image = global::DialogTest.Properties.Resources.galaxy_gray;
+            this.buttonExt2.Image = global::TestExtendedControls.Properties.Resources.galaxy_gray;
             this.buttonExt2.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonExt2.Location = new System.Drawing.Point(114, 173);
             this.buttonExt2.Margin = new System.Windows.Forms.Padding(0);

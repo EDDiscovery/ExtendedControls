@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DialogTest
+namespace TestExtendedControls
 {
     public partial class TestSplitter : Form
     {
@@ -58,12 +58,12 @@ namespace DialogTest
 //            tabstrip.StripMode = ExtendedControls.TabStrip.StripModeType.ListSelection;
             tabstrip.BackColor = Color.AliceBlue;
             tabstrip.ImageList = new Bitmap[] {
-                DialogTest.Properties.Resources.galaxy_red,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
-                DialogTest.Properties.Resources.galaxy_gray,
-                DialogTest.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_red,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
+                TestExtendedControls.Properties.Resources.galaxy_gray,
+                TestExtendedControls.Properties.Resources.galaxy_white,
                                             };
 
             tabstrip.TextList = new string[] { "icon 0", "icon 1",

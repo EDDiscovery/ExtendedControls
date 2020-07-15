@@ -7,8 +7,8 @@
     <ProjectGuid>{00AA0CC9-BF55-4051-B6CD-849526AE8FAA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DialogTest</RootNamespace>
-    <AssemblyName>DialogTest</AssemblyName>
+    <RootNamespace>TestExtendedControls</RootNamespace>
+    <AssemblyName>TestExtendedControls</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -52,6 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestAstroPlot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAstroPlot.Designer.cs">
+      <DependentUpon>TestAstroPlot.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestDraggableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,12 +117,6 @@
     </Compile>
     <Compile Include="TestCompassControl.Designer.cs">
       <DependentUpon>TestCompassControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestConditionUC.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TestConditionUC.Designer.cs">
-      <DependentUpon>TestConditionUC.cs</DependentUpon>
     </Compile>
     <Compile Include="TestExtendedForms.cs">
       <SubType>Form</SubType>
@@ -204,6 +204,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestAstroPlot.resx">
+      <DependentUpon>TestAstroPlot.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestDraggableForm.resx">
       <DependentUpon>TestDraggableForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -230,9 +233,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestButtons.resx">
       <DependentUpon>TestButtons.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestConditionUC.resx">
-      <DependentUpon>TestConditionUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestExtendedForms.resx">
       <DependentUpon>TestExtendedForms.cs</DependentUpon>
