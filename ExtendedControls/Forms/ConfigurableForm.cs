@@ -87,6 +87,7 @@ namespace ExtendedControls
             public ContentAlignment? textalign;  // label,button. nominal not applied
             public bool checkboxchecked;        // fill in for checkbox
             public bool textboxmultiline;       // fill in for textbox
+            public bool textboxescapeonreport;  // escape characters back on reporting a text box Get()
             public bool clearonfirstchar;       // fill in for textbox
             public string comboboxitems;        // fill in for combobox. comma separ list.
             public string customdateformat;     // fill in for datetimepicker
@@ -185,7 +186,12 @@ namespace ExtendedControls
             {
                 Control c = t.control;
                 if (c is ExtendedControls.ExtTextBox)
-                    return (c as ExtendedControls.ExtTextBox).Text;
+                {
+                    string s = (c as ExtendedControls.ExtTextBox).Text;
+                    if (t.textboxescapeonreport)
+                        s = s.EscapeControlChars();
+                    return s;
+                }
                 else if (c is ExtendedControls.ExtCheckBox)
                     return (c as ExtendedControls.ExtCheckBox).Checked ? "1" : "0";
                 else if (c is ExtendedControls.ExtDateTimePicker)
@@ -490,6 +496,9 @@ namespace ExtendedControls
                         }
                         return SwallowReturn;
                     };
+
+                    if (tb.ClearOnFirstChar)
+                        tb.SelectEnd();
                 }
                 else if (c is ExtendedControls.ExtCheckBox)
                 {
@@ -716,34 +725,41 @@ namespace ExtendedControls
             entry = new ConfigurableForm.Entry(name, ctype,
                         text, new System.Drawing.Point(x.Value, y.Value), new System.Drawing.Size(w.Value, h.Value), tip);
 
-            if (type.Contains("textbox") && tip != null)
+            if (tip != null)        // must have a tip for these..
             {
-                int? v = sp.NextWordComma().InvariantParseIntNull();
-                entry.textboxmultiline = v.HasValue && v.Value != 0;
+                if (ctype == typeof(ExtendedControls.ExtTextBox))
+                {
+                    int? v = sp.NextWordComma().InvariantParseIntNull();
+                    entry.textboxmultiline = v.HasValue && v.Value != 0;
+                    if (entry.textboxmultiline)
+                    {
+                        entry.textboxescapeonreport = true;
+                        entry.text = entry.text.ReplaceEscapeControlChars();        // New! if multiline, replace escape control chars
+                    }
+
+                    v = sp.NextWordComma().InvariantParseIntNull();
+                    entry.clearonfirstchar = v.HasValue && v.Value != 0;
+                }
+                else if (ctype == typeof(ExtendedControls.ExtCheckBox))
+                {
+                    int? v = sp.NextWordComma().InvariantParseIntNull();
+                    entry.checkboxchecked = v.HasValue && v.Value != 0;
+                }
             }
 
-            if (type.Contains("checkbox") && tip != null)
-            {
-                int? v = sp.NextWordComma().InvariantParseIntNull();
-                entry.checkboxchecked = v.HasValue && v.Value != 0;
-
-                v = sp.NextWordComma().InvariantParseIntNull();
-                entry.clearonfirstchar = v.HasValue && v.Value != 0;
-            }
-
-            if (type.Contains("combobox"))
+            if (ctype == typeof(ExtendedControls.ExtComboBox))
             {
                 entry.comboboxitems = sp.LineLeft.Trim();
                 if (tip == null || entry.comboboxitems.Length == 0)
-                    return "Missing paramters for combobox";
+                    return "Missing parameters for combobox";
             }
-
-            if (type.Contains("datetime"))
+            
+            if (ctype == typeof(ExtendedControls.ExtDateTimePicker))
             {
                 entry.customdateformat = sp.NextWord();
             }
 
-            if (type.Contains("numberboxdouble"))
+            if (ctype == typeof(ExtendedControls.NumberBoxDouble))
             {
                 double? min = sp.NextWordComma().InvariantParseDoubleNull();
                 double? max = sp.NextWordComma().InvariantParseDoubleNull();
@@ -752,7 +768,7 @@ namespace ExtendedControls
                 entry.numberboxformat = sp.NextWordComma();
             }
 
-            if (type.Contains("numberboxlong"))
+            if (ctype == typeof(ExtendedControls.NumberBoxLong))
             {
                 long? min = sp.NextWordComma().InvariantParseLongNull();
                 long? max = sp.NextWordComma().InvariantParseLongNull();
@@ -764,8 +780,6 @@ namespace ExtendedControls
             lastpos = new System.Drawing.Point(x.Value, y.Value);
             return null;
         }
-
-
 
         #endregion
 

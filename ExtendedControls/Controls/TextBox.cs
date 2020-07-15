@@ -51,6 +51,7 @@ namespace ExtendedControls
         public int SelectionStart { get { return textbox.SelectionStart; } set { textbox.SelectionStart = value; } }
         public int SelectionLength { get { return textbox.SelectionLength; } set { textbox.SelectionLength = value; } }
         public void Select(int s, int e) { textbox.Select(s, e); }
+        public void SelectEnd() { textbox.Select(textbox.Text.Length, textbox.Text.Length); }
         public string SelectedText { get { return textbox.SelectedText; } }
 
         public HorizontalAlignment TextAlign { get { return textbox.TextAlign; } set { textbox.TextAlign = value; } }
