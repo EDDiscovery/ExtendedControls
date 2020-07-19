@@ -33,9 +33,7 @@ namespace ExtendedControls.Controls
         private HotSpotMap hotSpotMap = new HotSpotMap();
         private readonly System.Timers.Timer mouseIdleTimer = new System.Timers.Timer();
 
-        /// <summary>
-        /// Initialize the control
-        /// </summary>
+        // Initialize the control
         private void InitializeComponent()
         {
             this.plotCanvas = new ExtendedControls.ExtPictureBox();
@@ -68,28 +66,19 @@ namespace ExtendedControls.Controls
 
         }
         
-        /// <summary>
-        /// Create needed lists for anchor points
-        /// </summary>
+        // Create needed lists for anchor points
         private readonly List<AnchorPoint> axesAnchors = new List<AnchorPoint>();
         private readonly List<AnchorPoint> planesAnchors = new List<AnchorPoint>();
         private readonly List<AnchorPoint> framesAnchors = new List<AnchorPoint>();
         private readonly List<AnchorPoint[]> gridsAnchors = new List<AnchorPoint[]>();
 
-        /// <summary>
-        /// Create a list for plot objects
-        /// </summary>
+        // Create a list for plot objects
         private readonly List<PlotObject> plotObjects = new List<PlotObject>();
 
-        /// <summary>
-        /// It create an additional list for hotspot map creation
-        /// </summary>
+        // It create an additional list for hotspot map creation
         private List<Tuple<Object, PointF>> plotHotSpots = new List<Tuple<Object, PointF>>();
 
-        /// <summary>
-        /// Define additional attributes for properties
-        /// </summary>
-        // Values normalization
+        // Define additional attributes for properties
         public class MaxValue : Attribute
         {
             public double Max;
@@ -129,11 +118,7 @@ namespace ExtendedControls.Controls
         }
 
         #region Properties
-
-        /// <summary>
-        /// Properties
-        /// </summary>
-
+                
         // Projection
         internal double[] cameraPosition = new double[3];
         internal double[] centerCoordinates = new double[3];
@@ -499,9 +484,7 @@ namespace ExtendedControls.Controls
             hotSpotMap.OnHotSpot += HotSpotMap_OnHotSpot;
         }
 
-        /// <summary>
-        /// Changes SelectedObject Name and Loction when OnHotSpot event from HotSpotMap is triggered
-        /// </summary>
+        // Changes SelectedObject Name and Loction when OnHotSpot event from HotSpotMap is triggered
         private void HotSpotMap_OnHotSpot(Object o,PointF p)
         {
             SelectedObjectName = (string)o;
@@ -509,10 +492,7 @@ namespace ExtendedControls.Controls
             Debug.WriteLine(SelectedObjectName + SelectedObjectLocation);
         }
 
-        /// <summary>
-        /// Set a new center of the plot
-        /// </summary>
-        /// <param name="coords"></param>
+        // Set a new center of the plot
         public void SetCenterOfMap(double[] coords)
         {
             if (coords != null)
@@ -526,11 +506,9 @@ namespace ExtendedControls.Controls
                     SetGridAnchors(GridCount, GridUnit);
             }
         }
-                
-        /// <summary>
-        /// Add given list to the object list to be plotted
-        /// </summary>
-        /// <param name="plotObjects"></param>
+               
+        
+        // Add given list to the object list to be plotted
         public void AddSystemsToMap(List<object[]> plotObjects)
         {
             for (int i = 0; i < plotObjects.Count; i++)
@@ -607,6 +585,7 @@ namespace ExtendedControls.Controls
 
             if (plotObjects != null)
             {
+                plotHotSpots.Clear();
                 ExtendedControls.AstroPlot.View.Update(plotObjects, plotHotSpots, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
                 hotSpotMap.CalculateHotSpotRegions(plotHotSpots, (int)HotSpotSize);
             }
