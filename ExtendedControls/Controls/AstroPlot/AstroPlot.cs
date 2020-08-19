@@ -33,9 +33,7 @@ namespace ExtendedControls.Controls
         private HotSpotMap hotSpotMap = new HotSpotMap();
         private readonly System.Timers.Timer mouseIdleTimer = new System.Timers.Timer();
 
-        /// <summary>
-        /// Initialize the control
-        /// </summary>
+        // Initialize the control
         private void InitializeComponent()
         {
             this.plotCanvas = new ExtendedControls.ExtPictureBox();
@@ -67,29 +65,20 @@ namespace ExtendedControls.Controls
             this.ResumeLayout(false);
 
         }
-        
-        /// <summary>
-        /// Create needed lists for anchor points
-        /// </summary>
+
+        // Create needed lists for anchor points
         private readonly List<AnchorPoint> axesAnchors = new List<AnchorPoint>();
         private readonly List<AnchorPoint> planesAnchors = new List<AnchorPoint>();
         private readonly List<AnchorPoint> framesAnchors = new List<AnchorPoint>();
         private readonly List<AnchorPoint[]> gridsAnchors = new List<AnchorPoint[]>();
 
-        /// <summary>
-        /// Create a list for plot objects
-        /// </summary>
+        // Create a list for plot objects
         private readonly List<PlotObject> plotObjects = new List<PlotObject>();
 
-        /// <summary>
-        /// It create an additional list for hotspot map creation
-        /// </summary>
+        // It create an additional list for hotspot map creation
         private List<Tuple<Object, PointF>> plotHotSpots = new List<Tuple<Object, PointF>>();
 
-        /// <summary>
-        /// Define additional attributes for properties
-        /// </summary>
-        // Values normalization
+        // Define additional attributes for properties
         public class MaxValue : Attribute
         {
             public double Max;
@@ -129,11 +118,7 @@ namespace ExtendedControls.Controls
         }
 
         #region Properties
-
-        /// <summary>
-        /// Properties
-        /// </summary>
-
+                
         // Projection
         internal double[] cameraPosition = new double[3];
         internal double[] centerCoordinates = new double[3];
@@ -300,7 +285,7 @@ namespace ExtendedControls.Controls
         public double MouseDrag_Resistance
         {
             get => mouseDragResistance;
-            
+
             set
             {
                 mouseDragResistance = NormalizePropertyValue(MouseDrag_Resistance.ToString(), value);
@@ -333,7 +318,7 @@ namespace ExtendedControls.Controls
                 hotspotSize = NormalizePropertyValue(HotSpotSize.ToString(), value); UpdateProjection();
             }
         }
-                
+
         // Axes Widget
         private bool showAxesWidget;
         public bool ShowAxesWidget
@@ -390,7 +375,7 @@ namespace ExtendedControls.Controls
         public enum Shape { Cube = 0, Planes = 1 };
 
         public Shape FrameShape;
-        
+
         public Shape GetFrameShape()
         {
             return FrameShape;
@@ -429,14 +414,14 @@ namespace ExtendedControls.Controls
         protected string selectedObjectName;
         public string SelectedObjectName
         {
-            get => selectedObjectName; private set { selectedObjectName = value; { OnSystemSelected(); } }
+            get => selectedObjectName; private set { selectedObjectName = value; }
         }
 
         protected Point selectedObjectPoint;
         public Point SelectedObjectLocation
         {
             get => selectedObjectPoint; private set { selectedObjectPoint = value; }
-        }                
+        }
         #endregion
 
         private const int WS_EX_COMPOSITED = 0x02000000;
@@ -499,20 +484,15 @@ namespace ExtendedControls.Controls
             hotSpotMap.OnHotSpot += HotSpotMap_OnHotSpot;
         }
 
-        /// <summary>
-        /// Changes SelectedObject Name and Loction when OnHotSpot event from HotSpotMap is triggered
-        /// </summary>
+        // Changes SelectedObject Name and Loction when OnHotSpot event from HotSpotMap is triggered
         private void HotSpotMap_OnHotSpot(Object o,PointF p)
         {
-            SelectedObjectName = (string)o;
+            SelectedObjectName = (string)o.ToString();
             SelectedObjectLocation = new Point((int)p.X,(int)p.Y);
             Debug.WriteLine(SelectedObjectName + SelectedObjectLocation);
         }
 
-        /// <summary>
-        /// Set a new center of the plot
-        /// </summary>
-        /// <param name="coords"></param>
+        // Set a new center of the plot
         public void SetCenterOfMap(double[] coords)
         {
             if (coords != null)
@@ -526,11 +506,8 @@ namespace ExtendedControls.Controls
                     SetGridAnchors(GridCount, GridUnit);
             }
         }
-                
-        /// <summary>
-        /// Add given list to the object list to be plotted
-        /// </summary>
-        /// <param name="plotObjects"></param>
+
+        // Add given list to the object list to be plotted
         public void AddSystemsToMap(List<object[]> plotObjects)
         {
             for (int i = 0; i < plotObjects.Count; i++)
@@ -546,8 +523,6 @@ namespace ExtendedControls.Controls
                     IsCurrent = (bool)plotObjects[i][6],
                     Coords = new PointF(0, 0)
                 });
-
-                plotHotSpots.Add(new Tuple<Object, PointF>(plotObjects[i][0].ToString(), new PointF(0, 0)));
             }
             
             UpdateProjection();
@@ -566,9 +541,7 @@ namespace ExtendedControls.Controls
             SetCenterCoordinates((double[])selected.Tag);
         }
 
-        /// <summary>
-        /// Update coordinates according to user interaction
-        /// </summary>
+        // Update coordinates according to user interaction
         private void UpdateProjection()
         {
             if (Projection == PlotProjection.Fixed)
@@ -593,7 +566,7 @@ namespace ExtendedControls.Controls
             {
                 ExtendedControls.AstroPlot.View.Update(axesAnchors, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
             }
-                        
+
             if (ShowFrameWidget && framesAnchors != null)
             {
                 ExtendedControls.AstroPlot.View.Update(framesAnchors, Width, Height, focalLength, cameraPosition, azimuth, elevation, centerCoordinates);
@@ -619,11 +592,7 @@ namespace ExtendedControls.Controls
             UpdateProjection();
         }
 
-        /// <summary>
-        /// Paint the plot
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // Paint the plot
         private void PlotCanvas_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
@@ -633,7 +602,7 @@ namespace ExtendedControls.Controls
             g.CompositingQuality = CompositingQuality.HighSpeed;
             g.CompositingMode = CompositingMode.SourceOver;
 
-            /// axes
+            // axes
             using (var AxisPen = new Pen(new SolidBrush(ForeColor))
             {
                 Width = 2,
@@ -664,7 +633,7 @@ namespace ExtendedControls.Controls
                 }
             }
 
-            /// Grid
+            // Grid
             if (ShowGridWidget && Projection == PlotProjection.Fixed)
             {
                 using (var GridPen = new Pen(new SolidBrush(Color.FromArgb(80, 40, 160, 220))) { Width = 1 })
@@ -676,7 +645,7 @@ namespace ExtendedControls.Controls
                 }
             }
 
-            /// Frame
+            // Frame
             if (ShowFrameWidget && Projection == PlotProjection.Free)
             {
                 using (var FramePen = new Pen(new SolidBrush(ForeColor))
@@ -685,31 +654,31 @@ namespace ExtendedControls.Controls
                     DashStyle = DashStyle.Solid
                 })
                 {
-                    /// Cubical frame
+                    // Cubical frame
                     if (GetFrameShape() == Shape.Cube && framesAnchors.Count > 0)
                     {
-                        /// bottom
+                        // bottom
                         g.DrawLine(FramePen, framesAnchors[0].Coords, framesAnchors[1].Coords);
                         g.DrawLine(FramePen, framesAnchors[1].Coords, framesAnchors[5].Coords);
                         g.DrawLine(FramePen, framesAnchors[5].Coords, framesAnchors[3].Coords);
                         g.DrawLine(FramePen, framesAnchors[3].Coords, framesAnchors[0].Coords);
 
-                        /// left
+                        // left
                         g.DrawLine(FramePen, framesAnchors[0].Coords, framesAnchors[2].Coords);
                         g.DrawLine(FramePen, framesAnchors[2].Coords, framesAnchors[4].Coords);
                         g.DrawLine(FramePen, framesAnchors[4].Coords, framesAnchors[3].Coords);
 
-                        /// right
+                        // right
                         g.DrawLine(FramePen, framesAnchors[1].Coords, framesAnchors[6].Coords);
                         g.DrawLine(FramePen, framesAnchors[6].Coords, framesAnchors[7].Coords);
                         g.DrawLine(FramePen, framesAnchors[7].Coords, framesAnchors[5].Coords);
 
-                        /// top
+                        // top
                         g.DrawLine(FramePen, framesAnchors[2].Coords, framesAnchors[6].Coords);
                         g.DrawLine(FramePen, framesAnchors[4].Coords, framesAnchors[7].Coords);
                     }
 
-                    /// Spherical frame
+                    // Spherical frame
                     if (GetFrameShape() == Shape.Planes && framesAnchors.Count > 0)
                     {
                         var horizontalPlane = new PointF[] { planesAnchors[0].Coords, planesAnchors[2].Coords, planesAnchors[1].Coords, planesAnchors[3].Coords };
@@ -758,41 +727,25 @@ namespace ExtendedControls.Controls
             base.OnPaint(e);
         }
 
-        /// <summary>
-        /// Stop timer when mouse leave the control
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // Stop timer when mouse leave the control
         private void PlotCanvas_MouseLeave(object sender, EventArgs e)
         {
             mouseIdleTimer.Stop();
         }
 
-        /// <summary>
-        /// Start the timer when mouse enter the control
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // Start the timer when mouse enter the control
         private void PlotCanvas_MouseEnter(object sender, EventArgs e)
         {
             mouseIdleTimer.Start();
         }
 
-        /// <summary>
-        /// Do somethign when the timer tick passed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // Do somethign when the timer tick passed
         private void mouseIdleTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             hotSpotMap.CheckForMouseInHotSpot(mousePosition);
         }
 
-        /// <summary>
-        /// Actiosn taken when mouse moves
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // Action taken when mouse moves
         private void PlotCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             mouseIdleTimer.Stop();
@@ -824,11 +777,7 @@ namespace ExtendedControls.Controls
             mouseIdleTimer.Start();
         }
 
-        /// <summary>
-        /// When mouse is pressed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // When mouse is pressed
         private void PlotCanvas_MouseDown(object sender, MouseEventArgs e)
         {
             ptMouseClick = new PointF(e.X, e.Y);
@@ -852,11 +801,7 @@ namespace ExtendedControls.Controls
             }
         }
 
-        /// <summary>
-        /// When mouse is released
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        // When mouse is released
         private void PlotCanvas_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -876,11 +821,8 @@ namespace ExtendedControls.Controls
             if (e.Button == MouseButtons.Right)
                 rightMousePressed = false;
         }
-   
-        /// <summary>
-        /// On mouse wheel
-        /// </summary>
-        /// <param name="e"></param>
+
+        // On mouse wheel
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             if (!middleMousePressed)
