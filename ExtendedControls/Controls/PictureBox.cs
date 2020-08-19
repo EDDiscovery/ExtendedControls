@@ -61,6 +61,7 @@ namespace ExtendedControls
                                             Object t = null, string tt = null, StringFormat frmt = null)
             {
                 Image = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
+                ImageOwned = true;
                 Location = new Rectangle(poscentrehorz.X - Image.Width / 2, poscentrehorz.Y, Image.Width, Image.Height);
                 Tag = t;
                 ToolTipText = tt;
@@ -71,6 +72,7 @@ namespace ExtendedControls
                                         Object t = null, string tt = null, StringFormat frmt = null)
             {
                 Image = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
+                ImageOwned = true;
                 Location = new Rectangle(topleft.X, topleft.Y, Image.Width, Image.Height);
                 Tag = t;
                 ToolTipText = tt;
@@ -82,6 +84,7 @@ namespace ExtendedControls
                                     Object t = null, string tt = null, StringFormat frmt = null)
             {
                 Image = BaseUtils.BitMapHelpers.DrawTextIntoFixedSizeBitmapC(text, size, dp, c, backcolour, backscale, centertext, frmt );
+                ImageOwned = true;
                 Location = new Rectangle(topleft.X, topleft.Y, Image.Width, Image.Height);
                 Tag = t;
                 ToolTipText = tt;
