@@ -60,7 +60,8 @@ namespace ExtendedControls
                 label,
                 tabcontrol_borderlines,
                 toolstrip_back, toolstrip_border, unused_entry,     // previously assigned to toolstrip_checkbox thing
-                s_panel
+                s_panel,
+                transparentcolorkey,
             };
 
             public string name;         // name of scheme
@@ -85,7 +86,7 @@ namespace ExtendedControls
                                         Color grpb, Color grpt, Color grlines,
                                         Color tabborderlines,
                                         Color ttb, Color ttborder, Color ttbuttonchecked,
-                                        Color sPanel,
+                                        Color sPanel, Color keycolor,
                                         bool wf, double op, string ft, float fs)            // ft = empty means don't set it
             {
                 name = n;
@@ -107,6 +108,7 @@ namespace ExtendedControls
                 colors.Add(CI.tabcontrol_borderlines, tabborderlines);
                 colors.Add(CI.toolstrip_back, ttb); colors.Add(CI.toolstrip_border, ttborder); colors.Add(CI.unused_entry, ttbuttonchecked);
                 colors.Add(CI.s_panel, sPanel);
+                colors.Add(CI.transparentcolorkey, keycolor);
                 buttonstyle = bstyle; textboxborderstyle = tbbstyle;
                 windowsframe = wf; formopacity = op; fontname = ft; fontsize = fs;
             }
@@ -130,6 +132,7 @@ namespace ExtendedControls
                 colors.Add(CI.tabcontrol_borderlines, SystemColors.ControlDark);
                 colors.Add(CI.toolstrip_back, SystemColors.Control); colors.Add(CI.toolstrip_border, SystemColors.Menu); colors.Add(CI.unused_entry, SystemColors.MenuText);
                 colors.Add(CI.s_panel, Color.Orange);
+                colors.Add(CI.transparentcolorkey, Color.Green);
                 buttonstyle = buttonstyle_system;
                 textboxborderstyle = textboxborderstyle_fixed3D;
                 windowsframe = true;
@@ -183,6 +186,8 @@ namespace ExtendedControls
         public Color LabelColor { get { return currentsettings.colors[Settings.CI.label]; } set { SetCustom(); currentsettings.colors[Settings.CI.label] = value; } }
 
         public Color SPanelColor { get { return currentsettings.colors[Settings.CI.s_panel]; } set { SetCustom(); currentsettings.colors[Settings.CI.s_panel] = value; } }
+
+        public Color TransparentColorKey { get { return currentsettings.colors[Settings.CI.transparentcolorkey]; } set { SetCustom(); currentsettings.colors[Settings.CI.transparentcolorkey] = value; } }
 
         public string TextBlockBorderStyle { get { return currentsettings.textboxborderstyle; } set { SetCustom(); currentsettings.textboxborderstyle = value; } }
 
@@ -270,6 +275,7 @@ namespace ExtendedControls
                 Color.DarkOrange, // tab control
                 Color.Black, Color.DarkOrange, Color.Orange, // toolstrip
                 Color.Orange, // spanel
+                Color.Green, // overlay
                 false, 95, "Microsoft Sans Serif", 8.25F));
 
             // ON purpose, always show them the euro caps one to give a hint!
@@ -295,6 +301,7 @@ namespace ExtendedControls
                     Color.DarkOrange, // tab control
                     Color.Black, Color.DarkOrange, Color.Orange, // toolstrips
                     Color.Orange, // spanel
+                    Color.Green, // overlay
                     false, 100, "Euro Caps", 12F));
             }
 
@@ -325,6 +332,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 40, 45, 50), // tab control borderlines
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
                 Color.FromArgb(255, 250, 150, 8), // spanel
+                Color.Green, // overlay
                 false, 100, "Arial", 9.75F));
 
             themelist.Add(new Settings(themelist[themelist.Count - 1], "Easy Dark High DPI", "Arial", 20F));
@@ -344,6 +352,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 41, 46, 51), // tab control borderlines
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56), Color.FromArgb(255, 41, 46, 51), // toolstrip, back, border
                 Color.FromArgb(255, 255, 0, 0), // spanel
+                Color.Green, // overlay
                 false, 100, "Arial", 10.25F));
 
             themelist.Add(new Settings(themelist[themelist.Count - 1], "EDSM High DPI", "Arial", 20F));
@@ -374,6 +383,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 40, 45, 50), // tab control borderlines
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
                 Color.FromArgb(255, 250, 150, 8), // spanel
+                Color.Green, // overlay
                 false, 100, "Microsoft Sans Serif", 9.75F));
 
             themelist.Add(new Settings(themelist[themelist.Count - 1], "Material Dark High DPI", "Microsoft Sans Serif", 20F));
@@ -395,6 +405,7 @@ namespace ExtendedControls
                 r2, // tab control
                 Color.Black, r2, r1, // toolstrip
                 r1, // spanel
+                Color.Green, // overlay
                 false, 95, "Microsoft Sans Serif", 10F));
 
             if (IsFontAvailable("Euro Caps"))
@@ -418,6 +429,7 @@ namespace ExtendedControls
                                         SystemColors.ControlDark, // tab control
                                         SystemColors.Menu, SystemColors.Menu, SystemColors.MenuText,  // toolstrip
                                         SystemColors.ControlLightLight, // spanel
+                                        Color.Green, // overlay
                                         false, 95, "Euro Caps", 12F));
             }
 
@@ -439,6 +451,7 @@ namespace ExtendedControls
                                                Color.Blue,
                                                Color.DarkBlue, Color.White, Color.Red,  // toolstrip
                                                Color.LightBlue, // spanel
+                                               Color.Green, // overlay
                                                false, 95, "Microsoft Sans Serif", 8.25F));
 
             Color baizegreen = Color.FromArgb(255, 13, 68, 13);
@@ -457,6 +470,7 @@ namespace ExtendedControls
                                                Color.LightGreen,    // tabcontrol
                                                baizegreen, Color.White, Color.White,
                                                baizegreen,
+                                               Color.Green, // overlay
                                                false, 95, "Microsoft Sans Serif", 8.25F));
         }
 

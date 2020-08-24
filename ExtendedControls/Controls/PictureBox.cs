@@ -284,26 +284,26 @@ namespace ExtendedControls
         // taking image elements, draw to main bitmap. set if resize control, and if we have a min size of bitmap, or a margin
         public void Render( bool resizecontrol = true , Size? minsize = null , Size? margin = null )          
         {
-            Size max = DisplaySize();
+            Size size = DisplaySize();
             Image?.Dispose();
             Image = null;
-            if (max.Width > 0 && max.Height > 0 ) // will be zero if no elements
+            if (size.Width > 0 && size.Height > 0 ) // will be zero if no elements
             {
                 elementin = null;
 
                 if (minsize.HasValue)           // minimum map size
                 {
-                    max.Width = Math.Min(max.Width, minsize.Value.Width);
-                    max.Height = Math.Min(max.Height, minsize.Value.Height);
+                    size.Width = Math.Max(size.Width, minsize.Value.Width);
+                    size.Height = Math.Max(size.Height, minsize.Value.Height);
                 }
 
                 if (margin.HasValue)            // and any margin to allow for control growth
                 {
-                    max.Width += margin.Value.Width;
-                    max.Height += margin.Value.Height;
+                    size.Width += margin.Value.Width;
+                    size.Height += margin.Value.Height;
                 }
 
-                Bitmap newrender = new Bitmap(max.Width, max.Height);   // size bitmap to contents
+                Bitmap newrender = new Bitmap(size.Width, size.Height);   // size bitmap to contents
 
                 if (!FillColor.IsFullyTransparent())
                 {
@@ -324,7 +324,7 @@ namespace ExtendedControls
                 Image = newrender;      // and replace the image
 
                 if (resizecontrol)
-                    this.Size = new Size(max.Width, max.Height);
+                    this.Size = new Size(size.Width, size.Height);
             }
             else
                 Image = null;       // nothing, null image

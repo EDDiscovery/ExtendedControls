@@ -75,6 +75,7 @@ namespace ExtendedControls
             SetPanel(panel_theme61, "Tool Strip Border Colour", ThemeStandard.Settings.CI.toolstrip_border);
             SetPanel(panel_theme70, "Check Box Tick Color", ThemeStandard.Settings.CI.checkbox_tick );
             SetPanel(panel_theme71, "S-Panel Text Colour", ThemeStandard.Settings.CI.s_panel);
+            SetPanel(panel_theme72, "Transparent Colour Key", ThemeStandard.Settings.CI.transparentcolorkey);
 
             UpdatePatchesEtc();
 
@@ -121,6 +122,7 @@ namespace ExtendedControls
             UpdatePatch(panel_theme61);
             UpdatePatch(panel_theme70);
             UpdatePatch(panel_theme71);
+            UpdatePatch(panel_theme72);
             textBox_Font.Text = theme.FontName + " " + theme.FontSize + " points";
             checkBox_theme_windowframe.Checked = theme.WindowsFrame;
         }

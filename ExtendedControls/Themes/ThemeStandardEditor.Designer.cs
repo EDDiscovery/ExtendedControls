@@ -118,6 +118,8 @@ namespace ExtendedControls
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel_theme72 = new System.Windows.Forms.Panel();
+            this.label27 = new System.Windows.Forms.Label();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -882,7 +884,9 @@ namespace ExtendedControls
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label27);
             this.groupBox1.Controls.Add(this.checkBox_theme_windowframe);
+            this.groupBox1.Controls.Add(this.panel_theme72);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label_opacity);
             this.groupBox1.Controls.Add(this.trackBar_theme_opacity);
@@ -902,6 +906,25 @@ namespace ExtendedControls
             this.label3.Size = new System.Drawing.Size(28, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Font";
+            // 
+            // panel_theme72
+            // 
+            this.panel_theme72.AccessibleDescription = "";
+            this.panel_theme72.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_theme72.Location = new System.Drawing.Point(351, 74);
+            this.panel_theme72.Name = "panel_theme72";
+            this.panel_theme72.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme72.TabIndex = 6;
+            this.panel_theme72.Tag = "";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(211, 81);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(118, 13);
+            this.label27.TabIndex = 11;
+            this.label27.Text = "Transparent Colour Key";
             // 
             // ThemeStandardEditor
             // 
@@ -1001,5 +1024,7 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_theme70;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.Panel panel_theme71;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Panel panel_theme72;
     }
 }

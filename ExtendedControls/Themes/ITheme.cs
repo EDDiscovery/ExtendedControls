@@ -39,6 +39,8 @@ namespace ExtendedControls
 
         Color LabelColor { get; set; }
 
+        Color TransparentColorKey { get; set; }
+
         string FontName { get; set; }
         Font GetScaledFont(float scaled, FontStyle fs = FontStyle.Regular, float max = 999);       // 1.0 = selected font size.
         Font GetDialogScaledFont(float scaled, FontStyle fs = FontStyle.Regular, float max = 999);       // 1.0 = selected font size.
