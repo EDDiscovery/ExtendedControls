@@ -118,5 +118,16 @@ namespace TestExtendedControls
             theme.FontSize = 8.25f;
             theme.ApplyStd(this);
         }
+
+        private void TestButtons_MouseClick(object sender, MouseEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Click on form");
+        }
+
+        private void TestButtons_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Double Click on form");
+
+        }
     }
 }

@@ -46,6 +46,10 @@ namespace ExtendedControls
         public Color DropDownMouseOverBackgroundColor { get; set; } = Color.Red;
         public Color DropDownItemSeperatorColor { get; set; } = Color.Purple;
 
+        // If non null, a help icon ? appears on the right. When clicked, you get a callback.  P is the lower bottom of the ? icon in screen co-ords
+
+        public Action<Point> HelpAction { get; set; }  = null;
+
         // Selected
         public int SelectedIndex { get { return selectedindex; } set { ChangePanel(value); } }
         public Control CurrentControl;
@@ -97,6 +101,7 @@ namespace ExtendedControls
             pimageSelectedIcon.BackgroundImage = EmptyPanelIcon;
             pimageSelectedIcon.BackgroundImageLayout = ImageLayout.Stretch;
             pimagePopOutIcon.Visible = pimageListSelection.Visible = false;
+            extButtonDrawnHelp.Visible = false;
         }
 
         #region Public interface
@@ -134,6 +139,7 @@ namespace ExtendedControls
                 labelControlText.Text = "";
                 labelTitle.Text = "?";
                 pimageSelectedIcon.BackgroundImage = EmptyPanelIcon;
+                extButtonDrawnHelp.Visible = false;
             }
         }
 
@@ -158,6 +164,8 @@ namespace ExtendedControls
                         pimageSelectedIcon.BackgroundImage = ImageList[i];   // paranoia..
 
                     labelTitle.Text = CurrentControl.Name;
+
+                    extButtonDrawnHelp.Visible = HelpAction != null;    // visible if help is defined and tab is created
                 }
             }
 
@@ -360,7 +368,8 @@ namespace ExtendedControls
                 for (; tabno < tabdisplaystart; tabno++)
                     imagepanels[tabno].Visible = false;
 
-                int stoppoint = DisplayRectangle.Width - Spacing; // stop here
+                // don't trust extButtonDrawnHelp.Visible - we all know that does not get set until its redrawn.  use another decision to decide on width
+                int stoppoint = DisplayRectangle.Width - Spacing - (CurrentControl!=null && HelpAction!=null ? extButtonDrawnHelp.Width : 0); // stop here
 
                 int spaceforarrowsandoneicon = panelArrowLeft.Width + Spacing + imagepanels[0].Width + Spacing + panelArrowRight.Width;
 
@@ -495,6 +504,11 @@ namespace ExtendedControls
         private void Autorepeat_Tick(object sender, EventArgs e)
         {
             ClickArrow();
+        }
+
+        private void extButtonDrawnHelp_Click(object sender, EventArgs e)
+        {
+            HelpAction?.Invoke(panelStrip.PointToScreen(new Point(extButtonDrawnHelp.Left, extButtonDrawnHelp.Bottom)));
         }
 
         #endregion

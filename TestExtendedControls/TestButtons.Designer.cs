@@ -63,6 +63,7 @@
             this.extCheckBoxEDSMSmall = new ExtendedControls.ExtCheckBox();
             this.buttonExt1 = new ExtendedControls.ExtButton();
             this.buttonExt2 = new ExtendedControls.ExtButton();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.compositeButton1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -643,12 +644,24 @@
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
             // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.DarkTurquoise;
+            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel4.Location = new System.Drawing.Point(585, 12);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(76, 98);
+            this.panel4.TabIndex = 72;
+            this.panel4.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TestButtons_MouseClick);
+            this.panel4.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TestButtons_MouseDoubleClick);
+            // 
             // TestButtons
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(1060, 623);
+            this.Controls.Add(this.panel4);
             this.Controls.Add(this.extCheckBox5);
             this.Controls.Add(this.extCheckBox4);
             this.Controls.Add(this.extButton11);
@@ -718,5 +731,6 @@
         private ExtendedControls.ExtButton extButton12;
         private ExtendedControls.ExtCheckBox extCheckBox4;
         private ExtendedControls.ExtCheckBox extCheckBox5;
+        private System.Windows.Forms.Panel panel4;
     }
 }

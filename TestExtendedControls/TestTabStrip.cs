@@ -57,6 +57,8 @@ namespace TestExtendedControls
             tabStrip1.OnCreateTab += OnCreateTab;
             tabStrip1.SelectedBackColor = Color.Green;
 
+            tabStrip1.HelpAction = (p) => { System.Diagnostics.Debug.WriteLine("Help at " + p); };
+
             tabStrip2.ImageList = new Bitmap[] {
                 TestExtendedControls.Properties.Resources.galaxy_red,
                 TestExtendedControls.Properties.Resources.galaxy_gray,

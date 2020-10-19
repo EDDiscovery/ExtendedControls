@@ -49,15 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\AstroPlot\PlotObject.cs" />
-    <Compile Include="Controls\AstroPlot\AnchorPoint.cs" />
-    <Compile Include="Controls\AstroPlot\View.cs" />
-    <Compile Include="Controls\AstroPlot\Widgets.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\AstroPlot\AstroPlot.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
@@ -224,9 +215,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\AstroPlot\AstroPlot.resx">
-      <DependentUpon>AstroPlot.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
@@ -331,6 +319,11 @@
   <ItemGroup>
     <None Include="Resources\Selector.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\popout1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\help.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -47,6 +47,7 @@ namespace ExtendedControls
             this.panelStrip = new System.Windows.Forms.Panel();
             this.labelControlText = new System.Windows.Forms.Label();
             this.pimageListSelection = new ExtendedControls.ExtButtonDrawn();
+            this.extButtonDrawnHelp = new ExtendedControls.ExtButtonDrawn();
             this.pimagePopOutIcon = new ExtendedControls.ExtButtonDrawn();
             this.panelArrowRight = new System.Windows.Forms.Panel();
             this.panelArrowLeft = new System.Windows.Forms.Panel();
@@ -64,6 +65,7 @@ namespace ExtendedControls
             this.panelStrip.AutoSize = true;
             this.panelStrip.Controls.Add(this.labelControlText);
             this.panelStrip.Controls.Add(this.pimageListSelection);
+            this.panelStrip.Controls.Add(this.extButtonDrawnHelp);
             this.panelStrip.Controls.Add(this.pimagePopOutIcon);
             this.panelStrip.Controls.Add(this.panelArrowRight);
             this.panelStrip.Controls.Add(this.panelArrowLeft);
@@ -88,7 +90,7 @@ namespace ExtendedControls
             this.labelControlText.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.labelControlText.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
-            // panelListSelection
+            // pimageListSelection
             // 
             this.pimageListSelection.AutoEllipsis = false;
             this.pimageListSelection.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -98,7 +100,7 @@ namespace ExtendedControls
             this.pimageListSelection.MouseOverColor = System.Drawing.Color.White;
             this.pimageListSelection.MouseSelectedColor = System.Drawing.Color.Green;
             this.pimageListSelection.MouseSelectedColorEnable = true;
-            this.pimageListSelection.Name = "panelListSelection";
+            this.pimageListSelection.Name = "pimageListSelection";
             this.pimageListSelection.PanelDisabledScaling = 0.25F;
             this.pimageListSelection.Selectable = true;
             this.pimageListSelection.Size = new System.Drawing.Size(24, 24);
@@ -109,7 +111,30 @@ namespace ExtendedControls
             this.pimageListSelection.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.pimageListSelection.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
-            // panelPopOutIcon
+            // extButtonDrawnHelp
+            // 
+            this.extButtonDrawnHelp.AutoEllipsis = false;
+            this.extButtonDrawnHelp.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extButtonDrawnHelp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.extButtonDrawnHelp.Dock = System.Windows.Forms.DockStyle.Right;
+            this.extButtonDrawnHelp.Image = global::ExtendedControls.Properties.Resources.help;
+            this.extButtonDrawnHelp.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
+            this.extButtonDrawnHelp.Location = new System.Drawing.Point(538, 0);
+            this.extButtonDrawnHelp.MouseOverColor = System.Drawing.Color.White;
+            this.extButtonDrawnHelp.MouseSelectedColor = System.Drawing.Color.Green;
+            this.extButtonDrawnHelp.MouseSelectedColorEnable = true;
+            this.extButtonDrawnHelp.Name = "extButtonDrawnHelp";
+            this.extButtonDrawnHelp.PanelDisabledScaling = 0.25F;
+            this.extButtonDrawnHelp.Selectable = true;
+            this.extButtonDrawnHelp.Size = new System.Drawing.Size(24, 30);
+            this.extButtonDrawnHelp.TabIndex = 3;
+            this.extButtonDrawnHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.extButtonDrawnHelp.UseMnemonic = true;
+            this.extButtonDrawnHelp.Click += new System.EventHandler(this.extButtonDrawnHelp_Click);
+            this.extButtonDrawnHelp.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.extButtonDrawnHelp.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            // 
+            // pimagePopOutIcon
             // 
             this.pimagePopOutIcon.AutoEllipsis = false;
             this.pimagePopOutIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
@@ -119,7 +144,7 @@ namespace ExtendedControls
             this.pimagePopOutIcon.MouseOverColor = System.Drawing.Color.White;
             this.pimagePopOutIcon.MouseSelectedColor = System.Drawing.Color.Green;
             this.pimagePopOutIcon.MouseSelectedColorEnable = true;
-            this.pimagePopOutIcon.Name = "panelPopOutIcon";
+            this.pimagePopOutIcon.Name = "pimagePopOutIcon";
             this.pimagePopOutIcon.PanelDisabledScaling = 0.25F;
             this.pimagePopOutIcon.Selectable = true;
             this.pimagePopOutIcon.Size = new System.Drawing.Size(24, 24);
@@ -161,11 +186,11 @@ namespace ExtendedControls
             this.panelArrowLeft.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             this.panelArrowLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelArrowLeft_MouseUp);
             // 
-            // panelSelectedIcon
+            // pimageSelectedIcon
             // 
             this.pimageSelectedIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pimageSelectedIcon.Location = new System.Drawing.Point(3, 3);
-            this.pimageSelectedIcon.Name = "panelSelectedIcon";
+            this.pimageSelectedIcon.Name = "pimageSelectedIcon";
             this.pimageSelectedIcon.Size = new System.Drawing.Size(24, 24);
             this.pimageSelectedIcon.TabIndex = 1;
             this.pimageSelectedIcon.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
@@ -230,5 +255,6 @@ namespace ExtendedControls
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemPopOut;
         private System.Windows.Forms.Label labelControlText;
         private ExtButtonDrawn pimageListSelection;
+        private ExtButtonDrawn extButtonDrawnHelp;
     }
 }
