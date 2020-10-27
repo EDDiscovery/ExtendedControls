@@ -359,8 +359,8 @@ namespace ExtendedControls
             this.Text = caption;
 
             int yoffset = 0;                            // adjustment to move controls up if windows frame present.
-
-            if (theme.WindowsFrame)
+            
+            if (theme.WindowsFrame && !ForceNoBorder)
             {
                 yoffset = int.MaxValue;
                 for (int i = 0; i < entries.Count; i++)             // find minimum control Y
@@ -579,7 +579,7 @@ namespace ExtendedControls
             // outer.FindMaxSubControlArea(0, 0,null,true); // debug
 
             //this.DumpTree(0);
-            theme.ApplyStd(this,ForceNoBorder);
+            theme.ApplyStd(this, ForceNoBorder);
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
             //this.DumpTree(0);
 

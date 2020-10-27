@@ -601,7 +601,7 @@ namespace ExtendedControls
             {
                 ExtButton ctrl = (ExtButton)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
-              //  ctrl.AutoSize = true;
+                ctrl.AutoSize = true;
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
                 {
