@@ -46,6 +46,9 @@ namespace ExtendedControls
 
         public int BottomMargin { get; set; } = 8;      // Extra space right/bot to allow for extra space past the controls
         public int RightMargin { get; set; } = 8;       // Size this at 8.25f font size, it will be scaled to suit. 
+        public bool AllowSpaceForScrollBar { get; set; } = true;       // allow for a scroll bar on right, reserves space for it if it thinks it needs it, else don't
+        public bool ForceNoBorder { get; set; } = false;       // set to force no border theme
+        public bool AllowSpaceForCloseButton { get; set; } = false;       // Allow space on right for close button (only set if your design means there won't normally be space for it)
 
         public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
 
@@ -69,6 +72,7 @@ namespace ExtendedControls
             {
                 controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long"; PostThemeFontScale = fontscale; textalign = align;
             }
+
 
             // ComboBoxCustom
             public Entry(string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, List<string> comboitems)
@@ -149,6 +153,13 @@ namespace ExtendedControls
         public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false)
         {
             InitCentred(p, icon, caption, lname, callertag, closeicon: closeicon);
+            callback?.Invoke();
+            return ShowDialog(p);
+        }
+
+        public DialogResult ShowDialog(Form p, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false)
+        {
+            Init(pos, icon, caption, lname, callertag, closeicon: closeicon);
             callback?.Invoke();
             return ShowDialog(p);
         }
@@ -566,7 +577,7 @@ namespace ExtendedControls
             this.AutoScaleMode = asm;
 
             //this.DumpTree(0);
-            theme.ApplyStd(this);
+            theme.ApplyStd(this,ForceNoBorder);
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
             //this.DumpTree(0);
 
@@ -608,7 +619,13 @@ namespace ExtendedControls
 
             // now position in the screen, allowing for a scroll bar if required due to height restricted
 
-            this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height, false, 64, halign, valign, outer.ScrollBarWidth);
+            MinimumSize = new Size(1, 1);       // setting this allows for small windows
+
+            int widthw = measureitemsinwindow.Width;
+            if (closebutton != null && AllowSpaceForCloseButton)
+                widthw += closebutton.Width;
+
+            this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height, false, 64, halign, valign, AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0);
 
             if (closebutton != null)      // now position close at correct place, its not contributed to overall size
                 closebutton.Location = new Point(outer.Width - closebutton.Width - titlelabel.Left, titlelabel.Top + titlelabel.Height / 2 - closebutton.Height / 2);

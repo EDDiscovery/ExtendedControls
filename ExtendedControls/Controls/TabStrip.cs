@@ -50,6 +50,8 @@ namespace ExtendedControls
 
         public Action<Point> HelpAction { get; set; }  = null;
 
+        public static Image HelpIcon { get { return global::ExtendedControls.Properties.Resources.help; } }
+
         // Selected
         public int SelectedIndex { get { return selectedindex; } set { ChangePanel(value); } }
         public Control CurrentControl;
