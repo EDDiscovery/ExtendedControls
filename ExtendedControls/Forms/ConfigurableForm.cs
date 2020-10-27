@@ -576,6 +576,8 @@ namespace ExtendedControls
 
             this.AutoScaleMode = asm;
 
+            // outer.FindMaxSubControlArea(0, 0,null,true); // debug
+
             //this.DumpTree(0);
             theme.ApplyStd(this,ForceNoBorder);
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
@@ -628,9 +630,12 @@ namespace ExtendedControls
             this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height, false, 64, halign, valign, AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0);
 
             if (closebutton != null)      // now position close at correct place, its not contributed to overall size
-                closebutton.Location = new Point(outer.Width - closebutton.Width - titlelabel.Left, titlelabel.Top + titlelabel.Height / 2 - closebutton.Height / 2);
+            {
+                closebutton.Location = new Point(outer.Width - closebutton.Width , Font.ScalePixels(4));
+                closebutton.Padding = new Padding(Font.ScalePixels(4));
+            }
 
-            //System.Diagnostics.Debug.WriteLine("Form Load" + Bounds + " " + ClientRectangle);
+            //System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
         }
 
         protected override void OnShown(EventArgs e)

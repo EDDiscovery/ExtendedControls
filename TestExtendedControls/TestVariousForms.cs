@@ -270,5 +270,54 @@ namespace TestExtendedControls
 
         }
 
+        private void extButton21_Click(object sender, EventArgs e)
+        {
+            ConfigurableForm cfg = new ExtendedControls.ConfigurableForm();
+            cfg.AllowSpaceForScrollBar = false;
+            cfg.RightMargin = cfg.BottomMargin = 0;
+            cfg.ForceNoBorder = true;
+            cfg.AllowSpaceForCloseButton = true;
+            ExtButton wikibutton = new ExtButton();
+            //wikibutton.Text = "W";
+            wikibutton.Image = Properties.Resources.CursorToTop;
+            cfg.Add(new ConfigurableForm.Entry(wikibutton, "Wiki", null, new Point(0, 0), new Size(24, 24), null));
+            ExtButton videobutton = new ExtButton();
+            videobutton.Image = Properties.Resources.CursorToTop;
+            //videobutton.Text = "V";
+            cfg.Add(new ConfigurableForm.Entry(videobutton, "Video", null, new Point(24, 0), new Size(24, 24), null));
+
+            cfg.Trigger += (string logicalname, string ctrlname, object callertag) =>
+            {
+                if (ctrlname == "Close")
+                    cfg.ReturnResult(DialogResult.Cancel);
+                else if (ctrlname == "Wiki")
+                    cfg.ReturnResult(DialogResult.OK);
+                else if (ctrlname == "Video")
+                    cfg.ReturnResult(DialogResult.Yes);
+            };
+
+            theme.WindowsFrame = false;
+            theme.FontSize = sender is float ? (float)sender : 8.5f;
+
+            DialogResult res = cfg.ShowDialog(this, new Point(500,500), this.Icon, "", closeicon: true);
+
+        }
+
+        private void extButton22_Click(object sender, EventArgs e)
+        {
+            extButton21_Click(12.0f, e);
+        }
+
+        private void extButton23_Click(object sender, EventArgs e)
+        {
+            extButton21_Click(16.0f, e);
+
+        }
+
+        private void extButton24_Click(object sender, EventArgs e)
+        {
+            extButton21_Click(10.0f, e);
+
+        }
     }
 }

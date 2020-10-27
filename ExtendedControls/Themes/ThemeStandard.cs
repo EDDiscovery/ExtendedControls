@@ -601,7 +601,7 @@ namespace ExtendedControls
             {
                 ExtButton ctrl = (ExtButton)myControl;
                 ctrl.ForeColor = currentsettings.colors[Settings.CI.button_text];
-                ctrl.AutoSize = true;
+              //  ctrl.AutoSize = true;
 
                 if (currentsettings.buttonstyle.Equals(ButtonStyles[0])) // system
                 {
@@ -831,7 +831,7 @@ namespace ExtendedControls
 
                 if (ctrl.Image != null)
                 {
-                    System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       
+                    System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();
                     colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
                     colormap.NewColor = ctrl.ForeColor;
                     ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
