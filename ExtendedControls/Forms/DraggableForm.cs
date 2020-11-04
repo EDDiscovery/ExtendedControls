@@ -237,7 +237,7 @@ namespace ExtendedControls
                             if (WindowState == FormWindowState.Minimized)
                                 return;
 
-                            var p = PointToClient(new Point(unchecked((int)m.LParam)));
+                            var p = PointToClient(new Point(unchecked((int)(long)m.LParam)));
                             const int CaptionHeight = 32;
                             const int edgesz = 5;   // 5 is generous.. really only a few pixels gets thru before the subwindows grabs them
 
@@ -281,7 +281,7 @@ namespace ExtendedControls
                     {
                         if (!windowsborder && m.WParam == (IntPtr)HT.CAPTION)
                         {
-                            var p = new Point(unchecked((int)m.LParam));
+                            var p = new Point(unchecked((int)(long)m.LParam));
                             if (dblClickTimer.Enabled && ((Rectangle)dblClickTimer.Tag).Contains(p))
                             {
                                 dblClickTimer.Enabled = false;
