@@ -381,7 +381,7 @@ namespace ExtendedControls
                 if (m.Msg == WM.KEYDOWN || m.Msg == WM.SYSKEYDOWN)
                 {
                     Keys k = (Keys)m.WParam;
-                    int sc = (int)m.LParam;
+                    int sc = (int)(long)m.LParam;
                     keyform.PressedKey(k, sc, Control.ModifierKeys);
                     return true;
                 }

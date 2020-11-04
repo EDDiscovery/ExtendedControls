@@ -193,7 +193,7 @@ namespace ExtendedControls
                     {
                         if (FormBorderStyle == FormBorderStyle.None && m.WParam == (IntPtr)HT.CAPTION)
                         {
-                            ShowSystemMenu(new Point((int)m.LParam));
+                            ShowSystemMenu(new Point((int)(long)m.LParam));
                             m.Result = IntPtr.Zero;
                             return;
                         }
