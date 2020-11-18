@@ -59,7 +59,7 @@ namespace ExtendedControls
         protected const int SC_ADDITIONALMENU = 0x0020;    
         // 0x000D-0x001F are reserved by us for future expansion, while 0x0000 and 0xF000+ are system reserved.
 
-        protected virtual bool AllowResize { get; } = true;
+        protected virtual bool AllowResize { get; set; } = true;
 
         protected override CreateParams CreateParams
         {

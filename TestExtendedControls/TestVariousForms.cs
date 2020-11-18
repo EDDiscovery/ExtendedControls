@@ -60,9 +60,12 @@ namespace TestExtendedControls
             f.AddOK(new Point(width - 100, 150));
             f.AddCancel(new Point(20, 150));
 
-            f.Trigger += (a, b, c) => { System.Diagnostics.Debug.WriteLine("Ret " + b); f.ReturnResult(DialogResult.OK); };
+            f.Trigger += (a, b, c) => { System.Diagnostics.Debug.WriteLine("Ret " + b); if ( b == "OK" || b == "Close" ) f.ReturnResult(DialogResult.OK); };
 
             f.RightMargin = 20;
+            f.AllowResize = true;
+
+            theme.FontSize = 12;
 
             f.ShowDialogCentred(this, this.Icon, "Trader",closeicon:true);
 
@@ -108,7 +111,7 @@ namespace TestExtendedControls
                 }
             };
 
-
+            f.AllowResize = true;
             DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Jump to Entry".Tx(t, "Title"), closeicon:true);
 
             if (res == DialogResult.OK)

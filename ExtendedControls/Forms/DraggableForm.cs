@@ -183,42 +183,32 @@ namespace ExtendedControls
                             mmi.ptMaxPosition.X = wa.Left - scb.Left;
                             mmi.ptMaxPosition.Y = wa.Top - scb.Top;
 
-                            if (AllowResize)
+                            if (!this.MaximumSize.IsEmpty)      // use Max size if set, 
                             {
-                                if (!this.MaximumSize.IsEmpty)
-                                {
-                                    mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = this.MaximumSize.Width;
-                                    mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = this.MaximumSize.Height;
-                                }
-                                else
-                                {
-                                    mmi.ptMaxSize.X = wa.Width;
-                                    mmi.ptMaxSize.Y = wa.Height;
-                                    //mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = wa.Width;
-                                    //mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = wa.Height;
-                                }
-
-                                if (!this.MinimumSize.IsEmpty)
-                                {
-                                    mmi.ptMinTrackSize.X = this.MinimumSize.Width;
-                                    mmi.ptMinTrackSize.Y = this.MinimumSize.Height;
-                                }
-                                else
-                                {
-                                    mmi.ptMinTrackSize.X = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CXMINTRACK);
-                                    mmi.ptMinTrackSize.Y = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CYMINTRACK);
-                                }
-                                //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
+                                mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = this.MaximumSize.Width;
+                                mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = this.MaximumSize.Height;
                             }
                             else
                             {
-                                mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = mmi.ptMinTrackSize.X = ClientSize.Width;
-                                mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = mmi.ptMinTrackSize.Y = ClientSize.Height;
+                                mmi.ptMaxSize.X = wa.Width;     // else use monitor working area 
+                                mmi.ptMaxSize.Y = wa.Height;
                             }
+
+                            if (!this.MinimumSize.IsEmpty)      // use Min size if set
+                            {
+                                mmi.ptMinTrackSize.X = this.MinimumSize.Width;  
+                                mmi.ptMinTrackSize.Y = this.MinimumSize.Height;
+                            }
+                            else
+                            {                                   // else use min size
+                                mmi.ptMinTrackSize.X = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CXMINTRACK);
+                                mmi.ptMinTrackSize.Y = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CYMINTRACK);
+                            }
+
+                            //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
 
                             Marshal.StructureToPtr(mmi, m.LParam, false);
                             m.Result = IntPtr.Zero;
-                            //System.Diagnostics.Debug.WriteLine("MINMAX " + mmi.ptMaxSize);
                             return;
                         }
                         break;

@@ -44,6 +44,8 @@ namespace ExtendedControls
 
         public event Action<string, string, Object> Trigger;
 
+        public new bool AllowResize { get { return base.AllowResize; } set { base.AllowResize = value; } } // if form resizing (you need a BorderMargin)
+        public int BorderMargin { get; set; } = 3;       // space between window edge and outer area
         public int BottomMargin { get; set; } = 8;      // Extra space right/bot to allow for extra space past the controls
         public int RightMargin { get; set; } = 8;       // Size this at 8.25f font size, it will be scaled to suit. 
         public bool AllowSpaceForScrollBar { get; set; } = true;       // allow for a scroll bar on right, reserves space for it if it thinks it needs it, else don't
@@ -116,6 +118,7 @@ namespace ExtendedControls
             this.components = new System.ComponentModel.Container();
             entries = new List<Entry>();
             lastpos = new System.Drawing.Point(0, 0);
+            AllowResize = false;
         }
 
         public string Add(string instr)       // add a string definition dynamically add to list.  errmsg if something is wrong
@@ -347,7 +350,7 @@ namespace ExtendedControls
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
+            outer = new ExtPanelScroll() { BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
             outer.MouseDown += FormMouseDown;
             outer.MouseUp += FormMouseUp;
             Controls.Add(outer);
@@ -605,8 +608,8 @@ namespace ExtendedControls
 
             int boundsh = Bounds.Height - ClientRectangle.Height;                   // allow for window border..  Only works after OnLoad.
             int boundsw = Bounds.Width - ClientRectangle.Width;
-            int outerh = ClientRectangle.Height - outer.ClientRectangle.Height;     // any border on outer panel
-            int outerw = ClientRectangle.Width - outer.ClientRectangle.Width;
+            int outerh = 2 + BorderMargin;
+            int outerw = 2 + BorderMargin;
 
             // get the scaling factor, we adjust the right/bottom margins accordingly
 
@@ -629,13 +632,19 @@ namespace ExtendedControls
 
             this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height, false, 64, halign, valign, AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0);
 
+            outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
+            outer.Location = new Point(BorderMargin, BorderMargin);
+
+
             if (closebutton != null)      // now position close at correct place, its not contributed to overall size
             {
                 closebutton.Location = new Point(outer.Width - closebutton.Width , Font.ScalePixels(4));
                 closebutton.Padding = new Padding(Font.ScalePixels(4));
             }
 
-            //System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
+            resizeon = true;
+
+        //System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
         }
 
         protected override void OnShown(EventArgs e)
@@ -645,8 +654,25 @@ namespace ExtendedControls
                 firsttextbox.Focus();       // focus on first text box
             base.OnShown(e);
             //System.Diagnostics.Debug.WriteLine("Form Shown " + Bounds + " " + ClientRectangle);
-
         }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
+
+            if (closebutton != null)      // now position close at correct place, its not contributed to overall size
+            {
+                closebutton.Location = new Point(outer.Width - closebutton.Width, Font.ScalePixels(4));
+            }
+
+            if (!ProgClose && resizeon)
+            {
+                Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -819,6 +845,6 @@ namespace ExtendedControls
         private ExtPanelScroll outer;
         private ExtButtonDrawn closebutton;
         private Label titlelabel;
-
+        private bool resizeon;
     }
 }
