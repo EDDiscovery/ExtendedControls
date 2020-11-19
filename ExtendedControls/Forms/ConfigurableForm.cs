@@ -629,7 +629,13 @@ namespace ExtendedControls
             if (closebutton != null && AllowSpaceForCloseButton)
                 widthw += closebutton.Width;
 
-            this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height, false, 64, halign, valign, AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0);
+            int scrollbarsizeifheightnotacheived = 0;
+            if (AllowResize)                                                        // if resizable, must allow for scroll bar
+                widthw += outer.ScrollBarWidth;
+            else
+                scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
+
+            this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height, false, 64, halign, valign, scrollbarsizeifheightnotacheived);
 
             outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
             outer.Location = new Point(BorderMargin, BorderMargin);
