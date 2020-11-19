@@ -116,13 +116,13 @@ namespace ExtendedControls
         {
             if (ignorelocationchange == 0)
             {
-               // System.Diagnostics.Debug.WriteLine("CS loc Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds);
+                //System.Diagnostics.Debug.WriteLine("CS loc Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds + " scroll offset " + scrollpos);
                 ignorelocationchange++;        // stop recursion
                 Control c = sender as Control;
                 c.Top = c.Top - scrollpos;      // account for scroll pos and move control to scroll pos offset
                 ScrollTo(scrollpos, true);    // check bar within bounds
                 ignorelocationchange--;
-                //System.Diagnostics.Debug.WriteLine("PS Move " + c.Name + " " + c.Location);
+                //System.Diagnostics.Debug.WriteLine(".. to " + c.Name + " " + c.Location);
             }
         }
 
@@ -237,7 +237,7 @@ namespace ExtendedControls
                     {
                         c.Location = new Point(cposnorm[posi].X, cposnorm[posi].Y - newscrollpos);
                         posi++;
-                      //  System.Diagnostics.Debug.WriteLine("   flow and set " + c.Name + " to " + c.Location);
+                        //System.Diagnostics.Debug.WriteLine("   flow and set " + c.Name + " to " + c.Location + " Using sp " + newscrollpos);
                     }
                 }
 
@@ -253,6 +253,7 @@ namespace ExtendedControls
             }
 
             scrollpos = newscrollpos;
+            //System.Diagnostics.Debug.WriteLine("Set scroll pos to " + scrollpos);
         }
 
         public void RemoveAllControls(List<Control> excluded = null)

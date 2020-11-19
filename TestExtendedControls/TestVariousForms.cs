@@ -44,21 +44,24 @@ namespace TestExtendedControls
             butr.Image = Properties.Resources.RightArrow;
             f.Add(new ExtendedControls.ConfigurableForm.Entry(butr, "right", "", new Point(width - 20 - 32, 64), new Size(32, 32), null));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("olabel", typeof(Label), "Offer", new Point(20, 30), new Size(width-40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("olabel", typeof(Label), "Offer", new Point(20, 30), new Size(width - 40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("offer", typeof(Label), "0/0", new Point(width / 2 - 12, 50), new Size(width/2-20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("offer", typeof(Label), "0/0", new Point(width / 2 - 12, 50), new Size(width / 2 - 20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
 
             var bar = new PictureBox();
             bar.SizeMode = PictureBoxSizeMode.StretchImage;
             bar.Image = Properties.Resources.TraderBar;
             f.Add(new ExtendedControls.ConfigurableForm.Entry(bar, "bar", "", new Point(width / 2 - 32, 70), new Size(64, 16), null));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("receive", typeof(Label), "0", new Point(width / 2 - 12, 90), new Size(width / 2-20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("receive", typeof(Label), "0", new Point(width / 2 - 12, 90), new Size(width / 2 - 20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("rlabel", typeof(Label), "Receive", new Point(20, 110), new Size(width-40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("rlabel", typeof(Label), "Receive", new Point(20, 110), new Size(width - 40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
 
-            f.AddOK(new Point(width - 100, 150));
-            f.AddCancel(new Point(20, 150));
+            var panelbox = new GroupBox() { ForeColor = Color.Red };
+            f.Add(new ExtendedControls.ConfigurableForm.Entry(panelbox, "panel", "g1", new Point(10, 150), new Size(width - 10, 100), "") { anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left });
+
+            f.AddOK(new Point(width - 100, 270), anchor: AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom);
+            f.AddCancel(new Point(20, 270), anchor: AnchorStyles.Right | AnchorStyles.Bottom);
 
             f.Trigger += (a, b, c) => { System.Diagnostics.Debug.WriteLine("Ret " + b); if ( b == "OK" || b == "Close" ) f.ReturnResult(DialogResult.OK); };
 
@@ -111,7 +114,7 @@ namespace TestExtendedControls
                 }
             };
 
-            f.AllowResize = true;
+            //f.AllowResize = true;
             DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Jump to Entry".Tx(t, "Title"), closeicon:true);
 
             if (res == DialogResult.OK)
@@ -280,13 +283,14 @@ namespace TestExtendedControls
             cfg.RightMargin = cfg.BottomMargin = 0;
             cfg.ForceNoBorder = true;
             cfg.AllowSpaceForCloseButton = true;
+            cfg.BorderMargin = 0;
+
             ExtButton wikibutton = new ExtButton();
-            //wikibutton.Text = "W";
             wikibutton.Image = Properties.Resources.CursorToTop;
             cfg.Add(new ConfigurableForm.Entry(wikibutton, "Wiki", null, new Point(0, 0), new Size(24, 24), null));
+
             ExtButton videobutton = new ExtButton();
             videobutton.Image = Properties.Resources.CursorToTop;
-            //videobutton.Text = "V";
             cfg.Add(new ConfigurableForm.Entry(videobutton, "Video", null, new Point(24, 0), new Size(24, 24), null));
 
             cfg.Trigger += (string logicalname, string ctrlname, object callertag) =>
@@ -303,7 +307,6 @@ namespace TestExtendedControls
             theme.FontSize = sender is float ? (float)sender : 8.5f;
 
             DialogResult res = cfg.ShowDialog(this, new Point(500,500), this.Icon, "", closeicon: true);
-
         }
 
         private void extButton22_Click(object sender, EventArgs e)

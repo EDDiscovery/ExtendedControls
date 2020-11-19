@@ -63,6 +63,7 @@ namespace ExtendedControls
             public System.Drawing.Point pos;
             public System.Drawing.Size size;
             public string tooltip;                      // can be null.
+            public AnchorStyles anchor = AnchorStyles.None;
 
             // ButtonExt, TextBoxBorder, Label, CheckBoxCustom, DateTime (t=time)
             public Entry(string nam, Type c, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
@@ -135,18 +136,18 @@ namespace ExtendedControls
             entries.Add(e);
         }
 
-        public void AddOK(Point p, string tooltip = null, Size? sz = null)
+        public void AddOK(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), p, sz.Value, tooltip));
+            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), p, sz.Value, tooltip) { anchor = anchor });
         }
 
-        public void AddCancel(Point p, string tooltip = null, Size? sz = null)
+        public void AddCancel(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), p, sz.Value, tooltip));
+            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), p, sz.Value, tooltip) { anchor = anchor });
         }
 
         public Entry Last { get { return entries.Last(); } }
@@ -350,7 +351,8 @@ namespace ExtendedControls
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            outer = new ExtPanelScroll() { BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
+            //outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
+            outer = new ExtPanelScroll() { Name = "Outer", BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
             outer.MouseDown += FormMouseDown;
             outer.MouseUp += FormMouseUp;
             Controls.Add(outer);
@@ -373,7 +375,7 @@ namespace ExtendedControls
             }
             else
             {
-                titlelabel = new Label() { Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
+                titlelabel = new Label() { Name="title", Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
                 titlelabel.MouseDown += FormMouseDown;
                 titlelabel.MouseUp += FormMouseUp;
                 titlelabel.Name = "title";
@@ -381,10 +383,7 @@ namespace ExtendedControls
 
                 if (closeicon)
                 {
-                    closebutton = new ExtButtonDrawn();
-                    closebutton.Size = new Size(18, 18);
-                    closebutton.Location = new Point(0, 0);     // purposely at top left to make it not contribute to overall size
-
+                    closebutton = new ExtButtonDrawn() { Name = "closebut", Size = new Size(18, 18), Location = new Point(0, 0) };     // purposely at top left to make it not contribute to overall size
                     closebutton.ImageSelected = ExtButtonDrawn.ImageType.Close;
                     closebutton.Click += (sender, f) =>
                     {
@@ -409,10 +408,10 @@ namespace ExtendedControls
                 c.Size = ent.size;
                 c.Location = new Point(ent.pos.X, ent.pos.Y - yoffset);
                 c.Name = ent.controlname;
-                //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
-                if (!(ent.controltype == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong))        // everything but get text
+                if (!(ent.text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong))        // everything but get text
                     c.Text = ent.text;
                 c.Tag = ent;     // point control tag at ent structure
+                System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size + " " + c.Text);
                 outer.Controls.Add(c);
                 if (ent.tooltip != null)
                     tt.SetToolTip(c, ent.tooltip);
@@ -635,16 +634,23 @@ namespace ExtendedControls
             outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
             outer.Location = new Point(BorderMargin, BorderMargin);
 
-
             if (closebutton != null)      // now position close at correct place, its not contributed to overall size
             {
-                closebutton.Location = new Point(outer.Width - closebutton.Width , Font.ScalePixels(4));
+                closebutton.Location = new Point(outer.Width - closebutton.Width - (AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0), Font.ScalePixels(4));
                 closebutton.Padding = new Padding(Font.ScalePixels(4));
             }
 
+            for (int i = 0; i < entries.Count; i++)     // record nominal pos after all positioning done
+            {
+                entries[i].pos = entries[i].control.Location;
+                entries[i].size = entries[i].control.Size;
+            }
+
+            initialsize = outer.Size;
+
             resizeon = true;
 
-        //System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
+            //System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
         }
 
         protected override void OnShown(EventArgs e)
@@ -654,21 +660,29 @@ namespace ExtendedControls
                 firsttextbox.Focus();       // focus on first text box
             base.OnShown(e);
             //System.Diagnostics.Debug.WriteLine("Form Shown " + Bounds + " " + ClientRectangle);
+
         }
 
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
 
-            outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
-
-            if (closebutton != null)      // now position close at correct place, its not contributed to overall size
-            {
-                closebutton.Location = new Point(outer.Width - closebutton.Width, Font.ScalePixels(4));
-            }
-
             if (!ProgClose && resizeon)
             {
+                outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
+
+                if (closebutton != null)      // now position close at correct logical place
+                    closebutton.Location = new Point(outer.Width - closebutton.Width - (AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0), Font.ScalePixels(4));
+
+                int widthdelta = outer.Width - initialsize.Width;
+                int heightdelta = outer.Height - initialsize.Height;
+                //System.Diagnostics.Debug.WriteLine(Environment.NewLine + "Resize {0} {1} so {2}", widthdelta, heightdelta, outer.ScrollOffset);
+
+                foreach ( var en in entries)
+                {
+                    en.control.ApplyAnchor(en.anchor, en.pos, en.size, widthdelta, heightdelta);
+                }
+
                 Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
             }
         }
@@ -846,5 +860,7 @@ namespace ExtendedControls
         private ExtButtonDrawn closebutton;
         private Label titlelabel;
         private bool resizeon;
+        private Size initialsize;
+
     }
 }
