@@ -52,10 +52,10 @@ namespace ExtendedControls
 
         public int Value { get { return thumbvalue; } set { SetValues(value, maximum, minimum, largechange, smallchange); } }
         public int ValueLimited { get { return thumbvalue; } set { SetValues(value, maximum, minimum, largechange, smallchange,true); } }
-        public int Maximum { get { return maximum; } set { SetValues(thumbvalue, value, minimum, largechange, smallchange); } }
-        public int Minimum { get { return minimum; } set { SetValues(thumbvalue, maximum, value, largechange, smallchange); } }
-        public int LargeChange { get { return largechange; } set { SetValues(thumbvalue, maximum, minimum, value, smallchange); } }
-        public int SmallChange { get { return smallchange; } set { SetValues(thumbvalue, maximum, minimum, largechange, value); } }
+        public int Maximum { get { return maximum; } set { if ( value != maximum) SetValues(thumbvalue, value, minimum, largechange, smallchange); } }
+        public int Minimum { get { return minimum; } set { if ( value != Minimum ) SetValues(thumbvalue, maximum, value, largechange, smallchange); } }
+        public int LargeChange { get { return largechange; } set { if ( value != largechange ) SetValues(thumbvalue, maximum, minimum, value, smallchange); } }
+        public int SmallChange { get { return smallchange; } set { if ( value != smallchange ) SetValues(thumbvalue, maximum, minimum, largechange, value); } }
         public void SetValueMaximum(int v, int m) { SetValues(v, m, minimum, largechange, smallchange); }
         public void SetValueMaximumLargeChange(int v, int m, int lc) { SetValues(v, m, minimum, lc, smallchange); }
         public void SetValueMaximumMinimum(int v, int max, int min) { SetValues(v, max, min, largechange, smallchange); }

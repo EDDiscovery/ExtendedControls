@@ -228,8 +228,8 @@ namespace ExtendedControls
                 int visibleindex = dgv.Rows.GetNumberOfVisibleRowsAbove(toprowindex);                   // so we translate to visible rows above index
                 int totalvisible = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);             // this gives total visible - this is now the scroll bar range
                 int visibleonscreen = dgv.DisplayedRowCount(false);                                     // and the viewport size..
-                //System.Diagnostics.Debug.WriteLine("FDRow " + toprowindex + " Visible index " + visibleindex + " Total visible " + totalvisible + " On screen " + visibleonscreen);
-                vsc.SetValueMaximumLargeChange(visibleindex, totalvisible - 1, Math.Min(visibleonscreen,LimitLargeChange) );
+                //System.Diagnostics.Debug.WriteLine(dgv.Name + " FDRow " + toprowindex + " Visible index " + visibleindex + " Total visible " + totalvisible + " On screen " + visibleonscreen);
+                vsc.SetValueMaximumLargeChange(visibleindex, totalvisible - 1, Math.Min(visibleonscreen, LimitLargeChange));
             }
         }
 
@@ -299,6 +299,8 @@ namespace ExtendedControls
                         ignoredgvscroll = true; // don't fire the DGVScrolled.. as we can get into a cycle if rows are hidden
 
                         dgv.SafeFirstDisplayedScrollingRowIndex(rowi);
+                        //System.Diagnostics.Debug.WriteLine("Set to " + rowi + " displayed " + dgv.DisplayedRowCount(false));
+                        vsc.LargeChange = Math.Min(dgv.DisplayedRowCount(false), LimitLargeChange); // fix nov 20, need to reset as changing row index can change visible rows
 
                         dgv.Update();
                         vsc.Update();
