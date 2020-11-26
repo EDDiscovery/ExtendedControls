@@ -26,7 +26,6 @@ namespace ExtendedControls
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
-        public int LimitLargeChange { get; set; } = int.MaxValue;       // set to limit large change, useful when we have very variable row sizes
 
         public int ScrollBarWidth { get { return Font.ScalePixels(24); } }       // if internal
 
@@ -229,7 +228,7 @@ namespace ExtendedControls
                 int totalvisible = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);             // this gives total visible - this is now the scroll bar range
                 int visibleonscreen = dgv.DisplayedRowCount(false);                                     // and the viewport size..
                 //System.Diagnostics.Debug.WriteLine(dgv.Name + " FDRow " + toprowindex + " Visible index " + visibleindex + " Total visible " + totalvisible + " On screen " + visibleonscreen);
-                vsc.SetValueMaximumLargeChange(visibleindex, totalvisible - 1, Math.Min(visibleonscreen, LimitLargeChange));
+                vsc.SetValueMaximumLargeChange(visibleindex, totalvisible - 1, visibleonscreen);
             }
         }
 
@@ -300,7 +299,7 @@ namespace ExtendedControls
 
                         dgv.SafeFirstDisplayedScrollingRowIndex(rowi);
                         //System.Diagnostics.Debug.WriteLine("Set to " + rowi + " displayed " + dgv.DisplayedRowCount(false));
-                        vsc.LargeChange = Math.Min(dgv.DisplayedRowCount(false), LimitLargeChange); // fix nov 20, need to reset as changing row index can change visible rows
+                        vsc.LargeChange = dgv.DisplayedRowCount(false); // fix nov 20, need to reset as changing row index can change visible rows
 
                         dgv.Update();
                         vsc.Update();
