@@ -150,6 +150,19 @@ namespace ExtendedControls
             Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), p, sz.Value, tooltip) { anchor = anchor });
         }
 
+        public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
+        {
+            Trigger += (dialogname, controlname, xtag) =>
+            {
+                if (controlname == "OK")
+                    ReturnResult(DialogResult.OK);
+                else if (controlname == "Close" || controlname == "Escape")
+                    ReturnResult(DialogResult.Cancel);
+                else
+                    othertrigger?.Invoke(dialogname, controlname, xtag);
+            };
+        }
+
         public Entry Last { get { return entries.Last(); } }
 
         // pos.x <= -999 means autocentre to parent.
