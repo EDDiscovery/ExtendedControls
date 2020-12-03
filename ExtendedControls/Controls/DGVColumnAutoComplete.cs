@@ -24,34 +24,26 @@ namespace ExtendedControls
     /// </summary>
     public class ExtDataGridViewColumnAutoComplete : DataGridViewColumn
     {
-        #region AutoCompleteDGVColumn
-
-        /// <summary>
-        /// The method to use for generating available autocomplete options, such as <see cref="SystemClass.ReturnSystemListForAutoComplete"/>.
-        /// Signature is "<c>List&lt;string&gt; (string, TextBox as object)</c>".
-        /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ExtTextBoxAutoComplete.PerformAutoComplete AutoCompleteGenerator { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExtDataGridViewColumnAutoComplete"/> class to the default state.
-        /// </summary>
-        public ExtDataGridViewColumnAutoComplete() : base(new CellDisplayControl()) { }
+        public ExtDataGridViewColumnAutoComplete() : base(new DataGridViewTextBoxCellAutoComplete())  // column is this type of cell
+        { }
 
         /// <summary>
         /// Gets or sets the template used to create new cells.
         /// </summary>
         /// <value>A <see cref="DataGridViewCell"/> that all other cells in the column are modeled after. The default is <c>null</c>.</value>
-        /// <exception cref="InvalidCastException">raised when <paramref name="CellTemplate"/> does not inherit from <see cref="CellDisplayControl"/>.</exception>
+        /// <exception cref="InvalidCastException">raised when <paramref name="CellTemplate"/> does not inherit from <see cref="DataGridViewTextBoxCellAutoComplete"/>.</exception>
         [Browsable(false)]
         public override DataGridViewCell CellTemplate
         {
             get { return base.CellTemplate; }
             set
             {
-                if (value != null && !value.GetType().IsAssignableFrom(typeof(CellDisplayControl)))
-                    throw new InvalidCastException($"value is not a {nameof(CellDisplayControl)}");
+                if (value != null && !value.GetType().IsAssignableFrom(typeof(DataGridViewTextBoxCellAutoComplete)))
+                    throw new InvalidCastException($"value is not a {nameof(DataGridViewTextBoxCellAutoComplete)}");
                 base.CellTemplate = value;
             }
         }
@@ -69,22 +61,22 @@ namespace ExtendedControls
             base.Dispose(disposing);
         }
 
-        #endregion // AutoCompleteDGVColumn
-
-        #region CellDisplayControl
+        #region new text box cell with auto complete
 
         /// <summary>
         /// Displays editable text information in a <see cref="DataGridViewTextBoxCell"/> control
         /// and provides autocompletion facilities for <see cref="CellEditControl"/>.
         /// </summary>
-        private class CellDisplayControl : DataGridViewTextBoxCell
+        private class DataGridViewTextBoxCellAutoComplete : DataGridViewTextBoxCell
         {
             private CellEditControl celleditcontrol;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="CellDisplayControl"/> class.
+            /// Initializes a new instance of the <see cref="DataGridViewTextBoxCellAutoComplete"/> class.
             /// </summary>
-            public CellDisplayControl() : base() { }
+            public DataGridViewTextBoxCellAutoComplete() : base()
+            {
+            }
 
             /// <summary>
             /// Gets the default value for a cell in the row for new records.
@@ -109,11 +101,15 @@ namespace ExtendedControls
             /// <param name="dataGridViewCellStyle">A cell style that is used to determine the appearance of the hosted control.</param>
             public override void InitializeEditingControl(int rowIndex, object initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle)
             {
+                System.Diagnostics.Debug.WriteLine("Init editing control");
                 base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
                 if (DataGridView.EditingControl != null)    // This should not be needed, but just in case...
                 {
+                    System.Diagnostics.Debug.WriteLine("Cell value " + Value);
                     celleditcontrol = DataGridView.EditingControl as CellEditControl;
                     celleditcontrol.Text = (string)(Value ?? DefaultNewRowValue);
+
+                    // hook autocompleter from column to cell
                     if (OwningColumn != null && ((ExtDataGridViewColumnAutoComplete)OwningColumn).AutoCompleteGenerator != null)
                         celleditcontrol.SetAutoCompletor((OwningColumn as ExtDataGridViewColumnAutoComplete).AutoCompleteGenerator);
                 }
@@ -212,8 +208,13 @@ namespace ExtendedControls
             /// <returns><c>true</c> if the specified key is a regular input key that the edit control should handle; <c>false</c> otherwise.</returns>
             public bool EditingControlWantsInputKey(Keys key, bool dgvWantsInputKey)
             {
-                // TODO: need to get these keys right to handle up/down and enter appropriately, along with the usual typing.
-                return !dgvWantsInputKey;
+                System.Diagnostics.Debug.WriteLine("Key " + key + " wants " + dgvWantsInputKey);
+                if (key == Keys.Left || key == Keys.Right || key == Keys.Home || key == Keys.End)
+                    return true;
+                else if ( InDropDown && ( key == Keys.Up || key == Keys.Down || key == Keys.Escape ))
+                    return true;
+                else
+                    return false;
             }
 
             /// <summary>
@@ -254,7 +255,42 @@ namespace ExtendedControls
                 EditingControlValueChanged = true;
                 EditingControlDataGridView?.NotifyCurrentCellDirty(true);
             }
+
+            // it appears, that due to the control being a control TextBox within an ExtTextBox, the TextBox
+            // when the first key is hit only gets a KU, not a KD/KP.  Thus it misses the first character in this system
+            // so lets see if it sees it, if it does not, push it in.
+            
+            int keypressedseencount;
+            protected override void OnKeyDown(KeyEventArgs e)       // occurs before control press below
+            {
+                keypressedseencount = KeysPressed;
+                base.OnKeyDown(e);
+            }
+            protected override void OnKeyPress(KeyPressEventArgs e)
+            {
+                bool notseen = KeysPressed == keypressedseencount;
+                //System.Diagnostics.Debug.WriteLine("TB-KP not seen " + notseen);
+                if (notseen)
+                {
+                    TextChangedEvent += "" + e.KeyChar;
+                    textbox.Select(Text.Length,Text.Length);
+                }
+                base.OnKeyPress(e);
+            }
+
+            // Return is owned by DGV, unless you use one with ProcessDialogKey
+            // so to use this, the DataGridView should be from the baseutils to get this call
+
+            public bool ReturnPressedInEditMode()       // in edit mode, return is pressed
+            {
+                //System.Diagnostics.Debug.WriteLine("Return pressed when in edit mode");
+                var e = new KeyEventArgs(Keys.Return);
+                AutoCompleteTextBox_KeyDown(this,e );
+                return e.Handled;   // true if handled
+            }
         }
+
+
 
         #endregion // CellEditControl
     }

@@ -46,7 +46,17 @@ namespace TestExtendedControls
 
             comboBoxCustom1.Items.AddRange(list);
 
+            for (int i = 0; i < 5; i++)
+                dataGridViewColumnHider1.Rows.Add("", "");
+
+            Column1.AutoCompleteGenerator = ReturnSystemAutoCompleteListDGV;
+            dataGridViewColumnHider1.PreviewKeyDown += DataGridViewColumnHider1_PreviewKeyDown;
             theme.ApplyStd(this);
+        }
+
+        private void DataGridViewColumnHider1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Key down" + e.KeyValue);
         }
 
         private void AutoCompleteTextBox2_KeyUp(object sender, KeyEventArgs e)
@@ -65,5 +75,12 @@ namespace TestExtendedControls
             return res;
         }
 
+        public static List<string> ReturnSystemAutoCompleteListDGV(string input, Object ctrl)
+        {
+            List<string> res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
+            return res;
+        }
+
     }
+
 }
