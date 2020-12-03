@@ -44,20 +44,19 @@ namespace ExtendedControls
             static int MajorThemeID = 1;         // Change if major change made outside of number of colors.
             static public int ThemeID { get { return MajorThemeID * 10000 + Enum.GetNames(typeof(CI)).Length; } }
 
-            public enum CI
+            public enum CI      // in the Order of Settings(..)
             {
                 form,
-                button_back, button_border, button_text,
-                grid_borderback, grid_bordertext,
-                grid_cellbackground, grid_celltext, grid_borderlines,
+                button_back, button_text, button_border,
+                grid_borderback, grid_bordertext, grid_cellbackground, grid_celltext, grid_borderlines,
                 grid_sliderback, grid_scrollarrow, grid_scrollbutton,
-                textbox_fore, textbox_highlight, textbox_success, textbox_back, textbox_border,
-                textbox_sliderback, textbox_scrollarrow, textbox_scrollbutton,
-                menu_back, menu_fore, menu_dropdownback, menu_dropdownfore,
-                group_back, group_text, group_borderlines,
                 travelgrid_nonvisted, travelgrid_visited,
+                textbox_back, textbox_fore, textbox_highlight, textbox_success, textbox_border,
+                textbox_sliderback, textbox_scrollarrow, textbox_scrollbutton,
                 checkbox, checkbox_tick,
+                menu_back, menu_fore, menu_dropdownback, menu_dropdownfore,
                 label,
+                group_back, group_text, group_borderlines,
                 tabcontrol_borderlines,
                 toolstrip_back, toolstrip_border, unused_entry,     // previously assigned to toolstrip_checkbox thing
                 s_panel,
@@ -74,41 +73,49 @@ namespace ExtendedControls
             public string textboxborderstyle;
 
             public Settings(String n, Color f,
-                                        Color bb, Color bf, Color bborder, string bstyle,
-                                        Color gb, Color gbt, Color gbck, Color gt, Color gridlines,
-                                        Color gsb, Color gst, Color gsbut,
-                                        Color tn, Color tv,
-                                        Color tbb, Color tbf, Color tbh, Color tbs, Color tbborder, string tbbstyle,
-                                        Color tbsb, Color tbst, Color tbbut,
-                                        Color c, Color ctick,
-                                        Color mb, Color mf, Color mdb, Color mdf,
-                                        Color l,
-                                        Color grpb, Color grpt, Color grlines,
+                                        Color butback, Color buttext, Color butborder, string bstyle,
+                                        Color gridborderback, Color gridbordertext, Color gridcellback, Color gridcelltext, Color gridborderlines,
+                                        Color gridsliderback, Color gridscrollarrow, Color gridscrollbutton,
+                                        Color travelgridnonvisited, Color travelgridvisited,
+                                        Color textboxback, Color textboxfore, Color textboxhighlight, Color textboxsuccess, Color textboxborder, string tbbstyle,
+                                        Color textboxsliderback, Color textboxscrollarrow, Color textboxscrollbutton,
+                                        Color checkboxfore, Color checkboxtick,
+                                        Color menuback, Color menufore, Color menudropbackback, Color menudropdownfore,
+                                        Color label,
+                                        Color groupboxback, Color groupboxtext, Color groupboxlines,
                                         Color tabborderlines,
-                                        Color ttb, Color ttborder, Color ttbuttonchecked,
+                                        Color toolstripback, Color toolstripborder, Color toolstripbuttonunused,
                                         Color sPanel, Color keycolor,
                                         bool wf, double op, string ft, float fs)            // ft = empty means don't set it
             {
                 name = n;
                 colors = new Dictionary<CI, Color>();
                 colors.Add(CI.form, f);
-                colors.Add(CI.button_back, bb); colors.Add(CI.button_text, bf); colors.Add(CI.button_border, bborder);
-                colors.Add(CI.grid_borderback, gb); colors.Add(CI.grid_bordertext, gbt);
-                colors.Add(CI.grid_cellbackground, gbck); colors.Add(CI.grid_celltext, gt); colors.Add(CI.grid_borderlines, gridlines);
-                colors.Add(CI.grid_sliderback, gsb); colors.Add(CI.grid_scrollarrow, gst); colors.Add(CI.grid_scrollbutton, gsbut);
-                colors.Add(CI.travelgrid_nonvisted, tn); colors.Add(CI.travelgrid_visited, tv);
-                colors.Add(CI.textbox_back, tbb); colors.Add(CI.textbox_fore, tbf);
-                colors.Add(CI.textbox_sliderback, tbsb); colors.Add(CI.textbox_scrollarrow, tbst); colors.Add(CI.textbox_scrollbutton, tbbut);
-                colors.Add(CI.textbox_highlight, tbh); colors.Add(CI.textbox_success, tbs);
-                colors.Add(CI.textbox_border, tbborder);
-                colors.Add(CI.checkbox, c); colors.Add(CI.checkbox_tick, ctick);
-                colors.Add(CI.menu_back, mb); colors.Add(CI.menu_fore, mf); colors.Add(CI.menu_dropdownback, mdb); colors.Add(CI.menu_dropdownfore, mdf);
-                colors.Add(CI.label, l);
-                colors.Add(CI.group_back, grpb); colors.Add(CI.group_text, grpt); colors.Add(CI.group_borderlines, grlines);
+
+                colors.Add(CI.button_back, butback); colors.Add(CI.button_text, buttext); colors.Add(CI.button_border, butborder);
+
+                colors.Add(CI.grid_borderback, gridborderback); colors.Add(CI.grid_bordertext, gridbordertext);
+                colors.Add(CI.grid_cellbackground, gridcellback); colors.Add(CI.grid_celltext, gridcelltext); colors.Add(CI.grid_borderlines, gridborderlines);
+                colors.Add(CI.grid_sliderback, gridsliderback); colors.Add(CI.grid_scrollarrow, gridscrollarrow); colors.Add(CI.grid_scrollbutton, gridscrollbutton);
+
+                colors.Add(CI.travelgrid_nonvisted, travelgridnonvisited); colors.Add(CI.travelgrid_visited, travelgridvisited);
+
+                colors.Add(CI.textbox_back, textboxback); colors.Add(CI.textbox_fore, textboxfore);
+                colors.Add(CI.textbox_highlight, textboxhighlight); colors.Add(CI.textbox_success, textboxsuccess); colors.Add(CI.textbox_border, textboxborder);
+                colors.Add(CI.textbox_sliderback, textboxsliderback); colors.Add(CI.textbox_scrollarrow, textboxscrollarrow); colors.Add(CI.textbox_scrollbutton, textboxscrollbutton);
+
+                colors.Add(CI.checkbox, checkboxfore); colors.Add(CI.checkbox_tick, checkboxtick);
+
+                colors.Add(CI.menu_back, menuback); colors.Add(CI.menu_fore, menufore); colors.Add(CI.menu_dropdownback, menudropbackback); colors.Add(CI.menu_dropdownfore, menudropdownfore);
+
+                colors.Add(CI.label, label);
+
+                colors.Add(CI.group_back, groupboxback); colors.Add(CI.group_text, groupboxtext); colors.Add(CI.group_borderlines, groupboxlines);
                 colors.Add(CI.tabcontrol_borderlines, tabborderlines);
-                colors.Add(CI.toolstrip_back, ttb); colors.Add(CI.toolstrip_border, ttborder); colors.Add(CI.unused_entry, ttbuttonchecked);
+                colors.Add(CI.toolstrip_back, toolstripback); colors.Add(CI.toolstrip_border, toolstripborder); colors.Add(CI.unused_entry, toolstripbuttonunused);
                 colors.Add(CI.s_panel, sPanel);
                 colors.Add(CI.transparentcolorkey, keycolor);
+
                 buttonstyle = bstyle; textboxborderstyle = tbbstyle;
                 windowsframe = wf; formopacity = op; fontname = ft; fontsize = fs;
             }
@@ -472,6 +479,54 @@ namespace ExtendedControls
                                                baizegreen,
                                                Color.Green, // overlay
                                                false, 95, "Microsoft Sans Serif", 8.25F));
+
+
+            if (IsFontAvailable("Verdana"))     
+            {                                                                               // exported via theme load in EDDiscovery
+                themelist.Add(new Settings("Deep Blue Sky",
+                            Color.FromArgb(255, 0, 0, 0), // form
+                            Color.FromArgb(255, 64, 64, 64), // button_back
+                            Color.FromArgb(255, 100, 177, 255), // button_text
+                            Color.FromArgb(255, 96, 96, 96), // button_border
+                            buttonstyle_gradient,
+                            Color.FromArgb(255, 0, 84, 168), // grid_borderback
+                            Color.FromArgb(255, 202, 228, 255), // grid_bordertext
+                            Color.FromArgb(255, 32, 32, 32), // grid_cellbackground
+                            Color.FromArgb(255, 130, 192, 255), // grid_celltext
+                            Color.FromArgb(255, 0, 50, 100), // grid_borderlines
+                            Color.FromArgb(255, 32, 32, 32), // grid_sliderback
+                            Color.FromArgb(255, 98, 176, 255), // grid_scrollarrow
+                            Color.FromArgb(255, 55, 155, 255), // grid_scrollbutton
+                            Color.FromArgb(255, 0, 128, 255), // travelgrid_nonvisted
+                            Color.FromArgb(255, 255, 255, 255), // travelgrid_visited
+                            Color.FromArgb(255, 32, 32, 32), // textbox_back
+                            Color.FromArgb(255, 91, 173, 255), // textbox_fore
+                            Color.FromArgb(255, 255, 0, 0), // textbox_highlight
+                            Color.FromArgb(255, 0, 128, 0), // textbox_success
+                            Color.FromArgb(255, 64, 64, 64), // textbox_border
+                            textboxborderstyle_color,
+                            Color.FromArgb(255, 32, 32, 32), // textbox_sliderback
+                            Color.FromArgb(255, 85, 170, 255), // textbox_scrollarrow
+                            Color.FromArgb(255, 0, 128, 255), // textbox_scrollbutton
+                            Color.FromArgb(255, 0, 128, 255), // checkbox
+                            Color.FromArgb(255, 65, 33, 33), // checkbox_tick
+                            Color.FromArgb(255, 0, 0, 0), // menu_back
+                            Color.FromArgb(255, 113, 184, 255), // menu_fore
+                            Color.FromArgb(255, 0, 98, 196), // menu_dropdownback
+                            Color.FromArgb(255, 193, 224, 255), // menu_dropdownfore
+                            Color.FromArgb(255, 0, 128, 255), // label
+                            Color.FromArgb(255, 0, 0, 0), // group_back
+                            Color.FromArgb(255, 117, 186, 255), // group_text
+                            Color.FromArgb(255, 130, 71, 0), // group_borderlines
+                            Color.FromArgb(255, 0, 50, 100), // tabcontrol_borderlines
+                            Color.FromArgb(255, 0, 0, 0), // toolstrip_back
+                            Color.FromArgb(255, 0, 50, 100), // toolstrip_border
+                            Color.FromArgb(255, 0, 0, 0), // unused_entry
+                            Color.FromArgb(255, 0, 128, 255), // s_panel
+                            Color.FromArgb(255, 0, 128, 0), // transparentcolorkey
+                            false, 100, "Verdana", 8));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Deep Blue Sky High DPI", "Verdana", 20));
+            }
         }
 
         public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
