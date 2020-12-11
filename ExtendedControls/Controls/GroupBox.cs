@@ -30,10 +30,6 @@ namespace ExtendedControls
         public int TextStartPosition { get; set; } = -1;                // -1 left, +1 right, 0 centre, else pixel start pos
         public int TextPadding { get; set; } = 0;                       // pixels at start/end of text
 
-        // if not set, whole client is filled with BackColor as per normal group box.
-        public bool FillClientAreaWithAlternateColor { get; set; } = false;  // Fill client area with alternate colour..
-        public Color AlternateClientBackColor { get; set; } = Color.Blue;        // area of client.. only used if FillOnlyClientArea is true.  
-
         public ExtGroupBox() : base()
         {
         }
@@ -46,18 +42,13 @@ namespace ExtendedControls
             {
                 int topline = DisplayRectangle.Y / 2;
 
-                Color colorback = (FillClientAreaWithAlternateColor) ? AlternateClientBackColor : BackColor;
+                Color colorback = BackColor;
 
                 if (!colorback.IsFullyTransparent())
                 {
                     Color color2 = (FlatStyle == FlatStyle.Popup) ? colorback.Multiply(BackColorScaling) : BackColor;
 
                     Rectangle borderrect = ClientRectangle;
-                    if (FillClientAreaWithAlternateColor)
-                    {
-                        borderrect.Y += topline;
-                        borderrect.Height -= topline;
-                    }
 
                     using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, colorback, color2, 90))
                         e.Graphics.FillRectangle(b, borderrect);

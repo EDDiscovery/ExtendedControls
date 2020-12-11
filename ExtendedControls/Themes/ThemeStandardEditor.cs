@@ -77,6 +77,9 @@ namespace ExtendedControls
             SetPanel(panel_theme71, "S-Panel Text Colour", ThemeStandard.Settings.CI.s_panel);
             SetPanel(panel_theme72, "Transparent Colour Key", ThemeStandard.Settings.CI.transparentcolorkey);
 
+            SetPanel(panel_theme80, "Grid Cell Alt Back Colour", ThemeStandard.Settings.CI.grid_altcellbackground);
+            SetPanel(panel_theme81, "Grid Cell Alt Text Colour", ThemeStandard.Settings.CI.grid_altcelltext);
+
             UpdatePatchesEtc();
 
             trackBar_theme_opacity.Value = (int)theme.Opacity;
@@ -123,6 +126,8 @@ namespace ExtendedControls
             UpdatePatch(panel_theme70);
             UpdatePatch(panel_theme71);
             UpdatePatch(panel_theme72);
+            UpdatePatch(panel_theme80);
+            UpdatePatch(panel_theme81);
             textBox_Font.Text = theme.FontName + " " + theme.FontSize + " points";
             checkBox_theme_windowframe.Checked = theme.WindowsFrame;
         }
