@@ -38,6 +38,7 @@ namespace ExtendedControls
         {
             dgv.RowsAdded -= DGVRowsAdded;              // need to keep row removed in case outlining range goes out 
             dgv.RowStateChanged -= DGVRowStateChanged;
+            dgv.RowsRemoved -= DGVRowsRemoved;
             dgv.SuspendLayout();
         }
 
@@ -48,6 +49,7 @@ namespace ExtendedControls
             dgv.ResumeLayout();
             dgv.RowsAdded += DGVRowsAdded;
             dgv.RowStateChanged += DGVRowStateChanged;
+            dgv.RowsRemoved += DGVRowsRemoved;
         }
 
         public void ChangeVisibility(int startrow, int endrow, bool state)       // this efficiently changes the visibility and stops repeated scroll updates
