@@ -216,13 +216,11 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.AlternateClientBackColor = System.Drawing.Color.Blue;
             this.groupBox1.BackColorScaling = 0.5F;
             this.groupBox1.BorderColor = System.Drawing.Color.LightGray;
             this.groupBox1.BorderColorScaling = 0.5F;
             this.groupBox1.Controls.Add(this.extRadioButton2);
             this.groupBox1.Controls.Add(this.extRadioButton1);
-            this.groupBox1.FillClientAreaWithAlternateColor = false;
             this.groupBox1.Location = new System.Drawing.Point(12, 399);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 100);

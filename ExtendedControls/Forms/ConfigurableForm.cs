@@ -167,28 +167,33 @@ namespace ExtendedControls
 
         // pos.x <= -999 means autocentre to parent.
 
-        public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false)
+        public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
+                                              Size? minsize = null, Size? maxsize = null, bool transparent = false)
         {
-            InitCentred(p, icon, caption, lname, callertag, closeicon: closeicon);
+            InitCentred(p, minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000,50000), icon, caption, lname, callertag, closeicon: closeicon, transparent:transparent);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
-        public DialogResult ShowDialog(Form p, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false)
+        public DialogResult ShowDialog(Form p, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
+                                              Size? minsize = null, Size ? maxsize = null, bool transparent = false)
         {
-            Init(pos, icon, caption, lname, callertag, closeicon: closeicon);
+            Init(minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000, 50000), pos, icon, caption, lname, callertag, closeicon: closeicon, transparent:transparent);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
-        public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
+        public void InitCentred(Form p, Size minsize, Size maxsize, Icon icon, string caption, string lname = null, Object callertag = null, 
+                                AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false, bool transparent = false)
         {
-            Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon, HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
+            Init(icon, minsize, maxsize, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon, 
+                                    HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm, transparent);
         }
 
-        public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
+        public void Init(Size minsize, Size maxsize, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, 
+                            AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false, bool transparent= false)
         {
-            Init(icon, pos, caption, lname, callertag, closeicon, null, null, asm);
+            Init(icon, minsize, maxsize, pos, caption, lname, callertag, closeicon, null, null, asm, transparent);
         }
 
         public void ReturnResult(DialogResult result)           // MUST call to return result and close.  DO NOT USE DialogResult directly
@@ -351,14 +356,19 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, bool closeicon,
-                                HorizontalAlignment? halign = null, ControlHelpersStaticFunc.VerticalAlignment? valign = null, AutoScaleMode asm = AutoScaleMode.Font)
+        private void Init(Icon icon, System.Drawing.Size minsize, System.Drawing.Size maxsize, System.Drawing.Point pos, 
+                                string caption, string lname, Object callertag, bool closeicon,
+                                HorizontalAlignment? halign , ControlHelpersStaticFunc.VerticalAlignment? valign , 
+                                AutoScaleMode asm, bool transparent)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
 
             this.halign = halign;
             this.valign = valign;
+
+            this.minsize = minsize;       // set min size window
+            this.maxsize = maxsize;
 
             ITheme theme = ThemeableFormsInstance.Instance;
 
@@ -598,6 +608,9 @@ namespace ExtendedControls
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
             //this.DumpTree(0);
 
+            if ( transparent )
+                TransparencyKey = BackColor;
+
             for (int i = 0; i < entries.Count; i++)     // post scale any controls which ask for different font ratio sizes
             {
                 if (entries[i].PostThemeFontScale != 1.0f)
@@ -636,7 +649,8 @@ namespace ExtendedControls
 
             // now position in the screen, allowing for a scroll bar if required due to height restricted
 
-            MinimumSize = new Size(1, 1);       // setting this allows for small windows
+            MinimumSize = minsize;       // setting this allows for small windows
+            MaximumSize = maxsize;      // and force limits
 
             int widthw = measureitemsinwindow.Width;
             if (closebutton != null && AllowSpaceForCloseButton)
@@ -874,6 +888,8 @@ namespace ExtendedControls
 
         private HorizontalAlignment? halign;
         private ControlHelpersStaticFunc.VerticalAlignment? valign;
+        private Size minsize;
+        private Size maxsize;
 
         private ExtPanelScroll outer;
         private ExtButtonDrawn closebutton;

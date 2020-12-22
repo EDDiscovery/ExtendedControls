@@ -370,13 +370,11 @@
             // 
             // extGroupBox1
             // 
-            this.extGroupBox1.AlternateClientBackColor = System.Drawing.Color.Blue;
             this.extGroupBox1.BackColorScaling = 0.5F;
             this.extGroupBox1.BorderColor = System.Drawing.Color.LightGray;
             this.extGroupBox1.BorderColorScaling = 0.5F;
             this.extGroupBox1.Controls.Add(this.tableLayoutPanel3);
             this.extGroupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.extGroupBox1.FillClientAreaWithAlternateColor = false;
             this.extGroupBox1.Location = new System.Drawing.Point(0, 244);
             this.extGroupBox1.Name = "extGroupBox1";
             this.extGroupBox1.Size = new System.Drawing.Size(879, 200);

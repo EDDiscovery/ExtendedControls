@@ -70,7 +70,7 @@ namespace TestExtendedControls
 
             theme.FontSize = 12;
 
-            f.ShowDialogCentred(this, this.Icon, "Trader",closeicon:true);
+            f.ShowDialogCentred(this, this.Icon, "Trader",closeicon:true, minsize: new Size(800, 500), maxsize:new Size(1000,600), transparent:true);
 
         }
 
