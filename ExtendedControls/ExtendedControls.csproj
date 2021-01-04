@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Sdk="Microsoft.NET.Sdk.WindowsDesktop" Project="Sdk.props" Condition="'$(TargetFramework)' == 'netcoreapp3.0'" />
+  <Import Sdk="Microsoft.NET.Sdk.WindowsDesktop" Project="Sdk.props" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
   <PropertyGroup>
     <ProjectGuid>{2049403F-F4C7-45E6-B777-6390C78E4D2B}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -11,8 +11,11 @@
     <Version>1.1.0.0</Version>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(OS)' == 'Windows_NT' and '$(NETCoreSdkVersion)' != '' and '$(NETCoreSdkVersion.Substring(0, 1))' == '3'">
-    <TargetFrameworks>net461;netcoreapp3.0</TargetFrameworks>
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT' and '$(NETCoreSdkVersion)' != '' and '$(NETCoreSdkVersion.Substring(0, 3))' == '3.1'">
+    <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,37 +32,21 @@
     <Reference Include="System.Design" />
   </ItemGroup>
   <ItemGroup Label="Controls">
-    <Compile Update="Controls\ImageViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\PanelDropDown.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\TabStrip.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\TreeView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="Controls\ImageViewer.cs" />
+    <Compile Update="Controls\PanelDropDown.cs" />
+    <Compile Update="Controls\TabStrip.cs" />
+    <Compile Update="Controls\TreeView.cs" />
   </ItemGroup>
   <ItemGroup Label="Forms">
-    <Compile Update="Forms\InfoForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\KeyForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\MessageBoxTheme.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\InfoForm.cs" />
+    <Compile Update="Forms\KeyForm.cs" />
+    <Compile Update="Forms\MessageBoxTheme.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Themes\ThemeStandardEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Themes\ThemeStandardEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj" />
@@ -76,5 +63,5 @@
       <Version>1.0.0-prerelease.19218.1</Version>
     </PackageReference>
   </ItemGroup>
-  <Import Sdk="Microsoft.NET.Sdk.WindowsDesktop" Project="Sdk.targets" Condition="'$(TargetFramework)' == 'netcoreapp3.0'" />
+  <Import Sdk="Microsoft.NET.Sdk.WindowsDesktop" Project="Sdk.targets" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
 </Project>

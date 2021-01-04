@@ -19,7 +19,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+
+#if !NETCOREAPP
 using System.Windows.Forms.DataVisualization.Charting;
+#endif
 
 namespace ExtendedControls
 {
@@ -920,11 +923,13 @@ namespace ExtendedControls
                 ctrl.updown.MouseSelectedColor = c1.Multiply(mouseselectedscaling);
                 ctrl.Invalidate();
             }
+#if !NETCOREAPP
             else if (myControl is Chart)
             {
                 Chart ctrl = (Chart)myControl;
                 ctrl.BackColor = Color.Transparent;
             }
+#endif
             else if (myControl is PictureBox)
             {
                 PictureBox ctrl = (PictureBox)myControl;
