@@ -44,8 +44,13 @@ namespace ExtendedControls
 
         public event Action<string, string, Object> Trigger;
 
+        public new bool AllowResize { get { return base.AllowResize; } set { base.AllowResize = value; } } // if form resizing (you need a BorderMargin)
+        public int BorderMargin { get; set; } = 3;       // space between window edge and outer area
         public int BottomMargin { get; set; } = 8;      // Extra space right/bot to allow for extra space past the controls
         public int RightMargin { get; set; } = 8;       // Size this at 8.25f font size, it will be scaled to suit. 
+        public bool AllowSpaceForScrollBar { get; set; } = true;       // allow for a scroll bar on right, reserves space for it if it thinks it needs it, else don't
+        public bool ForceNoBorder { get; set; } = false;       // set to force no border theme
+        public bool AllowSpaceForCloseButton { get; set; } = false;       // Allow space on right for close button (only set if your design means there won't normally be space for it)
 
         public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
 
@@ -58,6 +63,7 @@ namespace ExtendedControls
             public System.Drawing.Point pos;
             public System.Drawing.Size size;
             public string tooltip;                      // can be null.
+            public AnchorStyles anchor = AnchorStyles.None;
 
             // ButtonExt, TextBoxBorder, Label, CheckBoxCustom, DateTime (t=time)
             public Entry(string nam, Type c, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
@@ -69,6 +75,7 @@ namespace ExtendedControls
             {
                 controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long"; PostThemeFontScale = fontscale; textalign = align;
             }
+
 
             // ComboBoxCustom
             public Entry(string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, List<string> comboitems)
@@ -87,6 +94,7 @@ namespace ExtendedControls
             public ContentAlignment? textalign;  // label,button. nominal not applied
             public bool checkboxchecked;        // fill in for checkbox
             public bool textboxmultiline;       // fill in for textbox
+            public bool textboxescapeonreport;  // escape characters back on reporting a text box Get()
             public bool clearonfirstchar;       // fill in for textbox
             public string comboboxitems;        // fill in for combobox. comma separ list.
             public string customdateformat;     // fill in for datetimepicker
@@ -111,6 +119,7 @@ namespace ExtendedControls
             this.components = new System.ComponentModel.Container();
             entries = new List<Entry>();
             lastpos = new System.Drawing.Point(0, 0);
+            AllowResize = false;
         }
 
         public string Add(string instr)       // add a string definition dynamically add to list.  errmsg if something is wrong
@@ -127,39 +136,64 @@ namespace ExtendedControls
             entries.Add(e);
         }
 
-        public void AddOK(Point p, string tooltip = null, Size? sz = null)
+        public void AddOK(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), p, sz.Value, tooltip));
+            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), p, sz.Value, tooltip) { anchor = anchor });
         }
 
-        public void AddCancel(Point p, string tooltip = null, Size? sz = null)
+        public void AddCancel(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), p, sz.Value, tooltip));
+            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), p, sz.Value, tooltip) { anchor = anchor });
+        }
+
+        public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
+        {
+            Trigger += (dialogname, controlname, xtag) =>
+            {
+                if (controlname == "OK")
+                    ReturnResult(DialogResult.OK);
+                else if (controlname == "Close" || controlname == "Escape")
+                    ReturnResult(DialogResult.Cancel);
+                else
+                    othertrigger?.Invoke(dialogname, controlname, xtag);
+            };
         }
 
         public Entry Last { get { return entries.Last(); } }
 
         // pos.x <= -999 means autocentre to parent.
 
-        public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false)
+        public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
+                                              Size? minsize = null, Size? maxsize = null, bool transparent = false)
         {
-            InitCentred(p, icon, caption, lname, callertag, closeicon: closeicon);
+            InitCentred(p, minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000,50000), icon, caption, lname, callertag, closeicon: closeicon, transparent:transparent);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
-        public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
+        public DialogResult ShowDialog(Form p, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
+                                              Size? minsize = null, Size ? maxsize = null, bool transparent = false)
         {
-            Init(icon, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon, HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
+            Init(minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000, 50000), pos, icon, caption, lname, callertag, closeicon: closeicon, transparent:transparent);
+            callback?.Invoke();
+            return ShowDialog(p);
         }
 
-        public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null, AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
+        public void InitCentred(Form p, Size minsize, Size maxsize, Icon icon, string caption, string lname = null, Object callertag = null, 
+                                AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false, bool transparent = false)
         {
-            Init(icon, pos, caption, lname, callertag, closeicon, null, null, asm);
+            Init(icon, minsize, maxsize, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon, 
+                                    HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm, transparent);
+        }
+
+        public void Init(Size minsize, Size maxsize, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, 
+                            AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false, bool transparent= false)
+        {
+            Init(icon, minsize, maxsize, pos, caption, lname, callertag, closeicon, null, null, asm, transparent);
         }
 
         public void ReturnResult(DialogResult result)           // MUST call to return result and close.  DO NOT USE DialogResult directly
@@ -185,7 +219,12 @@ namespace ExtendedControls
             {
                 Control c = t.control;
                 if (c is ExtendedControls.ExtTextBox)
-                    return (c as ExtendedControls.ExtTextBox).Text;
+                {
+                    string s = (c as ExtendedControls.ExtTextBox).Text;
+                    if (t.textboxescapeonreport)
+                        s = s.EscapeControlChars();
+                    return s;
+                }
                 else if (c is ExtendedControls.ExtCheckBox)
                     return (c as ExtendedControls.ExtCheckBox).Checked ? "1" : "0";
                 else if (c is ExtendedControls.ExtDateTimePicker)
@@ -317,8 +356,10 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void Init(Icon icon, System.Drawing.Point pos, string caption, string lname, Object callertag, bool closeicon,
-                                HorizontalAlignment? halign = null, ControlHelpersStaticFunc.VerticalAlignment? valign = null, AutoScaleMode asm = AutoScaleMode.Font)
+        private void Init(Icon icon, System.Drawing.Size minsize, System.Drawing.Size maxsize, System.Drawing.Point pos, 
+                                string caption, string lname, Object callertag, bool closeicon,
+                                HorizontalAlignment? halign , ControlHelpersStaticFunc.VerticalAlignment? valign , 
+                                AutoScaleMode asm, bool transparent)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
@@ -326,11 +367,15 @@ namespace ExtendedControls
             this.halign = halign;
             this.valign = valign;
 
+            this.minsize = minsize;       // set min size window
+            this.maxsize = maxsize;
+
             ITheme theme = ThemeableFormsInstance.Instance;
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
+            //outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
+            outer = new ExtPanelScroll() { Name = "Outer", BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
             outer.MouseDown += FormMouseDown;
             outer.MouseUp += FormMouseUp;
             Controls.Add(outer);
@@ -342,8 +387,8 @@ namespace ExtendedControls
             this.Text = caption;
 
             int yoffset = 0;                            // adjustment to move controls up if windows frame present.
-
-            if (theme.WindowsFrame)
+            
+            if (theme.WindowsFrame && !ForceNoBorder)
             {
                 yoffset = int.MaxValue;
                 for (int i = 0; i < entries.Count; i++)             // find minimum control Y
@@ -353,7 +398,7 @@ namespace ExtendedControls
             }
             else
             {
-                titlelabel = new Label() { Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
+                titlelabel = new Label() { Name="title", Left = 4, Top = 8, Width = 10, Text = caption, AutoSize = true }; // autosize it, and set width small so it does not mess up the computation below
                 titlelabel.MouseDown += FormMouseDown;
                 titlelabel.MouseUp += FormMouseUp;
                 titlelabel.Name = "title";
@@ -361,10 +406,7 @@ namespace ExtendedControls
 
                 if (closeicon)
                 {
-                    closebutton = new ExtButtonDrawn();
-                    closebutton.Size = new Size(18, 18);
-                    closebutton.Location = new Point(0, 0);     // purposely at top left to make it not contribute to overall size
-
+                    closebutton = new ExtButtonDrawn() { Name = "closebut", Size = new Size(18, 18), Location = new Point(0, 0) };     // purposely at top left to make it not contribute to overall size
                     closebutton.ImageSelected = ExtButtonDrawn.ImageType.Close;
                     closebutton.Click += (sender, f) =>
                     {
@@ -389,10 +431,10 @@ namespace ExtendedControls
                 c.Size = ent.size;
                 c.Location = new Point(ent.pos.X, ent.pos.Y - yoffset);
                 c.Name = ent.controlname;
-                //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size);
-                if (!(ent.controltype == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong))        // everything but get text
+                if (!(ent.text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong))        // everything but get text
                     c.Text = ent.text;
                 c.Tag = ent;     // point control tag at ent structure
+                System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size + " " + c.Text);
                 outer.Controls.Add(c);
                 if (ent.tooltip != null)
                     tt.SetToolTip(c, ent.tooltip);
@@ -490,6 +532,9 @@ namespace ExtendedControls
                         }
                         return SwallowReturn;
                     };
+
+                    if (tb.ClearOnFirstChar)
+                        tb.SelectEnd();
                 }
                 else if (c is ExtendedControls.ExtCheckBox)
                 {
@@ -556,10 +601,15 @@ namespace ExtendedControls
 
             this.AutoScaleMode = asm;
 
+            // outer.FindMaxSubControlArea(0, 0,null,true); // debug
+
             //this.DumpTree(0);
-            theme.ApplyStd(this);
+            theme.ApplyStd(this, ForceNoBorder);
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
             //this.DumpTree(0);
+
+            if ( transparent )
+                TransparencyKey = BackColor;
 
             for (int i = 0; i < entries.Count; i++)     // post scale any controls which ask for different font ratio sizes
             {
@@ -583,8 +633,8 @@ namespace ExtendedControls
 
             int boundsh = Bounds.Height - ClientRectangle.Height;                   // allow for window border..  Only works after OnLoad.
             int boundsw = Bounds.Width - ClientRectangle.Width;
-            int outerh = ClientRectangle.Height - outer.ClientRectangle.Height;     // any border on outer panel
-            int outerw = ClientRectangle.Width - outer.ClientRectangle.Width;
+            int outerh = 2 + BorderMargin;
+            int outerw = 2 + BorderMargin;
 
             // get the scaling factor, we adjust the right/bottom margins accordingly
 
@@ -599,12 +649,41 @@ namespace ExtendedControls
 
             // now position in the screen, allowing for a scroll bar if required due to height restricted
 
-            this.PositionSizeWithinScreen(measureitemsinwindow.Width, measureitemsinwindow.Height, false, 64, halign, valign, outer.ScrollBarWidth);
+            MinimumSize = minsize;       // setting this allows for small windows
+            MaximumSize = maxsize;      // and force limits
+
+            int widthw = measureitemsinwindow.Width;
+            if (closebutton != null && AllowSpaceForCloseButton)
+                widthw += closebutton.Width;
+
+            int scrollbarsizeifheightnotacheived = 0;
+            if (AllowResize)                                                        // if resizable, must allow for scroll bar
+                widthw += outer.ScrollBarWidth;
+            else
+                scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
+
+            this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height, false, 64, halign, valign, scrollbarsizeifheightnotacheived);
+
+            outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
+            outer.Location = new Point(BorderMargin, BorderMargin);
 
             if (closebutton != null)      // now position close at correct place, its not contributed to overall size
-                closebutton.Location = new Point(outer.Width - closebutton.Width - titlelabel.Left, titlelabel.Top + titlelabel.Height / 2 - closebutton.Height / 2);
+            {
+                closebutton.Location = new Point(outer.Width - closebutton.Width - (AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0), Font.ScalePixels(4));
+                closebutton.Padding = new Padding(Font.ScalePixels(4));
+            }
 
-            //System.Diagnostics.Debug.WriteLine("Form Load" + Bounds + " " + ClientRectangle);
+            for (int i = 0; i < entries.Count; i++)     // record nominal pos after all positioning done
+            {
+                entries[i].pos = entries[i].control.Location;
+                entries[i].size = entries[i].control.Size;
+            }
+
+            initialsize = outer.Size;
+
+            resizeon = true;
+
+            //System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
         }
 
         protected override void OnShown(EventArgs e)
@@ -616,6 +695,31 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine("Form Shown " + Bounds + " " + ClientRectangle);
 
         }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            if (!ProgClose && resizeon)
+            {
+                outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
+
+                if (closebutton != null)      // now position close at correct logical place
+                    closebutton.Location = new Point(outer.Width - closebutton.Width - (AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0), Font.ScalePixels(4));
+
+                int widthdelta = outer.Width - initialsize.Width;
+                int heightdelta = outer.Height - initialsize.Height;
+                //System.Diagnostics.Debug.WriteLine(Environment.NewLine + "Resize {0} {1} so {2}", widthdelta, heightdelta, outer.ScrollOffset);
+
+                foreach ( var en in entries)
+                {
+                    en.control.ApplyAnchor(en.anchor, en.pos, en.size, widthdelta, heightdelta);
+                }
+
+                Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -716,34 +820,41 @@ namespace ExtendedControls
             entry = new ConfigurableForm.Entry(name, ctype,
                         text, new System.Drawing.Point(x.Value, y.Value), new System.Drawing.Size(w.Value, h.Value), tip);
 
-            if (type.Contains("textbox") && tip != null)
+            if (tip != null)        // must have a tip for these..
             {
-                int? v = sp.NextWordComma().InvariantParseIntNull();
-                entry.textboxmultiline = v.HasValue && v.Value != 0;
+                if (ctype == typeof(ExtendedControls.ExtTextBox))
+                {
+                    int? v = sp.NextWordComma().InvariantParseIntNull();
+                    entry.textboxmultiline = v.HasValue && v.Value != 0;
+                    if (entry.textboxmultiline)
+                    {
+                        entry.textboxescapeonreport = true;
+                        entry.text = entry.text.ReplaceEscapeControlChars();        // New! if multiline, replace escape control chars
+                    }
+
+                    v = sp.NextWordComma().InvariantParseIntNull();
+                    entry.clearonfirstchar = v.HasValue && v.Value != 0;
+                }
+                else if (ctype == typeof(ExtendedControls.ExtCheckBox))
+                {
+                    int? v = sp.NextWordComma().InvariantParseIntNull();
+                    entry.checkboxchecked = v.HasValue && v.Value != 0;
+                }
             }
 
-            if (type.Contains("checkbox") && tip != null)
-            {
-                int? v = sp.NextWordComma().InvariantParseIntNull();
-                entry.checkboxchecked = v.HasValue && v.Value != 0;
-
-                v = sp.NextWordComma().InvariantParseIntNull();
-                entry.clearonfirstchar = v.HasValue && v.Value != 0;
-            }
-
-            if (type.Contains("combobox"))
+            if (ctype == typeof(ExtendedControls.ExtComboBox))
             {
                 entry.comboboxitems = sp.LineLeft.Trim();
                 if (tip == null || entry.comboboxitems.Length == 0)
-                    return "Missing paramters for combobox";
+                    return "Missing parameters for combobox";
             }
-
-            if (type.Contains("datetime"))
+            
+            if (ctype == typeof(ExtendedControls.ExtDateTimePicker))
             {
                 entry.customdateformat = sp.NextWord();
             }
 
-            if (type.Contains("numberboxdouble"))
+            if (ctype == typeof(ExtendedControls.NumberBoxDouble))
             {
                 double? min = sp.NextWordComma().InvariantParseDoubleNull();
                 double? max = sp.NextWordComma().InvariantParseDoubleNull();
@@ -752,7 +863,7 @@ namespace ExtendedControls
                 entry.numberboxformat = sp.NextWordComma();
             }
 
-            if (type.Contains("numberboxlong"))
+            if (ctype == typeof(ExtendedControls.NumberBoxLong))
             {
                 long? min = sp.NextWordComma().InvariantParseLongNull();
                 long? max = sp.NextWordComma().InvariantParseLongNull();
@@ -764,8 +875,6 @@ namespace ExtendedControls
             lastpos = new System.Drawing.Point(x.Value, y.Value);
             return null;
         }
-
-
 
         #endregion
 
@@ -779,10 +888,14 @@ namespace ExtendedControls
 
         private HorizontalAlignment? halign;
         private ControlHelpersStaticFunc.VerticalAlignment? valign;
+        private Size minsize;
+        private Size maxsize;
 
         private ExtPanelScroll outer;
         private ExtButtonDrawn closebutton;
         private Label titlelabel;
+        private bool resizeon;
+        private Size initialsize;
 
     }
 }

@@ -37,7 +37,7 @@ namespace ExtendedControls
                 else if (m.Result == (IntPtr)HT.CLIENT)
                 {
                     // Work around the implementation returning HT_CLIENT instead of HT_BOTTOMRIGHT
-                    Point p = PointToClient(new Point((int)m.LParam));
+                    Point p = PointToClient(new Point((int)(long)m.LParam));
 
                     if (p.X >= this.ClientSize.Width - this.ClientSize.Height || p.Y >= this.ClientSize.Height - 5) // corner, or bottom strip
                     {

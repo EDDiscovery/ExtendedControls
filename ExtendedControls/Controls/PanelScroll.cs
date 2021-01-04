@@ -116,13 +116,13 @@ namespace ExtendedControls
         {
             if (ignorelocationchange == 0)
             {
-               // System.Diagnostics.Debug.WriteLine("CS loc Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds);
+                //System.Diagnostics.Debug.WriteLine("CS loc Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds + " scroll offset " + scrollpos);
                 ignorelocationchange++;        // stop recursion
                 Control c = sender as Control;
                 c.Top = c.Top - scrollpos;      // account for scroll pos and move control to scroll pos offset
                 ScrollTo(scrollpos, true);    // check bar within bounds
                 ignorelocationchange--;
-                //System.Diagnostics.Debug.WriteLine("PS Move " + c.Name + " " + c.Location);
+                //System.Diagnostics.Debug.WriteLine(".. to " + c.Name + " " + c.Location);
             }
         }
 
@@ -144,14 +144,14 @@ namespace ExtendedControls
                 else
                     ScrollBar.ValueLimited += ScrollBar.LargeChange;
 
-                //System.Diagnostics.Debug.WriteLine("CS Mouse Wheel ");
+                //System.Diagnostics.Debug.WriteLine("CS Mouse Wheel to " + ScrollBar.ValueLimited);
                 ScrollTo(ScrollBar.Value, false);
             }
         }
 
         protected virtual void OnScrollBarChanged(object sender, ScrollEventArgs e)
         {
-           // System.Diagnostics.Debug.WriteLine("CS Scroll bar ");
+           // System.Diagnostics.Debug.WriteLine("On Scroll Bar Changed " + e.NewValue);
             ScrollTo(e.NewValue, false);
         }
 
@@ -163,10 +163,10 @@ namespace ExtendedControls
         // set forcereposition if the vscroll pos does not change but something like a control resize may have messed about with the positioning
         private void ScrollTo(int newscrollpos, bool forcereposition)
         {
-            //System.Diagnostics.Debug.WriteLine("  Scroll panel " + Name + " is " + ClientRectangle + " curscrollpos " + scrollpos + " " + Controls.Count);
+            //System.Diagnostics.Debug.WriteLine("ScrollTo " + newscrollpos );
             //System.Diagnostics.Debug.WriteLine("From " + Environment.StackTrace.StackTrace("ScrollTo",5));
 
-              int maxy =0;
+            int maxy =0;
             List<Point> cposnorm = new List<Point>();
 
             Point flowpos = new Point(0, 0);            // for flow
@@ -237,6 +237,7 @@ namespace ExtendedControls
                     {
                         c.Location = new Point(cposnorm[posi].X, cposnorm[posi].Y - newscrollpos);
                         posi++;
+                        //System.Diagnostics.Debug.WriteLine("   flow and set " + c.Name + " to " + c.Location + " Using sp " + newscrollpos);
                     }
                 }
 
@@ -248,10 +249,11 @@ namespace ExtendedControls
             if (ScrollBar != null)
             {
                 ScrollBar.SetValueMaximumMinimum(newscrollpos, maxscr, 0);
-                // System.Diagnostics.Debug.WriteLine("Scroll {0} to {1} maxscr {2} maxy {3} ClientH {4}", scrollpos, newscrollpos, maxscr , maxy , ClientRectangle.Height);
+                //System.Diagnostics.Debug.WriteLine("  set bar from {0} to {1} maxscr {2} maxy {3} ClientH {4}", scrollpos, newscrollpos, maxscr , maxy , ClientRectangle.Height);
             }
 
             scrollpos = newscrollpos;
+            //System.Diagnostics.Debug.WriteLine("Set scroll pos to " + scrollpos);
         }
 
         public void RemoveAllControls(List<Control> excluded = null)

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace DialogTest
+namespace TestExtendedControls
 {
     public partial class TestButtons : Form
     {
@@ -22,6 +22,7 @@ namespace DialogTest
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
             theme.FontName = "Microsoft Sans Serif";
+
             theme.FontSize = 8.25f;
             theme.WindowsFrame = true;
 
@@ -51,6 +52,12 @@ namespace DialogTest
             b.Size = new Size(128, b.FindMaxSubControlArea(0, 6).Height);
 
             theme.ApplyStd(this);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            extButton4.Text = "!" + this.WindowState.ToString();
         }
 
         private void extButton5_Click(object sender, EventArgs e)
@@ -110,6 +117,17 @@ namespace DialogTest
             theme.SetThemeByName("Elite EuroCaps");
             theme.FontSize = 8.25f;
             theme.ApplyStd(this);
+        }
+
+        private void TestButtons_MouseClick(object sender, MouseEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Click on form");
+        }
+
+        private void TestButtons_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Double Click on form");
+
         }
     }
 }

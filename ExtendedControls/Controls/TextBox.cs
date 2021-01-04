@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2020 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -51,6 +51,7 @@ namespace ExtendedControls
         public int SelectionStart { get { return textbox.SelectionStart; } set { textbox.SelectionStart = value; } }
         public int SelectionLength { get { return textbox.SelectionLength; } set { textbox.SelectionLength = value; } }
         public void Select(int s, int e) { textbox.Select(s, e); }
+        public void SelectEnd() { textbox.Select(textbox.Text.Length, textbox.Text.Length); }
         public string SelectedText { get { return textbox.SelectedText; } }
 
         public HorizontalAlignment TextAlign { get { return textbox.TextAlign; } set { textbox.TextAlign = value; } }
@@ -61,6 +62,8 @@ namespace ExtendedControls
         public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(textbox, text); } // only needed for dynamic changes..
 
         public Func<ExtTextBox,bool> ReturnPressed;                          // fires if return pressed. Return true if supress return
+
+        public int KeysPressed { get; private set; }  = 0;                     // count of key presses seen
 
         public bool EndButtonVisible                                         // extra visual control added within the bounds of the textbox border at end
         {
@@ -342,7 +345,7 @@ namespace ExtendedControls
         private void Textbox_KeyPress(object sender, KeyPressEventArgs e)
         {
             lastkey = e.KeyChar;
-            keyspressed++;
+            KeysPressed++;
 
             if (e.KeyChar == '\r')
             {
@@ -368,10 +371,10 @@ namespace ExtendedControls
         bool nonreentrantchange = true;
         protected virtual void Textbox_TextChanged(object sender, EventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("Text changed " + nonreentrantchange);
+            //System.Diagnostics.Debug.WriteLine("TB Text changed " + nonreentrantchange);
             if (nonreentrantchange == true)
             {
-                if (ClearOnFirstChar && keyspressed == 1)
+                if (ClearOnFirstChar && KeysPressed == 1)
                 {
                     nonreentrantchange = false;
                     textbox.Text = "" + lastkey;
@@ -400,12 +403,10 @@ namespace ExtendedControls
         private bool inerrorcondition;          // if in error condition
 
         private char lastkey;               // records key presses
-        private int keyspressed = 0;
 
         private ExtButton endbutton;
         private bool endbuttontoshow = false; // you can't trust visible
 
         #endregion
-
     }
 }

@@ -54,10 +54,10 @@
             this.panelOuter.Controls.Add(this.panelGap);
             this.panelOuter.Controls.Add(this.labelCaption);
             this.panelOuter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelOuter.Location = new System.Drawing.Point(0, 0);
+            this.panelOuter.Location = new System.Drawing.Point(3, 0);
             this.panelOuter.Margin = new System.Windows.Forms.Padding(0);
             this.panelOuter.Name = "panelOuter";
-            this.panelOuter.Size = new System.Drawing.Size(667, 461);
+            this.panelOuter.Size = new System.Drawing.Size(664, 461);
             this.panelOuter.TabIndex = 5;
             this.panelOuter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
             this.panelOuter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
@@ -69,7 +69,7 @@
             this.panelIconText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelIconText.Location = new System.Drawing.Point(0, 27);
             this.panelIconText.Name = "panelIconText";
-            this.panelIconText.Size = new System.Drawing.Size(665, 384);
+            this.panelIconText.Size = new System.Drawing.Size(662, 384);
             this.panelIconText.TabIndex = 3;
             // 
             // themeTextBox
@@ -96,7 +96,7 @@
             this.themeTextBox.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
             this.themeTextBox.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.themeTextBox.ShowLineCount = false;
-            this.themeTextBox.Size = new System.Drawing.Size(598, 384);
+            this.themeTextBox.Size = new System.Drawing.Size(595, 384);
             this.themeTextBox.TabIndex = 5;
             this.themeTextBox.TextBoxBackColor = System.Drawing.SystemColors.Control;
             this.themeTextBox.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
@@ -129,13 +129,13 @@
             this.panelButs.Location = new System.Drawing.Point(0, 411);
             this.panelButs.Margin = new System.Windows.Forms.Padding(10);
             this.panelButs.Name = "panelButs";
-            this.panelButs.Size = new System.Drawing.Size(665, 48);
+            this.panelButs.Size = new System.Drawing.Size(662, 48);
             this.panelButs.TabIndex = 6;
             // 
             // buttonExt1
             // 
             this.buttonExt1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt1.Location = new System.Drawing.Point(570, 12);
+            this.buttonExt1.Location = new System.Drawing.Point(567, 12);
             this.buttonExt1.Name = "buttonExt1";
             this.buttonExt1.Size = new System.Drawing.Size(80, 24);
             this.buttonExt1.TabIndex = 2;
@@ -146,7 +146,7 @@
             // buttonExt2
             // 
             this.buttonExt2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt2.Location = new System.Drawing.Point(470, 12);
+            this.buttonExt2.Location = new System.Drawing.Point(467, 12);
             this.buttonExt2.Name = "buttonExt2";
             this.buttonExt2.Size = new System.Drawing.Size(80, 24);
             this.buttonExt2.TabIndex = 3;
@@ -157,7 +157,7 @@
             // buttonExt3
             // 
             this.buttonExt3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt3.Location = new System.Drawing.Point(370, 12);
+            this.buttonExt3.Location = new System.Drawing.Point(367, 12);
             this.buttonExt3.Name = "buttonExt3";
             this.buttonExt3.Size = new System.Drawing.Size(80, 24);
             this.buttonExt3.TabIndex = 4;
@@ -171,7 +171,7 @@
             this.panelGap.Location = new System.Drawing.Point(0, 13);
             this.panelGap.Margin = new System.Windows.Forms.Padding(0);
             this.panelGap.Name = "panelGap";
-            this.panelGap.Size = new System.Drawing.Size(665, 14);
+            this.panelGap.Size = new System.Drawing.Size(662, 14);
             this.panelGap.TabIndex = 7;
             this.panelGap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
             this.panelGap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
@@ -195,7 +195,7 @@
             this.ClientSize = new System.Drawing.Size(670, 464);
             this.Controls.Add(this.panelOuter);
             this.Name = "MessageBoxTheme";
-            this.Padding = new System.Windows.Forms.Padding(0, 0, 3, 3);
+            this.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "MessageBox";

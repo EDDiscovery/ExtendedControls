@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -26,7 +25,6 @@ namespace ExtendedControls
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
-        public int LimitLargeChange { get; set; } = int.MaxValue;       // set to limit large change, useful when we have very variable row sizes
 
         public int ScrollBarWidth { get { return Font.ScalePixels(24); } }       // if internal
 
@@ -40,6 +38,7 @@ namespace ExtendedControls
         {
             dgv.RowsAdded -= DGVRowsAdded;              // need to keep row removed in case outlining range goes out 
             dgv.RowStateChanged -= DGVRowStateChanged;
+            dgv.RowsRemoved -= DGVRowsRemoved;
             dgv.SuspendLayout();
         }
 
@@ -50,6 +49,7 @@ namespace ExtendedControls
             dgv.ResumeLayout();
             dgv.RowsAdded += DGVRowsAdded;
             dgv.RowStateChanged += DGVRowStateChanged;
+            dgv.RowsRemoved += DGVRowsRemoved;
         }
 
         public void ChangeVisibility(int startrow, int endrow, bool state)       // this efficiently changes the visibility and stops repeated scroll updates
@@ -228,8 +228,8 @@ namespace ExtendedControls
                 int visibleindex = dgv.Rows.GetNumberOfVisibleRowsAbove(toprowindex);                   // so we translate to visible rows above index
                 int totalvisible = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);             // this gives total visible - this is now the scroll bar range
                 int visibleonscreen = dgv.DisplayedRowCount(false);                                     // and the viewport size..
-                //System.Diagnostics.Debug.WriteLine("FDRow " + toprowindex + " Visible index " + visibleindex + " Total visible " + totalvisible + " On screen " + visibleonscreen);
-                vsc.SetValueMaximumLargeChange(visibleindex, totalvisible - 1, Math.Min(visibleonscreen,LimitLargeChange) );
+                //System.Diagnostics.Debug.WriteLine(dgv.Name + " FDRow " + toprowindex + " Visible index " + visibleindex + " Total visible " + totalvisible + " On screen " + visibleonscreen);
+                vsc.SetValueMaximumLargeChange(visibleindex, totalvisible - 1, visibleonscreen);
             }
         }
 
@@ -299,6 +299,8 @@ namespace ExtendedControls
                         ignoredgvscroll = true; // don't fire the DGVScrolled.. as we can get into a cycle if rows are hidden
 
                         dgv.SafeFirstDisplayedScrollingRowIndex(rowi);
+                        //System.Diagnostics.Debug.WriteLine("Set to " + rowi + " displayed " + dgv.DisplayedRowCount(false));
+                        vsc.LargeChange = dgv.DisplayedRowCount(false); // fix nov 20, need to reset as changing row index can change visible rows
 
                         dgv.Update();
                         vsc.Update();

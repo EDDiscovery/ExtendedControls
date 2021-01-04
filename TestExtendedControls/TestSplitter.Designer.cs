@@ -1,4 +1,4 @@
-﻿namespace DialogTest
+﻿namespace TestExtendedControls
 {
     partial class TestSplitter
     {
@@ -45,7 +45,7 @@
             // 
             // panel1
             // 
-            this.panel1.BackgroundImage = global::DialogTest.Properties.Resources.edsm32x32;
+            this.panel1.BackgroundImage = global::TestExtendedControls.Properties.Resources.edsm32x32;
             this.panel1.Location = new System.Drawing.Point(106, 60);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(48, 48);
@@ -58,7 +58,7 @@
             this.buttonExt1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.buttonExt1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.buttonExt1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonExt1.Image = global::DialogTest.Properties.Resources.galaxy;
+            this.buttonExt1.Image = global::TestExtendedControls.Properties.Resources.galaxy;
             this.buttonExt1.Location = new System.Drawing.Point(78, 110);
             this.buttonExt1.Name = "buttonExt1";
             this.buttonExt1.Size = new System.Drawing.Size(48, 48);
@@ -72,7 +72,7 @@
             this.buttonExt2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Red;
             this.buttonExt2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.buttonExt2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.buttonExt2.Image = global::DialogTest.Properties.Resources.galaxy_gray;
+            this.buttonExt2.Image = global::TestExtendedControls.Properties.Resources.galaxy_gray;
             this.buttonExt2.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonExt2.Location = new System.Drawing.Point(134, 110);
             this.buttonExt2.Margin = new System.Windows.Forms.Padding(0);

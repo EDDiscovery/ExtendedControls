@@ -1,4 +1,4 @@
-﻿namespace DialogTest
+﻿namespace TestExtendedControls
 {
     partial class TestAutoComplete
     {
@@ -29,16 +29,20 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestAutoComplete));
             this.autoCompleteTextBox1 = new ExtendedControls.ExtTextBoxAutoComplete();
             this.comboBoxCustom1 = new ExtendedControls.ExtComboBox();
             this.autoCompleteTextBox2 = new ExtendedControls.ExtTextBoxAutoComplete();
             this.textBoxBorder1 = new ExtendedControls.ExtTextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.dataGridViewColumnHider1 = new BaseUtils.DataGridViewColumnHider();
+            this.Column1 = new ExtendedControls.ExtDataGridViewColumnAutoComplete();
+            this.Column2 = new ExtendedControls.ExtDataGridViewColumnAutoComplete();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColumnHider1)).BeginInit();
             this.SuspendLayout();
             // 
             // autoCompleteTextBox1
             // 
+            this.autoCompleteTextBox1.AutoCompleteCommentMarker = null;
             this.autoCompleteTextBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.autoCompleteTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.autoCompleteTextBox1.BackErrorColor = System.Drawing.Color.Red;
@@ -49,10 +53,12 @@
             this.autoCompleteTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.autoCompleteTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox1.DropDownButtonImage")));
             this.autoCompleteTextBox1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox1.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
+            this.autoCompleteTextBox1.EndButtonEnable = false;
+            this.autoCompleteTextBox1.EndButtonImage = null;
+            this.autoCompleteTextBox1.EndButtonVisible = false;
             this.autoCompleteTextBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.autoCompleteTextBox1.InErrorCondition = false;
             this.autoCompleteTextBox1.Location = new System.Drawing.Point(40, 37);
@@ -92,6 +98,7 @@
             // 
             // autoCompleteTextBox2
             // 
+            this.autoCompleteTextBox2.AutoCompleteCommentMarker = null;
             this.autoCompleteTextBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.autoCompleteTextBox2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.autoCompleteTextBox2.BackErrorColor = System.Drawing.Color.Red;
@@ -102,10 +109,12 @@
             this.autoCompleteTextBox2.ControlBackground = System.Drawing.SystemColors.Control;
             this.autoCompleteTextBox2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.autoCompleteTextBox2.DropDownBorderColor = System.Drawing.Color.Green;
-            this.autoCompleteTextBox2.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox2.DropDownButtonImage")));
             this.autoCompleteTextBox2.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox2.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox2.DropDownScrollBarColor = System.Drawing.Color.LightGray;
+            this.autoCompleteTextBox2.EndButtonEnable = false;
+            this.autoCompleteTextBox2.EndButtonImage = null;
+            this.autoCompleteTextBox2.EndButtonVisible = false;
             this.autoCompleteTextBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.autoCompleteTextBox2.InErrorCondition = false;
             this.autoCompleteTextBox2.Location = new System.Drawing.Point(40, 87);
@@ -130,7 +139,9 @@
             this.textBoxBorder1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorder1.ClearOnFirstChar = false;
             this.textBoxBorder1.ControlBackground = System.Drawing.SystemColors.Control;
-            this.textBoxBorder1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorder1.DropDownButtonImage")));
+            this.textBoxBorder1.EndButtonEnable = true;
+            this.textBoxBorder1.EndButtonImage = null;
+            this.textBoxBorder1.EndButtonVisible = false;
             this.textBoxBorder1.InErrorCondition = false;
             this.textBoxBorder1.Location = new System.Drawing.Point(40, 222);
             this.textBoxBorder1.Multiline = false;
@@ -145,17 +156,43 @@
             this.textBoxBorder1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.textBoxBorder1.WordWrap = true;
             // 
+            // dataGridViewColumnHider1
+            // 
+            this.dataGridViewColumnHider1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewColumnHider1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewColumnHider1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
+            this.dataGridViewColumnHider1.Location = new System.Drawing.Point(40, 300);
+            this.dataGridViewColumnHider1.Name = "dataGridViewColumnHider1";
+            this.dataGridViewColumnHider1.RowHeaderMenuStrip = null;
+            this.dataGridViewColumnHider1.SingleRowSelect = true;
+            this.dataGridViewColumnHider1.Size = new System.Drawing.Size(638, 150);
+            this.dataGridViewColumnHider1.TabIndex = 3;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Column2";
+            this.Column2.Name = "Column2";
+            // 
             // TestAutoComplete
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(521, 334);
+            this.ClientSize = new System.Drawing.Size(792, 509);
+            this.Controls.Add(this.dataGridViewColumnHider1);
             this.Controls.Add(this.textBoxBorder1);
             this.Controls.Add(this.comboBoxCustom1);
             this.Controls.Add(this.autoCompleteTextBox2);
             this.Controls.Add(this.autoCompleteTextBox1);
             this.Name = "TestAutoComplete";
             this.Text = "TestAutoComplete";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColumnHider1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -167,5 +204,8 @@
         private ExtendedControls.ExtTextBoxAutoComplete autoCompleteTextBox2;
         private ExtendedControls.ExtTextBox textBoxBorder1;
         private System.Windows.Forms.Timer timer1;
+        private BaseUtils.DataGridViewColumnHider dataGridViewColumnHider1;
+        private ExtendedControls.ExtDataGridViewColumnAutoComplete Column1;
+        private ExtendedControls.ExtDataGridViewColumnAutoComplete Column2;
     }
 }

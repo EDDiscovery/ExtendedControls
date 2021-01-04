@@ -1,4 +1,4 @@
-﻿namespace DialogTest
+﻿namespace TestExtendedControls
 {
     partial class TestPanelDrawnPanel
     {
@@ -57,7 +57,7 @@
             // 
             // gridToolStripMenuItem
             // 
-            this.gridToolStripMenuItem.Image = global::DialogTest.Properties.Resources.edlogo24;
+            this.gridToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
             this.gridToolStripMenuItem.Name = "gridToolStripMenuItem";
             this.gridToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.gridToolStripMenuItem.Text = "Grid";
@@ -72,7 +72,7 @@
             // 
             // statsToolStripMenuItem
             // 
-            this.statsToolStripMenuItem.Image = global::DialogTest.Properties.Resources.galaxy;
+            this.statsToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.galaxy;
             this.statsToolStripMenuItem.Name = "statsToolStripMenuItem";
             this.statsToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.statsToolStripMenuItem.Text = "Stats";

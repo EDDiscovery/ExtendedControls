@@ -1,4 +1,4 @@
-﻿namespace DialogTest
+﻿namespace TestExtendedControls
 {
     partial class TestVariousForms
     {
@@ -35,6 +35,8 @@
             this.addAsGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extButton22 = new ExtendedControls.ExtButton();
+            this.extButton21 = new ExtendedControls.ExtButton();
             this.extButton5 = new ExtendedControls.ExtButton();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton4 = new ExtendedControls.ExtButton();
@@ -45,16 +47,18 @@
             this.extButton11 = new ExtendedControls.ExtButton();
             this.extButton18 = new ExtendedControls.ExtButton();
             this.extButton17 = new ExtendedControls.ExtButton();
+            this.extButton19 = new ExtendedControls.ExtButton();
             this.extButton16 = new ExtendedControls.ExtButton();
             this.extButton15 = new ExtendedControls.ExtButton();
             this.extButton14 = new ExtendedControls.ExtButton();
             this.extButton13 = new ExtendedControls.ExtButton();
+            this.extButton20 = new ExtendedControls.ExtButton();
             this.extButton12 = new ExtendedControls.ExtButton();
             this.extButton10 = new ExtendedControls.ExtButton();
             this.extButton6 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
-            this.extButton19 = new ExtendedControls.ExtButton();
-            this.extButton20 = new ExtendedControls.ExtButton();
+            this.extButton23 = new ExtendedControls.ExtButton();
+            this.extButton24 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,7 +81,7 @@
             // 
             // gridToolStripMenuItem
             // 
-            this.gridToolStripMenuItem.Image = global::DialogTest.Properties.Resources.edlogo24;
+            this.gridToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
             this.gridToolStripMenuItem.Name = "gridToolStripMenuItem";
             this.gridToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.gridToolStripMenuItem.Text = "Grid";
@@ -92,7 +96,7 @@
             // 
             // statsToolStripMenuItem
             // 
-            this.statsToolStripMenuItem.Image = global::DialogTest.Properties.Resources.galaxy;
+            this.statsToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.galaxy;
             this.statsToolStripMenuItem.Name = "statsToolStripMenuItem";
             this.statsToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.statsToolStripMenuItem.Text = "Stats";
@@ -102,6 +106,26 @@
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
             this.removeToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.removeToolStripMenuItem.Text = "Remove";
+            // 
+            // extButton22
+            // 
+            this.extButton22.Location = new System.Drawing.Point(12, 219);
+            this.extButton22.Name = "extButton22";
+            this.extButton22.Size = new System.Drawing.Size(183, 23);
+            this.extButton22.TabIndex = 1;
+            this.extButton22.Text = "CF-Icons-T12";
+            this.extButton22.UseVisualStyleBackColor = true;
+            this.extButton22.Click += new System.EventHandler(this.extButton22_Click);
+            // 
+            // extButton21
+            // 
+            this.extButton21.Location = new System.Drawing.Point(12, 161);
+            this.extButton21.Name = "extButton21";
+            this.extButton21.Size = new System.Drawing.Size(183, 23);
+            this.extButton21.TabIndex = 1;
+            this.extButton21.Text = "CF-Icons-T8";
+            this.extButton21.UseVisualStyleBackColor = true;
+            this.extButton21.Click += new System.EventHandler(this.extButton21_Click);
             // 
             // extButton5
             // 
@@ -185,7 +209,7 @@
             // 
             // extButton18
             // 
-            this.extButton18.Location = new System.Drawing.Point(12, 255);
+            this.extButton18.Location = new System.Drawing.Point(239, 248);
             this.extButton18.Name = "extButton18";
             this.extButton18.Size = new System.Drawing.Size(183, 23);
             this.extButton18.TabIndex = 1;
@@ -195,7 +219,7 @@
             // 
             // extButton17
             // 
-            this.extButton17.Location = new System.Drawing.Point(12, 226);
+            this.extButton17.Location = new System.Drawing.Point(239, 219);
             this.extButton17.Name = "extButton17";
             this.extButton17.Size = new System.Drawing.Size(183, 23);
             this.extButton17.TabIndex = 1;
@@ -203,9 +227,19 @@
             this.extButton17.UseVisualStyleBackColor = true;
             this.extButton17.Click += new System.EventHandler(this.extButton17_Click);
             // 
+            // extButton19
+            // 
+            this.extButton19.Location = new System.Drawing.Point(239, 161);
+            this.extButton19.Name = "extButton19";
+            this.extButton19.Size = new System.Drawing.Size(183, 23);
+            this.extButton19.TabIndex = 1;
+            this.extButton19.Text = "Prompt-T8";
+            this.extButton19.UseVisualStyleBackColor = true;
+            this.extButton19.Click += new System.EventHandler(this.extButton19_Click);
+            // 
             // extButton16
             // 
-            this.extButton16.Location = new System.Drawing.Point(12, 197);
+            this.extButton16.Location = new System.Drawing.Point(239, 190);
             this.extButton16.Name = "extButton16";
             this.extButton16.Size = new System.Drawing.Size(183, 23);
             this.extButton16.TabIndex = 1;
@@ -242,6 +276,16 @@
             this.extButton13.Text = "Messagebox-T30";
             this.extButton13.UseVisualStyleBackColor = true;
             this.extButton13.Click += new System.EventHandler(this.extButton13_Click);
+            // 
+            // extButton20
+            // 
+            this.extButton20.Location = new System.Drawing.Point(653, 128);
+            this.extButton20.Name = "extButton20";
+            this.extButton20.Size = new System.Drawing.Size(183, 23);
+            this.extButton20.TabIndex = 1;
+            this.extButton20.Text = "Messagebox-T12-noicon";
+            this.extButton20.UseVisualStyleBackColor = true;
+            this.extButton20.Click += new System.EventHandler(this.extButton20_Click);
             // 
             // extButton12
             // 
@@ -283,29 +327,33 @@
             this.extButton1.UseVisualStyleBackColor = true;
             this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
-            // extButton19
+            // extButton23
             // 
-            this.extButton19.Location = new System.Drawing.Point(12, 168);
-            this.extButton19.Name = "extButton19";
-            this.extButton19.Size = new System.Drawing.Size(183, 23);
-            this.extButton19.TabIndex = 1;
-            this.extButton19.Text = "Prompt-T8";
-            this.extButton19.UseVisualStyleBackColor = true;
-            this.extButton19.Click += new System.EventHandler(this.extButton19_Click);
+            this.extButton23.Location = new System.Drawing.Point(12, 248);
+            this.extButton23.Name = "extButton23";
+            this.extButton23.Size = new System.Drawing.Size(183, 23);
+            this.extButton23.TabIndex = 1;
+            this.extButton23.Text = "CF-Icons-T16";
+            this.extButton23.UseVisualStyleBackColor = true;
+            this.extButton23.Click += new System.EventHandler(this.extButton23_Click);
             // 
-            // extButton20
+            // extButton24
             // 
-            this.extButton20.Location = new System.Drawing.Point(653, 128);
-            this.extButton20.Name = "extButton20";
-            this.extButton20.Size = new System.Drawing.Size(183, 23);
-            this.extButton20.TabIndex = 1;
-            this.extButton20.Text = "Messagebox-T12-noicon";
-            this.extButton20.UseVisualStyleBackColor = true;
-            this.extButton20.Click += new System.EventHandler(this.extButton20_Click);
+            this.extButton24.Location = new System.Drawing.Point(12, 190);
+            this.extButton24.Name = "extButton24";
+            this.extButton24.Size = new System.Drawing.Size(183, 23);
+            this.extButton24.TabIndex = 1;
+            this.extButton24.Text = "CF-Icons-T10";
+            this.extButton24.UseVisualStyleBackColor = true;
+            this.extButton24.Click += new System.EventHandler(this.extButton24_Click);
             // 
             // TestVariousForms
             // 
             this.ClientSize = new System.Drawing.Size(854, 295);
+            this.Controls.Add(this.extButton24);
+            this.Controls.Add(this.extButton23);
+            this.Controls.Add(this.extButton22);
+            this.Controls.Add(this.extButton21);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton4);
@@ -360,5 +408,9 @@
         private ExtendedControls.ExtButton extButton18;
         private ExtendedControls.ExtButton extButton19;
         private ExtendedControls.ExtButton extButton20;
+        private ExtendedControls.ExtButton extButton21;
+        private ExtendedControls.ExtButton extButton22;
+        private ExtendedControls.ExtButton extButton23;
+        private ExtendedControls.ExtButton extButton24;
     }
 }

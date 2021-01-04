@@ -1,4 +1,4 @@
-﻿namespace DialogTest
+﻿namespace TestExtendedControls
 {
     partial class TestMisc
     {
@@ -89,7 +89,7 @@
             // 
             // gridToolStripMenuItem
             // 
-            this.gridToolStripMenuItem.Image = global::DialogTest.Properties.Resources.edlogo24;
+            this.gridToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
             this.gridToolStripMenuItem.Name = "gridToolStripMenuItem";
             this.gridToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
             this.gridToolStripMenuItem.Text = "Grid";
@@ -104,7 +104,7 @@
             // 
             // statsToolStripMenuItem
             // 
-            this.statsToolStripMenuItem.Image = global::DialogTest.Properties.Resources.galaxy;
+            this.statsToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.galaxy;
             this.statsToolStripMenuItem.Name = "statsToolStripMenuItem";
             this.statsToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.statsToolStripMenuItem.Text = "Stats";
@@ -228,7 +228,7 @@
             // 
             // extButton4
             // 
-            this.extButton4.Image = global::DialogTest.Properties.Resources.edlogo24;
+            this.extButton4.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
             this.extButton4.Location = new System.Drawing.Point(442, 28);
             this.extButton4.Name = "extButton4";
             this.extButton4.Size = new System.Drawing.Size(24, 19);
@@ -370,13 +370,11 @@
             // 
             // extGroupBox1
             // 
-            this.extGroupBox1.AlternateClientBackColor = System.Drawing.Color.Blue;
             this.extGroupBox1.BackColorScaling = 0.5F;
             this.extGroupBox1.BorderColor = System.Drawing.Color.LightGray;
             this.extGroupBox1.BorderColorScaling = 0.5F;
             this.extGroupBox1.Controls.Add(this.tableLayoutPanel3);
             this.extGroupBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.extGroupBox1.FillClientAreaWithAlternateColor = false;
             this.extGroupBox1.Location = new System.Drawing.Point(0, 244);
             this.extGroupBox1.Name = "extGroupBox1";
             this.extGroupBox1.Size = new System.Drawing.Size(879, 200);
@@ -462,7 +460,7 @@
             this.extButton5.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Lime;
             this.extButton5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.extButton5.ForeColor = System.Drawing.Color.DarkOrange;
-            this.extButton5.Image = global::DialogTest.Properties.Resources.galaxy_white;
+            this.extButton5.Image = global::TestExtendedControls.Properties.Resources.galaxy_white;
             this.extButton5.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.extButton5.Location = new System.Drawing.Point(439, 63);
             this.extButton5.Name = "extButton5";
@@ -474,7 +472,7 @@
             // 
             // extButton6
             // 
-            this.extButton6.Image = global::DialogTest.Properties.Resources.galaxy_black;
+            this.extButton6.Image = global::TestExtendedControls.Properties.Resources.galaxy_black;
             this.extButton6.Location = new System.Drawing.Point(3, 123);
             this.extButton6.Name = "extButton6";
             this.extButton6.Size = new System.Drawing.Size(75, 23);

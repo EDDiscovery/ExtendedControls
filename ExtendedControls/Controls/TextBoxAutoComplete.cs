@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2020 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -25,8 +25,10 @@ namespace ExtendedControls
     {
         #region Public IF
 
-        // programtic change of text does not make autocomplete execute.
+        // programatic change of text does not make autocomplete execute.
         public override string Text { get { return base.Text; } set { tempdisableauto = true; base.Text = value; tempdisableauto = false; } }
+        // unless done by this one
+        public string TextChangedEvent { get { return base.Text; } set { base.Text = value; } }
 
         public Color DropDownBackgroundColor { get; set; } = Color.Gray;
         public Color DropDownBorderColor { get; set; } = Color.Green;
@@ -34,6 +36,8 @@ namespace ExtendedControls
         public Color DropDownScrollBarButtonColor { get; set; } = Color.LightGray;
         public Color DropDownMouseOverBackgroundColor { get; set; } = Color.Red;
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
+
+        public bool InDropDown { get { return cbdropdown != null; } }
 
         // use EndButtonEnable to turn on autocompleter button
 
@@ -111,7 +115,7 @@ namespace ExtendedControls
 
         private void TextChangeEventHandler(object sender, EventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("{0} text change event", Environment.TickCount % 10000);
+            //System.Diagnostics.Debug.WriteLine("AC {0} text change event", Environment.TickCount % 10000);
             if (autoCompleteFunction != null && !tempdisableauto)
             {
                 if (!executingautocomplete)
@@ -233,9 +237,9 @@ namespace ExtendedControls
 
         // keys when WE have to focus, which we do all the time now, some need passing onto the control.
 
-        private void AutoCompleteTextBox_KeyDown(object sender, KeyEventArgs e)
+        public void AutoCompleteTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("{0} Keypress {1}", Environment.TickCount % 10000 , e.KeyCode);
+            System.Diagnostics.Debug.WriteLine("{0} Keypress {1}", Environment.TickCount % 10000 , e.KeyCode);
 
             if (cbdropdown != null)        // pass certain keys to the shown drop down
             {

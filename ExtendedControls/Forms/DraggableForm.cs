@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017-2019 EDDiscovery development team
+ * Copyright © 2017-2020 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -183,42 +183,32 @@ namespace ExtendedControls
                             mmi.ptMaxPosition.X = wa.Left - scb.Left;
                             mmi.ptMaxPosition.Y = wa.Top - scb.Top;
 
-                            if (AllowResize)
+                            if (!this.MaximumSize.IsEmpty)      // use Max size if set, 
                             {
-                                if (!this.MaximumSize.IsEmpty)
-                                {
-                                    mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = this.MaximumSize.Width;
-                                    mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = this.MaximumSize.Height;
-                                }
-                                else
-                                {
-                                    mmi.ptMaxSize.X = wa.Width;
-                                    mmi.ptMaxSize.Y = wa.Height;
-                                    //mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = wa.Width;
-                                    //mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = wa.Height;
-                                }
-
-                                if (!this.MinimumSize.IsEmpty)
-                                {
-                                    mmi.ptMinTrackSize.X = this.MinimumSize.Width;
-                                    mmi.ptMinTrackSize.Y = this.MinimumSize.Height;
-                                }
-                                else
-                                {
-                                    mmi.ptMinTrackSize.X = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CXMINTRACK);
-                                    mmi.ptMinTrackSize.Y = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CYMINTRACK);
-                                }
-                                //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
+                                mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = this.MaximumSize.Width;
+                                mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = this.MaximumSize.Height;
                             }
                             else
                             {
-                                mmi.ptMaxSize.X = mmi.ptMaxTrackSize.X = mmi.ptMinTrackSize.X = ClientSize.Width;
-                                mmi.ptMaxSize.Y = mmi.ptMaxTrackSize.Y = mmi.ptMinTrackSize.Y = ClientSize.Height;
+                                mmi.ptMaxSize.X = wa.Width;     // else use monitor working area 
+                                mmi.ptMaxSize.Y = wa.Height;
                             }
+
+                            if (!this.MinimumSize.IsEmpty)      // use Min size if set
+                            {
+                                mmi.ptMinTrackSize.X = this.MinimumSize.Width;  
+                                mmi.ptMinTrackSize.Y = this.MinimumSize.Height;
+                            }
+                            else
+                            {                                   // else use min size
+                                mmi.ptMinTrackSize.X = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CXMINTRACK);
+                                mmi.ptMinTrackSize.Y = UnsafeNativeMethods.GetSystemMetrics(SystemMetrics.CYMINTRACK);
+                            }
+
+                            //  System.Diagnostics.Debug.WriteLine("SET TRACK SIZE " + mmi.ptMinTrackSize + " - " + mmi.ptMaxTrackSize);
 
                             Marshal.StructureToPtr(mmi, m.LParam, false);
                             m.Result = IntPtr.Zero;
-                            //System.Diagnostics.Debug.WriteLine("MINMAX " + mmi.ptMaxSize);
                             return;
                         }
                         break;
@@ -237,7 +227,7 @@ namespace ExtendedControls
                             if (WindowState == FormWindowState.Minimized)
                                 return;
 
-                            var p = PointToClient(new Point(unchecked((int)m.LParam)));
+                            var p = PointToClient(new Point(unchecked((int)(long)m.LParam)));
                             const int CaptionHeight = 32;
                             const int edgesz = 5;   // 5 is generous.. really only a few pixels gets thru before the subwindows grabs them
 
@@ -281,7 +271,7 @@ namespace ExtendedControls
                     {
                         if (!windowsborder && m.WParam == (IntPtr)HT.CAPTION)
                         {
-                            var p = new Point(unchecked((int)m.LParam));
+                            var p = new Point(unchecked((int)(long)m.LParam));
                             if (dblClickTimer.Enabled && ((Rectangle)dblClickTimer.Tag).Contains(p))
                             {
                                 dblClickTimer.Enabled = false;
