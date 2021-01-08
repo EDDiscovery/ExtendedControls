@@ -24,6 +24,8 @@ namespace ExtendedControls
         bool ApplyDialog(Control ctrl, bool nowindowsborderoverride = false);
         bool Apply(Control ctrl, Font fnt, bool nowindowsborderoverride = false);
 
+        Color Form { get; set; }
+
         Color ButtonBackColor { get; set; }
         Color ButtonTextColor { get; set; }
         Color ButtonBorderColor { get; set; }

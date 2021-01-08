@@ -49,10 +49,12 @@ namespace ExtendedControls
         public int BottomMargin { get; set; } = 8;      // Extra space right/bot to allow for extra space past the controls
         public int RightMargin { get; set; } = 8;       // Size this at 8.25f font size, it will be scaled to suit. 
         public bool AllowSpaceForScrollBar { get; set; } = true;       // allow for a scroll bar on right, reserves space for it if it thinks it needs it, else don't
-        public bool ForceNoBorder { get; set; } = false;       // set to force no border theme
+        public bool ForceNoWindowsBorder { get; set; } = false;       // set to force no border theme
         public bool AllowSpaceForCloseButton { get; set; } = false;       // Allow space on right for close button (only set if your design means there won't normally be space for it)
-
+        public bool Transparent { get; set; } = false;
         public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
+        public Color BorderRectColour { get; set; } = Color.Empty;  // force border colour
+        public BorderStyle PanelBorderStyle { get; set; } = BorderStyle.FixedSingle;
 
         public class Entry
         {
@@ -168,32 +170,38 @@ namespace ExtendedControls
         // pos.x <= -999 means autocentre to parent.
 
         public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
-                                              Size? minsize = null, Size? maxsize = null, bool transparent = false)
+                                              Size? minsize = null, Size? maxsize = null)
         {
-            InitCentred(p, minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000,50000), icon, caption, lname, callertag, closeicon: closeicon, transparent:transparent);
+            InitCentred(p, minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000,50000), icon, caption, lname, callertag, closeicon: closeicon);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
         public DialogResult ShowDialog(Form p, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
-                                              Size? minsize = null, Size ? maxsize = null, bool transparent = false)
+                                              Size? minsize = null, Size ? maxsize = null)
         {
-            Init(minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000, 50000), pos, icon, caption, lname, callertag, closeicon: closeicon, transparent:transparent);
+            Init(minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000, 50000), pos, icon, caption, lname, callertag, closeicon: closeicon);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
-        public void InitCentred(Form p, Size minsize, Size maxsize, Icon icon, string caption, string lname = null, Object callertag = null, 
-                                AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false, bool transparent = false)
+        public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null,
+                                AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
         {
-            Init(icon, minsize, maxsize, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon, 
-                                    HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm, transparent);
+            Init(icon, new Size(1,1), new Size(50000,50000), new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon,
+                                    HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
+        }
+        public void InitCentred(Form p, Size minsize, Size maxsize, Icon icon, string caption, string lname = null, Object callertag = null,
+                                AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
+        {
+            Init(icon, minsize, maxsize, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon,
+                                    HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
         }
 
         public void Init(Size minsize, Size maxsize, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, 
-                            AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false, bool transparent= false)
+                            AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
         {
-            Init(icon, minsize, maxsize, pos, caption, lname, callertag, closeicon, null, null, asm, transparent);
+            Init(icon, minsize, maxsize, pos, caption, lname, callertag, closeicon, null, null, asm);
         }
 
         public void ReturnResult(DialogResult result)           // MUST call to return result and close.  DO NOT USE DialogResult directly
@@ -218,13 +226,15 @@ namespace ExtendedControls
             if (t != null)
             {
                 Control c = t.control;
-                if (c is ExtendedControls.ExtTextBox)
+                if (c is ExtendedControls.ExtTextBox )
                 {
                     string s = (c as ExtendedControls.ExtTextBox).Text;
                     if (t.textboxescapeonreport)
                         s = s.EscapeControlChars();
                     return s;
                 }
+                else if (c is Label)
+                    return (c as Label).Text;
                 else if (c is ExtendedControls.ExtCheckBox)
                     return (c as ExtendedControls.ExtCheckBox).Checked ? "1" : "0";
                 else if (c is ExtendedControls.ExtDateTimePicker)
@@ -292,9 +302,14 @@ namespace ExtendedControls
             if (t != null)
             {
                 Control c = t.control;
-                if (c is ExtendedControls.ExtTextBox)
+                if (c is ExtendedControls.ExtTextBox )
                 {
                     (c as ExtendedControls.ExtTextBox).Text = value;
+                    return true;
+                }
+                else if ( c is Label)
+                {
+                    (c as Label).Text = value;
                     return true;
                 }
                 else if (c is ExtendedControls.ExtCheckBox)
@@ -359,7 +374,7 @@ namespace ExtendedControls
         private void Init(Icon icon, System.Drawing.Size minsize, System.Drawing.Size maxsize, System.Drawing.Point pos, 
                                 string caption, string lname, Object callertag, bool closeicon,
                                 HorizontalAlignment? halign , ControlHelpersStaticFunc.VerticalAlignment? valign , 
-                                AutoScaleMode asm, bool transparent)
+                                AutoScaleMode asm)
         {
             this.logicalname = lname;    // passed back to caller via trigger
             this.callertag = callertag;      // passed back to caller via trigger
@@ -375,7 +390,7 @@ namespace ExtendedControls
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
             //outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
-            outer = new ExtPanelScroll() { Name = "Outer", BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
+            outer = new ExtPanelScroll() { Name = "Outer", BorderStyle = PanelBorderStyle, Margin = new Padding(0), Padding = new Padding(0) };
             outer.MouseDown += FormMouseDown;
             outer.MouseUp += FormMouseUp;
             Controls.Add(outer);
@@ -388,7 +403,7 @@ namespace ExtendedControls
 
             int yoffset = 0;                            // adjustment to move controls up if windows frame present.
             
-            if (theme.WindowsFrame && !ForceNoBorder)
+            if (theme.WindowsFrame && !ForceNoWindowsBorder)
             {
                 yoffset = int.MaxValue;
                 for (int i = 0; i < entries.Count; i++)             // find minimum control Y
@@ -604,12 +619,18 @@ namespace ExtendedControls
             // outer.FindMaxSubControlArea(0, 0,null,true); // debug
 
             //this.DumpTree(0);
-            theme.ApplyStd(this, ForceNoBorder);
+            theme.ApplyStd(this, ForceNoWindowsBorder);
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
             //this.DumpTree(0);
 
-            if ( transparent )
+            if (Transparent)
+            {
                 TransparencyKey = BackColor;
+                timer = new Timer();      // timer to monitor for entry into form when transparent.. only sane way in forms
+                timer.Interval = 500;
+                timer.Tick += CheckMouse;
+                timer.Start();
+            }
 
             for (int i = 0; i < entries.Count; i++)     // post scale any controls which ask for different font ratio sizes
             {
@@ -717,6 +738,29 @@ namespace ExtendedControls
                 }
 
                 Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+            }
+        }
+
+        private void CheckMouse(object sender, EventArgs e)     // best way of knowing your inside the client.. using mouseleave/enter with transparency does not work..
+        {
+            if (!ProgClose)
+            {
+                if (ClientRectangle.Contains(this.PointToClient(MousePosition)))
+                {
+                    panelshowcounter++;
+                    if (panelshowcounter == 3)
+                    {
+                        TransparencyKey = Color.Empty;
+                    }
+                }
+                else
+                {
+                    if (panelshowcounter >= 3)
+                    {
+                        TransparencyKey = ThemeableFormsInstance.Instance.Form;
+                    }
+                    panelshowcounter = 0;
+                }
             }
         }
 
@@ -896,6 +940,9 @@ namespace ExtendedControls
         private Label titlelabel;
         private bool resizeon;
         private Size initialsize;
+
+        private Timer timer;
+        private int panelshowcounter;
 
     }
 }
