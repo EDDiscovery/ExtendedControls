@@ -220,6 +220,15 @@ namespace ExtendedControls
                 return null;
         }
 
+        public Control GetControl(string controlname )
+        {
+            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t != null)
+                return t.control;
+            else
+                return null;
+        }
+
         public string Get(string controlname)      // return value of dialog control
         {
             Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
@@ -353,21 +362,7 @@ namespace ExtendedControls
             return false;
         }
 
-        public bool SetEnabled(string controlname, bool state)      // set enable state of dialog control
-        {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
-            {
-                var cn = t.control as Control;
-                cn.Enabled = state;
-                return true;
-            }
-            else
-                return false;
-        }
-
-
-        #endregion
+         #endregion
 
         #region Implementation
 
@@ -459,6 +454,8 @@ namespace ExtendedControls
                     Label l = c as Label;
                     if (ent.textalign.HasValue)
                         l.TextAlign = ent.textalign.Value;
+                    l.MouseDown += (md1, md2) => { OnCaptionMouseDown((Control)md1, md2); };        // make em draggable
+                    l.MouseUp += (md1, md2) => { OnCaptionMouseUp((Control)md1, md2); };
                 }
                 else if (c is ExtendedControls.ExtButton)
                 {
@@ -702,7 +699,7 @@ namespace ExtendedControls
 
             initialsize = outer.Size;
 
-            resizeon = true;
+            resizerepositionon = true;
 
             //System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
         }
@@ -717,11 +714,19 @@ namespace ExtendedControls
 
         }
 
+        protected override void OnMove(EventArgs e)
+        {
+            base.OnMove(e);
+
+            if (!ProgClose && resizerepositionon )
+                Trigger?.Invoke(logicalname, "Reposition", this.callertag);       // pass back the logical name of dialog, Moved, the caller tag
+        }
+
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
 
-            if (!ProgClose && resizeon)
+            if (!ProgClose && resizerepositionon)
             {
                 outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
 
@@ -737,7 +742,7 @@ namespace ExtendedControls
                     en.control.ApplyAnchor(en.anchor, en.pos, en.size, widthdelta, heightdelta);
                 }
 
-                Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, Resize, the caller tag
             }
         }
 
@@ -938,7 +943,7 @@ namespace ExtendedControls
         private ExtPanelScroll outer;
         private ExtButtonDrawn closebutton;
         private Label titlelabel;
-        private bool resizeon;
+        private bool resizerepositionon;
         private Size initialsize;
 
         private Timer timer;
