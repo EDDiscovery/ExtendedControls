@@ -57,7 +57,8 @@ namespace ExtendedControls
         public Control CurrentControl;
 
         // events
-        public Action<TabStrip, Control> OnRemoving;            // called due to ChangePanel or Close
+        public Func<TabStrip, int, Control,bool> AllowClose;     // called if a panel is being closed, true to allow it
+        public Action<TabStrip, Control> OnRemoving;        // called due to ChangePanel or Close
         public Func<TabStrip, int,Control> OnCreateTab;     // called due to  Create or due to ChangePanel
         public Action<TabStrip, Control, int> OnPostCreateTab;  // called due to ChangePanel 
         public Action<TabStrip, int> OnPopOut;
@@ -118,31 +119,41 @@ namespace ExtendedControls
         {
             if (i >= 0 && i < ImageList.Length)
             {
-                Close();
-                Create(i);
-                PostCreate();
-                return true;
+                if ( Close() )
+                {
+                    Create(i);
+                    PostCreate();
+                    return true;
+                }
+                else
+                    return false;
             }
             else
                 return false;
         }
 
-        public void Close()     // close down
+        public bool Close()     // close down
         {
             if (CurrentControl != null)
             {
-                if (OnRemoving != null)
-                    OnRemoving(this, CurrentControl);
-
-                this.Controls.Remove(CurrentControl);
-                CurrentControl.Dispose();
-                CurrentControl = null;
-                selectedindex = -1;
-                labelControlText.Text = "";
-                labelTitle.Text = "?";
-                pimageSelectedIcon.BackgroundImage = EmptyPanelIcon;
-                extButtonDrawnHelp.Visible = false;
+                if (AllowClose?.Invoke(this, selectedindex, CurrentControl) ?? true)
+                {
+                    OnRemoving?.Invoke(this, CurrentControl);
+                    this.Controls.Remove(CurrentControl);
+                    CurrentControl.Dispose();
+                    CurrentControl = null;
+                    selectedindex = -1;
+                    labelControlText.Text = "";
+                    labelTitle.Text = "?";
+                    pimageSelectedIcon.BackgroundImage = EmptyPanelIcon;
+                    extButtonDrawnHelp.Visible = false;
+                    return true;
+                }
+                else
+                    return false;
             }
+            else
+                return true;
         }
 
         public void Create(int i)       // create.. only if already closed
