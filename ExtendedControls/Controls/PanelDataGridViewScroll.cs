@@ -5,12 +5,12 @@
  * file except in compliance with the License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
+ *
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
@@ -36,13 +36,13 @@ namespace ExtendedControls
 
         public void Suspend()                           // use these for quicker adding in of rows to table
         {
-            dgv.RowsAdded -= DGVRowsAdded;              // need to keep row removed in case outlining range goes out 
+            dgv.RowsAdded -= DGVRowsAdded;              // need to keep row removed in case outlining range goes out
             dgv.RowStateChanged -= DGVRowStateChanged;
             dgv.RowsRemoved -= DGVRowsRemoved;
             dgv.SuspendLayout();
         }
 
-        public void Resume()                            
+        public void Resume()
         {
             UpdateScrollBar();
             outlining?.UpdateOutlines();
@@ -142,7 +142,7 @@ namespace ExtendedControls
         {
         }
 
-        protected override void OnControlAdded(ControlEventArgs e ) 
+        protected override void OnControlAdded(ControlEventArgs e )
         {  // as controls are added, remember them in local variables.
             if (e.Control is DataGridView)
             {
@@ -224,7 +224,12 @@ namespace ExtendedControls
         {
             if (dgv != null && vsc != null) // may not be attached at various design points
             {
+#if MONO
+                int toprowindex = dgv.CurrentCell != null ? dgv.CurrentCell.RowIndex : 0;
+#else
                 int toprowindex = dgv.FirstDisplayedScrollingRowIndex;                                  // this index ignores invisible rows
+#endif
+
                 int visibleindex = dgv.Rows.GetNumberOfVisibleRowsAbove(toprowindex);                   // so we translate to visible rows above index
                 int totalvisible = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);             // this gives total visible - this is now the scroll bar range
                 int visibleonscreen = dgv.DisplayedRowCount(false);                                     // and the viewport size..
@@ -290,7 +295,7 @@ namespace ExtendedControls
 
         private void MoveDGVToRow(int rowindex)                   // given row index, find it taking into account visibility
         {
-            if (dgv != null )                      
+            if (dgv != null )
             {
                 for (int rowi = 0; rowi < dgv.RowCount; rowi++)
                 {
