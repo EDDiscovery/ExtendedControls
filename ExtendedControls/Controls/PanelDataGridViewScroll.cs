@@ -224,12 +224,7 @@ namespace ExtendedControls
         {
             if (dgv != null && vsc != null) // may not be attached at various design points
             {
-#if MONO
-                int toprowindex = dgv.CurrentCell != null ? dgv.CurrentCell.RowIndex : 0;
-#else
-                int toprowindex = dgv.FirstDisplayedScrollingRowIndex;                                  // this index ignores invisible rows
-#endif
-
+                int toprowindex = dgv.SafeFirstDisplayedScrollingRowIndex();                            // this index ignores invisible rows
                 int visibleindex = dgv.Rows.GetNumberOfVisibleRowsAbove(toprowindex);                   // so we translate to visible rows above index
                 int totalvisible = dgv.Rows.GetRowCount(DataGridViewElementStates.Visible);             // this gives total visible - this is now the scroll bar range
                 int visibleonscreen = dgv.DisplayedRowCount(false);                                     // and the viewport size..
@@ -240,7 +235,7 @@ namespace ExtendedControls
 
         protected void DGVRowsAdded(Object sender, DataGridViewRowsAddedEventArgs e)
         {
-            int firstvisible = dgv.FirstDisplayedScrollingRowIndex;
+            int firstvisible = dgv.SafeFirstDisplayedScrollingRowIndex();
 
             if (firstvisible >= 0)  // prevents updates while initially generating the dgv
             {

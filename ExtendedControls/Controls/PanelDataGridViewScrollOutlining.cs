@@ -189,7 +189,7 @@ namespace ExtendedControls
         {
             if (Outlines.Count > 0)
             {
-                int toprow = dgv?.FirstDisplayedScrollingRowIndex ?? -1;
+                int toprow = dgv?.SafeFirstDisplayedScrollingRowIndex() ?? -1;
 
                 if (toprow >= 0 )
                 {
