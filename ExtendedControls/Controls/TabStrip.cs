@@ -61,7 +61,9 @@ namespace ExtendedControls
         public Action<TabStrip, Control> OnRemoving;        // called due to ChangePanel or Close
         public Func<TabStrip, int,Control> OnCreateTab;     // called due to  Create or due to ChangePanel
         public Action<TabStrip, Control, int> OnPostCreateTab;  // called due to ChangePanel 
-        public Action<TabStrip, int> OnPopOut;
+        public Action<TabStrip, int> OnPopOut;              // when the popout button clicked
+        public Action<TabStrip> OnTitleClick;               // when the title is clicked
+        public Action<TabStrip> OnControlTextClick;         // when the control text is clicked
 
         // internals
 
@@ -97,7 +99,9 @@ namespace ExtendedControls
         {
             InitializeComponent();
             labelControlText.Text = "";
+            labelControlText.MouseDown += (s1, e1) => OnControlTextClick?.Invoke(this);
             labelTitle.Text = "?";
+            labelTitle.MouseDown += (s1, e1) => OnTitleClick?.Invoke(this);
             autofadeinouttimer.Tick += AutoFadeInOutTick;
             autorepeat.Interval = 200;
             autorepeat.Tick += Autorepeat_Tick;
