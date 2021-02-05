@@ -88,6 +88,7 @@ namespace ExtendedControls
             updown.Selected += OnUpDown;
             calendaricon.MouseClick += Calendaricon_MouseClick;
             calendar.DateSelected += Calendar_DateSelected;
+            calendar.LostFocus += Calendar_LostFocus;
             calendar.Visible = false;
             checkbox.CheckedChanged += Checkbox_CheckedChanged;
         }
@@ -455,22 +456,29 @@ namespace ExtendedControls
                 calendar.Location = formpoint.PositionWithinRectangle(calendar.Size, f.ClientRectangle);
                 //calendar.Size = new Size(ClientRectangle.Width, ClientRectangle.Width );
                 calendar.MaxSelectionCount = 1;
-                calendar.Focus();
                 calendar.SetDate(datetimevalue);
-                calendar.Show();
                 f.Controls.Add(calendar);
+                calendar.Show();
                 this.FindForm().Controls.SetChildIndex(calendar, 0);
                 selectedpart = -1;
+                calendar.Focus();
                 Invalidate();
             }
         }
+
+        private void Calendar_LostFocus(object sender, EventArgs e)
+        {
+            calendar.Visible = false;
+            this.FindForm().Controls.Remove(calendar);
+            Invalidate();
+        }
+
 
         private void Calendar_DateSelected(object sender, DateRangeEventArgs e)
         {
             datetimevalue = new DateTime(e.Start.Year, e.Start.Month, e.Start.Day, datetimevalue.Hour, datetimevalue.Minute, datetimevalue.Second, datetimevalue.Kind);
             //System.Diagnostics.Debug.WriteLine("Set to " + Value.ToLongTimeString() + " " + Value.ToLongDateString());
             calendar.Visible = false;
-            calendar.Hide();
             this.FindForm().Controls.Remove(calendar);
             Invalidate();
 
