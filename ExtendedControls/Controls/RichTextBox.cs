@@ -1,16 +1,16 @@
-﻿/*
+/*
  * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
+ *
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
@@ -36,7 +36,7 @@ namespace ExtendedControls
             }
         }
 
-        // BackColor is the colour of the panel. 
+        // BackColor is the colour of the panel.
         // if BorderColor is set, BackColor gets shown, with BorderColor on top.
         // BorderStyle is also applied by windows around the control, set to None for BorderColor only
 
@@ -233,7 +233,7 @@ namespace ExtendedControls
 
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
             int textboxclienth = ClientRectangle.Height - bordersize * 2;           // account for border
-            
+
             if (Text.HasChars() && Text.Contains("\n"))                             // we need text to sense it
             {
                 int sl = TextBox.GetCharIndexFromPosition(new Point(0, 0));
@@ -246,7 +246,7 @@ namespace ExtendedControls
                     {
                         foundlineheight = i;
                         visiblelines = textboxclienth / i;                          // gotcha..
-                        //System.Diagnostics.Debug.WriteLine("Found line h " + i + " giving " + visiblelines);
+                        //System.Diagnostics.Debug.WriteLine("Found line h " + i + " giving " + visiblelines + " " + ((float)textboxclienth / i));
                         return;
                     }
                 }
@@ -257,7 +257,13 @@ namespace ExtendedControls
 
         private void UpdateScrollBar()            // from the richtext, vscroll occurred, set the scroll bar
         {
+#if MONO
+            int firstVisibleChar = TextBox.GetCharIndexFromPosition(new Point(0,0));
+            int firstVisibleLine = TextBox.GetLineFromCharIndex(firstVisibleChar);
+            //System.Diagnostics.Debug.WriteLine("USB first VL:" + firstVisibleLine + " lines " + LineCount + " " + visiblelines );
+#else
             int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
+#endif
             ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
             if (ScrollBar.IsScrollBarOn != scrollbarvisibleonlayout)     // need to relayout if scroll bars pop on
                 PerformLayout();
@@ -283,10 +289,23 @@ namespace ExtendedControls
             ScrollToBar();
         }
 
+#if MONO
+        int lastscrollto = 0;
+#endif
+
         private void ScrollToBar()              // from the scrollbar, scroll first line to value
         {
-            int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
             int scrollvalue = ScrollBar.Value;
+#if MONO
+            int line = scrollvalue + (lastscrollto<=scrollvalue ? visiblelines-1 : 0);
+            int index = TextBox.GetFirstCharIndexFromLine(line);         // MONO does not do EM.LiNESCROLL - this is the best we can do
+            lastscrollto = scrollvalue;
+
+            //System.Diagnostics.Debug.WriteLine("Scroll Bar:" + scrollvalue + " vl " + visiblelines + " goto " + line);
+            TextBox.Select(index , 0);
+            TextBox.ScrollToCaret();
+#else
+            int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
             int delta = scrollvalue - firstVisibleLine;
 
             //Console.WriteLine("Scroll Bar:" + scrollvalue + " FVL: " + firstVisibleLine + " delta " + delta);
@@ -294,7 +313,7 @@ namespace ExtendedControls
             {
                 TextBox.SendMessage(EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
             }
-
+#endif
         }
 
         protected virtual void MWheel(object sender, MouseEventArgs e)  // mouse, we move then scroll to bar
@@ -348,4 +367,3 @@ namespace ExtendedControls
 
     }
 }
-
