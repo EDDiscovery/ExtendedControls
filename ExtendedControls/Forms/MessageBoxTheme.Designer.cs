@@ -39,6 +39,7 @@
             this.buttonExt3 = new ExtendedControls.ExtButton();
             this.panelGap = new System.Windows.Forms.Panel();
             this.labelCaption = new System.Windows.Forms.Label();
+            this.panelTopGap = new System.Windows.Forms.Panel();
             this.panelOuter.SuspendLayout();
             this.panelIconText.SuspendLayout();
             this.panelLeft.SuspendLayout();
@@ -54,10 +55,10 @@
             this.panelOuter.Controls.Add(this.panelGap);
             this.panelOuter.Controls.Add(this.labelCaption);
             this.panelOuter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelOuter.Location = new System.Drawing.Point(3, 0);
+            this.panelOuter.Location = new System.Drawing.Point(3, 3);
             this.panelOuter.Margin = new System.Windows.Forms.Padding(0);
             this.panelOuter.Name = "panelOuter";
-            this.panelOuter.Size = new System.Drawing.Size(664, 461);
+            this.panelOuter.Size = new System.Drawing.Size(664, 458);
             this.panelOuter.TabIndex = 5;
             this.panelOuter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
             this.panelOuter.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
@@ -69,7 +70,7 @@
             this.panelIconText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelIconText.Location = new System.Drawing.Point(0, 27);
             this.panelIconText.Name = "panelIconText";
-            this.panelIconText.Size = new System.Drawing.Size(662, 384);
+            this.panelIconText.Size = new System.Drawing.Size(662, 381);
             this.panelIconText.TabIndex = 3;
             // 
             // themeTextBox
@@ -96,7 +97,7 @@
             this.themeTextBox.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
             this.themeTextBox.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.themeTextBox.ShowLineCount = false;
-            this.themeTextBox.Size = new System.Drawing.Size(595, 384);
+            this.themeTextBox.Size = new System.Drawing.Size(595, 381);
             this.themeTextBox.TabIndex = 5;
             this.themeTextBox.TextBoxBackColor = System.Drawing.SystemColors.Control;
             this.themeTextBox.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
@@ -107,7 +108,7 @@
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
             this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(67, 384);
+            this.panelLeft.Size = new System.Drawing.Size(67, 381);
             this.panelLeft.TabIndex = 7;
             this.panelLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
             this.panelLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
@@ -126,7 +127,7 @@
             this.panelButs.Controls.Add(this.buttonExt2);
             this.panelButs.Controls.Add(this.buttonExt3);
             this.panelButs.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelButs.Location = new System.Drawing.Point(0, 411);
+            this.panelButs.Location = new System.Drawing.Point(0, 408);
             this.panelButs.Margin = new System.Windows.Forms.Padding(10);
             this.panelButs.Name = "panelButs";
             this.panelButs.Size = new System.Drawing.Size(662, 48);
@@ -188,12 +189,21 @@
             this.labelCaption.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MoveMouseDown);
             this.labelCaption.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MoveMouseUp);
             // 
+            // panelTopGap
+            // 
+            this.panelTopGap.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelTopGap.Location = new System.Drawing.Point(3, 0);
+            this.panelTopGap.Name = "panelTopGap";
+            this.panelTopGap.Size = new System.Drawing.Size(664, 3);
+            this.panelTopGap.TabIndex = 2;
+            // 
             // MessageBoxTheme
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(670, 464);
             this.Controls.Add(this.panelOuter);
+            this.Controls.Add(this.panelTopGap);
             this.Name = "MessageBoxTheme";
             this.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.ShowInTaskbar = false;
@@ -222,5 +232,6 @@
         private System.Windows.Forms.Panel panelIcon;
         private System.Windows.Forms.Panel panelIconText;
         private System.Windows.Forms.Panel panelLeft;
+        private System.Windows.Forms.Panel panelTopGap;
     }
 }

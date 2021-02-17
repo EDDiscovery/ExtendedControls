@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTextBoxes));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.extComboBoxFontSize = new ExtendedControls.ExtComboBox();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
             this.textBoxDouble1 = new ExtendedControls.NumberBoxDouble();
@@ -37,13 +38,10 @@
             this.numberBoxLong2 = new ExtendedControls.NumberBoxLong();
             this.numberBoxLong1 = new ExtendedControls.NumberBoxLong();
             this.extRichTextBox1 = new ExtendedControls.ExtRichTextBox();
-            this.extNumericUpDown1 = new ExtendedControls.ExtNumericUpDown();
             this.extTextBox1 = new ExtendedControls.ExtTextBox();
-            this.extComboBox2 = new ExtendedControls.ExtComboBox();
-            this.button1 = new ExtendedControls.ExtButton();
-            this.extComboBox1 = new ExtendedControls.ExtComboBox();
             this.buttonExt1 = new ExtendedControls.ExtButton();
             this.buttonExt2 = new ExtendedControls.ExtButton();
+            this.extComboBoxFont = new ExtendedControls.ExtComboBox();
             this.SuspendLayout();
             // 
             // panel1
@@ -54,9 +52,33 @@
             this.panel1.Size = new System.Drawing.Size(48, 48);
             this.panel1.TabIndex = 0;
             // 
+            // extComboBoxFontSize
+            // 
+            this.extComboBoxFontSize.BorderColor = System.Drawing.Color.White;
+            this.extComboBoxFontSize.ButtonColorScaling = 0.5F;
+            this.extComboBoxFontSize.DataSource = null;
+            this.extComboBoxFontSize.DisableBackgroundDisabledShadingGradient = false;
+            this.extComboBoxFontSize.DisplayMember = "";
+            this.extComboBoxFontSize.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.extComboBoxFontSize.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extComboBoxFontSize.Location = new System.Drawing.Point(443, 321);
+            this.extComboBoxFontSize.MouseOverBackgroundColor = System.Drawing.Color.Silver;
+            this.extComboBoxFontSize.Name = "extComboBoxFontSize";
+            this.extComboBoxFontSize.ScrollBarButtonColor = System.Drawing.Color.LightGray;
+            this.extComboBoxFontSize.ScrollBarColor = System.Drawing.Color.LightGray;
+            this.extComboBoxFontSize.SelectedIndex = -1;
+            this.extComboBoxFontSize.SelectedItem = null;
+            this.extComboBoxFontSize.SelectedValue = null;
+            this.extComboBoxFontSize.Size = new System.Drawing.Size(75, 21);
+            this.extComboBoxFontSize.TabIndex = 69;
+            this.extComboBoxFontSize.Text = "size";
+            this.extComboBoxFontSize.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.extComboBoxFontSize.ValueMember = "";
+            this.extComboBoxFontSize.SelectedIndexChanged += new System.EventHandler(this.extComboBoxFontSize_SelectedIndexChanged);
+            // 
             // extButton2
             // 
-            this.extButton2.Location = new System.Drawing.Point(233, 292);
+            this.extButton2.Location = new System.Drawing.Point(443, 282);
             this.extButton2.Name = "extButton2";
             this.extButton2.Size = new System.Drawing.Size(75, 23);
             this.extButton2.TabIndex = 68;
@@ -66,7 +88,7 @@
             // 
             // extButton1
             // 
-            this.extButton1.Location = new System.Drawing.Point(233, 251);
+            this.extButton1.Location = new System.Drawing.Point(443, 241);
             this.extButton1.Name = "extButton1";
             this.extButton1.Size = new System.Drawing.Size(75, 23);
             this.extButton1.TabIndex = 68;
@@ -223,27 +245,10 @@
             this.extRichTextBox1.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
             this.extRichTextBox1.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extRichTextBox1.ShowLineCount = false;
-            this.extRichTextBox1.Size = new System.Drawing.Size(181, 185);
+            this.extRichTextBox1.Size = new System.Drawing.Size(406, 439);
             this.extRichTextBox1.TabIndex = 30;
             this.extRichTextBox1.TextBoxBackColor = System.Drawing.Color.Red;
             this.extRichTextBox1.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
-            // 
-            // extNumericUpDown1
-            // 
-            this.extNumericUpDown1.AutoSizeTextBox = true;
-            this.extNumericUpDown1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.extNumericUpDown1.BorderColorScaling = 0.5F;
-            this.extNumericUpDown1.Location = new System.Drawing.Point(12, 364);
-            this.extNumericUpDown1.Maximum = 100;
-            this.extNumericUpDown1.Minimum = 0;
-            this.extNumericUpDown1.Name = "extNumericUpDown1";
-            this.extNumericUpDown1.Size = new System.Drawing.Size(75, 40);
-            this.extNumericUpDown1.TabIndex = 45;
-            this.extNumericUpDown1.Text = "0";
-            this.extNumericUpDown1.TextBoxBackColor = System.Drawing.SystemColors.Control;
-            this.extNumericUpDown1.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
-            this.extNumericUpDown1.Value = 0;
-            this.extNumericUpDown1.ValueChanged += new System.EventHandler(this.extNumericUpDown1_ValueChanged);
             // 
             // extTextBox1
             // 
@@ -259,7 +264,7 @@
             this.extTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("extTextBox1.EndButtonImage")));
             this.extTextBox1.EndButtonVisible = false;
             this.extTextBox1.InErrorCondition = false;
-            this.extTextBox1.Location = new System.Drawing.Point(233, 136);
+            this.extTextBox1.Location = new System.Drawing.Point(219, 12);
             this.extTextBox1.Multiline = false;
             this.extTextBox1.Name = "extTextBox1";
             this.extTextBox1.ReadOnly = false;
@@ -271,63 +276,6 @@
             this.extTextBox1.Text = "exttextbox";
             this.extTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.extTextBox1.WordWrap = true;
-            // 
-            // extComboBox2
-            // 
-            this.extComboBox2.BackColor = System.Drawing.Color.Black;
-            this.extComboBox2.BorderColor = System.Drawing.Color.Red;
-            this.extComboBox2.ButtonColorScaling = 0.5F;
-            this.extComboBox2.DataSource = null;
-            this.extComboBox2.DisableBackgroundDisabledShadingGradient = false;
-            this.extComboBox2.DisplayMember = "";
-            this.extComboBox2.DropDownBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.extComboBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extComboBox2.Location = new System.Drawing.Point(233, 101);
-            this.extComboBox2.MouseOverBackgroundColor = System.Drawing.Color.Silver;
-            this.extComboBox2.Name = "extComboBox2";
-            this.extComboBox2.ScrollBarButtonColor = System.Drawing.Color.Maroon;
-            this.extComboBox2.ScrollBarColor = System.Drawing.Color.Yellow;
-            this.extComboBox2.SelectedIndex = -1;
-            this.extComboBox2.SelectedItem = null;
-            this.extComboBox2.SelectedValue = null;
-            this.extComboBox2.Size = new System.Drawing.Size(229, 21);
-            this.extComboBox2.TabIndex = 15;
-            this.extComboBox2.Text = "EDCommander demo";
-            this.extComboBox2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.extComboBox2.ValueMember = "";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(233, 34);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "Change combo";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // extComboBox1
-            // 
-            this.extComboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.extComboBox1.BorderColor = System.Drawing.Color.Red;
-            this.extComboBox1.ButtonColorScaling = 0.5F;
-            this.extComboBox1.DataSource = null;
-            this.extComboBox1.DisableBackgroundDisabledShadingGradient = false;
-            this.extComboBox1.DisplayMember = "";
-            this.extComboBox1.DropDownBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.extComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.extComboBox1.Location = new System.Drawing.Point(233, 63);
-            this.extComboBox1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
-            this.extComboBox1.Name = "extComboBox1";
-            this.extComboBox1.ScrollBarButtonColor = System.Drawing.Color.Maroon;
-            this.extComboBox1.ScrollBarColor = System.Drawing.Color.Yellow;
-            this.extComboBox1.SelectedIndex = -1;
-            this.extComboBox1.SelectedItem = null;
-            this.extComboBox1.SelectedValue = null;
-            this.extComboBox1.Size = new System.Drawing.Size(229, 21);
-            this.extComboBox1.TabIndex = 15;
-            this.extComboBox1.Text = "EDCommander demo";
-            this.extComboBox1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.extComboBox1.ValueMember = "";
             // 
             // buttonExt1
             // 
@@ -360,12 +308,38 @@
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
             // 
+            // extComboBoxFont
+            // 
+            this.extComboBoxFont.BorderColor = System.Drawing.Color.White;
+            this.extComboBoxFont.ButtonColorScaling = 0.5F;
+            this.extComboBoxFont.DataSource = null;
+            this.extComboBoxFont.DisableBackgroundDisabledShadingGradient = false;
+            this.extComboBoxFont.DisplayMember = "";
+            this.extComboBoxFont.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.extComboBoxFont.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extComboBoxFont.Location = new System.Drawing.Point(443, 362);
+            this.extComboBoxFont.MouseOverBackgroundColor = System.Drawing.Color.Silver;
+            this.extComboBoxFont.Name = "extComboBoxFont";
+            this.extComboBoxFont.ScrollBarButtonColor = System.Drawing.Color.LightGray;
+            this.extComboBoxFont.ScrollBarColor = System.Drawing.Color.LightGray;
+            this.extComboBoxFont.SelectedIndex = -1;
+            this.extComboBoxFont.SelectedItem = null;
+            this.extComboBoxFont.SelectedValue = null;
+            this.extComboBoxFont.Size = new System.Drawing.Size(75, 21);
+            this.extComboBoxFont.TabIndex = 69;
+            this.extComboBoxFont.Text = "font";
+            this.extComboBoxFont.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.extComboBoxFont.ValueMember = "";
+            this.extComboBoxFont.SelectedIndexChanged += new System.EventHandler(this.extComboBoxFont_SelectedIndexChanged);
+            // 
             // TestTextBoxes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
-            this.ClientSize = new System.Drawing.Size(470, 390);
+            this.ClientSize = new System.Drawing.Size(718, 635);
+            this.Controls.Add(this.extComboBoxFont);
+            this.Controls.Add(this.extComboBoxFontSize);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton1);
             this.Controls.Add(this.textBoxDouble1);
@@ -373,11 +347,7 @@
             this.Controls.Add(this.numberBoxLong2);
             this.Controls.Add(this.numberBoxLong1);
             this.Controls.Add(this.extRichTextBox1);
-            this.Controls.Add(this.extNumericUpDown1);
             this.Controls.Add(this.extTextBox1);
-            this.Controls.Add(this.extComboBox2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.extComboBox1);
             this.Name = "TestTextBoxes";
             this.Text = "TestCompositeButton";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TestTextBoxes_Paint);
@@ -396,10 +366,8 @@
         private ExtendedControls.ExtRichTextBox extRichTextBox1;
         private ExtendedControls.ExtButton extButton1;
         private ExtendedControls.ExtButton extButton2;
-        private ExtendedControls.ExtNumericUpDown extNumericUpDown1;
-        private ExtendedControls.ExtComboBox extComboBox1;
-        private ExtendedControls.ExtButton button1;
-        private ExtendedControls.ExtComboBox extComboBox2;
         private ExtendedControls.ExtTextBox extTextBox1;
+        private ExtendedControls.ExtComboBox extComboBoxFontSize;
+        private ExtendedControls.ExtComboBox extComboBoxFont;
     }
 }

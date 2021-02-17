@@ -199,6 +199,7 @@ namespace TestExtendedControls
         private void extButton12_Click(object sender, EventArgs e)
         {
             theme.FontSize = 12;
+            theme.WindowsFrame = false;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
         }
@@ -206,6 +207,7 @@ namespace TestExtendedControls
         private void extButton13_Click(object sender, EventArgs e)
         {
             theme.FontSize = 20;
+            theme.WindowsFrame = false;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
         }
@@ -213,6 +215,7 @@ namespace TestExtendedControls
         private void extButton14_Click(object sender, EventArgs e)
         {
             theme.FontSize = 20;
+            theme.WindowsFrame = false;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.RetryCancel);
         }
 
@@ -227,6 +230,7 @@ namespace TestExtendedControls
         private void extButton20_Click(object sender, EventArgs e)
         {
             theme.FontSize = 12;
+            theme.WindowsFrame = false;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
         }
 
@@ -325,5 +329,56 @@ namespace TestExtendedControls
             extButton21_Click(10.0f, e);
 
         }
+
+        private void extButton25_Click(object sender, EventArgs e)
+        {
+            theme.WindowsFrame = false;
+            MessageBoxTheme.Show("Test text", "wkwkwk");
+        }
+
+        private void extButton26_Click(object sender, EventArgs e)
+        {
+            theme.WindowsFrame = false;
+            MessageBoxTheme.Show("Test text\r\nwith a line", "wkwkwk");
+   
+        }
+
+        private void extButton27_Click(object sender, EventArgs e)
+        {
+            theme.WindowsFrame = false;
+            MessageBoxTheme.Show("Test text qwkqkqw qwkqwkqw qwkqwkqw qwkqwkqw wjkqwkqwkqw qwkqwkqw qwkqwkqw  qwkqk \r\nSTART qkqwkqwkqw qwkqwkqwqw qwkqwkqw end", "kw wkwkw wkwkw wkwk wank", MessageBoxButtons.OKCancel);
+        }
+
+        private void extButton28_Click(object sender, EventArgs e)
+        {
+            theme.WindowsFrame = false;
+            MessageBoxTheme.Show("Test text", "Very long title wkwkwk wkwkwkw wkwkw wkwkw wkwkw wkwkw wkwkw wkwk wank", MessageBoxButtons.OKCancel);
+        }
+
+        private void extButton29_Click(object sender, EventArgs e)
+        {
+            theme.WindowsFrame = false;
+            MessageBoxTheme.Show("Test text qwkqkqw qwkqwkqw qwkqwkqw qwkqwkqw wjkqwkqwkqw qwkqwkqw qwkqwkqw  qwkqk \r\nSTART qkqwkqwkqw qwkqwkqwqw qwkqwkqw end", "kw wkwkw wkwkw wkwk wank", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand);
+        }
+
+        private void extButton30_Click(object sender, EventArgs e)
+        {
+            theme.WindowsFrame = false;
+            MessageBoxTheme.Show("A", "A", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand);
+        }
+
+        private void extButton31_Click(object sender, EventArgs e)
+        {
+            theme.WindowsFrame = false;
+            MessageBoxTheme.Show("A", "A", MessageBoxButtons.OKCancel);
+        }
+
+        private void extButton32_Click(object sender, EventArgs e)
+        {
+            theme.WindowsFrame = true;
+            MessageBoxTheme.Show("A", "A", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+
+        }
     }
 }
+
