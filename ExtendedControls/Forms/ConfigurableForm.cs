@@ -44,6 +44,8 @@ namespace ExtendedControls
 
         public event Action<string, string, Object> Trigger;
 
+        public List<Entry> Entries { get { return entries; } }
+
         public new bool AllowResize { get { return base.AllowResize; } set { base.AllowResize = value; } } // if form resizing (you need a BorderMargin)
         public int BorderMargin { get; set; } = 3;       // space between window edge and outer area
         public int BottomMargin { get; set; } = 8;      // Extra space right/bot to allow for extra space past the controls
@@ -164,8 +166,6 @@ namespace ExtendedControls
                     othertrigger?.Invoke(dialogname, controlname, xtag);
             };
         }
-
-        public Entry Last { get { return entries.Last(); } }
 
         // pos.x <= -999 means autocentre to parent.
 
