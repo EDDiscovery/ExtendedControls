@@ -82,6 +82,12 @@
     <Compile Include="TestTextBoxesRTF.Designer.cs">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestPictureBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPictureBox.Designer.cs">
+      <DependentUpon>TestPictureBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestVScroll.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +218,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestTextBoxesRTF.resx">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestPictureBox.resx">
+      <DependentUpon>TestPictureBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestVScroll.resx">
       <DependentUpon>TestVScroll.cs</DependentUpon>
