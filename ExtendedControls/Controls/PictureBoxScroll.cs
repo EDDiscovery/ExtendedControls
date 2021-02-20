@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    // apply a ExtPictureBox and a ExtScrollBar to this
+    // apply a ExtPictureBox and a ExtScrollBar to this panel
 
     public class ExtPictureBoxScroll : Panel      
     {
@@ -35,6 +35,24 @@ namespace ExtendedControls
         #region Implementation
         public ExtPictureBoxScroll() : base()
         {
+        }
+
+        public void Render(Size? margin = null)     // call this instead of the picturebox render
+        {
+            if (pbox != null)
+            {
+                if (ScrollBarEnabled)
+                {
+                    pbox.Render(true, margin: margin);
+                }
+                else
+                {
+                    pbox.Height = ClientRectangle.Height;
+                    pbox.Render(false, margin: margin);
+                }
+            }
+
+            UpdateScrollBar();
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -60,9 +78,7 @@ namespace ExtendedControls
             int left = 0;
             int right = ClientRectangle.Width;
 
-            bool scrollbaron = vsc != null && ScrollBarEnabled;
-
-            if ( scrollbaron )      // attach to right or left..
+            if ( vsc != null )      // attach to right or left..
             {
                 vsc.Size = new Size(ScrollBarWidth, ClientSize.Height);
 
@@ -78,48 +94,13 @@ namespace ExtendedControls
                 }
             }
 
-            if (pbox != null)                       // finally, put the dgv between left and right
+            if (pbox != null)                       // finally, put the box between left and right
             {
-                pbox.Location = new Point(left, -(scrollbaron ? vsc.Value : 0));
-                pbox.Size = new Size(right-left, pbox.Height);
+                pbox.Location = new Point(left, pbox.Top);      // position left only, leave positioning for update scroll bar
+                pbox.Size = new Size(right-left, pbox.Height);  // don't change the height
             }
 
             UpdateScrollBar();
-        }
-
-        public void Render(Size? margin = null)
-        {
-            if (pbox != null)
-            {
-                if (ScrollBarEnabled)
-                {
-                    pbox.Render(true, margin: margin);
-                }
-                else
-                {
-                    pbox.Height = ClientRectangle.Height;
-                    pbox.Render(false, margin: margin);
-                }
-            }
-
-            UpdateScrollBar();
-        }
-
-        public void UpdateScrollBar()
-        {
-            if (pbox != null && vsc != null && ScrollBarEnabled) // may not be attached at various design points
-            {
-                Size sz = pbox.DisplaySize();
-                int range = sz.Height - ClientSize.Height;      // +ve if display > height
-                if ( range < 0 )                // if items are smaller than window
-                {
-                    pbox.Location = new Point(pbox.Left, 0);
-                    range = 0;
-                }
-
-                int offset = -pbox.Location.Y;                  // <0 its scrolled..
-                vsc.SetValueMaximumLargeChange(offset, pbox.Height, ClientRectangle.Height);
-            }
         }
 
         protected virtual void Wheel(object sender, MouseEventArgs e)   // wheel changed, move vsc
@@ -133,6 +114,33 @@ namespace ExtendedControls
         protected virtual void ScrollBarMoved(object sender, ScrollEventArgs e)     // scroll bar moved, move dgv
         {
             pbox.Location = new Point(pbox.Left, -vsc.Value);
+        }
+
+        private void UpdateScrollBar()
+        {
+            if (pbox != null && vsc != null ) // may not be attached at various design points
+            {
+                if (ScrollBarEnabled)
+                {
+                    int range = pbox.Height - ClientSize.Height;        //+ve if pbox > available
+
+                    if (range < 0)                              // if we don't need the scroll bar, put back to zero
+                        vsc.Value = 0;
+                    else if (vsc.Value >= range)                // if we are past the range, set to maximum
+                        vsc.Value = range;
+
+                    pbox.Location = new Point(pbox.Left, -vsc.Value);
+
+                    //System.Diagnostics.Debug.WriteLine("pscroll {0},{1},{2}", offset, pbox.Height - 1, ClientRectangle.Height);
+
+                    vsc.SetValueMaximumLargeChange(vsc.Value, pbox.Height - 1, ClientRectangle.Height);
+                }
+                else
+                {
+                    pbox.Location = new Point(pbox.Left, 0);
+                    vsc.SetValueMaximumLargeChange(0, 10, 100);    // inert the bar, give it numbers which would make it go empty/hide
+                }
+            }
         }
 
         #endregion
