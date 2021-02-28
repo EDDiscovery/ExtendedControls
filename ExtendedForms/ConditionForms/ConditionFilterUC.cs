@@ -647,7 +647,12 @@ namespace ExtendedConditionsForms
                 foreach (var x in gc.Item1.variables)
                 {
                     if (x.Name.StartsWith(s, StringComparison.InvariantCultureIgnoreCase))
-                        ret.Add(x.Name + (x.Comment != null ? (" " + commentmarker + " "+ x.Comment) : ""));
+                    {
+                        string chelp = (x.Help ?? "").AppendPrePad(x.Comment, ":");
+                        chelp = chelp.Replace("\n", " ");
+                        chelp = chelp.Truncate(0, 80, "..");
+                        ret.Add(x.Name.AppendPrePad(chelp,commentmarker));
+                    }
                 }
             }
 
@@ -706,7 +711,7 @@ namespace ExtendedConditionsForms
 
         private const int panelxmargin = 3;
         private const int panelymargin = 3;
-        private const string commentmarker = "|";
+        private const string commentmarker = " | ";
 
         #endregion
 

@@ -26,7 +26,10 @@ namespace TestExtendedControls
             string arg1 = args.Next();
             Type t = Type.GetType("TestExtendedControls." + arg1);
 
-            if (t != null)
+            if (t == null)
+                t = Type.GetType("TestExtendedControls.Test" + arg1);
+
+            if ( t != null)
             {
                 Application.Run((Form)Activator.CreateInstance(t));
             }

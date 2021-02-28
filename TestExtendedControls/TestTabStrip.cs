@@ -93,6 +93,7 @@ namespace TestExtendedControls
             tabStrip3.StripMode = ExtendedControls.TabStrip.StripModeType.ListSelection;
             tabStrip3.SetControlText("Ctext3");
             tabStrip3.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("3 Command pop out" + t + " " + i);
+            tabStrip3.AllowClose += (t, i, c) => { return MessageBox.Show("Allow close", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes; };
             tabStrip3.OnCreateTab += OnCreateTab;
 
             tabStrip4.ImageList = new Bitmap[] {

@@ -28,7 +28,7 @@ namespace TestExtendedControls
             //theme.FontName = "Arial";
             //theme.FontName = "Euro Caps";
             //theme.FontSize = 20f;
-            theme.WindowsFrame = true;
+          //  theme.WindowsFrame = true;
 
             InitializeComponent();
 
@@ -58,59 +58,14 @@ namespace TestExtendedControls
 
             extRichTextBox1.HideScrollBar = true;
 
-            extNumericUpDown1.AutoSize = true;
-            extNumericUpDown1.Minimum = -100;
-
-            commanders = new List<EDDiscovery2.EDCommander>();
-            commanders.Add(new EDCommander(-1, "Hidden log", ""));
-            commanders.Add(new EDCommander(1, "Robby1", ""));
-            commanders.Add(new EDCommander(2, "Robby2", ""));
-            commanders.Add(new EDCommander(3, "Robby3", ""));
-            commanders.Add(new EDCommander(4, "Robby4", ""));
-            commanders.Add(new EDCommander(6, "Robby6", ""));
-            commanders.Add(new EDCommander(7, "Robby7", ""));
-            commanders.Add(new EDCommander(8, "Robby8", ""));
-            commanders.Add(new EDCommander(9, "Robby9", ""));
-            commanders.Add(new EDCommander(10, "Robby10", ""));
-            commanders.Add(new EDCommander(11, "Robby11", ""));
-
-            extComboBox1.DataSource = commanders;
-            extComboBox1.DisplayMember = "Name";
-            extComboBox1.ValueMember = "Nr";
-            extComboBox1.FlatStyle = FlatStyle.Popup;
-            extComboBox1.Repaint();
-
-            commanders2 = new List<EDDiscovery2.EDCommander>();
-            commanders2.Add(new EDCommander(-1, "2Hidden log", ""));
-            commanders2.Add(new EDCommander(1, "2Robby1", ""));
-            commanders2.Add(new EDCommander(2, "2Robby2", ""));
-            commanders2.Add(new EDCommander(3, "2Robby3", ""));
-            commanders2.Add(new EDCommander(4, "2Robby4", ""));
-            commanders2.Add(new EDCommander(6, "2Robby6", ""));
-            commanders2.Add(new EDCommander(7, "2Robby7", ""));
-            commanders2.Add(new EDCommander(8, "2Robby8", ""));
-            commanders2.Add(new EDCommander(9, "2Robby9", ""));
-            commanders2.Add(new EDCommander(10, "2Robby10", ""));
-            commanders2.Add(new EDCommander(11, "2Robby11", ""));
-
-
-            extComboBox2.DataSource = commanders2;
-            extComboBox2.DisplayMember = "Name";
-            extComboBox2.ValueMember = "Nr";
-            extComboBox2.FlatStyle = FlatStyle.System;
-            extComboBox2.Repaint();
-
             string tx = "";
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 200; i++)
                 tx = tx.AppendPrePad(i.ToStringInvariant("0000") + ":" + " Here is some text", Environment.NewLine);
             extRichTextBox1.Text = tx;
 
-
+            extComboBoxFontSize.Items = new string[] { "8", "10", "12", "14", "16", "18", "20", "22", "24" };
+            extComboBoxFont.Items = new string[] { "Arial","MS Sans Serif","Euro Caps" };
         }
-
-        List<EDDiscovery2.EDCommander> commanders = null;
-        List<EDDiscovery2.EDCommander> commanders2 = null;
-
 
         private void numberBoxLong1_ValueChanged(object sender, EventArgs e)
         {
@@ -144,11 +99,6 @@ namespace TestExtendedControls
 
         }
 
-        private void extNumericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Value changed Custom numeric " + extNumericUpDown1.Value);
-        }
-
         private void TestTextBoxes_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
@@ -168,6 +118,22 @@ namespace TestExtendedControls
                 }
 
             }
+        }
+
+        string font = "Arial";
+        int fontsize = 8;
+
+        private void extComboBoxFontSize_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            fontsize = ((string)extComboBoxFontSize.SelectedItem).InvariantParseInt(10);
+            extRichTextBox1.Font = new Font(font, fontsize);
+        }
+
+        private void extComboBoxFont_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            font = (string)extComboBoxFont.SelectedItem;
+            extRichTextBox1.Font = new Font(font, fontsize);
+
         }
     }
 }

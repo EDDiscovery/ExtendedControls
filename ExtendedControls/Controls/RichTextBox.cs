@@ -1,16 +1,16 @@
-﻿/*
+/*
  * Copyright © 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software distributed under
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
+ *
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
@@ -36,7 +36,7 @@ namespace ExtendedControls
             }
         }
 
-        // BackColor is the colour of the panel. 
+        // BackColor is the colour of the panel.
         // if BorderColor is set, BackColor gets shown, with BorderColor on top.
         // BorderStyle is also applied by windows around the control, set to None for BorderColor only
 
@@ -59,7 +59,7 @@ namespace ExtendedControls
         public Color ScrollBarMousePressedButtonColor { get { return ScrollBar.MousePressedButtonColor; } set { ScrollBar.MousePressedButtonColor = value; } }
         public Color ScrollBarForeColor { get { return ScrollBar.ForeColor; } set { ScrollBar.ForeColor = value; } }
 
-        public override string Text { get { return TextBox.Text; } set { TextBox.Text = value; UpdateScrollBar(); } }                // return only textbox text
+        public override string Text { get { return TextBox.Text; } set { TextBox.Text = value; EstimateLines(); UpdateScrollBar(); } }                // return only textbox text
         public string[] Lines {  get { return TextBox.Lines; } }
 
         public string Rtf { get { return TextBox.Rtf; } set { TextBox.Rtf = value; UpdateScrollBar(); } }
@@ -89,6 +89,7 @@ namespace ExtendedControls
             }
             TextBox.AppendText(s);
             TextBox.ScrollToCaret();
+            EstimateLines();
             UpdateScrollBar();
         }
 
@@ -108,12 +109,14 @@ namespace ExtendedControls
             TextBox.SelectionStart = TextBox.TextLength;
             TextBox.SelectionLength = 0;
             TextBox.ScrollToCaret();
+            EstimateLines();
             UpdateScrollBar();
         }
 
         public void CopyFrom(ExtRichTextBox other)
         {
             TextBox.Rtf = other.TextBox.Rtf;
+            EstimateLines();
         }
 
         public void SetTabs(int[] array)
@@ -201,12 +204,11 @@ namespace ExtendedControls
             ScrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
         }
 
-        int visiblelines = 1;
-
         protected override void OnFontChanged(EventArgs e)      // these events can change visible lines
         {
             base.OnFontChanged(e);
-            visiblelines = CalcVisibleLines(ClientRectangle.Height);
+            foundlineheight = 0;
+            EstimateLines();
             UpdateScrollBar();
         }
 
@@ -215,33 +217,53 @@ namespace ExtendedControls
             base.OnResize(eventargs);
             if (Width > 0)
             {
-                visiblelines = CalcVisibleLines(ClientRectangle.Height);
+                foundlineheight = 0;
+                EstimateLines();
                 UpdateScrollBar();
             }
         }
 
-        public float FontPixels()
-        {
-            using (var g = this.CreateGraphics())
-            {
-                Size f = TextRenderer.MeasureText(g, "FRED" + Environment.NewLine + "FRED" + Environment.NewLine + "FRED" + Environment.NewLine + "FRED", this.Font);
-                return (float)f.Height / 4.0f;
-            }
-        }
+        int visiblelines = 1;
+        int foundlineheight = 0;
 
-        public int CalcVisibleLines(int height)
+        private void EstimateLines()
         {
+            if (foundlineheight>0)      // already done
+                return;
+
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
-            int textboxclienth = height - bordersize * 2;
-            float fh = FontPixels();
-            float fvs = (float)textboxclienth / fh;
-            //System.Diagnostics.Debug.WriteLine("Visible lines " + ((int)fvs) + " h " + textboxclienth + " fract " + fvs);
-            return (int)fvs;
+            int textboxclienth = ClientRectangle.Height - bordersize * 2;           // account for border
+
+            if (Text.HasChars() && Text.Contains("\n"))                             // we need text to sense it
+            {
+                int sl = TextBox.GetCharIndexFromPosition(new Point(0, 0));
+                sl = TextBox.GetLineFromCharIndex(sl);
+                for (int i = 1; i < ClientRectangle.Height; i++)
+                {
+                    int nl = TextBox.GetCharIndexFromPosition(new Point(0, i));     // look to see when line changes.. it may not if only one line
+                    nl = TextBox.GetLineFromCharIndex(nl);
+                    if (sl != nl)
+                    {
+                        foundlineheight = i;
+                        visiblelines = textboxclienth / i;                          // gotcha..
+                        //System.Diagnostics.Debug.WriteLine("Found line h " + i + " giving " + visiblelines + " " + ((float)textboxclienth / i));
+                        return;
+                    }
+                }
+            }
+
+            visiblelines = textboxclienth / (int)(Font.GetHeight() + 1);            // basic estimate
         }
 
         private void UpdateScrollBar()            // from the richtext, vscroll occurred, set the scroll bar
         {
+#if MONO
+            int firstVisibleChar = TextBox.GetCharIndexFromPosition(new Point(0,0));
+            int firstVisibleLine = TextBox.GetLineFromCharIndex(firstVisibleChar);
+            //System.Diagnostics.Debug.WriteLine("USB first VL:" + firstVisibleLine + " lines " + LineCount + " " + visiblelines );
+#else
             int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
+#endif
             ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
             if (ScrollBar.IsScrollBarOn != scrollbarvisibleonlayout)     // need to relayout if scroll bars pop on
                 PerformLayout();
@@ -252,7 +274,8 @@ namespace ExtendedControls
             int lastselpos = this.Text.Length;
             int numberlines = (lastselpos >= 0) ? (TextBox.GetLineFromCharIndex(lastselpos) + 1) : 0;
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
-            int neededpixels = (int)(FontPixels() * numberlines) + bordersize * 2 + 4;      // 4 extra for border area of this (bounds-client rect)
+            int lineh = foundlineheight > 0 ? foundlineheight : (int)(Font.GetHeight() + 2);        // if we have an estimate, use it, else use Font Height
+            int neededpixels = (int)(lineh * numberlines) + bordersize * 2 + 4;      // 4 extra for border area of this (bounds-client rect)
             return neededpixels;
         }
 
@@ -266,10 +289,23 @@ namespace ExtendedControls
             ScrollToBar();
         }
 
+#if MONO
+        int lastscrollto = 0;
+#endif
+
         private void ScrollToBar()              // from the scrollbar, scroll first line to value
         {
-            int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
             int scrollvalue = ScrollBar.Value;
+#if MONO
+            int line = scrollvalue + (lastscrollto<=scrollvalue ? visiblelines-1 : 0);
+            int index = TextBox.GetFirstCharIndexFromLine(line);         // MONO does not do EM.LiNESCROLL - this is the best we can do
+            lastscrollto = scrollvalue;
+
+            //System.Diagnostics.Debug.WriteLine("Scroll Bar:" + scrollvalue + " vl " + visiblelines + " goto " + line);
+            TextBox.Select(index , 0);
+            TextBox.ScrollToCaret();
+#else
+            int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
             int delta = scrollvalue - firstVisibleLine;
 
             //Console.WriteLine("Scroll Bar:" + scrollvalue + " FVL: " + firstVisibleLine + " delta " + delta);
@@ -277,6 +313,7 @@ namespace ExtendedControls
             {
                 TextBox.SendMessage(EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
             }
+#endif
         }
 
         protected virtual void MWheel(object sender, MouseEventArgs e)  // mouse, we move then scroll to bar
@@ -330,4 +367,3 @@ namespace ExtendedControls
 
     }
 }
-

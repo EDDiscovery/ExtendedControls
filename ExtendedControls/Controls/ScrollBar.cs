@@ -46,9 +46,11 @@ namespace ExtendedControls
         public Color MouseOverButtonColor { get; set; } = Color.Green;
         public Color MousePressedButtonColor { get; set; } = Color.Red;
 
-        public bool HideScrollBar { get; set; } = false;                   // hide (make not visible) if no scroll needed
+        public bool HideScrollBar { get { return hideScrollBar; } set { hideScrollBar = value; Visible = !HideScrollBar || DesignMode; } }
 
         public bool IsScrollBarOn { get { return thumbenable; } }           // is it on?
+
+        // Causes ValueChanged if applicable
 
         public int Value { get { return thumbvalue; } set { SetValues(value, maximum, minimum, largechange, smallchange); } }
         public int ValueLimited { get { return thumbvalue; } set { SetValues(value, maximum, minimum, largechange, smallchange,true); } }
@@ -60,8 +62,22 @@ namespace ExtendedControls
         public void SetValueMaximumLargeChange(int v, int m, int lc) { SetValues(v, m, minimum, lc, smallchange); }
         public void SetValueMaximumMinimum(int v, int max, int min) { SetValues(v, max, min, largechange, smallchange); }
 
+        // Causes ValueChanged and Scroll
+
+        public void Nudge(bool up)
+        {
+            int oldv = ValueLimited;
+            if (up)
+                ValueLimited = ValueLimited - smallchange;                 // control takes care of end limits..
+            else
+                ValueLimited = ValueLimited + smallchange;                 // control takes care of end limits..
+            if ( oldv != ValueLimited)
+                OnScroll(new ScrollEventArgs(up ? ScrollEventType.SmallDecrement : ScrollEventType.SmallIncrement, oldv, ValueLimited, ScrollOrientation.VerticalScroll));
+        }
+
+
         #region Events
-        public event ScrollEventHandler Scroll
+        public event ScrollEventHandler Scroll                              // when user scrolls
         {
             add{Events.AddHandler(EVENT_SCROLL, value);}
             remove{Events.RemoveHandler(EVENT_SCROLL, value);}
@@ -234,8 +250,8 @@ namespace ExtendedControls
                 if (newthumbvalue != thumbvalue)        // and if changed, apply it.
                 {
                     thumbvalue = newthumbvalue;
-                    OnScroll(new ScrollEventArgs((newthumbvalue<thumbvalue) ? ScrollEventType.SmallDecrement : ScrollEventType.SmallIncrement, thumbvalue, newthumbvalue, ScrollOrientation.VerticalScroll));
                     OnValueChanged(new EventArgs());
+                    OnScroll(new ScrollEventArgs((newthumbvalue<thumbvalue) ? ScrollEventType.SmallDecrement : ScrollEventType.SmallIncrement, thumbvalue, newthumbvalue, ScrollOrientation.VerticalScroll));
                     CalculateThumb();
                     Invalidate();
                 }
@@ -332,6 +348,12 @@ namespace ExtendedControls
                 mouseover = MouseOver.MouseOverNone;
                 Invalidate();
             }
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+            Nudge(e.Delta > 0);
         }
 
         private void MoveThumb(int vchange)
@@ -521,6 +543,7 @@ namespace ExtendedControls
         MouseEventArgs mouseargs;
         private static readonly object EVENT_SCROLL = new object();
         private static readonly object EVENT_VALUECHANGED = new object();
+        private bool hideScrollBar = false;                   // hide (make not visible) if no scroll needed
 
         #endregion
     }

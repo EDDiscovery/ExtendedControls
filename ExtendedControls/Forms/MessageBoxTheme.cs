@@ -55,7 +55,6 @@ namespace ExtendedControls
 
         MessageBoxButtons? buttons;     // The buttons that this dialog will display
         MessageBoxIcon mbIcon;          // The icon that this dialog will show
-        RichTextBox focusholder;        // holds the focus off screen so cursor does not show
 
         public MessageBoxTheme(string text, string caption = null, MessageBoxButtons? buttons = MessageBoxButtons.OK, MessageBoxIcon messageBoxIcon = MessageBoxIcon.None, Icon formIcon = null)
         {
@@ -69,18 +68,21 @@ namespace ExtendedControls
             this.mbIcon = messageBoxIcon;
             if (formIcon != null)
                 this.Icon = formIcon;
-        }
 
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            if (panelIcon.BackgroundImage != null)
-                panelIcon.BackgroundImage.Dispose();
-        }
+            ITheme theme = ThemeableFormsInstance.Instance;
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
+            if (theme != null)  // paranoid
+            {
+                theme.ApplyStd(this);
+                themeTextBox.TextBoxBackColor = this.BackColor; // text box back is form back in this circumstance - we don't want it to stand out.
+                if (theme.MessageBoxWindowIcon != null)
+                    this.Icon = theme.MessageBoxWindowIcon;
+            }
+            else
+            {
+                this.Font = BaseUtils.FontLoader.GetFont("MS Sans Serif", 12.0F);
+                this.ForeColor = Color.Black;
+            }
 
             switch (buttons)
             {
@@ -161,7 +163,7 @@ namespace ExtendedControls
             {
                 panelIcon.Width = iconselected.Width;
                 panelIcon.Height = iconselected.Height;
-                panelLeft.Width = panelIcon.Right+8;
+                panelLeft.Width = panelIcon.Right + 8;
                 panelIcon.BackgroundImage = iconselected;
             }
             else
@@ -169,32 +171,57 @@ namespace ExtendedControls
                 panelLeft.Width = 4;
             }
 
-            ITheme theme = ThemeableFormsInstance.Instance;
-            bool framed = true;
-
-            if (theme != null)  // paranoid
-            {
-                framed = theme.ApplyStd(this);
-                themeTextBox.TextBoxBackColor = this.BackColor; // text box back is form back in this circumstance - we don't want it to stand out.
-                if (theme.MessageBoxWindowIcon != null)
-                    this.Icon = theme.MessageBoxWindowIcon;
-            }
-            else
-            {
-                this.Font = BaseUtils.FontLoader.GetFont("MS Sans Serif", 12.0F);
-                this.ForeColor = Color.Black;
-            }
-
-            labelCaption.Visible = !framed;
+            labelCaption.Visible = this.FormBorderStyle == FormBorderStyle.None;
 
             themeTextBox.BorderStyle = BorderStyle.None;
             themeTextBox.BorderColor = Color.Transparent;
             themeTextBox.ReadOnly = true;
 
-            focusholder = new RichTextBox();
-            focusholder.Location = new Point(20000, 10000); // impossible, as of 2019.. 
-            Controls.Add(focusholder);
-            focusholder.Focus();    // easy way to move the flashing caret from the primary rich text box - it does not seem to have a cursor off
+            Size = new Size(20, 20);        // minimise until shown
+        }
+
+        private void MessageBoxTheme_Shown(object sender, EventArgs e)
+        {
+            bool framed = !(FormBorderStyle == FormBorderStyle.None);
+
+            string longest = themeTextBox.Lines.Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
+
+            if (labelCaption.Text.Length > longest.Length)
+                longest = labelCaption.Text;
+
+            var measuretextcaption = BaseUtils.BitMapHelpers.MeasureStringInBitmap(longest, Font);
+
+            int wantedw = 16 + (int)measuretextcaption.Width;
+
+            int butspacing = buttonExt1.Left - buttonExt2.Left;     // make sure we have enough space for the buttons!
+            if (buttonExt3.Visible)
+                wantedw = Math.Max(wantedw, butspacing * 3 + 20);       // 20 allows for left edge
+            else if (buttonExt2.Visible)
+                wantedw = Math.Max(wantedw, butspacing * 2 + 20);
+            else
+                wantedw = Math.Max(wantedw, butspacing + 20);
+
+            wantedw += panelLeft.Width;        // 0.5 is an estimate of avg ratio
+
+            Width = wantedw;        // changing width changes estimate vert size
+
+            int wantedh = themeTextBox.EstimateVerticalSizeFromText();
+            if ( panelIcon.BackgroundImage != null )
+                wantedh = Math.Max(panelIcon.Bottom, wantedh);
+
+            wantedh += panelTopGap.Height + panelGap.Height + panelButs.Height  + (framed ? 50 : labelCaption.Height) + Font.ScalePixels(8);
+
+            this.Location = new Point(Owner.Left + Owner.Width / 2 - wantedw / 2, Owner.Top + Owner.Height / 2 - wantedh / 2);
+            this.PositionSizeWithinScreen(wantedw, wantedh, false, 72);
+
+            buttonExt1.Focus();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            if (panelIcon.BackgroundImage != null)
+                panelIcon.BackgroundImage.Dispose();
         }
 
         private void buttonExt_Click(object sender, EventArgs e)
@@ -210,35 +237,6 @@ namespace ExtendedControls
         private void MoveMouseUp(object sender, MouseEventArgs e)
         {
             OnCaptionMouseUp((Control)sender, e);
-        }
-
-        private void MessageBoxTheme_Shown(object sender, EventArgs e)
-        {
-            bool framed = !(FormBorderStyle == FormBorderStyle.None);
-
-            int cl = (from x in themeTextBox.Lines select x.Length).Max();
-            cl = Math.Max(cl, labelCaption.Text.Length);
-            int wantedw = 16 + (int)(Font.GetHeight() * cl * 0.5);
-
-            int butspacing = buttonExt1.Left - buttonExt2.Left;     // make sure we have enough space for the buttons!
-            if (buttonExt3.Visible)
-                wantedw = Math.Max(wantedw, butspacing*3);
-            else if (buttonExt2.Visible)
-                wantedw = Math.Max(wantedw, butspacing*2);
-            else
-                wantedw = Math.Max(wantedw, butspacing);
-
-            wantedw += panelLeft.Width;        // 0.5 is an estimate of avg ratio
-
-            Width = wantedw;        // changing width changes estimate vert size
-
-            int wantedh = themeTextBox.EstimateVerticalSizeFromText();
-            wantedh = Math.Max(panelIcon.BackgroundImage != null ? panelIcon.Bottom : 0, wantedh);
-
-            wantedh += panelButs.Height + panelGap.Height + (framed ? 50 : labelCaption.Height) + Font.ScalePixels(8);
-
-            this.Location = new Point(Owner.Left + Owner.Width / 2 - wantedw / 2, Owner.Top + Owner.Height / 2 - wantedh / 2);
-            this.PositionSizeWithinScreen(wantedw,wantedh,false,72);
         }
 
     }
