@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2015 - 2019 EDDiscovery development team
+ * Copyright © 2015 - 2021 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -29,12 +29,12 @@ namespace ExtendedControls
         [DefaultValue(true), Category("Appearance")]
         public bool AutoCenter
         {
-            get { return _autoCenter; }
+            get { return autoCenter; }
             set
             {
-                if (_autoCenter != value)
+                if (autoCenter != value)
                 {
-                    _autoCenter = value;
+                    autoCenter = value;
                     this.OnAutoCenterChanged(EventArgs.Empty);
                 }
             }
@@ -43,12 +43,12 @@ namespace ExtendedControls
         [DefaultValue(true), Category("Behavior")]
         public bool AutoPan
         {
-            get { return _autoPan; }
+            get { return autoPan; }
             set
             {
-                if (_autoPan != value)
+                if (autoPan != value)
                 {
-                    _autoPan = value;
+                    autoPan = value;
                     this.OnAutoPanChanged(EventArgs.Empty);
 
                     if (value)
@@ -60,10 +60,10 @@ namespace ExtendedControls
         [DefaultValue(true), Category("Behavior")]
         public bool ClickToZoom
         {
-            get { return _clicktozoom; }
+            get { return clicktozoom; }
             set
             {
-                _clicktozoom = value;
+                clicktozoom = value;
             }
         }
 
@@ -79,12 +79,12 @@ namespace ExtendedControls
         [Category("Appearance"), DefaultValue(null)]
         public virtual Image Image
         {
-            get { return _image; }
+            get { return image; }
             set
             {
-                if (_image != value)
+                if (image != value)
                 {
-                    _image = value;
+                    image = value;
                     this.OnImageChanged(EventArgs.Empty);
                 }
             }
@@ -93,20 +93,19 @@ namespace ExtendedControls
         [DefaultValue(InterpolationMode.Default), Category("Appearance")]
         public InterpolationMode InterpolationMode
         {
-            get { return _interpolationMode; }
+            get { return interpolationMode; }
             set
             {
                 if (value == InterpolationMode.Invalid)
                     value = InterpolationMode.Default;
 
-                if (_interpolationMode != value)
+                if (interpolationMode != value)
                 {
-                    _interpolationMode = value;
+                    interpolationMode = value;
                     this.OnInterpolationModeChanged(EventArgs.Empty);
                 }
             }
         }
-
 
         public int MinZoom { get; set; } = 10;
         public int MaxZoom { get; set; } = 400;
@@ -114,13 +113,13 @@ namespace ExtendedControls
         [DefaultValue(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public bool IsPanning
         {
-            get { return _isPanning; }
+            get { return isPanning; }
             protected set
             {
-                if (_isPanning != value)
+                if (isPanning != value)
                 {
-                    _isPanning = value;
-                    _startScrollPosition = this.AutoScrollPosition;
+                    isPanning = value;
+                    startScrollPosition = this.AutoScrollPosition;
 
                     if (value)
                     {
@@ -139,12 +138,12 @@ namespace ExtendedControls
         [DefaultValue(false), Category("Appearance")]
         public bool SizeToFit
         {
-            get { return _sizeToFit; }
+            get { return sizeToFit; }
             set
             {
-                if (_sizeToFit != value)
+                if (sizeToFit != value)
                 {
-                    _sizeToFit = value;
+                    sizeToFit = value;
                     this.OnSizeToFitChanged(EventArgs.Empty);
 
                     if (value)
@@ -156,17 +155,14 @@ namespace ExtendedControls
         [DefaultValue(100), Category("Appearance")]
         public int Zoom
         {
-            get { return _zoom; }
+            get { return zoom; }
             set
             {
-                if (value < MinZoom)
-                    value = MinZoom;
-                else if (value > MaxZoom)
-                    value = MaxZoom;
+                int newzoom = Math.Max(Math.Min(value, MaxZoom), MinZoom);        // limit zoom
 
-                if (_zoom != value)
+                if (zoom != newzoom)
                 {
-                    _zoom = value;
+                    zoom = newzoom;
                     this.OnZoomChanged(EventArgs.Empty);
                 }
             }
@@ -185,12 +181,12 @@ namespace ExtendedControls
         [DefaultValue(20), Category("Behavior")]
         public int ZoomIncrement
         {
-            get { return _zoomIncrement; }
+            get { return zoomIncrement; }
             set
             {
-                if (_zoomIncrement != value)
+                if (zoomIncrement != value)
                 {
-                    _zoomIncrement = value;
+                    zoomIncrement = value;
                     this.OnZoomIncrementChanged(EventArgs.Empty);
                 }
             }
@@ -274,7 +270,7 @@ namespace ExtendedControls
             return new Rectangle(left, top, width, height);
         }
 
-        public virtual Rectangle GetSourceImageRegion()
+        public virtual Rectangle GetSourceImageRegion()     // area being viewed
         {
             if (this.Image != null)
             {
@@ -287,6 +283,29 @@ namespace ExtendedControls
             }
             else
                 return Rectangle.Empty;
+        }
+
+        // given a mouse position over the image, what is the logical position. 0,0 is top left.
+        public bool PositionFromMouse(Point mouse, out Point res)
+        {
+            res = Point.Empty;
+            Rectangle imageviewport = GetImageViewPort();
+            int mx = mouse.X - imageviewport.X;
+            int my = mouse.Y - imageviewport.Y;
+
+            if (mx >= 0 && mx < imageviewport.Width && my >= 0 && my <= imageviewport.Height)
+            {
+                float fractx = (float)mx / imageviewport.Width;
+                float fracty = (float)my / imageviewport.Height;
+
+                Rectangle imagesourceregion = GetSourceImageRegion();  // This is what we are displaying
+
+                res = new Point(imagesourceregion.X + (int)(imagesourceregion.Width * fractx), imagesourceregion.Y + (int)(imagesourceregion.Height * fracty));
+
+                return true;
+            }
+            else
+                return false;
         }
 
         public virtual void ZoomToFit()
@@ -386,19 +405,19 @@ namespace ExtendedControls
         #endregion  Overriden Properties  
 
 
-        private bool _autoCenter;
-        private bool _autoPan;
-        private bool _clicktozoom;
+        private bool autoCenter;
+        private bool autoPan;
+        private bool clicktozoom;
 
-        private System.Drawing.Image _image;
-        private InterpolationMode _interpolationMode;
-        private bool _isPanning;
-        private bool _sizeToFit;
-        private Point _startMousePosition;
-        private Point _startScrollPosition;
-        private TextureBrush _texture;
-        private int _zoom;
-        private int _zoomIncrement;
+        private System.Drawing.Image image;
+        private InterpolationMode interpolationMode;
+        private bool isPanning;
+        private bool sizeToFit;
+        private Point startMousePosition;
+        private Point startScrollPosition;
+        private TextureBrush texture;
+        private int zoom;
+        private int zoomIncrement;
 
 
         #region  Public Overridden Methods  
@@ -468,10 +487,10 @@ namespace ExtendedControls
                 if (components != null)
                     components.Dispose();
 
-                if (_texture != null)
+                if (texture != null)
                 {
-                    _texture.Dispose();
-                    _texture = null;
+                    texture.Dispose();
+                    texture = null;
                 }
 
             }
@@ -569,14 +588,14 @@ namespace ExtendedControls
             {
                 if (!this.IsPanning)
                 {
-                    _startMousePosition = e.Location;
+                    startMousePosition = e.Location;
                     this.IsPanning = true;
                 }
 
                 if (this.IsPanning)
                 {
-                    int x = -_startScrollPosition.X + (_startMousePosition.X - e.Location.X);
-                    int y = -_startScrollPosition.Y + (_startMousePosition.Y - e.Location.Y);
+                    int x = -startScrollPosition.X + (startMousePosition.X - e.Location.X);
+                    int y = -startScrollPosition.Y + (startMousePosition.Y - e.Location.Y);
                     this.UpdateScrollPosition(new Point(x, y));
                 }
             }
@@ -623,7 +642,9 @@ namespace ExtendedControls
             {
                 Point? spos = ScreenPoint(mouse.Location);
 
-                if (spos != null)
+                newzoom = Math.Max(Math.Min(newzoom, MaxZoom), MinZoom);        // limit zoom
+
+                if (spos != null && newzoom != Zoom)
                 {
                     double changezoom = (double)(newzoom-Zoom) / 100.0;
                     //System.Diagnostics.Debug.WriteLine("Screen Point sx {0} Image {1} Autoscroll {2} {3}->{4} {5}", spos, Image.Size, AutoScrollPosition, Zoom, newzoom, changezoom);
@@ -805,7 +826,7 @@ namespace ExtendedControls
             this.AutoScrollPosition = position;
             this.Invalidate();
             this.OnScroll(new ScrollEventArgs(ScrollEventType.ThumbPosition, 0));
-            //System.Diagnostics.Debug.WriteLine("Position {0} Auto scroll {1}", position, AutoScrollPosition);
+           // System.Diagnostics.Debug.WriteLine("Position {0} Auto scroll {1}", position, AutoScrollPosition);
         }
 
         #endregion  Protected Methods  
