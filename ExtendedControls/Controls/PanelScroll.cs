@@ -74,6 +74,24 @@ namespace ExtendedControls
             base.OnControlAdded(e);
         }
 
+        protected override void OnControlRemoved(ControlEventArgs e)
+        {
+            if (e.Control is ExtScrollBar)
+            {
+                ScrollBar = null;
+            }
+            else
+            {
+                e.Control.LocationChanged -= Control_LocationChanged;   // and any location/size/visible changes means scroll bar is changed
+                e.Control.VisibleChanged -= Control_VisibleChanged;
+                e.Control.SizeChanged -= Control_SizeChanged;
+            }
+
+            e.Control.MouseWheel -= Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll, including the ExtScrollBar
+
+            base.OnControlRemoved(e);
+        }
+
         protected override void OnResize(EventArgs eventargs)       // added in resize event - should have been in here
         {
             base.OnResize(eventargs);       // call base class to let any hooks run
