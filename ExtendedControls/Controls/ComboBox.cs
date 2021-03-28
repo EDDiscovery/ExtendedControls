@@ -69,9 +69,11 @@ namespace ExtendedControls
             this.cbsystem.MouseLeave += cbsystem_MouseLeave;
             this.cbsystem.MouseEnter += cbsystem_MouseEnter;
             this.cbsystem.MouseUp += cbsystem_MouseUp;
+            this.cbsystem.Resize += (s,e)=> { this.cbsystem.DropDownWidth = Math.Max( Width * 2,100); };
             this._items = new ObjectCollection(this.cbsystem);
             this.Controls.Add(this.cbsystem);
         }
+
 
         public void SetTipDynamically(ToolTip t, string text)// only needed for dynamic changes..
         {
