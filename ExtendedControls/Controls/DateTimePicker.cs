@@ -46,36 +46,9 @@ namespace ExtendedControls
             remove { Events.RemoveHandler(EVENT_VALUECHANGED, value); }
         }
 
-        private static readonly object EVENT_VALUECHANGED = new object();
+        public bool CalendarActivated { get { return calendar != null; } }
 
-        private DateTime datetimevalue = DateTime.Now;
-        private DateTimePickerFormat format = DateTimePickerFormat.Long;
-        private string customformat = CultureInfo.CurrentCulture.DateTimeFormat.LongDatePattern;
-        private bool showupdown = false;
-        private bool showcheckbox = false;
-        private Color textbackcolor = Color.DarkBlue;
-        private Color bordercolor = Color.Transparent;
-
-        public UpDown updown = new UpDown();                            // for setting colours
-        public ExtCheckBox checkbox = new ExtCheckBox();          // for setting colours, note background is forces to TextBackColour
-
-        private MonthCalendar calendar = new MonthCalendar();           // calendar, when rendered by window, is colour locked
-        private PictureBox calendaricon = new PictureBox();             // does not need colour.. icon
-
-        private int xstart = 0;                             // where the text starts
-
-        enum PartsTypes { Text, DayName, Day, Month, Year, Hours, Mins, Seconds, AmPm }
-        class Parts
-        {
-            public PartsTypes ptype;
-            public string maxstring;
-            public string format;
-            public int xpos;
-            public int endx;
-        };
-
-        List<Parts> partlist = new List<Parts>();
-        int selectedpart = -1;
+        public void DeactivateCalendar() { calendar?.Close(); }
 
         public ExtDateTimePicker()
         {
@@ -87,9 +60,6 @@ namespace ExtendedControls
 
             updown.Selected += OnUpDown;
             calendaricon.MouseClick += Calendaricon_MouseClick;
-            calendar.DateSelected += Calendar_DateSelected;
-            calendar.LostFocus += Calendar_LostFocus;
-            calendar.Visible = false;
             checkbox.CheckedChanged += Checkbox_CheckedChanged;
         }
 
@@ -448,42 +418,32 @@ namespace ExtendedControls
 
         private void Calendaricon_MouseClick(object sender, MouseEventArgs e)
         {
-            if (calendar.Visible == false)
+            if (calendar == null)
             {
-                Point screencoord = PointToScreen(new Point(0, Height));     // screen co-ord of our control at the bottom left
-                Form f = FindForm();
-                Point formpoint = f.PointToClient(screencoord);             // now in form client terms
-                calendar.Location = formpoint.PositionWithinRectangle(calendar.Size, f.ClientRectangle);
-                //calendar.Size = new Size(ClientRectangle.Width, ClientRectangle.Width );
-                calendar.MaxSelectionCount = 1;
-                calendar.SetDate(datetimevalue);
-                f.Controls.Add(calendar);
-                calendar.Show();
-                this.FindForm().Controls.SetChildIndex(calendar, 0);
+                calendar = new CalendarForm();
+                calendar.Value = datetimevalue;
+                calendar.CloseOnSelection = calendar.CloseOnDeactivate = true;
+                calendar.PositionBelow(this);
+                calendar.TopMost = true;
+                calendar.Selected += calselected;
+                calendar.FormClosed += Calendar_FormClosed;
+                calendar.Show(this);
                 selectedpart = -1;
-                calendar.Focus();
                 Invalidate();
             }
         }
 
-        private void Calendar_LostFocus(object sender, EventArgs e)
+        private void calselected(CalendarForm cf, DateTime sel)
         {
-            calendar.Visible = false;
-            this.FindForm().Controls.Remove(calendar);
+            datetimevalue = new DateTime(sel.Year, sel.Month, sel.Day, datetimevalue.Hour, datetimevalue.Minute, datetimevalue.Second, datetimevalue.Kind);
             Invalidate();
-        }
-
-
-        private void Calendar_DateSelected(object sender, DateRangeEventArgs e)
-        {
-            datetimevalue = new DateTime(e.Start.Year, e.Start.Month, e.Start.Day, datetimevalue.Hour, datetimevalue.Minute, datetimevalue.Second, datetimevalue.Kind);
-            //System.Diagnostics.Debug.WriteLine("Set to " + Value.ToLongTimeString() + " " + Value.ToLongDateString());
-            calendar.Visible = false;
-            this.FindForm().Controls.Remove(calendar);
-            Invalidate();
-
             EventHandler handler = (EventHandler)Events[EVENT_VALUECHANGED];
             if (handler != null) handler(this, new EventArgs());
+        }
+
+        private void Calendar_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            calendar = null;
         }
 
         protected override void OnLostFocus(EventArgs e)
@@ -501,15 +461,39 @@ namespace ExtendedControls
             if (handler != null) handler(this, new EventArgs());
         }
 
-        // NOT IN USE
-        #region Icon Replacement
-        public void ReplaceIconsNOTINUSE(Func<string, Image> getIcon)
+        #region Privates
+        private static readonly object EVENT_VALUECHANGED = new object();
+
+        private DateTime datetimevalue = DateTime.Now;
+        private DateTimePickerFormat format = DateTimePickerFormat.Long;
+        private string customformat = CultureInfo.CurrentCulture.DateTimeFormat.LongDatePattern;
+        private bool showupdown = false;
+        private bool showcheckbox = false;
+        private Color textbackcolor = Color.DarkBlue;
+        private Color bordercolor = Color.Transparent;
+
+        public UpDown updown = new UpDown();                            // for setting colours
+        public ExtCheckBox checkbox = new ExtCheckBox();          // for setting colours, note background is forces to TextBackColour
+
+
+        private CalendarForm calendar;
+        private PictureBox calendaricon = new PictureBox();             // does not need colour.. icon
+
+        private int xstart = 0;                             // where the text starts
+
+        enum PartsTypes { Text, DayName, Day, Month, Year, Hours, Mins, Seconds, AmPm }
+        class Parts
         {
-            calendaricon.Image = getIcon("CalendarIcon");
-            int offset = BorderColor.IsFullyTransparent() ? 0 : 2;
-            calendaricon.Location = new Point(ClientRectangle.Width - offset - calendaricon.Image.Width - 4, ClientRectangle.Height / 2 - calendaricon.Image.Height / 2);
-            calendaricon.Size = calendaricon.Image.Size;
-        }
+            public PartsTypes ptype;
+            public string maxstring;
+            public string format;
+            public int xpos;
+            public int endx;
+        };
+
+        List<Parts> partlist = new List<Parts>();
+        int selectedpart = -1;
+
         #endregion
     }
 }

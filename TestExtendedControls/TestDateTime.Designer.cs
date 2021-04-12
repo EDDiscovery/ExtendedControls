@@ -35,6 +35,7 @@
             this.extDateTimePicker2 = new ExtendedControls.ExtDateTimePicker();
             this.extDateTimePicker3 = new ExtendedControls.ExtDateTimePicker();
             this.extDateTimePicker4 = new ExtendedControls.ExtDateTimePicker();
+            this.extButton1 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // panel1
@@ -148,12 +149,23 @@
             this.extDateTimePicker4.TextBackColor = System.Drawing.Color.DarkBlue;
             this.extDateTimePicker4.Value = new System.DateTime(2017, 4, 6, 16, 7, 12, 693);
             // 
+            // extButton1
+            // 
+            this.extButton1.Location = new System.Drawing.Point(13, 257);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.TabIndex = 61;
+            this.extButton1.Text = "Cal";
+            this.extButton1.UseVisualStyleBackColor = true;
+            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
+            // 
             // TestDateTime
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(1060, 623);
+            this.Controls.Add(this.extButton1);
             this.Controls.Add(this.extDateTimePicker1);
             this.Controls.Add(this.extDateTimePicker2);
             this.Controls.Add(this.extDateTimePicker3);
@@ -172,5 +184,6 @@
         private ExtendedControls.ExtDateTimePicker extDateTimePicker2;
         private ExtendedControls.ExtDateTimePicker extDateTimePicker3;
         private ExtendedControls.ExtDateTimePicker extDateTimePicker4;
+        private ExtendedControls.ExtButton extButton1;
     }
 }

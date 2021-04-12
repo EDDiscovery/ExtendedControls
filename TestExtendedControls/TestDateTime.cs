@@ -36,5 +36,13 @@ namespace TestExtendedControls
             extDateTimePicker1.SelectedColor = Color.DarkBlue;
         }
 
+        private void extButton1_Click(object sender, EventArgs e)
+        {
+            CalendarForm frm = new CalendarForm();
+            frm.Value = new DateTime(2021, 4, 10);
+            //  frm.CloseOnChange = true;
+            frm.Selected += (s, ev) => { System.Diagnostics.Debug.WriteLine("Date Sel " + ev); };
+            frm.Show();
+        }
     }
 }
