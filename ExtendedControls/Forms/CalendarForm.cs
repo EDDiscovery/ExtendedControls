@@ -58,7 +58,7 @@ namespace ExtendedControls
             if (SetLocation.X != int.MinValue)
                 Location = SetLocation;
 
-            this.PositionSizeWithinScreen(this.Width, this.Height, true, 64);    // keep it on the screen. 
+            this.PositionSizeWithinScreen(this.Width, this.Height, true, 4);    // keep it on the screen. 
         }
 
         protected override void OnClosing(CancelEventArgs e)
