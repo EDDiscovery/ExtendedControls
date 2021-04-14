@@ -53,6 +53,9 @@
             this.button3 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
             this.extButton2 = new ExtendedControls.ExtButton();
+            this.extButton3 = new ExtendedControls.ExtButton();
+            this.extButton4 = new ExtendedControls.ExtButton();
+            this.extButton5 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -134,10 +137,10 @@
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3});
-            this.dataGridView2.Location = new System.Drawing.Point(13, 0);
+            this.dataGridView2.Location = new System.Drawing.Point(16, 0);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView2.Size = new System.Drawing.Size(450, 565);
+            this.dataGridView2.Size = new System.Drawing.Size(447, 565);
             this.dataGridView2.TabIndex = 1;
             // 
             // dataGridViewTextBoxColumn1
@@ -172,7 +175,7 @@
             this.extScrollBar2.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar2.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBar2.Name = "extScrollBar2";
-            this.extScrollBar2.Size = new System.Drawing.Size(13, 565);
+            this.extScrollBar2.Size = new System.Drawing.Size(16, 565);
             this.extScrollBar2.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar2.SmallChange = 1;
             this.extScrollBar2.TabIndex = 0;
@@ -213,10 +216,10 @@
             this.Column1,
             this.Column2,
             this.Column3});
-            this.dataGridView1.Location = new System.Drawing.Point(63, 0);
+            this.dataGridView1.Location = new System.Drawing.Point(66, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView1.Size = new System.Drawing.Size(614, 565);
+            this.dataGridView1.Size = new System.Drawing.Size(611, 565);
             this.dataGridView1.TabIndex = 1;
             // 
             // Column1
@@ -251,7 +254,7 @@
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBar1.Name = "extScrollBar1";
-            this.extScrollBar1.Size = new System.Drawing.Size(13, 565);
+            this.extScrollBar1.Size = new System.Drawing.Size(16, 565);
             this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar1.SmallChange = 1;
             this.extScrollBar1.TabIndex = 0;
@@ -285,7 +288,7 @@
             // 
             // extButton1
             // 
-            this.extButton1.Location = new System.Drawing.Point(385, 13);
+            this.extButton1.Location = new System.Drawing.Point(533, 12);
             this.extButton1.Name = "extButton1";
             this.extButton1.Size = new System.Drawing.Size(75, 23);
             this.extButton1.TabIndex = 4;
@@ -295,13 +298,43 @@
             // 
             // extButton2
             // 
-            this.extButton2.Location = new System.Drawing.Point(466, 12);
+            this.extButton2.Location = new System.Drawing.Point(614, 11);
             this.extButton2.Name = "extButton2";
             this.extButton2.Size = new System.Drawing.Size(75, 23);
             this.extButton2.TabIndex = 5;
             this.extButton2.Text = "T20";
             this.extButton2.UseVisualStyleBackColor = true;
             this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
+            // 
+            // extButton3
+            // 
+            this.extButton3.Location = new System.Drawing.Point(337, 11);
+            this.extButton3.Name = "extButton3";
+            this.extButton3.Size = new System.Drawing.Size(75, 23);
+            this.extButton3.TabIndex = 2;
+            this.extButton3.Text = "Clear";
+            this.extButton3.UseVisualStyleBackColor = true;
+            this.extButton3.Click += new System.EventHandler(this.extButton3_Click);
+            // 
+            // extButton4
+            // 
+            this.extButton4.Location = new System.Drawing.Point(174, 13);
+            this.extButton4.Name = "extButton4";
+            this.extButton4.Size = new System.Drawing.Size(75, 23);
+            this.extButton4.TabIndex = 2;
+            this.extButton4.Text = "Add 10";
+            this.extButton4.UseVisualStyleBackColor = true;
+            this.extButton4.Click += new System.EventHandler(this.extButton4_Click);
+            // 
+            // extButton5
+            // 
+            this.extButton5.Location = new System.Drawing.Point(255, 13);
+            this.extButton5.Name = "extButton5";
+            this.extButton5.Size = new System.Drawing.Size(75, 23);
+            this.extButton5.TabIndex = 2;
+            this.extButton5.Text = "Remove 10";
+            this.extButton5.UseVisualStyleBackColor = true;
+            this.extButton5.Click += new System.EventHandler(this.extButton5_Click);
             // 
             // TestPanelScrollOutlining
             // 
@@ -313,6 +346,9 @@
             this.Controls.Add(this.extButton1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.button2);
+            this.Controls.Add(this.extButton5);
+            this.Controls.Add(this.extButton4);
+            this.Controls.Add(this.extButton3);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel);
@@ -352,5 +388,8 @@
         private ExtendedControls.ExtButton button3;
         private ExtendedControls.ExtButton extButton1;
         private ExtendedControls.ExtButton extButton2;
+        private ExtendedControls.ExtButton extButton3;
+        private ExtendedControls.ExtButton extButton4;
+        private ExtendedControls.ExtButton extButton5;
     }
 }

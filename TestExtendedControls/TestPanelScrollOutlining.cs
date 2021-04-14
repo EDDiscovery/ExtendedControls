@@ -27,7 +27,7 @@ namespace TestExtendedControls
             for ( int i = 0; i < 100; i++ )
             {
                 DataGridViewRow row = dataGridView1.RowTemplate.Clone() as DataGridViewRow;
-                row.CreateCells(dataGridView1, i.ToString(), "2", "3");
+                row.CreateCells(dataGridView1, "Initial " + i.ToString(), "-", "-");
                 dataGridView1.Rows.Add(row);
 
                 DataGridViewRow row2 = dataGridView1.RowTemplate.Clone() as DataGridViewRow;
@@ -42,7 +42,7 @@ namespace TestExtendedControls
             Outlining1.Add(8, 12);
             Outlining1.Add(13, 20);
             Outlining1.Add(50, 70);
-            Outlining1.Add(40, 80);
+            Outlining1.Add(40, 99);
 
 
             BaseUtils.IntRangeList rl = new BaseUtils.IntRangeList();
@@ -111,7 +111,10 @@ namespace TestExtendedControls
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Outlining1.Remove(6, 8);
+            for (int i = 6; i < 8; i++)
+                dataGridView1.Rows.RemoveAt(i);
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+                dataGridView1.Rows[i].Cells[1].Value = i.ToString();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -122,7 +125,12 @@ namespace TestExtendedControls
 
         private void button3_Click(object sender, EventArgs e)
         {
-            dataGridView1.Rows.RemoveAt(6);
+            if (dataGridView1.Rows.Count >= 7)
+            {
+                dataGridView1.Rows.RemoveAt(6);
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                    dataGridView1.Rows[i].Cells[1].Value = i.ToString();
+            }
         }
 
         private void extButton1_Click(object sender, EventArgs e)
@@ -136,6 +144,29 @@ namespace TestExtendedControls
         {
             theme.FontSize = 20;
             theme.ApplyStd(this);
+
+        }
+
+        private void extButton3_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+        }
+
+        private void extButton4_Click(object sender, EventArgs e)
+        {
+            DataGridViewRow row = dataGridView1.RowTemplate.Clone() as DataGridViewRow;
+            row.CreateCells(dataGridView1, "Add 10 ", "-", "-");
+            dataGridView1.Rows.Insert(10,row);
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+                dataGridView1.Rows[i].Cells[1].Value = i.ToString();
+
+        }
+
+        private void extButton5_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.RemoveAt(10);
+            for (int i = 0; i < dataGridView1.RowCount; i++)
+                dataGridView1.Rows[i].Cells[1].Value = i.ToString();
 
         }
     }

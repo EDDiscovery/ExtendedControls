@@ -76,25 +76,12 @@ namespace ExtendedControls
                 return false;
         }
 
-        public void UpdateAfterAdd()
-        {
-            RollUpListChanged();
-            UpdateOutlines();
-        }
-
-        public bool Remove(int rowstart, int rowend)        // remove it
+        public bool Remove(int rowstart, int rowend)        // remove an outline
         {
             OutlineState r = FindEntry(rowstart, rowend);
             if (r != null)
             {
-                if (r.button != null)
-                {
-                    Controls.Remove(r.button);
-                    r.button.Dispose();
-                }
-
-                Outlines.Remove(r);
-
+                Remove(r);
                 RollUpListChanged();
                 UpdateOutlines();
                 Invalidate();   // ensure in case we have gone to zero rollups
@@ -104,19 +91,25 @@ namespace ExtendedControls
                 return false;
         }
 
+        private void Remove(OutlineState rur)
+        {
+            if (rur.button != null)
+            {
+                Controls.Remove(rur.button);
+                rur.button.Dispose();
+            }
+
+            Outlines.Remove(rur);
+        }
+
         public void Clear()
         {
             SuspendLayout();
-            foreach (var rur in Outlines)
-            {
-                if (rur.button != null)
-                {
-                    Controls.Remove(rur.button);
-                    rur.button.Dispose();
-                }
-            }
+            var dup = new List<OutlineState>(Outlines);
+            foreach (var rur in dup)
+                Remove(rur);
 
-            Outlines.Clear();
+            Invalidate();   // in case we go to zero
             this.Width = MinWidth;
 
             ResumeLayout();
@@ -359,33 +352,75 @@ namespace ExtendedControls
             }
         }
 
-        public void RowAdded(int row, int count)
+        public void RowAdded(int row, int count)        // called if we added rows from DGV
         {
-            UpdateOutlines();
-        }
+            bool changed = false;
 
-        public void RowRemoved(int row, int count)
-        {
-            List<OutlineState> removelist = new List<OutlineState>();
-
-            foreach (var rur in Outlines)     // double check they are not removing a start or end row..
+            foreach (var rur in Outlines)
             {
-                if ((rur.r.start >= row && rur.r.start < row + count) || (rur.r.end >= row && rur.r.end < row + count) )
-                    removelist.Add(rur);
+                if (rur.r.start >= row)         // any indexes above the row start need adjusting
+                {
+                    rur.r.start += count;
+                    changed = true;
+                }
+                if (rur.r.end >= row)
+                {
+                    rur.r.end += count;
+                    changed = true;
+                }
             }
 
-            foreach (var r in removelist)       // if so, remove the roll up
-                Outlines.Remove(r);
+            if (changed)
+            {
+                UpdateOutlines();
+            }
+        }
 
-            if (removelist.Count > 0)       // if changed, rework states
-                RollUpListChanged();
+        public void RowRemoved(int row, int count)      // called if we removed rows from DGV
+        {
+            List<OutlineState> removelist = new List<OutlineState>();
+            bool changed = false;
 
-            UpdateOutlines();
+            foreach (var rur in Outlines)
+            {
+                // check they are not removing a start or end row.. if so, the outline is deleted
+
+                if ((rur.r.start >= row && rur.r.start < row + count) || (rur.r.end >= row && rur.r.end < row + count))
+                {
+                    removelist.Add(rur);
+                    changed = true;
+                }
+                else
+                {
+                    if (rur.r.start >= row)         // any indexes above the row start need adjusting
+                    {
+                        rur.r.start -= count;
+                        changed = true;
+                    }
+                    if (rur.r.end >= row)
+                    {
+                        rur.r.end -= count;
+                        changed = true;
+                    }
+                }
+            }
+
+            if (changed)                        // if changed, rework drawing
+            {
+                foreach (var r in removelist)       // remove any
+                    Remove(r);
+
+                RollUpListChanged();            // fix up roll up and outlines
+                UpdateOutlines();
+                Invalidate();                   // in case gone empty
+
+                //foreach (var rur in Outlines)  System.Diagnostics.Debug.WriteLine("Outline {0}-{1}", rur.r.start, rur.r.end);
+            }
         }
 
         public void RowChangedState(int row)
         {
-            if (!processed)       // need some trigger to get the first process done
+            if (!processed)       // need some trigger to get the first process done, only once first processed
                 UpdateOutlines();
         }
 
@@ -394,9 +429,6 @@ namespace ExtendedControls
             if (!processed)       // need some trigger to get the first process done
                 UpdateOutlines();
         }
-
-        bool processed = false;
-
 
 
         #endregion
@@ -421,6 +453,8 @@ namespace ExtendedControls
             public bool linedisplay;
             public int ystart, yend;
         };
+
+        private bool processed = false;
 
         private OutlineState FindEntry(int rowstart, int rowend) => Outlines.Find(x => x.r.start == rowstart && x.r.end == rowend);
 
