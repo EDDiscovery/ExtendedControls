@@ -54,10 +54,8 @@ namespace ExtendedControls
             return rur?.r;
         }
 
-        // Add/remove does not affect DGV - you need to do that yourself
-        // areas must be unique
-        // no update means you must call UpdateAfterAdd.
-        public bool Add(int rowstart, int rowend, bool expandedout = true, bool noupdate = false)       
+        // Add an outline area, areas must be unique but can overlap
+        public bool Add(int rowstart, int rowend, bool expandedout = true, bool noupdate = false)
         {
             if (FindEntry(rowstart, rowend) == null)
             {
@@ -76,6 +74,19 @@ namespace ExtendedControls
                 return false;
         }
 
+        // Add an set of outline areas, areas must be unique but can overlap
+        public void Add(IEnumerable<Outline> outlinelist)
+        {
+            foreach (var e in outlinelist)
+            {
+                OutlineState rup = new OutlineState();
+                rup.r = e;
+                Outlines.Add(rup);
+            }
+            RollUpListChanged();
+            UpdateOutlines();
+        }
+
         public bool Remove(int rowstart, int rowend)        // remove an outline
         {
             OutlineState r = FindEntry(rowstart, rowend);
@@ -89,17 +100,6 @@ namespace ExtendedControls
             }
             else
                 return false;
-        }
-
-        private void Remove(OutlineState rur)
-        {
-            if (rur.button != null)
-            {
-                Controls.Remove(rur.button);
-                rur.button.Dispose();
-            }
-
-            Outlines.Remove(rur);
         }
 
         public void Clear()
@@ -116,19 +116,30 @@ namespace ExtendedControls
             Invalidate();
         }
 
+        public void SetDGV(DataGridView dgv)    // called to set dgv
+        {
+            this.dgv = dgv;
+        }
+
         #endregion
 
         #region Implementation
+
+        private void Remove(OutlineState rur)
+        {
+            if (rur.button != null)
+            {
+                Controls.Remove(rur.button);
+                rur.button.Dispose();
+            }
+
+            Outlines.Remove(rur);
+        }
 
         protected override void OnResize(EventArgs eventargs)
         {
             base.OnResize(eventargs);
             UpdateOutlines();
-        }
-
-        public void SetDGV(DataGridView dgv)    // called to set dgv
-        {
-            this.dgv = dgv;
         }
 
         private void RollUpListChanged()        // changed list of rollups, resort, work out level of each, reset the outlining size
