@@ -66,7 +66,7 @@ namespace ExtendedConditionsForms
         public void InitCondition(Condition j)
         {
             ConditionLists l = new ConditionLists();
-            if ( j!= null && j.fields != null )
+            if ( j!= null && j.Fields != null )
                 l.Add(j);
             Init(null, false);          // no outer conditions..
             LoadConditions(l);
@@ -85,12 +85,12 @@ namespace ExtendedConditionsForms
                 groups = new List<Group>();
 
                 Condition fe = null;
-                for(int i = 0; (fe = clist.Get(i))!=null; i++)
+                for(int i = 0; (fe = clist[i])!=null; i++)
                 {
-                    Group g = CreateGroupInternal(fe.eventname, fe.action, fe.innercondition.ToString(), fe.outercondition.ToString());
+                    Group g = CreateGroupInternal(fe.EventName, fe.Action, fe.InnerCondition.ToString(), fe.OuterCondition.ToString());
 
-                    foreach (ConditionEntry f in fe.fields)
-                        CreateConditionInt(g, f.itemname, ConditionEntry.MatchNames[(int)f.matchtype], f.matchstring);
+                    foreach (ConditionEntry f in fe.Fields)
+                        CreateConditionInt(g, f.ItemName, ConditionEntry.MatchNames[(int)f.MatchCondition], f.MatchString);
 
                     groups.Add(g);
                 }
@@ -590,21 +590,21 @@ namespace ExtendedConditionsForms
                                 if (f.Create(fieldn, condn, valuen))
                                 {
                                     if (valuen.Length == 0 && !ConditionEntry.IsUnaryOperation(condn) && !ConditionEntry.IsNullOperation(condn))
-                                        errorlist += "Do you want filter '" + fieldn + "' in group '" + fe.eventname + "' to have an empty value" + Environment.NewLine;
+                                        errorlist += "Do you want filter '" + fieldn + "' in group '" + fe.EventName + "' to have an empty value" + Environment.NewLine;
 
                                     fe.Add(f);
                                 }
                                 else
-                                    errorlist += "Cannot create filter '" + fieldn + "' in group '" + fe.eventname + "' check value" + Environment.NewLine;
+                                    errorlist += "Cannot create filter '" + fieldn + "' in group '" + fe.EventName + "' check value" + Environment.NewLine;
                             }
                             else
-                                errorlist += "Ignored empty filter " + (i+1).ToString(System.Globalization.CultureInfo.InvariantCulture) + " in " + fe.eventname + Environment.NewLine;
+                                errorlist += "Ignored empty filter " + (i+1).ToString(System.Globalization.CultureInfo.InvariantCulture) + " in " + fe.EventName + Environment.NewLine;
                         }
 
-                        if (fe.fields != null)
+                        if (fe.Fields != null)
                             Result.Add(fe);
                         else
-                            errorlist += "No valid filters found in group '" + fe.eventname + "'" + Environment.NewLine;
+                            errorlist += "No valid filters found in group '" + fe.EventName + "'" + Environment.NewLine;
                     }
                     else
                         errorlist += "Cannot create " + evt + " not a normal error please report" + Environment.NewLine;

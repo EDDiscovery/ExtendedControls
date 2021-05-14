@@ -325,6 +325,7 @@ namespace ExtendedControls
             if (IsFontAvailable("Verdana"))
             {
                 themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana", "Verdana", 10F));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana Small", "Verdana", 8F));
                 themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Verdana High DPI", "Verdana", 20F));
                 var set = new Settings(themelist[themelist.Count - 1], "Elite Verdana Alt Grid", "Verdana", 10F);
                 set.colors[Settings.CI.grid_altcellbackground] = Color.FromArgb(255, 55, 55, 55);
