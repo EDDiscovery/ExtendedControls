@@ -38,14 +38,14 @@
             this.button1 = new ExtendedControls.ExtButton();
             this.panel = new ExtendedControls.ExtPanelDataGridViewScroll();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
             this.button2 = new ExtendedControls.ExtButton();
             this.extButton3 = new ExtendedControls.ExtButton();
             this.extButton4 = new ExtendedControls.ExtButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1.SuspendLayout();
             this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -135,7 +135,29 @@
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             this.dataGridView1.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView1_ColumnWidthChanged);
+            this.dataGridView1.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dataGridView1_SortCompare);
             this.dataGridView1.Resize += new System.EventHandler(this.dataGridView1_Resize);
+            // 
+            // Column1
+            // 
+            this.Column1.FillWeight = 10F;
+            this.Column1.HeaderText = "Column1";
+            this.Column1.MinimumWidth = 50;
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.FillWeight = 30F;
+            this.Column2.HeaderText = "Column2";
+            this.Column2.MinimumWidth = 50;
+            this.Column2.Name = "Column2";
+            // 
+            // Column3
+            // 
+            this.Column3.FillWeight = 40F;
+            this.Column3.HeaderText = "Column3";
+            this.Column3.MinimumWidth = 50;
+            this.Column3.Name = "Column3";
             // 
             // extScrollBar1
             // 
@@ -207,27 +229,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1224, 55);
             this.panel1.TabIndex = 6;
-            // 
-            // Column1
-            // 
-            this.Column1.FillWeight = 10F;
-            this.Column1.HeaderText = "Column1";
-            this.Column1.MinimumWidth = 50;
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.FillWeight = 30F;
-            this.Column2.HeaderText = "Column2";
-            this.Column2.MinimumWidth = 50;
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.FillWeight = 40F;
-            this.Column3.HeaderText = "Column3";
-            this.Column3.MinimumWidth = 50;
-            this.Column3.Name = "Column3";
             // 
             // TestPanelDGV
             // 
