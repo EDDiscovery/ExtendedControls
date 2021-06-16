@@ -188,7 +188,8 @@ namespace ExtendedControls
         private Timer hovertimer = new Timer();
         private ToolTip hovertip = null;
         private Point hoverpos;
-        private List<ImageElement> elements = new List<ImageElement>();
+
+        public List<ImageElement> Elements { get; private set; } = new List<ImageElement>();
 
         #region Interface
 
@@ -202,17 +203,17 @@ namespace ExtendedControls
 
         public void Add(ImageElement i)
         {
-            elements.Add(i);
+            Elements.Add(i);
         }
 
         public void AddDrawFirst(ImageElement i)        // add to front of queue, draw first
         {
-            elements.Insert(0, i);
+            Elements.Insert(0, i);
         }
 
         public void AddRange(List<ImageElement> list)
         {
-            elements.AddRange(list);
+            Elements.AddRange(list);
         }
 
         // topleft, autosized
@@ -220,7 +221,7 @@ namespace ExtendedControls
         {
             ImageElement lab = new ImageElement();
             lab.TextAutosize(topleft, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt);
-            elements.Add(lab);
+            Elements.Add(lab);
             return lab;
         }
 
@@ -229,7 +230,7 @@ namespace ExtendedControls
         {
             ImageElement lab = new ImageElement();
             lab.TextFixedSizeC(topleft, size, label, fnt, c, backcolour, backscale, centered, tag, tiptext, frmt);
-            elements.Add(lab);
+            Elements.Add(lab);
             return lab;
         }
 
@@ -238,7 +239,7 @@ namespace ExtendedControls
         {
             ImageElement lab = new ImageElement();
             lab.TextCentreAutosize(poscentrehorz, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt);
-            elements.Add(lab);
+            Elements.Add(lab);
             return lab;
         }
 
@@ -246,7 +247,7 @@ namespace ExtendedControls
         {
             ImageElement lab = new ImageElement();
             lab.Bitmap(p, img, tag, tiptext, imgowned);
-            elements.Add(lab);
+            Elements.Add(lab);
             return lab;
         }
 
@@ -254,29 +255,29 @@ namespace ExtendedControls
         {
             ImageElement lab = new ImageElement();
             lab.OwnerDraw(callback, p, tag, tiptext);
-            elements.Add(lab);
+            Elements.Add(lab);
             return lab;
         }
 
         public void ClearImageList()        // clears the element list, not the image.  call render to do this
         {
-            if (elements != null && elements.Count >= 1)
+            if (Elements != null && Elements.Count >= 1)
             {
-                foreach (var e in elements)
+                foreach (var e in Elements)
                 {
                     e.Dispose();
                 }
 
-                elements.Clear();
+                Elements.Clear();
             }
         }
 
         public Size DisplaySize()
         {
             int maxh = 0, maxw = 0;
-            if (elements != null)
+            if (Elements != null)
             {
-                foreach (ImageElement i in elements)
+                foreach (ImageElement i in Elements)
                 {
                     if (i.Location.X + i.Location.Width > maxw)
                         maxw = i.Location.X + i.Location.Width;
@@ -319,7 +320,7 @@ namespace ExtendedControls
 
                 using (Graphics gr = Graphics.FromImage(newrender))
                 {
-                    foreach (ImageElement i in elements)
+                    foreach (ImageElement i in Elements)
                     {
                         if (i.Image != null)
                             gr.DrawImage(i.Image, i.Location);
@@ -345,7 +346,7 @@ namespace ExtendedControls
 
         public void RemoveItem(ImageElement orgimg, Color? backcolour)
         {
-            int i = elements.IndexOf(orgimg);
+            int i = Elements.IndexOf(orgimg);
             if (i >= 0)
             {
                 if (!backcolour.HasValue)
@@ -353,7 +354,7 @@ namespace ExtendedControls
                 Bitmap b = Image as Bitmap;
                 BaseUtils.BitMapHelpers.ClearBitmapArea(b, orgimg.Location, backcolour.Value); // fill old element with back colour even if transparent
                 orgimg.Dispose();
-                elements.RemoveAt(i);
+                Elements.RemoveAt(i);
             }
         }
 
@@ -364,7 +365,7 @@ namespace ExtendedControls
                 if (newitem.Image != null)
                     gr.DrawImage(newitem.Image, newitem.Location);
                 newitem.OwnerDrawCallback?.Invoke(gr, newitem);
-                elements.Add(newitem);
+                Elements.Add(newitem);
             }
 
             Invalidate();
@@ -392,7 +393,7 @@ namespace ExtendedControls
             {
                 EnterElement = LeaveElement = ClickElement = null;
                 ClearImageList();
-                elements = null;
+                Elements = null;
                 ClearHoverTip();
                 hovertimer.Dispose();
                 hovertimer = null;
@@ -414,7 +415,7 @@ namespace ExtendedControls
 
             if (elementin == null)      // is in?
             {
-                foreach (ImageElement i in elements)
+                foreach (ImageElement i in Elements)
                 {
                     if (i.Location.Contains(eventargs.Location))
                     {
