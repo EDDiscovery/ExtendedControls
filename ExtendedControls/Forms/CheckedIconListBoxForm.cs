@@ -371,9 +371,8 @@ namespace ExtendedControls
             }
 
             panelscroll.ResumeLayout();
-            
-            //System.Diagnostics.Debug.WriteLine("OnLoad in " + sw.ElapsedMilliseconds);
 
+            //System.Diagnostics.Debug.WriteLine("OnLoad in " + sw.ElapsedMilliseconds);
             base.OnLoad(e);
         }
 
@@ -432,8 +431,6 @@ namespace ExtendedControls
         {
             base.OnDeactivate(e);
 
-            System.Diagnostics.Debug.WriteLine("Deactivated " );
-
             if (CloseOnDeactivate)
             {
                 SaveSettingsEvent();
@@ -443,15 +440,17 @@ namespace ExtendedControls
             {
                 SaveSettingsEvent();
 
-                if (Owner != null)
+                if ( Owner != null )
                 {
-                    bool otm = Owner.TopMost;
-                    Owner.TopMost = true;
+                    var o = Owner;          // calling Hide() when the owner is not ready to receive the focus causes windows to go and get another window to place
+                    Owner = null;           // disassociating it temp from its owner seems to solve this. Probably because it can pick that window now.
                     Hide();
-                    Owner.TopMost = otm;
+                    Owner = o;
                 }
                 else
+                {
                     Hide();
+                }
             }
         }
 
@@ -459,6 +458,8 @@ namespace ExtendedControls
         {
             SaveSettings?.Invoke(GetChecked(0, AllOrNoneBack), Tag);     // at this level, we return all items.
         }
+
+        Timer tmr = new Timer();
 
         #endregion
     }
