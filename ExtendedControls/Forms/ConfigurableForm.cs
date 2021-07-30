@@ -57,6 +57,7 @@ namespace ExtendedControls
         public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
         public Color BorderRectColour { get; set; } = Color.Empty;  // force border colour
         public BorderStyle PanelBorderStyle { get; set; } = BorderStyle.FixedSingle;
+        public Size ExtraMarginRightBottom { get; set; } = new Size(16,16);
 
         public class Entry
         {
@@ -680,7 +681,9 @@ namespace ExtendedControls
             else
                 scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
 
-            this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height, false, 64, halign, valign, scrollbarsizeifheightnotacheived);
+            widthw += ExtraMarginRightBottom.Width;
+
+            this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height + ExtraMarginRightBottom.Height, false, new Size(64,64), halign, valign, scrollbarsizeifheightnotacheived);
 
             outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
             outer.Location = new Point(BorderMargin, BorderMargin);

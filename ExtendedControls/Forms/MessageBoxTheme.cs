@@ -212,7 +212,7 @@ namespace ExtendedControls
             wantedh += panelTopGap.Height + panelGap.Height + panelButs.Height  + (framed ? 50 : labelCaption.Height) + Font.ScalePixels(8);
 
             this.Location = new Point(Owner.Left + Owner.Width / 2 - wantedw / 2, Owner.Top + Owner.Height / 2 - wantedh / 2);
-            this.PositionSizeWithinScreen(wantedw, wantedh, false, 72);
+            this.PositionSizeWithinScreen(wantedw, wantedh, false, new Size(64,64));
 
             buttonExt1.Focus();
         }
