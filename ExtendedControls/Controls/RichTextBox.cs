@@ -257,13 +257,19 @@ namespace ExtendedControls
 
         private void UpdateScrollBar()            // from the richtext, vscroll occurred, set the scroll bar
         {
-#if MONO
-            int firstVisibleChar = TextBox.GetCharIndexFromPosition(new Point(0,0));
-            int firstVisibleLine = TextBox.GetLineFromCharIndex(firstVisibleChar);
-            //System.Diagnostics.Debug.WriteLine("USB first VL:" + firstVisibleLine + " lines " + LineCount + " " + visiblelines );
-#else
-            int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
-#endif
+            int firstVisibleLine;
+
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                int firstVisibleChar = TextBox.GetCharIndexFromPosition(new Point(0,0));
+                firstVisibleLine = TextBox.GetLineFromCharIndex(firstVisibleChar);
+                //System.Diagnostics.Debug.WriteLine("USB first VL:" + firstVisibleLine + " lines " + LineCount + " " + visiblelines );
+            }
+            else
+            {
+                firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
+            }
+
             ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
             if (ScrollBar.IsScrollBarOn != scrollbarvisibleonlayout)     // need to relayout if scroll bars pop on
                 PerformLayout();
@@ -289,31 +295,33 @@ namespace ExtendedControls
             ScrollToBar();
         }
 
-#if MONO
         int lastscrollto = 0;
-#endif
 
         private void ScrollToBar()              // from the scrollbar, scroll first line to value
         {
             int scrollvalue = ScrollBar.Value;
-#if MONO
-            int line = scrollvalue + (lastscrollto<=scrollvalue ? visiblelines-1 : 0);
-            int index = TextBox.GetFirstCharIndexFromLine(line);         // MONO does not do EM.LiNESCROLL - this is the best we can do
-            lastscrollto = scrollvalue;
 
-            //System.Diagnostics.Debug.WriteLine("Scroll Bar:" + scrollvalue + " vl " + visiblelines + " goto " + line);
-            TextBox.Select(index , 0);
-            TextBox.ScrollToCaret();
-#else
-            int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
-            int delta = scrollvalue - firstVisibleLine;
-
-            //Console.WriteLine("Scroll Bar:" + scrollvalue + " FVL: " + firstVisibleLine + " delta " + delta);
-            if (delta != 0)
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
-                TextBox.SendMessage(EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
+                int line = scrollvalue + (lastscrollto<=scrollvalue ? visiblelines-1 : 0);
+                int index = TextBox.GetFirstCharIndexFromLine(line);         // MONO does not do EM.LiNESCROLL - this is the best we can do
+                lastscrollto = scrollvalue;
+
+                //System.Diagnostics.Debug.WriteLine("Scroll Bar:" + scrollvalue + " vl " + visiblelines + " goto " + line);
+                TextBox.Select(index , 0);
+                TextBox.ScrollToCaret();
             }
-#endif
+            else
+            {
+                int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
+                int delta = scrollvalue - firstVisibleLine;
+
+                //Console.WriteLine("Scroll Bar:" + scrollvalue + " FVL: " + firstVisibleLine + " delta " + delta);
+                if (delta != 0)
+                {
+                    TextBox.SendMessage(EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
+                }
+            }
         }
 
         protected virtual void MWheel(object sender, MouseEventArgs e)  // mouse, we move then scroll to bar
