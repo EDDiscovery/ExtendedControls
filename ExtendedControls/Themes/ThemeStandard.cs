@@ -123,7 +123,8 @@ namespace ExtendedControls
                 colors.Add(CI.transparentcolorkey, keycolor);
 
                 buttonstyle = bstyle; textboxborderstyle = tbbstyle;
-                windowsframe = wf; formopacity = op; fontname = ft; fontsize = fs;
+                windowsframe = Environment.OSVersion.Platform == PlatformID.Win32NT ? wf : true; 
+                formopacity = op; fontname = ft; fontsize = fs;
             }
 
             public Settings(string n)                                               // gets you windows default colours

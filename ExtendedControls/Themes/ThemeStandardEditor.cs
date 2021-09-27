@@ -85,6 +85,9 @@ namespace ExtendedControls
             trackBar_theme_opacity.Value = (int)theme.Opacity;
             comboBox_TextBorder.SelectedItem = theme.TextBlockBorderStyle;
             comboBox_ButtonStyle.SelectedItem = theme.ButtonStyle;
+            
+            if ( Environment.OSVersion.Platform != PlatformID.Win32NT )
+                checkBox_theme_windowframe.Visible = false;
         }
 
         public void UpdatePatchesEtc()                                         // update patch colours..
