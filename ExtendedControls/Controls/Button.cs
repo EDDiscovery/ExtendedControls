@@ -339,7 +339,9 @@ namespace ExtendedControls
 
                 if (!string.IsNullOrEmpty(Text))
                 {
-                    using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(RtlTranslateAlignment(TextAlign)))
+                    var txalign = Environment.OSVersion.Platform == PlatformID.Win32NT ? RtlTranslateAlignment(TextAlign) : TextAlign;      // MONO Bug cover over
+
+                    using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
                     {
                         using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(ButtonDisabledScaling)))
                         {

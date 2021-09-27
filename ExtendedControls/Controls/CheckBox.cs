@@ -96,7 +96,9 @@ namespace ExtendedControls
                     if (hasimages)
                         DrawImage(ClientRectangle, e.Graphics);
 
-                    using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(RtlTranslateAlignment(TextAlign)))
+                    var txalign = Environment.OSVersion.Platform == PlatformID.Win32NT ? RtlTranslateAlignment(TextAlign) : TextAlign;      // MONO Bug cover over
+
+                    using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
                     {
                         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                         DrawText(ClientRectangle, e.Graphics, fmt);

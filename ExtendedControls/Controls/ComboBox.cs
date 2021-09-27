@@ -186,7 +186,9 @@ namespace ExtendedControls
                     }
                 }
 
-                using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(RtlTranslateAlignment(TextAlign)))
+                var txalign = Environment.OSVersion.Platform == PlatformID.Win32NT ? RtlTranslateAlignment(TextAlign) : TextAlign;      // MONO Bug cover over
+
+                using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
                 {
                     fmt.FormatFlags = StringFormatFlags.NoWrap;
                     e.Graphics.DrawString(this.Text, this.Font, textb, topBoxTextArea, fmt);
