@@ -266,7 +266,7 @@ namespace ExtendedControls
 
             for (int i = 0; i < partlist.Count; i++)
             {
-                if (partlist[i].ptype >= PartsTypes.Day && mevent.X >= partlist[i].xpos+xstart && mevent.X <= partlist[i].endx+xstart)
+                if (partlist[i].ptype >= PartsTypes.DayName && mevent.X >= partlist[i].xpos+xstart && mevent.X <= partlist[i].endx+xstart)
                 {
                     //System.Diagnostics.Debug.WriteLine(".. on " + i);
                     if (selectedpart == i)      // click again, increment
@@ -308,7 +308,7 @@ namespace ExtendedControls
             else if (e.KeyCode == Keys.Left && selectedpart > 0)
             {
                 int findprev = selectedpart-1; // back 1
-                while (findprev >= 0 && partlist[findprev].ptype < PartsTypes.Day)       // back until valid
+                while (findprev >= 0 && partlist[findprev].ptype < PartsTypes.DayName)       // back until valid
                     findprev--;
 
                 if (findprev >= 0)
@@ -320,7 +320,7 @@ namespace ExtendedControls
             else if (e.KeyCode == Keys.Right && selectedpart < partlist.Count - 1 )
             {
                 int findnext = selectedpart + 1; // fwd 1
-                while (findnext < partlist.Count && partlist[findnext].ptype < PartsTypes.Day)       // fwd until valid
+                while (findnext < partlist.Count && partlist[findnext].ptype < PartsTypes.DayName)       // fwd until valid
                     findnext++;
 
                 if (findnext < partlist.Count )
@@ -351,7 +351,9 @@ namespace ExtendedControls
 
             try
             {
-                if (p.ptype == PartsTypes.Day)
+                if (p.ptype == PartsTypes.DayName)
+                    return false;
+                else if (p.ptype == PartsTypes.Day)
                     nv = new DateTime(datetimevalue.Year, datetimevalue.Month, newvalue, datetimevalue.Hour, datetimevalue.Minute, datetimevalue.Second, datetimevalue.Kind);
                 else if (p.ptype == PartsTypes.Month)
                     nv = new DateTime(datetimevalue.Year, newvalue, datetimevalue.Day, datetimevalue.Hour, datetimevalue.Minute, datetimevalue.Second, datetimevalue.Kind);
@@ -384,7 +386,9 @@ namespace ExtendedControls
             if (selectedpart != -1)
             {
                 Parts p = partlist[selectedpart];
-                if (p.ptype == PartsTypes.Day)
+                if (p.ptype == PartsTypes.DayName)
+                    datetimevalue = datetimevalue.AddDays(dir);
+                else if (p.ptype == PartsTypes.Day)
                     datetimevalue = datetimevalue.AddDays(dir);
                 else if (p.ptype == PartsTypes.Month)
                     datetimevalue = datetimevalue.AddMonths(dir);
