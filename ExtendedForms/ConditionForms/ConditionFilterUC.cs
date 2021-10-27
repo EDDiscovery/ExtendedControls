@@ -636,11 +636,9 @@ namespace ExtendedConditionsForms
 
         #region Autocomplete event field types.. complicated
 
-        List<string> AutoCompletor(string s, ExtendedControls.ExtTextBoxAutoComplete t)
+        void AutoCompletor(string s, ExtendedControls.ExtTextBoxAutoComplete t, SortedSet<string> set)
         {
             Tuple<Group, Group.Conditions> gc = t.Tag as Tuple<Group, Group.Conditions>;
-
-            List<string> ret = new List<string>();
 
             if (gc.Item1.variables != null)
             {
@@ -651,12 +649,10 @@ namespace ExtendedConditionsForms
                         string chelp = (x.Help ?? "").AppendPrePad(x.Comment, ":");
                         chelp = chelp.Replace("\n", " ");
                         chelp = chelp.Truncate(0, 80, "..");
-                        ret.Add(x.Name.AppendPrePad(chelp,commentmarker));
+                        set.Add(x.Name.AppendPrePad(chelp,commentmarker));
                     }
                 }
             }
-
-            return ret;
         }
 
         private List<TypeHelpers.PropertyNameInfo> CreateVariables(string evname)       // may return null

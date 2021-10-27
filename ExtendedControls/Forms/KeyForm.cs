@@ -149,13 +149,12 @@ namespace ExtendedControls
             RemoveMF();
         }
 
-        public static List<string> AutoList(string input, ExtTextBoxAutoComplete t)
+        public static void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
         {
             Process[] pa = Process.GetProcesses();
-
-            List<string> res = (from e in pa where e.ProcessName.StartsWith(input,StringComparison.InvariantCultureIgnoreCase) select e.ProcessName).ToList();
-
-            return res;
+            var res = (from e in pa where e.ProcessName.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select e.ProcessName);
+            foreach (var r in res)
+                set.Add(r);
         }
 
 

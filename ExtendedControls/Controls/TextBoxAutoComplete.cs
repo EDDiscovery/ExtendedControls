@@ -41,7 +41,7 @@ namespace ExtendedControls
 
         // use EndButtonEnable to turn on autocompleter button
 
-        public delegate List<string> PerformAutoComplete(string input, ExtTextBoxAutoComplete t);
+        public delegate void PerformAutoComplete(string input, ExtTextBoxAutoComplete t, SortedSet<string> set);
         private PerformAutoComplete AutoCompleteFunction { get { return autoCompleteFunction; } set { autoCompleteFunction = value; EndButtonEnable = value != null; } }
         public void SetAutoCompletor(PerformAutoComplete p) { AutoCompleteFunction = p; }  // older interface
         public void SetAutoCompletor(PerformAutoComplete p, bool endbuttonvisible ) { AutoCompleteFunction = p; EndButtonVisible = endbuttonvisible; }
@@ -150,7 +150,8 @@ namespace ExtendedControls
             {
                 //System.Diagnostics.Debug.WriteLine("{0} Begin AC", Environment.TickCount % 10000);
                 restartautocomplete = false;
-                autocompletestrings = autoCompleteFunction(string.Copy(autocompletestring), this);    // pass a copy, in case we change it out from under it
+                autocompletestrings = new SortedSet<string>();
+                autoCompleteFunction(string.Copy(autocompletestring), this, autocompletestrings);    // pass a copy, in case we change it out from under it
                 //System.Diagnostics.Debug.WriteLine("{0} finish func ret {1} restart {2}", Environment.TickCount % 10000, autocompletestrings.Count, restartautocomplete);
             } while (restartautocomplete == true);
 
@@ -180,7 +181,7 @@ namespace ExtendedControls
                     cbdropdown.ForeColor = this.ForeColor;
                     cbdropdown.BackColor = this.DropDownBorderColor;
                     cbdropdown.BorderColor = this.DropDownBorderColor;
-                    cbdropdown.Items = autocompletestrings;
+                    cbdropdown.Items = autocompletestrings.ToList();
                     cbdropdown.SelectedIndex = 0;
                     cbdropdown.FlatStyle = this.FlatStyle;
                     cbdropdown.Font = this.Font;
@@ -196,7 +197,7 @@ namespace ExtendedControls
                 else
                 {
                     cbdropdown.Items.Clear();
-                    cbdropdown.Items = autocompletestrings;
+                    cbdropdown.Items = autocompletestrings.ToList();
                     cbdropdown.Refresh();
                 }
 
@@ -264,7 +265,7 @@ namespace ExtendedControls
         private string autocompletestring;
         private bool restartautocomplete = false;
         private System.Threading.Thread ThreadAutoComplete;
-        private List<string> autocompletestrings = null;
+        private SortedSet<string> autocompletestrings = null;
         ExtListBoxForm cbdropdown;
         int autocompletelastcount = 0;
         private bool tempdisableauto = false;
