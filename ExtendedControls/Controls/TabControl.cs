@@ -124,18 +124,17 @@ namespace ExtendedControls
 
         #region Helpers
 
-        public bool SelectTabPage(string name)
+        public TabPage FindTabPageByName(string name)
         {
             foreach (TabPage p in TabPages)
             {
                 if (p.Text.Equals(name, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    SelectTab(p);
-                    return true;
+                    return p;
                 }
             }
 
-            return false;
+            return null;
         }
 
         public int CalculateMinimumTabWidth()                                // given fonts and the tab text, whats the minimum width?
