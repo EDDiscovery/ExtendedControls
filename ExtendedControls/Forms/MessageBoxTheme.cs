@@ -14,6 +14,7 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
+using BaseUtils;
 using System;
 using System.Data;
 using System.Drawing;
@@ -209,7 +210,7 @@ namespace ExtendedControls
             if ( panelIcon.BackgroundImage != null )
                 wantedh = Math.Max(panelIcon.Bottom, wantedh);
 
-            wantedh += panelTopGap.Height + panelGap.Height + panelButs.Height  + (framed ? 50 : labelCaption.Height) + Font.ScalePixels(8);
+            wantedh += panelTopGap.Height + panelGap.Height + panelButs.Height  + (framed ? 50 : labelCaption.Height + 8) + Font.ScalePixels(8);
 
             this.Location = new Point(Owner.Left + Owner.Width / 2 - wantedw / 2, Owner.Top + Owner.Height / 2 - wantedh / 2);
             this.PositionSizeWithinScreen(wantedw, wantedh, false, new Size(64,64));
