@@ -14,9 +14,7 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
-using BaseUtils;
 using System;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
