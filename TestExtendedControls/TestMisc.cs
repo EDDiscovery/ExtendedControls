@@ -63,7 +63,7 @@ namespace TestExtendedControls
             this.Font = new Font("Verdana", 20f);
         }
 
-        public static List<string> AutoList(string input, ExtTextBoxAutoComplete t)
+        public static void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
         {
             List<string> list = new List<string>();
 
@@ -81,7 +81,8 @@ namespace TestExtendedControls
             list.Add("Efive");
 
             List<string> res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
-            return res;
+            foreach (var x in res)
+                set.Add(x);
         }
 
     }

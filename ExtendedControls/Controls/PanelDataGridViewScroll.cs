@@ -39,6 +39,7 @@ namespace ExtendedControls
             dgv.RowsAdded -= DGVRowsAdded;              // need to keep row removed in case outlining range goes out
             dgv.RowStateChanged -= DGVRowStateChanged;
             dgv.RowsRemoved -= DGVRowsRemoved;
+            dgv.RowHeightChanged -= Dgv_RowHeightChanged;
             dgv.SuspendLayout();
         }
 
@@ -50,6 +51,7 @@ namespace ExtendedControls
             dgv.RowsAdded += DGVRowsAdded;
             dgv.RowStateChanged += DGVRowStateChanged;
             dgv.RowsRemoved += DGVRowsRemoved;
+            dgv.RowHeightChanged += Dgv_RowHeightChanged;
         }
 
         public void ChangeVisibility(int startrow, int endrow, bool state)       // this efficiently changes the visibility and stops repeated scroll updates
@@ -151,7 +153,7 @@ namespace ExtendedControls
                 dgv.RowsAdded += DGVRowsAdded;
                 dgv.RowsRemoved += DGVRowsRemoved;
                 dgv.RowStateChanged += DGVRowStateChanged;
-                //dgv.RowHeightChanged += Dgv_RowHeightChanged; // tbd on this one
+                dgv.RowHeightChanged += Dgv_RowHeightChanged;
                 dgv.MouseWheel += Wheel;
 
                 outlining?.SetDGV(dgv);    // tell outlining
@@ -247,7 +249,7 @@ namespace ExtendedControls
         protected void DGVRowsRemoved(Object sender, DataGridViewRowsRemovedEventArgs e)
         {
             UpdateScrollBar();
-            outlining?.RowRemoved(e.RowIndex,e.RowCount);
+            outlining?.RowRemoved(e.RowIndex, e.RowCount);
         }
 
         protected virtual void DGVRowStateChanged(object sender, DataGridViewRowStateChangedEventArgs e)
@@ -258,6 +260,12 @@ namespace ExtendedControls
                 outlining?.RowChangedState(e.Row.Index);
             }
         }
+
+        protected virtual void Dgv_RowHeightChanged(object sender, DataGridViewRowEventArgs e)
+        {
+            UpdateScrollBar();
+        }
+
 
         bool ignoredgvscroll = false;   // stops recursion when programatically changing first row pos
 

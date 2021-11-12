@@ -69,16 +69,19 @@ namespace TestExtendedControls
             System.Diagnostics.Debug.WriteLine("Answer " + autoCompleteTextBox1.Text);
         }
 
-        public static List<string> AutoList(string input, ExtTextBoxAutoComplete t)
+        public static void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
         {
-            List<string> res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
-            return res;
+            var res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
+            SortedSet<string> ss = new SortedSet<string>();
+            foreach (var x in res)
+                set.Add(x);
         }
 
-        public static List<string> ReturnSystemAutoCompleteListDGV(string input, Object ctrl)
+        public static void ReturnSystemAutoCompleteListDGV(string input, Object ctrl, SortedSet<string> set)
         {
             List<string> res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
-            return res;
+            foreach (var x in res)
+                set.Add(x);
         }
 
     }

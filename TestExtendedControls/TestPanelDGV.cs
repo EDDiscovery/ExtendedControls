@@ -24,14 +24,20 @@ namespace TestExtendedControls
             theme.SetThemeByName("Elite Verdana");
             theme.WindowsFrame = true;
 
-            dataGridView1.Dock = DockStyle.Fill;
+
+            dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+
+            dataGridView.RowHeightChanged += (a,e) => { System.Diagnostics.Debug.WriteLine("DGV Row Height"); };
+
+            dataGridView.Dock = DockStyle.Fill;
 
             for ( int i = 0; i < 100; i++ )
             {
-                DataGridViewRow row = dataGridView1.RowTemplate.Clone() as DataGridViewRow;
-                row.CreateCells(dataGridView1, i.ToString(), (100+i).ToString(), (10000-i).ToString());
+                DataGridViewRow row = dataGridView.RowTemplate.Clone() as DataGridViewRow;
+                row.CreateCells(dataGridView, i.ToString(), (100+i).ToString(), (10000-i).ToString());
                 row.Tag = i;
-                dataGridView1.Rows.Add(row);
+                dataGridView.Rows.Add(row);
             }
         }
 
@@ -44,15 +50,20 @@ namespace TestExtendedControls
         private void button1_Click(object sender, EventArgs e)
         {
             for (int r = 5; r < 10; r++)
-                dataGridView1.Rows[r].Cells[0].Value= "";       // col 0 sort by tag, knock some out and show it still sorts right
+                dataGridView.Rows[r].Cells[0].Value= "";       // col 0 sort by tag, knock some out and show it still sorts right
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            string s = "";
+            for (int i = 0; i < 10; i++)
+                s += $"Row {i}\r\n";
+            dataGridView.Rows[5].Cells[1].Value = s;
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
+            dataGridView.Rows[5].Cells[1].Value = "Back";
         }
 
         private void Button4_Click(object sender, EventArgs e)
@@ -82,8 +93,8 @@ namespace TestExtendedControls
         {
             if (e.Column.Index == 0)
             {
-                int tl = (int)dataGridView1.Rows[e.RowIndex1].Tag;
-                int tr = (int)dataGridView1.Rows[e.RowIndex2].Tag;
+                int tl = (int)dataGridView.Rows[e.RowIndex1].Tag;
+                int tr = (int)dataGridView.Rows[e.RowIndex2].Tag;
                 e.SortResult = tl.CompareTo(tr);
                 e.Handled = true;
             }

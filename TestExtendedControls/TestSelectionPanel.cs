@@ -54,10 +54,11 @@ namespace TestExtendedControls
             System.Diagnostics.Debug.WriteLine("Selected " + panelSelectionList1.SelectedIndex);
         }
 
-        public static List<string> AutoList(string input, ExtTextBoxAutoComplete t)
+        public static void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
         {
             List<string> res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
-            return res;
+            foreach (var x in res)
+                set.Add(x);
         }
 
         private void buttonExt1_Click(object sender, EventArgs e)
