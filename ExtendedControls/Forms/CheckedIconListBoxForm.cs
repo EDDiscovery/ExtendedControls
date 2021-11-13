@@ -62,7 +62,9 @@ namespace ExtendedControls
 
         // if not set, each image sets its size. If no images, then use this to set alternate size 
         // if fonth > imageheight, then images are scaled to font size
-        public Size ImageSize { get; set; } = new Size(0, 0);                       
+        public Size ImageSize { get; set; } = new Size(0, 0);
+
+        public Size ScreenMargin { get; set; } = new Size(64, 64);
 
         public int ItemCount { get { return controllist.Count; } }
 
@@ -387,7 +389,7 @@ namespace ExtendedControls
             if (SetLocation.X != int.MinValue)
                 Location = SetLocation;
 
-            this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, maxh, true, new Size(64,64));    // keep it on the screen. 
+            this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, maxh, true, ScreenMargin);    // keep it on the screen. 
         }
 
         private void Ipanel_MouseDown(object sender, MouseEventArgs e)
