@@ -105,7 +105,7 @@ namespace ExtendedControls
 
             for (int i = 0; i < tx.Count(); i++)
             {
-                list[i] = AddItem(tg[i], tx[i], (im != null && i < im.Length) ? im[i] : null);
+                list[i] = AddItem(tg[i], tx[i], (im != null && i < im.Length) ? im[i] : null, null);
             }
 
             if (attop)
@@ -117,9 +117,9 @@ namespace ExtendedControls
                 controllist.AddRange(list);
         }
 
-        public void AddItem(string tag, string text, Image img = null, bool attop = false)
+        public void AddItem(string tag, string text, Image img = null, bool attop = false, string exclusive = null)
         {
-            ControlSet c = AddItem(tag, text, img);
+            ControlSet c = AddItem(tag, text, img, exclusive);
 
             if (attop)
                 controllist.Insert(0, c);
@@ -127,13 +127,14 @@ namespace ExtendedControls
                 controllist.Add(c);
         }
 
-        private ControlSet AddItem(string tag, string text, Image img = null)
+        private ControlSet AddItem(string tag, string text, Image img = null, string exclusive = null)
         {
             ControlSet c = new ControlSet();
 
             panelscroll.SuspendLayout();
 
             c.tag = tag;
+            c.exclusivetags = exclusive;
 
             ExtCheckBox cb = new ExtCheckBox();
             cb.BackColor = this.BackColor;
@@ -186,6 +187,7 @@ namespace ExtendedControls
             public Panel icon;
             public Label label;
             public string tag;  // logical tag for settings
+            public string exclusivetags;        // ones which must be off if this is on
         };
 
         private List<ControlSet> controllist;
@@ -220,7 +222,9 @@ namespace ExtendedControls
                 for (int i = 0; i < controllist.Count; i++)
                 {
                     if (taglist.Contains(controllist[i].tag))
+                    { 
                         controllist[i].checkbox.CheckState = state;
+                    }
                 }
 
                 ignorechangeevent = false;
@@ -408,11 +412,28 @@ namespace ExtendedControls
                 ExtCheckBox cb = sender as ExtCheckBox;
                 int index = (int)cb.Tag;
 
+                if (cb.Checked && controllist[index].exclusivetags != null)      // if checking, and we have tags which must be turned off
+                {
+                    ignorechangeevent = true;
+                    string[] tags = controllist[index].exclusivetags.Split(";");
+                    foreach( string s in tags)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Tag {controllist[index].tag} turn off {s}");
+                        int offindex = controllist.FindIndex(x => x.tag == s);
+                        if (offindex >= 0)
+                            controllist[offindex].checkbox.Checked = false;
+                    }
+                    ignorechangeevent = false;
+                }
+
+
                 var prevstate = cb.Checked ? CheckState.Unchecked : CheckState.Checked;
 
                 ItemCheckEventArgs i = new ItemCheckEventArgs(index,cb.CheckState, prevstate);
                 CheckChangedEvent(cb,i);       // derived classes first.
                 CheckedChanged?.Invoke(this,i,Tag);
+
+
 
                 if (CloseOnChange)
                 {

@@ -49,7 +49,7 @@ namespace TestExtendedControls
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
 
             for (int i = 0; i < 200; i++)
-                f.AddItem("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length]);
+                f.AddItem("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length], false, (i==0) ? "T1;T2" : (i==1) ? "T0;T2" : (i==2) ? "T0;T1": null);
 
             f.PositionBelow(extButton1);
             f.SetChecked("Two;Four");

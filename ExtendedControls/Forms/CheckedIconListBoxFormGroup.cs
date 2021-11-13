@@ -31,6 +31,7 @@ namespace ExtendedControls
             public string Tag;
             public string Text;
             public Image Image;
+            public string Exclusive;
         }
 
         private List<Options> groupoptions = new List<Options>();
@@ -54,9 +55,9 @@ namespace ExtendedControls
             groupoptions.Insert(0, o);
         }
 
-        public void AddStandardOption(string tag, string text, Image img = null)                // standard option
+        public void AddStandardOption(string tag, string text, Image img = null, string exclusivetags = null )   // standard option
         {
-            standardoptions.Add(new Options() { Tag = tag, Text = text, Image = img });
+            standardoptions.Add(new Options() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags });
         }
 
         public void AddStandardOption(List<Tuple<string, string, Image>> list)                // standard option
@@ -79,7 +80,7 @@ namespace ExtendedControls
                 AddItem(x.Tag, x.Text, x.Image);
 
             foreach (var x in standardoptions)
-                AddItem(x.Tag, x.Text, x.Image);
+                AddItem(x.Tag, x.Text, x.Image, false, x.Exclusive);
 
             string[] slist = settings.SplitNoEmptyStartFinish(';');
             if (slist.Length == 1 && slist[0].Equals("All"))
