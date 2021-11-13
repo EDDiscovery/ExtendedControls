@@ -119,9 +119,9 @@ namespace ExtendedControls
                 controllist.AddRange(list);
         }
 
-        public void AddItem(string tag, string text, Image img = null, bool attop = false, string exclusive = null)
+        public void AddItem(string tag, string text, Image img = null, bool attop = false, string exclusive = null, bool disableuncheck = false)
         {
-            ControlSet c = AddItem(tag, text, img, exclusive);
+            ControlSet c = AddItem(tag, text, img, exclusive, disableuncheck);
 
             if (attop)
                 controllist.Insert(0, c);
@@ -129,7 +129,7 @@ namespace ExtendedControls
                 controllist.Add(c);
         }
 
-        private ControlSet AddItem(string tag, string text, Image img = null, string exclusive = null)
+        private ControlSet AddItem(string tag, string text, Image img = null, string exclusive = null, bool disableuncheck = false)
         {
             ControlSet c = new ControlSet();
 
@@ -137,6 +137,7 @@ namespace ExtendedControls
 
             c.tag = tag;
             c.exclusivetags = exclusive;
+            c.disableuncheck = disableuncheck;
 
             ExtCheckBox cb = new ExtCheckBox();
             cb.BackColor = this.BackColor;
@@ -190,6 +191,7 @@ namespace ExtendedControls
             public Label label;
             public string tag;  // logical tag for settings
             public string exclusivetags;        // ones which must be off if this is on
+            public bool disableuncheck; // no unchecking
         };
 
         private List<ControlSet> controllist;
@@ -414,6 +416,13 @@ namespace ExtendedControls
                 ExtCheckBox cb = sender as ExtCheckBox;
                 int index = (int)cb.Tag;
 
+                if (controllist[index].disableuncheck && cb.Checked == false) // if uncheckable, then set it back. Used in radio button situations
+                {
+                    ignorechangeevent = true;
+                    cb.Checked = true;
+                    ignorechangeevent = false;
+                }
+
                 if (cb.Checked && controllist[index].exclusivetags != null)      // if checking, and we have tags which must be turned off
                 {
                     ignorechangeevent = true;
@@ -427,7 +436,6 @@ namespace ExtendedControls
                     }
                     ignorechangeevent = false;
                 }
-
 
                 var prevstate = cb.Checked ? CheckState.Unchecked : CheckState.Checked;
 

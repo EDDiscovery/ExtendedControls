@@ -47,6 +47,7 @@
             this.extButton9 = new ExtendedControls.ExtButton();
             this.extButton10 = new ExtendedControls.ExtButton();
             this.extButton11 = new ExtendedControls.ExtButton();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -104,8 +105,9 @@
             this.extRichTextBox1.Location = new System.Drawing.Point(12, 262);
             this.extRichTextBox1.Name = "extRichTextBox1";
             this.extRichTextBox1.ReadOnly = false;
-            this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 Microsoft S" +
-    "ans Serif;}}\r\n\\viewkind4\\uc1\\pard\\f0\\fs17\\par\r\n}\r\n";
+            this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
+    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
+    "d\\f0\\fs17\\par\r\n}\r\n";
             this.extRichTextBox1.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
             this.extRichTextBox1.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
             this.extRichTextBox1.ScrollBarBackColor = System.Drawing.SystemColors.Control;
@@ -233,11 +235,22 @@
             this.extButton11.UseVisualStyleBackColor = true;
             this.extButton11.Click += new System.EventHandler(this.extButton11_Click);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(581, 140);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(80, 17);
+            this.checkBox1.TabIndex = 4;
+            this.checkBox1.Text = "checkBox1";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // TestListBoxIcon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(873, 558);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.extRichTextBox1);
             this.Controls.Add(this.extButton8);
             this.Controls.Add(this.extButton7);
@@ -254,6 +267,7 @@
             this.Text = "Form1";
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -276,5 +290,6 @@
         private ExtendedControls.ExtButton extButton9;
         private ExtendedControls.ExtButton extButton10;
         private ExtendedControls.ExtButton extButton11;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
