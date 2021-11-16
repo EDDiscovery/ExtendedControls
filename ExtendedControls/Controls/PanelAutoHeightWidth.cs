@@ -50,10 +50,10 @@ namespace ExtendedControls
         { 
             if (!AutoHeightWidthDisable && (AutoHeight||AutoWidth) && !ignoreresize)
             {
-                Size s = this.FindMaxSubControlArea(Padding.Horizontal, Padding.Vertical, null, true);
+                Size s = this.FindMaxSubControlArea(Padding.Horizontal, Padding.Vertical, null, false);
                 if ( this.Height != s.Height || this.Width != s.Width)
                 {
-                    System.Diagnostics.Debug.WriteLine($"AutoHeightWidth Panel {Name} adjust {s}");
+                    //System.Diagnostics.Debug.WriteLine($"AutoHeightWidth Panel {Name} adjust {s}");
                     ignoreresize = true;
                     if (AutoHeight && autoWidth)
                         this.Size = s;
