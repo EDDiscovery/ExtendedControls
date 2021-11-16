@@ -15,12 +15,14 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtPanelRollUp : Panel
+    public class ExtPanelRollUp : ExtPanelAutoHeightWidth
+    //public class ExtPanelRollUp : Panel
     {
         public int RollUpDelay { get; set; } = 1000;            // before rolling
         public int UnrollHoverDelay { get; set; } = 1000;       // set to large value and forces click to open functionality
@@ -32,6 +34,7 @@ namespace ExtendedControls
         public int SecondHiddenMarkerWidth { get; set; } = 0;   // 0 = off, else >0 width on far right.  Only set if HiddenMarkerWidth!=0 (not checked)
 
         public bool PinState { get { return pinbutton.Checked; } set { SetPinState(value); } }
+
 
         public event EventHandler DeployStarting;
         public event EventHandler DeployCompleted;
@@ -194,12 +197,19 @@ namespace ExtendedControls
                 targetrolltickstart = Environment.TickCount;
                 timer.Interval = rolltimerinterval;
                 RetractStarting?.Invoke(this, EventArgs.Empty);
+                AutoHeightWidthDisable = true;  // disable Auto width/height controls on PanelAutoHeightWidth
                 timer.Start();
 
+                autosizedpanels.Clear();
                 foreach (Control c in Controls)     // panels attached must not be autosized
                 {
-                    if (c is Panel)
-                        (c as Panel).AutoSize = false;
+                    Panel p = c as Panel;
+
+                    if (p != null && p.AutoSize == true)    // if autosize panel, disable it.
+                    {
+                        autosizedpanels.Add(p);
+                        p.AutoSize = false;
+                    }
                 }
 
                 wasautosized = this.AutoSize;
@@ -208,6 +218,7 @@ namespace ExtendedControls
         }
 
         bool wasautosized = false;
+        List<Panel> autosizedpanels = new List<Panel>();
 
         private void StartRollUpTimer()
         {
@@ -350,18 +361,15 @@ namespace ExtendedControls
                     timer.Stop();
                     mode = Mode.Down;
                     hiddenmarkershouldbeshown = false;
+                    AutoHeightWidthDisable = false;
+
                     SetHMViz();
 
                     if (wasautosized)
-                    {
                         this.AutoSize = true;
 
-                        foreach (Control c in Controls)     // all panels below become autosized.. shortcut for now.
-                        {
-                            if (c is Panel)
-                                (c as Panel).AutoSize = true;
-                        }
-                    }
+                    foreach (Panel p in autosizedpanels)
+                        p.AutoSize = true;
 
                     DeployCompleted?.Invoke(this, EventArgs.Empty);
                 }

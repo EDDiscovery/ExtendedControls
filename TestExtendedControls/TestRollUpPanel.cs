@@ -51,5 +51,17 @@ namespace TestExtendedControls
             theme.FontSize = 20;
             theme.ApplyStd(this);
         }
+
+
+
+        private void flowLayoutPanel2_Resize(object sender, EventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine($"Panel outer.flow1 {flowLayoutPanel1.Location} {flowLayoutPanel1.Size}");
+            //System.Diagnostics.Debug.WriteLine($"Panel mid {panelMid.Location} {panelMid.Size}");
+            //System.Diagnostics.Debug.WriteLine($"Panel flow2 {flowLayoutPanel2.Location} {flowLayoutPanel2.Size}");
+            //System.Diagnostics.Debug.WriteLine($"Panel bot {panelBot.Location} {panelBot.Size}");
+            //System.Diagnostics.Debug.WriteLine($"");
+            //PerformLayout();
+        }
     }
 }
