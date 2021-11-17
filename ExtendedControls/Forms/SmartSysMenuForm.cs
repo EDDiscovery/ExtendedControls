@@ -49,11 +49,9 @@ namespace ExtendedControls
 
         public event EventHandler TopMostChanged;
 
-
-        // TODO: managed wrapper to keep track of these all up and down the inhertance stack.
         protected const int SC_ONTOP = 0x0001;
         protected const int SC_OPACITYSUBMENU = 0x0002;    // 100% = 0x3; 90% = 0x4; ...; 10% = 0xC; 0% = NOT USED!
-        protected const int SC_ADDITIONALMENU = 0x0020;    
+        protected const int SC_ADDITIONALMENU = 0x0020;
         // 0x000D-0x001F are reserved by us for future expansion, while 0x0000 and 0xF000+ are system reserved.
 
         protected virtual bool AllowResize { get; set; } = true;

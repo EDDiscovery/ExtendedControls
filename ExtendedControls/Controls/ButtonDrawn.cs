@@ -175,7 +175,7 @@ namespace ExtendedControls
         /// otherwise.</param>
         public virtual void NotifyDefault(bool value)
         {
-            // TODO: we're possibly the default "button" on a form. Paint boldly or something.
+            // we're possibly the default "button" on a form. Paint boldly or something. we don't care
         }
 
         /// <summary>
@@ -790,7 +790,7 @@ namespace ExtendedControls
                 {
                     case ImageLayout.None:      // Image {0,0} = ClientRectangle {0,0} with no scaling
                         {
-                            // TODO: honour RightToLeft; Image {1,0} = ClientRect {1,0}
+                            // maybe honour RightToLeft; Image {1,0} = ClientRect {1,0}
                             var dstRc = this.ClientRectangle;
                             dstRc.Intersect(new Rectangle(Point.Empty, image.Size));
                             if (iattrib != null)
@@ -801,7 +801,7 @@ namespace ExtendedControls
                         }
                     case ImageLayout.Tile:      // Image {0,0} = ClientRectangle {0,0} with no scaling, and repeated to fill
                         {
-                            // TODO: Honour iattrib here? Doesn't seem fully possible?
+                            // Honour iattrib here? Doesn't seem fully possible?
                             using (var tb = new TextureBrush(image, WrapMode.Tile))
                                 e.Graphics.FillRectangle(tb, this.ClientRectangle);
                             break;
@@ -882,7 +882,6 @@ namespace ExtendedControls
 
             if (imageselected == ImageType.Text || imageselected == ImageType.InverseText)
             {
-                // TODO: AutoSize. Ugh.
                 Invalidate();
             }
         }
