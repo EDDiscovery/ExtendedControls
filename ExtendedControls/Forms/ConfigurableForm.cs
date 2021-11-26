@@ -161,7 +161,7 @@ namespace ExtendedControls
             {
                 if (controlname == "OK")
                     ReturnResult(DialogResult.OK);
-                else if (controlname == "Close" || controlname == "Escape")
+                else if (controlname == "Close" || controlname == "Escape" || controlname == "Cancel")
                     ReturnResult(DialogResult.Cancel);
                 else
                     othertrigger?.Invoke(dialogname, controlname, xtag);
