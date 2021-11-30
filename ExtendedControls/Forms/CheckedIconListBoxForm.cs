@@ -426,13 +426,24 @@ namespace ExtendedControls
                 if (cb.Checked && controllist[index].exclusivetags != null)      // if checking, and we have tags which must be turned off
                 {
                     ignorechangeevent = true;
-                    string[] tags = controllist[index].exclusivetags.Split(";");
-                    foreach( string s in tags)
+                    if (controllist[index].exclusivetags.Equals("All"))     // turn off all but us
                     {
-                        System.Diagnostics.Debug.WriteLine($"Tag {controllist[index].tag} turn off {s}");
-                        int offindex = controllist.FindIndex(x => x.tag == s);
-                        if (offindex >= 0)
-                            controllist[offindex].checkbox.Checked = false;
+                        for(int ix = 0; ix < controllist.Count; ix++)
+                        {
+                            if ( ix != index && controllist[ix].tag != "All" && controllist[ix].tag != "None")
+                                controllist[ix].checkbox.Checked = false;
+                        }
+                    }
+                    else
+                    {
+                        string[] tags = controllist[index].exclusivetags.Split(";");
+                        foreach (string s in tags)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Tag {controllist[index].tag} turn off {s}");
+                            int offindex = controllist.FindIndex(x => x.tag == s);
+                            if (offindex >= 0)
+                                controllist[offindex].checkbox.Checked = false;
+                        }
                     }
                     ignorechangeevent = false;
                 }
@@ -442,8 +453,6 @@ namespace ExtendedControls
                 ItemCheckEventArgs i = new ItemCheckEventArgs(index,cb.CheckState, prevstate);
                 CheckChangedEvent(cb,i);       // derived classes first.
                 CheckedChanged?.Invoke(this,i,Tag);
-
-
 
                 if (CloseOnChange)
                 {
