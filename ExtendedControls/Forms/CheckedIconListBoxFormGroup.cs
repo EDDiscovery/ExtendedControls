@@ -38,6 +38,8 @@ namespace ExtendedControls
         private List<Options> groupoptions = new List<Options>();
         private List<Options> standardoptions = new List<Options>();
 
+        public long LongConfigurationValue { get; private set; }                    // if using long as the tag, this is the accumulated long value of all bits
+
         public void AddAllNone()
         {
             AddGroupOptionAtTop("None", "None".Tx(), Properties.Resources.None);
@@ -50,13 +52,20 @@ namespace ExtendedControls
             groupoptions.Add(o);
         }
 
-        public void AddGroupOptionAtTop(string tags, string text, Image img = null)      // group option
+        public void AddGroupOptionAtTop(string tag, string text, Image img = null)      // group option
         {
-            var o = new Options() { Tag = tags, Text = text, Image = img };
+            var o = new Options() { Tag = tag, Text = text, Image = img };
             groupoptions.Insert(0, o);
         }
 
-        public void AddStandardOption(string tag, string text, Image img = null, string exclusivetags = null, bool disableuncheck = false )   // standard option
+        // use a long tag (bit field, 1,2,4,8 etc).  Use SettingsStringToLong to convert back
+        public void AddStandardOption(long tag, string text, Image img = null, string exclusivetags = null, bool disableuncheck = false)   
+        {
+            LongConfigurationValue |= tag;
+            standardoptions.Add(new Options() { Tag = tag.ToStringInvariant(), Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck });
+        }
+
+        public void AddStandardOption(string tag, string text, Image img = null, string exclusivetags = null, bool disableuncheck = false)   // standard option
         {
             standardoptions.Add(new Options() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck });
         }
@@ -73,6 +82,17 @@ namespace ExtendedControls
             {
                 return left.Text.CompareTo(right.Text);
             });
+        }
+
+        public static long SettingsStringToLong(string s)                                // if using long as the tag, use this to convert the 1;2;4; value back to long
+        {
+            string[] split = s.SplitNoEmptyStartFinish(';');
+            long v = 0;
+            foreach (var str in split)
+            {
+                v |= str.InvariantParseLong(0);
+            }
+            return v;
         }
 
         public void Create(string settings, bool applytheme = true)         // create, set settings, theme.  Call show(parent) afterwards
@@ -98,6 +118,28 @@ namespace ExtendedControls
                 ThemeableFormsInstance.Instance?.ApplyStd(this);
                 FormBorderStyle = FormBorderStyle.None;
             }
+        }
+
+        // show using a long to control - the tags should be numeric decimal versions of the flags
+        // if no flags are set, then you can use a default standard option
+        public void Show(long settings, Control ctr, Form parent, Object tag = null, int setonfornoflags = -1)         
+        {
+            string s = "";
+            for (int i = 0; i < 63; i++)
+            {
+                if ((settings & (1L << i)) != 0)
+                    s += (1L << i).ToStringInvariant() + ";";
+            }
+
+            if (s == "" && setonfornoflags>=0)
+                s = standardoptions[setonfornoflags].Tag;
+
+            if (ItemCount == 0)     // if not created, create..
+                Create(s);
+
+            Tag = tag;
+            PositionBelow(ctr);
+            Show(parent);
         }
 
         public void Show(string settings, Control ctr, Form parent, Object tag = null)         // quick form version
