@@ -95,6 +95,11 @@ namespace ExtendedControls
             return v;
         }
 
+        public string[] SettingsTagList()
+        {
+            return standardoptions.Select(x => x.Tag).ToArray();
+        }
+
         public void Create(string settings, bool applytheme = true)         // create, set settings, theme.  Call show(parent) afterwards
         {
             foreach (var x in groupoptions)
