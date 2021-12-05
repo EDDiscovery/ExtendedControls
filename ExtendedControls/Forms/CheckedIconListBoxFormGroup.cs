@@ -147,6 +147,25 @@ namespace ExtendedControls
             Show(parent);
         }
 
+        // given an enum list, and a set of bools indicating if each is set or not, show
+        public void Show(Type ofenum, bool[] ctrlset, Control ctr, Form parent, Object tag = null)      
+        {
+            string settings = "";
+
+            foreach (var v in Enum.GetValues(ofenum))
+            {
+                if (ctrlset[(int)v])
+                    settings += v.ToString() + ";";
+            }
+
+            if (ItemCount == 0)     // if not created, create..
+                Create(settings);
+
+            Tag = tag;
+            PositionBelow(ctr);
+            Show(parent);
+        }
+
         public void Show(string settings, Control ctr, Form parent, Object tag = null)         // quick form version
         {
             if (ItemCount == 0)     // if not created, create..
