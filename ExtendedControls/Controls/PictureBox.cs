@@ -201,6 +201,8 @@ namespace ExtendedControls
             this.TabStop = true;
         }
 
+        public int Count { get { return Elements.Count; } }
+
         public void Add(ImageElement i)
         {
             Elements.Add(i);
