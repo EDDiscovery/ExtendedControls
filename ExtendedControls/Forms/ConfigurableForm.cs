@@ -57,7 +57,8 @@ namespace ExtendedControls
         public bool SwallowReturn { get; set; }     // set in your trigger handler to swallow the return. Otherwise, return is return
         public Color BorderRectColour { get; set; } = Color.Empty;  // force border colour
         public BorderStyle PanelBorderStyle { get; set; } = BorderStyle.FixedSingle;
-        public Size ExtraMarginRightBottom { get; set; } = new Size(16,16);
+        public Size ExtraMarginRightBottom { get; set; } = new Size(16, 16);
+        public float FontScale { get; set; } = 1.0f;
 
         public class Entry
         {
@@ -617,7 +618,7 @@ namespace ExtendedControls
             // outer.FindMaxSubControlArea(0, 0,null,true); // debug
 
             //this.DumpTree(0);
-            theme.ApplyStd(this, ForceNoWindowsBorder);
+            theme.Apply(this, theme.GetScaledFont(FontScale), ForceNoWindowsBorder);
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
             //this.DumpTree(0);
 
