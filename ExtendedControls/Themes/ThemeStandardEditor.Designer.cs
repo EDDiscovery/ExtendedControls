@@ -123,6 +123,7 @@ namespace ExtendedControls
             this.label27 = new System.Windows.Forms.Label();
             this.panel_theme72 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel_theme82 = new System.Windows.Forms.Panel();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -179,6 +180,7 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel_theme35);
             this.groupBoxColors.Controls.Add(this.panel_theme33);
             this.groupBoxColors.Controls.Add(this.panel_theme32);
+            this.groupBoxColors.Controls.Add(this.panel_theme82);
             this.groupBoxColors.Controls.Add(this.panel_theme45);
             this.groupBoxColors.Controls.Add(this.panel_theme42);
             this.groupBoxColors.Controls.Add(this.panel_theme44);
@@ -961,6 +963,16 @@ namespace ExtendedControls
             this.label3.TabIndex = 4;
             this.label3.Text = "Font";
             // 
+            // panel_theme82
+            // 
+            this.panel_theme82.AccessibleDescription = "";
+            this.panel_theme82.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_theme82.Location = new System.Drawing.Point(211, 260);
+            this.panel_theme82.Name = "panel_theme82";
+            this.panel_theme82.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme82.TabIndex = 5;
+            this.panel_theme82.Tag = "";
+            // 
             // ThemeStandardEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1064,5 +1076,6 @@ namespace ExtendedControls
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Panel panel_theme81;
         private System.Windows.Forms.Panel panel_theme80;
+        private System.Windows.Forms.Panel panel_theme82;
     }
 }

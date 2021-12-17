@@ -229,11 +229,8 @@ namespace ExtendedControls
         #region CustomPainting
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (!e.ClipRectangle.Equals(this.ClientRectangle))      // always repaint whole
-            {
-                Invalidate();
-                return;
-            }
+            System.Diagnostics.Debug.WriteLine($"Paint tab {e.ClipRectangle} {ClientRectangle} {backImageControlBitmap!=null}");
+            // used to have this which causes an invalidate, but it does not work if (!e.ClipRectangle.Equals(this.ClientRectangle))      // always repaint whole
 
             if (backImageControlBitmap == null )    // First time, we have size.. or if multiline changes
             {

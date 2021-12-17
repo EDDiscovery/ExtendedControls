@@ -79,6 +79,7 @@ namespace ExtendedControls
 
             SetPanel(panel_theme80, "Grid Cell Alt Back Colour", ThemeStandard.Settings.CI.grid_altcellbackground);
             SetPanel(panel_theme81, "Grid Cell Alt Text Colour", ThemeStandard.Settings.CI.grid_altcelltext);
+            SetPanel(panel_theme82, "Grid Highlight Back Colour", ThemeStandard.Settings.CI.grid_highlightback);
 
             UpdatePatchesEtc();
 
@@ -131,6 +132,7 @@ namespace ExtendedControls
             UpdatePatch(panel_theme72);
             UpdatePatch(panel_theme80);
             UpdatePatch(panel_theme81);
+            UpdatePatch(panel_theme82);
             textBox_Font.Text = theme.FontName + " " + theme.FontSize + " points";
             checkBox_theme_windowframe.Checked = theme.WindowsFrame;
         }

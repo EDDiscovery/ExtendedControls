@@ -63,6 +63,7 @@ namespace ExtendedControls
                 toolstrip_back, toolstrip_border, unused_entry,     // previously assigned to toolstrip_checkbox thing
                 s_panel,
                 transparentcolorkey,
+                grid_highlightback,
             };
 
             public string name;         // name of scheme
@@ -77,7 +78,7 @@ namespace ExtendedControls
             public Settings(String n, Color f,
                                         Color butback, Color buttext, Color butborder, string bstyle,
                                         Color gridborderback, Color gridbordertext, 
-                                        Color gridcellback, Color gridaltcellback, Color gridcelltext, Color gridaltcelltext,
+                                        Color gridcellback, Color gridaltcellback, Color gridcelltext, Color gridaltcelltext, Color gridhighlightback,
                                         Color gridborderlines,
                                         Color gridsliderback, Color gridscrollarrow, Color gridscrollbutton,
                                         Color travelgridnonvisited, Color travelgridvisited,
@@ -100,7 +101,7 @@ namespace ExtendedControls
 
                 colors.Add(CI.grid_borderback, gridborderback); colors.Add(CI.grid_bordertext, gridbordertext);
                 colors.Add(CI.grid_cellbackground, gridcellback); colors.Add(CI.grid_altcellbackground, gridaltcellback);
-                colors.Add(CI.grid_celltext, gridcelltext); colors.Add(CI.grid_altcelltext, gridaltcelltext);
+                colors.Add(CI.grid_celltext, gridcelltext); colors.Add(CI.grid_altcelltext, gridaltcelltext); colors.Add(CI.grid_highlightback, gridhighlightback);
                 colors.Add(CI.grid_borderlines, gridborderlines);
                 colors.Add(CI.grid_sliderback, gridsliderback); colors.Add(CI.grid_scrollarrow, gridscrollarrow); colors.Add(CI.grid_scrollbutton, gridscrollbutton);
 
@@ -135,7 +136,7 @@ namespace ExtendedControls
                 colors.Add(CI.button_back, Color.FromArgb(255, 225, 225, 225)); colors.Add(CI.button_text, SystemColors.ControlText); colors.Add(CI.button_border, SystemColors.ActiveBorder);
                 colors.Add(CI.grid_borderback, SystemColors.Menu); colors.Add(CI.grid_bordertext, SystemColors.MenuText);
                 colors.Add(CI.grid_cellbackground, SystemColors.ControlLightLight); colors.Add(CI.grid_altcellbackground, SystemColors.ControlLightLight);
-                colors.Add(CI.grid_celltext, SystemColors.MenuText); colors.Add(CI.grid_altcelltext, SystemColors.MenuText);
+                colors.Add(CI.grid_celltext, SystemColors.MenuText); colors.Add(CI.grid_altcelltext, SystemColors.MenuText); colors.Add(CI.grid_highlightback, Color.LightGreen);
                 colors.Add(CI.grid_borderlines, SystemColors.ControlDark);
                 colors.Add(CI.grid_sliderback, SystemColors.ControlLight); colors.Add(CI.grid_scrollarrow, SystemColors.MenuText); colors.Add(CI.grid_scrollbutton, SystemColors.Control);
                 colors.Add(CI.travelgrid_nonvisted, Color.Blue); colors.Add(CI.travelgrid_visited, SystemColors.MenuText);
@@ -202,6 +203,7 @@ namespace ExtendedControls
         public Color LabelColor { get { return currentsettings.colors[Settings.CI.label]; } set { SetCustom(); currentsettings.colors[Settings.CI.label] = value; } }
 
         public Color SPanelColor { get { return currentsettings.colors[Settings.CI.s_panel]; } set { SetCustom(); currentsettings.colors[Settings.CI.s_panel] = value; } }
+        public Color GridHighlightBack { get { return currentsettings.colors[Settings.CI.grid_highlightback]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_highlightback] = value; } }
 
         public Color TransparentColorKey { get { return currentsettings.colors[Settings.CI.transparentcolorkey]; } set { SetCustom(); currentsettings.colors[Settings.CI.transparentcolorkey] = value; } }
 
@@ -276,10 +278,12 @@ namespace ExtendedControls
 
             themelist.Add(new Settings("Windows Default"));         // windows default..
 
+            Color hgb = Color.FromArgb(255, 10, 64, 10);
+
             themelist.Add(new Settings("Orange Delight", Color.Black,
                 Color.FromArgb(255, 48, 48, 48), Color.Orange, Color.DarkOrange, buttonstyle_gradient, // button
                 Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
-                Color.Black, Color.Black, Color.Orange,Color.Orange,     // back/alt text/alt
+                Color.Black, Color.Black, Color.Orange,Color.Orange,hgb,     // back/alt text/alt
                 Color.DarkOrange, // borderlines
                 Color.Black, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
                 Color.Red, Color.White, // travel
@@ -306,7 +310,7 @@ namespace ExtendedControls
                 themelist.Add(new Settings("Elite EuroCaps Less Border", Color.Black,
                     Color.FromArgb(255, 64, 64, 64), Color.Orange, Color.FromArgb(255, 96, 96, 96), buttonstyle_gradient, // button
                     Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
-                    butback, butback ,Color.Orange, Color.Orange, // back/alt fore/alt
+                    butback, butback ,Color.Orange, Color.Orange, hgb, // back/alt fore/alt
                     Color.DarkOrange, // borderlines
                     butback, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
                     Color.Red, Color.White, // travel
@@ -337,13 +341,14 @@ namespace ExtendedControls
             if (IsFontAvailable("Calisto MT"))
             {
                 themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Calisto", "Calisto MT", 12F));
+                themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Calisto Small", "Calisto MT", 8F));
                 themelist.Add(new Settings(themelist[themelist.Count - 1], "Elite Calisto High DPI", "Calisto MT", 20F));
             }
 
             themelist.Add(new Settings("Easy Dark", Color.FromArgb(255, 65, 65, 65), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 245, 120, 30), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
                 Color.FromArgb(255, 62, 68, 77), Color.FromArgb(255, 255, 120, 30), // grid borderback, bordertext
-                Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 223, 227, 238), //back/alt fore/alt
+                Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 223, 227, 238), hgb, //back/alt fore/alt
                 Color.FromArgb(255, 50, 50, 50), // borderlines
                 Color.FromArgb(255, 80, 75, 70), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 75, 75, 75), // grid sliderback, arrow, scrollbutton
                 Color.FromArgb(255, 192, 0, 0), Color.FromArgb(255, 202, 202, 255), // travelgrid_nonvisited, visited
@@ -364,7 +369,7 @@ namespace ExtendedControls
             themelist.Add(new Settings("EDSM", Color.FromArgb(255, 39, 43, 48), // form
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
                 Color.FromArgb(255, 62, 68, 77), Color.FromArgb(255, 200, 200, 200), // grid borderback, bordertext
-                Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 200, 200, 200), // back/alt fore/alt
+                Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 200, 200, 200), hgb, // back/alt fore/alt
                 Color.FromArgb(255, 62, 68, 77), // borderlines
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // grid sliderback, arrow, scrollbutton
                 Color.FromArgb(255, 200, 0, 0), Color.FromArgb(255, 90, 196, 222), // travelgrid_nonvisited, visited
@@ -396,7 +401,7 @@ namespace ExtendedControls
             themelist.Add(new Settings("Material Dark", Color.FromArgb(255, 54, 57, 63), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 41, 46, 51), buttonstyle_flat, // button back, text, border
                 Color.FromArgb(255, 47, 49, 54), Color.FromArgb(255, 255, 160, 0), // grid borderback, bordertext
-                Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 223, 227, 238),//back/alt fore/alt
+                Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 223, 227, 238), hgb,//back/alt fore/alt
                 Color.FromArgb(255, 82, 94, 164), // borderlines
                 Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 82, 94, 164), Color.FromArgb(255, 82, 94, 164), // grid sliderback, arrow, scrollbutton
                 Color.FromArgb(255, 192, 0 , 0), Color.FromArgb(255, 202, 202, 255), // travelgrid_nonvisited, visited
@@ -419,7 +424,7 @@ namespace ExtendedControls
             themelist.Add(new Settings("Night Vision", Color.Black,
                 Color.FromArgb(255, 48, 48, 48), r1, r2, buttonstyle_gradient, // button
                 r2, Color.Black,  // grid border/text
-                Color.Black, Color.Black, r1, r1, // back/alt fore/alt
+                Color.Black, Color.Black, r1, r1, hgb, // back/alt fore/alt
                 r2, // borderlines
                 Color.Black, r1, r2, // grid slider, arrow, button
                 Color.Red, Color.Green, // travel
@@ -444,7 +449,7 @@ namespace ExtendedControls
                                         SystemColors.Menu,
                                         SystemColors.Control, SystemColors.ControlText, Color.DarkGray, buttonstyle_gradient,// button
                                         SystemColors.Menu, SystemColors.MenuText,  // grid border
-                                        SystemColors.ControlLightLight, SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.MenuText, //back/alt fore/alt
+                                        SystemColors.ControlLightLight, SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.MenuText, Color.FromArgb(255,30,192,30), //back/alt fore/alt
                                         SystemColors.ControlDark, // borderlines
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // grid scroll
                                         Color.Blue, SystemColors.MenuText, // travel
@@ -462,12 +467,32 @@ namespace ExtendedControls
             }
 
             if (IsFontAvailable("Verdana"))
-                themelist.Add(new Settings(themelist[themelist.Count - 1], "Verdana Grey", "Verdana", 8F));
+            {
+                themelist.Add(new Settings("Verdana Grey",
+                                        SystemColors.Menu,
+                                        SystemColors.Control, SystemColors.ControlText, Color.DarkGray, buttonstyle_gradient,// button
+                                        SystemColors.Menu, SystemColors.MenuText,  // grid border
+                                        SystemColors.ControlLightLight, SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.MenuText, Color.FromArgb(255, 30, 192, 30), //back/alt fore/alt
+                                        SystemColors.ControlDark, // borderlines
+                                        SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // grid scroll
+                                        Color.Blue, SystemColors.MenuText, // travel
+                                        SystemColors.Window, SystemColors.WindowText, Color.Red, Color.Green, Color.DarkGray, textboxborderstyle_color,// text
+                                        SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // text box
+                                        SystemColors.MenuText, SystemColors.MenuHighlight, // checkbox
+                                        SystemColors.Menu, SystemColors.MenuText, SystemColors.ControlLightLight, SystemColors.MenuText,  // menu
+                                        SystemColors.MenuText,  // label
+                                        SystemColors.Menu, SystemColors.MenuText, SystemColors.ControlDark, // group
+                                        SystemColors.ControlDark, // tab control
+                                        SystemColors.Menu, SystemColors.Menu, SystemColors.MenuText,  // toolstrip
+                                        SystemColors.ControlLightLight, // spanel
+                                        Color.Green, // overlay
+                                        false, 95, "Verdana", 8F));
+            }
 
             themelist.Add(new Settings("Blue Wonder", Color.DarkBlue,
                                                Color.Blue, Color.White, Color.White, buttonstyle_gradient,// button
                                                Color.DarkBlue, Color.White,  // grid border
-                                               Color.DarkBlue, Color.DarkBlue, Color.White, Color.White, // back/alt fore/alt
+                                               Color.DarkBlue, Color.DarkBlue, Color.White, Color.White, hgb, // back/alt fore/alt
                                                Color.Blue, // borderlines
                                                Color.DarkBlue, Color.White, Color.Blue, // grid scroll
                                                Color.Red, Color.Cyan, // travel
@@ -487,7 +512,7 @@ namespace ExtendedControls
             themelist.Add(new Settings("Green Baize", baizegreen,
                                                baizegreen, Color.White, Color.White, buttonstyle_gradient,// button
                                                baizegreen, Color.White,  // grid border
-                                               baizegreen, baizegreen, Color.White, Color.White,//back/alt fore/alt
+                                               baizegreen, baizegreen, Color.White, Color.White, Color.FromArgb(255,30,192,30),//back/alt fore/alt
                                                Color.LightGreen, // borderlines
                                                baizegreen, Color.White, Color.LightGreen, // grid scroll
                                                Color.Red, Color.FromArgb(255, 78, 190, 27), // travel
@@ -518,6 +543,7 @@ namespace ExtendedControls
                             Color.FromArgb(255, 32, 32, 32), // grid_altcellbackground
                             Color.FromArgb(255, 130, 192, 255), // grid_celltext
                             Color.FromArgb(255, 130, 192, 255), // grid_altcelltext
+                            hgb,
                             Color.FromArgb(255, 0, 50, 100), // grid_borderlines
                             Color.FromArgb(255, 32, 32, 32), // grid_sliderback
                             Color.FromArgb(255, 98, 176, 255), // grid_scrollarrow
