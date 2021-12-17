@@ -66,6 +66,7 @@ namespace ExtendedControls
             this.label21 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -84,6 +85,7 @@ namespace ExtendedControls
             this.panel_theme35 = new System.Windows.Forms.Panel();
             this.panel_theme33 = new System.Windows.Forms.Panel();
             this.panel_theme32 = new System.Windows.Forms.Panel();
+            this.panel_theme82 = new System.Windows.Forms.Panel();
             this.panel_theme45 = new System.Windows.Forms.Panel();
             this.panel_theme42 = new System.Windows.Forms.Panel();
             this.panel_theme44 = new System.Windows.Forms.Panel();
@@ -123,7 +125,6 @@ namespace ExtendedControls
             this.label27 = new System.Windows.Forms.Label();
             this.panel_theme72 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
-            this.panel_theme82 = new System.Windows.Forms.Panel();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -132,7 +133,7 @@ namespace ExtendedControls
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(786, 527);
+            this.buttonOK.Location = new System.Drawing.Point(841, 620);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 0;
@@ -162,6 +163,7 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.label21);
             this.groupBoxColors.Controls.Add(this.label19);
             this.groupBoxColors.Controls.Add(this.label4);
+            this.groupBoxColors.Controls.Add(this.label31);
             this.groupBoxColors.Controls.Add(this.label15);
             this.groupBoxColors.Controls.Add(this.label7);
             this.groupBoxColors.Controls.Add(this.label6);
@@ -213,7 +215,7 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel_theme1);
             this.groupBoxColors.Location = new System.Drawing.Point(3, 12);
             this.groupBoxColors.Name = "groupBoxColors";
-            this.groupBoxColors.Size = new System.Drawing.Size(869, 365);
+            this.groupBoxColors.Size = new System.Drawing.Size(869, 406);
             this.groupBoxColors.TabIndex = 19;
             this.groupBoxColors.TabStop = false;
             this.groupBoxColors.Text = "Colours";
@@ -254,7 +256,7 @@ namespace ExtendedControls
             "System",
             "Flat",
             "Gradient"});
-            this.comboBox_ButtonStyle.Location = new System.Drawing.Point(403, 333);
+            this.comboBox_ButtonStyle.Location = new System.Drawing.Point(403, 374);
             this.comboBox_ButtonStyle.Name = "comboBox_ButtonStyle";
             this.comboBox_ButtonStyle.Size = new System.Drawing.Size(121, 21);
             this.comboBox_ButtonStyle.TabIndex = 10;
@@ -268,7 +270,7 @@ namespace ExtendedControls
             "System",
             "Flat",
             "Gradient"});
-            this.comboBox_TextBorder.Location = new System.Drawing.Point(150, 333);
+            this.comboBox_TextBorder.Location = new System.Drawing.Point(150, 374);
             this.comboBox_TextBorder.Name = "comboBox_TextBorder";
             this.comboBox_TextBorder.Size = new System.Drawing.Size(121, 21);
             this.comboBox_TextBorder.TabIndex = 10;
@@ -351,7 +353,7 @@ namespace ExtendedControls
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(403, 301);
+            this.label20.Location = new System.Drawing.Point(403, 336);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(80, 13);
             this.label20.TabIndex = 6;
@@ -360,7 +362,7 @@ namespace ExtendedControls
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(563, 301);
+            this.label22.Location = new System.Drawing.Point(563, 336);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(33, 13);
             this.label22.TabIndex = 6;
@@ -378,7 +380,7 @@ namespace ExtendedControls
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(563, 266);
+            this.label28.Location = new System.Drawing.Point(563, 301);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(62, 13);
             this.label28.TabIndex = 6;
@@ -396,7 +398,7 @@ namespace ExtendedControls
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(403, 266);
+            this.label19.Location = new System.Drawing.Point(403, 301);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(93, 13);
             this.label19.TabIndex = 6;
@@ -405,16 +407,25 @@ namespace ExtendedControls
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(87, 301);
+            this.label4.Location = new System.Drawing.Point(87, 336);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(48, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Success";
             // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(150, 267);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(109, 13);
+            this.label31.TabIndex = 6;
+            this.label31.Text = "Background Highlight";
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(87, 266);
+            this.label15.Location = new System.Drawing.Point(87, 302);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(48, 13);
             this.label15.TabIndex = 6;
@@ -495,11 +506,11 @@ namespace ExtendedControls
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(262, 20);
+            this.label11.Location = new System.Drawing.Point(273, 20);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(50, 13);
+            this.label11.Size = new System.Drawing.Size(26, 13);
             this.label11.TabIndex = 6;
-            this.label11.Text = "Grid Text";
+            this.label11.Text = "Grid";
             // 
             // label10
             // 
@@ -524,15 +535,15 @@ namespace ExtendedControls
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(150, 20);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(28, 13);
+            this.label1.Size = new System.Drawing.Size(46, 26);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Text";
+            this.label1.Text = "Text\r\nTextBox";
             // 
             // panel_theme15
             // 
             this.panel_theme15.AccessibleDescription = "";
             this.panel_theme15.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme15.Location = new System.Drawing.Point(150, 295);
+            this.panel_theme15.Location = new System.Drawing.Point(150, 330);
             this.panel_theme15.Name = "panel_theme15";
             this.panel_theme15.Size = new System.Drawing.Size(28, 28);
             this.panel_theme15.TabIndex = 5;
@@ -577,6 +588,16 @@ namespace ExtendedControls
             this.panel_theme32.Size = new System.Drawing.Size(28, 28);
             this.panel_theme32.TabIndex = 5;
             this.panel_theme32.Tag = "";
+            // 
+            // panel_theme82
+            // 
+            this.panel_theme82.AccessibleDescription = "";
+            this.panel_theme82.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_theme82.Location = new System.Drawing.Point(270, 260);
+            this.panel_theme82.Name = "panel_theme82";
+            this.panel_theme82.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme82.TabIndex = 5;
+            this.panel_theme82.Tag = "";
             // 
             // panel_theme45
             // 
@@ -652,7 +673,7 @@ namespace ExtendedControls
             // 
             this.panel_theme4.AccessibleDescription = "";
             this.panel_theme4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme4.Location = new System.Drawing.Point(150, 260);
+            this.panel_theme4.Location = new System.Drawing.Point(150, 295);
             this.panel_theme4.Name = "panel_theme4";
             this.panel_theme4.Size = new System.Drawing.Size(28, 28);
             this.panel_theme4.TabIndex = 5;
@@ -702,7 +723,7 @@ namespace ExtendedControls
             // 
             this.panel_theme17.AccessibleDescription = "";
             this.panel_theme17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme17.Location = new System.Drawing.Point(640, 295);
+            this.panel_theme17.Location = new System.Drawing.Point(640, 330);
             this.panel_theme17.Name = "panel_theme17";
             this.panel_theme17.Size = new System.Drawing.Size(28, 28);
             this.panel_theme17.TabIndex = 5;
@@ -732,7 +753,7 @@ namespace ExtendedControls
             // 
             this.panel_theme70.AccessibleDescription = "";
             this.panel_theme70.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme70.Location = new System.Drawing.Point(640, 260);
+            this.panel_theme70.Location = new System.Drawing.Point(640, 295);
             this.panel_theme70.Name = "panel_theme70";
             this.panel_theme70.Size = new System.Drawing.Size(28, 28);
             this.panel_theme70.TabIndex = 5;
@@ -752,7 +773,7 @@ namespace ExtendedControls
             // 
             this.panel_theme14.AccessibleDescription = "";
             this.panel_theme14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme14.Location = new System.Drawing.Point(510, 295);
+            this.panel_theme14.Location = new System.Drawing.Point(510, 330);
             this.panel_theme14.Name = "panel_theme14";
             this.panel_theme14.Size = new System.Drawing.Size(28, 28);
             this.panel_theme14.TabIndex = 5;
@@ -762,7 +783,7 @@ namespace ExtendedControls
             // 
             this.panel_theme13.AccessibleDescription = "";
             this.panel_theme13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme13.Location = new System.Drawing.Point(510, 260);
+            this.panel_theme13.Location = new System.Drawing.Point(510, 295);
             this.panel_theme13.Name = "panel_theme13";
             this.panel_theme13.Size = new System.Drawing.Size(28, 28);
             this.panel_theme13.TabIndex = 5;
@@ -928,7 +949,7 @@ namespace ExtendedControls
             this.groupBox1.Controls.Add(this.label_opacity);
             this.groupBox1.Controls.Add(this.trackBar_theme_opacity);
             this.groupBox1.Controls.Add(this.textBox_Font);
-            this.groupBox1.Location = new System.Drawing.Point(3, 383);
+            this.groupBox1.Location = new System.Drawing.Point(3, 424);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(869, 114);
             this.groupBox1.TabIndex = 20;
@@ -963,21 +984,11 @@ namespace ExtendedControls
             this.label3.TabIndex = 4;
             this.label3.Text = "Font";
             // 
-            // panel_theme82
-            // 
-            this.panel_theme82.AccessibleDescription = "";
-            this.panel_theme82.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme82.Location = new System.Drawing.Point(211, 260);
-            this.panel_theme82.Name = "panel_theme82";
-            this.panel_theme82.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme82.TabIndex = 5;
-            this.panel_theme82.Tag = "";
-            // 
             // ThemeStandardEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(875, 562);
+            this.ClientSize = new System.Drawing.Size(930, 655);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxColors);
             this.Controls.Add(this.buttonOK);
@@ -1077,5 +1088,6 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_theme81;
         private System.Windows.Forms.Panel panel_theme80;
         private System.Windows.Forms.Panel panel_theme82;
+        private System.Windows.Forms.Label label31;
     }
 }
