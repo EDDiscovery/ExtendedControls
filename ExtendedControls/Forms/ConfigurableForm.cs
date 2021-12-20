@@ -446,7 +446,7 @@ namespace ExtendedControls
                 if (!(ent.text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong))        // everything but get text
                     c.Text = ent.text;
                 c.Tag = ent;     // point control tag at ent structure
-                System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size + " " + c.Text);
+                //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size + " " + c.Text);
                 outer.Controls.Add(c);
                 if (ent.tooltip != null)
                     tt.SetToolTip(c, ent.tooltip);
@@ -664,7 +664,7 @@ namespace ExtendedControls
 
             Size measureitemsinwindow = outer.FindMaxSubControlArea(boundsw + outerw + (int)(RightMargin * currentautocale.Width),
                                                                    boundsh + outerh + (int)(BottomMargin * currentautocale.Height),
-                                                                   new Type[] { typeof(ExtScrollBar) }, true);
+                                                                   new Type[] { typeof(ExtScrollBar) }, false);
 
 
             // now position in the screen, allowing for a scroll bar if required due to height restricted
