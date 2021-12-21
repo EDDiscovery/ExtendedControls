@@ -186,10 +186,13 @@ namespace ExtendedControls
         public Color ButtonBorderColor { get { return currentsettings.colors[Settings.CI.button_border]; } set { SetCustom(); currentsettings.colors[Settings.CI.button_border] = value; } }
         public Color ButtonTextColor { get { return currentsettings.colors[Settings.CI.button_text]; } set { SetCustom(); currentsettings.colors[Settings.CI.button_text] = value; } }
 
-        public Color GridCellBack { get { return currentsettings.colors[Settings.CI.grid_cellbackground]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_cellbackground] = value; } }
-        public Color GridBorderBack { get { return currentsettings.colors[Settings.CI.grid_borderback]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_borderback] = value; } }
-        public Color GridCellText { get { return currentsettings.colors[Settings.CI.grid_celltext]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_celltext] = value; } }
         public Color GridBorderLines { get { return currentsettings.colors[Settings.CI.grid_borderlines]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_borderlines] = value; } }
+        public Color GridBorderBack { get { return currentsettings.colors[Settings.CI.grid_borderback]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_borderback] = value; } }
+        public Color GridBorderText { get { return currentsettings.colors[Settings.CI.grid_bordertext]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_bordertext] = value; } }
+        public Color GridCellText { get { return currentsettings.colors[Settings.CI.grid_celltext]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_celltext] = value; } }
+        public Color GridCellAltText { get { return currentsettings.colors[Settings.CI.grid_altcelltext]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_altcelltext] = value; } }
+        public Color GridCellBack { get { return currentsettings.colors[Settings.CI.grid_cellbackground]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_cellbackground] = value; } }
+        public Color GridCellAltBack { get { return currentsettings.colors[Settings.CI.grid_altcellbackground]; } set { SetCustom(); currentsettings.colors[Settings.CI.grid_altcellbackground] = value; } }
 
         public Color TextBlockColor { get { return currentsettings.colors[Settings.CI.textbox_fore]; } set { SetCustom(); currentsettings.colors[Settings.CI.textbox_fore] = value; } }
         public Color TextBlockHighlightColor { get { return currentsettings.colors[Settings.CI.textbox_highlight]; } set { SetCustom(); currentsettings.colors[Settings.CI.textbox_highlight] = value; } }
@@ -978,14 +981,14 @@ namespace ExtendedControls
                 ctrl.ColumnHeadersDefaultCellStyle.ForeColor = currentsettings.colors[Settings.CI.grid_bordertext];
 
                 ctrl.BackgroundColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.form]);
-                //                ctrl.DefaultCellStyle.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.grid_cellbackground]);
-                //              ctrl.AlternatingRowsDefaultCellStyle.BackColor = GroupBoxOverride(parent, currentsettings.colors[Settings.CI.grid_altcellbackground]);
                 ctrl.DefaultCellStyle.BackColor = currentsettings.colors[Settings.CI.grid_cellbackground];
                 ctrl.AlternatingRowsDefaultCellStyle.BackColor = currentsettings.colors[Settings.CI.grid_altcellbackground];
                 ctrl.DefaultCellStyle.ForeColor = currentsettings.colors[Settings.CI.grid_celltext];
                 ctrl.AlternatingRowsDefaultCellStyle.ForeColor = currentsettings.colors[Settings.CI.grid_altcelltext];
                 ctrl.DefaultCellStyle.SelectionBackColor = ctrl.DefaultCellStyle.ForeColor;
                 ctrl.DefaultCellStyle.SelectionForeColor = ctrl.DefaultCellStyle.BackColor;
+
+                ctrl.BorderStyle = BorderStyle.None;        // can't control the color of this, turn it off
 
                 ctrl.GridColor = currentsettings.colors[Settings.CI.grid_borderlines];
                 ctrl.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
