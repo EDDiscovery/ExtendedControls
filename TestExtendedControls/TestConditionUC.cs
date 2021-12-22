@@ -25,7 +25,7 @@ namespace TestExtendedControls
             theme.SetThemeByName("Elite Verdana");
             Theme.Current.FontSize = 12;
             Theme.Current.WindowsFrame = false;
-            ExtendedControls.ThemeableFormsInstance.Instance = theme;
+            ExtendedControls.Theme.Current = theme;
 
         }
 

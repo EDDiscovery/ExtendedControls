@@ -42,13 +42,13 @@ namespace ExtendedControls
             Color hgb = Color.FromArgb(255, 10, 64, 10);
 
             themelist.Add(new Theme("Orange Delight", Color.Black,
-                Color.FromArgb(255, 48, 48, 48), Color.Orange, Color.DarkOrange, Theme.buttonstyle_gradient, // button
+                Color.FromArgb(255, 48, 48, 48), Color.Orange, Color.DarkOrange, Theme.ButtonstyleGradient, // button
                 Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
                 Color.Black, Color.Black, Color.Orange,Color.Orange,hgb,     // back/alt text/alt
                 Color.DarkOrange, // borderlines
                 Color.Black, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
                 Color.Red, Color.White, // travel
-                Color.Black, Color.Orange, Color.Red, Color.Green, Color.DarkOrange, Theme.textboxborderstyle_color, // text box
+                Color.Black, Color.Orange, Color.Red, Color.Green, Color.DarkOrange, Theme.TextboxborderstyleColor, // text box
                 Color.Black, Color.Orange, Color.DarkOrange, // text back, arrow, button
                 Color.Orange, Color.FromArgb(255, 65, 33, 33), // checkbox
                 Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  // menu
@@ -69,13 +69,13 @@ namespace ExtendedControls
 
                 Color butback = Color.FromArgb(255, 32, 32, 32);
                 themelist.Add(new Theme("Elite EuroCaps Less Border", Color.Black,
-                    Color.FromArgb(255, 64, 64, 64), Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.buttonstyle_gradient, // button
+                    Color.FromArgb(255, 64, 64, 64), Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient, // button
                     Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
                     butback, butback ,Color.Orange, Color.Orange, hgb, // back/alt fore/alt
                     Color.DarkOrange, // borderlines
                     butback, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
                     Color.Red, Color.White, // travel
-                    butback, Color.Orange, Color.Red, Color.Green, Color.FromArgb(255, 64, 64, 64), Theme.textboxborderstyle_color, // text box
+                    butback, Color.Orange, Color.Red, Color.Green, Color.FromArgb(255, 64, 64, 64), Theme.TextboxborderstyleColor, // text box
                     butback, Color.Orange, Color.DarkOrange, // text back, arrow, button
                     Color.Orange, Color.FromArgb(255, 65, 33, 33),// checkbox
                     Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  // menu
@@ -107,13 +107,13 @@ namespace ExtendedControls
             }
 
             themelist.Add(new Theme("Easy Dark", Color.FromArgb(255, 65, 65, 65), // form
-                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 245, 120, 30), Color.FromArgb(255, 41, 46, 51), Theme.buttonstyle_flat, // button back, text, border
+                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 245, 120, 30), Color.FromArgb(255, 41, 46, 51), Theme.ButtonstyleFlat, // button back, text, border
                 Color.FromArgb(255, 62, 68, 77), Color.FromArgb(255, 255, 120, 30), // grid borderback, bordertext
                 Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 223, 227, 238), hgb, //back/alt fore/alt
                 Color.FromArgb(255, 50, 50, 50), // borderlines
                 Color.FromArgb(255, 80, 75, 70), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 75, 75, 75), // grid sliderback, arrow, scrollbutton
                 Color.FromArgb(255, 192, 0, 0), Color.FromArgb(255, 202, 202, 255), // travelgrid_nonvisited, visited
-                Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), Theme.textboxborderstyle_color, // textbox back, fore, highlight, success, border
+                Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), Theme.TextboxborderstyleColor, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 235, 110, 20), Color.FromArgb(255, 75, 75, 75), // text sliderback, scrollarrow, scrollbutton
                 Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 235, 116, 20), // checkbox, checkboxtick
                 Color.FromArgb(255, 60, 55, 50), Color.FromArgb(255, 233, 227, 238), Color.FromArgb(255, 60, 55, 50), Color.FromArgb(255, 245, 245, 245),  // menuback, fore, dropdownback, dropdownfore
@@ -128,13 +128,13 @@ namespace ExtendedControls
             themelist.Add(new Theme(themelist[themelist.Count - 1], "Easy Dark High DPI", "Arial", 20F));
 
             themelist.Add(new Theme("EDSM", Color.FromArgb(255, 39, 43, 48), // form
-                Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 41, 46, 51), Theme.buttonstyle_flat, // button back, text, border
+                Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 41, 46, 51), Theme.ButtonstyleFlat, // button back, text, border
                 Color.FromArgb(255, 62, 68, 77), Color.FromArgb(255, 200, 200, 200), // grid borderback, bordertext
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 200, 200, 200), hgb, // back/alt fore/alt
                 Color.FromArgb(255, 62, 68, 77), // borderlines
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // grid sliderback, arrow, scrollbutton
                 Color.FromArgb(255, 200, 0, 0), Color.FromArgb(255, 90, 196, 222), // travelgrid_nonvisited, visited
-                Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), Theme.textboxborderstyle_color, // textbox back, fore, highlight, success, border
+                Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), Theme.TextboxborderstyleColor, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // text sliderback, scrollarrow, scrollbutton
                 Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 98, 196, 98), // checkbox, checkboxtick
                 Color.FromArgb(255, 58, 63, 68), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 58, 63, 68), Color.FromArgb(255, 200, 200, 200),  // menuback, fore, dropdownback, dropdownfore
@@ -160,13 +160,13 @@ namespace ExtendedControls
             }
 
             themelist.Add(new Theme("Material Dark", Color.FromArgb(255, 54, 57, 63), // form
-                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 41, 46, 51), Theme.buttonstyle_flat, // button back, text, border
+                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 41, 46, 51), Theme.ButtonstyleFlat, // button back, text, border
                 Color.FromArgb(255, 47, 49, 54), Color.FromArgb(255, 255, 160, 0), // grid borderback, bordertext
                 Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 223, 227, 238), hgb,//back/alt fore/alt
                 Color.FromArgb(255, 82, 94, 164), // borderlines
                 Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 82, 94, 164), Color.FromArgb(255, 82, 94, 164), // grid sliderback, arrow, scrollbutton
                 Color.FromArgb(255, 192, 0 , 0), Color.FromArgb(255, 202, 202, 255), // travelgrid_nonvisited, visited
-                Color.FromArgb(255, 47, 49, 54), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 82, 94, 164), Theme.textboxborderstyle_color, // textbox back, fore, highlight, success, border
+                Color.FromArgb(255, 47, 49, 54), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 82, 94, 164), Theme.TextboxborderstyleColor, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 47, 49, 54), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 75, 75, 75), // text sliderback, scrollarrow, scrollbutton
                 Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 255, 160, 0), // checkbox, checkboxtick
                 Color.FromArgb(255, 60, 55, 50), Color.FromArgb(255, 196, 196, 196), Color.FromArgb(255, 60, 55, 50), Color.FromArgb(255, 245, 245, 245),  // menuback, fore, dropdownback, dropdownfore
@@ -183,13 +183,13 @@ namespace ExtendedControls
             Color r1 = Color.FromArgb(255, 160, 0, 0);
             Color r2 = Color.FromArgb(255, 64, 0, 0);
             themelist.Add(new Theme("Night Vision", Color.Black,
-                Color.FromArgb(255, 48, 48, 48), r1, r2, Theme.buttonstyle_gradient, // button
+                Color.FromArgb(255, 48, 48, 48), r1, r2, Theme.ButtonstyleGradient, // button
                 r2, Color.Black,  // grid border/text
                 Color.Black, Color.Black, r1, r1, hgb, // back/alt fore/alt
                 r2, // borderlines
                 Color.Black, r1, r2, // grid slider, arrow, button
                 Color.Red, Color.Green, // travel
-                Color.Black, r1, Color.Orange, Color.Green, r2, Theme.textboxborderstyle_color, // text box
+                Color.Black, r1, Color.Orange, Color.Green, r2, Theme.TextboxborderstyleColor, // text box
                 Color.Black, r1, r2, // text back, arrow, button
                 r1, Color.FromArgb(255, 65, 33, 33), // checkbox
                 Color.Black, r1, r2, Color.Yellow,  // menu
@@ -208,13 +208,13 @@ namespace ExtendedControls
             {
                 themelist.Add(new Theme("EuroCaps Grey",
                                         SystemColors.Menu,
-                                        SystemColors.Control, SystemColors.ControlText, Color.DarkGray, Theme.buttonstyle_gradient,// button
+                                        SystemColors.Control, SystemColors.ControlText, Color.DarkGray, Theme.ButtonstyleGradient,// button
                                         SystemColors.Menu, SystemColors.MenuText,  // grid border
                                         SystemColors.ControlLightLight, SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.MenuText, Color.FromArgb(255,30,192,30), //back/alt fore/alt
                                         SystemColors.ControlDark, // borderlines
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // grid scroll
                                         Color.Blue, SystemColors.MenuText, // travel
-                                        SystemColors.Window, SystemColors.WindowText, Color.Red, Color.Green, Color.DarkGray, Theme.textboxborderstyle_color,// text
+                                        SystemColors.Window, SystemColors.WindowText, Color.Red, Color.Green, Color.DarkGray, Theme.TextboxborderstyleColor,// text
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // text box
                                         SystemColors.MenuText, SystemColors.MenuHighlight, // checkbox
                                         SystemColors.Menu, SystemColors.MenuText, SystemColors.ControlLightLight, SystemColors.MenuText,  // menu
@@ -231,13 +231,13 @@ namespace ExtendedControls
             {
                 themelist.Add(new Theme("Verdana Grey",
                                         SystemColors.Menu,
-                                        SystemColors.Control, SystemColors.ControlText, Color.DarkGray, Theme.buttonstyle_gradient,// button
+                                        SystemColors.Control, SystemColors.ControlText, Color.DarkGray, Theme.ButtonstyleGradient,// button
                                         SystemColors.Menu, SystemColors.MenuText,  // grid border
                                         SystemColors.ControlLightLight, SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.MenuText, Color.FromArgb(255, 30, 192, 30), //back/alt fore/alt
                                         SystemColors.ControlDark, // borderlines
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // grid scroll
                                         Color.Blue, SystemColors.MenuText, // travel
-                                        SystemColors.Window, SystemColors.WindowText, Color.Red, Color.Green, Color.DarkGray, Theme.textboxborderstyle_color,// text
+                                        SystemColors.Window, SystemColors.WindowText, Color.Red, Color.Green, Color.DarkGray, Theme.TextboxborderstyleColor,// text
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // text box
                                         SystemColors.MenuText, SystemColors.MenuHighlight, // checkbox
                                         SystemColors.Menu, SystemColors.MenuText, SystemColors.ControlLightLight, SystemColors.MenuText,  // menu
@@ -251,13 +251,13 @@ namespace ExtendedControls
             }
 
             themelist.Add(new Theme("Blue Wonder", Color.DarkBlue,
-                                               Color.Blue, Color.White, Color.White, Theme.buttonstyle_gradient,// button
+                                               Color.Blue, Color.White, Color.White, Theme.ButtonstyleGradient,// button
                                                Color.DarkBlue, Color.White,  // grid border
                                                Color.DarkBlue, Color.DarkBlue, Color.White, Color.White, hgb, // back/alt fore/alt
                                                Color.Blue, // borderlines
                                                Color.DarkBlue, Color.White, Color.Blue, // grid scroll
                                                Color.Red, Color.Cyan, // travel
-                                               Color.DarkBlue, Color.White, Color.Red, Color.Green, Color.White, Theme.textboxborderstyle_color,// text box
+                                               Color.DarkBlue, Color.White, Color.Red, Color.Green, Color.White, Theme.TextboxborderstyleColor,// text box
                                                Color.DarkBlue, Color.White, Color.Blue, // text scroll
                                                Color.White, Color.Black, // checkbox
                                                Color.DarkBlue, Color.White, Color.DarkBlue, Color.White,  // menu
@@ -271,13 +271,13 @@ namespace ExtendedControls
 
             Color baizegreen = Color.FromArgb(255, 13, 68, 13);
             themelist.Add(new Theme("Green Baize", baizegreen,
-                                               baizegreen, Color.White, Color.White, Theme.buttonstyle_gradient,// button
+                                               baizegreen, Color.White, Color.White, Theme.ButtonstyleGradient,// button
                                                baizegreen, Color.White,  // grid border
                                                baizegreen, baizegreen, Color.White, Color.White, Color.FromArgb(255,30,192,30),//back/alt fore/alt
                                                Color.LightGreen, // borderlines
                                                baizegreen, Color.White, Color.LightGreen, // grid scroll
                                                Color.Red, Color.FromArgb(255, 78, 190, 27), // travel
-                                               baizegreen, Color.White, Color.Red, Color.Green, Color.White, Theme.textboxborderstyle_color,// text box
+                                               baizegreen, Color.White, Color.Red, Color.Green, Color.White, Theme.TextboxborderstyleColor,// text box
                                                baizegreen, Color.White, Color.LightGreen, // text scroll
                                                Color.White, Color.Black, // checkbox
                                                baizegreen, Color.White, baizegreen, Color.White,  // menu
@@ -297,7 +297,7 @@ namespace ExtendedControls
                             Color.FromArgb(255, 64, 64, 64), // button_back
                             Color.FromArgb(255, 100, 177, 255), // button_text
                             Color.FromArgb(255, 96, 96, 96), // button_border
-                            Theme.buttonstyle_gradient,
+                            Theme.ButtonstyleGradient,
                             Color.FromArgb(255, 0, 84, 168), // grid_borderback
                             Color.FromArgb(255, 202, 228, 255), // grid_bordertext
                             Color.FromArgb(255, 32, 32, 32), // grid_cellbackground
@@ -316,7 +316,7 @@ namespace ExtendedControls
                             Color.FromArgb(255, 255, 0, 0), // textbox_highlight
                             Color.FromArgb(255, 0, 128, 0), // textbox_success
                             Color.FromArgb(255, 64, 64, 64), // textbox_border
-                            Theme.textboxborderstyle_color,
+                            Theme.TextboxborderstyleColor,
                             Color.FromArgb(255, 32, 32, 32), // textbox_sliderback
                             Color.FromArgb(255, 85, 170, 255), // textbox_scrollarrow
                             Color.FromArgb(255, 0, 128, 255), // textbox_scrollbutton
@@ -351,8 +351,12 @@ namespace ExtendedControls
                 foreach (FileInfo fi in allFiles)
                 {
                     Theme set = new Theme();
-                    if ( set.LoadFile(fi.FullName, Path.GetFileNameWithoutExtension(fi.Name)))
-                    { 
+                    string name = Path.GetFileNameWithoutExtension(fi.Name);
+                    if ( set.LoadFile(fi.FullName, name))
+                    {
+                        int cur = FindThemeIndex(name);
+                        if (cur >= 0)
+                            themelist.RemoveAt(cur);        // don't duplicate names in list
                         themelist.Add(set);
                     }
                 }
@@ -418,7 +422,7 @@ namespace ExtendedControls
             }
         }
 
-        public bool SetThemeByName(string themename)                           // given a theme name, select it if possible
+        public bool SetThemeByName(string themename)               // given a theme name, select it if possible
         {
             int i = FindThemeIndex(themename);
             if (i != -1)

@@ -85,7 +85,7 @@ namespace ExtendedControls
             UpdatePatchesEtc();
 
             trackBar_theme_opacity.Value = (int)Theme.Opacity;
-            comboBox_TextBorder.SelectedItem = Theme.TextBlockBorderStyle;
+            comboBox_TextBorder.SelectedItem = Theme.TextBoxBorderStyle;
             comboBox_ButtonStyle.SelectedItem = Theme.ButtonStyle;
             
             if ( Environment.OSVersion.Platform != PlatformID.Win32NT )
@@ -144,7 +144,6 @@ namespace ExtendedControls
             pn.BackColor = Theme.GetColor(ci);
         }
 
-
         private void SetPanel(Panel pn, string name, Theme.CI ex)
         {
             toolTip1.SetToolTip(pn, name);        // assign tool tips and indicate which color to edit
@@ -187,6 +186,7 @@ namespace ExtendedControls
             {
                 Theme.SetColor(ex, MyDialog.Color);
                 Theme.SetCustom();
+                ApplyChanges?.Invoke(Theme);
                 return true;
             }
             else
@@ -243,7 +243,7 @@ namespace ExtendedControls
 
         private void comboBox_TextBorder_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            Theme.TextBlockBorderStyle = (string)comboBox_TextBorder.SelectedItem;
+            Theme.TextBoxBorderStyle = (string)comboBox_TextBorder.SelectedItem;
             Theme.SetCustom();
             ApplyChanges?.Invoke(Theme);
         }

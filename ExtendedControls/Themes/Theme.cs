@@ -24,27 +24,25 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ExtendedControls
 {
+    [System.Diagnostics.DebuggerDisplay("{Name} {FontName} {FontSize} {WindowsFrame}")]
     public class Theme 
     {
         public static Theme Current { get; set; } = null;             // current theme
 
-        //static int MajorThemeID = 1;         // Change if major change made outside of number of colors.
-        //static public int ThemeID { get { return MajorThemeID * 10000 + Enum.GetNames(typeof(CI)).Length; } }
-
         public static readonly string[] ButtonStyles = "System Flat Gradient".Split();
         public static readonly string[] TextboxBorderStyles = "None FixedSingle Fixed3D Colour".Split();
 
-        public static string buttonstyle_system = ButtonStyles[0];
-        public static string buttonstyle_flat = ButtonStyles[1];
-        public static string buttonstyle_gradient = ButtonStyles[2];
-        public static string textboxborderstyle_fixedsingle = TextboxBorderStyles[1];
-        public static string textboxborderstyle_fixed3D = TextboxBorderStyles[2];
-        public static string textboxborderstyle_color = TextboxBorderStyles[3];
+        public static string ButtonstyleSystem = ButtonStyles[0];
+        public static string ButtonstyleFlat = ButtonStyles[1];
+        public static string ButtonstyleGradient = ButtonStyles[2];
+        public static string TextboxborderstyleFixedSingle = TextboxBorderStyles[1];
+        public static string TextboxborderstyleFixed3D = TextboxBorderStyles[2];
+        public static string TextboxborderstyleColor = TextboxBorderStyles[3];
 
-        public static float minfontsize = 4;
-        public static string defaultfont = "Microsoft Sans Serif";
-        public static float defaultfontsize = 8.25F;
-        public System.Drawing.Icon MessageBoxWindowIcon { get; set; } = null;
+        public static string DefaultFont = "Microsoft Sans Serif";
+        public static float DefaultFontSize = 8.25F;
+
+        private static float minfontsize = 4;
 
         public enum CI     
         {
@@ -78,7 +76,11 @@ namespace ExtendedControls
         private string textboxborderstyle;
 
         public Theme()
-        { colors = new Dictionary<CI, Color>(); }
+        { 
+            colors = new Dictionary<CI, Color>();
+            foreach (CI ci in Enum.GetValues(typeof(CI)))      // pre fill in the array, so its always has all colours, so the getters won't except
+                colors[ci] = Color.DarkOrange;
+        }
 
         public Theme(String n, Color f,
                                     Color butback, Color buttext, Color butborder, string bstyle,
@@ -96,7 +98,7 @@ namespace ExtendedControls
                                     Color tabborderlines,
                                     Color toolstripback, Color toolstripborder, Color toolstripbuttonunused,
                                     Color sPanel, Color keycolor,
-                                    bool wf, double op, string ft, float fs)            // ft = empty means don't set it
+                                    bool wf, double op, string ft, float fs)             // ft = empty means don't set it
         {
             name = n;
             colors = new Dictionary<CI, Color>();
@@ -155,12 +157,12 @@ namespace ExtendedControls
             colors.Add(CI.toolstrip_back, SystemColors.Control); colors.Add(CI.toolstrip_border, SystemColors.Menu); colors.Add(CI.unused_entry, SystemColors.MenuText);
             colors.Add(CI.s_panel, Color.Orange);
             colors.Add(CI.transparentcolorkey, Color.Green);
-            buttonstyle = buttonstyle_system;
-            textboxborderstyle = textboxborderstyle_fixed3D;
+            buttonstyle = ButtonstyleSystem;
+            textboxborderstyle = TextboxborderstyleFixed3D;
             windowsframe = true;
             formopacity = 100;
-            fontname = defaultfont;
-            fontsize = defaultfontsize;
+            fontname = DefaultFont;
+            fontsize = DefaultFontSize;
         }
         // copy constructor, takes a real copy, with overrides
         public Theme(Theme other, string newname = null, string newfont = null, float newfontsize = 0, double opaque = 0)
@@ -178,7 +180,7 @@ namespace ExtendedControls
             }
         }
 
-        public string Name { get { return name; } }
+        public string Name { get { return name; } set { name = value; } }
         public Color Form { get { return colors[CI.form]; } }
         public Color ButtonBackColor { get { return colors[CI.button_back]; }  }
         public Color ButtonBorderColor { get { return colors[CI.button_border]; } }
@@ -201,7 +203,7 @@ namespace ExtendedControls
         public Color SPanelColor { get { return colors[CI.s_panel]; }  }
         public Color GridHighlightBack { get { return colors[CI.grid_highlightback]; }  }
         public Color TransparentColorKey { get { return colors[CI.transparentcolorkey]; }  }
-        public string TextBlockBorderStyle { get { return textboxborderstyle; } set { textboxborderstyle = value; } }
+        public string TextBoxBorderStyle { get { return textboxborderstyle; } set { textboxborderstyle = value; } }
         public string ButtonStyle { get { return buttonstyle; } set { buttonstyle = value; } }
         public bool WindowsFrame { get { return windowsframe; } set { windowsframe = value; } }
         public double Opacity { get { return formopacity; } set { formopacity = value; }  }
@@ -915,9 +917,18 @@ namespace ExtendedControls
                     if (s != null)
                     {
                         Color c = System.Drawing.ColorTranslator.FromHtml(s);   // may except if not valid HTML colour
-                        colors.Add(ck, c);
+                        colors[ck] = c;
                         foundcolour = true;
                         System.Diagnostics.Debug.WriteLine("Color.FromArgb({0},{1},{2},{3}), // {4}", c.A, c.R, c.G, c.B, ck.ToString());
+                    }
+                    else
+                    {
+                        int? v = jo[ck.ToString()].IntNull();       // or it can be a number
+                        if ( v != null)
+                        {
+                            colors[ck] = Color.FromArgb(v.Value);
+                            foundcolour = true;
+                        }
                     }
                 }
                 catch
@@ -935,17 +946,17 @@ namespace ExtendedControls
                         if (ck == CI.grid_altcelltext && gridtext != null)
                         {
                             Color c = System.Drawing.ColorTranslator.FromHtml(gridtext);   // may except if not valid HTML colour
-                            colors.Add(ck, c);
+                            colors[ck] = c;
                         }
                         else if (ck == CI.grid_altcellbackground && gridback != null)
                         {
                             Color c = System.Drawing.ColorTranslator.FromHtml(gridback);   // may except if not valid HTML colour
-                            colors.Add(ck, c);
+                            colors[ck] = c;
                         }
                         else
                         {
                             Color def = defaultset.colors[ck];        // 
-                            colors.Add(ck, def);
+                            colors[ck] = def;
                         }
                     }
                 }
@@ -999,7 +1010,6 @@ namespace ExtendedControls
             }
             return false;
         }
-
 
         public bool SaveFile(string pathname)
         {

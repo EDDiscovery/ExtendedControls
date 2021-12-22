@@ -70,12 +70,15 @@ namespace ExtendedControls
 
             Theme theme = Theme.Current;
 
+            this.MinimizeBox = false;
+
             if (theme != null)  // paranoid
             {
                 theme.ApplyStd(this);
                 themeTextBox.TextBoxBackColor = this.BackColor; // text box back is form back in this circumstance - we don't want it to stand out.
-                if (theme.MessageBoxWindowIcon != null)
-                    this.Icon = theme.MessageBoxWindowIcon;
+
+                if ( FormBorderStyle == FormBorderStyle.Sizable)        // override sizable to fixed
+                    FormBorderStyle = FormBorderStyle.FixedToolWindow;
             }
             else
             {
