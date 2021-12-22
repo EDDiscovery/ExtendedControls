@@ -13,28 +13,28 @@ namespace TestExtendedControls
 {
     public partial class TestPanelScroll2 : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestPanelScroll2()
         {
             InitializeComponent();
-            theme = new ThemeStandard();
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
+            Theme.Current.WindowsFrame = true;
             extPanelScroll1.FlowControlsLeftToRight = true;
         }
 
         private void extButton1_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 12;
+            Theme.Current.ApplyStd(this);
         }
 
         private void extButton2_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 20;
+            Theme.Current.ApplyStd(this);
         }
     }
 }

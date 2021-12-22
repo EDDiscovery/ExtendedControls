@@ -13,21 +13,20 @@ namespace TestExtendedControls
 {
     public partial class TestDateTime : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestDateTime()
         {
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontName = "Microsoft Sans Serif";
-            theme.FontSize = 8.25f;
-            theme.WindowsFrame = true;
+            Theme.Current.FontName = "Microsoft Sans Serif";
+            Theme.Current.FontSize = 8.25f;
+            Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
 
-            theme.ApplyStd(this);
+            Theme.Current.ApplyStd(this);
 
 
             extDateTimePicker1.Format = DateTimePickerFormat.Custom;

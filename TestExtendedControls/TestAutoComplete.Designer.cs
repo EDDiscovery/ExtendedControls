@@ -34,7 +34,7 @@
             this.autoCompleteTextBox2 = new ExtendedControls.ExtTextBoxAutoComplete();
             this.textBoxBorder1 = new ExtendedControls.ExtTextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.dataGridViewColumnHider1 = new BaseUtils.DataGridViewColumnHider();
+            this.dataGridViewColumnHider1 = new BaseUtils.DataGridViewColumnControl();
             this.Column1 = new ExtendedControls.ExtDataGridViewColumnAutoComplete();
             this.Column2 = new ExtendedControls.ExtDataGridViewColumnAutoComplete();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColumnHider1)).BeginInit();
@@ -204,7 +204,7 @@
         private ExtendedControls.ExtTextBoxAutoComplete autoCompleteTextBox2;
         private ExtendedControls.ExtTextBox textBoxBorder1;
         private System.Windows.Forms.Timer timer1;
-        private BaseUtils.DataGridViewColumnHider dataGridViewColumnHider1;
+        private BaseUtils.DataGridViewColumnControl dataGridViewColumnHider1;
         private ExtendedControls.ExtDataGridViewColumnAutoComplete Column1;
         private ExtendedControls.ExtDataGridViewColumnAutoComplete Column2;
     }

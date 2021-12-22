@@ -68,7 +68,8 @@ namespace ExtendedControls
             textLabel.MouseDown += (s, e) => { prompt.OnCaptionMouseDown(s as Control, e); };
             textLabel.MouseUp += (s, e) => { prompt.OnCaptionMouseUp(s as Control, e); };
 
-            ITheme theme = ThemeableFormsInstance.Instance;
+            Theme theme = Theme.Current;
+            System.Diagnostics.Debug.Assert(theme != null);
 
             if (!theme.WindowsFrame)
                 outer.Controls.Add(textLabel);

@@ -13,14 +13,14 @@ namespace TestExtendedControls
 {
     public partial class TestTabControlCustom : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestTabControlCustom()
         {
-            theme = new ThemeStandard();
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
+            Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
             tabControl1.FlatStyle = FlatStyle.Popup;
@@ -30,23 +30,23 @@ namespace TestExtendedControls
 
         private void extButton1_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 12;
+            Theme.Current.ApplyStd(this);
             System.Diagnostics.Debug.WriteLine("Font " + this.Font + this.Font.Height);
 
         }
 
         private void extButton2_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 20;
+            Theme.Current.ApplyStd(this);
             System.Diagnostics.Debug.WriteLine("Font " + this.Font + this.Font.Height);
         }
 
         private void extButton3_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 8.5f;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 8.5f;
+            Theme.Current.ApplyStd(this);
             System.Diagnostics.Debug.WriteLine("Font " + this.Font + this.Font.Height);
 
         }

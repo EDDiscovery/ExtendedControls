@@ -44,7 +44,7 @@ namespace ExtendedControls
             ackaction = acknowledgeaction;
             ackdata = acknowledgedata;
 
-            ITheme theme = ThemeableFormsInstance.Instance;
+            Theme theme = Theme.Current;
 
             if (theme != null)
             {

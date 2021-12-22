@@ -1,6 +1,6 @@
 ﻿namespace TestExtendedControls
 {
-    partial class TestPanelDGV
+    partial class TestTheme
     {
         /// <summary>
         /// Required designer variable.
@@ -28,42 +28,62 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new ExtendedControls.ExtButton();
+            this.extButtonLoad = new ExtendedControls.ExtButton();
+            this.extButtonSave = new ExtendedControls.ExtButton();
+            this.extButtonEdit = new ExtendedControls.ExtButton();
             this.panel = new ExtendedControls.ExtPanelDataGridViewScroll();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
-            this.button2 = new ExtendedControls.ExtButton();
-            this.extButton3 = new ExtendedControls.ExtButton();
-            this.extButton4 = new ExtendedControls.ExtButton();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.extButtonVerdana = new ExtendedControls.ExtButton();
+            this.extButtonEuroCaps = new ExtendedControls.ExtButton();
+            this.extButtonClose = new ExtendedControls.ExtButton();
+            this.labelName = new System.Windows.Forms.Label();
             this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // extButtonLoad
             // 
-            this.button1.Location = new System.Drawing.Point(3, 17);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Clr Rows";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.extButtonLoad.Location = new System.Drawing.Point(202, 13);
+            this.extButtonLoad.Name = "extButtonLoad";
+            this.extButtonLoad.Size = new System.Drawing.Size(75, 23);
+            this.extButtonLoad.TabIndex = 3;
+            this.extButtonLoad.Text = "Load";
+            this.extButtonLoad.UseVisualStyleBackColor = true;
+            this.extButtonLoad.Click += new System.EventHandler(this.extButtonLoad_Click);
+            // 
+            // extButtonSave
+            // 
+            this.extButtonSave.Location = new System.Drawing.Point(108, 13);
+            this.extButtonSave.Name = "extButtonSave";
+            this.extButtonSave.Size = new System.Drawing.Size(75, 23);
+            this.extButtonSave.TabIndex = 3;
+            this.extButtonSave.Text = "Save";
+            this.extButtonSave.UseVisualStyleBackColor = true;
+            this.extButtonSave.Click += new System.EventHandler(this.extButtonSave_Click);
+            // 
+            // extButtonEdit
+            // 
+            this.extButtonEdit.Location = new System.Drawing.Point(13, 13);
+            this.extButtonEdit.Name = "extButtonEdit";
+            this.extButtonEdit.Size = new System.Drawing.Size(75, 23);
+            this.extButtonEdit.TabIndex = 3;
+            this.extButtonEdit.Text = "Edit";
+            this.extButtonEdit.UseVisualStyleBackColor = true;
+            this.extButtonEdit.Click += new System.EventHandler(this.extButtonEdit_Click);
             // 
             // panel
             // 
             this.panel.Controls.Add(this.dataGridView);
             this.panel.Controls.Add(this.extScrollBar1);
-            this.panel.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel.InternalMargin = new System.Windows.Forms.Padding(0);
-            this.panel.Location = new System.Drawing.Point(0, 55);
+            this.panel.Location = new System.Drawing.Point(3, 170);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(1224, 565);
-            this.panel.TabIndex = 1;
+            this.panel.Size = new System.Drawing.Size(754, 364);
+            this.panel.TabIndex = 2;
             this.panel.VerticalScrollBarDockRight = true;
             // 
             // dataGridView
@@ -74,16 +94,12 @@
             this.Column1,
             this.Column2,
             this.Column3});
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView.Location = new System.Drawing.Point(0, 0);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView.Size = new System.Drawing.Size(1208, 565);
+            this.dataGridView.Size = new System.Drawing.Size(738, 364);
             this.dataGridView.TabIndex = 1;
-            this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
-            this.dataGridView.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView1_ColumnWidthChanged);
-            this.dataGridView.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dataGridView1_SortCompare);
-            this.dataGridView.Resize += new System.EventHandler(this.dataGridView1_Resize);
             // 
             // Column1
             // 
@@ -117,13 +133,13 @@
             this.extScrollBar1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extScrollBar1.HideScrollBar = false;
             this.extScrollBar1.LargeChange = 1;
-            this.extScrollBar1.Location = new System.Drawing.Point(1208, 0);
+            this.extScrollBar1.Location = new System.Drawing.Point(738, 0);
             this.extScrollBar1.Maximum = 0;
             this.extScrollBar1.Minimum = 0;
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBar1.Name = "extScrollBar1";
-            this.extScrollBar1.Size = new System.Drawing.Size(16, 565);
+            this.extScrollBar1.Size = new System.Drawing.Size(16, 364);
             this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar1.SmallChange = 1;
             this.extScrollBar1.TabIndex = 0;
@@ -135,76 +151,81 @@
             this.extScrollBar1.Value = 0;
             this.extScrollBar1.ValueLimited = 0;
             // 
-            // button2
+            // extButtonVerdana
             // 
-            this.button2.Location = new System.Drawing.Point(105, 17);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "add text";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.extButtonVerdana.Location = new System.Drawing.Point(293, 13);
+            this.extButtonVerdana.Name = "extButtonVerdana";
+            this.extButtonVerdana.Size = new System.Drawing.Size(75, 23);
+            this.extButtonVerdana.TabIndex = 3;
+            this.extButtonVerdana.Text = "Verdana";
+            this.extButtonVerdana.UseVisualStyleBackColor = true;
+            this.extButtonVerdana.Click += new System.EventHandler(this.extButtonVerdana_Click);
             // 
-            // extButton3
+            // extButtonEuroCaps
             // 
-            this.extButton3.Location = new System.Drawing.Point(186, 17);
-            this.extButton3.Name = "extButton3";
-            this.extButton3.Size = new System.Drawing.Size(75, 23);
-            this.extButton3.TabIndex = 4;
-            this.extButton3.Text = "Remove text";
-            this.extButton3.UseVisualStyleBackColor = true;
-            this.extButton3.Click += new System.EventHandler(this.Button3_Click);
+            this.extButtonEuroCaps.Location = new System.Drawing.Point(374, 13);
+            this.extButtonEuroCaps.Name = "extButtonEuroCaps";
+            this.extButtonEuroCaps.Size = new System.Drawing.Size(75, 23);
+            this.extButtonEuroCaps.TabIndex = 3;
+            this.extButtonEuroCaps.Text = "EuroCaps";
+            this.extButtonEuroCaps.UseVisualStyleBackColor = true;
+            this.extButtonEuroCaps.Click += new System.EventHandler(this.extButtonEuroCaps_Click);
             // 
-            // extButton4
+            // extButtonClose
             // 
-            this.extButton4.Location = new System.Drawing.Point(346, 17);
-            this.extButton4.Name = "extButton4";
-            this.extButton4.Size = new System.Drawing.Size(75, 23);
-            this.extButton4.TabIndex = 5;
-            this.extButton4.Text = "B4";
-            this.extButton4.UseVisualStyleBackColor = true;
-            this.extButton4.Click += new System.EventHandler(this.Button4_Click);
+            this.extButtonClose.Location = new System.Drawing.Point(792, 12);
+            this.extButtonClose.Name = "extButtonClose";
+            this.extButtonClose.Size = new System.Drawing.Size(75, 23);
+            this.extButtonClose.TabIndex = 3;
+            this.extButtonClose.Text = "Close";
+            this.extButtonClose.UseVisualStyleBackColor = true;
+            this.extButtonClose.Click += new System.EventHandler(this.extButtonClose_Click);
             // 
-            // panel1
+            // labelName
             // 
-            this.panel1.Controls.Add(this.button1);
-            this.panel1.Controls.Add(this.button2);
-            this.panel1.Controls.Add(this.extButton4);
-            this.panel1.Controls.Add(this.extButton3);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1224, 55);
-            this.panel1.TabIndex = 6;
+            this.labelName.AutoSize = true;
+            this.labelName.Location = new System.Drawing.Point(13, 59);
+            this.labelName.Name = "labelName";
+            this.labelName.Size = new System.Drawing.Size(35, 13);
+            this.labelName.TabIndex = 4;
+            this.labelName.Text = "Name";
             // 
-            // TestPanelDGV
+            // TestTheme
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Info;
-            this.ClientSize = new System.Drawing.Size(1224, 640);
+            this.ClientSize = new System.Drawing.Size(879, 666);
+            this.Controls.Add(this.labelName);
+            this.Controls.Add(this.extButtonClose);
+            this.Controls.Add(this.extButtonEuroCaps);
+            this.Controls.Add(this.extButtonVerdana);
+            this.Controls.Add(this.extButtonLoad);
+            this.Controls.Add(this.extButtonSave);
+            this.Controls.Add(this.extButtonEdit);
             this.Controls.Add(this.panel);
-            this.Controls.Add(this.panel1);
-            this.Name = "TestPanelDGV";
+            this.Name = "TestTheme";
             this.Text = "Form1";
             this.panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
-            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
         private ExtendedControls.ExtPanelDataGridViewScroll panel;
-        private ExtendedControls.ExtScrollBar extScrollBar1;
         private System.Windows.Forms.DataGridView dataGridView;
-        private ExtendedControls.ExtButton button1;
-        private ExtendedControls.ExtButton button2;
-        private ExtendedControls.ExtButton extButton3;
-        private ExtendedControls.ExtButton extButton4;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private ExtendedControls.ExtScrollBar extScrollBar1;
+        private ExtendedControls.ExtButton extButtonEdit;
+        private ExtendedControls.ExtButton extButtonSave;
+        private ExtendedControls.ExtButton extButtonLoad;
+        private ExtendedControls.ExtButton extButtonVerdana;
+        private ExtendedControls.ExtButton extButtonEuroCaps;
+        private ExtendedControls.ExtButton extButtonClose;
+        private System.Windows.Forms.Label labelName;
     }
 }

@@ -62,7 +62,7 @@ namespace ExtendedConditionsForms
 
             this.Icon = ic;
 
-            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this) ?? true;
+            bool winborder = ExtendedControls.Theme.Current?.ApplyDialog(this) ?? true;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             this.Text = label_index.Text = t;
 
@@ -162,7 +162,7 @@ namespace ExtendedConditionsForms
             groups.Add(g);
 
             panelVScroll1.Controls.Add(g.panel);
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(g.panel);
+            ExtendedControls.Theme.Current?.ApplyDialog(g.panel);
 
             FixUpGroups();
 

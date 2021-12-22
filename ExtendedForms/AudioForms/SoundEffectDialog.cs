@@ -101,7 +101,7 @@ namespace ExtendedAudioForms
 
             checkBoxCustomNone.Checked = ap.OverrideNone;
 
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this);
+            ExtendedControls.Theme.Current?.ApplyDialog(this);
         }
 
         public Variables GetEffects()

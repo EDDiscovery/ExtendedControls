@@ -14,16 +14,15 @@ namespace TestExtendedControls
 {
     public partial class TestListBoxIcon : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestListBoxIcon()
         {
             InitializeComponent();
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontSize = 12;
+            Theme.Current.FontSize = 12;
         }
 
         private void F_CheckedChanged(object sender, ItemCheckEventArgs e, Object tag)
@@ -103,7 +102,7 @@ namespace TestExtendedControls
             f.CheckedChanged += F_CheckedChanged;
             f.SaveSettings += F_SaveSettings;
             f.Font = new Font("Euro Caps", 16);
-            theme.ApplyStd(f);
+            Theme.Current.ApplyStd(f);
             f.Show(this);
 
         }
@@ -127,7 +126,7 @@ namespace TestExtendedControls
             }
             f.CheckedChanged += F_CheckedChanged;
             f.SaveSettings += F_SaveSettings;
-            theme.FontSize = size;
+            Theme.Current.FontSize = size;
             f.Create("", true);
 
             return f;
@@ -242,15 +241,14 @@ namespace TestExtendedControls
 
             if (themeit)
             {
-                theme.ApplyStd(dropdown);
+                Theme.Current.ApplyStd(dropdown);
             }
             else
             { 
-                var stdtheme = new ThemeStandard();
+                var stdtheme = new ThemeList();
                 stdtheme.LoadBaseThemes();
                 stdtheme.SetThemeByName("Windows Default");
-
-                stdtheme.ApplyStd(dropdown,true);
+                Theme.Current.ApplyStd(dropdown,true);
             }
 
 

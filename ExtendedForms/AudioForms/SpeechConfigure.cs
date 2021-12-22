@@ -127,7 +127,7 @@ namespace ExtendedAudioForms
 
             effects = ef;
 
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this);
+            ExtendedControls.Theme.Current?.ApplyDialog(this);
         }
 
         private void buttonExtOK_Click(object sender, EventArgs e)

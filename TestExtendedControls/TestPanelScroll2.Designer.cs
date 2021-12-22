@@ -28,15 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addAsGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.extButton2 = new ExtendedControls.ExtButton();
+            this.extButton1 = new ExtendedControls.ExtButton();
             this.extPanelScroll1 = new ExtendedControls.ExtPanelScroll();
+            this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -44,58 +40,9 @@
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
-            this.extButton2 = new ExtendedControls.ExtButton();
-            this.extButton1 = new ExtendedControls.ExtButton();
-            this.contextMenuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.extPanelScroll1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addToolStripMenuItem,
-            this.addAsGridToolStripMenuItem,
-            this.removeToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(136, 70);
-            // 
-            // addToolStripMenuItem
-            // 
-            this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gridToolStripMenuItem});
-            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.addToolStripMenuItem.Text = "Add";
-            // 
-            // gridToolStripMenuItem
-            // 
-            this.gridToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
-            this.gridToolStripMenuItem.Name = "gridToolStripMenuItem";
-            this.gridToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
-            this.gridToolStripMenuItem.Text = "Grid";
-            // 
-            // addAsGridToolStripMenuItem
-            // 
-            this.addAsGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statsToolStripMenuItem});
-            this.addAsGridToolStripMenuItem.Name = "addAsGridToolStripMenuItem";
-            this.addAsGridToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.addAsGridToolStripMenuItem.Text = "Add as Grid";
-            // 
-            // statsToolStripMenuItem
-            // 
-            this.statsToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.galaxy;
-            this.statsToolStripMenuItem.Name = "statsToolStripMenuItem";
-            this.statsToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
-            this.statsToolStripMenuItem.Text = "Stats";
-            // 
-            // removeToolStripMenuItem
-            // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.removeToolStripMenuItem.Text = "Remove";
             // 
             // panel1
             // 
@@ -106,6 +53,26 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1079, 56);
             this.panel1.TabIndex = 1;
+            // 
+            // extButton2
+            // 
+            this.extButton2.Location = new System.Drawing.Point(209, 13);
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(75, 23);
+            this.extButton2.TabIndex = 1;
+            this.extButton2.Text = "T20";
+            this.extButton2.UseVisualStyleBackColor = true;
+            this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
+            // 
+            // extButton1
+            // 
+            this.extButton1.Location = new System.Drawing.Point(13, 13);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.TabIndex = 0;
+            this.extButton1.Text = "T12";
+            this.extButton1.UseVisualStyleBackColor = true;
+            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
             // extPanelScroll1
             // 
@@ -118,11 +85,41 @@
             this.extPanelScroll1.Controls.Add(this.button6);
             this.extPanelScroll1.Controls.Add(this.button7);
             this.extPanelScroll1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extPanelScroll1.FlowControlsLeftToRight = false;
             this.extPanelScroll1.Location = new System.Drawing.Point(0, 56);
             this.extPanelScroll1.Name = "extPanelScroll1";
             this.extPanelScroll1.Size = new System.Drawing.Size(1079, 505);
             this.extPanelScroll1.TabIndex = 1;
             this.extPanelScroll1.VerticalScrollBarDockRight = true;
+            // 
+            // extScrollBar1
+            // 
+            this.extScrollBar1.ArrowBorderColor = System.Drawing.Color.LightBlue;
+            this.extScrollBar1.ArrowButtonColor = System.Drawing.Color.LightGray;
+            this.extScrollBar1.ArrowColorScaling = 0.5F;
+            this.extScrollBar1.ArrowDownDrawAngle = 270F;
+            this.extScrollBar1.ArrowUpDrawAngle = 90F;
+            this.extScrollBar1.BorderColor = System.Drawing.Color.White;
+            this.extScrollBar1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extScrollBar1.HideScrollBar = false;
+            this.extScrollBar1.LargeChange = 10;
+            this.extScrollBar1.Location = new System.Drawing.Point(1063, 0);
+            this.extScrollBar1.Maximum = 338;
+            this.extScrollBar1.Minimum = 0;
+            this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
+            this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
+            this.extScrollBar1.Name = "extScrollBar1";
+            this.extScrollBar1.Size = new System.Drawing.Size(16, 505);
+            this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
+            this.extScrollBar1.SmallChange = 1;
+            this.extScrollBar1.TabIndex = 0;
+            this.extScrollBar1.Text = "extScrollBar1";
+            this.extScrollBar1.ThumbBorderColor = System.Drawing.Color.Yellow;
+            this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
+            this.extScrollBar1.ThumbColorScaling = 0.5F;
+            this.extScrollBar1.ThumbDrawAngle = 0F;
+            this.extScrollBar1.Value = 0;
+            this.extScrollBar1.ValueLimited = 0;
             // 
             // button1
             // 
@@ -187,55 +184,6 @@
             this.button7.Text = "button7";
             this.button7.UseVisualStyleBackColor = true;
             // 
-            // extScrollBar1
-            // 
-            this.extScrollBar1.ArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.extScrollBar1.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extScrollBar1.ArrowColorScaling = 0.5F;
-            this.extScrollBar1.ArrowDownDrawAngle = 270F;
-            this.extScrollBar1.ArrowUpDrawAngle = 90F;
-            this.extScrollBar1.BorderColor = System.Drawing.Color.White;
-            this.extScrollBar1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extScrollBar1.HideScrollBar = false;
-            this.extScrollBar1.LargeChange = 10;
-            this.extScrollBar1.Location = new System.Drawing.Point(1063, 0);
-            this.extScrollBar1.Maximum = 339;
-            this.extScrollBar1.Minimum = 0;
-            this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
-            this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
-            this.extScrollBar1.Name = "extScrollBar1";
-            this.extScrollBar1.Size = new System.Drawing.Size(16, 505);
-            this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
-            this.extScrollBar1.SmallChange = 1;
-            this.extScrollBar1.TabIndex = 0;
-            this.extScrollBar1.Text = "extScrollBar1";
-            this.extScrollBar1.ThumbBorderColor = System.Drawing.Color.Yellow;
-            this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.extScrollBar1.ThumbColorScaling = 0.5F;
-            this.extScrollBar1.ThumbDrawAngle = 0F;
-            this.extScrollBar1.Value = 0;
-            this.extScrollBar1.ValueLimited = 0;
-            // 
-            // extButton2
-            // 
-            this.extButton2.Location = new System.Drawing.Point(209, 13);
-            this.extButton2.Name = "extButton2";
-            this.extButton2.Size = new System.Drawing.Size(75, 23);
-            this.extButton2.TabIndex = 1;
-            this.extButton2.Text = "T20";
-            this.extButton2.UseVisualStyleBackColor = true;
-            this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
-            // 
-            // extButton1
-            // 
-            this.extButton1.Location = new System.Drawing.Point(13, 13);
-            this.extButton1.Name = "extButton1";
-            this.extButton1.Size = new System.Drawing.Size(75, 23);
-            this.extButton1.TabIndex = 0;
-            this.extButton1.Text = "T12";
-            this.extButton1.UseVisualStyleBackColor = true;
-            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
-            // 
             // TestPanelScroll2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -245,7 +193,6 @@
             this.Controls.Add(this.panel1);
             this.Name = "TestPanelScroll2";
             this.Text = "Form1";
-            this.contextMenuStrip1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.extPanelScroll1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -253,12 +200,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addAsGridToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gridToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem statsToolStripMenuItem;
         private ExtendedControls.ExtPanelScroll extPanelScroll1;
         private ExtendedControls.ExtScrollBar extScrollBar1;
         private System.Windows.Forms.Panel panel1;

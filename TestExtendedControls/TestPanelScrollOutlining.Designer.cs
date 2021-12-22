@@ -28,13 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addAsGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.button1 = new ExtendedControls.ExtButton();
             this.panel2 = new ExtendedControls.ExtPanelDataGridViewScroll();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
@@ -56,57 +49,11 @@
             this.extButton3 = new ExtendedControls.ExtButton();
             this.extButton4 = new ExtendedControls.ExtButton();
             this.extButton5 = new ExtendedControls.ExtButton();
-            this.contextMenuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addToolStripMenuItem,
-            this.addAsGridToolStripMenuItem,
-            this.removeToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(136, 70);
-            // 
-            // addToolStripMenuItem
-            // 
-            this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gridToolStripMenuItem});
-            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.addToolStripMenuItem.Text = "Add";
-            // 
-            // gridToolStripMenuItem
-            // 
-            this.gridToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
-            this.gridToolStripMenuItem.Name = "gridToolStripMenuItem";
-            this.gridToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
-            this.gridToolStripMenuItem.Text = "Grid";
-            // 
-            // addAsGridToolStripMenuItem
-            // 
-            this.addAsGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statsToolStripMenuItem});
-            this.addAsGridToolStripMenuItem.Name = "addAsGridToolStripMenuItem";
-            this.addAsGridToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.addAsGridToolStripMenuItem.Text = "Add as Grid";
-            // 
-            // statsToolStripMenuItem
-            // 
-            this.statsToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.galaxy;
-            this.statsToolStripMenuItem.Name = "statsToolStripMenuItem";
-            this.statsToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
-            this.statsToolStripMenuItem.Text = "Stats";
-            // 
-            // removeToolStripMenuItem
-            // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.removeToolStripMenuItem.Text = "Remove";
             // 
             // button1
             // 
@@ -354,7 +301,6 @@
             this.Controls.Add(this.panel);
             this.Name = "TestPanelScrollOutlining";
             this.Text = "Form1";
-            this.contextMenuStrip1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.panel.ResumeLayout(false);
@@ -364,12 +310,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addAsGridToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gridToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem statsToolStripMenuItem;
         private ExtendedControls.ExtPanelDataGridViewScroll panel;
         private ExtendedControls.ExtScrollBar extScrollBar1;
         private System.Windows.Forms.DataGridView dataGridView1;

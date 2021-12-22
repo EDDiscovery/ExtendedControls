@@ -13,16 +13,16 @@ namespace TestExtendedControls
 {
     public partial class TestPanelScrollOutlining : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestPanelScrollOutlining()
         {
             InitializeComponent();
 
-            theme = new ThemeStandard();
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
+            Theme.Current.WindowsFrame = true;
 
             for ( int i = 0; i < 100; i++ )
             {
@@ -135,15 +135,15 @@ namespace TestExtendedControls
 
         private void extButton1_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 12;
+            Theme.Current.ApplyStd(this);
 
         }
 
         private void extButton2_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 20;
+            Theme.Current.ApplyStd(this);
 
         }
 

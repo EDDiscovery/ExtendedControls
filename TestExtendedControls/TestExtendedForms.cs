@@ -17,16 +17,15 @@ namespace TestExtendedControls
 {
     public partial class TestExtendedForms : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestExtendedForms()
         {
             InitializeComponent();
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontSize = 12;
+            Theme.Current.FontSize = 12;
         }
 
 
@@ -34,7 +33,7 @@ namespace TestExtendedControls
 
         private void extButton1_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
+            Theme.Current.FontSize = 12;
             AudioDriverCSCore ad = new AudioDriverCSCore();
             AudioDeviceConfigure f = new AudioDeviceConfigure();
             f.Init("Config check", ad);
@@ -43,7 +42,7 @@ namespace TestExtendedControls
 
         private void extButton2_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
+            Theme.Current.FontSize = 20;
             AudioDriverCSCore ad = new AudioDriverCSCore();
             AudioDeviceConfigure f = new AudioDeviceConfigure();
             f.Init("Config check", ad);
@@ -57,7 +56,7 @@ namespace TestExtendedControls
 
         private void SC(float size, bool mode)
         { 
-            theme.FontSize = size;
+            Theme.Current.FontSize = size;
             AudioDriverCSCore ad = new AudioDriverCSCore();
             AudioQueue q = new AudioQueue(ad);
             WindowsSpeechEngine wse = new WindowsSpeechEngine();
@@ -82,7 +81,7 @@ namespace TestExtendedControls
 
         private void extButton3_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = true;
+            Theme.Current.WindowsFrame = true;
         }
 
         private void extButton6_Click(object sender, EventArgs e)
@@ -93,7 +92,7 @@ namespace TestExtendedControls
 
         private void WC(float size)
         {
-            theme.FontSize = size;
+            Theme.Current.FontSize = size;
             AudioDriverCSCore ad = new AudioDriverCSCore();
             AudioQueue q = new AudioQueue(ad);
 
@@ -122,7 +121,7 @@ namespace TestExtendedControls
 
         private void VAR(float s, bool pop, bool ops = false)
         {
-            theme.FontSize = s;
+            Theme.Current.FontSize = s;
             VariablesForm f = new VariablesForm();
 
             Variables v = new Variables();

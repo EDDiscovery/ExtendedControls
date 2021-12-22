@@ -13,16 +13,16 @@ namespace TestExtendedControls
 {
     public partial class TestVScroll : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestVScroll()
         {
             InitializeComponent();
-            theme = new ThemeStandard();
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
-            theme.ApplyStd(this);
+            Theme.Current.WindowsFrame = true;
+            Theme.Current.ApplyStd(this);
         }
 
         private void extScrollBar2_ValueChanged(object sender, EventArgs e)

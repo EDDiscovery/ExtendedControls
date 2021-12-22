@@ -15,16 +15,16 @@ namespace TestExtendedControls
 {
     public partial class TestConditionUC: Form
     {
-        ThemeStandard theme;
+        ThemeLoader theme;
 
         public TestConditionUC()
         {
             InitializeComponent();
-            theme = new ThemeStandard();
+            theme = new ThemeLoader();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.FontSize = 12;
-            theme.WindowsFrame = false;
+            Theme.Current.FontSize = 12;
+            Theme.Current.WindowsFrame = false;
             ExtendedControls.ThemeableFormsInstance.Instance = theme;
 
         }
@@ -54,7 +54,7 @@ namespace TestExtendedControls
 
             List<string> events = new List<string>() { "eone", "etwo" };
 
-            theme.FontSize = s;
+            Theme.Current.FontSize = s;
             frm.InitFilter("Name", this.Icon, events);
 
             if (frm.ShowDialog() == DialogResult.OK)
@@ -116,7 +116,7 @@ namespace TestExtendedControls
             frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("defone", "String", ConditionEntry.MatchType.Contains));
             frm.VariableNames.Add(new BaseUtils.TypeHelpers.PropertyNameInfo("deftwo", "Number", ConditionEntry.MatchType.NumericEquals));
 
-            theme.FontSize = s;
+            Theme.Current.FontSize = s;
             frm.InitCondition("Name", this.Icon, conds);
 
             if (frm.ShowDialog() == DialogResult.OK)
@@ -185,7 +185,7 @@ namespace TestExtendedControls
                 clist2.Add(new Condition("e1", "a", new Variables(), ces, ConditionEntry.LogicalCondition.Or, ConditionEntry.LogicalCondition.And));
             }
 
-            theme.FontSize = s;
+            Theme.Current.FontSize = s;
             frm.InitCondition("Name", this.Icon, clist2);
 
             if (frm.ShowDialog() == DialogResult.OK)

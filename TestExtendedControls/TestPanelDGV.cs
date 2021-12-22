@@ -13,16 +13,16 @@ namespace TestExtendedControls
 {
     public partial class TestPanelDGV : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestPanelDGV()
         {
             InitializeComponent();
 
-            theme = new ThemeStandard();
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
+            Theme.Current.WindowsFrame = true;
 
 
             dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;

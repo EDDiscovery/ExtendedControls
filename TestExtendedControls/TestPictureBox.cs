@@ -13,16 +13,16 @@ namespace TestExtendedControls
 {
     public partial class TestPictureBox : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestPictureBox()
         {
             InitializeComponent();
-            theme = new ThemeStandard();
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
-            theme.ApplyStd(this);
+            Theme.Current.WindowsFrame = true;
+            Theme.Current.ApplyStd(this);
 
             extScrollBar1.HideScrollBar = true;
             extScrollBar1.SmallChange = 16;

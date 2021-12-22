@@ -120,7 +120,7 @@ namespace ExtendedControls
 
             if (applytheme)
             {
-                ThemeableFormsInstance.Instance?.ApplyStd(this);
+                Theme.Current?.ApplyStd(this);
                 FormBorderStyle = FormBorderStyle.None;
             }
         }

@@ -13,18 +13,17 @@ namespace TestExtendedControls
 {
     public partial class TestButtons : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestButtons()
         {
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontName = "Microsoft Sans Serif";
+            Theme.Current.FontName = "Microsoft Sans Serif";
 
-            theme.FontSize = 8.25f;
-            theme.WindowsFrame = true;
+            Theme.Current.FontSize = 8.25f;
+            Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
 
@@ -51,7 +50,7 @@ namespace TestExtendedControls
             b.Location = new Point(250, 120);
             b.Size = new Size(128, b.FindMaxSubControlArea(0, 6).Height);
 
-            theme.ApplyStd(this);
+            Theme.Current.ApplyStd(this);
         }
 
         protected override void OnShown(EventArgs e)
@@ -101,22 +100,22 @@ namespace TestExtendedControls
         private void extButton12_Click(object sender, EventArgs e)
         {
             theme.SetThemeByName("Windows Default");
-            theme.FontSize = 12;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 12;
+            Theme.Current.ApplyStd(this);
         }
 
         private void extButton2_Click(object sender, EventArgs e)
         {
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontSize = 15f;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 15f;
+            Theme.Current.ApplyStd(this);
         }
 
         private void extButton1_Click(object sender, EventArgs e)
         {
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontSize = 8.25f;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 8.25f;
+            Theme.Current.ApplyStd(this);
         }
 
         private void TestButtons_MouseClick(object sender, MouseEventArgs e)

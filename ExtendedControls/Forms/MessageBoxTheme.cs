@@ -68,7 +68,7 @@ namespace ExtendedControls
             if (formIcon != null)
                 this.Icon = formIcon;
 
-            ITheme theme = ThemeableFormsInstance.Instance;
+            Theme theme = Theme.Current;
 
             if (theme != null)  // paranoid
             {

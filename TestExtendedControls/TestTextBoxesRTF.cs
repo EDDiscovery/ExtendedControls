@@ -15,22 +15,21 @@ namespace TestExtendedControls
 {
     public partial class TestTextBoxesRTF : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         // proving you can't control RTF for scroll bar purposes.
 
         public TestTextBoxesRTF()
         {
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             //theme.SetThemeByName("Elite EuroCaps");
             theme.SetThemeByName("Elite Verdana");
-            //theme.FontName = "Microsoft Sans Serif";
-            //theme.FontName = "Arial";
-            //theme.FontName = "Euro Caps";
-            theme.FontSize = 14f;
-            theme.WindowsFrame = true;
+            //Theme.Current.FontName = "Microsoft Sans Serif";
+            //Theme.Current.FontName = "Arial";
+            //Theme.Current.FontName = "Euro Caps";
+            Theme.Current.FontSize = 14f;
+            Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
 
@@ -42,7 +41,7 @@ namespace TestExtendedControls
             var x = Properties.Resources.EDD_License;
             extRichTextBox1.Rtf = x;
 
-            theme.ApplyStd(this);
+            Theme.Current.ApplyStd(this);
 
 
         }

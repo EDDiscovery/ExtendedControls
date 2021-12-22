@@ -136,12 +136,13 @@
     <Compile Include="Controls\PanelDropDown.Designer.cs">
       <DependentUpon>PanelDropDown.cs</DependentUpon>
     </Compile>
-    <Compile Include="Themes\ITheme.cs" />
-    <Compile Include="Themes\ThemeStandardEditor.cs">
+    <Compile Include="Themes\Theme.cs" />
+    <Compile Include="Themes\ThemeList.cs" />
+    <Compile Include="Themes\ThemeEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Themes\ThemeStandardEditor.Designer.cs">
-      <DependentUpon>ThemeStandardEditor.cs</DependentUpon>
+    <Compile Include="Themes\ThemeEditor.Designer.cs">
+      <DependentUpon>ThemeEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="ToolStrips\ThemeToolStrip.cs" />
     <Compile Include="Controls\DateTimePicker.cs">
@@ -219,8 +220,6 @@
     <Compile Include="Controls\TextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Themes\Theme.cs" />
-    <Compile Include="Themes\ThemeStandard.cs" />
     <Compile Include="ToolStrips\ToolStripComboBoxCustom.cs" />
     <Compile Include="Controls\UpDown.cs">
       <SubType>Component</SubType>
@@ -267,8 +266,8 @@
     <EmbeddedResource Include="Controls\TabStrip.resx">
       <DependentUpon>TabStrip.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Themes\ThemeStandardEditor.resx">
-      <DependentUpon>ThemeStandardEditor.cs</DependentUpon>
+    <EmbeddedResource Include="Themes\ThemeEditor.resx">
+      <DependentUpon>ThemeEditor.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

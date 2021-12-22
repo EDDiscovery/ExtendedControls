@@ -13,22 +13,21 @@ namespace TestExtendedControls
 {
     public partial class TestDraggableForm : ExtendedControls.DraggableForm
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestDraggableForm()
         {
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            theme.Form = Color.FromArgb(50, 50, 0);
-            theme.FontName = "Microsoft Sans Serif";
-            theme.FontSize = 8.25f;
-            theme.WindowsFrame = false;
+            Theme.Current.SetColor(Theme.CI.form, Color.FromArgb(50, 50, 0));
+            Theme.Current.FontName = "Microsoft Sans Serif";
+            Theme.Current.FontSize = 8.25f;
+            Theme.Current.WindowsFrame = false;
 
             InitializeComponent();
 
-            theme.ApplyStd(this);
+            Theme.Current.ApplyStd(this);
 
         }
 
@@ -56,16 +55,15 @@ namespace TestExtendedControls
         Form two;
         private void extButton3_Click(object sender, EventArgs e)
         {
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontName = "Microsoft Sans Serif";
-            theme.FontSize = 8.25f;
-            theme.WindowsFrame = false;
+            Theme.Current.FontName = "Microsoft Sans Serif";
+            Theme.Current.FontSize = 8.25f;
+            Theme.Current.WindowsFrame = false;
 
             two = new DraggableForm();
-            theme.ApplyStd(two);
+            Theme.Current.ApplyStd(two);
             two.Show(this);
         }
 

@@ -13,17 +13,16 @@ namespace TestExtendedControls
 {
     public partial class TestVariousForms : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestVariousForms()
         {
             InitializeComponent();
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             //theme.SetThemeByName("Elite EuroCaps");
             theme.SetThemeByName("EDSM");
-            theme.FontSize = 12;
+            Theme.Current.FontSize = 12;
 
            // extButton1_Click(null, null);
         }
@@ -68,7 +67,7 @@ namespace TestExtendedControls
             f.RightMargin = 20;
             f.AllowResize = true;
 
-            theme.FontSize = 12;
+            Theme.Current.FontSize = 12;
 
             f.ShowDialogCentred(this, this.Icon, "Trader",closeicon:true, minsize: new Size(800, 500), maxsize:new Size(1000,600));
 
@@ -77,8 +76,8 @@ namespace TestExtendedControls
         
         void CF(float s, bool wf)
         {
-            theme.FontSize = s;
-            theme.WindowsFrame = wf;
+            Theme.Current.FontSize = s;
+            Theme.Current.WindowsFrame = wf;
 
             ExtendedControls.ConfigurableForm f = new ExtendedControls.ConfigurableForm();
 
@@ -157,7 +156,7 @@ namespace TestExtendedControls
             for (int tl = 0; tl < 20; tl++)
                 text += "Info line " + tl.ToString() + Environment.NewLine;
 
-            theme.FontSize = s;
+            Theme.Current.FontSize = s;
             i.Info("Example info form", this.Icon, text, new int[] { 0, 200, 300 }, isf);
             i.Show(this);
         }
@@ -186,7 +185,7 @@ namespace TestExtendedControls
 
         private void extButton11_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 30;
+            Theme.Current.FontSize = 30;
             KeyForm f = new KeyForm();
             f.Init(null, true, " ", "", "", -1, false);
             f.Show(this);
@@ -198,46 +197,46 @@ namespace TestExtendedControls
 
         private void extButton12_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
-            theme.WindowsFrame = false;
+            Theme.Current.FontSize = 12;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
         }
 
         private void extButton13_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
-            theme.WindowsFrame = false;
+            Theme.Current.FontSize = 20;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 
         }
 
         private void extButton14_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
-            theme.WindowsFrame = false;
+            Theme.Current.FontSize = 20;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.RetryCancel);
         }
 
         private void extButton15_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
-            theme.WindowsFrame = true;
+            Theme.Current.FontSize = 20;
+            Theme.Current.WindowsFrame = true;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.RetryCancel,MessageBoxIcon.Asterisk);
 
         }
 
         private void extButton20_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
-            theme.WindowsFrame = false;
+            Theme.Current.FontSize = 12;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show(infotext, "Help", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
         }
 
         private void extButton16_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
-            theme.WindowsFrame = true;
+            Theme.Current.FontSize = 12;
+            Theme.Current.WindowsFrame = true;
             List<string> ret = PromptMultiLine.ShowDialog(this, "Prompt ML", this.Icon,
                                 new string[] { "one", "two", "three" },
                                 new string[] { "done", "dtwo", "dthree" },
@@ -248,7 +247,7 @@ namespace TestExtendedControls
 
         private void extButton17_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
+            Theme.Current.FontSize = 20;
             List<string> ret = PromptMultiLine.ShowDialog(this, "Prompt ML", this.Icon,
                                 new string[] { "one", "two", "three" },
                                 new string[] { "done", "dtwo", "dthree" },
@@ -259,7 +258,7 @@ namespace TestExtendedControls
 
         private void extButton18_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 24;
+            Theme.Current.FontSize = 24;
             List<string> ret = PromptMultiLine.ShowDialog(this, "Prompt ML", this.Icon,
                                 new string[] { "one", "two", "three" },
                                 new string[] { "done", "dtwo", "dthree" },
@@ -270,7 +269,7 @@ namespace TestExtendedControls
 
         private void extButton19_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 8;
+            Theme.Current.FontSize = 8;
             List<string> ret = PromptMultiLine.ShowDialog(this, "Prompt ML", this.Icon,
                                 new string[] { "one", "two", "three" },
                                 new string[] { "done", "dtwo", "dthree" },
@@ -307,8 +306,8 @@ namespace TestExtendedControls
                     cfg.ReturnResult(DialogResult.Yes);
             };
 
-            theme.WindowsFrame = false;
-            theme.FontSize = sender is float ? (float)sender : 8.5f;
+            Theme.Current.WindowsFrame = false;
+            Theme.Current.FontSize = sender is float ? (float)sender : 8.5f;
 
             DialogResult res = cfg.ShowDialog(this, new Point(500,500), this.Icon, "", closeicon: true);
         }
@@ -332,50 +331,50 @@ namespace TestExtendedControls
 
         private void extButton25_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = false;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show("Test text", "wkwkwk");
         }
 
         private void extButton26_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = false;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show("Test text\r\nwith a line", "wkwkwk");
    
         }
 
         private void extButton27_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = false;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show("Test text qwkqkqw qwkqwkqw qwkqwkqw qwkqwkqw wjkqwkqwkqw qwkqwkqw qwkqwkqw  qwkqk \r\nSTART qkqwkqwkqw qwkqwkqwqw qwkqwkqw end", "kw wkwkw wkwkw wkwk wank", MessageBoxButtons.OKCancel);
         }
 
         private void extButton28_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = false;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show("Test text", "Very long title wkwkwk wkwkwkw wkwkw wkwkw wkwkw wkwkw wkwkw wkwk wank", MessageBoxButtons.OKCancel);
         }
 
         private void extButton29_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = false;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show("Test text qwkqkqw qwkqwkqw qwkqwkqw qwkqwkqw wjkqwkqwkqw qwkqwkqw qwkqwkqw  qwkqk \r\nSTART qkqwkqwkqw qwkqwkqwqw qwkqwkqw end", "kw wkwkw wkwkw wkwk wank", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand);
         }
 
         private void extButton30_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = false;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show("A", "A", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand);
         }
 
         private void extButton31_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = false;
+            Theme.Current.WindowsFrame = false;
             MessageBoxTheme.Show("A", "A", MessageBoxButtons.OKCancel);
         }
 
         private void extButton32_Click(object sender, EventArgs e)
         {
-            theme.WindowsFrame = true;
+            Theme.Current.WindowsFrame = true;
             MessageBoxTheme.Show("A", "A", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 
         }

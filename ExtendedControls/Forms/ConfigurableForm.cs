@@ -382,7 +382,8 @@ namespace ExtendedControls
             this.minsize = minsize;       // set min size window
             this.maxsize = maxsize;
 
-            ITheme theme = ThemeableFormsInstance.Instance;
+            Theme theme = Theme.Current;
+            System.Diagnostics.Debug.Assert(theme != null);
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
@@ -764,9 +765,9 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    if (panelshowcounter >= 3)
+                    if (panelshowcounter >= 3 && Theme.Current != null)
                     {
-                        TransparencyKey = ThemeableFormsInstance.Instance.Form;
+                        TransparencyKey = Theme.Current.Form;
                     }
                     panelshowcounter = 0;
                 }

@@ -13,15 +13,15 @@ namespace TestExtendedControls
 {
     public partial class TestTabStrip : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestTabStrip()
         {
-            theme = new ThemeStandard();
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
-            theme.FontSize = 15;
+            Theme.Current.WindowsFrame = true;
+            Theme.Current.FontSize = 15;
             
             InitializeComponent();
             tabStrip1.ImageList = new Bitmap[] {
@@ -236,15 +236,15 @@ namespace TestExtendedControls
 
         private void extButton1_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 12;
+            Theme.Current.ApplyStd(this);
 
         }
 
         private void extButton2_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 20;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 20;
+            Theme.Current.ApplyStd(this);
         }
     }
 }

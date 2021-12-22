@@ -87,7 +87,7 @@ namespace ExtendedAudioForms
 
             effects = ef;
 
-            ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this);
+            ExtendedControls.Theme.Current?.ApplyDialog(this);
         }
 
 

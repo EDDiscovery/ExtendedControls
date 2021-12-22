@@ -15,24 +15,23 @@ namespace TestExtendedControls
 {
     public partial class TestTextBoxes : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestTextBoxes()
         {
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             //theme.SetThemeByName("Elite EuroCaps");
             theme.SetThemeByName("Elite Verdana");
-            //theme.FontName = "Microsoft Sans Serif";
-            //theme.FontName = "Arial";
-            //theme.FontName = "Euro Caps";
-            //theme.FontSize = 20f;
-          //  theme.WindowsFrame = true;
+            //Theme.Current.FontName = "Microsoft Sans Serif";
+            //Theme.Current.FontName = "Arial";
+            //Theme.Current.FontName = "Euro Caps";
+            //Theme.Current.FontSize = 20f;
+          //  Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
 
-            theme.ApplyStd(this);
+            Theme.Current.ApplyStd(this);
 
             textBoxDouble1.FormatCulture = CultureInfo.GetCultureInfo("en-gb");
             textBoxDouble2.FormatCulture = CultureInfo.GetCultureInfo("fr");

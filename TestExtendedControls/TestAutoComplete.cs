@@ -14,16 +14,15 @@ namespace TestExtendedControls
     public partial class TestAutoComplete : Form
     {
         static List<string> list = new List<string>();
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestAutoComplete()
         {
             InitializeComponent();
-            theme = new ThemeStandard();
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.WindowsFrame = true;
-            ExtendedControls.ThemeableFormsInstance.Instance = theme;
+            Theme.Current.WindowsFrame = true;
 
             list.Add("one");
             list.Add("only");
@@ -51,7 +50,7 @@ namespace TestExtendedControls
 
             Column1.AutoCompleteGenerator = ReturnSystemAutoCompleteListDGV;
             dataGridViewColumnHider1.PreviewKeyDown += DataGridViewColumnHider1_PreviewKeyDown;
-            theme.ApplyStd(this);
+            Theme.Current.ApplyStd(this);
         }
 
         private void DataGridViewColumnHider1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

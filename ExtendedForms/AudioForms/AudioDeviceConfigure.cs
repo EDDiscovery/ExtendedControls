@@ -32,7 +32,7 @@ namespace ExtendedAudioForms
         {
             comboBoxCustomDevice.Items.AddRange(dr.GetAudioEndpoints().ToArray());
             comboBoxCustomDevice.SelectedItem = dr.GetAudioEndpoint();
-            bool border = ExtendedControls.ThemeableFormsInstance.Instance?.ApplyDialog(this) ?? true;
+            bool border = ExtendedControls.Theme.Current?.ApplyDialog(this) ?? true;
 
             this.Text = title;
             if (!border)

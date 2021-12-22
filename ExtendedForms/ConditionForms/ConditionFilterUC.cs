@@ -226,7 +226,7 @@ namespace ExtendedConditionsForms
             g.upbutton.Tag = g;
             g.panel.Controls.Add(g.upbutton);
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.panel);
+            ExtendedControls.Theme.Current.ApplyDialog(g.panel);
             g.panel.Scale(FindForm().CurrentAutoScaleFactor());
 
             g.panel.ResumeLayout();
@@ -342,7 +342,7 @@ namespace ExtendedConditionsForms
 
             c.fname.TextChanged += TextChangedInLeft;       // only when fully set up do we turn on the text change handler - exception if you do it sooner
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.panel);
+            ExtendedControls.Theme.Current.ApplyDialog(g.panel);
             g.panel.Scale(FindForm().CurrentAutoScaleFactor());
 
             g.panel.ResumeLayout();

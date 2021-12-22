@@ -15,7 +15,7 @@
  */
 namespace ExtendedControls
 {
-    partial class ThemeStandardEditor
+    partial class ThemeEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -125,6 +125,7 @@ namespace ExtendedControls
             this.label27 = new System.Windows.Forms.Label();
             this.panel_theme72 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -135,7 +136,7 @@ namespace ExtendedControls
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOK.Location = new System.Drawing.Point(841, 620);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(80, 24);
             this.buttonOK.TabIndex = 0;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -984,18 +985,30 @@ namespace ExtendedControls
             this.label3.TabIndex = 4;
             this.label3.Text = "Font";
             // 
-            // ThemeStandardEditor
+            // buttonCancel
+            // 
+            this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.Location = new System.Drawing.Point(745, 620);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(80, 24);
+            this.buttonCancel.TabIndex = 0;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
+            // 
+            // ThemeEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(930, 655);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxColors);
+            this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ThemeStandardEditor";
+            this.Name = "ThemeEditor";
             this.Text = "Edit Theme";
             this.groupBoxColors.ResumeLayout(false);
             this.groupBoxColors.PerformLayout();
@@ -1089,5 +1102,6 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_theme80;
         private System.Windows.Forms.Panel panel_theme82;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Button buttonCancel;
     }
 }

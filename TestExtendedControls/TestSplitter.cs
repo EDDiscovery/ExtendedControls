@@ -13,16 +13,15 @@ namespace TestExtendedControls
 {
     public partial class TestSplitter : Form
     {
-        ThemeStandard theme;
+        ThemeList theme;
 
         public TestSplitter()
         {
-            theme = new ThemeStandard();
-            ThemeableFormsInstance.Instance = theme;
+            theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            theme.FontSize = 8.25f;
-            theme.WindowsFrame = true;
+            Theme.Current.FontSize = 8.25f;
+            Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
 
@@ -32,7 +31,7 @@ namespace TestExtendedControls
 
             tabPage1.Controls.Add(sp);
 
-            //theme.ApplyStd(this);
+            //Theme.Current.ApplyStd(this);
 
         }
 
@@ -104,25 +103,25 @@ namespace TestExtendedControls
             uc.Controls.Add(lb);
             t.SetControlText("CT<" + uc.Name + ">");
 
-            theme.ApplyStd(uc);
+            Theme.Current.ApplyStd(uc);
             return uc;
         }
 
         private void extButton1_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 12;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 12;
+            Theme.Current.ApplyStd(this);
         }
         private void extButton2_Click(object sender, EventArgs e)
         {
-            theme.FontSize = 16;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 16;
+            Theme.Current.ApplyStd(this);
         }
 
         private void extButton2_Click_1(object sender, EventArgs e)
         {
-            theme.FontSize = 14;
-            theme.ApplyStd(this);
+            Theme.Current.FontSize = 14;
+            Theme.Current.ApplyStd(this);
 
         }
     }

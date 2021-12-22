@@ -28,14 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestMisc));
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addAsGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.extTextBoxAutoComplete1 = new ExtendedControls.ExtTextBoxAutoComplete();
@@ -57,9 +50,8 @@
             this.extRadioButton1 = new ExtendedControls.ExtRadioButton();
             this.extRadioButton2 = new ExtendedControls.ExtRadioButton();
             this.extNumericUpDown1 = new ExtendedControls.ExtNumericUpDown();
-            this.extButton5 = new ExtendedControls.ExtButton();
             this.extButton6 = new ExtendedControls.ExtButton();
-            this.contextMenuStrip1.SuspendLayout();
+            this.extButton5 = new ExtendedControls.ExtButton();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -69,51 +61,6 @@
             this.extGroupBox1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addToolStripMenuItem,
-            this.addAsGridToolStripMenuItem,
-            this.removeToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(136, 70);
-            // 
-            // addToolStripMenuItem
-            // 
-            this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gridToolStripMenuItem});
-            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.addToolStripMenuItem.Text = "Add";
-            // 
-            // gridToolStripMenuItem
-            // 
-            this.gridToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
-            this.gridToolStripMenuItem.Name = "gridToolStripMenuItem";
-            this.gridToolStripMenuItem.Size = new System.Drawing.Size(96, 22);
-            this.gridToolStripMenuItem.Text = "Grid";
-            // 
-            // addAsGridToolStripMenuItem
-            // 
-            this.addAsGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statsToolStripMenuItem});
-            this.addAsGridToolStripMenuItem.Name = "addAsGridToolStripMenuItem";
-            this.addAsGridToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.addAsGridToolStripMenuItem.Text = "Add as Grid";
-            // 
-            // statsToolStripMenuItem
-            // 
-            this.statsToolStripMenuItem.Image = global::TestExtendedControls.Properties.Resources.galaxy;
-            this.statsToolStripMenuItem.Name = "statsToolStripMenuItem";
-            this.statsToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
-            this.statsToolStripMenuItem.Text = "Stats";
-            // 
-            // removeToolStripMenuItem
-            // 
-            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
-            this.removeToolStripMenuItem.Text = "Remove";
             // 
             // panel3
             // 
@@ -178,6 +125,7 @@
             this.extTextBoxAutoComplete1.Size = new System.Drawing.Size(209, 19);
             this.extTextBoxAutoComplete1.TabIndex = 0;
             this.extTextBoxAutoComplete1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.extTextBoxAutoComplete1.TextChangedEvent = "";
             this.extTextBoxAutoComplete1.WordWrap = true;
             // 
             // extRichTextBox1
@@ -188,8 +136,9 @@
             this.extRichTextBox1.Location = new System.Drawing.Point(3, 28);
             this.extRichTextBox1.Name = "extRichTextBox1";
             this.extRichTextBox1.ReadOnly = false;
-            this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 Microsoft S" +
-    "ans Serif;}}\r\n\\viewkind4\\uc1\\pard\\f0\\fs17\\par\r\n}\r\n";
+            this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
+    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
+    "d\\f0\\fs17\\par\r\n}\r\n";
             this.extRichTextBox1.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
             this.extRichTextBox1.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
             this.extRichTextBox1.ScrollBarBackColor = System.Drawing.SystemColors.Control;
@@ -240,9 +189,13 @@
             // 
             this.extCheckBox1.AutoSize = true;
             this.extCheckBox1.CheckBoxColor = System.Drawing.Color.Gray;
+            this.extCheckBox1.CheckBoxDisabledScaling = 0.5F;
             this.extCheckBox1.CheckBoxInnerColor = System.Drawing.Color.White;
             this.extCheckBox1.CheckColor = System.Drawing.Color.DarkBlue;
             this.extCheckBox1.ImageButtonDisabledScaling = 0.5F;
+            this.extCheckBox1.ImageIndeterminate = null;
+            this.extCheckBox1.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.extCheckBox1.ImageUnchecked = null;
             this.extCheckBox1.Location = new System.Drawing.Point(3, 53);
             this.extCheckBox1.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.extCheckBox1.Name = "extCheckBox1";
@@ -452,6 +405,17 @@
             this.extNumericUpDown1.TextBoxForeColor = System.Drawing.SystemColors.WindowText;
             this.extNumericUpDown1.Value = 0;
             // 
+            // extButton6
+            // 
+            this.extButton6.Image = global::TestExtendedControls.Properties.Resources.galaxy_black;
+            this.extButton6.Location = new System.Drawing.Point(3, 123);
+            this.extButton6.Name = "extButton6";
+            this.extButton6.Size = new System.Drawing.Size(75, 23);
+            this.extButton6.TabIndex = 4;
+            this.extButton6.Text = "3D";
+            this.extButton6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.extButton6.UseVisualStyleBackColor = true;
+            // 
             // extButton5
             // 
             this.extButton5.BackColor = System.Drawing.Color.DimGray;
@@ -470,17 +434,6 @@
             this.extButton5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.extButton5.UseVisualStyleBackColor = false;
             // 
-            // extButton6
-            // 
-            this.extButton6.Image = global::TestExtendedControls.Properties.Resources.galaxy_black;
-            this.extButton6.Location = new System.Drawing.Point(3, 123);
-            this.extButton6.Name = "extButton6";
-            this.extButton6.Size = new System.Drawing.Size(75, 23);
-            this.extButton6.TabIndex = 4;
-            this.extButton6.Text = "3D";
-            this.extButton6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.extButton6.UseVisualStyleBackColor = true;
-            // 
             // TestMisc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -492,7 +445,6 @@
             this.Controls.Add(this.panel1);
             this.Name = "TestMisc";
             this.Text = "Form1";
-            this.contextMenuStrip1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -509,12 +461,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addAsGridToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gridToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem statsToolStripMenuItem;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
