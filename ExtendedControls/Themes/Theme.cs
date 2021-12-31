@@ -658,8 +658,10 @@ namespace ExtendedControls
 
                 ctrl.RowHeadersDefaultCellStyle.BackColor = colors[CI.grid_borderback];
                 ctrl.RowHeadersDefaultCellStyle.ForeColor = colors[CI.grid_bordertext];
+                ctrl.RowHeadersDefaultCellStyle.SelectionBackColor = colors[CI.grid_borderback];
                 ctrl.ColumnHeadersDefaultCellStyle.BackColor = colors[CI.grid_borderback];
                 ctrl.ColumnHeadersDefaultCellStyle.ForeColor = colors[CI.grid_bordertext];
+                ctrl.ColumnHeadersDefaultCellStyle.SelectionBackColor = colors[CI.grid_borderback];
 
                 ctrl.BackgroundColor = GroupBoxOverride(parent, colors[CI.form]);
                 ctrl.DefaultCellStyle.BackColor = colors[CI.grid_cellbackground];
