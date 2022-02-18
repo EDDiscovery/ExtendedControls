@@ -68,7 +68,8 @@ namespace ExtendedConditionsForms
             bool winborder = ExtendedControls.Theme.Current?.ApplyDialog(this) ?? false;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
 
-            BaseUtils.Translator.Instance?.Translate(this, new Control[] { label_index });
+            buttonCancel.Text = BaseUtils.Translator.Instance.Translate("Cancel", "Cancel");
+            buttonOK.Text = BaseUtils.Translator.Instance.Translate("OK", "OK");
 
             SetTitle(conditionFilterUC.Groups);
 
