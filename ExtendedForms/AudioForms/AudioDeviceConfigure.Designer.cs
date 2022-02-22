@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AudioDeviceConfigure));
             this.comboBoxCustomDevice = new ExtendedControls.ExtComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelText = new System.Windows.Forms.Label();
             this.buttonExtOK = new ExtendedControls.ExtButton();
             this.buttonExtCancel = new ExtendedControls.ExtButton();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -60,14 +60,14 @@
             this.comboBoxCustomDevice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomDevice.ValueMember = "";
             // 
-            // label1
+            // labelText
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Select Device";
+            this.labelText.AutoSize = true;
+            this.labelText.Location = new System.Drawing.Point(11, 24);
+            this.labelText.Name = "labelText";
+            this.labelText.Size = new System.Drawing.Size(74, 13);
+            this.labelText.TabIndex = 1;
+            this.labelText.Text = "Select Device";
             // 
             // buttonExtOK
             // 
@@ -75,7 +75,7 @@
             this.buttonExtOK.Name = "buttonExtOK";
             this.buttonExtOK.Size = new System.Drawing.Size(75, 23);
             this.buttonExtOK.TabIndex = 2;
-            this.buttonExtOK.Text = "OK";
+            this.buttonExtOK.Text = "%OK%";
             this.buttonExtOK.UseVisualStyleBackColor = true;
             this.buttonExtOK.Click += new System.EventHandler(this.buttonExtOK_Click);
             // 
@@ -86,13 +86,13 @@
             this.buttonExtCancel.Name = "buttonExtCancel";
             this.buttonExtCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonExtCancel.TabIndex = 3;
-            this.buttonExtCancel.Text = "Cancel";
+            this.buttonExtCancel.Text = "%Cancel%";
             this.buttonExtCancel.UseVisualStyleBackColor = true;
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.labelText);
             this.panel1.Controls.Add(this.buttonExtOK);
             this.panel1.Controls.Add(this.buttonExtCancel);
             this.panel1.Controls.Add(this.comboBoxCustomDevice);
@@ -125,7 +125,7 @@
         #endregion
 
         private ExtendedControls.ExtComboBox comboBoxCustomDevice;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelText;
         private ExtendedControls.ExtButton buttonExtOK;
         private ExtendedControls.ExtButton buttonExtCancel;
         private System.Windows.Forms.Panel panel1;

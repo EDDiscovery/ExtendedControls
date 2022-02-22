@@ -36,6 +36,8 @@ namespace ExtendedControls
         {
             Icon = ic;
 
+            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ECIDs));
+
             textBoxInfo.SetTabs(array ?? new int[] { 0, 100, 200, 300, 400, 500, 600, 800,900,1000,1100,1200 });
             textBoxInfo.ReadOnly = true;
             System.Diagnostics.Debug.WriteLine("Info " + info);
@@ -61,12 +63,9 @@ namespace ExtendedControls
 
             buttonAcknowledge.Visible = ackaction != null;
 
-            BaseUtils.Translator.Instance.Translate(this, ignorelist:new Control[] { textBoxInfo, labelCaption, this });
-
             textBoxInfo.Text = info;
             labelCaption.Text = title;
             Text = title;
-            System.Diagnostics.Debug.WriteLine("Main " + Font + " text font " + textBoxInfo.Font);
         }
 
 
@@ -132,7 +131,7 @@ namespace ExtendedControls
             }
             catch
             {
-                MessageBox.Show(this, "Copying text to clipboard failed".Tx(), "Clipboard error".Tx());
+                MessageBox.Show(this, "Copying text to clipboard failed".TxID(ECIDs.InfoForm_Copyingtextfailed));
             }
         }
 

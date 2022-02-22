@@ -39,6 +39,8 @@ namespace ExtendedAudioForms
         {
             this.Icon = ic;
 
+            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ExtendedForms.ConditionFormsIDs));
+
             if (!shownone)
                 checkBoxCustomNone.Visible = false;
 

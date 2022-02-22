@@ -112,11 +112,11 @@ namespace ExtendedControls
                 y += heightboxes + 20;
             }
 
-            ExtendedControls.ExtButton confirmation = new ExtendedControls.ExtButton() { Text = "OK".Tx(), Left = 0, Width = 100, Top = y, DialogResult = DialogResult.OK };
+            ExtendedControls.ExtButton confirmation = new ExtendedControls.ExtButton() { Text = "OK".TxID(ECIDs.MessageBoxTheme_OK), Left = 0, Width = 100, Top = y, DialogResult = DialogResult.OK };
             outer.Controls.Add(confirmation);
             confirmation.Click += (sender, e) => { prompt.Close(); };
 
-            ExtendedControls.ExtButton cancel = new ExtendedControls.ExtButton() { Text = "Cancel".Tx(), Left = 0, Width = 100, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
+            ExtendedControls.ExtButton cancel = new ExtendedControls.ExtButton() { Text = "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel), Left = 0, Width = 100, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
             outer.Controls.Add(cancel);
             cancel.Click += (sender, e) => { prompt.Close(); };
 

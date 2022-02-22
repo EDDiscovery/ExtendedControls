@@ -40,9 +40,8 @@ namespace ExtendedAudioForms
             InitializeComponent();
         }
 
-        public void Init(AudioQueue qu, 
-                          bool defaultmode,
-                          string title, string caption, Icon ic,
+        public void Init(bool defaultmode, AudioQueue qu, 
+                          string caption, Icon ic,
                           string defpath,
                           bool waitcomplete,
                           AudioQueue.Priority prio,
@@ -53,8 +52,12 @@ namespace ExtendedAudioForms
             comboBoxCustomPriority.Items.AddRange(Enum.GetNames(typeof(AudioQueue.Priority)));
 
             queue = qu;
-            this.Text = caption;
-            labelTitle.Text = title;
+
+            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ExtendedForms.ConditionFormsIDs));
+
+            if ( caption != null )
+                this.Text = caption;
+
             this.Icon = ic;
             textBoxBorderText.Text = defpath;
 
@@ -185,7 +188,7 @@ namespace ExtendedAudioForms
         private void buttonExtDevice_Click(object sender, EventArgs e)
         {
             AudioDeviceConfigure adc = new AudioDeviceConfigure();
-            adc.Init("Configure wave device", queue.Driver);
+            adc.Init(queue.Driver);
             if (adc.ShowDialog(this) == DialogResult.OK)
             {
                 if (!queue.SetAudioEndpoint(adc.Selected))

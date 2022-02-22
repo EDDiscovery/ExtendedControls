@@ -83,8 +83,9 @@
             this.themeTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.themeTextBox.Name = "themeTextBox";
             this.themeTextBox.ReadOnly = false;
-            this.themeTextBox.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 Microsoft S" +
-    "ans Serif;}}\r\n\\viewkind4\\uc1\\pard\\f0\\fs17\\par\r\n}\r\n";
+            this.themeTextBox.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
+    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
+    "d\\f0\\fs17\\par\r\n}\r\n";
             this.themeTextBox.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
             this.themeTextBox.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
             this.themeTextBox.ScrollBarBackColor = System.Drawing.SystemColors.Control;

@@ -53,8 +53,8 @@ namespace ExtendedControls
             this.panel_minimize = new ExtendedControls.ExtButtonDrawn();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelBottom = new System.Windows.Forms.Panel();
-            this.statusStripBottom = new ExtendedControls.ExtStatusStrip();
             this.buttonAcknowledge = new ExtendedControls.ExtButton();
+            this.statusStripBottom = new ExtendedControls.ExtStatusStrip();
             this.contextMenuStrip.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelBottom.SuspendLayout();
@@ -67,7 +67,7 @@ namespace ExtendedControls
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(100, 23);
             this.buttonOK.TabIndex = 1;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = "%OK%";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
@@ -81,6 +81,9 @@ namespace ExtendedControls
             this.textBoxInfo.Margin = new System.Windows.Forms.Padding(10);
             this.textBoxInfo.Name = "textBoxInfo";
             this.textBoxInfo.ReadOnly = false;
+            this.textBoxInfo.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
+    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
+    "d\\f0\\fs17\\par\r\n}\r\n";
             this.textBoxInfo.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
             this.textBoxInfo.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
             this.textBoxInfo.ScrollBarBackColor = System.Drawing.SystemColors.Control;
@@ -126,26 +129,45 @@ namespace ExtendedControls
             // panel_close
             // 
             this.panel_close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_close.AutoEllipsis = false;
+            this.panel_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_close.Image = null;
+            this.panel_close.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Close;
             this.panel_close.Location = new System.Drawing.Point(796, 3);
+            this.panel_close.MouseOverColor = System.Drawing.Color.White;
+            this.panel_close.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panel_close.MouseSelectedColorEnable = true;
             this.panel_close.Name = "panel_close";
             this.panel_close.Padding = new System.Windows.Forms.Padding(6);
+            this.panel_close.PanelDisabledScaling = 0.25F;
             this.panel_close.Selectable = false;
             this.panel_close.Size = new System.Drawing.Size(24, 24);
             this.panel_close.TabIndex = 29;
             this.panel_close.TabStop = false;
+            this.panel_close.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel_close.UseMnemonic = true;
             this.panel_close.Click += new System.EventHandler(this.panel_close_Click);
             // 
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_minimize.AutoEllipsis = false;
+            this.panel_minimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_minimize.Image = null;
             this.panel_minimize.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(766, 3);
+            this.panel_minimize.MouseOverColor = System.Drawing.Color.White;
+            this.panel_minimize.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panel_minimize.MouseSelectedColorEnable = true;
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
+            this.panel_minimize.PanelDisabledScaling = 0.25F;
             this.panel_minimize.Selectable = false;
             this.panel_minimize.Size = new System.Drawing.Size(24, 24);
             this.panel_minimize.TabIndex = 28;
             this.panel_minimize.TabStop = false;
+            this.panel_minimize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel_minimize.UseMnemonic = true;
             this.panel_minimize.Click += new System.EventHandler(this.panel_minimize_Click);
             // 
             // panelTop
@@ -171,14 +193,6 @@ namespace ExtendedControls
             this.panelBottom.Size = new System.Drawing.Size(824, 34);
             this.panelBottom.TabIndex = 31;
             // 
-            // statusStripBottom
-            // 
-            this.statusStripBottom.Location = new System.Drawing.Point(0, 572);
-            this.statusStripBottom.Name = "statusStripBottom";
-            this.statusStripBottom.Size = new System.Drawing.Size(824, 22);
-            this.statusStripBottom.TabIndex = 27;
-            this.statusStripBottom.Text = "statusStripCustom1";
-            // 
             // buttonAcknowledge
             // 
             this.buttonAcknowledge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -189,6 +203,14 @@ namespace ExtendedControls
             this.buttonAcknowledge.Text = "Acknowledge";
             this.buttonAcknowledge.UseVisualStyleBackColor = true;
             this.buttonAcknowledge.Click += new System.EventHandler(this.buttonAcknowledge_Click);
+            // 
+            // statusStripBottom
+            // 
+            this.statusStripBottom.Location = new System.Drawing.Point(0, 572);
+            this.statusStripBottom.Name = "statusStripBottom";
+            this.statusStripBottom.Size = new System.Drawing.Size(824, 22);
+            this.statusStripBottom.TabIndex = 27;
+            this.statusStripBottom.Text = "statusStripCustom1";
             // 
             // InfoForm
             // 

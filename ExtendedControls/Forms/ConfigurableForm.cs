@@ -146,14 +146,14 @@ namespace ExtendedControls
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), p, sz.Value, tooltip) { anchor = anchor });
+            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".TxID(ECIDs.OK), p, sz.Value, tooltip) { anchor = anchor });
         }
 
         public void AddCancel(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), p, sz.Value, tooltip) { anchor = anchor });
+            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { anchor = anchor });
         }
 
         public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)

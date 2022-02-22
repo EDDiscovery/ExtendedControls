@@ -52,7 +52,7 @@ namespace ExtendedConditionsForms
 
         // altops, if given, describes the operator of each variable.
 
-        public void Init(string t, Icon ic, Variables vbs , Dictionary<string, string> altops = null,
+        public void Init(string title, Icon ic, Variables vbs , Dictionary<string, string> altops = null,
                                                                 bool showatleastoneentry = false ,
                                                                 bool showrunatrefreshcheckbox = false , 
                                                                 bool allowadd = false, 
@@ -62,9 +62,11 @@ namespace ExtendedConditionsForms
 
             this.Icon = ic;
 
+            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ExtendedForms.ConditionFormsIDs));
+
             bool winborder = ExtendedControls.Theme.Current?.ApplyDialog(this) ?? true;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
-            this.Text = label_index.Text = t;
+            this.Text = label_index.Text = title;
 
             showadd = allowadd;
             shownoexpand = allownoexpand;
@@ -102,8 +104,7 @@ namespace ExtendedConditionsForms
             g.panel.BorderStyle = BorderStyle.FixedSingle;
 
             g.var = new ExtendedControls.ExtTextBox();
-            g.var.Size = new Size(Font.ScalePixels(120), Font.ScalePixels(24));
-            System.Diagnostics.Debug.WriteLine("Var size" + g.var.Size);
+            g.var.Size = new Size(Font.ScalePixels(120), Font.ScalePixels(32));
             g.var.Location = new Point(panelmargin, panelmargin);
             g.var.Text = var;
             g.panel.Controls.Add(g.var);
@@ -114,7 +115,7 @@ namespace ExtendedConditionsForms
             if (shownoexpand || showadd)
             {
                 g.op = new ExtendedControls.ExtComboBox();
-                g.op.Size = new Size(Font.ScalePixels(50), Font.ScalePixels(24));
+                g.op.Size = new Size(Font.ScalePixels(50), Font.ScalePixels(32));
                 g.op.Location = new Point(g.var.Right + 4, panelmargin);
 
                 string ttip="";

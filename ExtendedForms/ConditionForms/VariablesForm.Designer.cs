@@ -71,7 +71,7 @@ namespace ExtendedConditionsForms
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 9;
-            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.Text = "%Cancel%";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -82,7 +82,7 @@ namespace ExtendedConditionsForms
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 10;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = "%OK%";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
@@ -156,9 +156,9 @@ namespace ExtendedConditionsForms
             this.label_index.AutoSize = true;
             this.label_index.Location = new System.Drawing.Point(3, 8);
             this.label_index.Name = "label_index";
-            this.label_index.Size = new System.Drawing.Size(27, 13);
+            this.label_index.Size = new System.Drawing.Size(43, 13);
             this.label_index.TabIndex = 23;
-            this.label_index.Text = "N/A";
+            this.label_index.Text = "<code>";
             this.label_index.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_index_MouseDown);
             this.label_index.MouseUp += new System.Windows.Forms.MouseEventHandler(this.label_index_MouseUp);
             // 
@@ -206,7 +206,7 @@ namespace ExtendedConditionsForms
             this.vScrollBarCustom2.HideScrollBar = false;
             this.vScrollBarCustom2.LargeChange = 10;
             this.vScrollBarCustom2.Location = new System.Drawing.Point(625, 0);
-            this.vScrollBarCustom2.Maximum = -192;
+            this.vScrollBarCustom2.Maximum = -252;
             this.vScrollBarCustom2.Minimum = 0;
             this.vScrollBarCustom2.MouseOverButtonColor = System.Drawing.Color.Green;
             this.vScrollBarCustom2.MousePressedButtonColor = System.Drawing.Color.Red;
@@ -220,12 +220,12 @@ namespace ExtendedConditionsForms
             this.vScrollBarCustom2.ThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.vScrollBarCustom2.ThumbColorScaling = 0.5F;
             this.vScrollBarCustom2.ThumbDrawAngle = 0F;
-            this.vScrollBarCustom2.Value = -192;
-            this.vScrollBarCustom2.ValueLimited = -192;
+            this.vScrollBarCustom2.Value = -252;
+            this.vScrollBarCustom2.ValueLimited = -252;
             // 
             // buttonMore
             // 
-            this.buttonMore.Location = new System.Drawing.Point(3, 65);
+            this.buttonMore.Location = new System.Drawing.Point(3, 5);
             this.buttonMore.Name = "buttonMore";
             this.buttonMore.Size = new System.Drawing.Size(24, 24);
             this.buttonMore.TabIndex = 5;
@@ -251,7 +251,7 @@ namespace ExtendedConditionsForms
             this.Name = "VariablesForm";
             this.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ActionVariableForm";
+            this.Text = "<code>";
             this.Resize += new System.EventHandler(this.ConditionVariablesFormResize);
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();

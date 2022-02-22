@@ -64,10 +64,14 @@
             this.checkBoxShift.Appearance = System.Windows.Forms.Appearance.Button;
             this.checkBoxShift.AutoCheck = false;
             this.checkBoxShift.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxShift.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxShift.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxShift.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxShift.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBoxShift.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxShift.ImageIndeterminate = null;
+            this.checkBoxShift.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxShift.ImageUnchecked = null;
             this.checkBoxShift.Location = new System.Drawing.Point(12, 15);
             this.checkBoxShift.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxShift.Name = "checkBoxShift";
@@ -75,7 +79,7 @@
             this.checkBoxShift.TabIndex = 0;
             this.checkBoxShift.Text = "Shift";
             this.checkBoxShift.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxShift.TickBoxReductionRatio = 0.75f;
+            this.checkBoxShift.TickBoxReductionRatio = 0.75F;
             this.checkBoxShift.UseVisualStyleBackColor = true;
             this.checkBoxShift.MouseDown += new System.Windows.Forms.MouseEventHandler(this.checkBoxsac_MouseDown);
             // 
@@ -84,10 +88,14 @@
             this.checkBoxCtrl.Appearance = System.Windows.Forms.Appearance.Button;
             this.checkBoxCtrl.AutoCheck = false;
             this.checkBoxCtrl.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxCtrl.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCtrl.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCtrl.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxCtrl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBoxCtrl.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCtrl.ImageIndeterminate = null;
+            this.checkBoxCtrl.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxCtrl.ImageUnchecked = null;
             this.checkBoxCtrl.Location = new System.Drawing.Point(87, 15);
             this.checkBoxCtrl.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCtrl.Name = "checkBoxCtrl";
@@ -95,7 +103,7 @@
             this.checkBoxCtrl.TabIndex = 0;
             this.checkBoxCtrl.Text = "Ctrl";
             this.checkBoxCtrl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxCtrl.TickBoxReductionRatio = 0.75f;
+            this.checkBoxCtrl.TickBoxReductionRatio = 0.75F;
             this.checkBoxCtrl.UseVisualStyleBackColor = true;
             this.checkBoxCtrl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.checkBoxsac_MouseDown);
             // 
@@ -104,10 +112,14 @@
             this.checkBoxAlt.Appearance = System.Windows.Forms.Appearance.Button;
             this.checkBoxAlt.AutoCheck = false;
             this.checkBoxAlt.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxAlt.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxAlt.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxAlt.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxAlt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBoxAlt.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxAlt.ImageIndeterminate = null;
+            this.checkBoxAlt.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxAlt.ImageUnchecked = null;
             this.checkBoxAlt.Location = new System.Drawing.Point(163, 15);
             this.checkBoxAlt.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxAlt.Name = "checkBoxAlt";
@@ -115,7 +127,7 @@
             this.checkBoxAlt.TabIndex = 0;
             this.checkBoxAlt.Text = "Alt";
             this.checkBoxAlt.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxAlt.TickBoxReductionRatio = 0.75f;
+            this.checkBoxAlt.TickBoxReductionRatio = 0.75F;
             this.checkBoxAlt.UseVisualStyleBackColor = true;
             this.checkBoxAlt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.checkBoxsac_MouseDown);
             // 
@@ -124,10 +136,14 @@
             this.checkBoxKey.Appearance = System.Windows.Forms.Appearance.Button;
             this.checkBoxKey.AutoCheck = false;
             this.checkBoxKey.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxKey.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxKey.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxKey.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxKey.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBoxKey.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxKey.ImageIndeterminate = null;
+            this.checkBoxKey.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxKey.ImageUnchecked = null;
             this.checkBoxKey.Location = new System.Drawing.Point(247, 15);
             this.checkBoxKey.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxKey.Name = "checkBoxKey";
@@ -135,7 +151,7 @@
             this.checkBoxKey.TabIndex = 0;
             this.checkBoxKey.Text = "Press Key";
             this.checkBoxKey.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.checkBoxKey.TickBoxReductionRatio = 0.75f;
+            this.checkBoxKey.TickBoxReductionRatio = 0.75F;
             this.checkBoxKey.UseVisualStyleBackColor = true;
             // 
             // buttonReset
@@ -236,6 +252,7 @@
             this.textBoxSendTo.Size = new System.Drawing.Size(116, 20);
             this.textBoxSendTo.TabIndex = 2;
             this.textBoxSendTo.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxSendTo.TextChangedEvent = "";
             this.textBoxSendTo.WordWrap = true;
             this.textBoxSendTo.Enter += new System.EventHandler(this.textBox_Enter);
             this.textBoxSendTo.Leave += new System.EventHandler(this.textBox_Leave);
@@ -255,7 +272,7 @@
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(100, 23);
             this.buttonOK.TabIndex = 4;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = "%OK%";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
@@ -265,7 +282,7 @@
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(100, 23);
             this.buttonCancel.TabIndex = 4;
-            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.Text = "%Cancel%";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 

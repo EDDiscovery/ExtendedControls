@@ -57,32 +57,27 @@ namespace ExtendedAudioForms
             this.trackBarRM = new System.Windows.Forms.TrackBar();
             this.trackBarCM = new System.Windows.Forms.TrackBar();
             this.trackBarEM = new System.Windows.Forms.TrackBar();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelDistortionCentreFreq = new System.Windows.Forms.Label();
+            this.labelReverbHFRatio = new System.Windows.Forms.Label();
+            this.labelChorusDepth = new System.Windows.Forms.Label();
+            this.labelChorusDelay = new System.Windows.Forms.Label();
+            this.labelDistortionEdge = new System.Windows.Forms.Label();
+            this.labelReverbTime = new System.Windows.Forms.Label();
+            this.labelChorusFeedback = new System.Windows.Forms.Label();
+            this.labelDistortionGain = new System.Windows.Forms.Label();
+            this.labelReverbMix = new System.Windows.Forms.Label();
+            this.labelEchoDelay = new System.Windows.Forms.Label();
+            this.labelChorusMix = new System.Windows.Forms.Label();
+            this.labelEchoFeedback = new System.Windows.Forms.Label();
+            this.labelDistortion = new System.Windows.Forms.Label();
+            this.labelReverb = new System.Windows.Forms.Label();
+            this.labelChorus = new System.Windows.Forms.Label();
+            this.labelEchoMix = new System.Windows.Forms.Label();
+            this.labelEcho = new System.Windows.Forms.Label();
             this.trackBarDW = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
+            this.labelDistortionFreqWidth = new System.Windows.Forms.Label();
+            this.labelGargle = new System.Windows.Forms.Label();
+            this.labelGargleFrequency = new System.Windows.Forms.Label();
             this.trackBarGF = new System.Windows.Forms.TrackBar();
             this.checkBoxG = new ExtendedControls.ExtCheckBox();
             this.checkBoxD = new ExtendedControls.ExtCheckBox();
@@ -96,8 +91,8 @@ namespace ExtendedAudioForms
             this.comboBoxCustomVoices = new ExtendedControls.ExtComboBox();
             this.panelOuter = new System.Windows.Forms.Panel();
             this.checkBoxP = new ExtendedControls.ExtCheckBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
+            this.labelPitch = new System.Windows.Forms.Label();
+            this.labelPitchOctave = new System.Windows.Forms.Label();
             this.trackBarPitch = new System.Windows.Forms.TrackBar();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCDp)).BeginInit();
@@ -268,194 +263,158 @@ namespace ExtendedAudioForms
             this.trackBarEM.TickFrequency = 10;
             this.trackBarEM.Value = 50;
             // 
-            // label25
+            // labelDistortionCentreFreq
             // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(111, 280);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(32, 13);
-            this.label25.TabIndex = 28;
-            this.label25.Text = "Echo";
+            this.labelDistortionCentreFreq.AutoSize = true;
+            this.labelDistortionCentreFreq.Location = new System.Drawing.Point(296, 293);
+            this.labelDistortionCentreFreq.Name = "labelDistortionCentreFreq";
+            this.labelDistortionCentreFreq.Size = new System.Drawing.Size(53, 13);
+            this.labelDistortionCentreFreq.TabIndex = 8;
+            this.labelDistortionCentreFreq.Text = "Cent Freq";
             // 
-            // label20
+            // labelReverbHFRatio
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(111, 211);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(32, 13);
-            this.label20.TabIndex = 27;
-            this.label20.Text = "Echo";
+            this.labelReverbHFRatio.AutoSize = true;
+            this.labelReverbHFRatio.Location = new System.Drawing.Point(296, 224);
+            this.labelReverbHFRatio.Name = "labelReverbHFRatio";
+            this.labelReverbHFRatio.Size = new System.Drawing.Size(49, 13);
+            this.labelReverbHFRatio.TabIndex = 24;
+            this.labelReverbHFRatio.Text = "HF Ratio";
             // 
-            // label13
+            // labelChorusDepth
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(111, 136);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(32, 13);
-            this.label13.TabIndex = 26;
-            this.label13.Text = "Echo";
+            this.labelChorusDepth.AutoSize = true;
+            this.labelChorusDepth.Location = new System.Drawing.Point(402, 152);
+            this.labelChorusDepth.Name = "labelChorusDepth";
+            this.labelChorusDepth.Size = new System.Drawing.Size(36, 13);
+            this.labelChorusDepth.TabIndex = 9;
+            this.labelChorusDepth.Text = "Depth";
             // 
-            // label24
+            // labelChorusDelay
             // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(296, 293);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(53, 13);
-            this.label24.TabIndex = 8;
-            this.label24.Text = "Cent Freq";
+            this.labelChorusDelay.AutoSize = true;
+            this.labelChorusDelay.Location = new System.Drawing.Point(296, 149);
+            this.labelChorusDelay.Name = "labelChorusDelay";
+            this.labelChorusDelay.Size = new System.Drawing.Size(34, 13);
+            this.labelChorusDelay.TabIndex = 10;
+            this.labelChorusDelay.Text = "Delay";
             // 
-            // label18
+            // labelDistortionEdge
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(296, 224);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(49, 13);
-            this.label18.TabIndex = 24;
-            this.label18.Text = "HF Ratio";
+            this.labelDistortionEdge.AutoSize = true;
+            this.labelDistortionEdge.Location = new System.Drawing.Point(212, 293);
+            this.labelDistortionEdge.Name = "labelDistortionEdge";
+            this.labelDistortionEdge.Size = new System.Drawing.Size(32, 13);
+            this.labelDistortionEdge.TabIndex = 11;
+            this.labelDistortionEdge.Text = "Edge";
             // 
-            // label14
+            // labelReverbTime
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(402, 152);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(36, 13);
-            this.label14.TabIndex = 9;
-            this.label14.Text = "Depth";
+            this.labelReverbTime.AutoSize = true;
+            this.labelReverbTime.Location = new System.Drawing.Point(212, 224);
+            this.labelReverbTime.Name = "labelReverbTime";
+            this.labelReverbTime.Size = new System.Drawing.Size(30, 13);
+            this.labelReverbTime.TabIndex = 12;
+            this.labelReverbTime.Text = "Time";
             // 
-            // label12
+            // labelChorusFeedback
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(296, 149);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(34, 13);
-            this.label12.TabIndex = 10;
-            this.label12.Text = "Delay";
+            this.labelChorusFeedback.AutoSize = true;
+            this.labelChorusFeedback.Location = new System.Drawing.Point(201, 149);
+            this.labelChorusFeedback.Name = "labelChorusFeedback";
+            this.labelChorusFeedback.Size = new System.Drawing.Size(55, 13);
+            this.labelChorusFeedback.TabIndex = 14;
+            this.labelChorusFeedback.Text = "Feedback";
             // 
-            // label22
+            // labelDistortionGain
             // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(212, 293);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(32, 13);
-            this.label22.TabIndex = 11;
-            this.label22.Text = "Edge";
+            this.labelDistortionGain.AutoSize = true;
+            this.labelDistortionGain.Location = new System.Drawing.Point(116, 293);
+            this.labelDistortionGain.Name = "labelDistortionGain";
+            this.labelDistortionGain.Size = new System.Drawing.Size(29, 13);
+            this.labelDistortionGain.TabIndex = 16;
+            this.labelDistortionGain.Text = "Gain";
             // 
-            // label17
+            // labelReverbMix
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(212, 224);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(30, 13);
-            this.label17.TabIndex = 12;
-            this.label17.Text = "Time";
+            this.labelReverbMix.AutoSize = true;
+            this.labelReverbMix.Location = new System.Drawing.Point(116, 224);
+            this.labelReverbMix.Name = "labelReverbMix";
+            this.labelReverbMix.Size = new System.Drawing.Size(23, 13);
+            this.labelReverbMix.TabIndex = 23;
+            this.labelReverbMix.Text = "Mix";
             // 
-            // label4
+            // labelEchoDelay
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(111, 64);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 13);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "Echo";
+            this.labelEchoDelay.AutoSize = true;
+            this.labelEchoDelay.Location = new System.Drawing.Point(296, 77);
+            this.labelEchoDelay.Name = "labelEchoDelay";
+            this.labelEchoDelay.Size = new System.Drawing.Size(34, 13);
+            this.labelEchoDelay.TabIndex = 17;
+            this.labelEchoDelay.Text = "Delay";
             // 
-            // label11
+            // labelChorusMix
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(201, 149);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(55, 13);
-            this.label11.TabIndex = 14;
-            this.label11.Text = "Feedback";
+            this.labelChorusMix.AutoSize = true;
+            this.labelChorusMix.Location = new System.Drawing.Point(116, 149);
+            this.labelChorusMix.Name = "labelChorusMix";
+            this.labelChorusMix.Size = new System.Drawing.Size(23, 13);
+            this.labelChorusMix.TabIndex = 18;
+            this.labelChorusMix.Text = "Mix";
             // 
-            // label21
+            // labelEchoFeedback
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(116, 293);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(29, 13);
-            this.label21.TabIndex = 16;
-            this.label21.Text = "Gain";
+            this.labelEchoFeedback.AutoSize = true;
+            this.labelEchoFeedback.Location = new System.Drawing.Point(201, 77);
+            this.labelEchoFeedback.Name = "labelEchoFeedback";
+            this.labelEchoFeedback.Size = new System.Drawing.Size(55, 13);
+            this.labelEchoFeedback.TabIndex = 19;
+            this.labelEchoFeedback.Text = "Feedback";
             // 
-            // label16
+            // labelDistortion
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(116, 224);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(23, 13);
-            this.label16.TabIndex = 23;
-            this.label16.Text = "Mix";
+            this.labelDistortion.AutoSize = true;
+            this.labelDistortion.Location = new System.Drawing.Point(33, 263);
+            this.labelDistortion.Name = "labelDistortion";
+            this.labelDistortion.Size = new System.Drawing.Size(51, 13);
+            this.labelDistortion.TabIndex = 20;
+            this.labelDistortion.Text = "Distortion";
             // 
-            // label8
+            // labelReverb
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(296, 77);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(34, 13);
-            this.label8.TabIndex = 17;
-            this.label8.Text = "Delay";
+            this.labelReverb.AutoSize = true;
+            this.labelReverb.Location = new System.Drawing.Point(33, 194);
+            this.labelReverb.Name = "labelReverb";
+            this.labelReverb.Size = new System.Drawing.Size(42, 13);
+            this.labelReverb.TabIndex = 21;
+            this.labelReverb.Text = "Reverb";
             // 
-            // label10
+            // labelChorus
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(116, 149);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(23, 13);
-            this.label10.TabIndex = 18;
-            this.label10.Text = "Mix";
+            this.labelChorus.AutoSize = true;
+            this.labelChorus.Location = new System.Drawing.Point(33, 116);
+            this.labelChorus.Name = "labelChorus";
+            this.labelChorus.Size = new System.Drawing.Size(40, 13);
+            this.labelChorus.TabIndex = 22;
+            this.labelChorus.Text = "Chorus";
             // 
-            // label7
+            // labelEchoMix
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(201, 77);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(55, 13);
-            this.label7.TabIndex = 19;
-            this.label7.Text = "Feedback";
+            this.labelEchoMix.AutoSize = true;
+            this.labelEchoMix.Location = new System.Drawing.Point(115, 77);
+            this.labelEchoMix.Name = "labelEchoMix";
+            this.labelEchoMix.Size = new System.Drawing.Size(23, 13);
+            this.labelEchoMix.TabIndex = 29;
+            this.labelEchoMix.Text = "Mix";
             // 
-            // label19
+            // labelEcho
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(33, 263);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(51, 13);
-            this.label19.TabIndex = 20;
-            this.label19.Text = "Distortion";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(33, 194);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(42, 13);
-            this.label15.TabIndex = 21;
-            this.label15.Text = "Reverb";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(33, 116);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(40, 13);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "Chorus";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(115, 77);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(23, 13);
-            this.label5.TabIndex = 29;
-            this.label5.Text = "Mix";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 47);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(32, 13);
-            this.label2.TabIndex = 25;
-            this.label2.Text = "Echo";
+            this.labelEcho.AutoSize = true;
+            this.labelEcho.Location = new System.Drawing.Point(31, 47);
+            this.labelEcho.Name = "labelEcho";
+            this.labelEcho.Size = new System.Drawing.Size(32, 13);
+            this.labelEcho.TabIndex = 25;
+            this.labelEcho.Text = "Echo";
             // 
             // trackBarDW
             // 
@@ -469,41 +428,32 @@ namespace ExtendedAudioForms
             this.trackBarDW.TickFrequency = 200;
             this.trackBarDW.Value = 2400;
             // 
-            // label1
+            // labelDistortionFreqWidth
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(393, 293);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Freq Width";
+            this.labelDistortionFreqWidth.AutoSize = true;
+            this.labelDistortionFreqWidth.Location = new System.Drawing.Point(393, 293);
+            this.labelDistortionFreqWidth.Name = "labelDistortionFreqWidth";
+            this.labelDistortionFreqWidth.Size = new System.Drawing.Size(59, 13);
+            this.labelDistortionFreqWidth.TabIndex = 8;
+            this.labelDistortionFreqWidth.Text = "Freq Width";
             // 
-            // label3
+            // labelGargle
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(33, 335);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "Gargle";
+            this.labelGargle.AutoSize = true;
+            this.labelGargle.Location = new System.Drawing.Point(33, 335);
+            this.labelGargle.Name = "labelGargle";
+            this.labelGargle.Size = new System.Drawing.Size(38, 13);
+            this.labelGargle.TabIndex = 20;
+            this.labelGargle.Text = "Gargle";
             // 
-            // label6
+            // labelGargleFrequency
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(147, 361);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
-            this.label6.TabIndex = 16;
-            this.label6.Text = "Frequency";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(111, 352);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(32, 13);
-            this.label29.TabIndex = 28;
-            this.label29.Text = "Echo";
+            this.labelGargleFrequency.AutoSize = true;
+            this.labelGargleFrequency.Location = new System.Drawing.Point(147, 361);
+            this.labelGargleFrequency.Name = "labelGargleFrequency";
+            this.labelGargleFrequency.Size = new System.Drawing.Size(57, 13);
+            this.labelGargleFrequency.TabIndex = 16;
+            this.labelGargleFrequency.Text = "Frequency";
             // 
             // trackBarGF
             // 
@@ -521,10 +471,13 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxG.AutoSize = true;
             this.checkBoxG.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxG.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxG.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxG.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxG.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxG.ImageIndeterminate = null;
             this.checkBoxG.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxG.ImageUnchecked = null;
             this.checkBoxG.Location = new System.Drawing.Point(472, 331);
             this.checkBoxG.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxG.Name = "checkBoxG";
@@ -539,10 +492,13 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxD.AutoSize = true;
             this.checkBoxD.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxD.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxD.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxD.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxD.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxD.ImageIndeterminate = null;
             this.checkBoxD.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxD.ImageUnchecked = null;
             this.checkBoxD.Location = new System.Drawing.Point(472, 262);
             this.checkBoxD.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxD.Name = "checkBoxD";
@@ -561,7 +517,7 @@ namespace ExtendedAudioForms
             this.buttonExtCancel.Name = "buttonExtCancel";
             this.buttonExtCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonExtCancel.TabIndex = 22;
-            this.buttonExtCancel.Text = "Cancel";
+            this.buttonExtCancel.Text = "%Cancel%";
             this.buttonExtCancel.UseVisualStyleBackColor = true;
             // 
             // buttonExtOK
@@ -571,7 +527,7 @@ namespace ExtendedAudioForms
             this.buttonExtOK.Name = "buttonExtOK";
             this.buttonExtOK.Size = new System.Drawing.Size(75, 23);
             this.buttonExtOK.TabIndex = 23;
-            this.buttonExtOK.Text = "OK";
+            this.buttonExtOK.Text = "%OK%";
             this.buttonExtOK.UseVisualStyleBackColor = true;
             this.buttonExtOK.Click += new System.EventHandler(this.buttonExtOK_Click);
             // 
@@ -579,10 +535,13 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxR.AutoSize = true;
             this.checkBoxR.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxR.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxR.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxR.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxR.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxR.ImageIndeterminate = null;
             this.checkBoxR.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxR.ImageUnchecked = null;
             this.checkBoxR.Location = new System.Drawing.Point(472, 190);
             this.checkBoxR.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxR.Name = "checkBoxR";
@@ -597,10 +556,13 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxC.AutoSize = true;
             this.checkBoxC.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxC.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxC.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxC.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxC.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxC.ImageIndeterminate = null;
             this.checkBoxC.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxC.ImageUnchecked = null;
             this.checkBoxC.Location = new System.Drawing.Point(472, 112);
             this.checkBoxC.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxC.Name = "checkBoxC";
@@ -615,10 +577,13 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxE.AutoSize = true;
             this.checkBoxE.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxE.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxE.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxE.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxE.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxE.ImageIndeterminate = null;
             this.checkBoxE.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxE.ImageUnchecked = null;
             this.checkBoxE.Location = new System.Drawing.Point(472, 43);
             this.checkBoxE.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxE.Name = "checkBoxE";
@@ -644,10 +609,13 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxCustomNone.AutoSize = true;
             this.checkBoxCustomNone.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxCustomNone.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomNone.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomNone.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxCustomNone.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomNone.ImageIndeterminate = null;
             this.checkBoxCustomNone.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxCustomNone.ImageUnchecked = null;
             this.checkBoxCustomNone.Location = new System.Drawing.Point(472, 438);
             this.checkBoxCustomNone.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomNone.Name = "checkBoxCustomNone";
@@ -685,60 +653,55 @@ namespace ExtendedAudioForms
             // panelOuter
             // 
             this.panelOuter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelOuter.Controls.Add(this.label2);
+            this.panelOuter.Controls.Add(this.labelEcho);
             this.panelOuter.Controls.Add(this.buttonExtTest);
             this.panelOuter.Controls.Add(this.buttonExtCancel);
             this.panelOuter.Controls.Add(this.buttonExtOK);
             this.panelOuter.Controls.Add(this.comboBoxCustomVoices);
-            this.panelOuter.Controls.Add(this.label5);
-            this.panelOuter.Controls.Add(this.label9);
+            this.panelOuter.Controls.Add(this.labelEchoMix);
+            this.panelOuter.Controls.Add(this.labelChorus);
             this.panelOuter.Controls.Add(this.checkBoxCustomNone);
-            this.panelOuter.Controls.Add(this.label15);
+            this.panelOuter.Controls.Add(this.labelReverb);
             this.panelOuter.Controls.Add(this.checkBoxP);
             this.panelOuter.Controls.Add(this.checkBoxG);
-            this.panelOuter.Controls.Add(this.label19);
+            this.panelOuter.Controls.Add(this.labelDistortion);
             this.panelOuter.Controls.Add(this.checkBoxD);
-            this.panelOuter.Controls.Add(this.label7);
-            this.panelOuter.Controls.Add(this.label23);
-            this.panelOuter.Controls.Add(this.label3);
+            this.panelOuter.Controls.Add(this.labelEchoFeedback);
+            this.panelOuter.Controls.Add(this.labelPitch);
+            this.panelOuter.Controls.Add(this.labelGargle);
             this.panelOuter.Controls.Add(this.trackBarCDp);
-            this.panelOuter.Controls.Add(this.label10);
-            this.panelOuter.Controls.Add(this.label8);
+            this.panelOuter.Controls.Add(this.labelChorusMix);
+            this.panelOuter.Controls.Add(this.labelEchoDelay);
             this.panelOuter.Controls.Add(this.checkBoxR);
-            this.panelOuter.Controls.Add(this.label16);
+            this.panelOuter.Controls.Add(this.labelReverbMix);
             this.panelOuter.Controls.Add(this.trackBarDW);
-            this.panelOuter.Controls.Add(this.label21);
+            this.panelOuter.Controls.Add(this.labelDistortionGain);
             this.panelOuter.Controls.Add(this.trackBarDC);
-            this.panelOuter.Controls.Add(this.label11);
+            this.panelOuter.Controls.Add(this.labelChorusFeedback);
             this.panelOuter.Controls.Add(this.checkBoxC);
-            this.panelOuter.Controls.Add(this.label26);
-            this.panelOuter.Controls.Add(this.label6);
+            this.panelOuter.Controls.Add(this.labelPitchOctave);
+            this.panelOuter.Controls.Add(this.labelGargleFrequency);
             this.panelOuter.Controls.Add(this.trackBarRH);
-            this.panelOuter.Controls.Add(this.label4);
             this.panelOuter.Controls.Add(this.checkBoxE);
-            this.panelOuter.Controls.Add(this.label17);
+            this.panelOuter.Controls.Add(this.labelReverbTime);
             this.panelOuter.Controls.Add(this.trackBarCD);
-            this.panelOuter.Controls.Add(this.label22);
+            this.panelOuter.Controls.Add(this.labelDistortionEdge);
             this.panelOuter.Controls.Add(this.trackBarED);
-            this.panelOuter.Controls.Add(this.label12);
+            this.panelOuter.Controls.Add(this.labelChorusDelay);
             this.panelOuter.Controls.Add(this.trackBarDE);
-            this.panelOuter.Controls.Add(this.label14);
+            this.panelOuter.Controls.Add(this.labelChorusDepth);
             this.panelOuter.Controls.Add(this.trackBarRT);
-            this.panelOuter.Controls.Add(this.label18);
+            this.panelOuter.Controls.Add(this.labelReverbHFRatio);
             this.panelOuter.Controls.Add(this.trackBarCF);
-            this.panelOuter.Controls.Add(this.label24);
+            this.panelOuter.Controls.Add(this.labelDistortionCentreFreq);
             this.panelOuter.Controls.Add(this.trackBarEF);
-            this.panelOuter.Controls.Add(this.label1);
+            this.panelOuter.Controls.Add(this.labelDistortionFreqWidth);
             this.panelOuter.Controls.Add(this.trackBarPitch);
             this.panelOuter.Controls.Add(this.trackBarGF);
-            this.panelOuter.Controls.Add(this.label13);
             this.panelOuter.Controls.Add(this.trackBarDG);
-            this.panelOuter.Controls.Add(this.label20);
             this.panelOuter.Controls.Add(this.trackBarRM);
-            this.panelOuter.Controls.Add(this.label25);
             this.panelOuter.Controls.Add(this.trackBarCM);
             this.panelOuter.Controls.Add(this.trackBarEM);
-            this.panelOuter.Controls.Add(this.label29);
             this.panelOuter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelOuter.Location = new System.Drawing.Point(0, 0);
             this.panelOuter.Name = "panelOuter";
@@ -751,10 +714,13 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxP.AutoSize = true;
             this.checkBoxP.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxP.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxP.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxP.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxP.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxP.ImageIndeterminate = null;
             this.checkBoxP.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxP.ImageUnchecked = null;
             this.checkBoxP.Location = new System.Drawing.Point(472, 393);
             this.checkBoxP.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxP.Name = "checkBoxP";
@@ -765,23 +731,23 @@ namespace ExtendedAudioForms
             this.checkBoxP.UseVisualStyleBackColor = true;
             this.checkBoxP.CheckedChanged += new System.EventHandler(this.checkBoxP_CheckedChanged);
             // 
-            // label23
+            // labelPitch
             // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(33, 397);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(31, 13);
-            this.label23.TabIndex = 20;
-            this.label23.Text = "Pitch";
+            this.labelPitch.AutoSize = true;
+            this.labelPitch.Location = new System.Drawing.Point(33, 397);
+            this.labelPitch.Name = "labelPitch";
+            this.labelPitch.Size = new System.Drawing.Size(31, 13);
+            this.labelPitch.TabIndex = 20;
+            this.labelPitch.Text = "Pitch";
             // 
-            // label26
+            // labelPitchOctave
             // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(159, 429);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(42, 13);
-            this.label26.TabIndex = 16;
-            this.label26.Text = "Octave";
+            this.labelPitchOctave.AutoSize = true;
+            this.labelPitchOctave.Location = new System.Drawing.Point(159, 429);
+            this.labelPitchOctave.Name = "labelPitchOctave";
+            this.labelPitchOctave.Size = new System.Drawing.Size(42, 13);
+            this.labelPitchOctave.TabIndex = 16;
+            this.labelPitchOctave.Text = "Octave";
             // 
             // trackBarPitch
             // 
@@ -803,7 +769,7 @@ namespace ExtendedAudioForms
             this.Controls.Add(this.panelOuter);
             this.Name = "SoundEffectsDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "SoundEffects";
+            this.Text = "Sound Effects";
             ((System.ComponentModel.ISupportInitialize)(this.trackBarCDp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDC)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRH)).EndInit();
@@ -841,38 +807,33 @@ namespace ExtendedAudioForms
         private System.Windows.Forms.TrackBar trackBarRM;
         private System.Windows.Forms.TrackBar trackBarCM;
         private System.Windows.Forms.TrackBar trackBarEM;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelDistortionCentreFreq;
+        private System.Windows.Forms.Label labelReverbHFRatio;
+        private System.Windows.Forms.Label labelChorusDepth;
+        private System.Windows.Forms.Label labelChorusDelay;
+        private System.Windows.Forms.Label labelDistortionEdge;
+        private System.Windows.Forms.Label labelReverbTime;
+        private System.Windows.Forms.Label labelChorusFeedback;
+        private System.Windows.Forms.Label labelDistortionGain;
+        private System.Windows.Forms.Label labelReverbMix;
+        private System.Windows.Forms.Label labelEchoDelay;
+        private System.Windows.Forms.Label labelChorusMix;
+        private System.Windows.Forms.Label labelEchoFeedback;
+        private System.Windows.Forms.Label labelDistortion;
+        private System.Windows.Forms.Label labelReverb;
+        private System.Windows.Forms.Label labelChorus;
+        private System.Windows.Forms.Label labelEchoMix;
+        private System.Windows.Forms.Label labelEcho;
         private ExtendedControls.ExtCheckBox checkBoxE;
         private ExtendedControls.ExtCheckBox checkBoxC;
         private ExtendedControls.ExtCheckBox checkBoxR;
         private ExtendedControls.ExtCheckBox checkBoxD;
         private System.Windows.Forms.TrackBar trackBarDW;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelDistortionFreqWidth;
         private ExtendedControls.ExtButton buttonExtOK;
         private ExtendedControls.ExtButton buttonExtCancel;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label labelGargle;
+        private System.Windows.Forms.Label labelGargleFrequency;
         private System.Windows.Forms.TrackBar trackBarGF;
         private ExtendedControls.ExtCheckBox checkBoxG;
         private ExtendedControls.ExtButton buttonExtTest;
@@ -880,8 +841,8 @@ namespace ExtendedAudioForms
         private ExtendedControls.ExtComboBox comboBoxCustomVoices;
         private System.Windows.Forms.Panel panelOuter;
         private ExtendedControls.ExtCheckBox checkBoxP;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label labelPitch;
+        private System.Windows.Forms.Label labelPitchOctave;
         private System.Windows.Forms.TrackBar trackBarPitch;
         private System.Windows.Forms.ToolTip toolTip1;
     }

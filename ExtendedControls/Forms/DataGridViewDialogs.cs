@@ -29,11 +29,11 @@ public static class DataGridViewDialogs
 
         Type t = typeof(DataGridViewDialogs);
 
-        f.Add(new ExtendedControls.ConfigurableForm.Entry("L", typeof(Label), "Jump to:".Tx(t), new Point(10, 40), new Size(140, 24), ""));
-        f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to".Tx(t,"EN")) { numberboxdoubleminimum = 0, numberboxformat = "0" });
+        f.Add(new ExtendedControls.ConfigurableForm.Entry("L", typeof(Label), "Jump to:".TxID(ExtendedControls.ECIDs.DataGridViewDialogs_Jumpto), new Point(10, 40), new Size(140, 24), ""));
+        f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to".TxID(ExtendedControls.ECIDs.DataGridViewDialogs_EN)) { numberboxdoubleminimum = 0, numberboxformat = "0" });
 
-        f.AddOK(new Point(width - 100, 70), "Press to Accept".Tx(t));
-        f.AddCancel(new Point(width - 200, 70), "Press to Cancel".Tx(t));
+        f.AddOK(new Point(width - 100, 70), "Press to Accept".TxID(ExtendedControls.ECIDs.DataGridViewDialogs_PresstoAccept));
+        f.AddCancel(new Point(width - 200, 70), "Press to Cancel".TxID(ExtendedControls.ECIDs.DataGridViewDialogs_PresstoCancel));
 
         f.Trigger += (dialogname, controlname, tag) =>
         {
@@ -45,7 +45,7 @@ public static class DataGridViewDialogs
                     f.ReturnResult(DialogResult.OK);
                 }
                 else
-                    ExtendedControls.MessageBoxTheme.Show(parent, "Value is not valid".Tx(t,"VNV"), "Warning".Tx(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ExtendedControls.MessageBoxTheme.Show(parent, "Value is not valid".TxID(ExtendedControls.ECIDs.DataGridViewDialogs_VNV), "Warning".TxID(ExtendedControls.ECIDs.Warning), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (controlname == "Cancel" || controlname == "Close" )
             {
@@ -53,7 +53,7 @@ public static class DataGridViewDialogs
             }
         };
 
-        DialogResult res = f.ShowDialogCentred(parent, parent.Icon,  "Jump to Entry".Tx(t,"Title"), closeicon:true);
+        DialogResult res = f.ShowDialogCentred(parent, parent.Icon,  "Jump to Entry".TxID(ExtendedControls.ECIDs.DataGridViewDialogs_Jumpto), closeicon:true);
 
         if (res == DialogResult.OK)
         {

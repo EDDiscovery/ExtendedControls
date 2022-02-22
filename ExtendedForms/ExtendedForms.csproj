@@ -79,6 +79,7 @@
     <Compile Include="ConditionForms\ConditionFilterUC.Designer.cs">
       <DependentUpon>ConditionFilterUC.cs</DependentUpon>
     </Compile>
+    <Compile Include="TranslationIDs.cs" />
     <Compile Include="ConditionForms\VariablesForm.cs">
       <SubType>Form</SubType>
     </Compile>

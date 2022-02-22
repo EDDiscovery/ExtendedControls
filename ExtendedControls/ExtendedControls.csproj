@@ -139,6 +139,7 @@
     <Compile Include="Controls\PanelDropDown.Designer.cs">
       <DependentUpon>PanelDropDown.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\TranslationIDs.cs" />
     <Compile Include="Themes\Theme.cs" />
     <Compile Include="Themes\ThemeList.cs" />
     <Compile Include="Themes\ThemeEditor.cs">

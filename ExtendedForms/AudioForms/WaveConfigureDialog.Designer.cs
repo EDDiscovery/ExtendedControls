@@ -47,7 +47,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderText = new ExtendedControls.ExtTextBox();
             this.buttonExtBrowse = new ExtendedControls.ExtButton();
             this.trackBarVolume = new System.Windows.Forms.TrackBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelVolume = new System.Windows.Forms.Label();
             this.checkBoxCustomV = new ExtendedControls.ExtCheckBox();
             this.checkBoxCustomComplete = new ExtendedControls.ExtCheckBox();
             this.buttonExtTest = new ExtendedControls.ExtButton();
@@ -113,23 +113,26 @@ namespace ExtendedAudioForms
             this.trackBarVolume.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.trackBarVolume.Value = 60;
             // 
-            // label1
+            // labelVolume
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 163);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 13);
-            this.label1.TabIndex = 43;
-            this.label1.Text = "Volume";
+            this.labelVolume.AutoSize = true;
+            this.labelVolume.Location = new System.Drawing.Point(9, 163);
+            this.labelVolume.Name = "labelVolume";
+            this.labelVolume.Size = new System.Drawing.Size(42, 13);
+            this.labelVolume.TabIndex = 43;
+            this.labelVolume.Text = "Volume";
             // 
             // checkBoxCustomV
             // 
             this.checkBoxCustomV.AutoSize = true;
             this.checkBoxCustomV.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxCustomV.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomV.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomV.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxCustomV.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomV.ImageIndeterminate = null;
             this.checkBoxCustomV.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxCustomV.ImageUnchecked = null;
             this.checkBoxCustomV.Location = new System.Drawing.Point(276, 159);
             this.checkBoxCustomV.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomV.Name = "checkBoxCustomV";
@@ -144,10 +147,13 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxCustomComplete.AutoSize = true;
             this.checkBoxCustomComplete.CheckBoxColor = System.Drawing.Color.Gray;
+            this.checkBoxCustomComplete.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomComplete.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomComplete.CheckColor = System.Drawing.Color.DarkBlue;
             this.checkBoxCustomComplete.ImageButtonDisabledScaling = 0.5F;
+            this.checkBoxCustomComplete.ImageIndeterminate = null;
             this.checkBoxCustomComplete.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.checkBoxCustomComplete.ImageUnchecked = null;
             this.checkBoxCustomComplete.Location = new System.Drawing.Point(12, 82);
             this.checkBoxCustomComplete.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomComplete.Name = "checkBoxCustomComplete";
@@ -173,7 +179,7 @@ namespace ExtendedAudioForms
             this.buttonExtOK.Name = "buttonExtOK";
             this.buttonExtOK.Size = new System.Drawing.Size(75, 23);
             this.buttonExtOK.TabIndex = 8;
-            this.buttonExtOK.Text = "OK";
+            this.buttonExtOK.Text = "%OK%";
             this.buttonExtOK.UseVisualStyleBackColor = true;
             this.buttonExtOK.Click += new System.EventHandler(this.buttonExtOK_Click);
             // 
@@ -184,7 +190,7 @@ namespace ExtendedAudioForms
             this.buttonExtCancel.Name = "buttonExtCancel";
             this.buttonExtCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonExtCancel.TabIndex = 9;
-            this.buttonExtCancel.Text = "Cancel";
+            this.buttonExtCancel.Text = "%Cancel%";
             this.buttonExtCancel.UseVisualStyleBackColor = true;
             // 
             // buttonExtEffects
@@ -216,7 +222,7 @@ namespace ExtendedAudioForms
             this.panelOuter.Controls.Add(this.buttonExtEffects);
             this.panelOuter.Controls.Add(this.buttonExtTest);
             this.panelOuter.Controls.Add(this.checkBoxCustomV);
-            this.panelOuter.Controls.Add(this.label1);
+            this.panelOuter.Controls.Add(this.labelVolume);
             this.panelOuter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelOuter.Location = new System.Drawing.Point(0, 0);
             this.panelOuter.Name = "panelOuter";
@@ -333,9 +339,9 @@ namespace ExtendedAudioForms
             this.labelTitle.AutoSize = true;
             this.labelTitle.Location = new System.Drawing.Point(12, 10);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(23, 13);
+            this.labelTitle.Size = new System.Drawing.Size(205, 13);
             this.labelTitle.TabIndex = 44;
-            this.labelTitle.Text = "title";
+            this.labelTitle.Text = "Select Default device, volume and effects";
             // 
             // WaveConfigureDialog
             // 
@@ -346,7 +352,7 @@ namespace ExtendedAudioForms
             this.Controls.Add(this.panelOuter);
             this.Name = "WaveConfigureDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "WaveConfigure";
+            this.Text = "Configure Wave";
             ((System.ComponentModel.ISupportInitialize)(this.trackBarVolume)).EndInit();
             this.panelOuter.ResumeLayout(false);
             this.panelOuter.PerformLayout();
@@ -359,7 +365,7 @@ namespace ExtendedAudioForms
         private ExtendedControls.ExtTextBox textBoxBorderText;
         private ExtendedControls.ExtButton buttonExtBrowse;
         private System.Windows.Forms.TrackBar trackBarVolume;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelVolume;
         private ExtendedControls.ExtCheckBox checkBoxCustomV;
         private ExtendedControls.ExtCheckBox checkBoxCustomComplete;
         private ExtendedControls.ExtButton buttonExtTest;

@@ -118,9 +118,9 @@ namespace ExtendedConditionsForms
             this.label_index.AutoSize = true;
             this.label_index.Location = new System.Drawing.Point(3, 8);
             this.label_index.Name = "label_index";
-            this.label_index.Size = new System.Drawing.Size(27, 13);
+            this.label_index.Size = new System.Drawing.Size(43, 13);
             this.label_index.TabIndex = 23;
-            this.label_index.Text = "N/A";
+            this.label_index.Text = "<code>";
             this.label_index.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label_index_MouseDown);
             this.label_index.MouseUp += new System.Windows.Forms.MouseEventHandler(this.label_index_MouseUp);
             // 
@@ -141,7 +141,7 @@ namespace ExtendedConditionsForms
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(100, 23);
             this.buttonCancel.TabIndex = 6;
-            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.Text = "%Cancel%";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -152,7 +152,7 @@ namespace ExtendedConditionsForms
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(100, 23);
             this.buttonOK.TabIndex = 7;
-            this.buttonOK.Text = "OK";
+            this.buttonOK.Text = "%OK%";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
@@ -186,7 +186,7 @@ namespace ExtendedConditionsForms
             this.Name = "ConditionFilterForm";
             this.Padding = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Filter Form";
+            this.Text = "<code>";
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.panelOK.ResumeLayout(false);

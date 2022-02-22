@@ -42,8 +42,8 @@ namespace ExtendedControls
 
         public void AddAllNone()
         {
-            AddGroupOptionAtTop("None", "None".Tx(), Properties.Resources.None);
-            AddGroupOptionAtTop("All", "All".Tx(), Properties.Resources.All);       // displayed, translate
+            AddGroupOptionAtTop("None", "None".TxID(ECIDs.None), Properties.Resources.None);
+            AddGroupOptionAtTop("All", "All".TxID(ECIDs.All), Properties.Resources.All);       // displayed, translate
         }
 
         public void AddGroupOption(string tags, string text, Image img = null)      // group option
