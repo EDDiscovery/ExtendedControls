@@ -115,7 +115,8 @@ namespace ExtendedControls
 
             DisplayKeyString();
 
-            BaseUtils.Translator.Instance.TranslateVerify(this,typeof(ECIDs));
+            var enumlist = new Enum[] { ECIDs.KeyForm, ECIDs.KeyForm_radioButtonUp, ECIDs.KeyForm_radioButtonDown, ECIDs.KeyForm_radioButtonPress, ECIDs.KeyForm_checkBoxShift, ECIDs.KeyForm_checkBoxCtrl, ECIDs.KeyForm_checkBoxAlt, ECIDs.KeyForm_checkBoxKey, ECIDs.KeyForm_labelNextDelay, ECIDs.KeyForm_labelSelKeys, ECIDs.KeyForm_labelDelay, ECIDs.KeyForm_labelSendTo, ECIDs.KeyForm_buttonReset, ECIDs.KeyForm_labelKeys, ECIDs.KeyForm_buttonDelete, ECIDs.KeyForm_buttonNext, ECIDs.KeyForm_buttonTest };
+            BaseUtils.Translator.Instance.TranslateControls(this,enumlist);
 
             labelCaption.Text = this.Text;
         }
@@ -229,7 +230,7 @@ namespace ExtendedControls
             string keyname = shifters;
             keyname = keyname.AppendPrePad(basekeystroke, "+");
             partstring += keyname;
-            System.Diagnostics.Debug.WriteLine("Stroke " + partstring);
+            //System.Diagnostics.Debug.WriteLine("Stroke " + partstring);
 
             if (partstring.Length > 0)
                 res = res.AppendPrePad(partstring, seperator);

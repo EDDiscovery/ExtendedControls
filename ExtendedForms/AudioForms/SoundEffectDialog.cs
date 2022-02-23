@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using AudioExtensions;
 using BaseUtils;
 using ExtendedControls;
+using ExtendedForms;
 
 namespace ExtendedAudioForms
 {
@@ -39,7 +40,8 @@ namespace ExtendedAudioForms
         {
             this.Icon = ic;
 
-            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ExtendedForms.ConditionFormsIDs));
+            var enumlist = new Enum[] { CFIDs.SoundEffectsDialog, CFIDs.SoundEffectsDialog_labelEcho, CFIDs.SoundEffectsDialog_buttonExtTest, CFIDs.SoundEffectsDialog_labelEchoMix, CFIDs.SoundEffectsDialog_labelChorus, CFIDs.SoundEffectsDialog_checkBoxCustomNone, CFIDs.SoundEffectsDialog_labelReverb, CFIDs.SoundEffectsDialog_checkBoxP, CFIDs.SoundEffectsDialog_checkBoxG, CFIDs.SoundEffectsDialog_labelDistortion, CFIDs.SoundEffectsDialog_checkBoxD, CFIDs.SoundEffectsDialog_labelEchoFeedback, CFIDs.SoundEffectsDialog_labelPitch, CFIDs.SoundEffectsDialog_labelGargle, CFIDs.SoundEffectsDialog_labelChorusMix, CFIDs.SoundEffectsDialog_labelEchoDelay, CFIDs.SoundEffectsDialog_checkBoxR, CFIDs.SoundEffectsDialog_labelReverbMix, CFIDs.SoundEffectsDialog_labelDistortionGain, CFIDs.SoundEffectsDialog_labelChorusFeedback, CFIDs.SoundEffectsDialog_checkBoxC, CFIDs.SoundEffectsDialog_labelPitchOctave, CFIDs.SoundEffectsDialog_labelGargleFrequency, CFIDs.SoundEffectsDialog_checkBoxE, CFIDs.SoundEffectsDialog_labelReverbTime, CFIDs.SoundEffectsDialog_labelDistortionEdge, CFIDs.SoundEffectsDialog_labelChorusDelay, CFIDs.SoundEffectsDialog_labelChorusDepth, CFIDs.SoundEffectsDialog_labelReverbHFRatio, CFIDs.SoundEffectsDialog_labelDistortionCentreFreq, CFIDs.SoundEffectsDialog_labelDistortionFreqWidth };
+            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
 
             if (!shownone)
                 checkBoxCustomNone.Visible = false;

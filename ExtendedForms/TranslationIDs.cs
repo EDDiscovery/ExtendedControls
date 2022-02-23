@@ -17,7 +17,7 @@
 
 namespace ExtendedForms
 {
-    internal enum ConditionFormsIDs
+    internal enum CFIDs
     {
         SpeechConfigure, // Control 'Configure Speech'
         SpeechConfigure_Title, // Control 'Set Text to say (use ; to separate randomly selectable phrases and {} to group)'

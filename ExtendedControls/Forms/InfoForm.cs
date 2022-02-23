@@ -36,11 +36,11 @@ namespace ExtendedControls
         {
             Icon = ic;
 
-            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ECIDs));
+            var enumlist = new Enum[] { ECIDs.InfoForm_buttonAcknowledge };
+            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
 
             textBoxInfo.SetTabs(array ?? new int[] { 0, 100, 200, 300, 400, 500, 600, 800,900,1000,1100,1200 });
             textBoxInfo.ReadOnly = true;
-            System.Diagnostics.Debug.WriteLine("Info " + info);
             textBoxInfo.Select(0, 0);
 
             ackaction = acknowledgeaction;

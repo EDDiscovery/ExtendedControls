@@ -48,7 +48,6 @@ namespace ExtendedControls
         All,
         OK,
         Cancel,
-        Warning,
 
         MessageBoxTheme_OK,
         MessageBoxTheme_Cancel,
@@ -61,13 +60,5 @@ namespace ExtendedControls
 
         ExtPanelRollUp_RUPPin,
         ExtPanelRollUp_RUPMarker,
-
-        DataGridViewDialogs_EN,
-        DataGridViewDialogs_Jumpto,
-        DataGridViewDialogs_PresstoAccept,
-        DataGridViewDialogs_PresstoCancel,
-        DataGridViewDialogs_VNV,
-        DataGridViewDialogs_Title, // Control 'Jump to Entry'
-
     }
 }

@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using BaseUtils;
 using AudioExtensions;
 using ExtendedControls;
+using ExtendedForms;
 
 namespace ExtendedAudioForms
 {
@@ -53,7 +54,9 @@ namespace ExtendedAudioForms
 
             queue = qu;
 
-            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ExtendedForms.ConditionFormsIDs));
+            var enumlist = new Enum[] { CFIDs.WaveConfigureDialog, CFIDs.WaveConfigureDialog_buttonExtDevice, CFIDs.WaveConfigureDialog_labelStartTrigger, CFIDs.WaveConfigureDialog_labelEndTrigger, CFIDs.WaveConfigureDialog_labelTitle, CFIDs.WaveConfigureDialog_buttonExtBrowse, CFIDs.WaveConfigureDialog_checkBoxCustomComplete, CFIDs.WaveConfigureDialog_buttonExtEffects, CFIDs.WaveConfigureDialog_buttonExtTest, CFIDs.WaveConfigureDialog_checkBoxCustomV, CFIDs.WaveConfigureDialog_labelVolume };
+
+            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
 
             if ( caption != null )
                 this.Text = caption;

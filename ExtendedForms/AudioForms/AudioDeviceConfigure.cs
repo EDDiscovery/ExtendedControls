@@ -14,6 +14,7 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 using ExtendedControls;
+using ExtendedForms;
 using System;
 using System.Windows.Forms;
 
@@ -33,7 +34,8 @@ namespace ExtendedAudioForms
             comboBoxCustomDevice.Items.AddRange(dr.GetAudioEndpoints().ToArray());
             comboBoxCustomDevice.SelectedItem = dr.GetAudioEndpoint();
 
-            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ExtendedForms.ConditionFormsIDs));
+            var enumlist = new Enum[] { CFIDs.AudioDeviceConfigure, CFIDs.AudioDeviceConfigure_labelText };
+            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
 
             bool border = ExtendedControls.Theme.Current?.ApplyDialog(this) ?? true;
             labelText.Visible = !border;

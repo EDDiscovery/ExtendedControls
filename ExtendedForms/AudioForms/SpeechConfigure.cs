@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using AudioExtensions;
 using BaseUtils;
 using ExtendedControls;
+using ExtendedForms;
 
 namespace ExtendedAudioForms
 {
@@ -60,7 +61,8 @@ namespace ExtendedAudioForms
             queue = qu;
             synth = syn;
 
-            BaseUtils.Translator.Instance.TranslateVerify(this, typeof(ExtendedForms.ConditionFormsIDs));
+            var enumlist = new Enum[] { CFIDs.SpeechConfigure, CFIDs.SpeechConfigure_buttonExtTest, CFIDs.SpeechConfigure_buttonExtDevice, CFIDs.SpeechConfigure_buttonExtEffects, CFIDs.SpeechConfigure_checkBoxCustomLiteral, CFIDs.SpeechConfigure_checkBoxCustomComplete, CFIDs.SpeechConfigure_labelEndTrigger, CFIDs.SpeechConfigure_labelStartTrigger, CFIDs.SpeechConfigure_labelRate, CFIDs.SpeechConfigure_labelVoice, CFIDs.SpeechConfigure_labelVolume, CFIDs.SpeechConfigure_checkBoxCustomR, CFIDs.SpeechConfigure_checkBoxCustomV, CFIDs.SpeechConfigure_Title };
+            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
 
             if (caption != null)
                 this.Text = caption;
