@@ -921,7 +921,7 @@ namespace ExtendedControls
                         Color c = System.Drawing.ColorTranslator.FromHtml(s);   // may except if not valid HTML colour
                         colors[ck] = c;
                         foundcolour = true;
-                        System.Diagnostics.Debug.WriteLine("Color.FromArgb({0},{1},{2},{3}), // {4}", c.A, c.R, c.G, c.B, ck.ToString());
+                        //System.Diagnostics.Debug.WriteLine("Color.FromArgb({0},{1},{2},{3}), // {4}", c.A, c.R, c.G, c.B, ck.ToString());
                     }
                     else
                     {
