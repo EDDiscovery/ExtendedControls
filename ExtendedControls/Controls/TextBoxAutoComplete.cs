@@ -88,6 +88,7 @@ namespace ExtendedControls
             if (cbdropdown != null)
             {
                 cbdropdown.Close();
+                cbdropdown.Dispose();
                 cbdropdown = null;
                 Invalidate(true);
             }
@@ -170,6 +171,7 @@ namespace ExtendedControls
                 if ( cbdropdown != null && (autocompletelastcount < count || autocompletelastcount > count+5))
                 {                               // close if the counts are wildly different
                     cbdropdown.Close();
+                    cbdropdown.Dispose();
                     cbdropdown = null;
                 }
 
@@ -189,6 +191,7 @@ namespace ExtendedControls
                     cbdropdown.ScrollBarButtonColor = this.DropDownScrollBarButtonColor;
                     cbdropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
                     cbdropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
+                    cbdropdown.Activated += cbdropdown_Activated;
                     cbdropdown.PositionBelow(this);
                     EndButtonImage = Properties.Resources.ArrowUp;
                     cbdropdown.Show(FindForm());
@@ -207,6 +210,11 @@ namespace ExtendedControls
             {
                 CancelAutoComplete();
             }
+        }
+
+        private void cbdropdown_Activated(object sender, EventArgs e)
+        {
+            Focus();
         }
 
         private void cbdropdown_SelectedIndexChanged(object sender, EventArgs e)
