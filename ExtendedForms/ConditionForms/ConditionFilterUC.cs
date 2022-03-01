@@ -579,9 +579,9 @@ namespace ExtendedConditionsForms
                         for (int i = 0; i < g.condlist.Count; i++)
                         {
                             Group.Conditions c = g.condlist[i];
-                            string fieldn = c.fname.Text;
+                            string fieldn = c.fname.Text.Trim();
                             string condn = c.cond.Text;
-                            string valuen = c.value.Text;
+                            string valuen = c.value.Text.Trim();
 
                             if (fieldn.Length > 0 || ConditionEntry.IsNullOperation(condn))
                             {
