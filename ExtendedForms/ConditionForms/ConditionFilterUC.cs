@@ -581,7 +581,7 @@ namespace ExtendedConditionsForms
                             Group.Conditions c = g.condlist[i];
                             string fieldn = c.fname.Text.Trim();
                             string condn = c.cond.Text;
-                            string valuen = c.value.Text.Trim();
+                            string valuen = c.value.Text;       // this is a literal string, so can't be trimmed, you may mean to have spaces etc.
 
                             if (fieldn.Length > 0 || ConditionEntry.IsNullOperation(condn))
                             {
