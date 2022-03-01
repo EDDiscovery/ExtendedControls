@@ -88,6 +88,7 @@ namespace ExtendedControls
             if (cbdropdown != null)
             {
                 cbdropdown.Close();
+                cbdropdown.Dispose();
                 cbdropdown = null;
                 Invalidate(true);
             }
@@ -170,6 +171,7 @@ namespace ExtendedControls
                 if ( cbdropdown != null && (autocompletelastcount < count || autocompletelastcount > count+5))
                 {                               // close if the counts are wildly different
                     cbdropdown.Close();
+                    cbdropdown.Dispose();
                     cbdropdown = null;
                 }
 
@@ -193,6 +195,11 @@ namespace ExtendedControls
                     EndButtonImage = Properties.Resources.ArrowUp;
                     cbdropdown.Show(FindForm());
                     Focus();                // Major change.. we now keep the focus at all times
+
+                    if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+                    {
+                        cbdropdown.Activated += cbdropdown_Activated;
+                    }
                 }
                 else
                 {
@@ -207,6 +214,11 @@ namespace ExtendedControls
             {
                 CancelAutoComplete();
             }
+        }
+
+        private void cbdropdown_Activated(object sender, EventArgs e)
+        {
+            Focus();
         }
 
         private void cbdropdown_SelectedIndexChanged(object sender, EventArgs e)
