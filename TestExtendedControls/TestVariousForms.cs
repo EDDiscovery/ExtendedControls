@@ -84,16 +84,14 @@ namespace TestExtendedControls
             int width = 430;
             int ctrlleft = 150;
 
-            Type t = typeof(DataGridViewDialogs);
-
             int initialvalue = 200;
             Form parent = this;
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("L", typeof(Label), "Jump to:".Tx(t), new Point(10, 40), new Size(140, 24), ""));
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to".Tx(t, "EN")) { numberboxdoubleminimum = 0, numberboxformat = "0" });
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("L", typeof(Label), "Jump to:", new Point(10, 40), new Size(140, 24), ""));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { numberboxdoubleminimum = 0, numberboxformat = "0" });
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK".Tx(), new Point(width - 100, 70), new Size(80, 24), "Press to Accept".Tx(t)));
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".Tx(), new Point(width - 200, 70), new Size(80, 24), "Press to Cancel".Tx(t)));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept"));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(width - 200, 70), new Size(80, 24), "Press to Cancel"));
 
             f.Trigger += (dialogname, controlname, tag) =>
             {
@@ -105,7 +103,7 @@ namespace TestExtendedControls
                         f.ReturnResult(DialogResult.OK);
                     }
                     else
-                        ExtendedControls.MessageBoxTheme.Show(parent, "Value is not valid".Tx(t, "VNV"), "Warning".Tx(), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ExtendedControls.MessageBoxTheme.Show(parent, "Value is not valid", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else if (controlname == "Cancel" || controlname == "Close" )
                 {
@@ -114,7 +112,7 @@ namespace TestExtendedControls
             };
 
             //f.AllowResize = true;
-            DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Jump to Entry".Tx(t, "Title"), closeicon:true);
+            DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Jump to Entry", closeicon:true);
 
             if (res == DialogResult.OK)
             {

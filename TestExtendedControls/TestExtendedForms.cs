@@ -36,7 +36,7 @@ namespace TestExtendedControls
             Theme.Current.FontSize = 12;
             AudioDriverCSCore ad = new AudioDriverCSCore();
             AudioDeviceConfigure f = new AudioDeviceConfigure();
-            f.Init("Config check", ad);
+            f.Init(ad);
             f.ShowDialog(this);
         }
 
@@ -45,7 +45,7 @@ namespace TestExtendedControls
             Theme.Current.FontSize = 20;
             AudioDriverCSCore ad = new AudioDriverCSCore();
             AudioDeviceConfigure f = new AudioDeviceConfigure();
-            f.Init("Config check", ad);
+            f.Init(ad);
             f.ShowDialog(this);
         }
 
@@ -66,7 +66,7 @@ namespace TestExtendedControls
 
             Variables ef = new Variables();
 
-            c.Init(q, ss, "Check SC", "Caption title", this.Icon, mode ? "Text to do" : null,
+            c.Init(false,q, ss, "Caption title", this.Icon, mode ? "Text to do" : null,
                     true, true, AudioQueue.Priority.High,
                     "sn", "en", "Sheila", "100", "Default", ef);
 
@@ -100,7 +100,7 @@ namespace TestExtendedControls
 
             Variables ef = new Variables();
 
-            c.Init(q, false, "Check SC", "Caption title", this.Icon,
+            c.Init(false, q, "Caption title", this.Icon,
                     @"c:\",
                     true, AudioQueue.Priority.High,
                     "sn", "en", "100", ef);
