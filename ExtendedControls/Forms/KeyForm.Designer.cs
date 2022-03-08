@@ -343,7 +343,6 @@
             this.comboBoxKeySelector.SelectedValue = null;
             this.comboBoxKeySelector.Size = new System.Drawing.Size(162, 21);
             this.comboBoxKeySelector.TabIndex = 6;
-            this.comboBoxKeySelector.Text = "comboBoxCustom1";
             this.comboBoxKeySelector.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxKeySelector.ValueMember = "";
             // 

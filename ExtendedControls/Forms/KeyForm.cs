@@ -60,6 +60,9 @@ namespace ExtendedControls
                                 List<string> additionalkeys = null,
                                 BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser parser = null)
         {
+            var enumlist = new Enum[] { ECIDs.KeyForm, ECIDs.KeyForm_radioButtonUp, ECIDs.KeyForm_radioButtonDown, ECIDs.KeyForm_radioButtonPress, ECIDs.KeyForm_checkBoxShift, ECIDs.KeyForm_checkBoxCtrl, ECIDs.KeyForm_checkBoxAlt, ECIDs.KeyForm_checkBoxKey, ECIDs.KeyForm_labelNextDelay, ECIDs.KeyForm_labelSelKeys, ECIDs.KeyForm_labelDelay, ECIDs.KeyForm_labelSendTo, ECIDs.KeyForm_buttonReset, ECIDs.KeyForm_labelKeys, ECIDs.KeyForm_buttonDelete, ECIDs.KeyForm_buttonNext, ECIDs.KeyForm_buttonTest };
+            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
+
             if ( i != null )
                 Icon = i;
 
@@ -109,14 +112,12 @@ namespace ExtendedControls
             labelCaption.Visible = !border;
 
             AddMF();
+            AddMF();
 
             if (allowkeysedit)
                 textBoxKeys.ReadOnly = false;
 
             DisplayKeyString();
-
-            var enumlist = new Enum[] { ECIDs.KeyForm, ECIDs.KeyForm_radioButtonUp, ECIDs.KeyForm_radioButtonDown, ECIDs.KeyForm_radioButtonPress, ECIDs.KeyForm_checkBoxShift, ECIDs.KeyForm_checkBoxCtrl, ECIDs.KeyForm_checkBoxAlt, ECIDs.KeyForm_checkBoxKey, ECIDs.KeyForm_labelNextDelay, ECIDs.KeyForm_labelSelKeys, ECIDs.KeyForm_labelDelay, ECIDs.KeyForm_labelSendTo, ECIDs.KeyForm_buttonReset, ECIDs.KeyForm_labelKeys, ECIDs.KeyForm_buttonDelete, ECIDs.KeyForm_buttonNext, ECIDs.KeyForm_buttonTest };
-            BaseUtils.Translator.Instance.TranslateControls(this,enumlist);
 
             labelCaption.Text = this.Text;
         }

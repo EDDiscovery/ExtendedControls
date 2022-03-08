@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static BaseUtils.EnhancedSendKeysParser;
 
 namespace TestExtendedControls
 {
@@ -174,10 +175,27 @@ namespace TestExtendedControls
             INFO(30,12);
         }
 
+        class AddKeyParser : BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser
+        {
+            public Tuple<string, int, string> Parse(string s)
+            {
+                if (s.StartsWith("AddOne"))
+                    return new Tuple<string, int, string>("A B C", 6, null);
+                else
+                    return new Tuple<string, int, string>(null, 0, null);
+            }
+        }
+
         private void extButton10_Click(object sender, EventArgs e)
         {
+            AddKeyParser addp = new AddKeyParser();
+
+            Queue<SKEvent> events = new Queue<SKEvent>();
+
+            string err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "#5 Shift+A Shift+B", 200, 200, 200, addp);
+
             KeyForm f = new KeyForm();
-            f.Init(null, true, " ", "", "", -1, false);
+            f.Init(null, true, " ", "", "EliteDangerous64", -1, false,new List<string> { "AddOne" },addp);
             f.Show(this);
         }
 
