@@ -177,7 +177,7 @@ namespace TestExtendedControls
 
         class AddKeyParser : BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser
         {
-            public Tuple<string, int, string> Parse(string s)
+            public Tuple<string, int, string> Parse(string s,bool k)
             {
                 if (s.StartsWith("AddOne"))
                     return new Tuple<string, int, string>("A B C", 6, null);
@@ -190,9 +190,31 @@ namespace TestExtendedControls
         {
             AddKeyParser addp = new AddKeyParser();
 
-            Queue<SKEvent> events = new Queue<SKEvent>();
-
-            string err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "#5 Shift+A Shift+B", 200, 200, 200, addp);
+            {
+                Queue<SKEvent> events = new Queue<SKEvent>();
+                string err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "[1,2,3]#1Shift", 200, 201, 202, addp);
+            }
+            {
+                Queue<SKEvent> events = new Queue<SKEvent>();
+                string err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "[1,2,3]#1Shift+Insert", 200, 201, 202, addp);
+            }
+            {
+                Queue<SKEvent> events = new Queue<SKEvent>();
+                string err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "[1,2,3]#1Insert", 200, 201, 202, addp);
+            }
+            {
+                Queue<SKEvent> events = new Queue<SKEvent>();
+                string err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "[1,2,3]#1^Insert", 200, 201, 202, addp);
+            }
+            {
+                Queue<SKEvent> events = new Queue<SKEvent>();
+                string err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "[1,2,3]#1^Shift+Insert", 200, 201, 202, addp);
+            }
+            {
+                Queue<SKEvent> events = new Queue<SKEvent>();
+                string err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "[1,2,3]#1^Shift", 200, 201, 202, addp);
+            }
+            //     err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "[1,2,3]#Insert", 200, 201, 202, addp);
 
             KeyForm f = new KeyForm();
             f.Init(null, true, " ", "", "EliteDangerous64", -1, false,new List<string> { "AddOne" },addp);

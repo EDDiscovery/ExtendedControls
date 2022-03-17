@@ -52,6 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestThemeSpeed.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestThemeSpeed.Designer.cs">
+      <DependentUpon>TestThemeSpeed.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestDraggableForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -210,6 +216,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestThemeSpeed.resx">
+      <DependentUpon>TestThemeSpeed.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestDraggableForm.resx">
       <DependentUpon>TestDraggableForm.cs</DependentUpon>
     </EmbeddedResource>
