@@ -47,7 +47,7 @@ namespace ExtendedControls
             wd.Name = "Windows Default Flat Buttons";
             themelist.Add(wd);
 
-            Color hgb = Color.FromArgb(255, 10, 64, 10);
+            Color hgb = Color.FromArgb(255, 10, 40, 10);
 
             themelist.Add(new Theme("Orange Delight", Color.Black,
                 Color.FromArgb(255, 48, 48, 48), Color.Orange, Color.DarkOrange, Theme.ButtonstyleGradient, // button
