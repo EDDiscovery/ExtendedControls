@@ -74,6 +74,19 @@ namespace ExtendedControls
             base.OnControlAdded(e);
         }
 
+        public void ClearControls()
+        {
+            var clist = new List<Control>();
+            foreach(Control c in Controls)
+            {
+                if (c != ScrollBar)
+                    clist.Add(c);
+            }
+
+            foreach (var c in clist)
+                Controls.Remove(c);
+        }
+
         protected override void OnControlRemoved(ControlEventArgs e)
         {
             if (e.Control is ExtScrollBar)
@@ -102,7 +115,6 @@ namespace ExtendedControls
                 SetScrollBarLocationSize();
                 ScrollTo(scrollpos, true);
             }
-
         }
 
         private void SetScrollBarLocationSize()
