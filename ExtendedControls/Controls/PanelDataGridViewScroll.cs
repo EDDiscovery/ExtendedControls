@@ -288,6 +288,11 @@ namespace ExtendedControls
                     vsc.ValueLimited++;                 // end is UserLimit, not maximum
 
                 MoveDGVToRow(vsc.Value);
+
+                // https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.handledmouseeventargs?view=windowsdesktop-6.0
+                // and Control.cs: 13199 WmMouseWheel
+
+                ((HandledMouseEventArgs)e).Handled = true;      // we are actually passed this class, cast to it and set we handled it.
             }
         }
 

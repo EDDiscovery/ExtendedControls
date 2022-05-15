@@ -52,6 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestPanelScrollDGV.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPanelScrollDGV.Designer.cs">
+      <DependentUpon>TestPanelScrollDGV.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestThemeSpeed.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,6 +222,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestPanelScrollDGV.resx">
+      <DependentUpon>TestPanelScrollDGV.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestThemeSpeed.resx">
       <DependentUpon>TestThemeSpeed.cs</DependentUpon>
     </EmbeddedResource>
