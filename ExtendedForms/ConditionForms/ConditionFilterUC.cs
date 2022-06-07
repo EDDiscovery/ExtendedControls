@@ -436,6 +436,7 @@ namespace ExtendedConditionsForms
 
         private void FixUpGroups(bool calcminsize = true)      // fixes and positions groups.
         {
+            System.Diagnostics.Debug.WriteLine("UC Fix up");
             SuspendLayout();
             panelVScroll.SuspendLayout();
 
@@ -477,15 +478,20 @@ namespace ExtendedConditionsForms
                 for (int condc = 0; condc < g.condlist.Count; condc++)
                 {
                     Group.Conditions c = g.condlist[condc];
+
+                    int fnamewidth = Math.Max(panelwidth / (g.evlist != null ? 5 : 3),32);
+                    int valuewidth = panelwidth - condxoffset - fnamewidth - 4 - c.cond.Width - 4 - c.del.Width - 4 - c.more.Width - 4 - g.innercond.Width - 4 - g.upbutton.Width + 8;
+
                     c.fname.Location = new Point(condxoffset, vnextcond);
                     c.fname.Enabled = !ConditionEntry.IsNullOperation(c.cond.Text);
+                    c.fname.Width = fnamewidth;
                     if (!c.fname.Enabled)
                         c.fname.Text = "";
 
                     c.cond.Location = new Point(c.fname.Right + panelxspacing, vnextcond);
 
                     c.value.Location = new Point(c.cond.Right + panelxspacing, vnextcond );
-                    c.value.Width = panelwidth - condxoffset - c.fname.Width - 4 - c.cond.Width - 4 - c.del.Width - 4 - c.more.Width - 4 - g.innercond.Width - 4 - g.upbutton.Width + 8;
+                    c.value.Width = valuewidth;
                     c.value.Enabled = !ConditionEntry.IsNullOperation(c.cond.Text) && !ConditionEntry.IsUnaryOperation(c.cond.Text);
                     if (!c.value.Enabled)
                         c.value.Text = "";

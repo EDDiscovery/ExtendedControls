@@ -118,7 +118,7 @@ namespace ExtendedControls
                                                 ClientRectangle.Width - 1, ClientRectangle.Height - 1);
 
                 int hoffset = arrowRectangleArea.Width/12 + 2;
-                int voffset = arrowRectangleArea.Height / 6;
+                int voffset = arrowRectangleArea.Height / 4;
                 arrowpt1 = new Point(arrowRectangleArea.Left + hoffset, arrowRectangleArea.Y + voffset);
                 arrowpt2 = new Point(arrowRectangleArea.XCenter(), arrowRectangleArea.Bottom - voffset);
                 arrowpt3 = new Point(arrowRectangleArea.Right - hoffset, arrowpt1.Y);

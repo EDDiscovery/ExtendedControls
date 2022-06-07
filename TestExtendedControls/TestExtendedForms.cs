@@ -24,8 +24,14 @@ namespace TestExtendedControls
             InitializeComponent();
             theme = new ThemeList();
             theme.LoadBaseThemes();
-            theme.SetThemeByName("Elite EuroCaps");
+            theme.SetThemeByName("Elite Verdana");
             Theme.Current.FontSize = 12;
+
+            BaseUtils.Translator.Instance.AddExcludedControls(new Type[]
+            {   typeof(ExtendedControls.ExtComboBox), typeof(ExtendedControls.NumberBoxDouble),typeof(ExtendedControls.NumberBoxFloat),typeof(ExtendedControls.NumberBoxLong),
+                typeof(ExtendedControls.ExtScrollBar),typeof(ExtendedControls.ExtStatusStrip),typeof(ExtendedControls.ExtRichTextBox),typeof(ExtendedControls.ExtTextBox),
+                typeof(ExtendedControls.ExtTextBoxAutoComplete),typeof(ExtendedControls.ExtDateTimePicker),typeof(ExtendedControls.ExtNumericUpDown) });
+
         }
 
 
@@ -148,6 +154,67 @@ namespace TestExtendedControls
         private void extButton11_Click(object sender, EventArgs e)
         {
             VAR(24, true, true);
+
+        }
+
+        private void CForm(float size, bool filter)
+        {
+            Theme.Current.FontSize = size;
+            ConditionFilterForm f = new ConditionFilterForm();
+
+            if ( filter)
+            {
+                List<string> events = new List<string>() { "e1", "e2", "e3" };
+                ConditionLists cl = new ConditionLists();
+                cl.Add(new Condition("e1", "func1", new Variables() { ["one"] = "one" },
+                        new List<ConditionEntry>
+                        {
+                                new ConditionEntry("IsPlanet",ConditionEntry.MatchType.IsTrue,""),      // both passes
+                                new ConditionEntry("IsSmall",ConditionEntry.MatchType.IsFalse,""),
+                        },
+                        ConditionEntry.LogicalCondition.And,    // inner
+                        ConditionEntry.LogicalCondition.Or
+                  ));
+
+                f.InitFilter("Filter", this.Icon, events, cl);
+            }
+            else
+            {
+                ConditionLists cl = new ConditionLists();
+                cl.Add(new Condition("e", "f", new Variables(),
+                        new List<ConditionEntry>
+                        {
+                                new ConditionEntry("IsPlanet",ConditionEntry.MatchType.IsTrue,""),      // both passes
+                                new ConditionEntry("IsSmall",ConditionEntry.MatchType.IsFalse,""),
+                        },
+                        ConditionEntry.LogicalCondition.And,    // inner
+                        ConditionEntry.LogicalCondition.Or
+                    ));
+
+                cl.Add(new Condition("e", "f", new Variables(),
+                        new List<ConditionEntry>
+                        {
+                                new ConditionEntry("Other[Iter1].outerrad-Outer[Iter1].innerrad",ConditionEntry.MatchType.NumericGreaterEqual,"400"),        // does pass on Other[2]
+                        },
+                        ConditionEntry.LogicalCondition.Or,
+                        ConditionEntry.LogicalCondition.And
+                    ));
+
+                f.InitCondition("Condition", this.Icon, cl);
+            }
+
+            f.ShowDialog();
+        }
+
+        private void extButton12_Click(object sender, EventArgs e)
+        {
+            CForm(8, false);
+
+        }
+
+        private void extButton13_Click(object sender, EventArgs e)
+        {
+            CForm(8, true);
 
         }
     }
