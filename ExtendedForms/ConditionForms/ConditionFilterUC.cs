@@ -32,6 +32,8 @@ namespace ExtendedConditionsForms
         public Func<string, List<TypeHelpers.PropertyNameInfo>> VariableNamesEvents;         // set to hook up additional names, keyed by event
         public List<TypeHelpers.PropertyNameInfo> VariableNames { get; set; } = null;        // set to add variable names
 
+        public int AutoCompleteStringCropLength { get; set; } = 132;                // max length of autocomplete strings, limiting visual display
+
         public int Groups { get { return groups.Count; } }
         public Action<int> onChangeInGroups;                        // called if any change in group numbers
 
@@ -654,7 +656,7 @@ namespace ExtendedConditionsForms
                     {
                         string chelp = (x.Help ?? "").AppendPrePad(x.Comment, ":");
                         chelp = chelp.Replace("\n", " ");
-                        chelp = chelp.Truncate(0, 80, "..");
+                        chelp = chelp.Truncate(0, AutoCompleteStringCropLength, "..");
                         set.Add(x.Name.AppendPrePad(chelp,commentmarker));
                     }
                 }
