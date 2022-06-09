@@ -438,7 +438,6 @@ namespace ExtendedConditionsForms
 
         private void FixUpGroups(bool calcminsize = true)      // fixes and positions groups.
         {
-            System.Diagnostics.Debug.WriteLine("UC Fix up");
             SuspendLayout();
             panelVScroll.SuspendLayout();
 
@@ -582,7 +581,7 @@ namespace ExtendedConditionsForms
                     errorlist += "Ignored group with empty name" + Environment.NewLine;
                 else
                 {
-                    if (fe.Create(evt, "","", innerc, outerc)) // create must work
+                    if (fe.Create(evt, innerc, outerc)) // create must work
                     {
                         for (int i = 0; i < g.condlist.Count; i++)
                         {
