@@ -77,6 +77,8 @@ namespace ExtendedControls
         public Action<string, Object> SaveSettings;                // Action on close or hide
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported, else its all entries or empty list
 
+        public char SettingsSplittingChar { get; set; } = ';';      // what char is used for split settings
+
         private Size defsize = new Size(24, 24);        // default size if no other sizes given by ImageSize/Icons etc
 
         public void SetItems(IEnumerable<string> tags, IEnumerable<string> text, IEnumerable<Image> image = null)
@@ -202,7 +204,7 @@ namespace ExtendedControls
         public void SetChecked(string tag, bool state = true)        // using ; as the separator
         {
             if ( tag != null )
-                SetChecked(tag.SplitNoEmptyStrings(';'),state);
+                SetChecked(tag.SplitNoEmptyStrings(SettingsSplittingChar),state);
         }
 
         public void SetChecked(List<string> taglist, bool state = true)   // null allowed
@@ -270,7 +272,7 @@ namespace ExtendedControls
             {
                 if (controllist[i].checkbox.CheckState == CheckState.Checked)
                 {
-                    ret += controllist[i].tag + ";";
+                    ret += controllist[i].tag + SettingsSplittingChar;
                     total++;
                 }
             }
@@ -288,12 +290,12 @@ namespace ExtendedControls
 
         public List<string> GetCheckedList(int ignore = 0, bool allornone = true)
         {
-            return GetChecked(ignore, allornone).SplitNoEmptyStartFinish(';').ToList();
+            return GetChecked(ignore, allornone).SplitNoEmptyStartFinish(SettingsSplittingChar).ToList();
         }
 
         public string[] GetCheckedArray(int ignore = 0, bool allornone = true)
         {
-            return GetChecked(ignore, allornone).SplitNoEmptyStartFinish(';');
+            return GetChecked(ignore, allornone).SplitNoEmptyStartFinish(SettingsSplittingChar);
         }
 
         public CheckedIconListBoxForm()
@@ -436,7 +438,7 @@ namespace ExtendedControls
                     }
                     else
                     {
-                        string[] tags = controllist[index].exclusivetags.Split(";");
+                        string[] tags = controllist[index].exclusivetags.Split(SettingsSplittingChar);
                         foreach (string s in tags)
                         {
                             System.Diagnostics.Debug.WriteLine($"Tag {controllist[index].tag} turn off {s}");

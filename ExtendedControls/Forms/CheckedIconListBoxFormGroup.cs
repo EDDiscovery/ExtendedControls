@@ -84,9 +84,10 @@ namespace ExtendedControls
             });
         }
 
-        public static long SettingsStringToLong(string s)                                // if using long as the tag, use this to convert the 1;2;4; value back to long
+        // if using long as the tag, use this to convert the 1;2;4; value back to long
+        public static long SettingsStringToLong(string s, char splitchar = ';')     
         {
-            string[] split = s.SplitNoEmptyStartFinish(';');
+            string[] split = s.SplitNoEmptyStartFinish(splitchar);
             long v = 0;
             foreach (var str in split)
             {
@@ -108,7 +109,7 @@ namespace ExtendedControls
             foreach (var x in standardoptions)
                 AddItem(x.Tag, x.Text, x.Image, false, x.Exclusive, x.DisableUncheck);
 
-            string[] slist = settings.SplitNoEmptyStartFinish(';');
+            string[] slist = settings.SplitNoEmptyStartFinish(SettingsSplittingChar);
             if (slist.Length == 1 && slist[0].Equals("All"))
                 SetCheckedFromToEnd(groupoptions.Count());
             else
@@ -133,7 +134,7 @@ namespace ExtendedControls
             for (int i = 0; i < 63; i++)
             {
                 if ((settings & (1L << i)) != 0)
-                    s += (1L << i).ToStringInvariant() + ";";
+                    s += (1L << i).ToStringInvariant() + SettingsSplittingChar;
             }
 
             if (s == "" && setonfornoflags>=0)
@@ -155,7 +156,7 @@ namespace ExtendedControls
             foreach (var v in Enum.GetValues(ofenum))
             {
                 if (ctrlset[(int)v])
-                    settings += v.ToString() + ";";
+                    settings += v.ToString() + SettingsSplittingChar;
             }
 
             if (ItemCount == 0)     // if not created, create..
@@ -199,12 +200,12 @@ namespace ExtendedControls
                 {
                     SetChecked(p, list.Equals("None"));
                 }
-                else if (list.MatchesAllItemsInList(eo.Tag, ';'))        // exactly, tick
+                else if (list.MatchesAllItemsInList(eo.Tag, SettingsSplittingChar))        // exactly, tick
                 {
                     //System.Diagnostics.Debug.WriteLine("Checking T " + eo.Tag + " vs " + list);
                     SetChecked(p);
                 }
-                else if (list.ContainsAllItemsInList(eo.Tag, ';')) // contains, intermediate
+                else if (list.ContainsAllItemsInList(eo.Tag, SettingsSplittingChar)) // contains, intermediate
                 {
                     //System.Diagnostics.Debug.WriteLine("Checking I " + eo.Tag + " vs " + list + list.Equals(eo.Tag));
                     SetChecked(p, CheckState.Indeterminate);
