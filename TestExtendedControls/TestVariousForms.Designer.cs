@@ -461,7 +461,7 @@
             this.Controls.Add(this.extButton6);
             this.Controls.Add(this.extButton1);
             this.Name = "TestVariousForms";
-            this.Text = "Form1";
+            this.Text = "Test Various Forms";
             this.ResumeLayout(false);
             this.PerformLayout();
 

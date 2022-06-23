@@ -177,12 +177,15 @@ namespace TestExtendedControls
 
         class AddKeyParser : BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser
         {
-            public Tuple<string, int, string> Parse(string s,bool k)
+            public Tuple<string, string> Parse(ref string s)
             {
                 if (s.StartsWith("AddOne"))
-                    return new Tuple<string, int, string>("A B C", 6, null);
+                {
+                    s = s.Substring(6);
+                    return new Tuple<string, string>(s, null);
+                }
                 else
-                    return new Tuple<string, int, string>(null, 0, null);
+                    return null;
             }
         }
 

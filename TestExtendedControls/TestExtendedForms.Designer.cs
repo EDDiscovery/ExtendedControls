@@ -192,7 +192,7 @@
             this.Controls.Add(this.extButton3);
             this.Controls.Add(this.extButton1);
             this.Name = "TestExtendedForms";
-            this.Text = "Form1";
+            this.Text = "Test Extended Forms";
             this.ResumeLayout(false);
 
         }
