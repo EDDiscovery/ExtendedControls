@@ -317,7 +317,15 @@ namespace ExtendedControls
                 //Console.WriteLine("Thumb captured at " + thumbmovecaptureoffset);
             }
             else if (sliderarea.Contains(e.Location))      // slider, but not thumb..
-                MoveThumb((e.Location.Y < thumbbuttonarea.Y) ? -largechange : largechange);
+            {
+                int change = (e.Location.Y < thumbbuttonarea.Y) ? -largechange : largechange;
+                if ((Control.ModifierKeys & Keys.Shift) != 0)
+                    change *= 2;
+                if ((Control.ModifierKeys & Keys.Control) != 0)
+                    change *= 4;
+
+                MoveThumb(change);
+            }
 
         }
 
