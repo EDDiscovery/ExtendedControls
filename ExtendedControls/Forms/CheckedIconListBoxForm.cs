@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -52,6 +53,9 @@ namespace ExtendedControls
         public Color MouseOverButtonColor { get { return sb.MouseOverButtonColor; } set { sb.MouseOverButtonColor = value; } }
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
+
+        public bool CloseIfCursorOutsideBoundary { get; set; } = false;
+        public Size CloseBoundaryRegion { get; set; } = new Size(32, 64);
 
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 
@@ -382,6 +386,11 @@ namespace ExtendedControls
 
             panelscroll.ResumeLayout();
 
+            timer.Interval = 500;
+            timer.Tick += CheckMouse;
+            if ( CloseIfCursorOutsideBoundary )
+                timer.Start();
+
             //System.Diagnostics.Debug.WriteLine("OnLoad in " + sw.ElapsedMilliseconds);
             base.OnLoad(e);
         }
@@ -501,7 +510,22 @@ namespace ExtendedControls
             SaveSettings?.Invoke(GetChecked(0, AllOrNoneBack), Tag);     // at this level, we return all items.
         }
 
-        Timer tmr = new Timer();
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            timer.Stop();
+            base.OnClosing(e);
+        }
+
+        private void CheckMouse(object sender, EventArgs e)     // best way of knowing your inside the client..  turned on only if CloseIfCursorOutsideBoundary
+        {
+            Rectangle client = ClientRectangle;
+            client.Inflate(CloseBoundaryRegion);       // overlap area
+
+            if (!client.Contains(this.PointToClient(MousePosition)))    // if outside, close
+                Close();
+        }
+
+        private Timer timer = new Timer();      // timer to monitor for entry into form when transparent.. only sane way in forms
 
         #endregion
     }
