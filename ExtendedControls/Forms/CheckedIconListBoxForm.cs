@@ -313,6 +313,8 @@ namespace ExtendedControls
             sb = new ExtScrollBar();
             panelscroll.Controls.Add(sb);
             panelscroll.ScrollBar.HideScrollBar = true;
+            timer.Interval = 100;
+            timer.Tick += CheckMouse;
         }
 
         #region Implementation
@@ -383,10 +385,6 @@ namespace ExtendedControls
 
             panelscroll.ResumeLayout();
 
-            timer.Interval = 500;
-            timer.Tick += CheckMouse;
-            if ( !CloseBoundaryRegion.IsEmpty )
-                timer.Start();
 
             //System.Diagnostics.Debug.WriteLine("OnLoad in " + sw.ElapsedMilliseconds);
             base.OnLoad(e);
@@ -400,6 +398,11 @@ namespace ExtendedControls
                 Location = SetLocation;
 
             this.PositionSizeWithinScreen(maxw + 16 + panelscroll.ScrollBarWidth, maxh, true, ScreenMargin);    // keep it on the screen. 
+
+            if (!CloseBoundaryRegion.IsEmpty)
+                timer.Start();
+            else
+                System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
         }
 
         private void Ipanel_MouseDown(object sender, MouseEventArgs e)
@@ -478,14 +481,23 @@ namespace ExtendedControls
         protected override void OnDeactivate(EventArgs e)
         {
             base.OnDeactivate(e);
+            DeactivateAction();
+        }
 
+        private void DeactivateAction()
+        { 
             if (CloseOnDeactivate)
             {
+                timer.Stop();
+
                 SaveSettingsEvent();
+
                 this.Close();
             }
             else if (HideOnDeactivate)
             {
+                timer.Stop();
+
                 SaveSettingsEvent();
 
                 if ( Owner != null )
@@ -509,7 +521,7 @@ namespace ExtendedControls
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            timer.Stop();
+            timer.Stop();       // emergency stop, should have stopped by Deactivate..
             base.OnClosing(e);
         }
 
@@ -518,14 +530,36 @@ namespace ExtendedControls
             Rectangle client = ClientRectangle;
             client.Inflate(CloseBoundaryRegion);       // overlap area
 
-            if (!client.Contains(this.PointToClient(MousePosition)))    // if outside, close
+            if (Control.MouseButtons != MouseButtons.None)      // if we note a buttom down, we may be scrolling, note
             {
-                Close();
+                mousebuttonsdown = true;
+                //System.Diagnostics.Debug.WriteLine($"Noted mouse button down");
+            }
+            else
+            {
+                if (client.Contains(this.PointToClient(MousePosition)))     // if we are inside the box, cancel mouse down and set closedown to 0
+                {
+                   // System.Diagnostics.Debug.WriteLine($"Inside box, clear mbd");
+                    mousebuttonsdown = false;
+                    closedowncount = 0;
+                }
+                else
+                {
+                    //System.Diagnostics.Debug.WriteLine($"outside box, {mousebuttonsdown}");
+                    if (!mousebuttonsdown)              // 
+                    {
+                        if ( ++closedowncount == 10)     // N*timertick wait
+                            DeactivateAction();
+                    }
+                }
             }
         }
 
         private Size defsize = new Size(24, 24);        // default size if no other sizes given by ImageSize/Icons etc
         private Timer timer = new Timer();      // timer to monitor for entry into form when transparent.. only sane way in forms
+        private bool mousebuttonsdown = false;
+        private int closedowncount = 0;
+
 
         #endregion
     }
