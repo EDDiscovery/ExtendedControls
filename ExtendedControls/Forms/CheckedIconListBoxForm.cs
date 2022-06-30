@@ -54,8 +54,7 @@ namespace ExtendedControls
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
-        public bool CloseIfCursorOutsideBoundary { get; set; } = false;
-        public Size CloseBoundaryRegion { get; set; } = new Size(32, 64);
+        public Size CloseBoundaryRegion { get; set; } = new Size(0, 0);     // set size >0 to enable boundary close
 
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 
@@ -82,8 +81,6 @@ namespace ExtendedControls
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported, else its all entries or empty list
 
         public char SettingsSplittingChar { get; set; } = ';';      // what char is used for split settings
-
-        private Size defsize = new Size(24, 24);        // default size if no other sizes given by ImageSize/Icons etc
 
         public void SetItems(IEnumerable<string> tags, IEnumerable<string> text, IEnumerable<Image> image = null)
         {
@@ -388,7 +385,7 @@ namespace ExtendedControls
 
             timer.Interval = 500;
             timer.Tick += CheckMouse;
-            if ( CloseIfCursorOutsideBoundary )
+            if ( !CloseBoundaryRegion.IsEmpty )
                 timer.Start();
 
             //System.Diagnostics.Debug.WriteLine("OnLoad in " + sw.ElapsedMilliseconds);
@@ -522,9 +519,12 @@ namespace ExtendedControls
             client.Inflate(CloseBoundaryRegion);       // overlap area
 
             if (!client.Contains(this.PointToClient(MousePosition)))    // if outside, close
+            {
                 Close();
+            }
         }
 
+        private Size defsize = new Size(24, 24);        // default size if no other sizes given by ImageSize/Icons etc
         private Timer timer = new Timer();      // timer to monitor for entry into form when transparent.. only sane way in forms
 
         #endregion
