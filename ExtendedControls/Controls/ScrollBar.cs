@@ -299,14 +299,24 @@ namespace ExtendedControls
                 mousepressed = MouseOver.MouseOverUp;
                 Invalidate();
                 StartRepeatClick(e);
-                MoveThumb(-smallchange);
+                int change = -smallchange;
+                if ((Control.ModifierKeys & Keys.Shift) != 0)
+                    change *= 2;
+                if ((Control.ModifierKeys & Keys.Control) != 0)
+                    change *= 4;
+                MoveThumb(change);
             }
             else if (downbuttonarea.Contains(e.Location))
             {
                 mousepressed = MouseOver.MouseOverDown;
                 Invalidate();
                 StartRepeatClick(e);
-                MoveThumb(smallchange);
+                int change = smallchange;
+                if ((Control.ModifierKeys & Keys.Shift) != 0)
+                    change *= 4;
+                if ((Control.ModifierKeys & Keys.Control) != 0)
+                    change *= 8;
+                MoveThumb(change);
             }
             else if (thumbbuttonarea.Contains(e.Location))
             {
