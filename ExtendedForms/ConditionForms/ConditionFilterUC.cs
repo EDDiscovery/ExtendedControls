@@ -653,7 +653,7 @@ namespace ExtendedConditionsForms
                 {
                     if (x.Name.StartsWith(s, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        string chelp = (x.Help ?? "").AppendPrePad(x.Comment, ":");
+                        string chelp = (x.Help ?? "").AppendPrePad(x.Comment, " | ");
                         chelp = chelp.Replace("\n", " ");
                         chelp = chelp.Truncate(0, AutoCompleteStringCropLength, "..");
                         set.Add(x.Name.AppendPrePad(chelp,commentmarker));
