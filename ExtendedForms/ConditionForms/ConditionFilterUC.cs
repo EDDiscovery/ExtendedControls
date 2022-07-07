@@ -198,7 +198,7 @@ namespace ExtendedConditionsForms
             }
 
             g.innercond = new ExtendedControls.ExtComboBox();
-            g.innercond.Items.AddRange(Enum.GetNames(typeof(ConditionEntry.LogicalCondition)));
+            g.innercond.Items.AddRange(Enum.GetNames(typeof(Condition.LogicalCondition)));
             g.innercond.SelectedIndex = 0;
             g.innercond.Size = new Size(60, 24);
             g.innercond.Visible = false;
@@ -207,7 +207,7 @@ namespace ExtendedConditionsForms
             g.panel.Controls.Add(g.innercond);
 
             g.outercond = new ExtendedControls.ExtComboBox();
-            g.outercond.Items.AddRange(Enum.GetNames(typeof(ConditionEntry.LogicalCondition)));
+            g.outercond.Items.AddRange(Enum.GetNames(typeof(Condition.LogicalCondition)));
             g.outercond.SelectedIndex = 0;
             g.outercond.Size = new Size(60, 24);
             g.outercond.Enabled = g.outercond.Visible = false;
