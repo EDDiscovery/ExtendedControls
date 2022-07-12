@@ -55,9 +55,6 @@ namespace ExtendedControls
             waitforautotimer.Tick += TimeOutTick;
             HandleDestroyed += AutoCompleteTextBox_HandleDestroyed;
 
-            this.Click += AutoCompleteTextBox_Click;
-            this.KeyDown += AutoCompleteTextBox_KeyDown;
-
             EndButtonEnable = false;
 
             EndButtonClick = (s) =>                            // this is the default action if the user turns on the drop down button in text box
@@ -72,6 +69,8 @@ namespace ExtendedControls
                     CancelAutoComplete();                           // rollup
                 }
             };
+
+            ReturnPressed += (e) => { return true; };       // this stops the ding on return press. If someone else overrides this, they need to return true
         }
 
         public void AutoComplete(string autocomplete)           // call to autocomplete this
@@ -243,16 +242,23 @@ namespace ExtendedControls
             }
         }
 
-        private void AutoCompleteTextBox_Click(object sender, EventArgs e)      // clicking on the text box cancels autocomplete
+        protected override void OnLeave(EventArgs e)
         {
+            base.OnLeave(e);
+            CancelAutoComplete();
+        }
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine($"AC Click");
             CancelAutoComplete();
         }
 
         // keys when WE have to focus, which we do all the time now, some need passing onto the control.
 
-        public void AutoCompleteTextBox_KeyDown(object sender, KeyEventArgs e)
+        protected override void OnKeyDown(KeyEventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("Autocomplete {0} Keypress {1}", Environment.TickCount % 10000 , e.KeyCode);
+            //System.Diagnostics.Debug.WriteLine($"AC Key down Keypress {e.KeyCode}");
 
             if (cbdropdown != null)        // pass certain keys to the shown drop down
             {

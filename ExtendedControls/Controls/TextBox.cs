@@ -16,9 +16,8 @@
 
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 using System.Drawing.Drawing2D;
-using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace ExtendedControls
 {
@@ -28,6 +27,7 @@ namespace ExtendedControls
 
         // BorderColour != transparent to use ours
         // BorderStyle to set textbox style..  None for off.  Can use both if you wish 
+        public new string Name { get { return base.Name; } set { base.Name = value; textbox.Name = value; } }       // just so underlying control gets the same name
 
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; InternalPositionControls(); Invalidate(true); } }
         public float BorderColorScaling { get; set; } = 0.5F;
@@ -89,6 +89,7 @@ namespace ExtendedControls
         public Image EndButtonImage { get { return endbutton.Image; } set { endbutton.Image = value; } }     // if you want something else.. keep it small
 
         public Action<ExtTextBox> EndButtonClick = null;                              // if the button is pressed
+
 
         public ExtTextBox() : base()
         {
@@ -347,7 +348,7 @@ namespace ExtendedControls
             lastkey = e.KeyChar;
             KeysPressed++;
 
-            if (e.KeyChar == '\r')
+            if (e.Handled == false && e.KeyChar == '\r')
             {
                 if (ReturnPressed != null)
                 {

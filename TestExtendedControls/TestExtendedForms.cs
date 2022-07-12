@@ -172,8 +172,8 @@ namespace TestExtendedControls
                                 new ConditionEntry("IsPlanet",ConditionEntry.MatchType.IsTrue,""),      // both passes
                                 new ConditionEntry("IsSmall",ConditionEntry.MatchType.IsFalse,""),
                         },
-                        ConditionEntry.LogicalCondition.And,    // inner
-                        ConditionEntry.LogicalCondition.Or
+                        Condition.LogicalCondition.And,    // inner
+                        Condition.LogicalCondition.Or
                   ));
 
                 f.InitFilter("Filter", this.Icon, events, cl);
@@ -187,8 +187,8 @@ namespace TestExtendedControls
                                 new ConditionEntry("IsPlanet",ConditionEntry.MatchType.IsTrue,""),      // both passes
                                 new ConditionEntry("IsSmall",ConditionEntry.MatchType.IsFalse,""),
                         },
-                        ConditionEntry.LogicalCondition.And,    // inner
-                        ConditionEntry.LogicalCondition.Or
+                        Condition.LogicalCondition.And,    // inner
+                        Condition.LogicalCondition.Or
                     ));
 
                 cl.Add(new Condition("e", "f", new Variables(),
@@ -196,8 +196,8 @@ namespace TestExtendedControls
                         {
                                 new ConditionEntry("Other[Iter1].outerrad-Outer[Iter1].innerrad",ConditionEntry.MatchType.NumericGreaterEqual,"400"),        // does pass on Other[2]
                         },
-                        ConditionEntry.LogicalCondition.Or,
-                        ConditionEntry.LogicalCondition.And
+                        Condition.LogicalCondition.Or,
+                        Condition.LogicalCondition.And
                     ));
 
                 f.InitCondition("Condition", this.Icon, cl);

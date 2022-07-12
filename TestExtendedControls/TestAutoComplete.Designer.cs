@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestAutoComplete));
             this.autoCompleteTextBox1 = new ExtendedControls.ExtTextBoxAutoComplete();
             this.comboBoxCustom1 = new ExtendedControls.ExtComboBox();
             this.autoCompleteTextBox2 = new ExtendedControls.ExtTextBoxAutoComplete();
@@ -37,6 +38,7 @@
             this.dataGridViewColumnHider1 = new BaseUtils.DataGridViewColumnControl();
             this.Column1 = new ExtendedControls.ExtDataGridViewColumnAutoComplete();
             this.Column2 = new ExtendedControls.ExtDataGridViewColumnAutoComplete();
+            this.extTextBox1 = new ExtendedControls.ExtTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColumnHider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,6 +73,7 @@
             this.autoCompleteTextBox1.Size = new System.Drawing.Size(316, 20);
             this.autoCompleteTextBox1.TabIndex = 0;
             this.autoCompleteTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.autoCompleteTextBox1.TextChangedEvent = "";
             this.autoCompleteTextBox1.WordWrap = true;
             // 
             // comboBoxCustom1
@@ -127,6 +130,7 @@
             this.autoCompleteTextBox2.Size = new System.Drawing.Size(316, 20);
             this.autoCompleteTextBox2.TabIndex = 0;
             this.autoCompleteTextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.autoCompleteTextBox2.TextChangedEvent = "";
             this.autoCompleteTextBox2.WordWrap = true;
             // 
             // textBoxBorder1
@@ -160,6 +164,7 @@
             // 
             this.dataGridViewColumnHider1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewColumnHider1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewColumnHider1.ColumnReorder = true;
             this.dataGridViewColumnHider1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1,
             this.Column2});
@@ -180,11 +185,39 @@
             this.Column2.HeaderText = "Column2";
             this.Column2.Name = "Column2";
             // 
+            // extTextBox1
+            // 
+            this.extTextBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.extTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.extTextBox1.BackErrorColor = System.Drawing.Color.Red;
+            this.extTextBox1.BorderColor = System.Drawing.Color.Transparent;
+            this.extTextBox1.BorderColorScaling = 0.5F;
+            this.extTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.extTextBox1.ClearOnFirstChar = false;
+            this.extTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
+            this.extTextBox1.EndButtonEnable = true;
+            this.extTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("extTextBox1.EndButtonImage")));
+            this.extTextBox1.EndButtonVisible = false;
+            this.extTextBox1.InErrorCondition = false;
+            this.extTextBox1.Location = new System.Drawing.Point(512, 52);
+            this.extTextBox1.Multiline = false;
+            this.extTextBox1.Name = "extTextBox1";
+            this.extTextBox1.ReadOnly = false;
+            this.extTextBox1.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.extTextBox1.SelectionLength = 0;
+            this.extTextBox1.SelectionStart = 0;
+            this.extTextBox1.Size = new System.Drawing.Size(246, 81);
+            this.extTextBox1.TabIndex = 4;
+            this.extTextBox1.Text = "extTextBox1";
+            this.extTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.extTextBox1.WordWrap = true;
+            // 
             // TestAutoComplete
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 509);
+            this.Controls.Add(this.extTextBox1);
             this.Controls.Add(this.dataGridViewColumnHider1);
             this.Controls.Add(this.textBoxBorder1);
             this.Controls.Add(this.comboBoxCustom1);
@@ -207,5 +240,6 @@
         private BaseUtils.DataGridViewColumnControl dataGridViewColumnHider1;
         private ExtendedControls.ExtDataGridViewColumnAutoComplete Column1;
         private ExtendedControls.ExtDataGridViewColumnAutoComplete Column2;
+        private ExtendedControls.ExtTextBox extTextBox1;
     }
 }

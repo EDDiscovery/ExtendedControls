@@ -51,21 +51,32 @@ namespace TestExtendedControls
             Column1.AutoCompleteGenerator = ReturnSystemAutoCompleteListDGV;
             dataGridViewColumnHider1.PreviewKeyDown += DataGridViewColumnHider1_PreviewKeyDown;
             Theme.Current.ApplyStd(this);
+            tick.Interval = 1000;
+            tick.Tick += Tick_Tick;
+            tick.Start();
+
         }
 
+        private void Tick_Tick(object sender, EventArgs e)
+        {
+            var ac = ActiveControl;
+            System.Diagnostics.Debug.WriteLine($"Focus is {ac.Name} {ac.Text}");
+        }
+
+        Timer tick = new Timer();
         private void DataGridViewColumnHider1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Key down" + e.KeyValue);
+            System.Diagnostics.Debug.WriteLine("TAC Key down" + e.KeyValue);
         }
 
         private void AutoCompleteTextBox2_KeyUp(object sender, KeyEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Answer " + autoCompleteTextBox2.Text);
+            System.Diagnostics.Debug.WriteLine("TAC Answer " + autoCompleteTextBox2.Text);
         }
 
         private void AutoCompleteTextBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Answer " + autoCompleteTextBox1.Text);
+            System.Diagnostics.Debug.WriteLine("TAC Answer " + autoCompleteTextBox1.Text);
         }
 
         public static void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)

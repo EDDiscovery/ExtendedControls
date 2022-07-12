@@ -49,12 +49,11 @@ namespace ExtendedControls
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
         public void PositionBelow(Control c, int xoff, int yoff = 0) { SetLocation = c.PointToScreen(new Point(xoff, c.Height+yoff)); }
         public bool RightAlignedToLocation { get; set; } = false;
-
-        private bool closeondeactivateselected;
+        private bool CloseOnDeactivate { get; set; } = false;
 
         public ExtListBoxForm(string name = "", bool closeondeact = true)
         {
-            closeondeactivateselected = closeondeact;
+            CloseOnDeactivate = closeondeact;
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.ShowInTaskbar = false;
@@ -104,7 +103,7 @@ namespace ExtendedControls
 
         private void listcontrol_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (closeondeactivateselected)
+            if (CloseOnDeactivate)
                 this.Close();
 
             if (SelectedIndexChanged != null)
@@ -128,7 +127,7 @@ namespace ExtendedControls
         {
             base.OnDeactivate(e);
 
-            if ( closeondeactivateselected)
+            if ( CloseOnDeactivate)
                 this.Close();
         }
 

@@ -285,7 +285,7 @@ namespace ExtendedControls
             {
                 //System.Diagnostics.Debug.WriteLine("Return pressed when in edit mode");
                 var e = new KeyEventArgs(Keys.Return);
-                AutoCompleteTextBox_KeyDown(this,e );
+                OnKeyDown(e);
                 return e.Handled;   // true if handled
             }
         }
