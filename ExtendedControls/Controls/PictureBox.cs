@@ -92,12 +92,29 @@ namespace ExtendedControls
                 ToolTipText = tt;
             }
 
-            public void OwnerDraw(Action<Graphics, ImageElement> callback, Rectangle p, Object tag = null, string tiptext = null)
+            public void OwnerDraw(Action<Graphics, ImageElement> callback, Rectangle area, Object tag = null, string tiptext = null)
             {
-                Location = p;
+                Location = area;
                 OwnerDrawCallback = callback;
                 Tag = tag;
                 ToolTipText = tiptext;
+            }
+
+            public void HorizontalDivider(Color c, Rectangle area, float width = 1.0f, int offset = 0, Object t = null, string tt = null)
+            {
+                Image = new Bitmap(area.Width, area.Height);
+                ImageOwned = true;
+                Location = area;
+                Tag = t;
+                ToolTipText = tt;
+
+                using (Graphics dgr = Graphics.FromImage(Image))
+                {
+                    using ( Pen pen = new Pen(c,width))
+                    {
+                        dgr.DrawLine(pen, new Point(0, offset), new Point(area.Width, offset));
+                    }
+                }
             }
 
             public void SetAlternateImage(Image i, Rectangle p, bool mo = false, bool imgowned = true)
@@ -261,6 +278,14 @@ namespace ExtendedControls
             return lab;
         }
 
+        public ImageElement AddHorizontalDivider(Color c, Rectangle area, float width = 1.0f, int offset = 0, Object t = null, string tt = null)
+        {
+            ImageElement lab = new ImageElement();
+            lab.HorizontalDivider(c, area, width, offset, t, tt);
+            Elements.Add(lab);
+            return lab;
+
+        }
         public void ClearImageList()        // clears the element list, not the image.  call render to do this
         {
             if (Elements != null && Elements.Count >= 1)
