@@ -320,8 +320,6 @@ namespace ExtendedControls
         public void Render(bool resizecontrol = true, Size? minsize = null, Size? margin = null)
         {
             Size size = DisplaySize();
-            Image?.Dispose();
-            Image = null;
             if (size.Width > 0 && size.Height > 0) // will be zero if no elements
             {
                 elementin = null;
@@ -356,13 +354,21 @@ namespace ExtendedControls
                     }
                 }
 
-                Image = newrender;      // and replace the image
+                Image lastimage = Image;
+
+                Image = newrender;      // and replace the image in one go, to try and minimise distortion
 
                 if (resizecontrol)
                     this.Size = new Size(size.Width, size.Height);
+
+                lastimage?.Dispose();
+                lastimage = null;
             }
             else
+            {
+                Image?.Dispose();
                 Image = null;       // nothing, null image
+            }
         }
 
         public void SwapToAlternateImage(ImageElement i)
