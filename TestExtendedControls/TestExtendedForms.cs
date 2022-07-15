@@ -200,6 +200,15 @@ namespace TestExtendedControls
                         Condition.LogicalCondition.And
                     ));
 
+                List<TypeHelpers.PropertyNameInfo> vars = new List<TypeHelpers.PropertyNameInfo>();
+                vars.Add(new TypeHelpers.PropertyNameInfo("Pone", "Para one", ConditionEntry.MatchType.NumericEquals));
+                vars.Add(new TypeHelpers.PropertyNameInfo("Ptwo", "Para two", ConditionEntry.MatchType.NumericEquals));
+                vars.Add(new TypeHelpers.PropertyNameInfo("Pthree", "Para three", ConditionEntry.MatchType.NumericEquals));
+                vars.Add(new TypeHelpers.PropertyNameInfo("Sone", "Para one", ConditionEntry.MatchType.Equals));
+                vars.Add(new TypeHelpers.PropertyNameInfo("Stwo", "Para two", ConditionEntry.MatchType.Equals));
+
+               f.AutoCompleteOnMatch = true;
+                f.VariableNames = vars;
                 f.InitCondition("Condition", this.Icon, cl);
             }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright © 2017-2022 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -13,12 +13,11 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using BaseUtils.Win32Constants;
+
+using BaseUtils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using BaseUtils;
-
 using System.Windows.Forms;
 
 namespace ExtendedConditionsForms
@@ -33,6 +32,7 @@ namespace ExtendedConditionsForms
         public List<TypeHelpers.PropertyNameInfo> VariableNames { get; set; } = null;        // set to add variable names
 
         public int AutoCompleteStringCropLength { get; set; } = 132;                // max length of autocomplete strings, limiting visual display
+        public bool AutoCompleteOnMatch { get; set; } = false;                  // if to offer autocomplete on match 
 
         public int Groups { get { return groups.Count; } }
         public Action<int> onChangeInGroups;                        // called if any change in group numbers
@@ -291,32 +291,44 @@ namespace ExtendedConditionsForms
             Group.Conditions c = new Group.Conditions();
 
             c.fname = new ExtendedControls.ExtTextBoxAutoComplete();
-            c.fname.EndButtonVisible = true;
+
             c.fname.Name = "CVar";
             c.fname.Size = new Size(200, 24);
-            c.fname.SetAutoCompletor(AutoCompletor);
-            c.fname.Tag = new Tuple<Group,Group.Conditions>(g,c);
-            c.fname.AutoCompleteCommentMarker = commentmarker;
             if (initialfname != null)
                 c.fname.Text = initialfname;
-            g.panel.Controls.Add(c.fname);                                                // 1st control
+
+            c.fname.EndButtonVisible = true;
+            c.fname.SetAutoCompletor(AutoCompletor);
+            c.fname.AutoCompleteCommentMarker = commentmarker;
+            c.fname.Tag = new Tuple<Group, Group.Conditions>(g, c);               // use this tag to save the group and group condition classes, this is used by the autocompleter
+
+            g.panel.Controls.Add(c.fname);                                      // 1st control
 
             c.cond = new ExtendedControls.ExtComboBox();
             c.cond.Items.AddRange(ConditionEntry.MatchNames);
             c.cond.SelectedIndex = 0;
             c.cond.Size = new Size(140, 24);
             c.cond.Tag = g;
-
             if (initialcond != null)
                 c.cond.Text = initialcond.SplitCapsWord();
-
             c.cond.SelectedIndexChanged += Cond_SelectedIndexChanged; // and turn on handler
 
             g.panel.Controls.Add(c.cond);         // must be next
 
-            c.value = new ExtendedControls.ExtTextBox();
-            c.value.Size = new Size(100, 24);  // width will be set in positioning
+            if ( AutoCompleteOnMatch )      // if so, we make an AC box
+            {
+                var tba = new ExtendedControls.ExtTextBoxAutoComplete();
+                tba.EndButtonVisible = true;
+                tba.SetAutoCompletor(AutoCompletor);
+                tba.AutoCompleteCommentMarker = commentmarker;
+                tba.Tag = new Tuple<Group, Group.Conditions>(g, c);               // the autocomplete code below needs the tag
+                c.value = tba;
+            }
+            else
+                c.value = new ExtendedControls.ExtTextBox();            // else a standard box
 
+            c.value.Name = "MVar";
+            c.value.Size = new Size(100, 24);  // width will be set in positioning
             if (initialvalue != null)
                 c.value.Text = initialvalue;
 
@@ -647,11 +659,11 @@ namespace ExtendedConditionsForms
         {
             Tuple<Group, Group.Conditions> gc = t.Tag as Tuple<Group, Group.Conditions>;
 
-            if (gc.Item1.variables != null)
+            if (gc.Item1.variables != null)     // the group holds the variables to autocomplete against, and the tag on the text box carries the group
             {
                 foreach (var x in gc.Item1.variables)
                 {
-                    if (x.Name.StartsWith(s, StringComparison.InvariantCultureIgnoreCase))
+                    if (x.Name.StartsWith(s, StringComparison.InvariantCultureIgnoreCase))      // search for autocompletes
                     {
                         string chelp = (x.Help ?? "").AppendPrePad(x.Comment, " | ");
                         chelp = chelp.Replace("\n", " ");
@@ -701,7 +713,7 @@ namespace ExtendedConditionsForms
             {
                 public ExtendedControls.ExtTextBoxAutoComplete fname;
                 public ExtendedControls.ExtComboBox cond;
-                public ExtendedControls.ExtTextBox value;
+                public ExtendedControls.ExtTextBox value;           // may be an autocomplete or a normal text box
                 public ExtendedControls.ExtButton del;
                 public ExtendedControls.ExtButton more;
                 public Group group;

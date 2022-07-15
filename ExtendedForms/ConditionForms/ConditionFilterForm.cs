@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright © 2017-2022 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -29,6 +29,8 @@ namespace ExtendedConditionsForms
 
         public event Func<string, List<TypeHelpers.PropertyNameInfo>> VariableNamesEvents { add { conditionFilterUC.VariableNamesEvents += value; } remove { conditionFilterUC.VariableNamesEvents -= value; } }
         public List<TypeHelpers.PropertyNameInfo> VariableNames { get { return conditionFilterUC.VariableNames; } set { conditionFilterUC.VariableNames = value; } }
+
+        public bool AutoCompleteOnMatch { get { return conditionFilterUC.AutoCompleteOnMatch; } set { conditionFilterUC.AutoCompleteOnMatch = value; } }
 
         public ConditionFilterForm()
         {
