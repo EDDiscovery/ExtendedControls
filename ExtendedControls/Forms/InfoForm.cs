@@ -32,7 +32,7 @@ namespace ExtendedControls
         }
 
         public void Info(string title, Icon ic, string info , int[] array = null, float pointsize= -1, 
-                            Action<Object> acknowledgeaction = null, Object acknowledgedata = null, bool usedialogfont= true)    
+                            Action<Object> acknowledgeaction = null, Object acknowledgedata = null, bool usedialogfont= false)    
         {
             Icon = ic;
 
