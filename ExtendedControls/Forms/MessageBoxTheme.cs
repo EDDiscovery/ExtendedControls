@@ -193,7 +193,7 @@ namespace ExtendedControls
 
             var measuretextcaption = BaseUtils.BitMapHelpers.MeasureStringInBitmap(longest, Font);
 
-            themeTextBox.TextBoxBackColor = Color.Yellow;
+            //themeTextBox.TextBoxBackColor = Color.Yellow; //debug
             int wantedw = themeTextBox.ScrollBarWidth + Font.ScalePixels(18);    // we need a nerf, as the measuretextcaption width always seems to be an underestimate
             wantedw += (int)measuretextcaption.Width;
 
