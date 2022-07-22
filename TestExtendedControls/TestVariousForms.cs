@@ -404,7 +404,13 @@ namespace TestExtendedControls
         private void extButton30_Click(object sender, EventArgs e)
         {
             Theme.Current.WindowsFrame = false;
-            MessageBoxTheme.Show("A", "A", MessageBoxButtons.OKCancel, MessageBoxIcon.Hand);
+            Theme.Current.FontName = "Verdana";
+
+            for (int fontsize = 8; fontsize < 20; fontsize++)
+            {
+                Theme.Current.FontSize = fontsize;
+                MessageBoxTheme.Show("No new Release Found", "Warning", MessageBoxButtons.OK);
+            }
         }
 
         private void extButton31_Click(object sender, EventArgs e)

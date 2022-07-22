@@ -108,6 +108,7 @@
             this.panelLeft.Controls.Add(this.panelIcon);
             this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelLeft.Location = new System.Drawing.Point(0, 0);
+            this.panelLeft.Margin = new System.Windows.Forms.Padding(0);
             this.panelLeft.Name = "panelLeft";
             this.panelLeft.Size = new System.Drawing.Size(67, 381);
             this.panelLeft.TabIndex = 7;

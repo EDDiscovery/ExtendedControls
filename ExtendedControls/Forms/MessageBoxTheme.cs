@@ -193,7 +193,9 @@ namespace ExtendedControls
 
             var measuretextcaption = BaseUtils.BitMapHelpers.MeasureStringInBitmap(longest, Font);
 
-            int wantedw = 16 + (int)measuretextcaption.Width;
+            themeTextBox.TextBoxBackColor = Color.Yellow;
+            int wantedw = themeTextBox.ScrollBarWidth + Font.ScalePixels(18);    // we need a nerf, as the measuretextcaption width always seems to be an underestimate
+            wantedw += (int)measuretextcaption.Width;
 
             int butspacing = buttonExt1.Left - buttonExt2.Left;     // make sure we have enough space for the buttons!
             if (buttonExt3.Visible)

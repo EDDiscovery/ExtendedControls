@@ -298,7 +298,7 @@
             this.extButton32.Name = "extButton32";
             this.extButton32.Size = new System.Drawing.Size(183, 23);
             this.extButton32.TabIndex = 1;
-            this.extButton32.Text = "Messagebox";
+            this.extButton32.Text = "Messagebox 32";
             this.extButton32.UseVisualStyleBackColor = true;
             this.extButton32.Click += new System.EventHandler(this.extButton32_Click);
             // 
@@ -308,7 +308,7 @@
             this.extButton31.Name = "extButton31";
             this.extButton31.Size = new System.Drawing.Size(183, 23);
             this.extButton31.TabIndex = 1;
-            this.extButton31.Text = "Messagebox";
+            this.extButton31.Text = "Messagebox 31";
             this.extButton31.UseVisualStyleBackColor = true;
             this.extButton31.Click += new System.EventHandler(this.extButton31_Click);
             // 
@@ -318,7 +318,7 @@
             this.extButton30.Name = "extButton30";
             this.extButton30.Size = new System.Drawing.Size(183, 23);
             this.extButton30.TabIndex = 1;
-            this.extButton30.Text = "Messagebox";
+            this.extButton30.Text = "Messagebox 30";
             this.extButton30.UseVisualStyleBackColor = true;
             this.extButton30.Click += new System.EventHandler(this.extButton30_Click);
             // 
@@ -328,7 +328,7 @@
             this.extButton29.Name = "extButton29";
             this.extButton29.Size = new System.Drawing.Size(183, 23);
             this.extButton29.TabIndex = 1;
-            this.extButton29.Text = "Messagebox";
+            this.extButton29.Text = "Messagebox 29";
             this.extButton29.UseVisualStyleBackColor = true;
             this.extButton29.Click += new System.EventHandler(this.extButton29_Click);
             // 
@@ -338,7 +338,7 @@
             this.extButton28.Name = "extButton28";
             this.extButton28.Size = new System.Drawing.Size(183, 23);
             this.extButton28.TabIndex = 1;
-            this.extButton28.Text = "Messagebox";
+            this.extButton28.Text = "Messagebox 28";
             this.extButton28.UseVisualStyleBackColor = true;
             this.extButton28.Click += new System.EventHandler(this.extButton28_Click);
             // 
@@ -348,7 +348,7 @@
             this.extButton27.Name = "extButton27";
             this.extButton27.Size = new System.Drawing.Size(183, 23);
             this.extButton27.TabIndex = 1;
-            this.extButton27.Text = "Messagebox";
+            this.extButton27.Text = "Messagebox 27";
             this.extButton27.UseVisualStyleBackColor = true;
             this.extButton27.Click += new System.EventHandler(this.extButton27_Click);
             // 
@@ -358,7 +358,7 @@
             this.extButton26.Name = "extButton26";
             this.extButton26.Size = new System.Drawing.Size(183, 23);
             this.extButton26.TabIndex = 1;
-            this.extButton26.Text = "Messagebox";
+            this.extButton26.Text = "Messagebox 26";
             this.extButton26.UseVisualStyleBackColor = true;
             this.extButton26.Click += new System.EventHandler(this.extButton26_Click);
             // 
@@ -368,7 +368,7 @@
             this.extButton25.Name = "extButton25";
             this.extButton25.Size = new System.Drawing.Size(183, 23);
             this.extButton25.TabIndex = 1;
-            this.extButton25.Text = "Messagebox";
+            this.extButton25.Text = "Messagebox 25";
             this.extButton25.UseVisualStyleBackColor = true;
             this.extButton25.Click += new System.EventHandler(this.extButton25_Click);
             // 
