@@ -125,8 +125,10 @@ namespace ExtendedConditionsForms
 
             foreach( var c in cd )
             {
-                Delete(c);
+                Delete(c,false);
             }
+
+            FixUpGroups();
         }
 
         #endregion
@@ -413,9 +415,11 @@ namespace ExtendedConditionsForms
             Delete(c);
         }
 
-        private void Delete(Group.Conditions c)
-        { 
+        private void Delete(Group.Conditions c, bool fixupgroups = true)
+        {
             Group g = c.group;
+
+            g.panel.SuspendLayout();
 
             g.panel.Controls.Remove(c.fname);
             g.panel.Controls.Remove(c.cond);
@@ -425,7 +429,7 @@ namespace ExtendedConditionsForms
 
             g.condlist.Remove(c);
 
-            if ( g.condlist.Count == 0 )
+            if (g.condlist.Count == 0)
             {
                 panelVScroll.Controls.Remove(g.panel);
                 g.panel.Controls.Clear();
@@ -433,7 +437,10 @@ namespace ExtendedConditionsForms
                 onChangeInGroups?.Invoke(groups.Count);
             }
 
-            FixUpGroups();
+            if ( fixupgroups)
+                FixUpGroups();
+
+            g.panel.ResumeLayout();
         }
 
         private void NewConditionClick(object sender, EventArgs e)
