@@ -283,11 +283,17 @@ namespace ExtendedControls
 
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level, bool noborderoverride = false)    // parent can be null
         {
+            if (myControl is INoTheme)      // no action on this or below if of this interface class
+            {
+                return;
+            }
+
 #if DEBUG
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
-            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false));
+            System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + (myControl.GetType().Name + ":" + myControl.Name??"") + " : " + myControl.GetHeirarchy(false));
             //   System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
+            myControl.SuspendLayout();
 
             float mouseoverscaling = 1.3F;
             float mouseselectedscaling = 1.5F;
@@ -559,9 +565,6 @@ namespace ExtendedControls
             {
                 FlowLayoutPanel ctrl = myControl as FlowLayoutPanel;
                 ctrl.BackColor = paneldebugmode ? Color.Red : GroupBoxOverride(parent, colors[CI.form]);
-            }
-            else if (myControl is PanelNoTheme)
-            {
             }
             else if (myControl is Panel)
             {
@@ -853,6 +856,8 @@ namespace ExtendedControls
 
             foreach (Control subC in myControl.Controls)
                 UpdateControls(myControl, subC, fnt, level + 1);
+
+            myControl.ResumeLayout();
         }
 
         private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)
@@ -1031,8 +1036,10 @@ namespace ExtendedControls
                 return false;
             }
         }
+    }
 
-
+    public interface INoTheme       // attach to a class and it won't theme the class or its sub control
+    {
 
     }
 }

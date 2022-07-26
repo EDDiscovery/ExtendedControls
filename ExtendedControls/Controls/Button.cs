@@ -275,7 +275,7 @@ namespace ExtendedControls
                 Rectangle buttonarea = ClientRectangle;
                 buttonarea.Inflate(-1, -1);                     // inside it.
 
-                //System.Diagnostics.Debug.WriteLine("ButPaint " + this.Name + " " + ClientRectangle +" " + border + " " + buttonarea + " c " + BackColor + " " + FlatAppearance.BorderColor + " E:" + Enabled + " D:" + ButtonDisabledScaling);
+                //System.Diagnostics.Debug.WriteLine("ButPaint " + this.Name + " " + ClientRectangle +" " + border + " " + buttonarea + " c " + BackColor + " " + FlatAppearance.BorderColor + " E:" + Enabled + " D:" + ButtonDisabledScaling + " ms:" + MinimumSize);
 
                 Color colBack = Color.Empty;
                 Color colBorder = Color.Empty;

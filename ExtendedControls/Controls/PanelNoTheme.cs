@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class PanelNoTheme : Panel
+    public class PanelNoTheme : Panel, INoTheme
     {
         public PanelNoTheme() : base() { }
     }

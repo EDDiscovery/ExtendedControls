@@ -20,35 +20,12 @@ namespace TestExtendedControls
             theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            Theme.Current.FontName = "Microsoft Sans Serif";
-
-            Theme.Current.FontSize = 8.25f;
-            Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
 
-            CompositeButton b = CompositeButton.QuickInit(Properties.Resources.Selector,
-                                                           "B1 Dyn", new Font("Verdana", 8.25f), Color.Yellow, Color.Transparent,
-                                                           Properties.Resources.edsm32x32, new Size(32, 32),
-                                                           new Image[] { Properties.Resources.edlogo24, Properties.Resources.galaxy_black }, new Size(24, 24),
-                                                           3,
-                                                           (o, p) => { System.Diagnostics.Debug.WriteLine("CB " + o + " " + p); });
-            this.Controls.Add(b);
-            b.Location = new Point(250, 10);
-
-            System.Diagnostics.Debug.WriteLine("Size needed " + b.FindMaxSubControlArea(0, 6));
-            b.Size = new Size(128, b.FindMaxSubControlArea(0, 6).Height);
-
-            b = CompositeButton.QuickInit(Properties.Resources.Selector,
-                                                           "B2 Dyn", new Font("Verdana", 8.25f), Color.Yellow, Color.Transparent,
-                                                           Properties.Resources.ScreenShot, new Size(24, 24),
-                                                           new Image[] { Properties.Resources.edlogo24, Properties.Resources.galaxy_black }, new Size(24, 24),
-                                                           3,
-                                                           (o, p) => { System.Diagnostics.Debug.WriteLine("CB " + o + " " + p); });
-            b.Name = "Realistic";
-            this.Controls.Add(b);
-            b.Location = new Point(250, 120);
-            b.Size = new Size(128, b.FindMaxSubControlArea(0, 6).Height);
+            Theme.Current.FontName = "Microsoft Sans Serif";
+            Theme.Current.FontSize = 12f;
+            Theme.Current.WindowsFrame = true;
 
             Theme.Current.ApplyStd(this);
         }

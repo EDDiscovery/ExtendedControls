@@ -28,17 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestButtons));
             this.panel1 = new System.Windows.Forms.Panel();
             this.extCheckBox5 = new ExtendedControls.ExtCheckBox();
             this.extCheckBox4 = new ExtendedControls.ExtCheckBox();
             this.extButton11 = new ExtendedControls.ExtButton();
-            this.compositeButton1 = new ExtendedControls.CompositeButton();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.extButton9 = new ExtendedControls.ExtButton();
-            this.extButton8 = new ExtendedControls.ExtButton();
-            this.extLabel1 = new ExtendedControls.ExtLabel();
             this.extButton10 = new ExtendedControls.ExtButton();
             this.extButton7 = new ExtendedControls.ExtButton();
             this.groupBox1 = new ExtendedControls.ExtGroupBox();
@@ -63,8 +56,6 @@
             this.extCheckBoxEDSMSmall = new ExtendedControls.ExtCheckBox();
             this.buttonExt1 = new ExtendedControls.ExtButton();
             this.buttonExt2 = new ExtendedControls.ExtButton();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.compositeButton1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +78,7 @@
             this.extCheckBox5.ImageIndeterminate = null;
             this.extCheckBox5.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.extCheckBox5.ImageUnchecked = null;
-            this.extCheckBox5.Location = new System.Drawing.Point(494, 447);
+            this.extCheckBox5.Location = new System.Drawing.Point(388, 445);
             this.extCheckBox5.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.extCheckBox5.Name = "extCheckBox5";
             this.extCheckBox5.Size = new System.Drawing.Size(138, 36);
@@ -108,7 +99,7 @@
             this.extCheckBox4.ImageIndeterminate = null;
             this.extCheckBox4.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.extCheckBox4.ImageUnchecked = null;
-            this.extCheckBox4.Location = new System.Drawing.Point(494, 399);
+            this.extCheckBox4.Location = new System.Drawing.Point(388, 397);
             this.extCheckBox4.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.extCheckBox4.Name = "extCheckBox4";
             this.extCheckBox4.Size = new System.Drawing.Size(138, 36);
@@ -119,80 +110,13 @@
             // 
             // extButton11
             // 
-            this.extButton11.Location = new System.Drawing.Point(494, 194);
+            this.extButton11.Location = new System.Drawing.Point(388, 192);
             this.extButton11.Name = "extButton11";
             this.extButton11.Size = new System.Drawing.Size(75, 23);
             this.extButton11.TabIndex = 70;
             this.extButton11.Text = "Enable";
             this.extButton11.UseVisualStyleBackColor = true;
             this.extButton11.Click += new System.EventHandler(this.extButton11_Click);
-            // 
-            // compositeButton1
-            // 
-            this.compositeButton1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("compositeButton1.BackgroundImage")));
-            this.compositeButton1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.compositeButton1.Controls.Add(this.panel3);
-            this.compositeButton1.Controls.Add(this.panel2);
-            this.compositeButton1.Controls.Add(this.extButton9);
-            this.compositeButton1.Controls.Add(this.extButton8);
-            this.compositeButton1.Controls.Add(this.extLabel1);
-            this.compositeButton1.Location = new System.Drawing.Point(412, 12);
-            this.compositeButton1.Name = "compositeButton1";
-            this.compositeButton1.Padding = new System.Windows.Forms.Padding(0, 0, 0, 8);
-            this.compositeButton1.Size = new System.Drawing.Size(128, 128);
-            this.compositeButton1.TabIndex = 69;
-            // 
-            // panel3
-            // 
-            this.panel3.BackgroundImage = global::TestExtendedControls.Properties.Resources.Logo8bpp48rot;
-            this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel3.Location = new System.Drawing.Point(21, 14);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(48, 48);
-            this.panel3.TabIndex = 4;
-            // 
-            // panel2
-            // 
-            this.panel2.BackgroundImage = global::TestExtendedControls.Properties.Resources.edsm32x32;
-            this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.panel2.Location = new System.Drawing.Point(75, 14);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(32, 32);
-            this.panel2.TabIndex = 3;
-            // 
-            // extButton9
-            // 
-            this.extButton9.Image = global::TestExtendedControls.Properties.Resources.galaxy_red;
-            this.extButton9.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.extButton9.Location = new System.Drawing.Point(37, 62);
-            this.extButton9.Name = "extButton9";
-            this.extButton9.Size = new System.Drawing.Size(24, 24);
-            this.extButton9.TabIndex = 2;
-            this.extButton9.UseVisualStyleBackColor = true;
-            // 
-            // extButton8
-            // 
-            this.extButton8.Image = global::TestExtendedControls.Properties.Resources.edlogo24;
-            this.extButton8.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.extButton8.Location = new System.Drawing.Point(67, 62);
-            this.extButton8.Name = "extButton8";
-            this.extButton8.Size = new System.Drawing.Size(24, 24);
-            this.extButton8.TabIndex = 1;
-            this.extButton8.UseVisualStyleBackColor = true;
-            // 
-            // extLabel1
-            // 
-            this.extLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.extLabel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.extLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.extLabel1.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extLabel1.Location = new System.Drawing.Point(0, 0);
-            this.extLabel1.Name = "extLabel1";
-            this.extLabel1.Size = new System.Drawing.Size(128, 14);
-            this.extLabel1.TabIndex = 0;
-            this.extLabel1.Text = "extLabel1";
-            this.extLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.extLabel1.TextBackColor = System.Drawing.Color.Transparent;
             // 
             // extButton10
             // 
@@ -388,7 +312,7 @@
             this.extCheckBoxSys.ImageIndeterminate = null;
             this.extCheckBoxSys.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extCheckBoxSys.ImageUnchecked = null;
-            this.extCheckBoxSys.Location = new System.Drawing.Point(494, 241);
+            this.extCheckBoxSys.Location = new System.Drawing.Point(388, 239);
             this.extCheckBoxSys.MouseOverColor = System.Drawing.Color.Red;
             this.extCheckBoxSys.Name = "extCheckBoxSys";
             this.extCheckBoxSys.Size = new System.Drawing.Size(72, 42);
@@ -415,7 +339,7 @@
             this.extCheckBoxPopUpNormal.ImageIndeterminate = null;
             this.extCheckBoxPopUpNormal.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extCheckBoxPopUpNormal.ImageUnchecked = null;
-            this.extCheckBoxPopUpNormal.Location = new System.Drawing.Point(494, 296);
+            this.extCheckBoxPopUpNormal.Location = new System.Drawing.Point(388, 294);
             this.extCheckBoxPopUpNormal.MouseOverColor = System.Drawing.Color.Red;
             this.extCheckBoxPopUpNormal.Name = "extCheckBoxPopUpNormal";
             this.extCheckBoxPopUpNormal.Size = new System.Drawing.Size(138, 78);
@@ -642,28 +566,15 @@
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
             // 
-            // panel4
-            // 
-            this.panel4.BackColor = System.Drawing.Color.DarkTurquoise;
-            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Location = new System.Drawing.Point(585, 12);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(76, 98);
-            this.panel4.TabIndex = 72;
-            this.panel4.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TestButtons_MouseClick);
-            this.panel4.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.TestButtons_MouseDoubleClick);
-            // 
             // TestButtons
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
-            this.ClientSize = new System.Drawing.Size(1060, 623);
-            this.Controls.Add(this.panel4);
+            this.ClientSize = new System.Drawing.Size(736, 664);
             this.Controls.Add(this.extCheckBox5);
             this.Controls.Add(this.extCheckBox4);
             this.Controls.Add(this.extButton11);
-            this.Controls.Add(this.compositeButton1);
             this.Controls.Add(this.extButton10);
             this.Controls.Add(this.extButton7);
             this.Controls.Add(this.groupBox1);
@@ -686,7 +597,6 @@
             this.Controls.Add(this.extCheckBoxEDSMSmall);
             this.Name = "TestButtons";
             this.Text = "TestCompositeButton";
-            this.compositeButton1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -708,12 +618,6 @@
         private ExtendedControls.UpDown upDown1;
         private ExtendedControls.ExtCheckBox extCheckBoxEDSMSmall;
         private ExtendedControls.ExtButton extButton7;
-        private ExtendedControls.CompositeButton compositeButton1;
-        private ExtendedControls.ExtLabel extLabel1;
-        private ExtendedControls.ExtButton extButton9;
-        private ExtendedControls.ExtButton extButton8;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
         private ExtendedControls.ExtCheckBox extCheckBox2;
         private ExtendedControls.ExtCheckBox extCheckBox3;
         private ExtendedControls.ExtButton extButton10;
@@ -729,6 +633,5 @@
         private ExtendedControls.ExtButton extButton12;
         private ExtendedControls.ExtCheckBox extCheckBox4;
         private ExtendedControls.ExtCheckBox extCheckBox5;
-        private System.Windows.Forms.Panel panel4;
     }
 }

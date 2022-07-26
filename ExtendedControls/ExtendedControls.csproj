@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CompositeAutoScaleButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
     <Compile Include="Controls\PanelAutoHeightWidth.cs">
       <SubType>Component</SubType>
