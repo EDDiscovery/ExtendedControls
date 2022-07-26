@@ -290,7 +290,7 @@ namespace ExtendedControls
 
 #if DEBUG
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
-            System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + (myControl.GetType().Name + ":" + myControl.Name??"") + " : " + myControl.GetHeirarchy(false));
+            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + (myControl.GetType().Name + ":" + myControl.Name??"") + " : " + myControl.GetHeirarchy(false));
             //   System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
             myControl.SuspendLayout();
@@ -317,6 +317,10 @@ namespace ExtendedControls
                 )
             {
                 System.Diagnostics.Debug.Assert(false, myControl.Name + " of " + controltype.Name + " from " + parent.Name + " !!! Use the new controls in Controls folder - not the non visual themed ones!");
+            }
+            else if ( myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
+            {
+
             }
             else if (myControl is ExtRichTextBox)
             {
@@ -425,11 +429,16 @@ namespace ExtendedControls
                         ctrl.ImageLayout = ImageLayout.Stretch;
                     }
 
-
                     // if image, and no text or text over image centred (so over the image), background is form to make the back disappear
                     if (ctrl.Image != null && (ctrl.Text.Length == 0 || (ctrl.TextAlign == ContentAlignment.MiddleCenter && ctrl.ImageAlign == ContentAlignment.MiddleCenter)))
                     {
-                        ctrl.BackColor = colors[CI.form];
+                        if ( ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton )       // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
+                        {
+                            ctrl.BackColor = ctrl.Parent.BackColor;
+                            ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
+                        }
+                        else
+                            ctrl.BackColor = colors[CI.form];
                     }
                     else
                     {
@@ -815,10 +824,6 @@ namespace ExtendedControls
                 ts.DropDownItemSeperatorColor = colors[CI.button_border];
                 ts.EmptyColor = colors[CI.button_back];
                 ts.SelectedBackColor = colors[CI.button_back];
-            }
-            else if (myControl is CompositeButton)
-            {
-                return;     // no themeing of it or sub controls
             }
             else if (myControl is TreeView)
             {

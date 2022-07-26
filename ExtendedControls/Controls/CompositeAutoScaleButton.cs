@@ -40,7 +40,7 @@ namespace ExtendedControls
         {
             base.OnLayout(levent);
 
-            System.Diagnostics.Debug.WriteLine($"{Name} {Size} Font {Label.Font.Height} size {Label.Font.Size}");
+            //System.Diagnostics.Debug.WriteLine($"{Name} {Size} Font {Label.Font.Height} size {Label.Font.Size}");
 
             // nice border around dependent on size
 
@@ -59,40 +59,40 @@ namespace ExtendedControls
             // M Icon M Icon M  across
             // M Label M Decals M Buttons M down
 
-            int decw = (ClientRectangle.Width - margin * (2 + Decals.Length - 1)) / Decals.Length;          // if decals =1 , two margin, =2 three, etc. Then divide by decals to get decal size
-            int butw = (ClientRectangle.Width - margin * (2 + Buttons.Length - 1)) / Buttons.Length;        // repeat with buttons
-            int decbutw = Math.Min(decw, butw);                                                             // make them all the same size
+            int nodecals = Math.Max(Decals.Length, 1);      // allow for no buttons/decals, if none, set count to 1 to allow code below to work
+            int nobuts = Math.Max(Buttons.Length, 1);
 
-            int decbuth = (ClientRectangle.Height - Label.Bottom - margin * 3) / 2;                         // height is whats left after label, three margins, and /2 to get size for decal and buttons
+            int decw = (ClientRectangle.Width - margin * (2 + nodecals - 1)) / nodecals;    // if decals =1 , two margin, =2 three, etc. Then divide by decals to get decal size
+            int butw = (ClientRectangle.Width - margin * (2 + nobuts - 1)) / nobuts;        // repeat with buttons
+            int decbutw = Math.Min(decw, butw);                                             // make them all the same size
 
-            int hpos = ClientRectangle.Width / 2 - (decbutw * Decals.Length + margin * (Decals.Length - 1)) / 2;    // position centrally
+            int decbuth = (ClientRectangle.Height - Label.Bottom - margin * 3) / 2;         // height is whats left after label, three margins, and /2 to get size for decal and buttons
+
+            int hpos = ClientRectangle.Width / 2 - (decbutw * nodecals + margin * (nodecals - 1)) / 2;    // position centrally
             int vpos = Label.Bottom + margin;
 
            // System.Diagnostics.Debug.WriteLine($"{Name} {Size} m {margin} decw {decw} butw {butw} => {decbutw} : h {decbuth} pos {hpos} {vpos} Font {Label.Font.Height} size {Label.Font.Size}");
 
-            foreach (var p in Decals)       // first measure properties - all panels across
+            foreach (var p in Decals.EmptyIfNull())       // first measure properties - all panels across
             {
-                p.Size = new Size(decbutw, decbuth);
-                p.Location = new Point(hpos, vpos);
+                p.Bounds = new Rectangle(hpos, vpos, decbutw, decbuth);
                 hpos += decbutw + margin;
             }
 
             vpos += decbuth + margin;
-            hpos = ClientRectangle.Width / 2 - (decbutw * Buttons.Length + margin + (Buttons.Length - 1)) / 2;      // position centrally
+            hpos = ClientRectangle.Width / 2 - (decbutw * nobuts + margin + (nobuts - 1)) / 2;      // position centrally
 
-            foreach (var p in Buttons)       // first measure properties - all panels across
+            foreach (var p in Buttons.EmptyIfNull())       // first measure properties - all panels across
             {
                 p.Bounds = new Rectangle(hpos, vpos, decbutw, decbuth);
                 hpos += decbutw + margin;
-                System.Diagnostics.Debug.WriteLine($"    {p.Name} {p.Bounds}");
             }
-
         }
 
         // used to create a button dynamically
 
-        public static CompositeAutoScaleButton QuickInit(   Image backimage,
-                                                    string text, Color textfore, Color textbackgroundcol,
+        public static CompositeAutoScaleButton QuickInit( Bitmap backimage,
+                                                    string text, 
                                                 Image[] decals,
                                                 Image[] buttons,
                                                 Action<object, int> ButtonPressed)
@@ -100,28 +100,33 @@ namespace ExtendedControls
             CompositeAutoScaleButton cb = new CompositeAutoScaleButton();
             cb.Name = text;
             cb.SuspendLayout();
+            
             cb.BackgroundImage = backimage;
             cb.BackgroundImageLayout = ImageLayout.Stretch;
+
+            // store the colour used from the centre of the bit map as the backcolour of the composite
+            // themer assigns this colour to buttons
+            cb.BackColor = backimage.GetPixel(backimage.Width / 2, backimage.Height / 2);        
+
             cb.AutoSize = false;        // do not size to contents, this creates a circular relationship because we resize the components to the panel
 
-            Label l = new Label();      // Font inherited from this class
+            Label l = new Label();      // Font, colour set by themer
             l.Text = text;
             l.TextAlign = ContentAlignment.MiddleCenter;
             l.UseMnemonic = false;
             l.Margin = new Padding(0);
-            l.ForeColor = textfore;
-            l.BackColor = textbackgroundcol;
             l.AutoSize = false;     // we will position
+            l.BackColor = Color.Transparent;
             l.AutoEllipsis = true;
 
             cb.Controls.Add(l);
 
             foreach (Image i in decals)
             {
-                Panel d = new Panel();
+                PanelNoTheme d = new PanelNoTheme();        // use the no theme, we don't want the backcolor changed. Panels are themed with a back/fore colour.
                 d.BackgroundImage = i;
                 d.BackgroundImageLayout = ImageLayout.Stretch;
-                d.BackColor = Color.Transparent;
+                d.BackColor = cb.BackColor;
                 cb.Controls.Add(d);
             }
 
@@ -133,11 +138,11 @@ namespace ExtendedControls
                 b.Image = i;
                 b.ImageLayout = ImageLayout.Stretch;
                 b.Tag = butno++;
+                b.BackColor = cb.BackColor;
                 b.Click += (o, e) => { ExtButton bhit = o as ExtButton; ButtonPressed?.Invoke(cb, (int)bhit.Tag); };
                 cb.Controls.Add(b);
             }
 
-            cb.Padding = new Padding(0, 0, 0, 0);
             cb.ResumeLayout();
             return cb;
         }

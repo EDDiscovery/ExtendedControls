@@ -73,14 +73,14 @@
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
             // 
-            // TestCompositeButtons
+            // TestAutoScaleCompositeButtons
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(766, 605);
-            this.Name = "TestCompositeButtons";
-            this.Text = "TestCompositeButton";
+            this.Name = "TestAutoScaleCompositeButtons";
+            this.Text = "TestAutoScaleCompositeButton";
             this.ResumeLayout(false);
 
         }

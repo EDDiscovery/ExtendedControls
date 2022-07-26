@@ -73,6 +73,16 @@ namespace TestExtendedControls.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Addtab {
+            get {
+                object obj = ResourceManager.GetObject("Addtab", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Calendar {
             get {
                 object obj = ResourceManager.GetObject("Calendar", resourceCulture);
@@ -196,6 +206,16 @@ namespace TestExtendedControls.Properties {
         internal static System.Drawing.Bitmap Logo8bpp48rot {
             get {
                 object obj = ResourceManager.GetObject("Logo8bpp48rot", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Popout {
+            get {
+                object obj = ResourceManager.GetObject("Popout", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -172,4 +172,10 @@
   <data name="TraderBar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TraderBar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Addtab" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Addtab.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Popout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Popout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
