@@ -320,17 +320,18 @@ namespace ExtendedControls
 
                 if (Image != null)
                 {
-                    Size isize = (imagelayout == ImageLayout.Stretch) ? new Size(buttonarea.Height,buttonarea.Height) : Image.Size;
+                    Size isize = (imagelayout == ImageLayout.Stretch) ? new Size(buttonarea.Width,buttonarea.Height) : Image.Size;
+                    var destrect = ImageAlign.ImagePositionFromContentAlignment(buttonarea, isize);
+                   // System.Diagnostics.Debug.WriteLine($"ButtonExt {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height}");
 
                     if ((Enabled && drawnImageAttributesEnabled != null) || (!Enabled && drawnImageAttributesDisabled != null))
                     {
-                        //System.Diagnostics.Debug.WriteLine("ButtonExt " + this.Name + " Draw image with IA");
-                        pe.Graphics.DrawImage(Image, ImageAlign.ImagePositionFromContentAlignment(buttonarea, isize),
+                        pe.Graphics.DrawImage(Image, destrect,
                                     0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel, (Enabled) ? drawnImageAttributesEnabled : drawnImageAttributesDisabled);
                     }
                     else
                     {
-                        pe.Graphics.DrawImage(Image, ImageAlign.ImagePositionFromContentAlignment(buttonarea, isize),
+                        pe.Graphics.DrawImage(Image, destrect,
                                     0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel);
                     }
                 }

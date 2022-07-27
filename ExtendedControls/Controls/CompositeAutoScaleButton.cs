@@ -34,6 +34,7 @@ namespace ExtendedControls
         public ExtButton[] Buttons { get { return Controls.OfType<ExtButton>().ToArray(); } }
 
         public int AutoScaleFontSizeToWidth { get; set; } = 0;          // set to scaling.. 15 seems good
+        public int FixButtonsAcross { get; set; } = 1;                  // use maximum of decals/buttons or this. Must be 1 or more
 
 
         protected override void OnLayout(LayoutEventArgs levent)
@@ -59,16 +60,13 @@ namespace ExtendedControls
             // M Icon M Icon M  across
             // M Label M Decals M Buttons M down
 
-            int nodecals = Math.Max(Decals.Length, 1);      // allow for no buttons/decals, if none, set count to 1 to allow code below to work
-            int nobuts = Math.Max(Buttons.Length, 1);
+            int entriesacross = Math.Max(Math.Max(Decals.Length, Buttons.Length), FixButtonsAcross);
 
-            int decw = (ClientRectangle.Width - margin * (2 + nodecals - 1)) / nodecals;    // if decals =1 , two margin, =2 three, etc. Then divide by decals to get decal size
-            int butw = (ClientRectangle.Width - margin * (2 + nobuts - 1)) / nobuts;        // repeat with buttons
-            int decbutw = Math.Min(decw, butw);                                             // make them all the same size
+            int decbutw = (ClientRectangle.Width - margin * (2 + entriesacross - 1)) / entriesacross;    // if =1 , two margin, =2 three, etc. Then divide by decals to get decal size
 
             int decbuth = (ClientRectangle.Height - Label.Bottom - margin * 3) / 2;         // height is whats left after label, three margins, and /2 to get size for decal and buttons
 
-            int hpos = ClientRectangle.Width / 2 - (decbutw * nodecals + margin * (nodecals - 1)) / 2;    // position centrally
+            int hpos = ClientRectangle.Width / 2 - (decbutw * Decals.Length + margin * (Decals.Length - 1)) / 2;    // position centrally
             int vpos = Label.Bottom + margin;
 
            // System.Diagnostics.Debug.WriteLine($"{Name} {Size} m {margin} decw {decw} butw {butw} => {decbutw} : h {decbuth} pos {hpos} {vpos} Font {Label.Font.Height} size {Label.Font.Size}");
@@ -80,7 +78,7 @@ namespace ExtendedControls
             }
 
             vpos += decbuth + margin;
-            hpos = ClientRectangle.Width / 2 - (decbutw * nobuts + margin + (nobuts - 1)) / 2;      // position centrally
+            hpos = ClientRectangle.Width / 2 - (decbutw * Buttons.Length + margin + (Buttons.Length - 1)) / 2;      // position centrally
 
             foreach (var p in Buttons.EmptyIfNull())       // first measure properties - all panels across
             {
@@ -95,10 +93,12 @@ namespace ExtendedControls
                                                     string text, 
                                                 Image[] decals,
                                                 Image[] buttons,
-                                                Action<object, int> ButtonPressed)
+                                                Action<object, int> ButtonPressed,
+                                                int fixbuttonacross = 0)
         {
             CompositeAutoScaleButton cb = new CompositeAutoScaleButton();
             cb.Name = text;
+            cb.FixButtonsAcross = fixbuttonacross;
             cb.SuspendLayout();
             
             cb.BackgroundImage = backimage;
