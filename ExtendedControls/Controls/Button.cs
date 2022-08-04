@@ -320,9 +320,11 @@ namespace ExtendedControls
 
                 if (Image != null)
                 {
-                    Size isize = (imagelayout == ImageLayout.Stretch) ? new Size(buttonarea.Width,buttonarea.Height) : Image.Size;
+                    // if we are in the centre, we use the whole of the buttonarea, else we use the button height.
+                    Size isize = (ImageAlign == ContentAlignment.MiddleCenter) ? new Size(buttonarea.Width, buttonarea.Height) : new Size(buttonarea.Height, buttonarea.Height);
                     var destrect = ImageAlign.ImagePositionFromContentAlignment(buttonarea, isize);
-                   // System.Diagnostics.Debug.WriteLine($"ButtonExt {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height}");
+
+                    //System.Diagnostics.Debug.WriteLine($"ButtonExt {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height} {ImageAlign} {ImageLayout}");
 
                     if ((Enabled && drawnImageAttributesEnabled != null) || (!Enabled && drawnImageAttributesDisabled != null))
                     {
