@@ -33,7 +33,15 @@ namespace ExtendedControls
 
         public MonthCalendar Calendar { get { return monthCalendar; } }     // direct setting of properties
 
-        public DateTime Value { get { return monthCalendar.SelectionStart; } set { monthCalendar.SelectionStart = monthCalendar.SelectionEnd = value; } }
+        public DateTime Value { get { return monthCalendar.SelectionStart; } set 
+            {
+                if (value < monthCalendar.MinDate)
+                    value = monthCalendar.MinDate;
+                else if (value > monthCalendar.MaxDate)
+                    value = monthCalendar.MaxDate;
+
+                monthCalendar.SelectionStart = monthCalendar.SelectionEnd = value; 
+            } }
 
         public Action<CalendarForm, DateTime> Selected;               // Action on selected (mouse selection)
 

@@ -385,30 +385,38 @@ namespace ExtendedControls
         {
             if (selectedpart != -1)
             {
-                Parts p = partlist[selectedpart];
-                if (p.ptype == PartsTypes.DayName)
-                    datetimevalue = datetimevalue.AddDays(dir);
-                else if (p.ptype == PartsTypes.Day)
-                    datetimevalue = datetimevalue.AddDays(dir);
-                else if (p.ptype == PartsTypes.Month)
-                    datetimevalue = datetimevalue.AddMonths(dir);
-                else if (p.ptype == PartsTypes.Year)
-                    datetimevalue = datetimevalue.AddYears(dir);
-                else if (p.ptype == PartsTypes.Hours)
-                    datetimevalue = datetimevalue.AddHours(dir);
-                else if (p.ptype == PartsTypes.Mins)
-                    datetimevalue = datetimevalue.AddMinutes(dir);
-                else if (p.ptype == PartsTypes.Seconds)
-                    datetimevalue = datetimevalue.AddSeconds(dir);
-                else if (p.ptype == PartsTypes.AmPm)
-                    datetimevalue = datetimevalue.AddHours((datetimevalue.Hour >= 12) ? -12 : 12);
-                else
-                    return;
+                try
+                {                                                       // May except due to out of range
+                    Parts p = partlist[selectedpart];
+                    if (p.ptype == PartsTypes.DayName)
+                        datetimevalue = datetimevalue.AddDays(dir);
+                    else if (p.ptype == PartsTypes.Day)
+                        datetimevalue = datetimevalue.AddDays(dir);
+                    else if (p.ptype == PartsTypes.Month)
+                        datetimevalue = datetimevalue.AddMonths(dir);
+                    else if (p.ptype == PartsTypes.Year)
+                        datetimevalue = datetimevalue.AddYears(dir);
+                    else if (p.ptype == PartsTypes.Hours)
+                        datetimevalue = datetimevalue.AddHours(dir);
+                    else if (p.ptype == PartsTypes.Mins)
+                        datetimevalue = datetimevalue.AddMinutes(dir);
+                    else if (p.ptype == PartsTypes.Seconds)
+                        datetimevalue = datetimevalue.AddSeconds(dir);
+                    else if (p.ptype == PartsTypes.AmPm)
+                        datetimevalue = datetimevalue.AddHours((datetimevalue.Hour >= 12) ? -12 : 12);
+                    else
+                        return;
 
-                EventHandler handler = (EventHandler)Events[EVENT_VALUECHANGED];
-                if (handler != null) handler(this, new EventArgs());
+                    EventHandler handler = (EventHandler)Events[EVENT_VALUECHANGED];
+                    if (handler != null) handler(this, new EventArgs());
 
-                Invalidate();
+                    Invalidate();
+
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.Write(ex.Message);
+                }
             }
         }
 
