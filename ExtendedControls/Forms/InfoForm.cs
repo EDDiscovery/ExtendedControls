@@ -29,6 +29,12 @@ namespace ExtendedControls
         public InfoForm()
         {
             InitializeComponent();
+
+            BaseUtils.Translator.Instance.AddExcludedControls(new Type[]
+             {   typeof(ExtendedControls.ExtComboBox), typeof(ExtendedControls.NumberBoxDouble),typeof(ExtendedControls.NumberBoxFloat),typeof(ExtendedControls.NumberBoxLong),
+                typeof(ExtendedControls.ExtScrollBar),typeof(ExtendedControls.ExtStatusStrip),typeof(ExtendedControls.ExtRichTextBox),typeof(ExtendedControls.ExtTextBox),
+                typeof(ExtendedControls.ExtTextBoxAutoComplete),typeof(ExtendedControls.ExtDateTimePicker),typeof(ExtendedControls.ExtNumericUpDown) });
+
         }
 
         public void Info(string title, Icon ic, string info , int[] array = null, float pointsize= -1, 

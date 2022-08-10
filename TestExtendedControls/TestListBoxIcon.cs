@@ -25,6 +25,12 @@ namespace TestExtendedControls
             Theme.Current.FontSize = 12;
         }
 
+        void Log(string s)
+        {
+            extRichTextBox1.Text += s + Environment.NewLine;
+            extRichTextBox1.Select(extRichTextBox1.Text.Length, extRichTextBox1.Text.Length);
+        }
+
         private void F_CheckedChanged(object sender, ItemCheckEventArgs e, Object tag)
         {
             var s = sender as CheckedIconListBoxForm;
@@ -43,6 +49,7 @@ namespace TestExtendedControls
 
         private void extButton1_Click(object sender, EventArgs e)
         {
+            Log("Button1");
             CheckedIconListBoxForm f = new CheckedIconListBoxForm();
 
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
@@ -63,6 +70,8 @@ namespace TestExtendedControls
             f.ThumbButtonColor = Color.Red;
             f.ArrowButtonColor = Color.Yellow;
             f.Font = new Font("Euro Caps", 16);
+            f.CloseBoundaryRegion = new Size(32, 32);
+            f.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine("Save button1"); };
             f.Show(this);
         }
 
@@ -165,8 +174,15 @@ namespace TestExtendedControls
         CheckedIconListBoxForm showhidelistbox1 = null;
         private void extButton2_Click(object sender, EventArgs e)
         {
+            if ( showhidelistbox1 != null && showhidelistbox1.DeactivatedWithin(250) )
+            {
+                System.Diagnostics.Debug.WriteLine("Button 2 ignoring as just hid");
+                return;
+            }
+
             if (showhidelistbox1 == null)
             {
+                System.Diagnostics.Debug.WriteLine("Button 2 create");
                 showhidelistbox1 = new CheckedIconListBoxForm();
 
                 var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
@@ -187,10 +203,12 @@ namespace TestExtendedControls
                 showhidelistbox1.Font = new Font("Euro Caps", 10);
                 showhidelistbox1.CloseOnDeactivate = false;
                 showhidelistbox1.HideOnDeactivate = true;
-                System.Diagnostics.Debug.WriteLine("Make");
-            }
-            System.Diagnostics.Debug.WriteLine("Position");
+                showhidelistbox1.CloseBoundaryRegion = new Size(32, 32);
+                showhidelistbox1.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine("Save show hide list box 1"); };
 
+            }
+
+            System.Diagnostics.Debug.WriteLine("Button 2 position and show");
             showhidelistbox1.PositionBelow(extButton2);
             showhidelistbox1.Show(this);
 

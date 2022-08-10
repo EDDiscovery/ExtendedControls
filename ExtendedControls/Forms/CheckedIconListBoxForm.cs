@@ -63,6 +63,16 @@ namespace ExtendedControls
         public bool CloseOnChange { get; set; } = false;            // close when any is changed
         public bool HideOnChange { get; set; } = false;             // hide when any is changed
 
+        public long LastDeactivateTime { get; set; } = -Environment.TickCount;      // when we deactivate, we record last time
+        public bool DeactivatedWithin(long ms)                      // have we deactivated in this timeperiod. use for debouncing buttons if hiding
+        {
+            long timesince = Environment.TickCount - LastDeactivateTime;
+            //System.Diagnostics.Debug.WriteLine($"Deactivate time {timesince}");
+            return timesince <= ms;
+        }
+
+
+
         // if not set, each image sets its size. If no images, then use this to set alternate size 
         // if fonth > imageheight, then images are scaled to font size
         public Size ImageSize { get; set; } = new Size(0, 0);
@@ -402,7 +412,9 @@ namespace ExtendedControls
             if (!CloseBoundaryRegion.IsEmpty)
                 timer.Start();
             else
-                System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
+            {
+                //System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
+            }
         }
 
         private void Ipanel_MouseDown(object sender, MouseEventArgs e)
@@ -481,36 +493,50 @@ namespace ExtendedControls
         protected override void OnDeactivate(EventArgs e)
         {
             base.OnDeactivate(e);
-            DeactivateAction();
-        }
 
-        private void DeactivateAction()
-        { 
+            //System.Diagnostics.Debug.WriteLine("Deactivate event start");
+
+            LastDeactivateTime = Environment.TickCount;
+            timer.Stop();
+            SaveSettingsEvent();
+
             if (CloseOnDeactivate)
             {
-                timer.Stop();
-
-                SaveSettingsEvent();
-
+                //System.Diagnostics.Debug.WriteLine("Close");
                 this.Close();
             }
             else if (HideOnDeactivate)
             {
-                timer.Stop();
-
-                SaveSettingsEvent();
-
-                if ( Owner != null )
+                if (Owner != null)
                 {
+                    //System.Diagnostics.Debug.WriteLine("Disassociate and hide start");
                     var o = Owner;          // calling Hide() when the owner is not ready to receive the focus causes windows to go and get another window to place
                     Owner = null;           // disassociating it temp from its owner seems to solve this. Probably because it can pick that window now.
                     Hide();
                     Owner = o;
+                    //System.Diagnostics.Debug.WriteLine("Disassociate and hide end");
                 }
                 else
                 {
+                    //System.Diagnostics.Debug.WriteLine("No owner, hide");
                     Hide();
                 }
+            }
+
+            //System.Diagnostics.Debug.WriteLine("Deactivate event end");
+        }
+
+        private void CloseOrHide()
+        {
+            if (CloseOnDeactivate)
+            {
+               // System.Diagnostics.Debug.WriteLine("Close or hide - close");
+                this.Close();
+            }
+            else if (HideOnDeactivate)
+            {
+                //System.Diagnostics.Debug.WriteLine("Close or hide - hide");
+                Hide();
             }
         }
 
@@ -539,7 +565,7 @@ namespace ExtendedControls
             {
                 if (client.Contains(this.PointToClient(MousePosition)))     // if we are inside the box, cancel mouse down and set closedown to 0
                 {
-                   // System.Diagnostics.Debug.WriteLine($"Inside box, clear mbd");
+                    // System.Diagnostics.Debug.WriteLine($"Inside box, clear mbd");
                     mousebuttonsdown = false;
                     closedowncount = 0;
                 }
@@ -548,8 +574,11 @@ namespace ExtendedControls
                     //System.Diagnostics.Debug.WriteLine($"outside box, {mousebuttonsdown}");
                     if (!mousebuttonsdown)              // 
                     {
-                        if ( ++closedowncount == 10)     // N*timertick wait
-                            DeactivateAction();
+                        if (++closedowncount == 10)     // N*timertick wait
+                        {
+                            //System.Diagnostics.Debug.WriteLine("Out of bounds");
+                            CloseOrHide();
+                        }
                     }
                 }
             }

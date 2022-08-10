@@ -49,7 +49,7 @@
             this.extRichTextBox1.BorderColorScaling = 0.5F;
             this.extRichTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extRichTextBox1.HideScrollBar = true;
-            this.extRichTextBox1.Location = new System.Drawing.Point(12, 262);
+            this.extRichTextBox1.Location = new System.Drawing.Point(10, 3);
             this.extRichTextBox1.Name = "extRichTextBox1";
             this.extRichTextBox1.ReadOnly = false;
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
@@ -67,14 +67,14 @@
             this.extRichTextBox1.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
             this.extRichTextBox1.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extRichTextBox1.ShowLineCount = false;
-            this.extRichTextBox1.Size = new System.Drawing.Size(666, 255);
+            this.extRichTextBox1.Size = new System.Drawing.Size(992, 190);
             this.extRichTextBox1.TabIndex = 3;
             this.extRichTextBox1.TextBoxBackColor = System.Drawing.SystemColors.Control;
             this.extRichTextBox1.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
             // 
             // extButton8
             // 
-            this.extButton8.Location = new System.Drawing.Point(211, 99);
+            this.extButton8.Location = new System.Drawing.Point(211, 295);
             this.extButton8.Name = "extButton8";
             this.extButton8.Size = new System.Drawing.Size(264, 23);
             this.extButton8.TabIndex = 1;
@@ -84,7 +84,7 @@
             // 
             // extButton7
             // 
-            this.extButton7.Location = new System.Drawing.Point(211, 70);
+            this.extButton7.Location = new System.Drawing.Point(211, 266);
             this.extButton7.Name = "extButton7";
             this.extButton7.Size = new System.Drawing.Size(264, 23);
             this.extButton7.TabIndex = 1;
@@ -94,7 +94,7 @@
             // 
             // extButton6
             // 
-            this.extButton6.Location = new System.Drawing.Point(211, 41);
+            this.extButton6.Location = new System.Drawing.Point(211, 237);
             this.extButton6.Name = "extButton6";
             this.extButton6.Size = new System.Drawing.Size(264, 23);
             this.extButton6.TabIndex = 1;
@@ -104,7 +104,7 @@
             // 
             // extButton5
             // 
-            this.extButton5.Location = new System.Drawing.Point(211, 12);
+            this.extButton5.Location = new System.Drawing.Point(211, 208);
             this.extButton5.Name = "extButton5";
             this.extButton5.Size = new System.Drawing.Size(264, 23);
             this.extButton5.TabIndex = 1;
@@ -114,7 +114,7 @@
             // 
             // extButton4
             // 
-            this.extButton4.Location = new System.Drawing.Point(12, 70);
+            this.extButton4.Location = new System.Drawing.Point(12, 266);
             this.extButton4.Name = "extButton4";
             this.extButton4.Size = new System.Drawing.Size(183, 23);
             this.extButton4.TabIndex = 1;
@@ -124,7 +124,7 @@
             // 
             // extButton3
             // 
-            this.extButton3.Location = new System.Drawing.Point(12, 41);
+            this.extButton3.Location = new System.Drawing.Point(12, 237);
             this.extButton3.Name = "extButton3";
             this.extButton3.Size = new System.Drawing.Size(183, 23);
             this.extButton3.TabIndex = 1;
@@ -134,7 +134,7 @@
             // 
             // extButton1
             // 
-            this.extButton1.Location = new System.Drawing.Point(12, 12);
+            this.extButton1.Location = new System.Drawing.Point(12, 208);
             this.extButton1.Name = "extButton1";
             this.extButton1.Size = new System.Drawing.Size(183, 23);
             this.extButton1.TabIndex = 1;
@@ -144,7 +144,7 @@
             // 
             // extButton2
             // 
-            this.extButton2.Location = new System.Drawing.Point(12, 153);
+            this.extButton2.Location = new System.Drawing.Point(12, 349);
             this.extButton2.Name = "extButton2";
             this.extButton2.Size = new System.Drawing.Size(183, 23);
             this.extButton2.TabIndex = 1;
@@ -154,7 +154,7 @@
             // 
             // extButton9
             // 
-            this.extButton9.Location = new System.Drawing.Point(211, 153);
+            this.extButton9.Location = new System.Drawing.Point(211, 349);
             this.extButton9.Name = "extButton9";
             this.extButton9.Size = new System.Drawing.Size(264, 23);
             this.extButton9.TabIndex = 1;
@@ -164,7 +164,7 @@
             // 
             // extButton10
             // 
-            this.extButton10.Location = new System.Drawing.Point(497, 12);
+            this.extButton10.Location = new System.Drawing.Point(497, 208);
             this.extButton10.Name = "extButton10";
             this.extButton10.Size = new System.Drawing.Size(264, 23);
             this.extButton10.TabIndex = 1;
@@ -174,7 +174,7 @@
             // 
             // extButton11
             // 
-            this.extButton11.Location = new System.Drawing.Point(497, 41);
+            this.extButton11.Location = new System.Drawing.Point(497, 237);
             this.extButton11.Name = "extButton11";
             this.extButton11.Size = new System.Drawing.Size(264, 23);
             this.extButton11.TabIndex = 1;
@@ -185,7 +185,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(581, 140);
+            this.checkBox1.Location = new System.Drawing.Point(581, 336);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(80, 17);
             this.checkBox1.TabIndex = 4;
@@ -196,7 +196,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(873, 558);
+            this.ClientSize = new System.Drawing.Size(1014, 400);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.extRichTextBox1);
             this.Controls.Add(this.extButton8);
