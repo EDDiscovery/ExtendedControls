@@ -45,6 +45,7 @@ namespace ExtendedControls
         public Color DropDownScrollBarButtonColor { get; set; } = Color.LightGray;
         public Color DropDownMouseOverBackgroundColor { get; set; } = Color.Red;
         public Color DropDownItemSeperatorColor { get; set; } = Color.Purple;
+        public bool DropDownFitImagesToItemHeight { get; set; } = false;
 
         // If non null, a help icon ? appears on the right. When clicked, you get a callback.  P is the lower bottom of the ? icon in screen co-ords
 
@@ -548,6 +549,7 @@ namespace ExtendedControls
             dropdown.ScrollBarButtonColor = this.DropDownScrollBarButtonColor;
             dropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
             dropdown.ItemSeperatorColor = this.DropDownItemSeperatorColor;
+            dropdown.FitImagesToItemHeight = this.DropDownFitImagesToItemHeight;
 
             dropdown.Font = Font;
             dropdown.Items = TextList.ToList();

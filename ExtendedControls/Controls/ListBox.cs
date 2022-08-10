@@ -113,11 +113,18 @@ namespace ExtendedControls
             }
         }
 
+        // Measure width and height of line, maximum to items and imageitems.
         public Size MeasureItems(Graphics g)
         {
             using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.NoWrap })
             {
-                return g.MeasureItems(Font, Items.ToArray(), fmt);
+                Size p = g.MeasureItems(Font, Items.ToArray(), fmt);
+                if (imageitems != null)
+                {
+                    int maxwidth = imageitems.Max(x => x.Width);
+                    p.Width += FitImagesToItemHeight ? (int)(Font.GetHeight() + 2) : maxwidth;
+                }
+                return p;
             }
         }
 
@@ -306,7 +313,7 @@ namespace ExtendedControls
                 {
                     if (FitImagesToItemHeight)
                     {
-                        imagearea = new Rectangle(imagearea.X, imagearea.Y, itemheight - 1,itemheight - 1);
+                        imagearea = new Rectangle(imagearea.X, imagearea.Y, textarea.Height - 1,textarea.Height - 1);
                         textarea.X += imagearea.Width + 1;
                     }
                     else

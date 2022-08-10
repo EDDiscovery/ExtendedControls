@@ -418,6 +418,24 @@
   <ItemGroup>
     <None Include="Resources\Addtab.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Compass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BookmarkManager.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CaptainsLog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CombatPanel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Commodities.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Discoveries.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

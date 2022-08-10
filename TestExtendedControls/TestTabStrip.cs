@@ -117,6 +117,28 @@ namespace TestExtendedControls
             tabStrip4.EmptyColor = Color.Pink;
 
 
+            tabStrip5.StripMode = ExtendedControls.TabStrip.StripModeType.ListSelection;
+            tabStrip5.SetControlText("Ctext3");
+            tabStrip5.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("3 Command pop out" + t + " " + i);
+            tabStrip5.AllowClose += (t, i, c) => { return MessageBox.Show("Allow close", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes; };
+            tabStrip5.OnCreateTab += OnCreateTab;
+            tabStrip5.DropDownFitImagesToItemHeight = true;
+
+            tabStrip5.ImageList = new Bitmap[] {
+                TestExtendedControls.Properties.Resources.CaptainsLog,
+                TestExtendedControls.Properties.Resources.BookmarkManager,
+                TestExtendedControls.Properties.Resources.CombatPanel,
+                TestExtendedControls.Properties.Resources.Commodities,
+                TestExtendedControls.Properties.Resources.Compass,
+                TestExtendedControls.Properties.Resources.Discoveries,
+                                            };
+            tabStrip5.TextList = new string[] { 
+                "4icon 0", "4icon 1",
+                "4icon 2", "4icon 3",
+                "4icon 4", "4icon 5",
+            };
+
+
             ListViewItem item1 = new ListViewItem("item1", 0);
             // Place a check mark next to the item.
             item1.Checked = true;
@@ -169,12 +191,21 @@ namespace TestExtendedControls
             listControlCustom2.Items = lv;
             listControlCustom2.BackColor = Color.Black;
             listControlCustom2.ForeColor = Color.Red;
-            listControlCustom2.FlatStyle = FlatStyle.Popup;
             listControlCustom2.ImageItems = lvimages;
 
             listControlCustom3.Items = lv;
             listControlCustom3.ImageItems = lvimages;
 
+
+            listControlCustom4.Items = lv;
+            listControlCustom4.FitImagesToItemHeight = true;
+            listControlCustom4.BackColor = Color.Black;
+            listControlCustom4.ForeColor = Color.Red;
+            listControlCustom4.ImageItems = new List<Image>() 
+            { TestExtendedControls.Properties.Resources.CaptainsLog,
+                TestExtendedControls.Properties.Resources.Discoveries, 
+                TestExtendedControls.Properties.Resources.Commodities, 
+                TestExtendedControls.Properties.Resources.BookmarkManager };
 
             listBox1.Items.AddRange(lv.ToArray());
 
@@ -245,6 +276,13 @@ namespace TestExtendedControls
         {
             Theme.Current.FontSize = 20;
             Theme.Current.ApplyStd(this);
+        }
+
+        private void extButton3_Click(object sender, EventArgs e)
+        {
+            Theme.Current.FontSize = 8.5f;
+            Theme.Current.ApplyStd(this);
+
         }
     }
 }
