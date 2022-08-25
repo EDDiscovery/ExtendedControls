@@ -75,7 +75,7 @@ namespace TestExtendedControls
         }
 
         
-        void CF(float s, bool wf)
+        void CF(float s, bool wf, bool allowresize = false, Size? minsize = null, Size? maxsize = null, Size? reqsize = null)
         {
             Theme.Current.FontSize = s;
             Theme.Current.WindowsFrame = wf;
@@ -110,10 +110,14 @@ namespace TestExtendedControls
                 {
                     f.ReturnResult(DialogResult.Cancel);
                 }
+                else if ( controlname == "Resize")
+                {
+                    System.Diagnostics.Debug.WriteLine($"Resize to {f.Bounds}");
+                }
             };
 
-            //f.AllowResize = true;
-            DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Jump to Entry", closeicon:true);
+            f.AllowResize = allowresize;
+            DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Jump to Entry", closeicon:true,minsize:minsize,maxsize:maxsize,requestedsize:reqsize);
 
             if (res == DialogResult.OK)
             {
@@ -141,6 +145,28 @@ namespace TestExtendedControls
         private void extButton5_Click(object sender, EventArgs e)
         {
             CF(8, true);
+        }
+
+        private void extButton33_Click(object sender, EventArgs e)
+        {
+            CF(8, false, true);
+        }
+
+
+        private void extButton34_Click(object sender, EventArgs e)
+        {
+            CF(8, false, true, new Size(100, 100));
+        }
+
+        private void extButton35_Click(object sender, EventArgs e)
+        {
+            CF(8, false, true, new Size(100, 100), new Size(500, 500));
+
+        }
+
+        private void extButton36_Click(object sender, EventArgs e)
+        {
+            CF(8, false, true, new Size(400, 100), new Size(800, 800), new Size(500,250));
         }
 
         private void extButton6_Click(object sender, EventArgs e)
@@ -425,6 +451,7 @@ namespace TestExtendedControls
             MessageBoxTheme.Show("A", "A", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 
         }
+
     }
 }
 

@@ -41,6 +41,8 @@ namespace ExtendedControls
         // name:Validity:true/false for Number boxes
         // Close if the close button is pressed
         // Escape if escape pressed
+        // Resize if changed size
+        // Reposition if position changed
 
         public event Action<string, string, Object> Trigger;
 
@@ -172,17 +174,20 @@ namespace ExtendedControls
         // pos.x <= -999 means autocentre to parent.
 
         public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
-                                              Size? minsize = null, Size? maxsize = null)
+                                              Size? minsize = null, Size? maxsize = null, Size? requestedsize = null)
         {
-            InitCentred(p, minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000,50000), icon, caption, lname, callertag, closeicon: closeicon);
+            InitCentred(p, minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000,50000),
+                           requestedsize.HasValue ? requestedsize.Value : new Size(1, 1), icon, caption, lname, callertag, closeicon: closeicon);
             callback?.Invoke();
             return ShowDialog(p);
         }
 
         public DialogResult ShowDialog(Form p, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
-                                              Size? minsize = null, Size ? maxsize = null)
+                                              Size? minsize = null, Size ? maxsize = null, Size? requestedsize = null)
         {
-            Init(minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000, 50000), pos, icon, caption, lname, callertag, closeicon: closeicon);
+            Init(minsize.HasValue ? minsize.Value : new Size(1, 1), maxsize.HasValue ? maxsize.Value : new Size(50000, 50000),
+                            requestedsize.HasValue ? requestedsize.Value : new Size(1, 1),
+                            pos, icon, caption, lname, callertag, closeicon: closeicon);
             callback?.Invoke();
             return ShowDialog(p);
         }
@@ -190,20 +195,20 @@ namespace ExtendedControls
         public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null,
                                 AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
         {
-            Init(icon, new Size(1,1), new Size(50000,50000), new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon,
+            Init(icon, new Size(1,1), new Size(50000,50000), new Size(1,1), new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon,
                                     HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
         }
-        public void InitCentred(Form p, Size minsize, Size maxsize, Icon icon, string caption, string lname = null, Object callertag = null,
+        public void InitCentred(Form p, Size minsize, Size maxsize, Size requestedsize, Icon icon, string caption, string lname = null, Object callertag = null,
                                 AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
         {
-            Init(icon, minsize, maxsize, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon,
+            Init(icon, minsize, maxsize, requestedsize, new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon,
                                     HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
         }
 
-        public void Init(Size minsize, Size maxsize, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, 
+        public void Init(Size minsize, Size maxsize, Size requestedsize, Point pos, Icon icon, string caption, string lname = null, Object callertag = null, 
                             AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
         {
-            Init(icon, minsize, maxsize, pos, caption, lname, callertag, closeicon, null, null, asm);
+            Init(icon, minsize, maxsize, requestedsize, pos, caption, lname, callertag, closeicon, null, null, asm);
         }
 
         public void ReturnResult(DialogResult result)           // MUST call to return result and close.  DO NOT USE DialogResult directly
@@ -368,7 +373,7 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void Init(Icon icon, System.Drawing.Size minsize, System.Drawing.Size maxsize, System.Drawing.Point pos, 
+        private void Init(Icon icon, System.Drawing.Size minsize, System.Drawing.Size maxsize, Size requestedsize, System.Drawing.Point pos, 
                                 string caption, string lname, Object callertag, bool closeicon,
                                 HorizontalAlignment? halign , ControlHelpersStaticFunc.VerticalAlignment? valign , 
                                 AutoScaleMode asm)
@@ -381,6 +386,7 @@ namespace ExtendedControls
 
             this.minsize = minsize;       // set min size window
             this.maxsize = maxsize;
+            this.requestedsize = requestedsize;
 
             Theme theme = Theme.Current;
             System.Diagnostics.Debug.Assert(theme != null);
@@ -685,7 +691,12 @@ namespace ExtendedControls
 
             widthw += ExtraMarginRightBottom.Width;
 
-            this.PositionSizeWithinScreen(widthw, measureitemsinwindow.Height + ExtraMarginRightBottom.Height, false, new Size(64,64), halign, valign, scrollbarsizeifheightnotacheived);
+            widthw = Math.Max(requestedsize.Width, widthw);     // so, if requested size is bigger, increase
+
+            int height = measureitemsinwindow.Height + ExtraMarginRightBottom.Height;
+            height = Math.Max(requestedsize.Height, height);     // so, if requested size is bigger, increase
+
+            this.PositionSizeWithinScreen(widthw, height, false, new Size(64,64), halign, valign, scrollbarsizeifheightnotacheived);
 
             outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
             outer.Location = new Point(BorderMargin, BorderMargin);
@@ -706,7 +717,7 @@ namespace ExtendedControls
 
             resizerepositionon = true;
 
-            //System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
+            System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
         }
 
         protected override void OnShown(EventArgs e)
@@ -944,6 +955,7 @@ namespace ExtendedControls
         private ControlHelpersStaticFunc.VerticalAlignment? valign;
         private Size minsize;
         private Size maxsize;
+        private Size requestedsize;
 
         private ExtPanelScroll outer;
         private ExtButtonDrawn closebutton;

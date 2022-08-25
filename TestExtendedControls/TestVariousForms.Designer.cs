@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.extButton24 = new ExtendedControls.ExtButton();
             this.extButton23 = new ExtendedControls.ExtButton();
             this.extButton22 = new ExtendedControls.ExtButton();
@@ -63,48 +60,15 @@
             this.extButton10 = new ExtendedControls.ExtButton();
             this.extButton6 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
+            this.extButton33 = new ExtendedControls.ExtButton();
+            this.extButton34 = new ExtendedControls.ExtButton();
+            this.extButton35 = new ExtendedControls.ExtButton();
+            this.extButton36 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(13, 318);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(80, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "one",
-            "two",
-            "three",
-            "four"});
-            this.comboBox1.Location = new System.Drawing.Point(147, 318);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 3;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "w",
-            "w",
-            "e",
-            "r"});
-            this.listBox1.Location = new System.Drawing.Point(438, 318);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(118, 173);
-            this.listBox1.TabIndex = 4;
             // 
             // extButton24
             // 
-            this.extButton24.Location = new System.Drawing.Point(12, 209);
+            this.extButton24.Location = new System.Drawing.Point(12, 366);
             this.extButton24.Name = "extButton24";
             this.extButton24.Size = new System.Drawing.Size(183, 23);
             this.extButton24.TabIndex = 1;
@@ -114,7 +78,7 @@
             // 
             // extButton23
             // 
-            this.extButton23.Location = new System.Drawing.Point(12, 267);
+            this.extButton23.Location = new System.Drawing.Point(12, 424);
             this.extButton23.Name = "extButton23";
             this.extButton23.Size = new System.Drawing.Size(183, 23);
             this.extButton23.TabIndex = 1;
@@ -124,7 +88,7 @@
             // 
             // extButton22
             // 
-            this.extButton22.Location = new System.Drawing.Point(12, 238);
+            this.extButton22.Location = new System.Drawing.Point(12, 395);
             this.extButton22.Name = "extButton22";
             this.extButton22.Size = new System.Drawing.Size(183, 23);
             this.extButton22.TabIndex = 1;
@@ -134,7 +98,7 @@
             // 
             // extButton21
             // 
-            this.extButton21.Location = new System.Drawing.Point(12, 180);
+            this.extButton21.Location = new System.Drawing.Point(12, 337);
             this.extButton21.Name = "extButton21";
             this.extButton21.Size = new System.Drawing.Size(183, 23);
             this.extButton21.TabIndex = 1;
@@ -224,7 +188,7 @@
             // 
             // extButton18
             // 
-            this.extButton18.Location = new System.Drawing.Point(239, 267);
+            this.extButton18.Location = new System.Drawing.Point(239, 424);
             this.extButton18.Name = "extButton18";
             this.extButton18.Size = new System.Drawing.Size(183, 23);
             this.extButton18.TabIndex = 1;
@@ -234,7 +198,7 @@
             // 
             // extButton17
             // 
-            this.extButton17.Location = new System.Drawing.Point(239, 238);
+            this.extButton17.Location = new System.Drawing.Point(239, 395);
             this.extButton17.Name = "extButton17";
             this.extButton17.Size = new System.Drawing.Size(183, 23);
             this.extButton17.TabIndex = 1;
@@ -244,7 +208,7 @@
             // 
             // extButton19
             // 
-            this.extButton19.Location = new System.Drawing.Point(239, 180);
+            this.extButton19.Location = new System.Drawing.Point(239, 337);
             this.extButton19.Name = "extButton19";
             this.extButton19.Size = new System.Drawing.Size(183, 23);
             this.extButton19.TabIndex = 1;
@@ -254,7 +218,7 @@
             // 
             // extButton16
             // 
-            this.extButton16.Location = new System.Drawing.Point(239, 209);
+            this.extButton16.Location = new System.Drawing.Point(239, 366);
             this.extButton16.Name = "extButton16";
             this.extButton16.Size = new System.Drawing.Size(183, 23);
             this.extButton16.TabIndex = 1;
@@ -422,16 +386,57 @@
             this.extButton1.UseVisualStyleBackColor = true;
             this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
+            // extButton33
+            // 
+            this.extButton33.Location = new System.Drawing.Point(12, 180);
+            this.extButton33.Name = "extButton33";
+            this.extButton33.Size = new System.Drawing.Size(183, 23);
+            this.extButton33.TabIndex = 1;
+            this.extButton33.Text = "ConfigurableForm-T8-resize";
+            this.extButton33.UseVisualStyleBackColor = true;
+            this.extButton33.Click += new System.EventHandler(this.extButton33_Click);
+            // 
+            // extButton34
+            // 
+            this.extButton34.Location = new System.Drawing.Point(12, 209);
+            this.extButton34.Name = "extButton34";
+            this.extButton34.Size = new System.Drawing.Size(183, 23);
+            this.extButton34.TabIndex = 1;
+            this.extButton34.Text = "ConfigurableForm-T8-resizemin";
+            this.extButton34.UseVisualStyleBackColor = true;
+            this.extButton34.Click += new System.EventHandler(this.extButton34_Click);
+            // 
+            // extButton35
+            // 
+            this.extButton35.Location = new System.Drawing.Point(12, 238);
+            this.extButton35.Name = "extButton35";
+            this.extButton35.Size = new System.Drawing.Size(183, 23);
+            this.extButton35.TabIndex = 1;
+            this.extButton35.Text = "ConfigurableForm-T8-rs-minmax";
+            this.extButton35.UseVisualStyleBackColor = true;
+            this.extButton35.Click += new System.EventHandler(this.extButton35_Click);
+            // 
+            // extButton36
+            // 
+            this.extButton36.Location = new System.Drawing.Point(12, 267);
+            this.extButton36.Name = "extButton36";
+            this.extButton36.Size = new System.Drawing.Size(183, 23);
+            this.extButton36.TabIndex = 1;
+            this.extButton36.Text = "ConfigurableForm-T8-rs-min-max-cr";
+            this.extButton36.UseVisualStyleBackColor = true;
+            this.extButton36.Click += new System.EventHandler(this.extButton36_Click);
+            // 
             // TestVariousForms
             // 
             this.ClientSize = new System.Drawing.Size(854, 605);
-            this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.extButton24);
             this.Controls.Add(this.extButton23);
             this.Controls.Add(this.extButton22);
             this.Controls.Add(this.extButton21);
+            this.Controls.Add(this.extButton36);
+            this.Controls.Add(this.extButton35);
+            this.Controls.Add(this.extButton34);
+            this.Controls.Add(this.extButton33);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton4);
@@ -463,7 +468,6 @@
             this.Name = "TestVariousForms";
             this.Text = "Test Various Forms";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -492,9 +496,6 @@
         private ExtendedControls.ExtButton extButton22;
         private ExtendedControls.ExtButton extButton23;
         private ExtendedControls.ExtButton extButton24;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ListBox listBox1;
         private ExtendedControls.ExtButton extButton25;
         private ExtendedControls.ExtButton extButton26;
         private ExtendedControls.ExtButton extButton27;
@@ -503,5 +504,9 @@
         private ExtendedControls.ExtButton extButton30;
         private ExtendedControls.ExtButton extButton31;
         private ExtendedControls.ExtButton extButton32;
+        private ExtendedControls.ExtButton extButton33;
+        private ExtendedControls.ExtButton extButton34;
+        private ExtendedControls.ExtButton extButton35;
+        private ExtendedControls.ExtButton extButton36;
     }
 }
