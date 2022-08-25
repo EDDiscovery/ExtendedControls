@@ -166,8 +166,15 @@ namespace TestExtendedControls
 
         private void extButton36_Click(object sender, EventArgs e)
         {
-            CF(8, false, true, new Size(400, 100), new Size(800, 800), new Size(500,250));
+            CF(8, false, true, new Size(400, 100), new Size(800, 800), new Size(500, 250));
         }
+
+        private void extButton37_Click(object sender, EventArgs e)
+        {
+            CF(8, false, true, new Size(100, 100), new Size(800, 800), new Size(-150,-150));
+
+        }
+
 
         private void extButton6_Click(object sender, EventArgs e)
         {

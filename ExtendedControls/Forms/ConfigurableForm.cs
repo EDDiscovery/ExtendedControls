@@ -171,7 +171,7 @@ namespace ExtendedControls
             };
         }
 
-        // pos.x <= -999 means autocentre to parent.
+        // requestedsize.value < N force, >N minimum width
 
         public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
                                               Size? minsize = null, Size? maxsize = null, Size? requestedsize = null)
@@ -691,10 +691,16 @@ namespace ExtendedControls
 
             widthw += ExtraMarginRightBottom.Width;
 
-            widthw = Math.Max(requestedsize.Width, widthw);     // so, if requested size is bigger, increase
+            if (requestedsize.Width < 0)
+                widthw = -requestedsize.Width;
+            else
+                widthw = Math.Max(requestedsize.Width, widthw);
 
             int height = measureitemsinwindow.Height + ExtraMarginRightBottom.Height;
-            height = Math.Max(requestedsize.Height, height);     // so, if requested size is bigger, increase
+            if (requestedsize.Height < 0)
+                height = -requestedsize.Height;
+            else
+                height = Math.Max(requestedsize.Height, height);
 
             this.PositionSizeWithinScreen(widthw, height, false, new Size(64,64), halign, valign, scrollbarsizeifheightnotacheived);
 
@@ -717,7 +723,7 @@ namespace ExtendedControls
 
             resizerepositionon = true;
 
-            System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
+           // System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
         }
 
         protected override void OnShown(EventArgs e)

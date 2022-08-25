@@ -64,6 +64,7 @@
             this.extButton34 = new ExtendedControls.ExtButton();
             this.extButton35 = new ExtendedControls.ExtButton();
             this.extButton36 = new ExtendedControls.ExtButton();
+            this.extButton37 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // extButton24
@@ -426,6 +427,16 @@
             this.extButton36.UseVisualStyleBackColor = true;
             this.extButton36.Click += new System.EventHandler(this.extButton36_Click);
             // 
+            // extButton37
+            // 
+            this.extButton37.Location = new System.Drawing.Point(12, 296);
+            this.extButton37.Name = "extButton37";
+            this.extButton37.Size = new System.Drawing.Size(183, 23);
+            this.extButton37.TabIndex = 1;
+            this.extButton37.Text = "ConfigurableForm-T8-rs-force";
+            this.extButton37.UseVisualStyleBackColor = true;
+            this.extButton37.Click += new System.EventHandler(this.extButton37_Click);
+            // 
             // TestVariousForms
             // 
             this.ClientSize = new System.Drawing.Size(854, 605);
@@ -433,6 +444,7 @@
             this.Controls.Add(this.extButton23);
             this.Controls.Add(this.extButton22);
             this.Controls.Add(this.extButton21);
+            this.Controls.Add(this.extButton37);
             this.Controls.Add(this.extButton36);
             this.Controls.Add(this.extButton35);
             this.Controls.Add(this.extButton34);
@@ -508,5 +520,6 @@
         private ExtendedControls.ExtButton extButton34;
         private ExtendedControls.ExtButton extButton35;
         private ExtendedControls.ExtButton extButton36;
+        private ExtendedControls.ExtButton extButton37;
     }
 }
