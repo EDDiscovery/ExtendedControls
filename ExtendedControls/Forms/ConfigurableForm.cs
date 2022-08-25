@@ -677,7 +677,9 @@ namespace ExtendedControls
             // now position in the screen, allowing for a scroll bar if required due to height restricted
 
             MinimumSize = minsize;       // setting this allows for small windows
-            MaximumSize = maxsize;      // and force limits
+
+            if (maxsize.Width < 32000)       // only set if not stupid (i.e default). If you set it stupid, it sure screws up the system when double click max
+                MaximumSize = maxsize;      // and force limits
 
             int widthw = measureitemsinwindow.Width;
             if (closebutton != null && AllowSpaceForCloseButton)
