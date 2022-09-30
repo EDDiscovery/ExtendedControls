@@ -40,6 +40,8 @@ namespace ExtendedControls
         public bool ShowCheckBox { get { return showcheckbox; } set { showcheckbox = value; PerformLayout(); } }
         public bool Checked { get { return checkbox.Checked; } set { checkbox.Checked = value; } }
 
+        public int DisplayTimeIndex { get; set; }
+
         public event EventHandler ValueChanged
         {
             add { Events.AddHandler(EVENT_VALUECHANGED, value); }
@@ -432,9 +434,20 @@ namespace ExtendedControls
         {
             if (calendar == null)
             {
+                var todayDate = DateTime.UtcNow;
+                if (DisplayTimeIndex == 0)
+                {
+                    todayDate = todayDate.ToLocalTime();
+                }
+                else if (DisplayTimeIndex == 2)
+                {
+                    todayDate = todayDate.AddYears(1286);
+                }
+
                 calendar = new CalendarForm();
                 calendar.Value = datetimevalue;
                 calendar.CloseOnSelection = calendar.CloseOnDeactivate = true;
+                calendar.Calendar.TodayDate = todayDate;
                 calendar.PositionBelow(this);
                 calendar.TopMost = true;
                 calendar.Selected += calselected;
