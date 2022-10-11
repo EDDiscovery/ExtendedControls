@@ -61,6 +61,12 @@
     <Compile Include="TestPanelScrollDGV.Designer.cs">
       <DependentUpon>TestPanelScrollDGV.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestImageControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestImageControl.Designer.cs">
+      <DependentUpon>TestImageControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestThemeSpeed.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestPanelScrollDGV.resx">
       <DependentUpon>TestPanelScrollDGV.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestImageControl.resx">
+      <DependentUpon>TestImageControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestThemeSpeed.resx">
       <DependentUpon>TestThemeSpeed.cs</DependentUpon>
@@ -435,6 +444,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Discoveries.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FleetCarrier.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

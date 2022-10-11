@@ -59,5 +59,12 @@ namespace TestExtendedControls
             extPictureBoxScroll2.Render();
             extButton1.Text = vpos.ToString();
         }
+
+        private void extButton2_Click(object sender, EventArgs e)
+        {
+            extPictureBox1.Render();
+            extPictureBox1.AddTextAutoSize(new Point(5, vpos), new Size(1000, 1000), "Text to render " + vpos, Font, Color.Red, Color.White, 0.8f);
+            vpos += 30;
+        }
     }
 }

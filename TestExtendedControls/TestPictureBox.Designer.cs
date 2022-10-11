@@ -39,6 +39,7 @@
             this.extPictureBoxScroll2 = new ExtendedControls.ExtPictureBoxScroll();
             this.extScrollBar2 = new ExtendedControls.ExtScrollBar();
             this.extPictureBox3 = new ExtendedControls.ExtPictureBox();
+            this.extButton2 = new ExtendedControls.ExtButton();
             ((System.ComponentModel.ISupportInitialize)(this.extPictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -51,6 +52,8 @@
             // 
             // extPictureBox1
             // 
+            this.extPictureBox1.BackgroundImage = global::TestExtendedControls.Properties.Resources.FleetCarrier;
+            this.extPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extPictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.extPictureBox1.Location = new System.Drawing.Point(0, 0);
             this.extPictureBox1.Name = "extPictureBox1";
@@ -99,7 +102,7 @@
             this.extScrollBar1.HideScrollBar = false;
             this.extScrollBar1.LargeChange = 330;
             this.extScrollBar1.Location = new System.Drawing.Point(235, 0);
-            this.extScrollBar1.Maximum = 161;
+            this.extScrollBar1.Maximum = 160;
             this.extScrollBar1.Minimum = 0;
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
@@ -167,7 +170,7 @@
             this.extScrollBar2.HideScrollBar = false;
             this.extScrollBar2.LargeChange = 330;
             this.extScrollBar2.Location = new System.Drawing.Point(235, 0);
-            this.extScrollBar2.Maximum = 161;
+            this.extScrollBar2.Maximum = 160;
             this.extScrollBar2.Minimum = 0;
             this.extScrollBar2.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar2.MousePressedButtonColor = System.Drawing.Color.Red;
@@ -192,11 +195,22 @@
             this.extPictureBox3.Size = new System.Drawing.Size(235, 161);
             this.extPictureBox3.TabIndex = 0;
             // 
+            // extButton2
+            // 
+            this.extButton2.Location = new System.Drawing.Point(754, 52);
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(75, 23);
+            this.extButton2.TabIndex = 3;
+            this.extButton2.Text = "Render1";
+            this.extButton2.UseVisualStyleBackColor = true;
+            this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
+            // 
             // TestPictureBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(879, 666);
+            this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -228,5 +242,6 @@
         private ExtendedControls.ExtPictureBoxScroll extPictureBoxScroll2;
         private ExtendedControls.ExtScrollBar extScrollBar2;
         private ExtendedControls.ExtPictureBox extPictureBox3;
+        private ExtendedControls.ExtButton extButton2;
     }
 }

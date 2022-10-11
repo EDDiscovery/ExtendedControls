@@ -31,6 +31,7 @@ namespace ExtendedControls
             public Size Size { get { return new Size(Location.Width, Location.Height); } set { Location = new Rectangle(Location.Left, Location.Top, value.Width, value.Height); } }
             public Image Image { get; set; }
             public bool ImageOwned { get; set; }
+            public bool Visible { get; set; } = true;
 
             public Rectangle AltLocation { get; set; }
             public Image AltImage { get; set; }
@@ -43,6 +44,7 @@ namespace ExtendedControls
             public bool MouseOver { get; set; }
 
             public Action<Graphics, ImageElement> OwnerDrawCallback { get; set; }
+
 
             public ImageElement()
             {
@@ -80,18 +82,7 @@ namespace ExtendedControls
                 ToolTipText = tt;
             }
 
-            // top left, sized
-            public void TextFixedSizeC(Point topleft, Size size, string text, Font dp, Color c, Color backcolour,
-                                    float backscale = 1.0F, bool centertext = false,
-                                    Object t = null, string tt = null, StringFormat frmt = null)
-            {
-                Image = BaseUtils.BitMapHelpers.DrawTextIntoFixedSizeBitmapC(text, size, dp, c, backcolour, backscale, centertext, frmt);
-                ImageOwned = true;
-                Location = new Rectangle(topleft.X, topleft.Y, Image.Width, Image.Height);
-                Tag = t;
-                ToolTipText = tt;
-            }
-
+ 
             public void OwnerDraw(Action<Graphics, ImageElement> callback, Rectangle area, Object tag = null, string tiptext = null)
             {
                 Location = area;
@@ -244,16 +235,32 @@ namespace ExtendedControls
             return lab;
         }
 
-        // topleft, sized
-        public ImageElement AddTextFixedSizeC(Point topleft, Size size, string label, Font fnt, Color c, Color backcolour, float backscale, bool centered, Object tag = null, string tiptext = null, StringFormat frmt = null)
+        public List<ImageElement> AddTextAutoSize(Point topleft, Size max, string[] label, int linemargin, bool upwards, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
-            ImageElement lab = new ImageElement();
-            lab.TextFixedSizeC(topleft, size, label, fnt, c, backcolour, backscale, centered, tag, tiptext, frmt);
-            Elements.Add(lab);
-            return lab;
+            List<ImageElement> elements = new List<ImageElement>();
+            Point curpos = topleft;
+            foreach (var x in label)
+            {
+                if (x != null)
+                {
+                    var ie = AddTextAutoSize(curpos, max, x, fnt, c, backcolour, backscale, tag, tiptext, frmt);
+                    elements.Add(ie);
+                    curpos.Y = ie.Location.Bottom + linemargin;
+                }
+            }
+
+            if ( upwards)
+            {
+                curpos.Y -= linemargin;                     // remove extra offset
+                int offset = curpos.Y - topleft.Y;          // and this is the total size
+                foreach (var i in elements)
+                    i.Location = new Rectangle(i.Location.Left, i.Location.Top - offset, i.Location.Width, i.Location.Height);
+            }
+
+            return elements;
         }
 
-        // centre pos, autosized
+         // centre pos, autosized
         public ImageElement AddTextCentred(Point poscentrehorz, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
             ImageElement lab = new ImageElement();
@@ -316,8 +323,8 @@ namespace ExtendedControls
             return new Size(maxw, maxh);
         }
 
-        // taking image elements, draw to main bitmap. set if resize control, and if we have a min size of bitmap, or a margin
-        public void Render(bool resizecontrol = true, Size? minsize = null, Size? margin = null)
+
+        public Bitmap RenderBitmap(Size? minsize = null, Size? margin = null)
         {
             Size size = DisplaySize();
             if (size.Width > 0 && size.Height > 0) // will be zero if no elements
@@ -336,6 +343,8 @@ namespace ExtendedControls
                     size.Height += margin.Value.Height;
                 }
 
+                System.Diagnostics.Debug.WriteLine($"Picture box draw {size}");
+
                 Bitmap newrender = new Bitmap(size.Width, size.Height);   // size bitmap to contents
 
                 if (!FillColor.IsFullyTransparent())
@@ -347,19 +356,37 @@ namespace ExtendedControls
                 {
                     foreach (ImageElement i in Elements)
                     {
-                        if (i.Image != null)
-                            gr.DrawImage(i.Image, i.Location);
+                        if (i.Visible)
+                        {
+                            if (i.Image != null)
+                            {
+                                gr.DrawImage(i.Image, i.Location);
+                            }
 
-                        i.OwnerDrawCallback?.Invoke(gr, i);
+                            i.OwnerDrawCallback?.Invoke(gr, i);
+                        }
                     }
                 }
 
+                return newrender;
+            }
+            else
+                return null;
+        }
+
+        // taking image elements, draw to main bitmap. set if resize control, and if we have a min size of bitmap, or a margin
+        public void Render(bool resizecontrol = true, Size? minsize = null, Size? margin = null)
+        {
+            Bitmap newrender = RenderBitmap(minsize, margin);
+
+            if ( newrender != null )
+            { 
                 Image lastimage = Image;
 
                 Image = newrender;      // and replace the image in one go, to try and minimise distortion
 
                 if (resizecontrol)
-                    this.Size = new Size(size.Width, size.Height);
+                    this.Size = new Size(newrender.Width, newrender.Height);
 
                 lastimage?.Dispose();
                 lastimage = null;
@@ -450,7 +477,7 @@ namespace ExtendedControls
             {
                 foreach (ImageElement i in Elements)
                 {
-                    if (i.Location.Contains(eventargs.Location))
+                    if (i.Visible && i.Location.Contains(eventargs.Location))
                     {
                         elementin = i;
 
