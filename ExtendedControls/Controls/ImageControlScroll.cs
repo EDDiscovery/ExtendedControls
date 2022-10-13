@@ -43,7 +43,7 @@ namespace ExtendedControls.Controls
                 vsc.Scroll += new System.Windows.Forms.ScrollEventHandler(ScrollBarMoved);
             }
             else
-                System.Diagnostics.Debug.Assert(true, "Picture Box view Scroller Panel requires PictureBox and VScrollBarCustom to be added");
+                System.Diagnostics.Debug.Assert(true, "Image Control Scroll requires ImageControl and ExtScrollBar to be added");
         }
 
         protected override void OnLayout(LayoutEventArgs levent)
@@ -73,6 +73,7 @@ namespace ExtendedControls.Controls
             {
                 imgctrl.Location = new Point(left, imgctrl.Top);      // position left only, leave positioning for update scroll bar
                 imgctrl.Size = new Size(right - left, imgctrl.Height);  // don't change the height
+              //  System.Diagnostics.Debug.WriteLine($"ICS layout imgctrl {imgctrl.Bounds} scroll panel {Bounds}");
             }
 
             UpdateScrollBar();
@@ -106,6 +107,8 @@ namespace ExtendedControls.Controls
 
                     imgctrl.Location = new Point(imgctrl.Left, -vsc.Value);
 
+                   // System.Diagnostics.Debug.WriteLine($"ICS imgctrl {imgctrl.Bounds}");
+                  
                     //System.Diagnostics.Debug.WriteLine("pscroll {0},{1},{2}", offset, pbox.Height - 1, ClientRectangle.Height);
 
                     vsc.SetValueMaximumLargeChange(vsc.Value, imgctrl.Height - 1, ClientRectangle.Height);

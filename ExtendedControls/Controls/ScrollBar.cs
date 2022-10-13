@@ -253,7 +253,7 @@ namespace ExtendedControls
                     OnValueChanged(new EventArgs());
                     OnScroll(new ScrollEventArgs((newthumbvalue<thumbvalue) ? ScrollEventType.SmallDecrement : ScrollEventType.SmallIncrement, thumbvalue, newthumbvalue, ScrollOrientation.VerticalScroll));
                     CalculateThumb();
-                    Invalidate();
+                    Refresh();      // force redraw - if a lot is moving it can hold off doing it
                 }
             }
             else if (upbuttonarea.Contains(e.Location))

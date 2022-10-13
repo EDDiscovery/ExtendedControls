@@ -68,7 +68,7 @@ namespace ExtendedControls
                 vsc.Scroll += new System.Windows.Forms.ScrollEventHandler(ScrollBarMoved);
             }
             else
-                Debug.Assert(true, "Picture Box view Scroller Panel requires PictureBox and VScrollBarCustom to be added");
+                Debug.Assert(true, "Picture Box Scroller Panel requires ExtPictureBox and ExtScrollBar to be added");
         }
 
         protected override void OnLayout(LayoutEventArgs levent)
