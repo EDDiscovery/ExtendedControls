@@ -468,9 +468,8 @@ namespace ExtendedControls
 
             if (elementin != null && !elementin.Location.Contains(eventargs.Location))       // go out..
             {
-                LeaveCurrentElement();
-                if (LeaveElement != null)
-                    LeaveElement(this, eventargs, elementin, elementin.Tag);
+                LeaveElement?.Invoke(this, eventargs, elementin, elementin.Tag);
+                LeaveCurrentElement();      // clears elementin
             }
 
             if (elementin == null)      // is in?
@@ -489,8 +488,7 @@ namespace ExtendedControls
                             Invalidate();
                         }
 
-                        if (EnterElement != null)
-                            EnterElement(this, eventargs, elementin, elementin.Tag);
+                        EnterElement?.Invoke(this, eventargs, elementin, elementin.Tag);
                     }
                 }
             }
