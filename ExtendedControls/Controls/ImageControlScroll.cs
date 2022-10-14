@@ -23,9 +23,10 @@ namespace ExtendedControls.Controls
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }       // if internal
+        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }      
 
-        // disabling it makes the picturebox be the same size as the client area, enabling it means the picture box grows with the data
+        public int ImageControlMinimumHeight { get; set; } = 0;     // if zero, image control height is kept. If non zero, this is the minimum, and stretch out to available
+
         public bool ScrollBarEnabled { get { return scrollbarenabled; } set { scrollbarenabled = value; PerformLayout(); } }
 
         #region Implementation
@@ -72,8 +73,14 @@ namespace ExtendedControls.Controls
             if (imgctrl != null)                       // finally, put the box between left and right
             {
                 imgctrl.Location = new Point(left, imgctrl.Top);      // position left only, leave positioning for update scroll bar
-                imgctrl.Size = new Size(right - left, imgctrl.Height);  // don't change the height
-              //  System.Diagnostics.Debug.WriteLine($"ICS layout imgctrl {imgctrl.Bounds} scroll panel {Bounds}");
+
+                // always stretch to width available
+                if ( ImageControlMinimumHeight>0)                           // if set, set to either available or this min height
+                    imgctrl.Size = new Size(right - left, System.Math.Max(ClientRectangle.Height, ImageControlMinimumHeight));  
+                else
+                    imgctrl.Size = new Size(right - left, imgctrl.Height);  // don't change the height, but change the width to suit.
+
+                System.Diagnostics.Debug.WriteLine($"ICS layout imgctrl {imgctrl.Bounds} scroll panel {Bounds} sizing {right - left}");
             }
 
             UpdateScrollBar();

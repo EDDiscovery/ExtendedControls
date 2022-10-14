@@ -27,7 +27,7 @@ namespace ExtendedControls
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }       // if internal
+        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }     
 
         // disabling it makes the picturebox be the same size as the client area, enabling it means the picture box grows with the data
         public bool ScrollBarEnabled { get { return scrollbarenabled; } set { scrollbarenabled = value; PerformLayout(); } }

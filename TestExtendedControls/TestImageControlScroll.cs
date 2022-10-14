@@ -23,7 +23,9 @@ namespace TestExtendedControls
             imageControl1.BackColor = Color.Green;
 
             imageControl1.ImageSize = new Size(Properties.Resources.FleetCarrier.Width, Properties.Resources.FleetCarrier.Height);
-            imageControl1.Height = imageControl1.ImageSize.Height;
+            imageControl1.ImageLayout = ImageLayout.Stretch;
+            imageControl1.BackgroundImageLayout = ImageLayout.Stretch;
+            imageControlScroll1.ImageControlMinimumHeight = imageControl1.ImageSize.Height;
 
             imageControl1.EnterMouseArea += (c, a,l,e) => { System.Diagnostics.Debug.WriteLine($"Enter {a.Location} @ {l} cp {e.Location}"); };
             imageControl1.LeaveMouseArea += (c, a,l,e) => { System.Diagnostics.Debug.WriteLine($"Leave {a.Location} @ {l}  cp {e.Location}"); };

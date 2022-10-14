@@ -30,9 +30,9 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.imageControl1 = new ExtendedControls.Controls.ImageControl();
             this.imageControlScroll1 = new ExtendedControls.Controls.ImageControlScroll();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
+            this.imageControl1 = new ExtendedControls.Controls.ImageControl();
             this.imageControlScroll1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,23 +58,6 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // imageControl1
-            // 
-            this.imageControl1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.imageControl1.BackgroundImage = global::TestExtendedControls.Properties.Resources.FleetCarrier;
-            this.imageControl1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.imageControl1.ImageBackgroundColor = System.Drawing.Color.Transparent;
-            this.imageControl1.ImageDepth = 1;
-            this.imageControl1.ImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.imageControl1.ImageSize = new System.Drawing.Size(128, 128);
-            this.imageControl1.ImageVisible = new bool[] {
-        false};
-            this.imageControl1.Location = new System.Drawing.Point(0, 0);
-            this.imageControl1.Name = "imageControl1";
-            this.imageControl1.Size = new System.Drawing.Size(823, 754);
-            this.imageControl1.TabIndex = 0;
-            this.imageControl1.Text = "imageControl1";
-            // 
             // imageControlScroll1
             // 
             this.imageControlScroll1.Controls.Add(this.extScrollBar1);
@@ -98,7 +81,7 @@
             this.extScrollBar1.HideScrollBar = false;
             this.extScrollBar1.LargeChange = 602;
             this.extScrollBar1.Location = new System.Drawing.Point(823, 0);
-            this.extScrollBar1.Maximum = 358;
+            this.extScrollBar1.Maximum = 270;
             this.extScrollBar1.Minimum = 0;
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
@@ -114,6 +97,23 @@
             this.extScrollBar1.ThumbDrawAngle = 0F;
             this.extScrollBar1.Value = 0;
             this.extScrollBar1.ValueLimited = 0;
+            // 
+            // imageControl1
+            // 
+            this.imageControl1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.imageControl1.BackgroundImage = global::TestExtendedControls.Properties.Resources.FleetCarrier;
+            this.imageControl1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.imageControl1.ImageBackgroundColor = System.Drawing.Color.Transparent;
+            this.imageControl1.ImageDepth = 1;
+            this.imageControl1.ImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.imageControl1.ImageSize = new System.Drawing.Size(128, 128);
+            this.imageControl1.ImageVisible = new bool[] {
+        false};
+            this.imageControl1.Location = new System.Drawing.Point(0, 0);
+            this.imageControl1.Name = "imageControl1";
+            this.imageControl1.Size = new System.Drawing.Size(823, 271);
+            this.imageControl1.TabIndex = 0;
+            this.imageControl1.Text = "imageControl1";
             // 
             // TestImageControlScroll
             // 
