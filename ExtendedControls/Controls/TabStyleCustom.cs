@@ -96,7 +96,8 @@ namespace ExtendedControls
 
         public override void DrawText(Graphics gr, Rectangle borderrect, int index, bool selected, Color color, string text, Font ft, Image icon)        // provide a standard version..
         {
-            borderrect.Width += 2;  // little nerf is required
+            borderrect.X -= 4;
+            borderrect.Width += 8;  // little nerf is required
             base.DrawText(gr, borderrect, index, selected, color, text, ft, icon);
         }
 
@@ -144,7 +145,8 @@ namespace ExtendedControls
 
         public override void DrawText(Graphics gr, Rectangle borderrect, int index, bool selected, Color color, string text, Font ft, Image icon)        // provide a standard version..
         {
-            borderrect.Width += 2;  // little nerf is required
+            borderrect.X -= 4;
+            borderrect.Width += 8;  // little nerf is required
             base.DrawText(gr, borderrect, index, selected, color, text, ft, icon);
         }
 
