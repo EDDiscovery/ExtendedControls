@@ -785,6 +785,8 @@ namespace ExtendedControls
                 ctrl.updown.ForeColor = colors[CI.textbox_fore];
                 ctrl.updown.MouseOverColor = colors[CI.checkbox].Multiply(1.4F);
                 ctrl.updown.MouseSelectedColor = colors[CI.checkbox].Multiply(1.5F);
+                
+                ctrl.ResumeLayout();        // forgot to resume layout before (oct 22)!!!
                 return;     // don't do sub controls - we are in charge of them
             }
             else if (myControl is StatusStrip)
