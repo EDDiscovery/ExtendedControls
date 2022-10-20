@@ -206,7 +206,7 @@ namespace ExtendedControls
                 calendaricon.SizeMode = PictureBoxSizeMode.StretchImage;
                 calendaricon.Visible = !ShowUpDown;
 
-                System.Diagnostics.Debug.WriteLine($"DTP {Name} layout bc {BorderColor} bo {borderoffset} h {height} cb {checkbox.Bounds} ud {updown.Bounds} {calendaricon.Bounds} cr {ClientRectangle}");
+                //System.Diagnostics.Debug.WriteLine($"DTP {Name} layout bc {BorderColor} bo {borderoffset} h {height} cb {checkbox.Bounds} ud {updown.Bounds} {calendaricon.Bounds} cr {ClientRectangle}");
                 xstart = (showcheckbox ? (checkbox.Right + 2) : 2) + (BorderColor.IsFullyTransparent() ? 2 : 0);
 
                 Recalc();   // cause anything might have changed, like fonts
@@ -234,7 +234,7 @@ namespace ExtendedControls
 
                 drawarea.Inflate(-2, -2);
 
-                System.Diagnostics.Debug.WriteLine($"DTP paint border {BorderColor} {bordercolor}");
+                //System.Diagnostics.Debug.WriteLine($"DTP paint border {BorderColor} {bordercolor}");
             }
 
             using (Brush br = new SolidBrush(this.TextBackColor))
