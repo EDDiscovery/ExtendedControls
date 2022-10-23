@@ -61,6 +61,12 @@
     <Compile Include="TestImageControlScroll.Designer.cs">
       <DependentUpon>TestImageControlScroll.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestOldSplitter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestOldSplitter.Designer.cs">
+      <DependentUpon>TestOldSplitter.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestPanelScrollDGV.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,11 +139,11 @@
     <Compile Include="TestTextBoxes.Designer.cs">
       <DependentUpon>TestTextBoxes.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestSplitter.cs">
+    <Compile Include="TestSplitterContainer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestSplitter.Designer.cs">
-      <DependentUpon>TestSplitter.cs</DependentUpon>
+    <Compile Include="TestSplitterContainer.Designer.cs">
+      <DependentUpon>TestSplitterContainer.cs</DependentUpon>
     </Compile>
     <Compile Include="TestButtons.cs">
       <SubType>Form</SubType>
@@ -243,6 +249,9 @@
     <EmbeddedResource Include="TestImageControlScroll.resx">
       <DependentUpon>TestImageControlScroll.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestOldSplitter.resx">
+      <DependentUpon>TestOldSplitter.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestPanelScrollDGV.resx">
       <DependentUpon>TestPanelScrollDGV.cs</DependentUpon>
     </EmbeddedResource>
@@ -279,8 +288,8 @@
     <EmbeddedResource Include="TestTextBoxes.resx">
       <DependentUpon>TestTextBoxes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestSplitter.resx">
-      <DependentUpon>TestSplitter.cs</DependentUpon>
+    <EmbeddedResource Include="TestSplitterContainer.resx">
+      <DependentUpon>TestSplitterContainer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestButtons.resx">
       <DependentUpon>TestButtons.cs</DependentUpon>

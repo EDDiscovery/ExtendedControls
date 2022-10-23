@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace TestExtendedControls
 {
-    public partial class TestSplitter : Form
+    public partial class TestSplitterContainer : Form
     {
         ThemeList theme;
 
-        public TestSplitter()
+        public TestSplitterContainer()
         {
             theme = new ThemeList();
             theme.LoadBaseThemes();

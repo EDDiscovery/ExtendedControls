@@ -62,6 +62,9 @@
     <Compile Include="Controls\ImageControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\SplitterResizer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\PanelAutoHeightWidth.cs">
       <SubType>Component</SubType>
     </Compile>

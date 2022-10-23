@@ -1,6 +1,6 @@
 ﻿namespace TestExtendedControls
 {
-    partial class TestSplitter
+    partial class TestSplitterContainer
     {
         /// <summary>
         /// Required designer variable.
