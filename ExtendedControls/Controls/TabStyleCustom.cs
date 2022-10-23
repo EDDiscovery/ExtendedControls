@@ -47,8 +47,10 @@ namespace ExtendedControls
                 gr.SmoothingMode = SmoothingMode.AntiAlias;
 
                 using (StringFormat f = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
-                using (Brush textb = new SolidBrush(color))
-                    gr.DrawString(text, ft, textb, borderrect, f);
+                {
+                    using (Brush textb = new SolidBrush(color))
+                        gr.DrawString(text, ft, textb, borderrect, f);
+                }
             }
         }
     }
@@ -91,6 +93,14 @@ namespace ExtendedControls
             using (Pen p = new Pen(coloroutline, 1.0F))
                 gr.DrawPath(p, border);
         }
+
+        public override void DrawText(Graphics gr, Rectangle borderrect, int index, bool selected, Color color, string text, Font ft, Image icon)        // provide a standard version..
+        {
+            borderrect.X -= 4;
+            borderrect.Width += 8;  // little nerf is required
+            base.DrawText(gr, borderrect, index, selected, color, text, ft, icon);
+        }
+
     }
 
     public class TabStyleRoundedEdge : TabStyleCustom
@@ -132,6 +142,14 @@ namespace ExtendedControls
             using (Pen p = new Pen(coloroutline, 1.0F))
                 gr.DrawPath(p, border);
         }
+
+        public override void DrawText(Graphics gr, Rectangle borderrect, int index, bool selected, Color color, string text, Font ft, Image icon)        // provide a standard version..
+        {
+            borderrect.X -= 4;
+            borderrect.Width += 8;  // little nerf is required
+            base.DrawText(gr, borderrect, index, selected, color, text, ft, icon);
+        }
+
     }
 
     public class TabStyleAngled : TabStyleCustom
@@ -170,7 +188,7 @@ namespace ExtendedControls
         public override void DrawText(Graphics gr, Rectangle borderrect, int index, bool selected, Color color, string text, Font ft, Image icon)        // provide a standard version..
         {
             borderrect.Width += shift;
-            base.DrawText(gr, borderrect, index, selected, color, text, ft,icon);
+            base.DrawText(gr, borderrect, index, selected, color, text, ft, icon);
         }
     }
 }

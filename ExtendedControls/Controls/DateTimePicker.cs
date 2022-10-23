@@ -190,24 +190,23 @@ namespace ExtendedControls
                 int borderoffset = BorderColor.IsFullyTransparent() ? 0 : 2;
                 int height = ClientRectangle.Height - borderoffset * 2;
                 checkbox.Visible = ShowCheckBox;
-                checkbox.Location = new Point(borderoffset + 2, borderoffset);
-                checkbox.Size = new Size(height, height);
+                checkbox.Bounds = new Rectangle(borderoffset + 2, borderoffset,height,height);
 
                 updown.Visible = ShowUpDown;
-                updown.Location = new Point(ClientRectangle.Width - ClientRectangle.Height - borderoffset, borderoffset);
-                updown.Size = new Size(height, height);
+                updown.Bounds = new Rectangle(ClientRectangle.Width - ClientRectangle.Height - borderoffset, borderoffset,height, height);
+
 
                 Image ci = calendaricon.Image = ExtendedControls.Properties.Resources.Calendar;
 
                 int caliconh = height - 4;
                 int caliconw = (int)((float)caliconh / (float)ci.Height * ci.Width);
 
-                calendaricon.Size = new Size(caliconw, caliconh);
+                calendaricon.Bounds = new Rectangle(ClientRectangle.Width - borderoffset - caliconw - 4, ClientRectangle.Height / 2 - caliconh / 2, caliconw, caliconh);
                 calendaricon.Image = ci;
-                calendaricon.Location = new Point(ClientRectangle.Width - borderoffset - caliconw- 4, ClientRectangle.Height / 2 - caliconh / 2);
                 calendaricon.SizeMode = PictureBoxSizeMode.StretchImage;
                 calendaricon.Visible = !ShowUpDown;
 
+                //System.Diagnostics.Debug.WriteLine($"DTP {Name} layout bc {BorderColor} bo {borderoffset} h {height} cb {checkbox.Bounds} ud {updown.Bounds} {calendaricon.Bounds} cr {ClientRectangle}");
                 xstart = (showcheckbox ? (checkbox.Right + 2) : 2) + (BorderColor.IsFullyTransparent() ? 2 : 0);
 
                 Recalc();   // cause anything might have changed, like fonts
@@ -234,6 +233,8 @@ namespace ExtendedControls
                     e.Graphics.DrawPath(pc2, g2);
 
                 drawarea.Inflate(-2, -2);
+
+                //System.Diagnostics.Debug.WriteLine($"DTP paint border {BorderColor} {bordercolor}");
             }
 
             using (Brush br = new SolidBrush(this.TextBackColor))
