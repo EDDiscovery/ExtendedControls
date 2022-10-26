@@ -343,7 +343,7 @@ namespace ExtendedControls
                     size.Height += margin.Value.Height;
                 }
 
-                System.Diagnostics.Debug.WriteLine($"Picture box draw {size}");
+                //System.Diagnostics.Debug.WriteLine($"Picture box draw {size}");
 
                 Bitmap newrender = new Bitmap(size.Width, size.Height);   // size bitmap to contents
 
