@@ -1,7 +1,7 @@
 ﻿
 namespace TestExtendedControls
 {
-    partial class TestOldSplitter
+    partial class TestSplitterParentResize
     {
         /// <summary>
         /// Required designer variable.

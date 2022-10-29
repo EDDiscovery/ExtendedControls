@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,11 +62,17 @@
     <Compile Include="TestImageControlScroll.Designer.cs">
       <DependentUpon>TestImageControlScroll.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestOldSplitter.cs">
+    <Compile Include="TestChart.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestOldSplitter.Designer.cs">
-      <DependentUpon>TestOldSplitter.cs</DependentUpon>
+    <Compile Include="TestChart.Designer.cs">
+      <DependentUpon>TestChart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestSplitterParentResize.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestSplitterParentResize.Designer.cs">
+      <DependentUpon>TestSplitterParentResize.cs</DependentUpon>
     </Compile>
     <Compile Include="TestPanelScrollDGV.cs">
       <SubType>Form</SubType>
@@ -249,8 +256,11 @@
     <EmbeddedResource Include="TestImageControlScroll.resx">
       <DependentUpon>TestImageControlScroll.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestOldSplitter.resx">
-      <DependentUpon>TestOldSplitter.cs</DependentUpon>
+    <EmbeddedResource Include="TestChart.resx">
+      <DependentUpon>TestChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestSplitterParentResize.resx">
+      <DependentUpon>TestSplitterParentResize.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestPanelScrollDGV.resx">
       <DependentUpon>TestPanelScrollDGV.cs</DependentUpon>

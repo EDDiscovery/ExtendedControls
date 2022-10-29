@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace TestExtendedControls
 {
-    public partial class TestOldSplitter : Form
+    public partial class TestSplitterParentResize : Form
     {
-        public TestOldSplitter()
+        public TestSplitterParentResize()
         {
             InitializeComponent();
 

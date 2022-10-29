@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="QuickJSON, Version=0.9.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\RJKJSoft.QuickJSON.0.9.5\lib\net48\QuickJSON.dll</HintPath>
+      <HintPath>..\packages\RJKJSoft.QuickJSON.0.9.5\lib\net48\QuickJSON.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,6 +56,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
+    <Compile Include="Controls\ExtSafeChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ExtChart.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ImageControlScroll.cs">
       <SubType>Component</SubType>
     </Compile>
