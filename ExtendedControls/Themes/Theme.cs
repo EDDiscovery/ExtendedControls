@@ -502,6 +502,16 @@ namespace ExtendedControls
 
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
             }
+            else if (myControl is ExtSafeChart)     // needs to be before panel, as the underlying class is a panel. Must use ExtSafeChart
+            {
+                Apply(myControl as ExtSafeChart,fnt);
+                myControl.ResumeLayout();
+                return;     // don't go into subcomponents
+            }
+            else if (myControl is Chart)
+            {
+                System.Diagnostics.Debug.Assert(false, "Chart or ExtChart not directly allowed");
+            }
             else if (myControl is ExtPanelResizer)      // Resizers only show when no frame is on
             {
                 myControl.Visible = !WindowsFrame;
@@ -744,11 +754,6 @@ namespace ExtendedControls
                 ctrl.updown.MouseSelectedColor = c1.Multiply(mouseselectedscaling);
                 ctrl.Invalidate();
             }
-            else if (myControl is Chart)
-            {
-                Chart ctrl = (Chart)myControl;
-                ctrl.BackColor = Color.Transparent;
-            }
             else if (myControl is PictureBox)
             {
                 PictureBox ctrl = (PictureBox)myControl;
@@ -865,6 +870,36 @@ namespace ExtendedControls
                 UpdateControls(myControl, subC, fnt, level + 1);
 
             myControl.ResumeLayout();
+        }
+
+        // special - apply to chart. May want to call this if you play about with the chart after default themeing has been applied.
+        public void Apply(ExtSafeChart ctrl, Font fnt)
+        {
+            ctrl.Font = fnt;
+            ctrl.BackColor = colors[CI.form];
+            
+            for( int i = ctrl.ChartAreaCount-1; i>=0; i-- )
+            {
+                ctrl.SetCurrentChartArea(i);
+                ctrl.SetChartAreaColors(colors[CI.grid_cellbackground], colors[CI.group_borderlines]);      // 99% of charts have 1 chart area, so only theme that one
+
+                ctrl.SetXAxisMajorGrid(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
+                ctrl.SetYAxisMajorGrid(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
+                ctrl.SetXAxisLabelColorFont(colors[CI.grid_celltext], fnt);
+                ctrl.SetYAxisLabelColorFont(colors[CI.grid_celltext], fnt);
+
+                ctrl.SetXCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
+                ctrl.SetYCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
+
+                ctrl.SetXCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
+                ctrl.SetYCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
+            }
+
+            for ( int i = ctrl.SeriesCount-1; i>=0; i-- )
+            {
+                ctrl.SetCurrentSeries(i);
+                ctrl.SetSeriesColor(colors[CI.grid_celltext]);
+            }
         }
 
         private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)

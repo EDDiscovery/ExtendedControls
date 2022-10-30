@@ -56,10 +56,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
-    <Compile Include="Controls\ExtSafeChart.cs">
+    <Compile Include="Controls\SafeChart.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ExtChart.cs">
+    <Compile Include="Controls\Chart.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ImageControlScroll.cs">
