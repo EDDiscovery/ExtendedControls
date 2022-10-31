@@ -14,7 +14,9 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
+using System;
 using System.Drawing;
+using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ExtendedControls
@@ -142,6 +144,16 @@ namespace ExtendedControls
             CurrentChartArea.AxisX.ScrollBar.BackColor = scrollbarback;
             CurrentChartArea.AxisX.ScrollBar.ButtonColor = scrollbarbutton;
         }
+        public void ZoomOutX()
+        {
+            CurrentChartArea.AxisX.ScaleView.ZoomReset();
+        }
+        public void ZoomResetX()
+        {
+            CurrentChartArea.AxisX.ScaleView.ZoomReset(0);
+        }
+
+        public bool IsZoomedX { get { return CurrentChartArea.AxisX.ScaleView.IsZoomed; } }
 
         //////////////////////////////////////////////////////////////////////////// Y
 
@@ -202,6 +214,17 @@ namespace ExtendedControls
             CurrentChartArea.AxisY.ScrollBar.ButtonColor = scrollbarbutton;
         }
 
+        public void ZoomOutY()
+        {
+            CurrentChartArea.AxisY.ScaleView.ZoomReset();
+        }
+
+        public void ZoomResetY()
+        {
+            CurrentChartArea.AxisY.ScaleView.ZoomReset(0);
+        }
+        public bool IsZoomedY { get { return CurrentChartArea.AxisY.ScaleView.IsZoomed; } }
+
         //////////////////////////////////////////////////////////////////////////// Series
 
         public Series AddSeries(string name, string chartarea, SeriesChartType type, Color? seriescolor = null )
@@ -260,8 +283,10 @@ namespace ExtendedControls
         public Series SetSeriesDataLabels(Color? back = null, Font fnt = null, Color? defaultlabelcolor = null)     // fore colour set by data point
         {
             CurrentSeries.LabelBackColor = back ?? Color.Transparent;
-            CurrentSeries.Font = fnt ?? Font;
-            CurrentSeries.LabelForeColor = defaultlabelcolor ?? Color.Black;
+            if (fnt != null)
+                CurrentSeries.Font = fnt;
+            if ( defaultlabelcolor != null )
+                CurrentSeries.LabelForeColor = defaultlabelcolor.Value;
             return CurrentSeries;
         }
 
@@ -354,6 +379,28 @@ namespace ExtendedControls
                 dp.MarkerBorderColor = markerbordercolor.Value;
                 dp.MarkerBorderWidth = markerborderwidth;
             }
+        }
+
+        /// Context menu definition
+        public void AddContextMenu(string[] text, Action<ToolStripMenuItem>[] actions, Action<ToolStripMenuItem[]> opening = null)
+        {
+            System.Diagnostics.Debug.Assert(text.Length == actions.Length);
+
+            var ct = new ContextMenuStrip();
+            var tms = new ToolStripMenuItem[text.Length];
+            for( int i = 0; i < text.Length; i++)
+            {
+                tms[i] = new ToolStripMenuItem() { Name = text[i], Text = text[i], Tag = i };
+                tms[i].Click += (s, e) => { actions[(int)(((ToolStripMenuItem)s).Tag)]?.Invoke(s as ToolStripMenuItem); };
+                ct.Items.Add(tms[i]);
+            }
+
+            if (opening!=null)
+            {
+                ct.Opening += (s, e) => { opening.Invoke(tms); };
+            }
+
+            ContextMenuStrip = ct;
         }
 
         public ChartArea CurrentChartArea { set; get; }

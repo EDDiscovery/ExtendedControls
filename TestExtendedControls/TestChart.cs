@@ -79,47 +79,49 @@ namespace TestExtendedControls
                 chartdef1.Name = "mostVisited";
                 chartdef1.Bounds = new Rectangle(10, 10, 900, 900);
 
-                chartdef1.AddTitle("Most Visited", Color.Red, new Font("Arial", 15));
-                chartdef1.SetBorder(Color.Green, 5, ChartDashStyle.Dash);
+                chartdef1.AddTitle("Most Visited", Docking.Top, Color.Red, new Font("Arial", 15));
+                chartdef1.SetBorder(5, ChartDashStyle.Dash, Color.Green);
 
-                var ca = chartdef1.AddChartArea("ChartArea1", Color.Gray, Color.Purple, 5, ChartDashStyle.Dot);
+                chartdef1.AddChartArea("ChartArea1");
+                chartdef1.SetChartAreaColors(Color.Gray, Color.Purple, 5, ChartDashStyle.Dot);
 
-                chartdef1.SetXAxisMajorGrid(Color.RoyalBlue, 3, ChartDashStyle.DashDotDot);
-                chartdef1.SetXAxisMinorGrid(Color.RoyalBlue, 3, ChartDashStyle.DashDotDot);
-                chartdef1.SetXAxisLabelColorFontFormat(Color.Red, new Font("Brush Script MT", 12), "MM/yyyy");
+                //chartdef1.SetXAxisInterval(28, IntervalAutoMode.VariableCount);
+                chartdef1.SetXAxisInterval(28, IntervalAutoMode.FixedCount);
+                chartdef1.SetXAxisMajorGrid(1, ChartDashStyle.DashDotDot, Color.RoyalBlue);
+                //chartdef1.SetXAxisMinorGrid(1, ChartDashStyle.DashDotDot, Color.AliceBlue);
+                chartdef1.SetXAxisLabelColorFont(Color.Red, new Font("Arial", 8));
+                chartdef1.SetXAxisFormat("MM-yyyy");
 
-                chartdef1.SetYAxisMajorGrid(Color.DarkBlue, 3, ChartDashStyle.DashDotDot);
-                chartdef1.SetYAxisMinorGrid(Color.DarkBlue, 3, ChartDashStyle.DashDotDot);
-                chartdef1.SetYAxisLabelColorFontFormat(Color.Blue, new Font("Brush Script MT", 12), "N2");
+                chartdef1.SetYAxisMajorGrid(1, ChartDashStyle.DashDotDot, Color.DarkBlue);
+                //chartdef1.SetYAxisMinorGrid(3, ChartDashStyle.DashDotDot, Color.DarkBlue);
+                chartdef1.SetYAxisLabelColorFont(Color.Blue, new Font("Arial", 8));
+                chartdef1.SetYAxisFormat("N2");
 
-                chartdef1.EnableXCursor(Color.IndianRed, 5, Color.Yellow, Color.Red, Color.Yellow);
+                chartdef1.EnableXCursor(true);
+                chartdef1.SetXCursorColors(Color.IndianRed, Color.Yellow, 5);
+                chartdef1.SetXCursorScrollBarColors(Color.Red, Color.Yellow);
 
                 chartdef1.AddLegend(Color.Green, Color.Yellow, new Font("Ms sans serif", 7));
 
                 chartdef1.AddSeries("Series1", "ChartArea1", SeriesChartType.Line, Color.Pink);
-                chartdef1.ShowSeriesDataLabels(Color.Yellow, new Font("Algerian", 15), Color.Purple);
-                chartdef1.ShowSeriesDataLabelsBorder(Color.Green, 5, ChartDashStyle.Dot);
-                chartdef1.ShowSeriesMarkers(MarkerStyle.Diamond, Color.Goldenrod, 16, Color.Yellow, 5);
+                chartdef1.SetSeriesDataLabels(Color.Yellow, new Font("Algerian", 15), Color.Purple);
+                chartdef1.SetSeriesDataLabelsBorder(Color.Green, 5, ChartDashStyle.Dot);
+                chartdef1.ShowSeriesMarkers(MarkerStyle.Diamond);
+                chartdef1.SetSeriesMarkersColorSize(Color.Goldenrod, 2, Color.Yellow, 2);
+
+                chartdef1.AddContextMenu(new string[] { "Zoom out by 1", "Reset Zoom", "Test disable" },
+                                    new Action<ToolStripMenuItem>[]
+                                        { new Action<ToolStripMenuItem>((s)=> { chartdef1.ZoomOutX(); } ),
+                                          new Action<ToolStripMenuItem>((s)=> { chartdef1.ZoomResetX(); } ),
+                                          new Action<ToolStripMenuItem>((s)=> { } ),
+                                        },
+                                    new Action<ToolStripMenuItem[]>((list) => {
+                                        list[0].Enabled = list[1].Enabled = chartdef1.IsZoomedX;
+                                        list[2].Enabled = false; } )
+                                    );
 
                 if (false)
                 {
-                    int[] datavalues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-
-                    int i = 0;
-                    foreach (var data in datavalues)        // display 10
-                    {
-                        //   chartdef1.AddPoint(new DataPoint(i, data));
-                        if (i == 2)
-                        {
-                            // chartdef1.SetPointDataLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 5, ChartDashStyle.Solid);
-                        }
-                        i++;
-                    }
-                }
-
-                if (true)
-                {
-                    chartdef1.SetXAxisInterval(365);
                     int[] datavalues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
                     DateTime[] datevalues = new DateTime[] {
                         new DateTime(1970,1,1),new DateTime(1981,1,1),new DateTime(1982,1,1),new DateTime(1983,1,1),
@@ -132,71 +134,28 @@ namespace TestExtendedControls
                         chartdef1.AddXY(datevalues[i], datavalues[i]);
                         if (i == 2)
                         {
-                            chartdef1.SetPointDataLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 5, ChartDashStyle.Solid);
+                            chartdef1.SetPointLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 5, ChartDashStyle.Solid);
                             chartdef1.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
                         }
                     }
                 }
 
-
-                this.Controls.Add(chartdef1);
-            }
-
-            {
-                chartdef2 = new ExtendedControls.ExtSafeChart();                                                  // create a chart, to see if it works, may not on all platforms
-                chartdef2.Font = f;
-                chartdef2.Name = "mostVisited";
-                chartdef2.Bounds = new Rectangle(920, 500, 400, 400);
-
-                chartdef2.AddTitle("Most Visited", Color.Red, new Font("Arial", 8));
-                chartdef2.SetBorder(Color.Green, 5, ChartDashStyle.Dash);
-
-                chartdef2.AddChartArea("ChartArea1", Color.Gray, Color.Purple, 5, ChartDashStyle.Dot);
-
-                chartdef2.SetXAxisMajorGrid(Color.RoyalBlue, 3, ChartDashStyle.DashDotDot);
-                chartdef2.SetXAxisMinorGrid(Color.RoyalBlue, 3, ChartDashStyle.DashDotDot);
-                chartdef2.SetXAxisLabelColorFontFormat(Color.Red, new Font("Brush Script MT", 8), "MM/yyyy");
-
-                chartdef2.SetYAxisMajorGrid(Color.DarkBlue, 3, ChartDashStyle.DashDotDot);
-                chartdef2.SetYAxisMinorGrid(Color.DarkBlue, 3, ChartDashStyle.DashDotDot);
-                chartdef2.SetYAxisLabelColorFontFormat(Color.Blue, new Font("Brush Script MT", 8), "N2");
-
-                chartdef2.EnableXCursor(Color.IndianRed, 5, Color.Yellow, Color.Red, Color.Yellow);
-
-                chartdef2.AddLegend(Color.Green, Color.Yellow, new Font("Ms sans serif", 7));
-
-                chartdef2.AddSeries("Series1", "ChartArea1", SeriesChartType.Line, Color.Pink);
-                chartdef2.ShowSeriesDataLabels(Color.Yellow, new Font("Algerian",8), Color.Purple);
-                chartdef2.ShowSeriesDataLabelsBorder(Color.Green, 5, ChartDashStyle.Dot);
-                chartdef2.ShowSeriesMarkers(MarkerStyle.Diamond, Color.Goldenrod, 16, Color.Yellow, 5);
-
                 if (true)
                 {
-                    chartdef2.SetXAxisInterval(365);
-                    int[] datavalues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-                    DateTime[] datevalues = new DateTime[] {
-                        new DateTime(1970,1,1),new DateTime(1981,1,1),new DateTime(1982,1,1),new DateTime(1983,1,1),
-                        new DateTime(1984,1,1),new DateTime(1985,1,1),new DateTime(1986,1,1),new DateTime(1987,1,1),
-                        new DateTime(1988,1,1),new DateTime(1989,1,1),new DateTime(1990,1,1),new DateTime(1991,1,1),
-                    };
-
-                    for (int i = 0; i < datavalues.Length; i++)
+                    for (int i = 0; i < 365; i++)
                     {
-                        chartdef2.AddXY(datevalues[i], datavalues[i]);
+                        DateTime start = new DateTime(1970, 1, 1);
+                        start = start.AddDays(i * 2);
+                        chartdef1.AddXY(start, i % 100 +10);
                         if (i == 2)
                         {
-                            chartdef2.SetPointDataLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 5, ChartDashStyle.Solid);
-                            chartdef2.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
+                            chartdef1.SetPointLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 1, ChartDashStyle.Solid);
+                            chartdef1.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
                         }
                     }
                 }
-
-
-                this.Controls.Add(chartdef2);
+                this.Controls.Add(chartdef1);
             }
-
-
-
         }
 
     }

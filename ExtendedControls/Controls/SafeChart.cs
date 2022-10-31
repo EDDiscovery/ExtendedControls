@@ -14,6 +14,7 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -130,6 +131,15 @@ namespace ExtendedControls
         {
             chart?.SetXCursorScrollBarColors(scrollbarback, scrollbarbutton);
         }
+        public void ZoomOutX()
+        {
+            chart?.ZoomOutX();
+        }
+        public void ZoomResetX()
+        {
+            chart?.ZoomResetX();
+        }
+        public bool IsZoomedX { get { return chart?.IsZoomedX ?? false; } }
 
         //////////////////////////////////////////////////////////////////////////// Y
 
@@ -177,6 +187,16 @@ namespace ExtendedControls
         {
             chart?.SetYCursorScrollBarColors(scrollbarback, scrollbarbutton);
         }
+        public void ZoomOutY()
+        {
+            chart?.ZoomOutY();
+        }
+        public void ZoomResetY()
+        {
+            chart?.ZoomResetY();
+        }
+
+        public bool IsZoomedY { get { return chart?.IsZoomedY ?? false; } }
 
         //////////////////////////////////////////////////////////////////////////// Series
 
@@ -273,6 +293,13 @@ namespace ExtendedControls
         public void SetPointMarkerStyle(MarkerStyle style, Color color, int markersize = 1, Color? markerbordercolor = null, int markerborderwidth = 2)
         {
             chart?.SetPointMarkerStyle(style, color, markersize, markerbordercolor, markerborderwidth);
+        }
+
+        /// Context menu
+
+        public void AddContextMenu(string[] text, Action<ToolStripMenuItem>[] actions, Action<ToolStripMenuItem[]> opening = null)
+        {
+            chart?.AddContextMenu(text, actions, opening);
         }
 
 

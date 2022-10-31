@@ -875,13 +875,14 @@ namespace ExtendedControls
         // special - apply to chart. May want to call this if you play about with the chart after default themeing has been applied.
         public void Apply(ExtSafeChart ctrl, Font fnt)
         {
-            ctrl.Font = fnt;
+            ctrl.Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
             ctrl.BackColor = colors[CI.form];
-            
+
+            // we theme all chart areas, backwards, so chartarea0 is the one left selected            
             for( int i = ctrl.ChartAreaCount-1; i>=0; i-- )
             {
                 ctrl.SetCurrentChartArea(i);
-                ctrl.SetChartAreaColors(colors[CI.grid_cellbackground], colors[CI.group_borderlines]);      // 99% of charts have 1 chart area, so only theme that one
+                ctrl.SetChartAreaColors(colors[CI.grid_cellbackground], colors[CI.group_borderlines]);      
 
                 ctrl.SetXAxisMajorGrid(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
                 ctrl.SetYAxisMajorGrid(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
@@ -895,10 +896,11 @@ namespace ExtendedControls
                 ctrl.SetYCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
             }
 
-            for ( int i = ctrl.SeriesCount-1; i>=0; i-- )
+            if (ctrl.SeriesCount > 0)       // we theme series 0 only -other series need individual color control 
             {
-                ctrl.SetCurrentSeries(i);
+                ctrl.SetCurrentSeries(0);                           
                 ctrl.SetSeriesColor(colors[CI.grid_celltext]);
+                ctrl.SetSeriesDataLabelsColor(Color.Transparent, fnt, colors[CI.grid_celltext]);
             }
         }
 

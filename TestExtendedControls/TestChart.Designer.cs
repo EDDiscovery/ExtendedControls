@@ -29,8 +29,12 @@ namespace TestExtendedControls
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.fredToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // chart1
@@ -41,6 +45,19 @@ namespace TestExtendedControls
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fredToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            // 
+            // fredToolStripMenuItem
+            // 
+            this.fredToolStripMenuItem.Name = "fredToolStripMenuItem";
+            this.fredToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fredToolStripMenuItem.Text = "fred";
+            // 
             // TestChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -50,6 +67,7 @@ namespace TestExtendedControls
             this.Name = "TestChart";
             this.Text = "TestOldSplitter";
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -57,5 +75,7 @@ namespace TestExtendedControls
         #endregion
 
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fredToolStripMenuItem;
     }
 }
