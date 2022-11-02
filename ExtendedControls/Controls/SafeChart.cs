@@ -126,7 +126,7 @@ namespace ExtendedControls
         // Cursor
         public void XCursor(bool enabled = true)
         {
-            chart?.YCursor(enabled);
+            chart?.XCursor(enabled);
         }
         public void XCursorSelection(bool userallowed = true, bool autoscroll = true)
         {
@@ -223,6 +223,7 @@ namespace ExtendedControls
         {
             chart?.YAutoScale(on, enableyscrollbar);
         }
+        public double AutoScaleYAddedPercent { get { return chart?.AutoScaleYAddedPercent ?? 0; } set { if (chart != null) AutoScaleYAddedPercent = value; } }
 
         //////////////////////////////////////////////////////////////////////////// Series
 
@@ -334,7 +335,7 @@ namespace ExtendedControls
             chart?.EnableZoomMouseWheelX(on);
         }
 
-        public double ZoomMouseWheelXMinimumPercent { get { return chart?.ZoomMouseWheelXMinimumPercent ?? 0; } set { if (chart != null) ZoomMouseWheelXMinimumPercent = value; } } 
+        public double ZoomMouseWheelXMinimumPercent { get { return chart?.ZoomMouseWheelXMinimumPercent ?? 0; } set { if (chart != null) ZoomMouseWheelXMinimumPercent = value; } }
 
         private ExtChart chart;
     }

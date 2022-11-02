@@ -176,15 +176,19 @@ namespace ExtendedControls
         public void ZoomOutX()
         {
             CurrentChartArea.AxisX.ScaleView.ZoomReset();
+            AutoZoomY(CurrentChartArea);
         }
+
         public void ZoomResetX()
         {
             CurrentChartArea.AxisX.ScaleView.ZoomReset(0);
+            AutoZoomY(CurrentChartArea);
         }
 
         public void ZoomX(double min, double max)
         {
             CurrentChartArea.AxisX.ScaleView.Zoom(min, max);
+            AutoZoomY(CurrentChartArea);
         }
 
         public bool IsZoomedX { get { return CurrentChartArea.AxisX.ScaleView.IsZoomed; } }
@@ -290,7 +294,7 @@ namespace ExtendedControls
                 CurrentChartArea.AxisY.ScrollBar.Enabled = enableyscrollbar;
             }
         }
-
+        public double AutoScaleYAddedPercent { get; set; } = 5;         // added value to zoom to give spacing
 
         //////////////////////////////////////////////////////////////////////////// Series
 
@@ -460,7 +464,6 @@ namespace ExtendedControls
 
         public double ZoomMouseWheelXMinimumPercent { get; set; } = 5;
 
-
         #region ///////////////////////////////////////////////////////////// Private
 
         private void ExtChart_AxisViewChanged(object senderunused, ViewEventArgs e)       // user only interaction calls this
@@ -476,8 +479,11 @@ namespace ExtendedControls
                 if (ch.AxisX.ScaleView.IsZoomed)        // if x is zoomed, we adjust y to min/max
                 {
                     var minmax = ch.MinMaxYInChartArea(Series);
-                    //System.Diagnostics.Debug.WriteLine($"X Zoomed Min max {minmax.Item1} - {minmax.Item2}");
-                    ch.AxisY.ScaleView.Zoom(minmax.Item1, minmax.Item2);
+                    double graphsize = ch.AxisY.Maximum - ch.AxisY.Minimum;
+                    double min = Math.Max(minmax.Item1 - graphsize * AutoScaleYAddedPercent / 100.0, ch.AxisY.Minimum);
+                    double max = Math.Min(minmax.Item2 + graphsize * AutoScaleYAddedPercent / 100.0, ch.AxisY.Maximum);
+                    System.Diagnostics.Debug.WriteLine($"X Zoomed Min max {min} - {max}");
+                    ch.AxisY.ScaleView.Zoom(min,max);
                 }
                 else
                 {
@@ -491,52 +497,60 @@ namespace ExtendedControls
         {
             base.OnMouseWheel(e);
 
-            var hitres = HitTest(e.X, e.Y);
-            //System.Diagnostics.Debug.WriteLine($"Hit test {hitres.ChartElementType} ca {hitres.ChartArea?.Name} ax {hitres.Axis?.Name} pi {hitres.PointIndex} se {hitres.Series?.Name} so {hitres.SubObject}");
+            // saw an exception in HitTest which made no sense, so lets just cover it up and see if it occurs via debug
+            try
+            { 
+                var hitres = HitTest(e.X, e.Y);
+                //System.Diagnostics.Debug.WriteLine($"Hit test {hitres.ChartElementType} ca {hitres.ChartArea?.Name} ax {hitres.Axis?.Name} pi {hitres.PointIndex} se {hitres.Series?.Name} so {hitres.SubObject}");
 
-            bool grapharea = hitres.ChartElementType == ChartElementType.PlottingArea || hitres.ChartElementType == ChartElementType.Gridlines ||
-                            hitres.ChartElementType == ChartElementType.DataPoint;
+                bool grapharea = hitres.ChartElementType == ChartElementType.PlottingArea || hitres.ChartElementType == ChartElementType.Gridlines ||
+                                hitres.ChartElementType == ChartElementType.DataPoint;
 
-            ChartArea ch = hitres.ChartArea;
+                ChartArea ch = hitres.ChartArea;
 
-            // we have it enabled, and in graph area, or on x axis labels
-            if (mousewheelx.Contains(ch) && ( grapharea || (hitres.ChartElementType == ChartElementType.AxisLabels && hitres.Axis == ch.AxisX)))
-            {
-                Axis ax = ch.AxisX;
-                double xpos = ax.PixelPositionToValue(e.Location.X);
-                double size = ax.ScaleView.ViewMaximum - ax.ScaleView.ViewMinimum;
-                double graphsize = ax.Maximum - ax.Minimum;
-                //System.Diagnostics.Debug.WriteLine($"Zoom {ax.ScaleView.ViewMinimum} {ax.ScaleView.ViewMaximum} = {ax.ScaleView.ViewMaximum - ax.ScaleView.ViewMinimum} gs {graphsize}");
-
-                if (e.Delta > 0)
+                // we have it enabled, and in graph area, or on x axis labels
+                if (mousewheelx.Contains(ch) && (grapharea || (hitres.ChartElementType == ChartElementType.AxisLabels && hitres.Axis == ch.AxisX)))
                 {
-                    size /= 1.2;
-                    if (size > graphsize * ZoomMouseWheelXMinimumPercent / 100.0)       // not we limit the zoom in
+                    Axis ax = ch.AxisX;
+                    double xpos = ax.PixelPositionToValue(e.Location.X);
+                    double size = ax.ScaleView.ViewMaximum - ax.ScaleView.ViewMinimum;
+                    double graphsize = ax.Maximum - ax.Minimum;
+                    //System.Diagnostics.Debug.WriteLine($"Zoom {ax.ScaleView.ViewMinimum} {ax.ScaleView.ViewMaximum} = {ax.ScaleView.ViewMaximum - ax.ScaleView.ViewMinimum} gs {graphsize}");
+
+                    if (e.Delta > 0)
                     {
-                        ax.ScaleView.Zoom(xpos - size / 2, xpos + size / 2);
-                        AutoZoomY(ch);      // need to give the autozoom a chance to operate as well
-                    }
-                }
-                else
-                {
-                    if (ax.ScaleView.IsZoomed)
-                    {
-                        size *= 1.2;
-                        if (size >= graphsize)                         // if the size has grown beyond, we reset x zoom
-                            ax.ScaleView.ZoomReset(0);
-                        else
+                        size /= 1.2;
+                        if (size > graphsize * ZoomMouseWheelXMinimumPercent / 100.0)       // not we limit the zoom in
                         {
-                            if (xpos + size / 2 > ax.Maximum)                   // make sure we don't zoom off the left/right of the max/min
-                                ax.ScaleView.Zoom(ax.Maximum - size, ax.Maximum);
-                            else if (xpos - size / 2 < ax.Minimum)
-                                ax.ScaleView.Zoom(ax.Minimum, ax.Minimum + size);
-                            else
-                                ax.ScaleView.Zoom(xpos - size / 2, xpos + size / 2);
+                            ax.ScaleView.Zoom(xpos - size / 2, xpos + size / 2);
+                            AutoZoomY(ch);      // need to give the autozoom a chance to operate as well
                         }
+                    }
+                    else
+                    {
+                        if (ax.ScaleView.IsZoomed)
+                        {
+                            size *= 1.2;
+                            if (size >= graphsize)                         // if the size has grown beyond, we reset x zoom
+                                ax.ScaleView.ZoomReset(0);
+                            else
+                            {
+                                if (xpos + size / 2 > ax.Maximum)                   // make sure we don't zoom off the left/right of the max/min
+                                    ax.ScaleView.Zoom(ax.Maximum - size, ax.Maximum);
+                                else if (xpos - size / 2 < ax.Minimum)
+                                    ax.ScaleView.Zoom(ax.Minimum, ax.Minimum + size);
+                                else
+                                    ax.ScaleView.Zoom(xpos - size / 2, xpos + size / 2);
+                            }
 
-                        AutoZoomY(ch);
+                            AutoZoomY(ch);
+                        }
                     }
                 }
+            }
+            catch( Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"********Exception in chart mouse wheel {ex}");
             }
         }
 
