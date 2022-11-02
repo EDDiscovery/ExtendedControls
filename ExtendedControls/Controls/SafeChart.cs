@@ -49,9 +49,14 @@ namespace ExtendedControls
         }
 
 
-        public void AddTitle(string name, Docking dck = Docking.Top, Color? titlecolor = null, Font f = null)
+        public void AddTitle(string name, Docking dck = Docking.Top, Color? titlecolor = null, Font f = null, Color? backcolor = null, ContentAlignment? alignment = null)
         {
-            chart?.AddTitle(name, dck, titlecolor, f);
+            chart?.AddTitle(name, dck, titlecolor, f, backcolor, alignment);
+        }
+
+        public void SetAllTitleColorFont( Color titlecolor, Font f, Color? backcolor = null)
+        {
+            chart?.SetAllTitleColorFont(titlecolor, f,backcolor);
         }
 
         public void SetBorder(int width, ChartDashStyle style, Color? b = null)

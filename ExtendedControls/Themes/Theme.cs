@@ -878,6 +878,8 @@ namespace ExtendedControls
             ctrl.Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
             ctrl.BackColor = colors[CI.form];
 
+            ctrl.SetAllTitleColorFont(colors[CI.grid_celltext], fnt);
+
             // we theme all chart areas, backwards, so chartarea0 is the one left selected            
             for( int i = ctrl.ChartAreaCount-1; i>=0; i-- )
             {
@@ -901,6 +903,7 @@ namespace ExtendedControls
                 ctrl.SetCurrentSeries(0);                           
                 ctrl.SetSeriesColor(colors[CI.grid_celltext]);
                 ctrl.SetSeriesDataLabelsColor(Color.Transparent, fnt, colors[CI.grid_celltext]);
+                ctrl.SetSeriesMarkersColorSize(colors[CI.grid_scrollarrow], 4, colors[CI.grid_scrollbutton], 2);
             }
         }
 

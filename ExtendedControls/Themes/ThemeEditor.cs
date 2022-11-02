@@ -255,5 +255,24 @@ namespace ExtendedControls
             ApplyChanges?.Invoke(Theme);
         }
 
+        private void checkBoxDarkMode_CheckedChanged(object sender, EventArgs e)
+        {
+            SetLabels(this,checkBoxDarkMode.Checked ? Color.DarkOrange : Color.Black);
+            if (checkBoxDarkMode.Checked)
+                this.BackColor = Color.Black;
+            else
+                this.BackColor = SystemColors.Control;
+        }
+
+        private void SetLabels(Control ctrl, Color labeltext)
+        {
+            foreach (Control c in ctrl.Controls)
+            {
+                if (c is Label || c is CheckBox || c is GroupBox)
+                    c.ForeColor = labeltext;
+                else
+                    SetLabels(c, labeltext);
+            }
+        }
     }
 }

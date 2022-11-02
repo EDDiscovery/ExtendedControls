@@ -125,6 +125,7 @@ namespace ExtendedControls
             this.label27 = new System.Windows.Forms.Label();
             this.panel_theme72 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.checkBoxDarkMode = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
@@ -134,7 +135,7 @@ namespace ExtendedControls
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(841, 620);
+            this.buttonOK.Location = new System.Drawing.Point(841, 562);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 24);
             this.buttonOK.TabIndex = 0;
@@ -985,10 +986,22 @@ namespace ExtendedControls
             this.label3.TabIndex = 4;
             this.label3.Text = "Font";
             // 
+            // checkBoxDarkMode
+            // 
+            this.checkBoxDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.checkBoxDarkMode.AutoSize = true;
+            this.checkBoxDarkMode.Location = new System.Drawing.Point(27, 567);
+            this.checkBoxDarkMode.Name = "checkBoxDarkMode";
+            this.checkBoxDarkMode.Size = new System.Drawing.Size(110, 17);
+            this.checkBoxDarkMode.TabIndex = 21;
+            this.checkBoxDarkMode.Text = "Dark Background";
+            this.checkBoxDarkMode.UseVisualStyleBackColor = true;
+            this.checkBoxDarkMode.CheckedChanged += new System.EventHandler(this.checkBoxDarkMode_CheckedChanged);
+            // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(745, 620);
+            this.buttonCancel.Location = new System.Drawing.Point(738, 563);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(80, 24);
             this.buttonCancel.TabIndex = 0;
@@ -1000,7 +1013,8 @@ namespace ExtendedControls
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(930, 655);
+            this.ClientSize = new System.Drawing.Size(930, 597);
+            this.Controls.Add(this.checkBoxDarkMode);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxColors);
             this.Controls.Add(this.buttonCancel);
@@ -1016,6 +1030,7 @@ namespace ExtendedControls
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1102,6 +1117,7 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_theme80;
         private System.Windows.Forms.Panel panel_theme82;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.CheckBox checkBoxDarkMode;
         private System.Windows.Forms.Button buttonCancel;
     }
 }

@@ -26,7 +26,7 @@ namespace ExtendedControls
     public class ExtChart : Chart
     {
         // if give titlecolor, must give font
-        public void AddTitle(string name, Docking dck = Docking.Top, Color? titlecolor = null, Font f = null)
+        public void AddTitle(string name, Docking dck = Docking.Top, Color? titlecolor = null, Font f = null, Color? backcolor = null, ContentAlignment? alignment = null)
         {
             if (titlecolor != null && f != null)
             {
@@ -34,8 +34,27 @@ namespace ExtendedControls
             }
             else
                 Titles.Add(new Title(name, dck));
+
+            var t = Titles[Titles.Count - 1];
+
+            if (backcolor.HasValue)
+                t.BackColor = backcolor.Value;
+            if (alignment.HasValue)
+                t.Alignment = alignment.Value;
+
+            ChartAreas[0].AxisY.ScaleView.Zoomable = true;
         }
 
+        public void SetAllTitleColorFont(Color titlecolor, Font f, Color? backcolor = null)
+        {
+            foreach( var x in Titles)
+            {
+                x.Font = f;
+                x.ForeColor = titlecolor;
+                if ( backcolor.HasValue)
+                    x.BackColor = backcolor.Value;
+            }
+        }
         public void SetBorder(int width, ChartDashStyle style, Color? borderlinecolor = null)
         {
             BorderlineDashStyle = style;
