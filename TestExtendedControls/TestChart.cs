@@ -13,7 +13,7 @@ namespace TestExtendedControls
 {
     public partial class TestChart : Form
     {
-        private ExtendedControls.ExtChart chartdef1 { get; set; }
+        private ExtendedControls.ExtChart chart { get; set; }
         private ExtendedControls.ExtSafeChart chartdef2 { get; set; }
         public TestChart()
         {
@@ -74,49 +74,64 @@ namespace TestExtendedControls
             }
 
             {
-                chartdef1 = new ExtendedControls.ExtChart();                                                  // create a chart, to see if it works, may not on all platforms
-                chartdef1.Font = f;
-                chartdef1.Name = "mostVisited";
-                chartdef1.Bounds = new Rectangle(10, 10, 900, 900);
+                chart = new ExtendedControls.ExtChart();                                                  // create a chart, to see if it works, may not on all platforms
+                chart.Font = f;
+                chart.Name = "mostVisited";
+                chart.Bounds = new Rectangle(10, 10, 900, 900);
 
-                chartdef1.AddTitle("Most Visited", Docking.Top, Color.Red, new Font("Arial", 15));
-                chartdef1.SetBorder(5, ChartDashStyle.Dash, Color.Green);
+                chart.AddTitle("Most Visited", Docking.Top, Color.Red, new Font("Arial", 15));
+                chart.SetBorder(5, ChartDashStyle.Dash, Color.Green);
 
-                chartdef1.AddChartArea("ChartArea1");
-                chartdef1.SetChartAreaColors(Color.Gray, Color.Purple, 5, ChartDashStyle.Dot);
+                chart.AddChartArea("ChartArea1");
+                chart.SetChartAreaColors(Color.Gray, Color.Purple, 5, ChartDashStyle.Dot);
 
                 //chartdef1.SetXAxisInterval(28, IntervalAutoMode.VariableCount);
-                chartdef1.SetXAxisInterval(28, IntervalAutoMode.FixedCount);
-                chartdef1.SetXAxisMajorGrid(1, ChartDashStyle.DashDotDot, Color.RoyalBlue);
+                chart.SetXAxisInterval(28, IntervalAutoMode.FixedCount);
+                chart.SetXAxisMajorGrid(1, ChartDashStyle.DashDotDot, Color.RoyalBlue);
                 //chartdef1.SetXAxisMinorGrid(1, ChartDashStyle.DashDotDot, Color.AliceBlue);
-                chartdef1.SetXAxisLabelColorFont(Color.Red, new Font("Arial", 8));
-                chartdef1.SetXAxisFormat("MM-yyyy");
+                chart.SetXAxisLabelColorFont(Color.Red, new Font("Arial", 8));
+                chart.SetXAxisFormat("MM-yyyy");
+                chart.XCursor();
+                chart.XCursorSelection();
+                chart.SetXCursorColors(Color.IndianRed, Color.Yellow, 5);
+                chart.SetXCursorScrollBarColors(Color.Red, Color.Yellow);
 
-                chartdef1.SetYAxisMajorGrid(1, ChartDashStyle.DashDotDot, Color.DarkBlue);
+
+                chart.SetYAxisMajorGrid(1, ChartDashStyle.DashDotDot, Color.DarkBlue);
                 //chartdef1.SetYAxisMinorGrid(3, ChartDashStyle.DashDotDot, Color.DarkBlue);
-                chartdef1.SetYAxisLabelColorFont(Color.Blue, new Font("Arial", 8));
-                chartdef1.SetYAxisFormat("N2");
+                chart.SetYAxisLabelColorFont(Color.Blue, new Font("Arial", 8));
+                chart.SetYAxisFormat("N2");
 
-                chartdef1.EnableXCursor(true);
-                chartdef1.SetXCursorColors(Color.IndianRed, Color.Yellow, 5);
-                chartdef1.SetXCursorScrollBarColors(Color.Red, Color.Yellow);
+                //chart.YCursor();
+                //chart.YCursorSelection(true,false);
 
-                chartdef1.AddLegend(Color.Green, Color.Yellow, new Font("Ms sans serif", 7));
+                chart.YAutoScale();
+                chart.EnableZoomMouseWheelX();
 
-                chartdef1.AddSeries("Series1", "ChartArea1", SeriesChartType.Line, Color.Pink);
-                chartdef1.SetSeriesDataLabels(Color.Yellow, new Font("Algerian", 15), Color.Purple);
-                chartdef1.SetSeriesDataLabelsBorder(Color.Green, 5, ChartDashStyle.Dot);
-                chartdef1.ShowSeriesMarkers(MarkerStyle.Diamond);
-                chartdef1.SetSeriesMarkersColorSize(Color.Goldenrod, 2, Color.Yellow, 2);
+                chart.SetYCursorColors(Color.IndianRed, Color.Yellow, 5);
+                chart.SetYCursorScrollBarColors(Color.Red, Color.Yellow);
 
-                chartdef1.AddContextMenu(new string[] { "Zoom out by 1", "Reset Zoom", "Test disable" },
+
+                chart.AddLegend(Color.Green, Color.Yellow, new Font("Ms sans serif", 7));
+
+                chart.AddSeries("Series1", "ChartArea1", SeriesChartType.Line, Color.Pink);
+                chart.SetSeriesDataLabels(Color.Yellow, new Font("Algerian", 15), Color.Purple);
+                chart.SetSeriesDataLabelsBorder(Color.Green, 5, ChartDashStyle.Dot);
+                chart.ShowSeriesMarkers(MarkerStyle.Diamond);
+                chart.SetSeriesMarkersColorSize(Color.Goldenrod, 2, Color.Yellow, 2);
+
+                chart.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
+
+
+                
+                chart.AddContextMenu(new string[] { "Zoom out by 1", "Reset Zoom", "Test disable" },
                                     new Action<ToolStripMenuItem>[]
-                                        { new Action<ToolStripMenuItem>((s)=> { chartdef1.ZoomOutX(); } ),
-                                          new Action<ToolStripMenuItem>((s)=> { chartdef1.ZoomResetX(); } ),
+                                        { new Action<ToolStripMenuItem>((s)=> { chart.ZoomOutX(); } ),
+                                          new Action<ToolStripMenuItem>((s)=> { chart.ZoomResetX(); } ),
                                           new Action<ToolStripMenuItem>((s)=> { } ),
                                         },
                                     new Action<ToolStripMenuItem[]>((list) => {
-                                        list[0].Enabled = list[1].Enabled = chartdef1.IsZoomedX;
+                                        list[0].Enabled = list[1].Enabled = chart.IsZoomedX;
                                         list[2].Enabled = false; } )
                                     );
 
@@ -131,11 +146,11 @@ namespace TestExtendedControls
 
                     for (int i = 0; i < datavalues.Length; i++)
                     {
-                        chartdef1.AddXY(datevalues[i], datavalues[i]);
+                        chart.AddXY(datevalues[i], datavalues[i]);
                         if (i == 2)
                         {
-                            chartdef1.SetPointLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 5, ChartDashStyle.Solid);
-                            chartdef1.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
+                            chart.SetPointLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 5, ChartDashStyle.Solid);
+                            chart.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
                         }
                     }
                 }
@@ -146,17 +161,82 @@ namespace TestExtendedControls
                     {
                         DateTime start = new DateTime(1970, 1, 1);
                         start = start.AddDays(i * 2);
-                        chartdef1.AddXY(start, i % 100 +10);
+                        chart.AddXY(start, i *100);
                         if (i == 2)
                         {
-                            chartdef1.SetPointLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 1, ChartDashStyle.Solid);
-                            chartdef1.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
+                            chart.SetPointLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 1, ChartDashStyle.Solid);
+                            chart.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
                         }
                     }
                 }
-                this.Controls.Add(chartdef1);
+                this.Controls.Add(chart);
+
             }
         }
+
+        //   make this installable
+        //       is there a way of getting y values in display range
+
+        //private void Chartdef1_MouseWheel(object sender, MouseEventArgs e)
+        //{
+        //    ExtendedControls.ExtChart chart = sender as ExtendedControls.ExtChart;
+        //    ChartArea c0 = chart.ChartAreas[0];
+        //    Axis ax = chart.ChartAreas[0].AxisX;
+        //    Axis ay = chart.ChartAreas[0].AxisY;
+
+
+        //    //System.Diagnostics.Debug.WriteLine($"Mouse {e.Location} Chart0 {c0.Position.Size} {c0.Position.X} {c0.Position.Y}");
+        //    //RectangleF c0pos = new RectangleF(c0.Position.X * chart.Width/100, c0.Position.Y * chart.Height/100, c0.Position.Width * chart.Width / 100, c0.Position.Height * chart.Height / 100);
+        //    //PointF offset = new PointF((float)e.Location.X / chart.Width, (float)e.Location.Y / chart.Height);
+        //    //PointF mrelpos = new PointF(e.Location.X - c0pos.X, e.Location.Y - c0pos.Y);
+        //    //System.Diagnostics.Debug.WriteLine($"Chart is at {c0pos} offset into control {offset} offset in graph {mrelpos}");
+
+        //    //System.Diagnostics.Debug.WriteLine($"{}");
+
+        //    double xpos = c0.AxisX.PixelPositionToValue(e.Location.X);
+        //    double ypos = c0.AxisY.PixelPositionToValue(e.Location.Y);
+
+        //    // System.Diagnostics.Debug.WriteLine($"Axis x {ax.Maximum} {ax.Minimum} | {ax.ScaleView.Position} {ax.ScaleView.Size} | {ax.ScaleView.ViewMinimum} {ax.ScaleView.ViewMaximum}");
+            
+        //    double size = ax.ScaleView.ViewMaximum - ax.ScaleView.ViewMinimum;
+        //    System.Diagnostics.Debug.WriteLine($"Zoom {ax.ScaleView.ViewMinimum} {ax.ScaleView.ViewMaximum} = {ax.ScaleView.ViewMaximum - ax.ScaleView.ViewMinimum}");
+        //    System.Diagnostics.Debug.WriteLine($"  Axis y {ay.Maximum} {ay.Minimum} | {ax.ScaleView.Position} {ay.ScaleView.Size} |{ay.ScaleView.ViewMinimum} {ay.ScaleView.ViewMaximum}");
+
+        //    if (e.Delta > 0)
+        //    {
+        //        size /= 1.2;
+
+        //        //double size = double.IsNaN(ax.ScaleView.Size) ? (ax.Maximum - ax.Minimum) / 1.2 : ax.ScaleView.Size / 1.2;
+        //        if (size > 2)
+        //        {
+        //            ax.ScaleView.Zoom(xpos - size / 2, xpos + size / 2);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if ( ax.ScaleView.IsZoomed )
+        //        {
+        //            size *= 1.2;
+        //            if (size > ax.Maximum - ax.Minimum)
+        //                ax.ScaleView.ZoomReset(0);
+        //            else
+        //            {
+        //                if (xpos + size / 2 > ax.Maximum)
+        //                    ax.ScaleView.Zoom(ax.Maximum - size, ax.Maximum);
+        //                else if (xpos - size / 2 < ax.Minimum)
+        //                    ax.ScaleView.Zoom(ax.Minimum, ax.Minimum + size);
+        //                else
+        //                    ax.ScaleView.Zoom(xpos - size / 2, xpos + size / 2);
+        //            }
+        //        }
+
+        //    }
+
+        //  //  ay.ScaleView.Zoom(minmax.Item1, minmax.Item2);
+        //}
+
+
+
 
     }
 }

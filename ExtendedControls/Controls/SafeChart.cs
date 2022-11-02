@@ -48,16 +48,16 @@ namespace ExtendedControls
             }
         }
 
-
         public void AddTitle(string name, Docking dck = Docking.Top, Color? titlecolor = null, Font f = null, Color? backcolor = null, ContentAlignment? alignment = null)
         {
             chart?.AddTitle(name, dck, titlecolor, f, backcolor, alignment);
         }
 
-        public void SetAllTitleColorFont( Color titlecolor, Font f, Color? backcolor = null)
+        public void SetAllTitleColorFont(Color titlecolor, Font f, Color? backcolor = null)
         {
-            chart?.SetAllTitleColorFont(titlecolor, f,backcolor);
+            chart?.SetAllTitleColorFont(titlecolor, f, backcolor);
         }
+
 
         public void SetBorder(int width, ChartDashStyle style, Color? b = null)
         {
@@ -123,10 +123,14 @@ namespace ExtendedControls
             chart?.SetXAxisMinorGrid(width, style, minor);
         }
 
-        // configure LastChartArea X cursor
-        public void EnableXCursor(bool autoscroll = true)
+        // Cursor
+        public void XCursor(bool enabled = true)
         {
-            chart?.EnableXCursor(autoscroll);
+            chart?.YCursor(enabled);
+        }
+        public void XCursorSelection(bool userallowed = true, bool autoscroll = true)
+        {
+            chart?.XCursorSelection(userallowed, autoscroll);
         }
         public void SetXCursorColors(Color lc, Color sc, int lw = 2)
         {
@@ -143,6 +147,10 @@ namespace ExtendedControls
         public void ZoomResetX()
         {
             chart?.ZoomResetX();
+        }
+        public void ZoomX(double min, double max)
+        {
+            chart?.ZoomX(min, max);
         }
         public bool IsZoomedX { get { return chart?.IsZoomedX ?? false; } }
 
@@ -179,10 +187,14 @@ namespace ExtendedControls
             chart?.SetYAxisMinorGrid(width, style, minor);
         }
 
-        // configure LastChartArea Y cursor
-        public void EnableYCursor(bool autoscroll = true)
+        // cursor
+        public void YCursor(bool enabled = true)
         {
-            chart?.EnableYCursor(autoscroll);
+            chart?.YCursor(enabled);
+        }
+        public void YCursorSelection(bool userallowed = true, bool autoscroll = true)
+        {
+            chart?.YCursorSelection(userallowed, autoscroll);
         }
         public void SetYCursorColors(Color lc, Color sc, int lw = 2)
         {
@@ -200,8 +212,17 @@ namespace ExtendedControls
         {
             chart?.ZoomResetY();
         }
+        public void ZoomY(double min, double max)
+        {
+            chart?.ZoomY(min, max);
+        }
 
         public bool IsZoomedY { get { return chart?.IsZoomedY ?? false; } }
+
+        public void YAutoScale(bool on = true, bool enableyscrollbar = true)
+        {
+            chart?.YAutoScale(on, enableyscrollbar);
+        }
 
         //////////////////////////////////////////////////////////////////////////// Series
 
@@ -307,6 +328,13 @@ namespace ExtendedControls
             chart?.AddContextMenu(text, actions, opening);
         }
 
+        // Wheelo
+        public void EnableZoomMouseWheelX(bool on = true)
+        {
+            chart?.EnableZoomMouseWheelX(on);
+        }
+
+        public double ZoomMouseWheelXMinimumPercent { get { return chart?.ZoomMouseWheelXMinimumPercent ?? 0; } set { if (chart != null) ZoomMouseWheelXMinimumPercent = value; } } 
 
         private ExtChart chart;
     }
