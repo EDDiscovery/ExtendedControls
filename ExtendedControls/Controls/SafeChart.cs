@@ -223,7 +223,7 @@ namespace ExtendedControls
         {
             chart?.YAutoScale(on, enableyscrollbar);
         }
-        public double AutoScaleYAddedPercent { get { return chart?.AutoScaleYAddedPercent ?? 0; } set { if (chart != null) AutoScaleYAddedPercent = value; } }
+        public double AutoScaleYAddedPercent { get { return chart?.AutoScaleYAddedPercent ?? 0; } set { if (chart != null) chart.AutoScaleYAddedPercent = value; } }
 
         //////////////////////////////////////////////////////////////////////////// Series
 
@@ -335,7 +335,7 @@ namespace ExtendedControls
             chart?.EnableZoomMouseWheelX(on);
         }
 
-        public double ZoomMouseWheelXMinimumPercent { get { return chart?.ZoomMouseWheelXMinimumPercent ?? 0; } set { if (chart != null) ZoomMouseWheelXMinimumPercent = value; } }
+        public double ZoomMouseWheelXMinimumPercent { get { return chart?.ZoomMouseWheelXMinimumPercent ?? 0; } set { if (chart != null) chart.ZoomMouseWheelXMinimumPercent = value; } }
 
         private ExtChart chart;
     }
