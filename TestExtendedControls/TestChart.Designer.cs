@@ -30,52 +30,64 @@ namespace TestExtendedControls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.fredToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            this.extButton1 = new ExtendedControls.ExtButton();
+            this.extButton2 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // chart1
-            // 
-            this.chart1.Location = new System.Drawing.Point(968, 12);
-            this.chart1.Name = "chart1";
-            this.chart1.Size = new System.Drawing.Size(403, 420);
-            this.chart1.TabIndex = 0;
-            this.chart1.Text = "chart1";
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fredToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(96, 26);
             // 
             // fredToolStripMenuItem
             // 
             this.fredToolStripMenuItem.Name = "fredToolStripMenuItem";
-            this.fredToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fredToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.fredToolStripMenuItem.Text = "fred";
+            // 
+            // extButton1
+            // 
+            this.extButton1.Location = new System.Drawing.Point(12, 12);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.TabIndex = 1;
+            this.extButton1.Text = "Pos1";
+            this.extButton1.UseVisualStyleBackColor = true;
+            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
+            // 
+            // extButton2
+            // 
+            this.extButton2.Location = new System.Drawing.Point(12, 53);
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(75, 23);
+            this.extButton2.TabIndex = 1;
+            this.extButton2.Text = "Pos2";
+            this.extButton2.UseVisualStyleBackColor = true;
+            this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
             // 
             // TestChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1407, 965);
-            this.Controls.Add(this.chart1);
+            this.Controls.Add(this.extButton2);
+            this.Controls.Add(this.extButton1);
             this.Name = "TestChart";
             this.Text = "TestOldSplitter";
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fredToolStripMenuItem;
+        private ExtendedControls.ExtButton extButton1;
+        private ExtendedControls.ExtButton extButton2;
     }
 }

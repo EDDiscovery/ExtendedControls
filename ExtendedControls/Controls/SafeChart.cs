@@ -21,7 +21,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace ExtendedControls
 {
-    // use to safely execute in MONO
+    // use to safely execute in MONO. See ExtChart for help on functions
 
     public class ExtSafeChart : Panel
     {
@@ -53,11 +53,10 @@ namespace ExtendedControls
             chart?.AddTitle(name, dck, titlecolor, f, backcolor, alignment);
         }
 
-        public void SetAllTitleColorFont(Color titlecolor, Font f, Color? backcolor = null)
+        public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
         {
-            chart?.SetAllTitleColorFont(titlecolor, f, backcolor);
+            chart?.SetAllTitleColorFont(titlecolor, font, backcolor);
         }
-
 
         public void SetBorder(int width, ChartDashStyle style, Color? b = null)
         {
@@ -66,15 +65,18 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// Legend
 
-        // add legend to chart. Each legend seems to represent the series in order
-        public void AddLegend(Color? textcolor, Color? backcolor = null, Font f = null, string name = "default")
+        public void AddLegend(Color? textcolor, Color? backcolor = null, Font font = null, string name = "default")
         {
-            chart?.AddLegend(textcolor, backcolor, f, name);
+            chart?.AddLegend(textcolor, backcolor, font, name);
+        }
+
+        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null)
+        {
+            chart?.SetAllLegendsColorFont(legendtextcolor, font, backcolor);
         }
 
         //////////////////////////////////////////////////////////////////////////// Chart Area
-        ///
-        // make a chart area
+
         public void AddChartArea(string name)
         {
             chart?.AddChartArea(name);
@@ -91,13 +93,12 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// X
 
-        // configure LastChartArea X axis Interval
-        public void SetXAxisInterval(int interval, IntervalAutoMode im = IntervalAutoMode.FixedCount)
+        public void SetXAxisInterval(DateTimeIntervalType type, int interval, IntervalAutoMode im = IntervalAutoMode.FixedCount,
+                                       double offset = 0, DateTimeIntervalType offsettype = DateTimeIntervalType.Auto)
         {
-            chart?.SetXAxisInterval(interval, im);
+            chart?.SetXAxisInterval(type, interval, im, offset, offsettype);
         }
 
-        // label formatting on chart axis
         public void SetXAxisLabelColorFont(Color r, Font f = null)
         {
             chart?.SetXAxisLabelColorFont(r, f);
@@ -111,35 +112,55 @@ namespace ExtendedControls
         {
             chart?.SetXAxisFormat(format);
         }
-
-        // configure LastChartArea X axis Major grid
-        public void SetXAxisMajorGrid(int width, ChartDashStyle style, Color? major = null )
+        public void SetXAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
         {
-            chart?.SetXAxisMajorGrid(width, style, major);
+            chart?.SetXAxisMajorGridInterval(interval, type, offsetinterval, offsetintervaltype);
         }
-        // configure LastChartArea X axis Minor grid
-        public void SetXAxisMinorGrid(int width, ChartDashStyle style, Color? minor = null)
+        public void SetXAxisMinorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
         {
-            chart?.SetXAxisMinorGrid(width, style, minor);
+            chart?.SetXAxisMinorGridInterval(interval, type, offsetinterval, offsetintervaltype);
+        }
+        public void SetXAxisMajorGridWidthColor(int width, ChartDashStyle style, Color? major = null )
+        {
+            chart?.SetXAxisMajorGridWidthColor(width, style, major);
+        }
+        public void SetXAxisMinorGridWidthColor(int width, ChartDashStyle style, Color? minor = null)
+        {
+            chart?.SetXAxisMinorGridWidthColor(width, style, minor);
         }
 
         // Cursor
-        public void XCursor(bool enabled = true)
+        public void XCursorShown(bool enabled = true)
         {
-            chart?.XCursor(enabled);
+            chart?.XCursorShown(enabled);
         }
         public void XCursorSelection(bool userallowed = true, bool autoscroll = true)
         {
             chart?.XCursorSelection(userallowed, autoscroll);
         }
+        public void SetXCursorInterval(double interval, DateTimeIntervalType intervaltype, double intervaloffset = 0, DateTimeIntervalType intervaloffsettype = DateTimeIntervalType.Auto)
+        {
+            chart?.SetXCursorInterval(interval, intervaltype, intervaloffset, intervaloffsettype);
+        }
         public void SetXCursorColors(Color lc, Color sc, int lw = 2)
         {
             chart?.SetXCursorColors(lc, sc, lw);
         }
+
         public void SetXCursorScrollBarColors(Color scrollbarback, Color scrollbarbutton)
         {
             chart?.SetXCursorScrollBarColors(scrollbarback, scrollbarbutton);
         }
+
+        public void SetXCursorPosition(double d)
+        {
+            chart?.SetXCursorPosition(d);
+        }
+        public void SetXCursorPosition(DateTime d)
+        {
+            chart?.SetXCursorPosition(d);
+        }
+
         public void ZoomOutX()
         {
             chart?.ZoomOutX();
@@ -155,14 +176,11 @@ namespace ExtendedControls
         public bool IsZoomedX { get { return chart?.IsZoomedX ?? false; } }
 
         //////////////////////////////////////////////////////////////////////////// Y
-
-        // configure LastChartArea Y axis Interval
-        public void SetYAxisInterval(int interval, IntervalAutoMode im = IntervalAutoMode.FixedCount)
+        public void SetYAxisInterval(DateTimeIntervalType type, int interval, IntervalAutoMode im = IntervalAutoMode.FixedCount,
+                                       double offset = 0, DateTimeIntervalType offsettype = DateTimeIntervalType.Auto)
         {
-            chart?.SetYAxisInterval(interval, im);
+            chart?.SetYAxisInterval(type, interval, im, offset, offsettype);
         }
-
-        // label formatting on chart axis
         public void SetYAxisLabelColorFont(Color r, Font f = null)
         {
             chart?.SetYAxisLabelColorFont(r, f);
@@ -176,25 +194,35 @@ namespace ExtendedControls
             chart?.SetYAxisFormat(format);
         }
 
-        // configure LastChartArea Y axis Major grid
-        public void SetYAxisMajorGrid(int width, ChartDashStyle style, Color? major = null)
+        public void SetYAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
         {
-            chart?.SetYAxisMajorGrid(width, style, major);
+            chart?.SetYAxisMajorGridInterval(interval, type, offsetinterval, offsetintervaltype);
         }
-        // configure LastChartArea Y axis Minor grid
-        public void SetYAxisMinorGrid(int width, ChartDashStyle style, Color? minor = null)
+        public void SetYAxisMinorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
         {
-            chart?.SetYAxisMinorGrid(width, style, minor);
+            chart?.SetYAxisMinorGridInterval(interval, type, offsetinterval, offsetintervaltype);
         }
 
-        // cursor
-        public void YCursor(bool enabled = true)
+        public void SetYAxisMajorGridWidthColor(int width, ChartDashStyle style, Color? major = null)
         {
-            chart?.YCursor(enabled);
+            chart?.SetYAxisMajorGridWidthColor(width, style, major);
+        }
+        public void SetYAxisMinorGridWidthColor(int width, ChartDashStyle style, Color? minor = null)
+        {
+            chart?.SetYAxisMinorGridWidthColor(width, style, minor);
+        }
+
+        public void YCursorShown(bool enabled = true)
+        {
+            chart?.YCursorShown(enabled);
         }
         public void YCursorSelection(bool userallowed = true, bool autoscroll = true)
         {
             chart?.YCursorSelection(userallowed, autoscroll);
+        }
+        public void SetYCursorInterval(double interval, DateTimeIntervalType intervaltype, double intervaloffset = 0, DateTimeIntervalType intervaloffsettype = DateTimeIntervalType.Auto)
+        {
+            chart?.SetYCursorInterval(interval, intervaltype, intervaloffset, intervaloffsettype);
         }
         public void SetYCursorColors(Color lc, Color sc, int lw = 2)
         {
@@ -204,6 +232,15 @@ namespace ExtendedControls
         {
             chart?.SetYCursorScrollBarColors(scrollbarback, scrollbarbutton);
         }
+        public void SetYCursorPosition(double d)
+        {
+            chart?.SetYCursorPosition(d);
+        }
+        public void SetYCursorPosition(DateTime d)
+        {
+            chart?.SetYCursorPosition(d);
+        }
+
         public void ZoomOutY()
         {
             chart?.ZoomOutY();
@@ -259,17 +296,15 @@ namespace ExtendedControls
             chart?.SetSeriesMarkersColorSize(color, markersize, markerbordercolor, markerborderwidth);
         }
 
-        // configure LastSeries data labels
         public void ShowSeriesDataLabels()
         {
             chart?.ShowSeriesDataLabels();
         }
-        public void SetSeriesDataLabelsColor(Color? back = null, Font fnt = null, Color? defaultlabelcolor = null)     // fore colour set by data point
+        public void SetSeriesDataLabelsColorFont(Color labelcolor, Font fnt = null, Color? back = null)
         {
-            chart?.SetSeriesDataLabels(back, fnt, defaultlabelcolor);
+            chart?.SetSeriesDataLabelsColorFont(labelcolor,fnt,back);
         }
 
-        // configure LastSeries labels borders
         public void SetSeriesDataLabelsBorder(Color fore, int width, ChartDashStyle style)
         {
             chart?.SetSeriesDataLabelsBorder(fore, width, style);
@@ -287,14 +322,11 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// Points
 
-        // Add point to LastSeries
         public void AddPoint(DataPoint d, string label = null)
         {
             chart?.AddPoint(d,label);
         }
 
-        // Add xy point to LastSeries
-        // for dates, the chart uses the day count as the X enumerator.
         public void AddXY(object x, object y, string label = null)
         {
             chart?.AddXY(x, y, label);
@@ -310,32 +342,29 @@ namespace ExtendedControls
             chart?.SetPointLabel(label);
         }
 
-        // Set label properties of LastDataPoint
         public void SetPointDataLabelCustomColorBorder(Color fore, Color back, Color borderfore, int width, ChartDashStyle style)
         {
             chart?.SetPointLabelCustomColorBorder(fore, back, borderfore, width, style);
         }
 
-        // Set marker properties of LastDataPoint
         public void SetPointMarkerStyle(MarkerStyle style, Color color, int markersize = 1, Color? markerbordercolor = null, int markerborderwidth = 2)
         {
             chart?.SetPointMarkerStyle(style, color, markersize, markerbordercolor, markerborderwidth);
         }
 
-        /// Context menu
 
         public void AddContextMenu(string[] text, Action<ToolStripMenuItem>[] actions, Action<ToolStripMenuItem[]> opening = null)
         {
             chart?.AddContextMenu(text, actions, opening);
         }
 
-        // Wheelo
         public void EnableZoomMouseWheelX(bool on = true)
         {
             chart?.EnableZoomMouseWheelX(on);
         }
 
-        public double ZoomMouseWheelXMinimumPercent { get { return chart?.ZoomMouseWheelXMinimumPercent ?? 0; } set { if (chart != null) chart.ZoomMouseWheelXMinimumPercent = value; } }
+        public double ZoomMouseWheelXMinimumInterval { get { return chart?.ZoomMouseWheelXMinimumInterval ?? 0; } set { if (chart != null) chart.ZoomMouseWheelXMinimumInterval = value; } }
+        public double ZoomMouseWheelXZoomFactor { get { return chart?.ZoomMouseWheelXZoomFactor ?? 0; } set { if (chart != null) chart.ZoomMouseWheelXZoomFactor = value; } }
 
         private ExtChart chart;
     }
