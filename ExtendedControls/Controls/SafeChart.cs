@@ -22,6 +22,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 namespace ExtendedControls
 {
     // use to safely execute in MONO. See ExtChart for help on functions
+    // using the return structures (ChartArea etc) it may be null due to chart not being supported - beware
 
     public class ExtSafeChart : Panel
     {
@@ -30,13 +31,19 @@ namespace ExtendedControls
 
         public bool Active { get { return chart != null; } }
 
+        public Action<ExtSafeChart, string, AxisName, double> CursorPositionChanged = null;
+
         public ExtSafeChart()
         {
             try
-            {
+            { 
                 chart = new ExtChart();
                 chart.Dock = DockStyle.Fill;
                 this.Controls.Add(chart);
+                chart.CursorPositionChanged += (s, e) =>
+                {
+                    CursorPositionChanged?.Invoke(this, e.ChartArea.Name, e.Axis.AxisName, e.ChartArea.CursorX.Position);
+                };
             }
             catch
             {
@@ -48,9 +55,10 @@ namespace ExtendedControls
             }
         }
 
-        public void AddTitle(string name, Docking dck = Docking.Top, Color? titlecolor = null, Font f = null, Color? backcolor = null, ContentAlignment? alignment = null)
+        public Title AddTitle(string name, Docking dck = Docking.Top, Color? titlecolor = null, Font f = null, Color? backcolor = null, ContentAlignment? alignment = null,
+                                ElementPosition position = null)
         {
-            chart?.AddTitle(name, dck, titlecolor, f, backcolor, alignment);
+            return chart?.AddTitle(name, dck, titlecolor, f, backcolor, alignment,position) ?? null; 
         }
 
         public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
@@ -65,31 +73,41 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// Legend
 
-        public void AddLegend(Color? textcolor, Color? backcolor = null, Font font = null, string name = "default")
+        public Legend AddLegend(string name, Color? textcolor, Color? backcolor = null, Font font = null, ElementPosition position = null)
         {
-            chart?.AddLegend(textcolor, backcolor, font, name);
+            return chart?.AddLegend(name, textcolor, backcolor, font, position) ?? null;
         }
 
-        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null)
+        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null)
         {
-            chart?.SetAllLegendsColorFont(legendtextcolor, font, backcolor);
+            chart?.SetAllLegendsColorFont(legendtextcolor, font, backcolor, shadowoffset, shadowcolor);
         }
 
         //////////////////////////////////////////////////////////////////////////// Chart Area
 
-        public void AddChartArea(string name)
+        public ChartArea AddChartArea(string name, ElementPosition position = null)
         {
-            chart?.AddChartArea(name);
+            return chart?.AddChartArea(name,position) ?? null;
         }
-        public void SetCurrentChartArea(int i)
+        public ChartArea SetCurrentChartArea(int i)
         {
-            chart?.SetCurrentChartArea(i);
+            return chart?.SetCurrentChartArea(i) ?? null;
         }
+        public ChartArea SetCurrentChartArea(string name)
+        {
+            return chart?.SetCurrentChartArea(name) ?? null;
+        }
+        public int ChartAreaCount { get { return chart?.ChartAreas.Count ?? 0; } }
+
         public void SetChartAreaColors(Color? back = null, Color? bordercolor = null, int width = 2, ChartDashStyle style = ChartDashStyle.Solid)
         {
             chart?.SetChartAreaColors(back, bordercolor, width, style);
         }
-        public int ChartAreaCount { get { return chart?.ChartAreas.Count ?? 0; } }
+        
+        public void SetChartArea3DStyle(ChartArea3DStyle style)
+        {
+            chart?.SetChartArea3DStyle(style);
+        }
 
         //////////////////////////////////////////////////////////////////////////// X
 
@@ -264,26 +282,28 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// Series
 
-        public void AddSeries(string name, string chartarea, SeriesChartType type, Color? seriescolor = null)
+        public Series AddSeries(string name, string chartarea, SeriesChartType type, Color? seriescolor = null)
         {
-            chart?.AddSeries(name, chartarea, type, seriescolor);
+            return chart?.AddSeries(name, chartarea, type, seriescolor) ?? null;
+        }
+        public Series SetCurrentSeries(int i)
+        {
+            return chart?.SetCurrentSeries(i) ?? null;
+        }
+        public Series SetCurrentSeries(string name)
+        {
+            return chart?.SetCurrentSeries(name) ?? null;
         }
 
         public int SeriesCount { get { return chart?.Series.Count ?? 0; } }
 
-        public void SetSeriesColor(Color seriescolor)
+        public void SetSeriesShadowOffset(int offset)
         {
-            chart?.SetSeriesColor(seriescolor);
+            chart?.SetSeriesShadowOffset(offset);
         }
-
-        public void SetCurrentSeries(int i)
+        public void SetSeriesColor(Color seriescolor, Color? shadowcolor = null)
         {
-            chart?.SetCurrentSeries(i);
-        }
-
-        public void ClearSeriesPoints(int i = 0)
-        {
-            chart?.ClearSeriesPoints(i);
+            chart?.SetSeriesColor(seriescolor,shadowcolor);
         }
 
         public void ShowSeriesMarkers(MarkerStyle style)
@@ -322,14 +342,18 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// Points
 
-        public void AddPoint(DataPoint d, string label = null)
+        public void ClearPoints()
         {
-            chart?.AddPoint(d,label);
+            chart?.ClearPoints();
+        }
+        public DataPoint AddPoint(DataPoint d, string label = null)
+        {
+            return chart?.AddPoint(d,label);
         }
 
-        public void AddXY(object x, object y, string label = null)
+        public DataPoint AddXY(object x, object y, string label = null)
         {
-            chart?.AddXY(x, y, label);
+            return chart?.AddXY(x, y, label);
         }
 
         public void SetCurrentPoint(int i)
@@ -352,6 +376,15 @@ namespace ExtendedControls
             chart?.SetPointMarkerStyle(style, color, markersize, markerbordercolor, markerborderwidth);
         }
 
+        public int FindIndexOfPoint(double target, AxisName axis = AxisName.X)
+        {
+            return chart?.FindIndexOfPoint(target, axis) ?? -1;
+        }
+
+        public int FindIndexOfNearestPoint(double target, AxisName axis = AxisName.X)
+        {
+            return chart?.FindIndexOfNearestPoint(target, axis) ?? -1;
+        }
 
         public void AddContextMenu(string[] text, Action<ToolStripMenuItem>[] actions, Action<ToolStripMenuItem[]> opening = null)
         {

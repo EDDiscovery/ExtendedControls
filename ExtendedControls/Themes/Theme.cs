@@ -886,7 +886,7 @@ namespace ExtendedControls
             ctrl.Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
             ctrl.BackColor = colors[CI.form];
 
-            ctrl.SetAllTitleColorFont(colors[CI.grid_celltext], fnt);
+            ctrl.SetAllTitleColorFont(colors[CI.grid_celltext], GetScaledFont(1.2f));
             ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt);
 
             // we theme all chart areas, backwards, so chartarea0 is the one left selected            
@@ -907,10 +907,11 @@ namespace ExtendedControls
                 ctrl.SetYCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
             }
 
-            if (ctrl.Series.Count > 0)       // we theme series 0 only -other series need individual color control 
+            for( int i = ctrl.Series.Count-1; i >=0; i--)
             {
-                ctrl.SetCurrentSeries(0);                           
-                ctrl.SetSeriesColor(colors[CI.grid_celltext]);
+                ctrl.SetCurrentSeries(i);
+                if ( i == 0 )
+                    ctrl.SetSeriesColor(colors[CI.grid_celltext]);
                 ctrl.SetSeriesDataLabelsColorFont(colors[CI.grid_celltext], fnt, Color.Transparent);
                 ctrl.SetSeriesMarkersColorSize(colors[CI.grid_scrollarrow], 4, colors[CI.grid_scrollbutton], 2);
             }

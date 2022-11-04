@@ -56,6 +56,12 @@
     <Compile Include="TestAutoScaleCompositeButtons.Designer.cs">
       <DependentUpon>TestAutoScaleCompositeButtons.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestChartPie.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestChartPie.Designer.cs">
+      <DependentUpon>TestChartPie.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestImageControlScroll.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -252,6 +258,9 @@
     </Compile>
     <EmbeddedResource Include="TestAutoScaleCompositeButtons.resx">
       <DependentUpon>TestAutoScaleCompositeButtons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestChartPie.resx">
+      <DependentUpon>TestChartPie.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestImageControlScroll.resx">
       <DependentUpon>TestImageControlScroll.cs</DependentUpon>

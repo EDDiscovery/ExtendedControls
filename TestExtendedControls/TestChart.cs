@@ -53,7 +53,7 @@ namespace TestExtendedControls
 
                 chart.XCursorShown();
                 chart.XCursorSelection();
-                chart.SetXCursorInterval(1, DateTimeIntervalType.Hours);
+                chart.SetXCursorInterval(1, DateTimeIntervalType.Minutes);
                 chart.SetXCursorColors(Color.IndianRed, Color.Yellow, 5);
                 chart.SetXCursorScrollBarColors(Color.Red, Color.Yellow);
 
@@ -73,7 +73,7 @@ namespace TestExtendedControls
                 chart.SetYCursorScrollBarColors(Color.Red, Color.Yellow);
 
 
-                chart.AddLegend(Color.Green, Color.Yellow, new Font("Ms sans serif", 7));
+                chart.AddLegend("Line",Color.Green, Color.Yellow, new Font("Ms sans serif", 7));
 
                 chart.AddSeries("Series1", "ChartArea1", SeriesChartType.Line, Color.Pink);
                 chart.SetSeriesDataLabelsColorFont(Color.Purple, new Font("Algerian", 15), Color.Yellow);
@@ -153,6 +153,13 @@ namespace TestExtendedControls
             {
                 DateTime t = DateTime.FromOADate(pos);
                 System.Diagnostics.Debug.WriteLine($"{e.Axis.Name} {e.Axis.Minimum}-{e.Axis.Maximum} {e.ChartArea.CursorX.Position} = {t.ToString()}");
+
+                int dpindex = chart.FindIndexOfPoint(pos);
+
+                System.Diagnostics.Debug.WriteLine($".. Associated with data point {dpindex}");
+                int dpindex2 = chart.FindIndexOfNearestPoint(pos);
+                System.Diagnostics.Debug.WriteLine($".. Associated with nearest data point {dpindex2}");
+
             }
         }
 

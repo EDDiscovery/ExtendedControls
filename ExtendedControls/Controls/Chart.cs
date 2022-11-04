@@ -27,29 +27,37 @@ namespace ExtendedControls
         public ChartArea CurrentChartArea { set; get; }
         public Series CurrentSeries { set; get; }
         public DataPoint CurrentDataPoint { get; set; }
+        public Legend CurrentLegend { get; set; }
+        public Title CurrentTitle { get; set; }
 
         public ExtChart() : base()
         {
         }
 
         // add a title. Minimum is text. 
-        public void AddTitle(string text, Docking dck = Docking.Top, Color? titlecolor = null, Font font = null, 
-                                Color? backcolor = null, ContentAlignment? alignment = null)
+        public Title AddTitle(string text, Docking dck = Docking.Top, Color? titlecolor = null, Font font = null, 
+                                Color? backcolor = null, ContentAlignment? alignment = null, ElementPosition position = null)
         {
-            if (titlecolor != null && font != null)
-            {
-                Titles.Add(new Title(text, dck, font, titlecolor.Value));        // Can add multiple
-            }
+            CurrentTitle = new Title(text);
+            Titles.Add(CurrentTitle);
+
+            if (position != null)
+                CurrentTitle.Position = position;
             else
-                Titles.Add(new Title(text, dck));
+                CurrentTitle.Docking = dck;
 
-            var t = Titles[Titles.Count - 1];
-
+            if (titlecolor != null)
+                CurrentTitle.ForeColor = titlecolor.Value;
+            if (font != null)
+                CurrentTitle.Font = font;
             if (backcolor.HasValue)
-                t.BackColor = backcolor.Value;
+                CurrentTitle.BackColor = backcolor.Value;
             if (alignment.HasValue)
-                t.Alignment = alignment.Value;
+                CurrentTitle.Alignment = alignment.Value;
+
+            return CurrentTitle;
         }
+
 
         // set all titles to this colour, font and backcolor (transparent if not set)
         public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
@@ -74,45 +82,74 @@ namespace ExtendedControls
         //////////////////////////////////////////////////////////////////////////// Legend
 
         // add legend to chart. Each legend seems to represent the series in order. Optional themeing
-        public Legend AddLegend(Color? textcolor, Color? backcolor = null, Font f = null, string name = "default")
+        public Legend AddLegend(string name, Color? textcolor = null, Color? backcolor = null, Font font = null, ElementPosition position = null)
         {
             var legend = Legends.Add(name);
             if ( textcolor != null)
                 legend.ForeColor = textcolor.Value;
-            if ( f!= null)
-                legend.Font = f;
+            if ( font!= null)
+                legend.Font = font;
             if (backcolor != null)
                 legend.BackColor = backcolor.Value;
+            if (position != null)
+                legend.Position = position;
+
+            CurrentLegend = legend;
             return legend;
         }
 
         // set all legends to this colour, font and backcolor (transparent if not set)
-        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null)
+        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null)
         {
             foreach (var x in Legends)
             {
                 x.Font = font;
                 x.ForeColor = legendtextcolor;
                 x.BackColor = backcolor ?? Color.Transparent;
+                if ( shadowcolor != null)
+                {
+                    x.ShadowColor = shadowcolor.Value;
+                    x.ShadowOffset = shadowoffset;
+                }
             }
         }
 
+        public void SetLegendShadowOffset(int offset)
+        {
+            CurrentLegend.ShadowOffset = offset;
+        }
+
+        // colour used in series for both its contents and the labels
+        public void SetLegendColor(Color scolor, Color? shadowcolor = null)
+        {
+            CurrentLegend.ForeColor = scolor;
+            if (shadowcolor.HasValue)
+                CurrentLegend.ShadowColor = shadowcolor.Value;
+        }
 
         //////////////////////////////////////////////////////////////////////////// Chart Area
 
         // make a chart area, needs a unique name
-        public ChartArea AddChartArea(string name)
+        public ChartArea AddChartArea(string name, ElementPosition position = null)
         {
-            ChartArea ca = new ChartArea();
-            ca.Name = name;
-            ChartAreas.Add(ca);
-            CurrentChartArea = ca;
-            return ca;
+            CurrentChartArea = new ChartArea();
+            CurrentChartArea.Name = name;
+            if (position != null)
+                CurrentChartArea.Position = position;
+            ChartAreas.Add(CurrentChartArea);
+            return CurrentChartArea;
         }
-        public void SetCurrentChartArea(int i)
+        public ChartArea SetCurrentChartArea(string name)
+        {
+            CurrentChartArea = ChartAreas.FindByName(name);
+            return CurrentChartArea;
+        }
+        public ChartArea SetCurrentChartArea(int i)
         {
             CurrentChartArea = this.ChartAreas[i];
+            return CurrentChartArea;
         }
+
         public ChartArea SetChartAreaColors( Color? back = null,
                                     Color? bordercolor = null, int width = 2, ChartDashStyle style = ChartDashStyle.Solid)
         {
@@ -123,6 +160,11 @@ namespace ExtendedControls
             CurrentChartArea.BorderWidth = width;
             CurrentChartArea.BorderDashStyle = style;
             return CurrentChartArea;
+        }
+
+        public void SetChartArea3DStyle( ChartArea3DStyle style)
+        {
+            CurrentChartArea.Area3DStyle = style;
         }
 
         //////////////////////////////////////////////////////////////////////////// X for CurrentChartArea
@@ -407,34 +449,44 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// Series
 
-        public Series AddSeries(string name, string chartarea, SeriesChartType type, Color? seriescolor = null )
+        // make a new series of name, attached to chartarea, of type, and with a legend attached. Set the default series colour
+        public Series AddSeries(string name, string chartarea, SeriesChartType type, Color? seriescolor = null, string legend = null )
         {
-            Series series = new Series();
-            series.Name = name;
-            series.ChartArea = chartarea;
+            CurrentSeries = new Series();
+            CurrentSeries.Name = name;
+            CurrentSeries.ChartArea = chartarea;
             if ( seriescolor.HasValue)
-                series.Color = seriescolor.Value;
-            series.ChartType = type;
-            CurrentSeries = series;
-            Series.Add(series);
-            return series;
+                CurrentSeries.Color = seriescolor.Value;
+            if (legend != null)
+                CurrentSeries.Legend = legend;
+            CurrentSeries.ChartType = type;
+            Series.Add(CurrentSeries);
+            return CurrentSeries;
+        }
+        public Series SetCurrentSeries(int i)
+        {
+            CurrentSeries = Series[i];
+            return CurrentSeries;
+        }
+        public Series SetCurrentSeries(string name)
+        {
+            CurrentSeries = Series.FindByName(name);
+            return CurrentSeries;
+        }
+
+        public void SetSeriesShadowOffset(int offset)
+        {
+            CurrentSeries.ShadowOffset = offset;
         }
 
         // colour used in series for both its contents and the labels
-        public void SetSeriesColor(Color seriescolor)
+        public void SetSeriesColor(Color seriescolor, Color? shadowcolor = null)
         {
             CurrentSeries.Color = seriescolor;
+            if (shadowcolor.HasValue)
+                CurrentSeries.ShadowColor = shadowcolor.Value;
         }
 
-        public void SetCurrentSeries(int i)
-        {
-            CurrentSeries = Series[i];
-        }
-
-        public void ClearSeriesPoints(int i)
-        {
-            Series[i].Points.Clear();
-        }
 
         // show series markers on data points
         public Series ShowSeriesMarkers(MarkerStyle style)
@@ -498,6 +550,21 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// Points
 
+        // clear current series points
+        public void ClearPoints()
+        {
+            CurrentSeries.Points.Clear();
+        }
+
+        // Add point to CurrentSeries
+        public DataPoint AddPoint(double d, string label = null)
+        {
+            CurrentSeries.Points.Add(d);
+            CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
+            if (label != null)
+                CurrentDataPoint.AxisLabel = label;
+            return CurrentDataPoint;
+        }
         // Add point to CurrentSeries
         public DataPoint AddPoint(DataPoint d, string label = null)
         {
@@ -539,6 +606,58 @@ namespace ExtendedControls
         public void SetPointMarkerStyle(MarkerStyle style, Color color, int markersize = 1, Color? markerbordercolor = null, int markerborderwidth = 2)
         {
             SetPointMarkerStyle(CurrentDataPoint, style, color, markersize, markerbordercolor, markerborderwidth);
+        }
+
+        // first data point at this value, or -1 if not found
+        // axis is X or Y
+        public int FindIndexOfPoint(double target, AxisName axis = AxisName.X)
+        {
+            var ret = CurrentSeries.Points.FindByValue(target, axis.ToString());
+            if (ret != null)
+                return CurrentSeries.Points.IndexOf(ret);
+            else
+                return -1;
+        }
+
+        // first data point or nearest at this value, or -1 if not found
+        // axis is X or Y
+        public int FindIndexOfNearestPoint(double target, AxisName axis = AxisName.X)       
+        {
+            var ret = CurrentSeries.Points.FindByValue(target, axis.ToString());
+            if (ret != null)
+                return CurrentSeries.Points.IndexOf(ret);
+            else
+            {
+                double mindist = double.MaxValue;
+                int indexnearest = -1;
+                for( int i = 0; i < CurrentSeries.Points.Count; i++)
+                {
+                    var dp = CurrentSeries.Points[i];
+                    if ( axis == AxisName.X )
+                    {
+                        double delta = Math.Abs(dp.XValue - target);
+                        if (delta < mindist)
+                        {
+                            mindist = delta;
+                            indexnearest = i;
+                        }
+                    }
+                    else if ( axis == AxisName.Y)
+                    {
+                        foreach( var y in dp.YValues)
+                        {
+                            double delta = Math.Abs(y - target);
+                            if (delta < mindist)
+                            {
+                                mindist = delta;
+                                indexnearest = i;
+                            }
+                        }
+                    }
+                }
+
+                return indexnearest;
+            }
         }
 
         // markers
@@ -599,6 +718,24 @@ namespace ExtendedControls
             }
 
             ContextMenuStrip = ct;
+        }
+
+        //////////////////////////////////////////////////////////////////////// Click Objects
+
+        public void ReportOnMouseDown(Action<HitTestResult> action)
+        {
+            MouseDown += (s, e) =>
+            {
+                try
+                {
+                    var hittest = HitTest(e.Location.X, e.Location.Y);
+                    action.Invoke(hittest);
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"********Exception in chart mouse down {ex}");
+                }
+            };
         }
 
         #region ///////////////////////////////////////////////////////////// Private
