@@ -33,10 +33,10 @@ namespace TestExtendedControls
                 chart = new ExtChart();                                                  // create a chart, to see if it works, may not on all platforms
                 chart.Font = f;
                 chart.Name = "pie";
-                chart.Bounds = new Rectangle(150, 10, 1200, 900);
+                chart.Bounds = new Rectangle(150, 10, 1200, 400);
 
-                chart.AddTitle("Pie1", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(5, 0, 100, 5));
-                chart.AddTitle("Pie2", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(50, 0, 100, 5));
+                chart.AddTitle("TP1","Pie1", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(5, 0, 100, 5));
+                chart.AddTitle("TP2","Pie2", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(50, 5, 100, 5));
                 chart.SetBorder(5, ChartDashStyle.Solid, Color.Green);
 
                 var l1 = chart.AddLegend("LPie1", Color.Red, position: new ElementPosition(5, 5, 10, 20));
@@ -47,18 +47,18 @@ namespace TestExtendedControls
                 chart.SetLegendColor(Color.Blue, Color.FromArgb(128, 0, 0, 0));
 
                 var ca1 = chart.AddChartArea("Pie1", new ElementPosition(5, 5, 40, 90));
+                ca1.InnerPlotPosition = new ElementPosition(20, 0, 80, 100);
 
                 chart.SetChartAreaColors(Color.Gray, Color.Purple, 2, ChartDashStyle.Solid);
 
                 var series1 = chart.AddSeries("C1", "Pie1", SeriesChartType.Pie, legend:"LPie1");
                 chart.SetSeriesShadowOffset(10);
-                chart.SetSeriesDataLabelsColorFont(Color.White, new Font("Algerian", 15), Color.DarkBlue);
-                chart.SetSeriesDataLabelsBorder(Color.Black, 1, ChartDashStyle.Solid);
+              //  chart.SetSeriesDataLabelsColorFont(Color.White, new Font("Algerian", 8), Color.DarkBlue);
+              //  chart.SetSeriesDataLabelsBorder(Color.Black, 1, ChartDashStyle.Solid);
 
-                var ca2 = chart.AddChartArea("Pie2", new ElementPosition(50, 5, 45, 90));
-                //ca2.AlignWithChartArea = "Pie1";
-                //ca2.AlignmentOrientation = AreaAlignmentOrientations.Horizontal;
-                //ca2.AlignmentStyle = AreaAlignmentStyles.All;
+                var ca2 = chart.AddChartArea("Pie2", new ElementPosition(50, 2, 45, 96));
+                chart.SetChartAreaPlotArea(new ElementPosition(0, 0, 80, 100));
+
 
                 chart.SetChartAreaColors(Color.Gray, Color.Purple, 2, ChartDashStyle.Solid);
                 chart.SetChartArea3DStyle(new ChartArea3DStyle() { Inclination = 10, Enable3D = true, Rotation = -90, LightStyle = LightStyle.Simplistic});
@@ -79,18 +79,19 @@ namespace TestExtendedControls
 
                 for (int i = 0; i < 5; i++)
                 {
-                    var dp = chart.AddPoint(i + 1, $"Pie1 {i + 1}");
+                    var dp = chart.AddPoint(i + 1, $"Pie1 {i + 1}", $"Pie Lab {i+1}", pointcolor:colors[i]);
                     //  dp.LabelForeColor = Color.White;
-                    dp.Color = colors[i];
                 }
 
                 chart.SetCurrentSeries("C2");
 
                 for (int i = 0; i < 6; i++)
                 {
-                    var dp = chart.AddPoint(i + 1, $"Pie2 {i + 1}");
+                    //                    var dp = chart.AddPoint(i + 1, $"Pie2 {i + 1}",colors[i]);
+                    var dp = chart.AddPoint(i + 1, legendtext:$"Pie {i+1}", pointcolor:colors[i]);
+
+                    //dp.LabelForeColor = Color.Transparent;
                     //  dp.LabelForeColor = Color.White;
-                    dp.Color = colors[i];
                 }
 
                 this.Controls.Add(chart);

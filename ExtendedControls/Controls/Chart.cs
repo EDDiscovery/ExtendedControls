@@ -35,10 +35,11 @@ namespace ExtendedControls
         }
 
         // add a title. Minimum is text. 
-        public Title AddTitle(string text, Docking dck = Docking.Top, Color? titlecolor = null, Font font = null, 
+        public Title AddTitle(string name, string text, Docking dck = Docking.Top, Color? titlecolor = null, Font font = null, 
                                 Color? backcolor = null, ContentAlignment? alignment = null, ElementPosition position = null)
         {
             CurrentTitle = new Title(text);
+            CurrentTitle.Name = name;
             Titles.Add(CurrentTitle);
 
             if (position != null)
@@ -58,6 +59,20 @@ namespace ExtendedControls
             return CurrentTitle;
         }
 
+        public Title SetCurrentTitle(string name)
+        {
+            CurrentTitle = Titles.FindByName(name);
+            return CurrentTitle;
+        }
+        public Title SetCurrentTitle(int i)
+        {
+            CurrentTitle = this.Titles[i];
+            return CurrentTitle;
+        }
+        public void SetTitleText(string text)
+        {
+            CurrentTitle.Text = text;
+        }
 
         // set all titles to this colour, font and backcolor (transparent if not set)
         public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
@@ -98,6 +113,17 @@ namespace ExtendedControls
             return legend;
         }
 
+        public Legend SetCurrentLegend(string name)
+        {
+            CurrentLegend = Legends.FindByName(name);
+            return CurrentLegend;
+        }
+        public Legend SetCurrentLegend(int i)
+        {
+            CurrentLegend = this.Legends[i];
+            return CurrentLegend;
+        }
+
         // set all legends to this colour, font and backcolor (transparent if not set)
         public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null)
         {
@@ -120,11 +146,14 @@ namespace ExtendedControls
         }
 
         // colour used in series for both its contents and the labels
-        public void SetLegendColor(Color scolor, Color? shadowcolor = null)
+        public void SetLegendColor(Color scolor, Color? backcolor = null, Color? shadowcolor = null)
         {
             CurrentLegend.ForeColor = scolor;
+            CurrentLegend.BackColor = Color.Green;
             if (shadowcolor.HasValue)
                 CurrentLegend.ShadowColor = shadowcolor.Value;
+            if (backcolor.HasValue)
+                CurrentLegend.BackColor = backcolor.Value;
         }
 
         //////////////////////////////////////////////////////////////////////////// Chart Area
@@ -162,9 +191,14 @@ namespace ExtendedControls
             return CurrentChartArea;
         }
 
-        public void SetChartArea3DStyle( ChartArea3DStyle style)
+        public void SetChartArea3DStyle(ChartArea3DStyle style)
         {
             CurrentChartArea.Area3DStyle = style;
+        }
+
+        public void SetChartAreaPlotArea(ElementPosition pos)
+        {
+            CurrentChartArea.InnerPlotPosition = pos;
         }
 
         //////////////////////////////////////////////////////////////////////////// X for CurrentChartArea
@@ -450,7 +484,7 @@ namespace ExtendedControls
         //////////////////////////////////////////////////////////////////////////// Series
 
         // make a new series of name, attached to chartarea, of type, and with a legend attached. Set the default series colour
-        public Series AddSeries(string name, string chartarea, SeriesChartType type, Color? seriescolor = null, string legend = null )
+        public Series AddSeries(string name, string chartarea, SeriesChartType type, Color? seriescolor = null, string legend = null)
         {
             CurrentSeries = new Series();
             CurrentSeries.Name = name;
@@ -551,39 +585,73 @@ namespace ExtendedControls
         //////////////////////////////////////////////////////////////////////////// Points
 
         // clear current series points
-        public void ClearPoints()
+        public void ClearSeriesPoints()
         {
             CurrentSeries.Points.Clear();
         }
+        public void ClearAllSeriesPoints()
+        {
+            foreach (var s in Series)
+                s.Points.Clear();
+        }
 
         // Add point to CurrentSeries
-        public DataPoint AddPoint(double d, string label = null)
+        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
         {
             CurrentSeries.Points.Add(d);
             CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
             if (label != null)
-                CurrentDataPoint.AxisLabel = label;
+                CurrentDataPoint.Label = label;
+            if (legendtext != null)
+                CurrentDataPoint.LegendText = legendtext;
+            if (pointcolor != null)
+                CurrentDataPoint.Color = pointcolor.Value;
+            CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return CurrentDataPoint;
         }
         // Add point to CurrentSeries
-        public DataPoint AddPoint(DataPoint d, string label = null)
+        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
         {
             CurrentSeries.Points.Add(d);
             CurrentDataPoint = d;
             if (label != null)
-                CurrentDataPoint.AxisLabel = label;
+                CurrentDataPoint.Label = label;
+            if (legendtext != null)
+                CurrentDataPoint.LegendText = legendtext;
+            if (pointcolor != null)
+                CurrentDataPoint.Color = pointcolor.Value;
+            CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return d;
         }
 
         // Add xy point to CurrentSeries
         // for dates, the chart uses the day count as the X enumerator.
-        public DataPoint AddXY(object x, object y, string label = null)
+        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
         {
             CurrentSeries.Points.AddXY(x, y);
             CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
             if (label != null)
-                CurrentDataPoint.AxisLabel = label;
+                CurrentDataPoint.Label = label;
+            if (legendtext != null)
+                CurrentDataPoint.LegendText = legendtext;
+            if (pointcolor != null)
+                CurrentDataPoint.Color = pointcolor.Value;
+            CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return CurrentDataPoint;
+        }
+
+        public bool CompareYPoints(double[] values, int yentry = 0)
+        {
+            if (values.Length != CurrentSeries.Points.Count)
+                return false;
+
+            for( int i = 0; i < CurrentSeries.Points.Count; i++)
+            {
+                if (CurrentSeries.Points[i].YValues[yentry] != values[i])
+                    return false;
+            }
+
+            return true;
         }
 
         public void SetCurrentPoint(int i)
