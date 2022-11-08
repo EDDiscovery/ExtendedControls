@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 - 2019 EDDiscovery development team
+ * Copyright © 2016 - 2022 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 using System;
 using System.ComponentModel;
@@ -37,11 +35,6 @@ namespace ExtendedControls
             get { return null; }
             set { throw new InvalidOperationException("The BackgroundImage property is not supported by this control. Use Image instead."); }
         }
-
-        // Only Centre and Stretch is supported
-        [Category("Appearance"), DefaultValue(ImageLayout.Center),
-            Description("Determines Image size in button for Flatstyle!=Standard, Stretch or Center only")]
-        public ImageLayout ImageLayout { get { return imagelayout; } set { imagelayout = value; Invalidate(); } }
 
         [Category("Appearance"), DefaultValue(1.25F),
             Description("When using FlatStyle.Popup, the FlatAppearance.BorderColor will be multiplied by this amount during a hover or click.")]
@@ -138,7 +131,6 @@ namespace ExtendedControls
 
         private event PaintEventHandler _CustomPaint;                       // base.OnPaint interferes with our custom painting; mimic it to allow others in on the fun.
 
-        private ImageLayout imagelayout = ImageLayout.Center;               // new! image layout
 
         /// <summary>
         /// Releases the unmanaged resources used by the <see cref="ExtButton"/> and optionally releases the managed
@@ -303,6 +295,7 @@ namespace ExtendedControls
 
                 if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
                 {
+                    //System.Diagnostics.Debug.WriteLine($"{Name} {colBack} { buttonColorScaling}");
                     using (var b = new LinearGradientBrush(buttonarea, colBack, colBack.Multiply(buttonColorScaling), 90))
                         pe.Graphics.FillRectangle(b, buttonarea);       // linear grad brushes do not respect smoothing mode, btw
                 }
@@ -318,13 +311,13 @@ namespace ExtendedControls
                 if (buttonarea.Width < 1 || buttonarea.Height < 1)  // and no point drawing any more in the button area if its too small, it will except
                     return;
 
-                if (Image != null)
+                if (Image != null )
                 {
                     // if we are in the centre, we use the whole of the buttonarea, else we use the button height.
                     Size isize = (ImageAlign == ContentAlignment.MiddleCenter) ? new Size(buttonarea.Width, buttonarea.Height) : new Size(buttonarea.Height, buttonarea.Height);
                     var destrect = ImageAlign.ImagePositionFromContentAlignment(buttonarea, isize);
 
-                    //System.Diagnostics.Debug.WriteLine($"ButtonExt {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height} {ImageAlign} {ImageLayout}");
+                    //System.Diagnostics.Debug.WriteLine($"ButtonExt {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height} {ImageAlign}");
 
                     if ((Enabled && drawnImageAttributesEnabled != null) || (!Enabled && drawnImageAttributesDisabled != null))
                     {

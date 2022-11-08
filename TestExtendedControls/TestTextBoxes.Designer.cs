@@ -299,7 +299,6 @@
             this.buttonExt2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.buttonExt2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.buttonExt2.Image = global::TestExtendedControls.Properties.Resources.galaxy_gray;
-            this.buttonExt2.ImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonExt2.Location = new System.Drawing.Point(134, 110);
             this.buttonExt2.Margin = new System.Windows.Forms.Padding(0);
             this.buttonExt2.Name = "buttonExt2";

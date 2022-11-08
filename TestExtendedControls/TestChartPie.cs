@@ -14,8 +14,7 @@ namespace TestExtendedControls
 {
     public partial class TestChartPie : Form
     {
-        private ExtendedControls.ExtChart chart { get; set; }
-        private ExtendedControls.ExtSafeChart chartdef2 { get; set; }
+        private ExtendedControls.ExtSafeChart chart { get; set; }
         ThemeList theme;
         public TestChartPie()
         {
@@ -27,16 +26,24 @@ namespace TestExtendedControls
             theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
+            Theme.Current.WindowsFrame = true;
 
 
             {
-                chart = new ExtChart();                                                  // create a chart, to see if it works, may not on all platforms
+                chart = new ExtSafeChart();                                                  // create a chart, to see if it works, may not on all platforms
                 chart.Font = f;
                 chart.Name = "pie";
-                chart.Bounds = new Rectangle(150, 10, 1200, 400);
+                chart.Bounds = new Rectangle(100, 10, 1050, 400);
+                chart.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
-                chart.AddTitle("TP1","Pie1", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(5, 0, 100, 5));
-                chart.AddTitle("TP2","Pie2", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(50, 5, 100, 5));
+//                chart.AddTitle("TP1","Pie1", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(5, 0, 100, 5));
+                chart.AddTitle("TP2","Select", Docking.Top,  alignment: ContentAlignment.MiddleCenter, 
+                                        position: new ElementPosition(40, 5, 20, 5));
+                chart.SetTitleColorFont(border: Color.Yellow);
+
+                chart.LeftArrowPosition = new ElementPosition(38, 5, 2, 5);
+                chart.RightArrowPosition = new ElementPosition(60, 5, 2, 5);
+
                 chart.SetBorder(5, ChartDashStyle.Solid, Color.Green);
 
                 var l1 = chart.AddLegend("LPie1", Color.Red, position: new ElementPosition(5, 5, 10, 20));
@@ -68,11 +75,9 @@ namespace TestExtendedControls
                 chart.SetSeriesDataLabelsColorFont(Color.White, new Font("Arial", 15), Color.DarkBlue);
                 chart.SetSeriesDataLabelsBorder(Color.Black, 1, ChartDashStyle.Solid);
 
-             //    Theme.Current.Apply(chart, f);
-
                 chart.ReportOnMouseDown(MouseDownEvent);
                     
-                chart.CursorPositionChanged += Chart_CursorPositionChanged;
+                // chart.CursorPositionChanged += Chart_CursorPositionChanged;
 
                 chart.SetCurrentSeries("C1");
                 Color[] colors = new Color[] { Color.Red, Color.Green, Color.Blue, Color.DarkCyan, Color.Magenta, Color.Brown };
@@ -95,6 +100,10 @@ namespace TestExtendedControls
                 }
 
                 this.Controls.Add(chart);
+
+                Theme.Current.Apply(this, f);
+                //chart.SetAllTitleColorFont()
+
 
             }
         }

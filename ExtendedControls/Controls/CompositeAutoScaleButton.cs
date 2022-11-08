@@ -136,7 +136,6 @@ namespace ExtendedControls
                 ExtButton b = new ExtButton();
                 b.Name = "CB2 " + butno;
                 b.Image = i;
-                b.ImageLayout = ImageLayout.Stretch;
                 b.Tag = butno++;
                 b.BackColor = cb.BackColor;
                 b.Click += (o, e) => { ExtButton bhit = o as ExtButton; ButtonPressed?.Invoke(cb, (int)bhit.Tag); };

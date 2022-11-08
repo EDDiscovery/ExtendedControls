@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -33,17 +31,34 @@ namespace ExtendedControls
 
         public Action<ExtSafeChart, string, AxisName, double> CursorPositionChanged = null;
 
+        // setting position will turn it on. 
+        public ElementPosition LeftArrowPosition { get { return leftarrowposition; } set { if (chart != null) { leftarrowposition = value; leftArrowButton.Visible = !leftarrowposition.Size.IsEmpty; PerformLayout(); Invalidate(); } } }
+        public ElementPosition RightArrowPosition { get { return rightarrowposition; } set { if (chart != null) { rightarrowposition = value; rightArrowButton.Visible = !rightarrowposition.Size.IsEmpty; PerformLayout(); Invalidate(); } } }
+
+        public bool LeftArrowEnable { get { return leftArrowButton?.Enabled ?? false; } set { if (leftArrowButton != null) leftArrowButton.Enabled = value; } }
+        public bool RightArrowEnable { get { return rightArrowButton?.Enabled ?? false; } set { if (rightArrowButton != null) rightArrowButton.Enabled = value; } }
+
+        public Action<bool> ArrowButtonPressed = null;
+
         public ExtSafeChart()
         {
             try
             { 
                 chart = new ExtChart();
                 chart.Dock = DockStyle.Fill;
-                this.Controls.Add(chart);
                 chart.CursorPositionChanged += (s, e) =>
                 {
                     CursorPositionChanged?.Invoke(this, e.ChartArea.Name, e.Axis.AxisName, e.ChartArea.CursorX.Position);
                 };
+
+                leftArrowButton = new ExtButton() { Name="SCL", Visible = false, Image = Properties.Resources.ArrowLeft};
+                leftArrowButton.Click += (s, e) => { ArrowButtonPressed?.Invoke(false); };
+                rightArrowButton = new ExtButton() { Name="SCR", Visible = false, Image = Properties.Resources.ArrowRight};
+                rightArrowButton.Click += (s, e) => { ArrowButtonPressed?.Invoke(true); };
+
+                this.Controls.Add(leftArrowButton);
+                this.Controls.Add(rightArrowButton);
+                this.Controls.Add(chart);
             }
             catch
             {
@@ -55,10 +70,15 @@ namespace ExtendedControls
             }
         }
 
-        public Title AddTitle(string name, string text, Docking dck = Docking.Top, Color? titlecolor = null, Font f = null, Color? backcolor = null, ContentAlignment? alignment = null,
-                                ElementPosition position = null)
+        public void SetBorder(int width, ChartDashStyle style, Color? b = null)
         {
-            return chart?.AddTitle(name, text, dck, titlecolor, f, backcolor, alignment,position) ?? null; 
+            chart?.SetBorder(width, style, b);
+        }
+
+
+        public Title AddTitle(string name, string text, Docking dck = Docking.Top, ContentAlignment? alignment = null, ElementPosition position = null)
+        {
+            return chart?.AddTitle(name, text, dck, alignment,position) ?? null; 
         }
         public Title SetCurrentTitle(string name)
         {
@@ -72,13 +92,22 @@ namespace ExtendedControls
         {
             chart?.SetTitleText(text);
         }
-        public void SetBorder(int width, ChartDashStyle style, Color? b = null)
+        public void SetTitlePosition(ElementPosition p)
         {
-            chart?.SetBorder(width, style, b);
+            chart?.SetTitlePosition(p);
+        }
+
+        public void SetTitleColorFont(Color? titlecolor = null, Font font = null, Color? backcolor = null, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
+        {
+            chart?.SetTitleColorFont(titlecolor, font, backcolor, border, borderwidth, borderstyle);
         }
         public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
         {
             chart?.SetAllTitleColorFont(titlecolor, font, backcolor);
+        }
+        public void SetAllTitleBorder(bool setborderonlyifset = false, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
+        {
+            chart?.SetAllTitleBorder(setborderonlyifset, border, borderwidth, borderstyle);
         }
 
         public void SetChartAreaPlotArea(ElementPosition pos)
@@ -455,6 +484,11 @@ namespace ExtendedControls
             chart?.AddContextMenu(text, actions, opening);
         }
 
+        public void ReportOnMouseDown(Action<HitTestResult> action)
+        {
+            chart?.ReportOnMouseDown(action);
+        }
+
         public void EnableZoomMouseWheelX(bool on = true)
         {
             chart?.EnableZoomMouseWheelX(on);
@@ -463,6 +497,55 @@ namespace ExtendedControls
         public double ZoomMouseWheelXMinimumInterval { get { return chart?.ZoomMouseWheelXMinimumInterval ?? 0; } set { if (chart != null) chart.ZoomMouseWheelXMinimumInterval = value; } }
         public double ZoomMouseWheelXZoomFactor { get { return chart?.ZoomMouseWheelXZoomFactor ?? 0; } set { if (chart != null) chart.ZoomMouseWheelXZoomFactor = value; } }
 
+
+        #region Internal
+
+        protected override void OnLayout(LayoutEventArgs levent)
+        {
+            base.OnLayout(levent);
+            if (!LeftArrowPosition.Size.IsEmpty)
+            {
+                int x = (int)Math.Round(Width * LeftArrowPosition.X / 100.0);
+                int y = (int)Math.Round(Height * LeftArrowPosition.Y / 100.0);
+                int width = (int)Math.Round(Width * LeftArrowPosition.Width / 100.0);
+                int height = (int)Math.Round(Height * LeftArrowPosition.Height / 100.0);
+                if (height == 0)
+                    height = width;
+                leftArrowButton.Bounds = new Rectangle(x, y, width, height);
+
+                if (chart.Titles.Count > 0 && leftArrowButton.BackColor != chart.Titles[0].BackColor)       // so here, we want to override the themeing of a button to make it the same as titles
+                {
+                    leftArrowButton.BackColor = chart.Titles[0].BackColor;
+                    leftArrowButton.ButtonColorScaling = 1;
+                }
+
+                //                System.Diagnostics.Debug.WriteLine($"LA size = {leftArrowButton.Bounds} on {Width} {Height}");
+            }
+            if (!RightArrowPosition.Size.IsEmpty)
+            {
+                int x = (int)Math.Round(Width * RightArrowPosition.X / 100.0);
+                int y = (int)Math.Round(Height * RightArrowPosition.Y / 100.0);
+                int width = (int)Math.Round(Width * RightArrowPosition.Width / 100.0);
+                int height = (int)Math.Round(Height * RightArrowPosition.Height / 100.0);
+                if (height == 0)
+                    height = width;
+                if (chart.Titles.Count > 0 && rightArrowButton.BackColor != chart.Titles[0].BackColor)
+                {
+                    rightArrowButton.BackColor = chart.Titles[0].BackColor;
+                    rightArrowButton.ButtonColorScaling = 1;
+                }
+                rightArrowButton.Bounds = new Rectangle(x, y, width, height);
+            }
+        }
+
+
+
         private ExtChart chart;
+        private ElementPosition leftarrowposition = new ElementPosition();
+        private ElementPosition rightarrowposition = new ElementPosition();
+        private ExtButton leftArrowButton;
+        private ExtButton rightArrowButton;
+
+        #endregion
     }
 }

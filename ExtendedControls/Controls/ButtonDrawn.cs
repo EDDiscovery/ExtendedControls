@@ -58,6 +58,8 @@ namespace ExtendedControls
             WindowNotInTaskBar,
             Bars,
             Restore,
+            LeftDelta,
+            RightDelta,
 
             None,
         };
@@ -714,6 +716,34 @@ namespace ExtendedControls
                             break;
                         }
 
+                    case ImageType.LeftDelta:
+                        {
+                            using (Brush bFore = new SolidBrush(cFore))
+                            {
+                                e.Graphics.FillPolygon(bFore, new System.Drawing.Point[]
+                                {
+                                    new Point(sc.Left,sc.YCenter()),
+                                    new Point(sc.Right,sc.Top),
+                                    new Point(sc.Right,sc.Bottom),
+                                });
+                            }
+                            break;
+                        }
+
+                    case ImageType.RightDelta:
+                        {
+                            using (Brush bFore = new SolidBrush(cFore))
+                            {
+                                e.Graphics.FillPolygon(bFore, new System.Drawing.Point[]
+                                {
+                                    new Point(sc.Right,sc.YCenter()),
+                                    new Point(sc.Left,sc.Top),
+                                    new Point(sc.Left,sc.Bottom),
+                                });
+                            }
+                            break;
+                        }
+
                     default:
                         throw new NotImplementedException($"ImageType ({imageselected}) painting is apparantly not implemented; please add support for it.");
                 }
@@ -773,6 +803,8 @@ namespace ExtendedControls
                             e.Graphics.FillRectangle(b, this.ClientRectangle);
                         break;
                     }
+
+
 
                 // Otherwise, base can handle it.
                 default:

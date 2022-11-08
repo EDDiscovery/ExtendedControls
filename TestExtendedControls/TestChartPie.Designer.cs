@@ -32,8 +32,8 @@ namespace TestExtendedControls
             this.components = new System.ComponentModel.Container();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.fredToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.extButton1 = new ExtendedControls.ExtButton();
             this.extButton2 = new ExtendedControls.ExtButton();
+            this.extButton1 = new ExtendedControls.ExtButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,16 +50,6 @@ namespace TestExtendedControls
             this.fredToolStripMenuItem.Size = new System.Drawing.Size(95, 22);
             this.fredToolStripMenuItem.Text = "fred";
             // 
-            // extButton1
-            // 
-            this.extButton1.Location = new System.Drawing.Point(12, 12);
-            this.extButton1.Name = "extButton1";
-            this.extButton1.Size = new System.Drawing.Size(75, 23);
-            this.extButton1.TabIndex = 1;
-            this.extButton1.Text = "Pos1";
-            this.extButton1.UseVisualStyleBackColor = true;
-            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
-            // 
             // extButton2
             // 
             this.extButton2.Location = new System.Drawing.Point(12, 53);
@@ -70,14 +60,26 @@ namespace TestExtendedControls
             this.extButton2.UseVisualStyleBackColor = true;
             this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
             // 
-            // TestChart
+            // extButton1
+            // 
+            this.extButton1.Location = new System.Drawing.Point(12, 12);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.TabIndex = 1;
+            this.extButton1.Text = "Pos1";
+            this.extButton1.UseVisualStyleBackColor = true;
+            this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
+            // 
+            // TestChartPie
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1407, 965);
+            this.ClientSize = new System.Drawing.Size(1184, 861);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton1);
-            this.Name = "TestChart";
+            this.Location = new System.Drawing.Point(60, 20);
+            this.Name = "TestChartPie";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "TestOldSplitter";
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);

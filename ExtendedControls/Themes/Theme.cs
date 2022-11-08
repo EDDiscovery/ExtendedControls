@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2021 EDDiscovery development team
+ * Copyright © 2016-2022 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using QuickJSON;
@@ -425,8 +423,6 @@ namespace ExtendedControls
                         //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap2.OldColor + " to " + colormap2.NewColor);
 
                         ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap1, colormap2 });     // used ButtonDisabledScaling note!
-
-                        ctrl.ImageLayout = ImageLayout.Stretch;
                     }
 
                     // if image, and no text or text over image centred (so over the image), background is form to make the back disappear
@@ -502,19 +498,46 @@ namespace ExtendedControls
 
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
             }
-            else if (myControl is ExtSafeChart)     // needs to be before panel, as the underlying class is a panel. Must use ExtSafeChart
+            else if (myControl is ExtSafeChart)  // as a panel, we intercept to say okay before the panel. Item itself needs no themeing
             {
-                if (myControl.Controls.Count > 0)
-                {
-                    ThemeChart(myControl.Controls[0] as ExtChart, fnt);
-                }
-                myControl.ResumeLayout();
-                return;     // don't go into subcomponents
             }
-            else if (myControl is ExtChart)     // allowed with a warning for debug 
+            else if (myControl is ExtChart)     // Note you should be using ExtSafeChart
             {
-                System.Diagnostics.Debug.WriteLine("Warning - ExtChart not directly allowed - use SafeExtChart");
-                ThemeChart(myControl as ExtChart, fnt);
+                var ctrl = (ExtChart)myControl;
+
+                ctrl.Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
+                ctrl.BackColor = colors[CI.form];
+
+                ctrl.SetAllTitleColorFont(colors[CI.grid_celltext], GetScaledFont(1.5f), colors[CI.grid_cellbackground]);
+                ctrl.SetAllTitleBorder(true, colors[CI.group_borderlines]);
+                ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt);
+
+                // we theme all chart areas, backwards, so chartarea0 is the one left selected            
+                for (int i = ctrl.ChartAreas.Count - 1; i >= 0; i--)
+                {
+                    ctrl.SetCurrentChartArea(i);
+                    ctrl.SetChartAreaColors(colors[CI.grid_cellbackground], colors[CI.group_borderlines]);
+
+                    ctrl.SetXAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
+                    ctrl.SetYAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
+                    ctrl.SetXAxisLabelColorFont(colors[CI.grid_celltext], fnt);
+                    ctrl.SetYAxisLabelColorFont(colors[CI.grid_celltext], fnt);
+
+                    ctrl.SetXCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
+                    ctrl.SetYCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
+
+                    ctrl.SetXCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
+                    ctrl.SetYCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
+                }
+
+                for (int i = ctrl.Series.Count - 1; i >= 0; i--)
+                {
+                    ctrl.SetCurrentSeries(i);
+                    if (i == 0)
+                        ctrl.SetSeriesColor(colors[CI.grid_celltext]);
+                    ctrl.SetSeriesDataLabelsColorFont(colors[CI.grid_celltext], fnt, Color.Transparent);
+                    ctrl.SetSeriesMarkersColorSize(colors[CI.grid_scrollarrow], 4, colors[CI.grid_scrollbutton], 2);
+                }
             }
             else if (myControl is Chart)
             {
@@ -880,42 +903,6 @@ namespace ExtendedControls
             myControl.ResumeLayout();
         }
 
-        // special - apply to chart. May want to call this if you play about with the chart after default themeing has been applied.
-        private void ThemeChart(ExtChart ctrl, Font fnt)
-        {
-            ctrl.Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
-            ctrl.BackColor = colors[CI.form];
-
-            ctrl.SetAllTitleColorFont(colors[CI.grid_celltext], GetScaledFont(1.2f));
-            ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt);
-
-            // we theme all chart areas, backwards, so chartarea0 is the one left selected            
-            for( int i = ctrl.ChartAreas.Count-1; i>=0; i-- )
-            {
-                ctrl.SetCurrentChartArea(i);
-                ctrl.SetChartAreaColors(colors[CI.grid_cellbackground], colors[CI.group_borderlines]);      
-
-                ctrl.SetXAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
-                ctrl.SetYAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
-                ctrl.SetXAxisLabelColorFont(colors[CI.grid_celltext], fnt);
-                ctrl.SetYAxisLabelColorFont(colors[CI.grid_celltext], fnt);
-
-                ctrl.SetXCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
-                ctrl.SetYCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
-
-                ctrl.SetXCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
-                ctrl.SetYCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
-            }
-
-            for( int i = ctrl.Series.Count-1; i >=0; i--)
-            {
-                ctrl.SetCurrentSeries(i);
-                if ( i == 0 )
-                    ctrl.SetSeriesColor(colors[CI.grid_celltext]);
-                ctrl.SetSeriesDataLabelsColorFont(colors[CI.grid_celltext], fnt, Color.Transparent);
-                ctrl.SetSeriesMarkersColorSize(colors[CI.grid_scrollarrow], 4, colors[CI.grid_scrollbutton], 2);
-            }
-        }
 
         private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)
         {

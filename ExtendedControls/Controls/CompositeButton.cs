@@ -117,7 +117,6 @@ namespace ExtendedControls
             {
                 ExtButton b = new ExtButton();
                 b.Image = i;
-                b.ImageLayout = ImageLayout.Stretch;
                 b.Size = buttonsize;
                 b.Tag = butno++;
                 b.Click += (o, e) => { ExtButton bhit = o as ExtButton; ButtonPressed?.Invoke(but, (int)bhit.Tag); };

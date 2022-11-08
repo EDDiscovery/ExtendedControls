@@ -10,7 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
  */
 
 using System;
@@ -34,9 +33,17 @@ namespace ExtendedControls
         {
         }
 
+        // Set chart border
+        public void SetBorder(int width, ChartDashStyle style, Color? borderlinecolor = null)
+        {
+            BorderlineDashStyle = style;
+            BorderlineWidth = width;
+            if (borderlinecolor != null)
+                BorderlineColor = borderlinecolor.Value;
+        }
+
         // add a title. Minimum is text. 
-        public Title AddTitle(string name, string text, Docking dck = Docking.Top, Color? titlecolor = null, Font font = null, 
-                                Color? backcolor = null, ContentAlignment? alignment = null, ElementPosition position = null)
+        public Title AddTitle(string name, string text, Docking dck = Docking.Top,  ContentAlignment? alignment = null, ElementPosition position = null )
         {
             CurrentTitle = new Title(text);
             CurrentTitle.Name = name;
@@ -47,12 +54,6 @@ namespace ExtendedControls
             else
                 CurrentTitle.Docking = dck;
 
-            if (titlecolor != null)
-                CurrentTitle.ForeColor = titlecolor.Value;
-            if (font != null)
-                CurrentTitle.Font = font;
-            if (backcolor.HasValue)
-                CurrentTitle.BackColor = backcolor.Value;
             if (alignment.HasValue)
                 CurrentTitle.Alignment = alignment.Value;
 
@@ -73,6 +74,25 @@ namespace ExtendedControls
         {
             CurrentTitle.Text = text;
         }
+        public void SetTitlePosition(ElementPosition p)
+        {
+            CurrentTitle.Position = p;
+        }
+        public void SetTitleColorFont(Color? titlecolor = null, Font font = null, Color? backcolor = null, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
+        {
+            if (titlecolor != null)
+                CurrentTitle.ForeColor = titlecolor.Value;
+            if (font != null)
+                CurrentTitle.Font = font;
+            if (backcolor.HasValue)
+                CurrentTitle.BackColor = backcolor.Value;
+            if (border.HasValue)
+            {
+                CurrentTitle.BorderColor = border.Value;
+                CurrentTitle.BorderWidth = borderwidth;
+                CurrentTitle.BorderDashStyle = borderstyle;
+            }
+        }
 
         // set all titles to this colour, font and backcolor (transparent if not set)
         public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
@@ -85,32 +105,35 @@ namespace ExtendedControls
             }
         }
 
-        // Set chart border
-        public void SetBorder(int width, ChartDashStyle style, Color? borderlinecolor = null)
+        // titles are normally borderless. if setborderonlyifset = true, the title needs to call SetTitleColorFont and set an (arbitary) color before this to allow the border to be applied.
+        public void SetAllTitleBorder(bool setborderonlyifset, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
         {
-            BorderlineDashStyle = style;
-            BorderlineWidth = width;
-            if ( borderlinecolor != null)
-                BorderlineColor = borderlinecolor.Value;
+            foreach (var x in Titles)
+            {
+                if (!setborderonlyifset || !x.BorderColor.IsEmpty)
+                    x.BorderColor = border ?? Color.Transparent;
+                x.BorderWidth = borderwidth;
+                x.BorderDashStyle = borderstyle;
+            }
         }
+
 
         //////////////////////////////////////////////////////////////////////////// Legend
 
         // add legend to chart. Each legend seems to represent the series in order. Optional themeing
         public Legend AddLegend(string name, Color? textcolor = null, Color? backcolor = null, Font font = null, ElementPosition position = null)
         {
-            var legend = Legends.Add(name);
+            CurrentLegend = Legends.Add(name);
             if ( textcolor != null)
-                legend.ForeColor = textcolor.Value;
+                CurrentLegend.ForeColor = textcolor.Value;
             if ( font!= null)
-                legend.Font = font;
+                CurrentLegend.Font = font;
             if (backcolor != null)
-                legend.BackColor = backcolor.Value;
+                CurrentLegend.BackColor = backcolor.Value;
             if (position != null)
-                legend.Position = position;
+                CurrentLegend.Position = position;
 
-            CurrentLegend = legend;
-            return legend;
+            return CurrentLegend;
         }
 
         public Legend SetCurrentLegend(string name)
@@ -199,6 +222,7 @@ namespace ExtendedControls
         public void SetChartAreaPlotArea(ElementPosition pos)
         {
             CurrentChartArea.InnerPlotPosition = pos;
+            //System.Diagnostics.Debug.WriteLine($"CA {pos}");
         }
 
         //////////////////////////////////////////////////////////////////////////// X for CurrentChartArea

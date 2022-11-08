@@ -35,7 +35,7 @@ namespace TestExtendedControls
                 chart.Name = "mostVisited";
                 chart.Bounds = new Rectangle(150, 10, 900, 900);
 
-                chart.AddTitle("MV1","Most Visited", Docking.Top, Color.Red, new Font("Arial", 15));
+                chart.AddTitle("MV1","Most Visited", Docking.Top);
                 chart.SetBorder(5, ChartDashStyle.Dash, Color.Green);
 
                 chart.AddChartArea("ChartArea1");
