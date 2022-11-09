@@ -142,9 +142,9 @@ namespace ExtendedControls
         }
 
         // colour used in series for both its contents and the labels
-        public void SetLegendColor(Color scolor, Color? back = null, Color? shadowcolor = null)
+        public void SetLegendColor(Color? scolor = null, Color? backcolor = null, Color? shadowcolor = null, Color? bordercolor = null)
         {
-            chart?.SetLegendColor(scolor, back, shadowcolor);
+            chart?.SetLegendColor(scolor, backcolor, shadowcolor, bordercolor);
         }
 
         //////////////////////////////////////////////////////////////////////////// Chart Area

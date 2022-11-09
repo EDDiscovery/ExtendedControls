@@ -101,22 +101,24 @@ namespace ExtendedControls
 
         // set all titles to this colour, font and backcolor (transparent if not set)
         // Fonts are autosized to the title below, using layout, so the size is ignored in Font.
-        public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
+        public void SetAllTitleColorFont(bool setbackonlyifset, Color titlecolor, Font font, Color? backcolor = null)
         {
             foreach (var x in Titles)
             {
                 x.Font = font;
                 x.ForeColor = titlecolor;
-                x.BackColor = backcolor ?? Color.Transparent;
+                if ( !setbackonlyifset || x.BackColor != Color.Empty)       // if set always, or if set already
+                    x.BackColor = backcolor ?? Color.Transparent;
             }
         }
 
-        // titles are normally borderless. if setborderonlyifset = true, the title needs to call SetTitleColorFont and set an (arbitary) color before this to allow the border to be applied.
+        // titles are normally borderless.
+        // if setborderonlyifset = true, the title needs to call SetTitleColorFont and set an (arbitary) color before this to allow the border to be applied.
         public void SetAllTitleBorder(bool setborderonlyifset, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
         {
             foreach (var x in Titles)
             {
-                if (!setborderonlyifset || !x.BorderColor.IsEmpty)
+                if (!setborderonlyifset || x.BorderColor != Color.Empty)            // if set always, or if set already
                     x.BorderColor = border ?? Color.Transparent;
                 x.BorderWidth = borderwidth;
                 x.BorderDashStyle = borderstyle;
@@ -176,20 +178,24 @@ namespace ExtendedControls
             CurrentLegend.ShadowOffset = offset;
         }
 
-        // colour used in series for both its contents and the labels
-        public void SetLegendColor(Color scolor, Color? backcolor = null, Color? shadowcolor = null)
+        // for the themer, to indicate you want a background or border, set your legend color to any color and the themer will override.
+
+        public void SetLegendColor(Color? scolor = null, Color? backcolor = null, Color? shadowcolor = null, Color? bordercolor = null)
         {
-            CurrentLegend.ForeColor = scolor;
-            CurrentLegend.BackColor = Color.Green;
+            if ( scolor.HasValue)
+                CurrentLegend.ForeColor = scolor.Value;
             if (shadowcolor.HasValue)
                 CurrentLegend.ShadowColor = shadowcolor.Value;
             if (backcolor.HasValue)
                 CurrentLegend.BackColor = backcolor.Value;
+            if (bordercolor.HasValue)
+                CurrentLegend.BorderColor = bordercolor.Value;
         }
 
-
-        // set all legends to this colour, font and backcolor (transparent if not set)
-        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null,
+        // set all legends to this colour set
+        public void SetAllLegendsColorFont(bool setbackborderonlyifset,        // if false, we override with the colour given (or transparent if not) for these
+                                           Color legendtextcolor, Font font, 
+                                           Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null,
                                            Color? tforecolor = null, Color? tbackcolor = null, Font tfont = null, StringAlignment? talignment = null,
                                            LegendSeparatorStyle? tsep = null, Color? tseperatorcolor = null,
                                            Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
@@ -199,7 +205,10 @@ namespace ExtendedControls
             {
                 x.Font = font;
                 x.ForeColor = legendtextcolor;
-                x.BackColor = backcolor ?? Color.Transparent;
+
+                if (!setbackborderonlyifset || x.BackColor != Color.Empty)
+                    x.BackColor = backcolor ?? Color.Transparent;
+
                 if (shadowcolor != null)
                 {
                     x.ShadowColor = shadowcolor.Value;
@@ -218,8 +227,9 @@ namespace ExtendedControls
                     x.TitleSeparator = tsep.Value;
                 if (tseperatorcolor.HasValue)
                     x.TitleSeparatorColor = tseperatorcolor.Value;
-                if (bordercolor.HasValue)
-                    x.BorderColor = bordercolor.Value;
+                if (!setbackborderonlyifset || x.BorderColor != Color.Empty)
+                    x.BorderColor = bordercolor ?? Color.Transparent;
+
                 x.BorderDashStyle = borderdashstyle;
                 x.BorderWidth = borderwidth;
                 if (isep.HasValue)
@@ -273,7 +283,6 @@ namespace ExtendedControls
         public void SetChartAreaPlotArea(ElementPosition pos)
         {
             CurrentChartArea.InnerPlotPosition = pos;
-            //System.Diagnostics.Debug.WriteLine($"CA {pos}");
         }
 
         //////////////////////////////////////////////////////////////////////////// X for CurrentChartArea
@@ -568,6 +577,8 @@ namespace ExtendedControls
                 CurrentSeries.Color = seriescolor.Value;
             if (legend != null)
                 CurrentSeries.Legend = legend;
+            else
+                CurrentSeries.IsVisibleInLegend = false;
             CurrentSeries.ChartType = type;
             Series.Add(CurrentSeries);
             return CurrentSeries;
