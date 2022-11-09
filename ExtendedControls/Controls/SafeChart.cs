@@ -505,13 +505,8 @@ namespace ExtendedControls
             base.OnLayout(levent);
             if (!LeftArrowPosition.Size.IsEmpty)
             {
-                int x = (int)Math.Round(Width * LeftArrowPosition.X / 100.0);
-                int y = (int)Math.Round(Height * LeftArrowPosition.Y / 100.0);
-                int width = (int)Math.Round(Width * LeftArrowPosition.Width / 100.0);
-                int height = (int)Math.Round(Height * LeftArrowPosition.Height / 100.0);
-                if (height == 0)
-                    height = width;
-                leftArrowButton.Bounds = new Rectangle(x, y, width, height);
+                Rectangle area = chart.GetArea(LeftArrowPosition);
+                leftArrowButton.Bounds = area;
 
                 if (chart.Titles.Count > 0 && leftArrowButton.BackColor != chart.Titles[0].BackColor)       // so here, we want to override the themeing of a button to make it the same as titles
                 {
@@ -523,18 +518,14 @@ namespace ExtendedControls
             }
             if (!RightArrowPosition.Size.IsEmpty)
             {
-                int x = (int)Math.Round(Width * RightArrowPosition.X / 100.0);
-                int y = (int)Math.Round(Height * RightArrowPosition.Y / 100.0);
-                int width = (int)Math.Round(Width * RightArrowPosition.Width / 100.0);
-                int height = (int)Math.Round(Height * RightArrowPosition.Height / 100.0);
-                if (height == 0)
-                    height = width;
+                Rectangle area = chart.GetArea(RightArrowPosition);
+                rightArrowButton.Bounds = area;
                 if (chart.Titles.Count > 0 && rightArrowButton.BackColor != chart.Titles[0].BackColor)
                 {
                     rightArrowButton.BackColor = chart.Titles[0].BackColor;
                     rightArrowButton.ButtonColorScaling = 1;
                 }
-                rightArrowButton.Bounds = new Rectangle(x, y, width, height);
+                
             }
         }
 

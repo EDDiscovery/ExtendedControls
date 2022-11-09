@@ -21,28 +21,27 @@ namespace TestExtendedControls
             InitializeComponent();
 
 
-            Font f = new Font("Ms sans serif", 10);
-
             theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
             Theme.Current.WindowsFrame = true;
+            Theme.Current.FontName = "Arial";
+            Theme.Current.FontSize = 11.25f;
 
 
             {
                 chart = new ExtSafeChart();                                                  // create a chart, to see if it works, may not on all platforms
-                chart.Font = f;
                 chart.Name = "pie";
                 chart.Bounds = new Rectangle(100, 10, 1050, 400);
                 chart.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
-//                chart.AddTitle("TP1","Pie1", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(5, 0, 100, 5));
-                chart.AddTitle("TP2","Select", Docking.Top,  alignment: ContentAlignment.MiddleCenter, 
-                                        position: new ElementPosition(40, 5, 20, 5));
+                //                chart.AddTitle("TP1","Pie1", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(5, 0, 100, 5));
+                chart.AddTitle("TP2", "Select", Docking.Top, alignment: ContentAlignment.MiddleCenter,
+                                        position: new ElementPosition(40, 5, 20, 10));;
                 chart.SetTitleColorFont(border: Color.Yellow);
 
-                chart.LeftArrowPosition = new ElementPosition(38, 5, 2, 5);
-                chart.RightArrowPosition = new ElementPosition(60, 5, 2, 5);
+                chart.LeftArrowPosition = new ElementPosition(38, 5, 2, 10);
+                chart.RightArrowPosition = new ElementPosition(60, 5, 2, 10);
 
                 chart.SetBorder(5, ChartDashStyle.Solid, Color.Green);
 
@@ -101,11 +100,21 @@ namespace TestExtendedControls
 
                 this.Controls.Add(chart);
 
-                Theme.Current.Apply(this, f);
                 //chart.SetAllTitleColorFont()
 
 
             }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+        }
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            System.Diagnostics.Debug.WriteLine($"Theme it");
+            Theme.Current.ApplyStd(this);
         }
 
         private void MouseDownEvent(HitTestResult hittest)

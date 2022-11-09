@@ -78,6 +78,8 @@ namespace ExtendedControls
         {
             CurrentTitle.Position = p;
         }
+
+        // Fonts are autosized to the title below, using layout, so the size is ignored in Font.
         public void SetTitleColorFont(Color? titlecolor = null, Font font = null, Color? backcolor = null, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
         {
             if (titlecolor != null)
@@ -95,6 +97,7 @@ namespace ExtendedControls
         }
 
         // set all titles to this colour, font and backcolor (transparent if not set)
+        // Fonts are autosized to the title below, using layout, so the size is ignored in Font.
         public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
         {
             foreach (var x in Titles)
@@ -116,7 +119,6 @@ namespace ExtendedControls
                 x.BorderDashStyle = borderstyle;
             }
         }
-
 
         //////////////////////////////////////////////////////////////////////////// Legend
 
@@ -830,6 +832,18 @@ namespace ExtendedControls
             };
         }
 
+        //////////////////////////////////////////////////////////////////////// Helpers
+        public Rectangle GetArea(ElementPosition p)
+        {
+            int x = (int)Math.Round(Width * p.X / 100.0);
+            int y = (int)Math.Round(Height * p.Y / 100.0);
+            int width = (int)Math.Round(Width * p.Width / 100.0);
+            int height = (int)Math.Round(Height * (p.Height>0?p.Height:p.Width) / 100.0);
+            return new Rectangle(x, y, width, height);
+        }
+
+
+
         #region ///////////////////////////////////////////////////////////// Private
 
         private void ExtChart_AxisViewChanged(object senderunused, ViewEventArgs e)       // user only interaction calls this
@@ -927,6 +941,43 @@ namespace ExtendedControls
                     ax.ScaleView.Zoom(pos - size / 2, pos + size / 2);
             }
         }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            boundssizedat = Rectangle.Empty;            // if we changed the font, cause a resize event
+        }
+
+        protected override void OnPrePaint(ChartPaintEventArgs e)
+        {
+            SizeTitleFonts();
+            base.OnPrePaint(e);
+        }
+
+        private Rectangle boundssizedat;
+        private void SizeTitleFonts()
+        {
+            if (Bounds != boundssizedat)        // if changed layout size, we recalc the title sizes placed manually
+            {
+                boundssizedat = Bounds;
+                foreach (var t in Titles)
+                {
+                    if (!t.Position.Auto)
+                    {
+                        Rectangle area = GetArea(t.Position);
+                        System.Diagnostics.Debug.WriteLine($"Title pos {t.Position} = {area}");
+                        using (StringFormat fmt = new StringFormat())
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Font in is {t.Font}");
+                            t.Font = ControlHelpersStaticFunc.GetFontToFitRectangle(t.Text, t.Font, area, fmt);
+                            System.Diagnostics.Debug.WriteLine($".. out is {t.Font}");
+
+                        }
+                    }
+                }
+            }
+        }
+
 
         private HashSet<ChartArea> autozoomy = new HashSet<ChartArea>();
         private HashSet<ChartArea> mousewheelx = new HashSet<ChartArea>();
