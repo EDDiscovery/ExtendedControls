@@ -45,11 +45,12 @@ namespace TestExtendedControls
 
                 chart.SetBorder(5, ChartDashStyle.Solid, Color.Green);
 
-                var l1 = chart.AddLegend("LPie1", Color.Red, position: new ElementPosition(5, 5, 10, 20));
-                chart.SetLegendShadowOffset(20);
-                chart.SetLegendColor(Color.Blue, Color.FromArgb(128, 0, 0, 0));
-                var l2 = chart.AddLegend("LPie2", Color.Red, position: new ElementPosition(85, 5, 10, 20));
-                chart.SetLegendShadowOffset(20);
+                var l1 = chart.AddLegend("LPie1", Color.Red, position: new ElementPosition(5, 5, 10, 80));
+                chart.SetLegendTitle("Fred");
+              //  chart.SetLegendShadowOffset(20);
+                chart.SetLegendColor(Color.Blue, Color.FromArgb(128, 60, 60, 60));
+                var l2 = chart.AddLegend("LPie2", Color.Red, position: new ElementPosition(85, 5, 10, 80));
+             //   chart.SetLegendShadowOffset(20);
                 chart.SetLegendColor(Color.Blue, Color.FromArgb(128, 0, 0, 0));
 
                 var ca1 = chart.AddChartArea("Pie1", new ElementPosition(5, 5, 40, 90));
@@ -81,9 +82,9 @@ namespace TestExtendedControls
                 chart.SetCurrentSeries("C1");
                 Color[] colors = new Color[] { Color.Red, Color.Green, Color.Blue, Color.DarkCyan, Color.Magenta, Color.Brown };
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 15; i++)
                 {
-                    var dp = chart.AddPoint(i + 1, $"Pie1 {i + 1}", $"Pie Lab {i+1}", pointcolor:colors[i]);
+                    var dp = chart.AddPoint(i + 1, $"Pie1 {i + 1}", $"Pie Lab {i+1}", pointcolor:colors[i%colors.Length]);
                     //  dp.LabelForeColor = Color.White;
                 }
 

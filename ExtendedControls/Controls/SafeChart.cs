@@ -101,14 +101,6 @@ namespace ExtendedControls
         {
             chart?.SetTitleColorFont(titlecolor, font, backcolor, border, borderwidth, borderstyle);
         }
-        public void SetAllTitleColorFont(Color titlecolor, Font font, Color? backcolor = null)
-        {
-            chart?.SetAllTitleColorFont(titlecolor, font, backcolor);
-        }
-        public void SetAllTitleBorder(bool setborderonlyifset = false, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
-        {
-            chart?.SetAllTitleBorder(setborderonlyifset, border, borderwidth, borderstyle);
-        }
 
         public void SetChartAreaPlotArea(ElementPosition pos)
         {
@@ -137,10 +129,12 @@ namespace ExtendedControls
             return chart?.SetCurrentLegend(i);
         }
 
-        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null)
+        public void SetLegendTitle(string title, Color? forecolor = null, Color? backcolor = null, Font font = null, StringAlignment? alignment = null,
+                                            LegendSeparatorStyle? sep = null, Color? seperatorcolor = null)
         {
-            chart?.SetAllLegendsColorFont(legendtextcolor, font, backcolor, shadowoffset, shadowcolor);
+            chart?.SetLegendTitle(title, forecolor, backcolor, font, alignment, sep, seperatorcolor);
         }
+
 
         public void SetLegendShadowOffset(int offset)
         {

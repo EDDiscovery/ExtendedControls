@@ -510,7 +510,10 @@ namespace ExtendedControls
 
                 ctrl.SetAllTitleColorFont(colors[CI.grid_celltext], GetScaledFont(1.5f), colors[CI.grid_cellbackground]);
                 ctrl.SetAllTitleBorder(true, colors[CI.group_borderlines]);
-                ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt);
+                ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt, colors[CI.grid_cellbackground].Multiply(1.2f), 6, Color.FromArgb(128,0,0,0),
+                                            colors[CI.grid_celltext], null, fnt, StringAlignment.Center,LegendSeparatorStyle.Line, colors[CI.group_borderlines],
+                                            colors[CI.group_borderlines],ChartDashStyle.Solid,1,
+                                            LegendSeparatorStyle.Line, colors[CI.group_borderlines],1);
 
                 // we theme all chart areas, backwards, so chartarea0 is the one left selected            
                 for (int i = ctrl.ChartAreas.Count - 1; i >= 0; i--)

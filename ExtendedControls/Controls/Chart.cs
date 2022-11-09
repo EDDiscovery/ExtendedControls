@@ -129,7 +129,7 @@ namespace ExtendedControls
         public Legend AddLegend(string name, Color? textcolor = null, Color? backcolor = null, Font font = null, ElementPosition position = null)
         {
             CurrentLegend = Legends.Add(name);
-            if ( textcolor != null)
+            if (textcolor != null)
                 CurrentLegend.ForeColor = textcolor.Value;
             if ( font!= null)
                 CurrentLegend.Font = font;
@@ -152,20 +152,23 @@ namespace ExtendedControls
             return CurrentLegend;
         }
 
-        // set all legends to this colour, font and backcolor (transparent if not set)
-        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null)
+        public void SetLegendTitle(string title, Color? forecolor = null, Color? backcolor = null, Font font = null, StringAlignment? alignment = null,
+                                            LegendSeparatorStyle? sep = null, Color? seperatorcolor = null)
         {
-            foreach (var x in Legends)
-            {
-                x.Font = font;
-                x.ForeColor = legendtextcolor;
-                x.BackColor = backcolor ?? Color.Transparent;
-                if ( shadowcolor != null)
-                {
-                    x.ShadowColor = shadowcolor.Value;
-                    x.ShadowOffset = shadowoffset;
-                }
-            }
+            CurrentLegend.Title = title;
+
+            if (forecolor.HasValue)
+                CurrentLegend.TitleForeColor = forecolor.Value;
+            if (backcolor.HasValue)
+                CurrentLegend.TitleBackColor = backcolor.Value;
+            if (font != null)
+                CurrentLegend.TitleFont = font;
+            if (alignment.HasValue)
+                CurrentLegend.TitleAlignment = alignment.Value;
+            if (sep.HasValue)
+                CurrentLegend.TitleSeparator = sep.Value;
+            if (seperatorcolor.HasValue)
+                CurrentLegend.TitleSeparatorColor = seperatorcolor.Value;
         }
 
         public void SetLegendShadowOffset(int offset)
@@ -182,6 +185,49 @@ namespace ExtendedControls
                 CurrentLegend.ShadowColor = shadowcolor.Value;
             if (backcolor.HasValue)
                 CurrentLegend.BackColor = backcolor.Value;
+        }
+
+
+        // set all legends to this colour, font and backcolor (transparent if not set)
+        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null,
+                                           Color? tforecolor = null, Color? tbackcolor = null, Font tfont = null, StringAlignment? talignment = null,
+                                           LegendSeparatorStyle? tsep = null, Color? tseperatorcolor = null,
+                                           Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
+                                           LegendSeparatorStyle? isep = null, Color? iseperatorcolor = null, int columnspacing = 5)
+        {
+            foreach (var x in Legends)
+            {
+                x.Font = font;
+                x.ForeColor = legendtextcolor;
+                x.BackColor = backcolor ?? Color.Transparent;
+                if (shadowcolor != null)
+                {
+                    x.ShadowColor = shadowcolor.Value;
+                    x.ShadowOffset = shadowoffset;
+                }
+
+                if (tforecolor.HasValue)
+                    x.TitleForeColor = tforecolor.Value;
+                if (tbackcolor.HasValue)
+                    x.TitleBackColor = tbackcolor.Value;
+                if (tfont != null)
+                    x.TitleFont = tfont;
+                if (talignment.HasValue)
+                    x.TitleAlignment = talignment.Value;
+                if (tsep.HasValue)
+                    x.TitleSeparator = tsep.Value;
+                if (tseperatorcolor.HasValue)
+                    x.TitleSeparatorColor = tseperatorcolor.Value;
+                if (bordercolor.HasValue)
+                    x.BorderColor = bordercolor.Value;
+                x.BorderDashStyle = borderdashstyle;
+                x.BorderWidth = borderwidth;
+                if (isep.HasValue)
+                    x.ItemColumnSeparator = isep.Value;
+                if (iseperatorcolor.HasValue)
+                    x.ItemColumnSeparatorColor = iseperatorcolor.Value;
+                x.ItemColumnSpacing = 5;
+            }
         }
 
         //////////////////////////////////////////////////////////////////////////// Chart Area
