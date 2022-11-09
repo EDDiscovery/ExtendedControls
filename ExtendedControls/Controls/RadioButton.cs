@@ -134,7 +134,7 @@ namespace ExtendedControls
                     using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
                     {
                         if (FontToUse == null || FontToUse.FontFamily != Font.FontFamily || FontToUse.Style != Font.Style)
-                            FontToUse = e.Graphics.GetFontToFitRectangle(this.Text, Font, textarea, fmt);
+                            FontToUse = e.Graphics.GetFontToFit(this.Text, Font, textarea.Size, fmt);
 
                         e.Graphics.DrawString(this.Text, FontToUse, textb, textarea, fmt);
                     }

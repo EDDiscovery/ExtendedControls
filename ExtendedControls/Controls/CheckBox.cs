@@ -253,7 +253,7 @@ namespace ExtendedControls
                 using (Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(CheckBoxDisabledScaling)))
                 {
                     if (FontToUse == null || FontToUse.FontFamily != Font.FontFamily || FontToUse.Style != Font.Style)
-                        FontToUse = g.GetFontToFitRectangle(this.Text, Font, box, fmt);
+                        FontToUse = g.GetFontToFit(this.Text, Font, box.Size, fmt);
 
                     g.DrawString(this.Text, FontToUse, textb, box, fmt);
                 }

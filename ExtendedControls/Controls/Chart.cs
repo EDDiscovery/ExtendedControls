@@ -54,6 +54,8 @@ namespace ExtendedControls
             else
                 CurrentTitle.Docking = dck;
 
+            boundssizedat = Rectangle.Empty;            // Recalc any positional text boxes
+
             if (alignment.HasValue)
                 CurrentTitle.Alignment = alignment.Value;
 
@@ -73,6 +75,7 @@ namespace ExtendedControls
         public void SetTitleText(string text)
         {
             CurrentTitle.Text = text;
+            boundssizedat = Rectangle.Empty;            // Recalc any positional text boxes
         }
         public void SetTitlePosition(ElementPosition p)
         {
@@ -965,14 +968,8 @@ namespace ExtendedControls
                     if (!t.Position.Auto)
                     {
                         Rectangle area = GetArea(t.Position);
-                        System.Diagnostics.Debug.WriteLine($"Title pos {t.Position} = {area}");
-                        using (StringFormat fmt = new StringFormat())
-                        {
-                            System.Diagnostics.Debug.WriteLine($"Font in is {t.Font}");
-                            t.Font = ControlHelpersStaticFunc.GetFontToFitRectangle(t.Text, t.Font, area, fmt);
-                            System.Diagnostics.Debug.WriteLine($".. out is {t.Font}");
-
-                        }
+                        //System.Diagnostics.Debug.WriteLine($"Title pos {t.Position} = {area} chart area {Bounds}");
+                        t.Font = ControlHelpersStaticFunc.GetFontToFit(t.Text, t.Font, new Size(area.Width-12, area.Height-4));     //12 pixels for borders etc and spacing etc.
                     }
                 }
             }
