@@ -23,11 +23,16 @@ namespace ExtendedControls
     // Does not work in MONO
     public class ExtChart : Chart
     {
+        // currently selected items in chart
+
         public ChartArea CurrentChartArea { set; get; }
         public Series CurrentSeries { set; get; }
         public DataPoint CurrentDataPoint { get; set; }
         public Legend CurrentLegend { get; set; }
         public Title CurrentTitle { get; set; }
+
+        public static Color RequestTheme = Color.FromArgb(0, 255, 255, 255);        // set textcolor to this to request themeing
+        public static Color Disable = Color.FromArgb(0, 255, 255, 254);             // to disable themeing on elements - see below
 
         public ExtChart() : base()
         {
@@ -42,23 +47,50 @@ namespace ExtendedControls
                 BorderlineColor = borderlinecolor.Value;
         }
 
-        // add a title. Minimum is text. 
-        public Title AddTitle(string name, string text, Docking dck = Docking.Top,  ContentAlignment? alignment = null, ElementPosition position = null )
+        //////////////////////////////////////////////////////////////////////////// Titles
+
+        // add a title of name with text
+        // the title will be themed if textcolor is set to RequestTheme (default if textcolor=null)
+        // the border/shadow can be disabled even if the theme wants it by setting border/shadow color to Disable
+        public Title AddTitle(string name, string text, 
+                                 Color? textcolor = null, Color? backcolor = null, Font font = null,
+                                 Docking dck = Docking.Top,  ContentAlignment? alignment = null, ElementPosition position = null,
+                                 Color? bordercolor = null, int borderwidth = 1, ChartDashStyle borderdashstyle = ChartDashStyle.Solid,
+                                 Color? shadowcolor = null, int shadowoffset = 0)
         {
             CurrentTitle = new Title(text);
             CurrentTitle.Name = name;
             Titles.Add(CurrentTitle);
+
+            CurrentTitle.ForeColor = textcolor ?? RequestTheme;
+
+            if (backcolor != null)
+                CurrentTitle.BackColor = backcolor.Value;
+            if (font != null)
+                CurrentTitle.Font = font;
 
             if (position != null)
                 CurrentTitle.Position = position;
             else
                 CurrentTitle.Docking = dck;
 
-            boundssizedat = Rectangle.Empty;            // Recalc any positional text boxes
-
             if (alignment.HasValue)
                 CurrentTitle.Alignment = alignment.Value;
 
+            if (bordercolor.HasValue)
+            {
+                CurrentTitle.BorderColor = bordercolor.Value;
+                CurrentTitle.BorderDashStyle = borderdashstyle;
+                CurrentTitle.BorderWidth = borderwidth;
+            }
+
+            if (shadowcolor.HasValue)
+            {
+                CurrentTitle.ShadowColor = shadowcolor.Value;
+                CurrentTitle.ShadowOffset = shadowoffset;
+            }
+
+            boundssizedat = Rectangle.Empty;            // Recalc any positional text boxes
             return CurrentTitle;
         }
 
@@ -82,63 +114,62 @@ namespace ExtendedControls
             CurrentTitle.Position = p;
         }
 
-        // Fonts are autosized to the title below, using layout, so the size is ignored in Font.
-        public void SetTitleColorFont(Color? titlecolor = null, Font font = null, Color? backcolor = null, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
-        {
-            if (titlecolor != null)
-                CurrentTitle.ForeColor = titlecolor.Value;
-            if (font != null)
-                CurrentTitle.Font = font;
-            if (backcolor.HasValue)
-                CurrentTitle.BackColor = backcolor.Value;
-            if (border.HasValue)
-            {
-                CurrentTitle.BorderColor = border.Value;
-                CurrentTitle.BorderWidth = borderwidth;
-                CurrentTitle.BorderDashStyle = borderstyle;
-            }
-        }
-
         // set all titles to this colour, font and backcolor (transparent if not set)
         // Fonts are autosized to the title below, using layout, so the size is ignored in Font.
-        public void SetAllTitleColorFont(bool setbackonlyifset, Color titlecolor, Font font, Color? backcolor = null)
+        public void SetAllTitlesColorFont(Color textcolor, Font font, Color backcolor,
+                                         Color shadowcolor, int shadowwidth,
+                                         Color bordercolor, int borderwidth, ChartDashStyle borderstyle)
         {
             foreach (var x in Titles)
             {
-                x.Font = font;
-                x.ForeColor = titlecolor;
-                if ( !setbackonlyifset || x.BackColor != Color.Empty)       // if set always, or if set already
-                    x.BackColor = backcolor ?? Color.Transparent;
-            }
-        }
-
-        // titles are normally borderless.
-        // if setborderonlyifset = true, the title needs to call SetTitleColorFont and set an (arbitary) color before this to allow the border to be applied.
-        public void SetAllTitleBorder(bool setborderonlyifset, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
-        {
-            foreach (var x in Titles)
-            {
-                if (!setborderonlyifset || x.BorderColor != Color.Empty)            // if set always, or if set already
-                    x.BorderColor = border ?? Color.Transparent;
-                x.BorderWidth = borderwidth;
-                x.BorderDashStyle = borderstyle;
+                if (x.ForeColor == RequestTheme)
+                {
+                    x.Font = font;
+                    x.ForeColor = textcolor;
+                    x.BackColor = backcolor;
+                    if (x.ShadowColor != Disable)
+                    {
+                        x.ShadowColor = shadowcolor;
+                        x.ShadowOffset = shadowwidth;
+                    }
+                    if (x.BorderColor != Disable)
+                    {
+                        x.BorderColor = bordercolor;
+                        x.BorderWidth = borderwidth;
+                        x.BorderDashStyle = borderstyle;
+                    }
+                }
             }
         }
 
         //////////////////////////////////////////////////////////////////////////// Legend
 
-        // add legend to chart. Each legend seems to represent the series in order. Optional themeing
-        public Legend AddLegend(string name, Color? textcolor = null, Color? backcolor = null, Font font = null, ElementPosition position = null)
+        // add legend to chart. Each legend seems to represent the series in order. 
+        // the legend will be themed if textcolor is set to RequestTheme (default if textcolor=null)
+        // the border/shadow can be disabled even if the theme wants it by setting border/shadow color to Disable
+        public Legend AddLegend(string name, Color? textcolor = null, Color? backcolor = null, Font font = null, ElementPosition position = null,
+                                Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
+                                Color? shadowcolor = null, int shadowoffset = 0)
         {
             CurrentLegend = Legends.Add(name);
-            if (textcolor != null)
-                CurrentLegend.ForeColor = textcolor.Value;
+            CurrentLegend.ForeColor = textcolor ?? RequestTheme;
             if ( font!= null)
                 CurrentLegend.Font = font;
             if (backcolor != null)
                 CurrentLegend.BackColor = backcolor.Value;
             if (position != null)
                 CurrentLegend.Position = position;
+            if ( bordercolor.HasValue)
+            {
+                CurrentLegend.BorderColor = bordercolor.Value;
+                CurrentLegend.BorderDashStyle = borderdashstyle;
+                CurrentLegend.BorderWidth = borderwidth;
+            }
+            if (shadowcolor.HasValue)
+            {
+                CurrentLegend.ShadowColor = shadowcolor.Value;
+                CurrentLegend.ShadowOffset = shadowoffset;
+            }
 
             return CurrentLegend;
         }
@@ -173,70 +204,42 @@ namespace ExtendedControls
                 CurrentLegend.TitleSeparatorColor = seperatorcolor.Value;
         }
 
-        public void SetLegendShadowOffset(int offset)
-        {
-            CurrentLegend.ShadowOffset = offset;
-        }
-
-        // for the themer, to indicate you want a background or border, set your legend color to any color and the themer will override.
-
-        public void SetLegendColor(Color? scolor = null, Color? backcolor = null, Color? shadowcolor = null, Color? bordercolor = null)
-        {
-            if ( scolor.HasValue)
-                CurrentLegend.ForeColor = scolor.Value;
-            if (shadowcolor.HasValue)
-                CurrentLegend.ShadowColor = shadowcolor.Value;
-            if (backcolor.HasValue)
-                CurrentLegend.BackColor = backcolor.Value;
-            if (bordercolor.HasValue)
-                CurrentLegend.BorderColor = bordercolor.Value;
-        }
-
         // set all legends to this colour set
-        public void SetAllLegendsColorFont(bool setbackborderonlyifset,        // if false, we override with the colour given (or transparent if not) for these
-                                           Color legendtextcolor, Font font, 
-                                           Color? backcolor = null, int shadowoffset = 0, Color? shadowcolor = null,
-                                           Color? tforecolor = null, Color? tbackcolor = null, Font tfont = null, StringAlignment? talignment = null,
-                                           LegendSeparatorStyle? tsep = null, Color? tseperatorcolor = null,
-                                           Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
-                                           LegendSeparatorStyle? isep = null, Color? iseperatorcolor = null, int columnspacing = 5)
+        public void SetAllLegendsColorFont( Color legendtextcolor, Font font, Color backcolor, 
+                                           int shadowoffset, Color shadowcolor,
+                                           Color tforecolor, Color tbackcolor, Font tfont, StringAlignment talignment,
+                                           LegendSeparatorStyle tsep, Color tseperatorcolor,
+                                           Color bordercolor, ChartDashStyle borderdashstyle, int borderwidth,
+                                           LegendSeparatorStyle isep, Color iseperatorcolor, int columnspacing)
         {
             foreach (var x in Legends)
             {
-                x.Font = font;
-                x.ForeColor = legendtextcolor;
-
-                if (!setbackborderonlyifset || x.BackColor != Color.Empty)
-                    x.BackColor = backcolor ?? Color.Transparent;
-
-                if (shadowcolor != null)
+                if (x.ForeColor == RequestTheme)
                 {
-                    x.ShadowColor = shadowcolor.Value;
-                    x.ShadowOffset = shadowoffset;
-                }
-
-                if (tforecolor.HasValue)
-                    x.TitleForeColor = tforecolor.Value;
-                if (tbackcolor.HasValue)
-                    x.TitleBackColor = tbackcolor.Value;
-                if (tfont != null)
+                    x.Font = font;
+                    x.ForeColor = legendtextcolor;
+                    x.BackColor = backcolor;
+                    if (x.ShadowColor != Disable)
+                    {
+                        x.ShadowColor = shadowcolor;
+                        x.ShadowOffset = shadowoffset;
+                    }
+                    if (x.BorderColor != Disable)
+                    {
+                        x.BorderColor = bordercolor;
+                        x.BorderDashStyle = borderdashstyle;
+                        x.BorderWidth = borderwidth;
+                    }
+                    x.TitleForeColor = tforecolor;
+                    x.TitleBackColor = tbackcolor;
                     x.TitleFont = tfont;
-                if (talignment.HasValue)
-                    x.TitleAlignment = talignment.Value;
-                if (tsep.HasValue)
-                    x.TitleSeparator = tsep.Value;
-                if (tseperatorcolor.HasValue)
-                    x.TitleSeparatorColor = tseperatorcolor.Value;
-                if (!setbackborderonlyifset || x.BorderColor != Color.Empty)
-                    x.BorderColor = bordercolor ?? Color.Transparent;
-
-                x.BorderDashStyle = borderdashstyle;
-                x.BorderWidth = borderwidth;
-                if (isep.HasValue)
-                    x.ItemColumnSeparator = isep.Value;
-                if (iseperatorcolor.HasValue)
-                    x.ItemColumnSeparatorColor = iseperatorcolor.Value;
-                x.ItemColumnSpacing = 5;
+                    x.TitleAlignment = talignment;
+                    x.TitleSeparator = tsep;
+                    x.TitleSeparatorColor = tseperatorcolor;
+                    x.ItemColumnSeparator = isep;
+                    x.ItemColumnSeparatorColor = iseperatorcolor;
+                    x.ItemColumnSpacing = columnspacing;
+                }
             }
         }
 
@@ -682,7 +685,8 @@ namespace ExtendedControls
         }
 
         // Add point to CurrentSeries
-        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
+        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
+                                    string graphtooltip = null, string legendtooltip = null)
         {
             CurrentSeries.Points.Add(d);
             CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
@@ -692,11 +696,16 @@ namespace ExtendedControls
                 CurrentDataPoint.LegendText = legendtext;
             if (pointcolor != null)
                 CurrentDataPoint.Color = pointcolor.Value;
+            if (graphtooltip != null)
+                CurrentDataPoint.ToolTip = graphtooltip;
+            if (legendtooltip != null)
+                CurrentDataPoint.LegendToolTip = legendtooltip;
             CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return CurrentDataPoint;
         }
         // Add point to CurrentSeries
-        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
+        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
+                                    string graphtooltip = null, string legendtooltip = null)
         {
             CurrentSeries.Points.Add(d);
             CurrentDataPoint = d;
@@ -706,13 +715,18 @@ namespace ExtendedControls
                 CurrentDataPoint.LegendText = legendtext;
             if (pointcolor != null)
                 CurrentDataPoint.Color = pointcolor.Value;
+            if (graphtooltip != null)
+                CurrentDataPoint.ToolTip = graphtooltip;
+            if (legendtooltip != null)
+                CurrentDataPoint.LegendToolTip = legendtooltip;
             CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return d;
         }
 
         // Add xy point to CurrentSeries
         // for dates, the chart uses the day count as the X enumerator.
-        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
+        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
+                                string graphtooltip = null, string legendtooltip = null)
         {
             CurrentSeries.Points.AddXY(x, y);
             CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
@@ -722,6 +736,10 @@ namespace ExtendedControls
                 CurrentDataPoint.LegendText = legendtext;
             if (pointcolor != null)
                 CurrentDataPoint.Color = pointcolor.Value;
+            if (graphtooltip != null)
+                CurrentDataPoint.ToolTip = graphtooltip;
+            if (legendtooltip != null)
+                CurrentDataPoint.LegendToolTip = legendtooltip;
             CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return CurrentDataPoint;
         }

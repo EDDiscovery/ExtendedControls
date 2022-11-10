@@ -511,10 +511,12 @@ namespace ExtendedControls
                 // so the themer only overrides border/back colours if the user has set them to a value already. It does not override empty entries 
                 // the user can chose if titles/legends border and back is themed
 
-                ctrl.SetAllTitleColorFont(true, colors[CI.grid_celltext], GetScaledFont(1.5f), colors[CI.grid_cellbackground]);
-                ctrl.SetAllTitleBorder(true, colors[CI.group_borderlines]);
-                ctrl.SetAllLegendsColorFont(true, colors[CI.grid_celltext], fnt, colors[CI.grid_cellbackground].Multiply(1.2f), 6, Color.FromArgb(128,0,0,0),
-                                            colors[CI.grid_celltext], null, fnt, StringAlignment.Center,LegendSeparatorStyle.Line, colors[CI.group_borderlines],
+                ctrl.SetAllTitlesColorFont(colors[CI.grid_celltext], GetScaledFont(1.5f), colors[CI.grid_cellbackground],
+                                          Color.Empty,1,
+                                          colors[CI.group_borderlines],1,ChartDashStyle.Solid);
+
+                ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt, colors[CI.grid_cellbackground].Multiply(1.2f), 6, Color.FromArgb(128,0,0,0),
+                                            colors[CI.grid_celltext], colors[CI.grid_cellbackground], fnt, StringAlignment.Center,LegendSeparatorStyle.Line, colors[CI.group_borderlines],
                                             colors[CI.group_borderlines],ChartDashStyle.Solid,1,
                                             LegendSeparatorStyle.Line, colors[CI.group_borderlines],1);
 

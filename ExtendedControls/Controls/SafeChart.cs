@@ -24,6 +24,9 @@ namespace ExtendedControls
 
     public class ExtSafeChart : Panel
     {
+        public static Color RequestTheme = ExtChart.RequestTheme;
+        public static Color Disable = ExtChart.Disable;
+
         public override Color BackColor { get { return chart?.BackColor ?? base.BackColor; }
                             set { if (chart != null) chart.BackColor = value; else base.BackColor = value; } }
 
@@ -75,10 +78,13 @@ namespace ExtendedControls
             chart?.SetBorder(width, style, b);
         }
 
-
-        public Title AddTitle(string name, string text, Docking dck = Docking.Top, ContentAlignment? alignment = null, ElementPosition position = null)
+        public Title AddTitle(string name, string text,
+                                 Color? textcolor = null, Color? backcolor = null, Font font = null,
+                                 Docking dockingpos = Docking.Top, ContentAlignment? alignment = null, ElementPosition position = null,
+                                 Color? bordercolor = null, int borderwidth = 1, ChartDashStyle borderdashstyle = ChartDashStyle.Solid,
+                                 Color? shadowcolor = null, int shadowoffset = 0)
         {
-            return chart?.AddTitle(name, text, dck, alignment,position) ?? null; 
+            return chart?.AddTitle(name, text, textcolor, backcolor, font, dockingpos, alignment,position, bordercolor,borderwidth,borderdashstyle,shadowcolor,shadowoffset) ?? null; 
         }
         public Title SetCurrentTitle(string name)
         {
@@ -97,27 +103,13 @@ namespace ExtendedControls
             chart?.SetTitlePosition(p);
         }
 
-        public void SetTitleColorFont(Color? titlecolor = null, Font font = null, Color? backcolor = null, Color? border = null, int borderwidth = 1, ChartDashStyle borderstyle = ChartDashStyle.Solid)
-        {
-            chart?.SetTitleColorFont(titlecolor, font, backcolor, border, borderwidth, borderstyle);
-        }
-
-        public void SetChartAreaPlotArea(ElementPosition pos)
-        {
-            chart?.SetChartAreaPlotArea(pos);
-        }
-
-        public void SetChartAreaVisible(bool visible)
-        {
-            if (chart != null)
-                chart.CurrentChartArea.Visible = visible;
-        }
-
         //////////////////////////////////////////////////////////////////////////// Legend
 
-        public Legend AddLegend(string name, Color? textcolor =null, Color? backcolor = null, Font font = null, ElementPosition position = null)
+        public Legend AddLegend(string name, Color? textcolor =null, Color? backcolor = null, Font font = null, ElementPosition position = null,
+                                Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
+                                Color? shadowcolor = null, int shadowoffset = 0)
         {
-            return chart?.AddLegend(name, textcolor, backcolor, font, position) ?? null;
+            return chart?.AddLegend(name, textcolor, backcolor, font, position, bordercolor, borderdashstyle, borderwidth, shadowcolor, shadowoffset) ?? null;
         }
 
         public Legend SetCurrentLegend(string name)
@@ -133,18 +125,6 @@ namespace ExtendedControls
                                             LegendSeparatorStyle? sep = null, Color? seperatorcolor = null)
         {
             chart?.SetLegendTitle(title, forecolor, backcolor, font, alignment, sep, seperatorcolor);
-        }
-
-
-        public void SetLegendShadowOffset(int offset)
-        {
-            chart?.SetLegendShadowOffset(offset);
-        }
-
-        // colour used in series for both its contents and the labels
-        public void SetLegendColor(Color? scolor = null, Color? backcolor = null, Color? shadowcolor = null, Color? bordercolor = null)
-        {
-            chart?.SetLegendColor(scolor, backcolor, shadowcolor, bordercolor);
         }
 
         //////////////////////////////////////////////////////////////////////////// Chart Area
@@ -171,6 +151,23 @@ namespace ExtendedControls
         public void SetChartArea3DStyle(ChartArea3DStyle style)
         {
             chart?.SetChartArea3DStyle(style);
+        }
+
+        public void SetChartAreaPlotArea(ElementPosition pos)
+        {
+            chart?.SetChartAreaPlotArea(pos);
+        }
+
+        public void SetChartAreaVisible(bool visible)
+        {
+            if (chart != null)
+                chart.CurrentChartArea.Visible = visible;
+        }
+
+        public void SetChartAreaVisible(int chartnumber, bool visible)
+        {
+            if (chart != null)
+                chart.ChartAreas[chartnumber].Visible = visible;
         }
 
         //////////////////////////////////////////////////////////////////////////// X
@@ -414,18 +411,18 @@ namespace ExtendedControls
         {
             chart?.ClearAllSeriesPoints();
         }
-        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
+        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null)
         {
-            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue);
+            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip);
         }
 
-        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
+        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null)
         {
-            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue);
+            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip);
         }
-        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false)
+        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null)
         {
-            return chart?.AddXY(x, y, label, legendtext, pointcolor, showvalue);
+            return chart?.AddXY(x, y, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip);
         }
 
         public bool CompareYPoints(double[] values, int yentry = 0)
