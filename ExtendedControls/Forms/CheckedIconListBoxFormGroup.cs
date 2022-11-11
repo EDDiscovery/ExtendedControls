@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2022 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -26,17 +24,22 @@ namespace ExtendedControls
 
     public class CheckedIconListBoxFormGroup : CheckedIconListBoxForm
     {
-        private class Options
+        public class Options
         {
-            public string Tag;
-            public string Text;
-            public Image Image;
-            public string Exclusive;
-            public bool DisableUncheck;
+            public string Tag { get; set; }
+            public string Text { get; set; }
+            public Image Image { get; set; }
+            public string Exclusive { get; set; }
+            public bool DisableUncheck { get; set; }
+            public bool Button { get; set; }
+            public object UserTag { get; set; }
         }
 
-        private List<Options> groupoptions = new List<Options>();
-        private List<Options> standardoptions = new List<Options>();
+        public List<Options> GroupOptions() { return groupoptions; }
+        public List<Options> GroupOptionsWithUserTag() { return groupoptions.Where(x=>x.UserTag!=null).ToList(); }
+        public List<Options> StandardOptions() { return standardoptions; }
+
+        public string GetChecked() { return GetChecked(groupoptions.Count, AllOrNoneBack); }
 
         public long LongConfigurationValue { get; private set; }                    // if using long as the tag, this is the accumulated long value of all bits
 
@@ -46,16 +49,47 @@ namespace ExtendedControls
             AddGroupOptionAtTop("All", "All".TxID(ECIDs.All), Properties.Resources.All);       // displayed, translate
         }
 
-        public void AddGroupOption(string tags, string text, Image img = null)      // group option
+        public void AddGroupOption(string tags, string text, Image img = null, object usertag = null)      // group option
         {
-            var o = new Options() { Tag = tags, Text = text, Image = img };
+            var o = new Options() { Tag = tags, Text = text, Image = img, UserTag = usertag };
             groupoptions.Add(o);
         }
 
-        public void AddGroupOptionAtTop(string tag, string text, Image img = null)      // group option
+        public void AddGroupOptionAtTop(string tag, string text, Image img = null , object usertag = null)      // group option
         {
-            var o = new Options() { Tag = tag, Text = text, Image = img };
+            var o = new Options() { Tag = tag, Text = text, Image = img , UserTag = usertag};
             groupoptions.Insert(0, o);
+        }
+
+        public void AddGroupOptions(string groupswithids, object usertag, Image img = null)           // group options formatted in a string
+        {
+            string[] groups = groupswithids.Split('\u24C2');
+            foreach (var x in groups)
+            {
+                int nsp = x.IndexOf('\u2713');
+                if (nsp > 0)
+                {
+                    var tag = x.Substring(nsp + 1);
+                    var name = x.Substring(0, nsp);
+                    AddGroupOption(tag, name , img, usertag: usertag);        // use the usertag and just put a marker in it
+                }
+            }
+        }
+
+        public string GetUserGroupDefinition(object usertag)                    // given a specific usertag, find group definition string
+        {
+            string ret = "";
+            foreach (var x in groupoptions)
+            {
+                if ( x.UserTag != null && x.UserTag.Equals(usertag))
+                    ret = ret.AppendPrePad($"{x.Text}\u2713{x.Tag}", "\u24C2");
+            }
+            return ret;
+        }
+
+        public void RemoveGroupOption(int i)
+        {
+            groupoptions.RemoveAt(i);
         }
 
         // use a long tag (bit field, 1,2,4,8 etc).  Use SettingsStringToLong to convert back
@@ -65,9 +99,15 @@ namespace ExtendedControls
             standardoptions.Add(new Options() { Tag = tag.ToStringInvariant(), Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck });
         }
 
-        public void AddStandardOption(string tag, string text, Image img = null, string exclusivetags = null, bool disableuncheck = false)   // standard option
+        public void AddStandardOption(string tag, string text, Image img = null, string exclusivetags = null, bool disableuncheck = false, bool button = false, object usertag = null)   // standard option
         {
-            standardoptions.Add(new Options() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck });
+            standardoptions.Add(new Options() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, UserTag = usertag });
+        }
+
+        public void AddStandardOptionAtTop(string tag, string text, Image img = null, string exclusivetags = null, bool disableuncheck = false, bool button = false, object usertag = null)   // standard option
+        {
+            var o = new Options() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, UserTag = usertag };
+            standardoptions.Insert(0, o);
         }
 
         public void AddStandardOption(List<Tuple<string, string, Image>> list)                // standard option
@@ -83,6 +123,7 @@ namespace ExtendedControls
                 return left.Text.CompareTo(right.Text);
             });
         }
+
 
         // if using long as the tag, use this to convert the 1;2;4; value back to long
         public static long SettingsStringToLong(string s, char splitchar = ';')     
@@ -103,19 +144,22 @@ namespace ExtendedControls
 
         public void Create(string settings, bool applytheme = true)         // create, set settings, theme.  Call show(parent) afterwards
         {
+            StartAdd();
             foreach (var x in groupoptions)
-                AddItem(x.Tag, x.Text, x.Image);
+                AddItem(x.Tag, x.Text, x.Image,usertag:x.UserTag);
 
             foreach (var x in standardoptions)
-                AddItem(x.Tag, x.Text, x.Image, false, x.Exclusive, x.DisableUncheck);
+                AddItem(x.Tag, x.Text, x.Image, false, x.Exclusive, x.DisableUncheck, x.Button,x.UserTag);
 
             string[] slist = settings.SplitNoEmptyStartFinish(SettingsSplittingChar);
             if (slist.Length == 1 && slist[0].Equals("All"))
-                SetCheckedFromToEnd(groupoptions.Count());
+                SetCheckedFromToEnd(groupoptions.Count);
             else
                 SetChecked(settings);
 
             SetGroupOptions();
+
+            EndAdd();
 
             LargeChange = ItemCount * Properties.Resources.All.Height / 40;   // 40 ish scroll movements
 
@@ -125,6 +169,7 @@ namespace ExtendedControls
                 FormBorderStyle = FormBorderStyle.None;
             }
         }
+
 
         // show using a long to control - the tags should be numeric decimal versions of the flags
         // if no flags are set, then you can use a default standard option
@@ -185,38 +230,40 @@ namespace ExtendedControls
             Show(parent);
         }
 
+        #region Implementation
+
         private void SetGroupOptions()
         {
-            string list = GetChecked(groupoptions.Count());       // using All or None.. on items beyond reserved entries
+            string list = GetChecked(groupoptions.Count);       // using All or None.. on items beyond reserved entries
                                                                      //            System.Diagnostics.Debug.WriteLine("Checked" + list);
-            int p = 0;
+            int pos = 0;
             foreach (var eo in groupoptions)
             {
                 if (eo.Tag == "All")
                 {
-                    SetChecked(p, list.Equals("All"));
+                    SetChecked(pos, list.Equals("All"));
                 }
                 else if (eo.Tag == "None")
                 {
-                    SetChecked(p, list.Equals("None"));
+                    SetChecked(pos, list.Equals("None"));
                 }
                 else if (list.MatchesAllItemsInList(eo.Tag, SettingsSplittingChar))        // exactly, tick
                 {
                     //System.Diagnostics.Debug.WriteLine("Checking T " + eo.Tag + " vs " + list);
-                    SetChecked(p);
+                    SetChecked(pos,true);
                 }
                 else if (list.ContainsAllItemsInList(eo.Tag, SettingsSplittingChar)) // contains, intermediate
                 {
                     //System.Diagnostics.Debug.WriteLine("Checking I " + eo.Tag + " vs " + list + list.Equals(eo.Tag));
-                    SetChecked(p, CheckState.Indeterminate);
+                    SetChecked(pos, CheckState.Indeterminate);
                 }
                 else
                 {
                     //System.Diagnostics.Debug.WriteLine("Checking F " + eo.Tag + " vs " + list);
-                    SetChecked(p, false);
+                    SetChecked(pos, false);
                 }
 
-                p++;
+                pos++;
             }
         }
 
@@ -224,25 +271,25 @@ namespace ExtendedControls
         {
             if (e.NewValue == CheckState.Checked)       // all or none set all of them
             {
-                if (e.Index < groupoptions.Count())
+                if (e.Index < groupoptions.Count)
                 {
                     bool shift = Control.ModifierKeys.HasFlag(Keys.Control);
 
                     if (!shift)
-                        SetCheckedFromToEnd(groupoptions.Count(), false);   // if not shift, we clear all, and apply this tag
+                        SetCheckedFromToEnd(groupoptions.Count, false);   // if not shift, we clear all, and apply this tag
 
                     string tag = groupoptions[e.Index].Tag;
                     if (tag == "All")
-                        SetCheckedFromToEnd(groupoptions.Count(), true);
+                        SetCheckedFromToEnd(groupoptions.Count, true);
                     else if (tag == "None")
-                        SetCheckedFromToEnd(groupoptions.Count(), false);
+                        SetCheckedFromToEnd(groupoptions.Count, false);
                     else
                         SetChecked(tag);
                 }
             }
             else
             {
-                if (e.Index < groupoptions.Count())        // off on this clears the entries of it only
+                if (e.Index < groupoptions.Count)        // off on this clears the entries of it only
                 {
                     string tag = groupoptions[e.Index].Tag;
                     if (tag != "All" && tag != "None ")
@@ -255,9 +302,14 @@ namespace ExtendedControls
 
         protected override void SaveSettingsEvent()     // override to handle group returns
         {
-            System.Diagnostics.Debug.WriteLine("SF Deactivate save settings");
+            //System.Diagnostics.Debug.WriteLine("SF Deactivate save settings");
             SaveSettings?.Invoke(GetChecked(groupoptions.Count, AllOrNoneBack), Tag);
         }
+
+        private List<Options> groupoptions = new List<Options>();
+        private List<Options> standardoptions = new List<Options>();
+
+        #endregion
 
     }
 }

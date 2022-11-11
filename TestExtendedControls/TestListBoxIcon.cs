@@ -16,6 +16,8 @@ namespace TestExtendedControls
     {
         ThemeList theme;
 
+        CheckedIconListBoxFormGroup fgroup;
+
         public TestListBoxIcon()
         {
             InitializeComponent();
@@ -23,6 +25,30 @@ namespace TestExtendedControls
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
             Theme.Current.FontSize = 12;
+
+            fgroup = new CheckedIconListBoxFormGroup();
+
+            var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
+
+            fgroup.AddAllNone();
+            fgroup.AddGroupOption("T1;T2", "T1+2");
+
+            for (int i = 0; i < 250; i++)
+            {
+                fgroup.AddStandardOption("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length]);
+            }
+
+            fgroup.SortStandardOptions();
+
+            fgroup.AddStandardOptionAtTop("B1", "Button1", button: true);
+
+            fgroup.AddGroupOption("T1;T2;T3;T4;", "G1-4");
+            fgroup.AddGroupOption("T5;T6;T7;T8;", "G5-8");
+            fgroup.CheckedChanged += F_CheckedChanged;
+            fgroup.SaveSettings += F_SaveSettings;
+            fgroup.ButtonPressed += F_ButtonPressed;
+            fgroup.HideOnDeactivate = true;
+            fgroup.CloseOnDeactivate = false;
         }
 
         void Log(string s)
@@ -34,15 +60,16 @@ namespace TestExtendedControls
         private void F_CheckedChanged(object sender, ItemCheckEventArgs e, Object tag)
         {
             var s = sender as CheckedIconListBoxForm;
-            extRichTextBox1.Text += "From " + sender.GetType().Name + " " + e.Index + " c " + e.CurrentValue + " new " + e.NewValue + " " + s.GetChecked() + Environment.NewLine;
-            
-            extRichTextBox1.Select(extRichTextBox1.Text.Length, extRichTextBox1.Text.Length);
+            extRichTextBox1.AppendText("From " + sender.GetType().Name + " " + e.Index + " c " + e.CurrentValue + " new " + e.NewValue + " " + s.GetChecked() + Environment.NewLine);
         }
 
         private void F_SaveSettings(string s, Object tag)
         {
-            extRichTextBox1.Text += "Save settings " + s + Environment.NewLine;
-            extRichTextBox1.Select(extRichTextBox1.Text.Length, extRichTextBox1.Text.Length);
+            extRichTextBox1.AppendText("Save settings " + s + Environment.NewLine);
+        }
+        private void F_ButtonPressed(int index, string stag, string text, Object tag, MouseEventArgs e)
+        {
+            extRichTextBox1.AppendText($"Button {stag} {text} with {e.Button}" + Environment.NewLine);
         }
 
         // icon list box
@@ -54,12 +81,13 @@ namespace TestExtendedControls
 
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
 
-            for (int i = 0; i < 200; i++)
-                f.AddItem("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length], false, (i==0) ? "T1;T2" : (i==1) ? "T0;T2" : (i==2) ? "T0;T1": null, i<=2);
+            for (int i = 0; i < 10; i++)
+                f.AddItem("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length], false, (i == 0) ? "T1;T2" : (i == 1) ? "T0;T2" : (i == 2) ? "T0;T1" : null, i <= 2);
+
+            f.AddItem(null, "Press Button", imglist[0], button: true);
 
             f.PositionBelow(extButton1);
-            f.SetChecked("Two;Four");
-            f.CheckedChanged += F_CheckedChanged;
+            f.SetChecked("T1;T4");
             f.SaveSettings += F_SaveSettings;
             f.CheckBoxColor = Color.Orange;
             f.CheckBoxInnerColor = Color.Yellow;
@@ -71,7 +99,9 @@ namespace TestExtendedControls
             f.ArrowButtonColor = Color.Yellow;
             f.Font = new Font("Euro Caps", 16);
             f.CloseBoundaryRegion = new Size(32, 32);
+            f.CheckedChanged += F_CheckedChanged;
             f.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine("Save button1"); };
+            f.ButtonPressed += F_ButtonPressed;
             f.Show(this);
         }
 
@@ -123,20 +153,28 @@ namespace TestExtendedControls
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
 
             f.AddAllNone();
-            for (int i = 0; i <250; i++)
+            f.AddGroupOption("T1;T2", "T1+2");
+
+            for (int i = 0; i <10; i++)
             {
                 f.AddStandardOption("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length]);
             }
+
+            f.SortStandardOptions();
+
+            f.AddStandardOptionAtTop("B1", "Button1", button: true);
 
             if (group)
             {
                 f.AddGroupOption("T1;T2;T3;T4;", "G1-4");
                 f.AddGroupOption("T5;T6;T7;T8;", "G5-8");
             }
+
             f.CheckedChanged += F_CheckedChanged;
             f.SaveSettings += F_SaveSettings;
+            f.ButtonPressed += F_ButtonPressed;
             Theme.Current.FontSize = size;
-            f.Create("", true);
+            f.Create("All", true);
 
             return f;
         }
@@ -273,6 +311,32 @@ namespace TestExtendedControls
             dropdown.Show(this.FindForm());
 
 
+        }
+
+        private void extButton12_Click(object sender, EventArgs e)
+        {
+            if (fgroup.Visible == true)
+            {
+                fgroup.Hide();
+            }
+            else 
+            {
+                fgroup.Show("All", extButton12, this);     // use the quick helper. 
+            }
+
+        }
+
+        private void extButton13_Click(object sender, EventArgs e)
+        {
+            fgroup.Clear();
+        }
+
+        int bi = 0;
+        private void extButton14_Click(object sender, EventArgs e)
+        {
+            fgroup.AddStandardOptionAtTop("B2", $"Button {bi}", button: true);
+            fgroup.AddGroupOption("G2", $"Group {bi}");
+            bi++;
         }
     }
 }

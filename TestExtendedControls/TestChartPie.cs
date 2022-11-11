@@ -36,22 +36,17 @@ namespace TestExtendedControls
                 chart.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
                 //                chart.AddTitle("TP1","Pie1", Docking.Top, Color.Red, new Font("Arial", 15), alignment: ContentAlignment.MiddleLeft, position: new ElementPosition(5, 0, 100, 5));
-                chart.AddTitle("TP2", "Select", Docking.Top, alignment: ContentAlignment.MiddleCenter,
-                                        position: new ElementPosition(40, 5, 20, 10));;
-                chart.SetTitleColorFont(border: Color.Yellow);
+                chart.AddTitle("TP2", "Select", 
+                                        position: new ElementPosition(40, 5, 20, 10), textcolor:Color.Red);
 
                 chart.LeftArrowPosition = new ElementPosition(38, 5, 2, 10);
                 chart.RightArrowPosition = new ElementPosition(60, 5, 2, 10);
 
                 chart.SetBorder(5, ChartDashStyle.Solid, Color.Green);
 
-                var l1 = chart.AddLegend("LPie1", Color.Red, position: new ElementPosition(5, 5, 10, 80));
+                var l1 = chart.AddLegend("LPie1", position: new ElementPosition(5, 5, 10, 80), textcolor: Color.Red);
                 chart.SetLegendTitle("Fred");
-              //  chart.SetLegendShadowOffset(20);
-                chart.SetLegendColor(Color.Blue, Color.FromArgb(128, 60, 60, 60));
-                var l2 = chart.AddLegend("LPie2", Color.Red, position: new ElementPosition(85, 5, 10, 80));
-             //   chart.SetLegendShadowOffset(20);
-                chart.SetLegendColor(Color.Blue, Color.FromArgb(128, 0, 0, 0));
+                var l2 = chart.AddLegend("LPie2", position: new ElementPosition(85, 5, 10, 80), textcolor: Color.Red);
 
                 var ca1 = chart.AddChartArea("Pie1", new ElementPosition(5, 5, 40, 90));
                 ca1.InnerPlotPosition = new ElementPosition(20, 0, 80, 100);
