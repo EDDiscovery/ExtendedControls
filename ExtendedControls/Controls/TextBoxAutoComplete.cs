@@ -29,7 +29,7 @@ namespace ExtendedControls
         public override string Text { get { return base.Text; } set { tempdisableauto = true; base.Text = value; tempdisableauto = false; } }
         // unless done by this one
         public string TextChangedEvent { get { return base.Text; } set { base.Text = value; } }
-
+        public int AutoCompleteTimeout { get { return waitforautotimer.Interval; } set { waitforautotimer.Interval = value; } }
         public Color DropDownBackgroundColor { get; set; } = Color.Gray;
         public Color DropDownBorderColor { get; set; } = Color.Green;
         public Color DropDownScrollBarColor { get; set; } = Color.LightGray;
@@ -138,6 +138,7 @@ namespace ExtendedControls
         {
             waitforautotimer.Stop();
             executingautocomplete = true;
+            EndButtonImage = Properties.Resources.Wait;
 
             ThreadAutoComplete = new System.Threading.Thread(new System.Threading.ThreadStart(AutoComplete));
             ThreadAutoComplete.Name = "AutoComplete";
