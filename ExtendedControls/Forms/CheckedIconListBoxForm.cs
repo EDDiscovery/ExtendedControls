@@ -30,6 +30,11 @@ namespace ExtendedControls
         public Color CheckColor { get; set; } = Color.DarkBlue;
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
         public Size CheckBoxSize { get; set; } = new Size(0, 0);                   // if not set, ImageSize sets the size, or first image, else 24/24
+
+        // if not set, each image sets its size. If no images, then use this to set alternate size 
+        // if fonth > imageheight, then images are scaled to font size
+        public Size ImageSize { get; set; } = new Size(0, 0);
+
         public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
         public int VerticalSpacing { get; set; } = 4;
         public int HorizontalSpacing { get; set; } = 4;
@@ -58,6 +63,8 @@ namespace ExtendedControls
         public bool HideOnDeactivate { get; set; } = false;         // hide instead
         public bool CloseOnChange { get; set; } = false;            // close when any is changed
         public bool HideOnChange { get; set; } = false;             // hide when any is changed
+        public bool MultipleColumnsAllowed { get; set; } = false;      // allow multiple columns
+        public bool MultipleColumnsFitToScreen { get; set; } = false;      // if multiple columns, move left to fit
 
         public long LastDeactivateTime { get; set; } = -Environment.TickCount;      // when we deactivate, we record last time
         public bool DeactivatedWithin(long ms)                      // have we deactivated in this timeperiod. use for debouncing buttons if hiding
@@ -66,11 +73,6 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine($"Deactivate time {timesince}");
             return timesince <= ms;
         }
-
-        // if not set, each image sets its size. If no images, then use this to set alternate size 
-        // if fonth > imageheight, then images are scaled to font size
-        public Size ImageSize { get; set; } = new Size(0, 0);
-
         public Size ScreenMargin { get; set; } = new Size(64, 64);
 
         public int ItemCount { get { return controllist.Count; } }
@@ -90,13 +92,13 @@ namespace ExtendedControls
         // this will speed up multiple adds a touch
         public void StartAdd()
         {
-           // System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("SA",true)} Start add {panelscroll.Controls.Count}");
+            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("SA",true)} Start add {panelscroll.Controls.Count}");
             panelscroll.SuspendLayout();
         }
         public void EndAdd()
         {
-            //panelscroll.ResumeLayout();
-            System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("SA")} End add");
+            panelscroll.ResumeLayout();
+            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("SA")} End add");
         }
 
         public void AddItem(string tag, string text, Image img = null, bool attop = false, string exclusive = null, bool disableuncheck = false, bool button = false, object usertag = null)
@@ -221,9 +223,10 @@ namespace ExtendedControls
         {
             controllist.Clear();
             panelscroll.ClearControls();
-            positiondone = false;
+            positioncontrolcolumns = -2;
+            lastbounds = Rectangle.Empty;
             Refresh();
-       }
+        }
 
         public CheckedIconListBoxForm()
         {
@@ -242,6 +245,20 @@ namespace ExtendedControls
             timer.Interval = 100;
             timer.Tick += CheckMouse;
         }
+
+        public new void Show(IWin32Window parent)
+        {
+            // intercept this while hidden, and check if we need a relayout
+            // if we were shown, and we moved, or we were cleared
+            if ((!lastbounds.IsEmpty && SetLocation != this.Location ) || positioncontrolcolumns == -2)
+            {
+                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCount} Previously shown but now moved or cleared");
+                PositionControls(SetLocation.X != int.MinValue ? SetLocation : Location);
+            }
+
+            base.Show(parent);
+        }
+
 
         #region Implementation
 
@@ -269,7 +286,6 @@ namespace ExtendedControls
                 cb.TickBoxReductionRatio = TickBoxReductionRatio;
                 cb.CheckedChanged += CheckedIconListBoxForm_CheckedChanged;
                 cb.MouseDown += (s, e) => { if (e.Button == MouseButtons.Right) ButtonPressed.Invoke(controllist.IndexOf(c),c.tag, text, c.usertag, e); };
-                cb.Visible = false;
                 c.extcheckbox = cb;
                 panelscroll.Controls.Add(cb);
             }
@@ -281,7 +297,6 @@ namespace ExtendedControls
                 Tag = controllist.Count,
                 ForeColor = this.ForeColor,
                 TextAlign = ContentAlignment.MiddleLeft,
-                Visible = false,
             };
             lb.SuspendLayout();
 
@@ -303,10 +318,9 @@ namespace ExtendedControls
                     Image = img,
                     SizeMode = PictureBoxSizeMode.StretchImage,
                     Tag = controllist.Count,
-                    Visible = false,
                 };
 
-                ipanel.SuspendLayout();
+                ipanel.SuspendLayout();     // adding suspended speeds it up a bit
 
                 ipanel.MouseDown += (s, e) =>
                 {
@@ -326,16 +340,8 @@ namespace ExtendedControls
         }
 
         // call to position controls, will do nothing if already did this
-        private void PositionControls()
+        private Rectangle PositionControls(Point location)
         {
-            if (positiondone)
-                return;
-
-            Refresh();
-
-            int lpos = HorizontalSpacing;
-            maxheight = VerticalSpacing;
-
             foreach (var ce in controllist)
             {
                 if (ce.icon != null)                  // find first non null and use for defsize
@@ -345,106 +351,147 @@ namespace ExtendedControls
                 }
             }
 
-           // System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("L1", true)} Controls list {controllist.Count} {panelscroll.Controls.Count}");
+            bool imagesizeset = ImageSize != Size.Empty;
+            Size defaultimagesize = imagesizeset ? ImageSize : defsize;      // this is the image size to use
 
-            bool hasimagesize = ImageSize.Width > 0 && ImageSize.Height > 0;        // has fixed size.. if so use it, else base it on first image, or 24x24
-            Size imgsize = hasimagesize ? ImageSize : defsize;
-
-            Size chkboxsize = (CheckBoxSize.Height < 1 || CheckBoxSize.Width < 1) ? imgsize : CheckBoxSize; // based on imagesize or checkboxsize
+            Size chkboxsize = (CheckBoxSize.Height < 1 || CheckBoxSize.Width < 1) ? defaultimagesize : CheckBoxSize; // based on imagesize or checkboxsize
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
-            panelscroll.SuspendLayout();    // double speed doing this
+            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1", true)} Reposition controls {defaultimagesize} {chkboxsize} ");
 
-            int col1 = lpos;                // records where the col1 (icon then text) pos is, in case the check box is not present on a particular row
+            int maxwidthsinglecol = 0;     // reset..
+            int lpos = HorizontalSpacing;
+            int vpos = VerticalSpacing;
+
+            List<Tuple<Rectangle, Rectangle, Rectangle>> positions = new List<Tuple<Rectangle, Rectangle, Rectangle>>();
+
+            panelscroll.SuspendControlMonitoring();
+
+            // calculate positions in single column
 
             for (int i = 0; i < controllist.Count; i++)
             {
                 var cl = controllist[i];
 
-                if (cl.icon != null)
-                {
-                    imgsize = hasimagesize ? ImageSize : cl.icon.Image.Size;        // set size of item
-                }
-
-                //System.Diagnostics.Debug.WriteLine(i + "=" + imgsize);
-
                 int fonth = (int)cl.label.Font.GetHeight() + 2;
 
-                int vspacing = Math.Max(fonth, imgsize.Height);
-
-                int vcentre = maxheight + vspacing / 2;
-
-                if (cl.extcheckbox != null)
-                {
-                    cl.extcheckbox.Location = new Point(lpos, vcentre - chkboxsize.Height / 2);
-                    cl.extcheckbox.Size = chkboxsize;
-                    cl.extcheckbox.Tag = i;        // store index of control when displayed
-                    col1 = cl.extcheckbox.Right + HorizontalSpacing;        // set col1 position
-                }
-
-                int textpos = col1;
-
-                if (cl.icon != null)
-                {
-                    Size iconsize = (fonth > imgsize.Height) ? new Size((int)(imgsize.Width * (float)fonth / imgsize.Height), fonth) : imgsize;
-                    cl.icon.Size = iconsize;
-                    cl.icon.Location = new Point(col1, vcentre - iconsize.Height / 2);
-                    textpos += iconsize.Width + HorizontalSpacing;
-                }
+                Size iconsize = cl.icon != null ? cl.icon.Image.Size : (fonth > defaultimagesize.Height) ? new Size((int)(defaultimagesize.Width * (float)fonth / defaultimagesize.Height), fonth) : defaultimagesize;
+                int vspacing = Math.Max(fonth, iconsize.Height);
+                int vcentre = vpos + vspacing / 2;
 
                 cl.label.AutoSize = true;       // now autosize
-                cl.label.Location = new Point(textpos, vcentre - cl.label.Height / 2);     // and position
 
-                maxwidth = Math.Max(maxwidth, cl.label.Right + 1);
-                maxheight += vspacing + VerticalSpacing;
+                int labx = chkboxsize.Width + HorizontalSpacing + (cl.icon != null ? (iconsize.Width + HorizontalSpacing) : 0);
+
+                // Y records vpos, vcentre and end pos
+                var pos = new Tuple<Rectangle, Rectangle, Rectangle>(
+                                new Rectangle(lpos, vpos, chkboxsize.Width, chkboxsize.Height),
+                                new Rectangle(chkboxsize.Width + HorizontalSpacing, vcentre , iconsize.Width, iconsize.Height),
+                                new Rectangle(labx, vpos + vspacing + VerticalSpacing, cl.label.Width, cl.label.Height));        
+
+                positions.Add(pos);
+
+                vpos += vspacing + VerticalSpacing;
+
+                maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Width);
             }
 
-            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("L1")} Controls positioned");
+            Rectangle available = location.ScreenRectangleAvailable();
 
-            for (int i = 0; i < controllist.Count; i++)     // now turn them on, once all are in position
+            int colsavailable = 1;
+
+            // if we have multiple columns, and we need them
+            if (MultipleColumnsAllowed && vpos >= available.Height - ScreenMargin.Height)       
             {
-                var cl = controllist[i];
-                if (cl.extcheckbox != null)
+                int widthav = available.Width - ScreenMargin.Width - 16 - panelscroll.ScrollBarWidth;
+                colsavailable = Math.Max(1, widthav / maxwidthsinglecol);      // this is how many we can fit without moving x,y
+
+                if (MultipleColumnsFitToScreen)
                 {
-                    cl.extcheckbox.Visible = true;
-                    cl.extcheckbox.ResumeLayout();
+                    Rectangle scrworkingarea = Screen.FromPoint(location).WorkingArea;
+                    int maxwidth = scrworkingarea.Width - ScreenMargin.Width * 2 - panelscroll.ScrollBarWidth - 16;
+                    int colsonscreen = maxwidth / maxwidthsinglecol;       // this is maximum which the screen can support
+
+                   // System.Diagnostics.Debug.WriteLine($"** {location} {colsavailable} vs {colsonscreen} {scrworkingarea}");
+
+                    if (colsonscreen > colsavailable)       // if we have more on screen than we have already
+                    {
+                        location.X = Math.Max(scrworkingarea.X, location.X - maxwidthsinglecol * (colsonscreen - colsavailable));      // shift pos left
+                        colsavailable = colsonscreen;       // update cols
+                        SetLocation = location;     // update loc so we don't recalc again
+                    }
                 }
-                cl.label.Visible = true;
-                cl.label.ResumeLayout();
-                if (cl.icon != null)
-                {
-                    cl.icon.Visible = true;
-                    cl.icon.ResumeLayout();
-                }
+
+                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Total height {vpos} max width {maxwidthsinglecol} widthav {widthav} Items {controllist.Count} == cols {colsavailable}");
             }
 
-            panelscroll.ResumeLayout();
 
-            positiondone = true;
+            if (colsavailable != positioncontrolcolumns)       // if rework 
+            {
+                positioncontrolcolumns = colsavailable;
 
-            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("L1")} Controls Visible resumed");
+                widthrequired = maxwidthsinglecol * positioncontrolcolumns;
 
+                heightrequired = 0;
+
+                int depth = (int)Math.Ceiling((double)controllist.Count / colsavailable);
+                int colx = 0;
+                int coly = 0;
+
+                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Reposition");
+
+                for (int i = 0; i < controllist.Count; i++)     // now turn them on, once all are in position
+                {
+                    var cl = controllist[i];
+
+                    if (i > 0 && i % depth == 0)
+                    {
+                        colx += maxwidthsinglecol;
+                        coly = -positions[i].Item1.Y;       // offset by previous Vcentre
+                    }
+
+                    if (cl.extcheckbox != null)
+                    {
+                        cl.extcheckbox.Tag = i;        // store index of control when displayed
+                        cl.extcheckbox.Bounds = new Rectangle(positions[i].Item1.X + colx, positions[i].Item2.Y + coly - positions[i].Item1.Height/2, positions[i].Item1.Width, positions[i].Item1.Height);
+                        cl.extcheckbox.ResumeLayout();
+                    }
+                    if (cl.icon != null)
+                    {
+                        cl.icon.Bounds = new Rectangle(positions[i].Item2.X + colx, positions[i].Item2.Y + coly - positions[i].Item2.Height/2, positions[i].Item2.Width, positions[i].Item2.Height);
+                        cl.icon.ResumeLayout();
+                    }
+
+                    cl.label.Bounds = new Rectangle(positions[i].Item3.X+colx, positions[i].Item2.Y + coly - positions[i].Item3.Height/2, positions[i].Item3.Width, positions[i].Item3.Height);
+                    cl.label.ResumeLayout();
+
+                    heightrequired = Math.Max(heightrequired, positions[i].Item3.Y + coly);        // 3 carries final vpos
+                }
+
+                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Finish");
+            }
+
+            var rect = location.CalculateRectangleWithinScreen(widthrequired + 16 + panelscroll.ScrollBarWidth, heightrequired, true, ScreenMargin);
+
+            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Position screen {widthrequired} x {heightrequired} = {rect}");
+            lastbounds = this.Bounds = rect;
+
+            panelscroll.ResumeControlMonitoring();
+
+            return rect;
         }
-
 
         protected override void OnLoad(EventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCount} On Load");
             base.OnLoad(e);
-            PositionControls();
+            PositionControls(SetLocation.X != int.MinValue ? SetLocation : Location);
         }
 
         protected override void OnActivated(EventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCount} On Activated");
             base.OnActivated(e);
 
-            PositionControls();     // if we hid, we may need to redo this if we have updated the list
-
-            if (SetLocation.X != int.MinValue)
-                Location = SetLocation;
-
-            this.PositionSizeWithinScreen(maxwidth + 16 + panelscroll.ScrollBarWidth, maxheight, true, ScreenMargin);    // keep it on the screen. 
+            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Activated");
 
             if (!CloseBoundaryRegion.IsEmpty)
                 timer.Start();
@@ -453,13 +500,6 @@ namespace ExtendedControls
                 //System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
             }
         }
-
-        protected override void OnShown(EventArgs e)
-        {
-            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCount} On shown");
-            base.OnShown(e);
-        }
-
 
         // Sent after the change, so cb.CheckState is the new state
         private void CheckedIconListBoxForm_CheckedChanged(object sender, EventArgs e)
@@ -630,16 +670,19 @@ namespace ExtendedControls
         private ExtPanelScroll panelscroll;
         private ExtScrollBar sb;
 
-        private int maxwidth = 0;
-        private int maxheight = 0;
+        private int widthrequired = 0;
+        private int heightrequired = 0;
 
         private Size defsize = new Size(24, 24);        // default size if no other sizes given by ImageSize/Icons etc
         private Timer timer = new Timer();      // timer to monitor for entry into form when transparent.. only sane way in forms
         private bool mousebuttonsdown = false;
         private int closedowncount = 0;
 
-        private bool positiondone = false;       // we have executed position, normally done one in onload, but if reset, can be redone
+        private Rectangle lastbounds;       // last bounds the position was done on
+        private int positioncontrolcolumns = -1;    
 
-        #endregion
+
+
+#endregion
     }
 }

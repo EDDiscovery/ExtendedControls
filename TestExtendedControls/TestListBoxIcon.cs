@@ -49,6 +49,8 @@ namespace TestExtendedControls
             fgroup.ButtonPressed += F_ButtonPressed;
             fgroup.HideOnDeactivate = true;
             fgroup.CloseOnDeactivate = false;
+            fgroup.MultipleColumnsAllowed = true;
+            fgroup.MultipleColumnsFitToScreen = true;
         }
 
         void Log(string s)

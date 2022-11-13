@@ -233,7 +233,9 @@
             this.Controls.Add(this.extButton4);
             this.Controls.Add(this.extButton3);
             this.Controls.Add(this.extButton1);
+            this.Location = new System.Drawing.Point(100, 30);
             this.Name = "TestListBoxIcon";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form1";
             this.ResumeLayout(false);
 

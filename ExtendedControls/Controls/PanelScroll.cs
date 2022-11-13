@@ -35,7 +35,23 @@ namespace ExtendedControls
 
         public int ScrollOffset { get { return -scrollpos; } }
 
-        private int scrollpos = 0;
+        
+        // use these if your doing mass movement of controls on panel - performs a layout suspend and a monitoring suspend
+        public void SuspendControlMonitoring()
+        {
+            extsuspendcontrolmonitoring++;
+            SuspendLayout();
+        }
+        public void ResumeControlMonitoring()
+        {
+            ResumeLayout();
+            if (extsuspendcontrolmonitoring > 0)
+            {
+                extsuspendcontrolmonitoring--;
+                if ( extsuspendcontrolmonitoring == 0)
+                    ScrollTo(scrollpos, true);
+            }
+        }
 
         public ExtPanelScroll()
         {
@@ -130,23 +146,29 @@ namespace ExtendedControls
 
         private void Control_SizeChanged(object sender, EventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("CS size Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds);
-            ScrollTo(scrollpos, true);
+            if (extsuspendcontrolmonitoring == 0)
+            {
+                //System.Diagnostics.Debug.WriteLine("CS size Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds);
+                ScrollTo(scrollpos, true);
+            }
         }
 
         private void Control_VisibleChanged(object sender, EventArgs e)
         {
-            // Control c = sender as Control; System.Diagnostics.Debug.WriteLine("CS Visible Change " + c.Name + " " + c.Bounds + " " + c.Visible);
-            ScrollTo(scrollpos, true);
+            if (extsuspendcontrolmonitoring == 0)
+            {
+              //  System.Diagnostics.Debug.WriteLine("CS visible Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds);
+                // Control c = sender as Control; System.Diagnostics.Debug.WriteLine("CS Visible Change " + c.Name + " " + c.Bounds + " " + c.Visible);
+                ScrollTo(scrollpos, true);
+            }
         }
 
-        int ignorelocationchange = 0;      // location changes triggered when we reposition controls to scroll, so we need to mask them 
 
         private void Control_LocationChanged(object sender, EventArgs e)
         {
-            if (ignorelocationchange == 0)
+            if (ignorelocationchange == 0 && extsuspendcontrolmonitoring == 0)
             {
-                //System.Diagnostics.Debug.WriteLine("CS loc Change " + ((Control)sender).Name + " " + ((Control)sender).Bounds + " scroll offset " + scrollpos);
+                //System.Diagnostics.Debug.WriteLine($"Control loc changed");
                 ignorelocationchange++;        // stop recursion
                 Control c = sender as Control;
                 c.Top = c.Top - scrollpos;      // account for scroll pos and move control to scroll pos offset
@@ -258,6 +280,7 @@ namespace ExtendedControls
 
             if (newscrollpos != scrollpos || (FlowControlsLeftToRight && forcereposition))  // only need forcereposition on flowing
             {
+                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("Lx", true)} start");
                 SuspendLayout();
                 ignorelocationchange++;
                 int posi = 0;
@@ -265,7 +288,9 @@ namespace ExtendedControls
                 {
                     if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
                     {
-                        c.Location = new Point(cposnorm[posi].X, cposnorm[posi].Y - newscrollpos);
+                        Point newloc = new Point(cposnorm[posi].X, cposnorm[posi].Y - newscrollpos);
+                        if ( c.Location != newloc)
+                            c.Location = newloc;
                         posi++;
                         //System.Diagnostics.Debug.WriteLine("   flow and set " + c.Name + " to " + c.Location + " Using sp " + newscrollpos);
                     }
@@ -274,6 +299,7 @@ namespace ExtendedControls
                 ignorelocationchange--;
                 ResumeLayout();
                 Update(); // force redisplay
+                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("Lx")} finish");
             }
 
             if (ScrollBar != null)
@@ -303,5 +329,8 @@ namespace ExtendedControls
             ResumeLayout();
         }
 
+        private int ignorelocationchange = 0;      // location changes triggered when we reposition controls to scroll, so we need to mask them 
+        private int extsuspendcontrolmonitoring = 0;    // external suspend
+        private int scrollpos = 0;
     }
 }
