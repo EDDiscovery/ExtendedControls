@@ -12,13 +12,13 @@ using System.Windows.Forms;
 
 namespace TestExtendedControls
 {
-    public partial class TestListBoxIcon : Form
+    public partial class TestCheckedIconListBoxForm : Form
     {
         ThemeList theme;
 
         CheckedIconListBoxFormGroup fgroup;
 
-        public TestListBoxIcon()
+        public TestCheckedIconListBoxForm()
         {
             InitializeComponent();
             theme = new ThemeList();
@@ -30,20 +30,20 @@ namespace TestExtendedControls
 
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
 
-            fgroup.AddAllNone();
-            fgroup.AddGroupOption("T1;T2", "T1+2");
+            //fgroup.AddAllNone();
+            //fgroup.AddGroupOption("T1;T2", "T1+2");
 
             for (int i = 0; i < 250; i++)
             {
                 fgroup.AddStandardOption("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length]);
             }
 
-            fgroup.SortStandardOptions();
+       //     fgroup.SortStandardOptions();
 
-            fgroup.AddStandardOptionAtTop("B1", "Button1", button: true);
+         //   fgroup.AddStandardOptionAtTop("B1", "Button1", button: true);
 
-            fgroup.AddGroupOption("T1;T2;T3;T4;", "G1-4");
-            fgroup.AddGroupOption("T5;T6;T7;T8;", "G5-8");
+           // fgroup.AddGroupOption("T1;T2;T3;T4;", "G1-4");
+          //  fgroup.AddGroupOption("T5;T6;T7;T8;", "G5-8");
             fgroup.CheckedChanged += F_CheckedChanged;
             fgroup.SaveSettings += F_SaveSettings;
             fgroup.ButtonPressed += F_ButtonPressed;
@@ -51,6 +51,8 @@ namespace TestExtendedControls
             fgroup.CloseOnDeactivate = false;
             fgroup.MultipleColumnsAllowed = true;
             fgroup.MultipleColumnsFitToScreen = true;
+            fgroup.BorderStyle = BorderStyle.Fixed3D;
+          //  fgroup.ImageSize = new Size(24, 24);
         }
 
         void Log(string s)

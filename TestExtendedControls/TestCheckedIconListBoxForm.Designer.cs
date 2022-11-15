@@ -1,6 +1,6 @@
 ﻿namespace TestExtendedControls
 {
-    partial class TestListBoxIcon
+    partial class TestCheckedIconListBoxForm
     {
         /// <summary>
         /// Required designer variable.

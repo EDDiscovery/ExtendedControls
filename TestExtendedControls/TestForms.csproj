@@ -206,11 +206,11 @@
     <Compile Include="TestPanelScroll.Designer.cs">
       <DependentUpon>TestPanelScroll.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestListBoxIcon.cs">
+    <Compile Include="TestCheckedIconListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestListBoxIcon.Designer.cs">
-      <DependentUpon>TestListBoxIcon.cs</DependentUpon>
+    <Compile Include="TestCheckedIconListBoxForm.Designer.cs">
+      <DependentUpon>TestCheckedIconListBoxForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TestTabControlCustom.cs">
       <SubType>Form</SubType>
@@ -353,8 +353,8 @@
     <EmbeddedResource Include="TestCompassControl.resx">
       <DependentUpon>TestCompassControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestListBoxIcon.resx">
-      <DependentUpon>TestListBoxIcon.cs</DependentUpon>
+    <EmbeddedResource Include="TestCheckedIconListBoxForm.resx">
+      <DependentUpon>TestCheckedIconListBoxForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestTabControlCustom.resx">
       <DependentUpon>TestTabControlCustom.cs</DependentUpon>

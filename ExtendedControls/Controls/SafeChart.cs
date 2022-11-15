@@ -107,9 +107,10 @@ namespace ExtendedControls
 
         public Legend AddLegend(string name, Color? textcolor =null, Color? backcolor = null, Font font = null, ElementPosition position = null,
                                 Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
-                                Color? shadowcolor = null, int shadowoffset = 0)
+                                Color? shadowcolor = null, int shadowoffset = 0,
+                                int textautowrap = 30, int minfontsize = 5)
         {
-            return chart?.AddLegend(name, textcolor, backcolor, font, position, bordercolor, borderdashstyle, borderwidth, shadowcolor, shadowoffset) ?? null;
+            return chart?.AddLegend(name, textcolor, backcolor, font, position, bordercolor, borderdashstyle, borderwidth, shadowcolor, shadowoffset, textautowrap, minfontsize) ?? null;
         }
 
         public Legend SetCurrentLegend(string name)

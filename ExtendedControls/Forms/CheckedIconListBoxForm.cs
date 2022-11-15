@@ -29,12 +29,8 @@ namespace ExtendedControls
         public Color CheckBoxInnerColor { get; set; } = Color.White;
         public Color CheckColor { get; set; } = Color.DarkBlue;
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
-        public Size CheckBoxSize { get; set; } = new Size(0, 0);                   // if not set, ImageSize sets the size, or first image, else 24/24
-
-        // if not set, each image sets its size. If no images, then use this to set alternate size 
-        // if fonth > imageheight, then images are scaled to font size
-        public Size ImageSize { get; set; } = new Size(0, 0);
-
+        public Size CheckBoxSize { get; set; } = Size.Empty;                  // if not set, ImageSize sets the size, or first image, else 24/24
+        public Size ImageSize { get; set; } = Size.Empty;                     // if not set, each image sets its size. 
         public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
         public int VerticalSpacing { get; set; } = 4;
         public int HorizontalSpacing { get; set; } = 4;
@@ -58,6 +54,8 @@ namespace ExtendedControls
         public Size CloseBoundaryRegion { get; set; } = new Size(0, 0);     // set size >0 to enable boundary close
 
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
+
+        public BorderStyle BorderStyle { get; set; } = BorderStyle.None;        // border around panel
 
         public bool CloseOnDeactivate { get; set; } = true;         // close on deactivate
         public bool HideOnDeactivate { get; set; } = false;         // hide instead
@@ -223,11 +221,10 @@ namespace ExtendedControls
         {
             controllist.Clear();
             panelscroll.ClearControls();
-            positioncontrolcolumns = -2;
+            forcereposition = true;
             lastbounds = Rectangle.Empty;
             Refresh();
         }
-
         public CheckedIconListBoxForm()
         {
             FormBorderStyle = FormBorderStyle.None;
@@ -250,10 +247,10 @@ namespace ExtendedControls
         {
             // intercept this while hidden, and check if we need a relayout
             // if we were shown, and we moved, or we were cleared
-            if ((!lastbounds.IsEmpty && SetLocation != this.Location ) || positioncontrolcolumns == -2)
+            if ((!lastbounds.IsEmpty && SetLocation != this.Location ) || forcereposition)
             {
                 //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCount} Previously shown but now moved or cleared");
-                PositionControls(SetLocation.X != int.MinValue ? SetLocation : Location);
+                PositionControlsWindow(SetLocation.X != int.MinValue ? SetLocation : Location);
             }
 
             base.Show(parent);
@@ -330,7 +327,7 @@ namespace ExtendedControls
                         ButtonPressed?.Invoke(controllist.IndexOf(c),c.tag, text, c.usertag, e);
                 };
 
-                c.icon = ipanel;
+                c.picturebox = ipanel;
                 panelscroll.Controls.Add(ipanel);
             }
 
@@ -339,35 +336,40 @@ namespace ExtendedControls
             return c;
         }
 
-        // call to position controls, will do nothing if already did this
-        private Rectangle PositionControls(Point location)
+        // call to position controls and set window size
+        private void PositionControlsWindow(Point location)
         {
-            foreach (var ce in controllist)
+            // dynamic controls applied to constructor items which may have changed
+            panelscroll.BorderStyle = BorderStyle;  
+
+            // work out icon size default
+
+            Size firsticonsize = ImageSize.IsEmpty ? new Size(24, 24) : ImageSize;            // if we have an image size, the default size
+
+            if (ImageSize.IsEmpty)      // if empty, the first icon will be used
             {
-                if (ce.icon != null)                  // find first non null and use for defsize
+                foreach (var ce in controllist)
                 {
-                    defsize = ce.icon.Image.Size;
-                    break;
+                    if (ce.picturebox != null)                  // find first non null and use for defsize
+                    {
+                        firsticonsize = ce.picturebox.Image.Size;
+                        break;
+                    }
                 }
             }
 
-            bool imagesizeset = ImageSize != Size.Empty;
-            Size defaultimagesize = imagesizeset ? ImageSize : defsize;      // this is the image size to use
-
-            Size chkboxsize = (CheckBoxSize.Height < 1 || CheckBoxSize.Width < 1) ? defaultimagesize : CheckBoxSize; // based on imagesize or checkboxsize
+            Size chkboxsize = CheckBoxSize.IsEmpty ? firsticonsize : CheckBoxSize;
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
-            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1", true)} Reposition controls {defaultimagesize} {chkboxsize} ");
-
-            int maxwidthsinglecol = 0;     // reset..
-            int lpos = HorizontalSpacing;
-            int vpos = VerticalSpacing;
-
-            List<Tuple<Rectangle, Rectangle, Rectangle>> positions = new List<Tuple<Rectangle, Rectangle, Rectangle>>();
+            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1", true)} Reposition controls {firsticonsize} {chkboxsize} ");
 
             panelscroll.SuspendControlMonitoring();
 
-            // calculate positions in single column
+            int maxwidthsinglecol = 0;     
+            int vheightsinglecol = VerticalSpacing;
+            List<Tuple<Rectangle, Rectangle, Rectangle>> positions = new List<Tuple<Rectangle, Rectangle, Rectangle>>();
+
+            // calculate positions in single column into an array, calculate maxwidthsignelcol, calculate vheight
 
             for (int i = 0; i < controllist.Count; i++)
             {
@@ -375,116 +377,132 @@ namespace ExtendedControls
 
                 int fonth = (int)cl.label.Font.GetHeight() + 2;
 
-                Size iconsize = cl.icon != null ? cl.icon.Image.Size : (fonth > defaultimagesize.Height) ? new Size((int)(defaultimagesize.Width * (float)fonth / defaultimagesize.Height), fonth) : defaultimagesize;
+                Size iconsize = ImageSize.IsEmpty ? (cl.picturebox?.Image.Size ?? new Size(0,0)) : ImageSize;
                 int vspacing = Math.Max(fonth, iconsize.Height);
-                int vcentre = vpos + vspacing / 2;
+
+                //cl.picturebox != null ? cl.picturebox.Image.Size : (fonth > defaultimagesize.Height) ? new Size((int)(defaultimagesize.Width * (float)fonth / defaultimagesize.Height), fonth) : defaultimagesize;
 
                 cl.label.AutoSize = true;       // now autosize
 
-                int labx = chkboxsize.Width + HorizontalSpacing + (cl.icon != null ? (iconsize.Width + HorizontalSpacing) : 0);
+                int labx = chkboxsize.Width + HorizontalSpacing + (cl.picturebox != null ? (iconsize.Width + HorizontalSpacing) : 0);
 
-                // Y records vpos, vcentre and end pos
+                // Y records vspacing on first entry only, see below for vpositioning
                 var pos = new Tuple<Rectangle, Rectangle, Rectangle>(
-                                new Rectangle(lpos, vpos, chkboxsize.Width, chkboxsize.Height),
-                                new Rectangle(chkboxsize.Width + HorizontalSpacing, vcentre , iconsize.Width, iconsize.Height),
-                                new Rectangle(labx, vpos + vspacing + VerticalSpacing, cl.label.Width, cl.label.Height));        
+                                new Rectangle(HorizontalSpacing, vspacing, chkboxsize.Width, chkboxsize.Height),
+                                new Rectangle(chkboxsize.Width + HorizontalSpacing, 0 , iconsize.Width, iconsize.Height),
+                                new Rectangle(labx, 0, cl.label.Width, cl.label.Height));        
 
                 positions.Add(pos);
 
-                vpos += vspacing + VerticalSpacing;
+                vheightsinglecol += vspacing + VerticalSpacing;
 
                 maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Width);
             }
 
+            // we now work out an estimated columns to display
+
+            int estcolstodisplay = 1;       // default is one
+            bool checkvspacing = false;     // set if we can allow vspacing overflow check to work, only if we are less than cols on screen, so we can afford another column
+
             Rectangle available = location.ScreenRectangleAvailable();
+            int vavailable = available.Height - ScreenMargin.Height - 16;           // 16 is for margins etc
 
-            int colsavailable = 1;
-
-            // if we have multiple columns, and we need them
-            if (MultipleColumnsAllowed && vpos >= available.Height - ScreenMargin.Height)       
+            if (MultipleColumnsAllowed && vheightsinglecol >= vavailable)               // if we have multiple columns, and we need them
             {
-                int widthav = available.Width - ScreenMargin.Width - 16 - panelscroll.ScrollBarWidth;
-                colsavailable = Math.Max(1, widthav / maxwidthsinglecol);      // this is how many we can fit without moving x,y
+                int estcolsneeded = (int)Math.Ceiling((double)vheightsinglecol / vavailable);        // this is how many we need with the vheight we have
+                int pixelsright = available.Width - ScreenMargin.Width - 16 - panelscroll.ScrollBarWidth;
+                int colstoright = pixelsright / maxwidthsinglecol;      // number we can do to the right
 
-                if (MultipleColumnsFitToScreen)
+                if (estcolsneeded < colstoright)       // if we have estimated less than cols available to the right, its good (need to allow for 1 cols growth)
+                {
+                    estcolstodisplay = estcolsneeded;   // we can go for these cols needed
+                    checkvspacing = true;           // we can allow an overflow into the next column
+                }
+                else if (MultipleColumnsFitToScreen)    // if we want to slide left to accomodate
                 {
                     Rectangle scrworkingarea = Screen.FromPoint(location).WorkingArea;
                     int maxwidth = scrworkingarea.Width - ScreenMargin.Width * 2 - panelscroll.ScrollBarWidth - 16;
                     int colsonscreen = maxwidth / maxwidthsinglecol;       // this is maximum which the screen can support
+          
+                    estcolstodisplay = Math.Min(colsonscreen, estcolsneeded);     // pick the minimum of needed vs available
 
-                   // System.Diagnostics.Debug.WriteLine($"** {location} {colsavailable} vs {colsonscreen} {scrworkingarea}");
+                    checkvspacing = estcolstodisplay < colsonscreen;          // if we have more cols that estimated, we can afford an overflow due to vspacing 
 
-                    if (colsonscreen > colsavailable)       // if we have more on screen than we have already
-                    {
-                        location.X = Math.Max(scrworkingarea.X, location.X - maxwidthsinglecol * (colsonscreen - colsavailable));      // shift pos left
-                        colsavailable = colsonscreen;       // update cols
-                        SetLocation = location;     // update loc so we don't recalc again
-                    }
+                    location.X = Math.Max(scrworkingarea.X, scrworkingarea.Right - 16 - panelscroll.ScrollBarWidth - maxwidthsinglecol * estcolstodisplay);
+                    SetLocation = location;     // update loc so we don't recalc again
                 }
-
-                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Total height {vpos} max width {maxwidthsinglecol} widthav {widthav} Items {controllist.Count} == cols {colsavailable}");
-            }
-
-
-            if (colsavailable != positioncontrolcolumns)       // if rework 
-            {
-                positioncontrolcolumns = colsavailable;
-
-                widthrequired = maxwidthsinglecol * positioncontrolcolumns;
-
-                heightrequired = 0;
-
-                int depth = (int)Math.Ceiling((double)controllist.Count / colsavailable);
-                int colx = 0;
-                int coly = 0;
-
-                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Reposition");
-
-                for (int i = 0; i < controllist.Count; i++)     // now turn them on, once all are in position
+                else
                 {
-                    var cl = controllist[i];
-
-                    if (i > 0 && i % depth == 0)
-                    {
-                        colx += maxwidthsinglecol;
-                        coly = -positions[i].Item1.Y;       // offset by previous Vcentre
-                    }
-
-                    if (cl.extcheckbox != null)
-                    {
-                        cl.extcheckbox.Tag = i;        // store index of control when displayed
-                        cl.extcheckbox.Bounds = new Rectangle(positions[i].Item1.X + colx, positions[i].Item2.Y + coly - positions[i].Item1.Height/2, positions[i].Item1.Width, positions[i].Item1.Height);
-                        cl.extcheckbox.ResumeLayout();
-                    }
-                    if (cl.icon != null)
-                    {
-                        cl.icon.Bounds = new Rectangle(positions[i].Item2.X + colx, positions[i].Item2.Y + coly - positions[i].Item2.Height/2, positions[i].Item2.Width, positions[i].Item2.Height);
-                        cl.icon.ResumeLayout();
-                    }
-
-                    cl.label.Bounds = new Rectangle(positions[i].Item3.X+colx, positions[i].Item2.Y + coly - positions[i].Item3.Height/2, positions[i].Item3.Width, positions[i].Item3.Height);
-                    cl.label.ResumeLayout();
-
-                    heightrequired = Math.Max(heightrequired, positions[i].Item3.Y + coly);        // 3 carries final vpos
+                    estcolstodisplay = colstoright;        // settle on colstoright, no vspacing check, use scroll bar
                 }
-
-                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Finish");
             }
 
-            var rect = location.CalculateRectangleWithinScreen(widthrequired + 16 + panelscroll.ScrollBarWidth, heightrequired, true, ScreenMargin);
+            // try and make it as boxy as can be by estimating the number of items per column
+
+            int itemspercolumn = (int)Math.Ceiling((double)controllist.Count / estcolstodisplay);
+
+            //System.Diagnostics.Debug.WriteLine($".. Estimated cols {estcolstodisplay} allow vspacing {checkvspacing} items per col {depth}");
+
+            int colindex = 0;
+            int colused = 1;        // actually displayed
+            int vpos = VerticalSpacing;
+            int heightrequired = 0;     // maximum we got to..
+
+            for (int i = 0; i < controllist.Count; i++)     // now turn them on, once all are in position
+            {
+                var cl = controllist[i];
+                var post = positions[i];
+
+                int vspacing = post.Item1.Y;
+
+                // if allowed, and we display any part of this over vavailable
+                // or we have reached the depth..
+                if ((checkvspacing && vpos + vspacing >= vavailable) || colindex++==itemspercolumn)         
+                {
+                    colused++;
+                    vpos = VerticalSpacing;
+                    colindex = 1;
+                }
+
+                int vcentre = vpos + vspacing / 2;
+                int colx = (colused-1) *  maxwidthsinglecol;
+
+                //System.Diagnostics.Debug.WriteLine($" {cl.label.Text} = {post.Item1} : {post.Item2} : {post.Item3} @ {colx} {vpos}");
+
+                if (cl.extcheckbox != null)
+                {
+                    cl.extcheckbox.Tag = i;        // store index of control when displayed
+                    cl.extcheckbox.Bounds = new Rectangle(post.Item1.X + colx, vcentre - post.Item1.Height/2, post.Item1.Width, post.Item1.Height);
+                    cl.extcheckbox.ResumeLayout();
+                }
+                if (cl.picturebox != null)
+                {
+                    cl.picturebox.Bounds = new Rectangle(post.Item2.X + colx, vcentre - post.Item2.Height/2, post.Item2.Width, post.Item2.Height);
+                    cl.picturebox.ResumeLayout();
+                }
+
+                cl.label.Bounds = new Rectangle(post.Item3.X+colx, vcentre- post.Item3.Height/2, post.Item3.Width, post.Item3.Height);
+                cl.label.ResumeLayout();
+
+                vpos += post.Item1.Y + VerticalSpacing;
+
+                heightrequired = Math.Max(heightrequired, vpos);       
+            }
+
+            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Finish");
+
+            var rect = location.CalculateRectangleWithinScreen(maxwidthsinglecol * colused + 16 + panelscroll.ScrollBarWidth, heightrequired, true, ScreenMargin);
 
             //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Position screen {widthrequired} x {heightrequired} = {rect}");
             lastbounds = this.Bounds = rect;
 
             panelscroll.ResumeControlMonitoring();
-
-            return rect;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            PositionControls(SetLocation.X != int.MinValue ? SetLocation : Location);
+            PositionControlsWindow(SetLocation.X != int.MinValue ? SetLocation : Location);
         }
 
         protected override void OnActivated(EventArgs e)
@@ -657,7 +675,7 @@ namespace ExtendedControls
         private class ControlSet
         {
             public ExtCheckBox extcheckbox;        // may not be there is just a click item
-            public PictureBox icon;
+            public PictureBox picturebox;
             public Label label;
             public string tag;  // logical tag for settings
             public string exclusivetags;        // ones which must be off if this is on
@@ -670,19 +688,14 @@ namespace ExtendedControls
         private ExtPanelScroll panelscroll;
         private ExtScrollBar sb;
 
-        private int widthrequired = 0;
-        private int heightrequired = 0;
-
-        private Size defsize = new Size(24, 24);        // default size if no other sizes given by ImageSize/Icons etc
         private Timer timer = new Timer();      // timer to monitor for entry into form when transparent.. only sane way in forms
         private bool mousebuttonsdown = false;
         private int closedowncount = 0;
 
         private Rectangle lastbounds;       // last bounds the position was done on
-        private int positioncontrolcolumns = -1;    
+        bool forcereposition = false;       // force reposition 
 
 
-
-#endregion
+        #endregion
     }
 }

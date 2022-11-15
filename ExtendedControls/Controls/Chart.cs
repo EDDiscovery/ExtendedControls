@@ -149,7 +149,8 @@ namespace ExtendedControls
         // the border/shadow can be disabled even if the theme wants it by setting border/shadow color to Disable
         public Legend AddLegend(string name, Color? textcolor = null, Color? backcolor = null, Font font = null, ElementPosition position = null,
                                 Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
-                                Color? shadowcolor = null, int shadowoffset = 0)
+                                Color? shadowcolor = null, int shadowoffset = 0,
+                                int textautowrap = 30, int minfontsize = 5)
         {
             CurrentLegend = Legends.Add(name);
             CurrentLegend.ForeColor = textcolor ?? RequestTheme;
@@ -170,6 +171,9 @@ namespace ExtendedControls
                 CurrentLegend.ShadowColor = shadowcolor.Value;
                 CurrentLegend.ShadowOffset = shadowoffset;
             }
+
+            CurrentLegend.AutoFitMinFontSize = minfontsize;
+            CurrentLegend.TextWrapThreshold = textautowrap;
 
             return CurrentLegend;
         }
