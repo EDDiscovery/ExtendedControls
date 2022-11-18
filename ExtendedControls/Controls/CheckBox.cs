@@ -44,7 +44,7 @@ namespace ExtendedControls
 
         public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)        // call to set up disable scaling
         {
-            ControlHelpersStaticFunc.ComputeDrawnPanel(out DrawnImageAttributesEnabled, out DrawnImageAttributesDisabled, ImageButtonDisabledScaling, remap, colormatrix);
+            DrawingHelpersStaticFunc.ComputeDrawnPanel(out DrawnImageAttributesEnabled, out DrawnImageAttributesDisabled, ImageButtonDisabledScaling, remap, colormatrix);
         }
 
         public ExtCheckBox() : base()
@@ -98,7 +98,7 @@ namespace ExtendedControls
 
                     var txalign = Environment.OSVersion.Platform == PlatformID.Win32NT ? RtlTranslateAlignment(TextAlign) : TextAlign;      // MONO Bug cover over
 
-                    using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
+                    using (var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
                     {
                         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                         DrawText(ClientRectangle, e.Graphics, fmt);

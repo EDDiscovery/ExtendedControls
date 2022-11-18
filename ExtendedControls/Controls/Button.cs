@@ -112,7 +112,7 @@ namespace ExtendedControls
             drawnImageAttributesEnabled?.Dispose();
             drawnImageAttributesDisabled?.Dispose();
 
-            ControlHelpersStaticFunc.ComputeDrawnPanel(out drawnImageAttributesEnabled, out drawnImageAttributesDisabled, buttonDisabledScaling, remap, colormatrix);
+            DrawingHelpersStaticFunc.ComputeDrawnPanel(out drawnImageAttributesEnabled, out drawnImageAttributesDisabled, buttonDisabledScaling, remap, colormatrix);
         }
 
 
@@ -337,7 +337,7 @@ namespace ExtendedControls
                 {
                     var txalign = Environment.OSVersion.Platform == PlatformID.Win32NT ? RtlTranslateAlignment(TextAlign) : TextAlign;      // MONO Bug cover over
 
-                    using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
+                    using (var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
                     {
                         using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(ButtonDisabledScaling)))
                         {

@@ -203,11 +203,11 @@ namespace ExtendedControls
                 Color color1 = BorderColor;
                 Color color2 = BorderColor.Multiply(BorderColorScaling);
 
-                GraphicsPath g1 = ControlHelpersStaticFunc.RectCutCorners(area.X + 1, area.Y + 1, area.Width - 2, area.Height - 1, 1, 1);
+                GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(area.X + 1, area.Y + 1, area.Width - 2, area.Height - 1, 1, 1);
                 using (Pen pc1 = new Pen(color1, 1.0F))
                     e.Graphics.DrawPath(pc1, g1);
 
-                GraphicsPath g2 = ControlHelpersStaticFunc.RectCutCorners(area.X, area.Y, area.Width, area.Height - 1, 2, 2);
+                GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(area.X, area.Y, area.Width, area.Height - 1, 2, 2);
                 using (Pen pc2 = new Pen(color2, 1.0F))
                     e.Graphics.DrawPath(pc2, g2);
             }

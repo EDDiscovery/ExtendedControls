@@ -331,7 +331,7 @@ namespace ExtendedControls
                     Pen p1 = new Pen(sc, 1);
                     Pen p2 = new Pen(sc, 2);
                     Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(0.5F));
-                    var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
+                    var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
 
                     for (int d = pixelstart; d < 360 + pixelstart; d++)
                     {
@@ -411,7 +411,7 @@ namespace ExtendedControls
                     {
                         if (disablemessage.Length > 0)
                         {
-                            var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
+                            var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
                             pe.Graphics.SmoothingMode = textsmoothingmode;
                             pe.Graphics.DrawString(disablemessage, this.Font, textb, new Rectangle(0, compass.Height, this.Width, 24), fmt);
                             fmt.Dispose();
@@ -454,14 +454,14 @@ namespace ExtendedControls
                                         pe.Graphics.FillPolygon(bbrush, new Point[3] { new Point(0, bugy + BugSizePixels), new Point(BugSizePixels * 2, bugy), new Point(BugSizePixels * 2, bugy + BugSizePixels * 2) });
                                         xmargin += BugSizePixels * 2;
                                         r = new Rectangle(xmargin, bugy, this.Width - xmargin, BugSizePixels * 2);
-                                        fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleLeft);
+                                        fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleLeft);
                                         text = ToVisual(bug) + "° " + distancetext;
                                     }
                                     else
                                     {
                                         pe.Graphics.FillPolygon(bbrush, new Point[3] { new Point(this.Width - 1, bugy + BugSizePixels), new Point(this.Width - 1 - BugSizePixels * 2, bugy), new Point(this.Width - 1 - BugSizePixels * 2, bugy + BugSizePixels * 2) });
                                         r = new Rectangle(0, bugy, this.Width - BugSizePixels * 2 - xmargin, BugSizePixels * 2);
-                                        fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleRight);
+                                        fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleRight);
                                         text = distancetext + " " + ToVisual(bug) + "°";
                                     }
 
@@ -483,14 +483,14 @@ namespace ExtendedControls
 
                                         if (bugx > this.Width / 2)    // left or right, dependent
                                         {
-                                            fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleRight);
+                                            fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleRight);
                                             r = new Rectangle(0, bugy, bugx - BugSizePixels * 1, BugSizePixels * 2);
                                         }
                                         else
                                         {
                                             int xs = bugx + BugSizePixels * 1;
                                             r = new Rectangle(xs, bugy, this.Width - xs, BugSizePixels * 2);
-                                            fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleLeft);
+                                            fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleLeft);
                                         }
 
                                         pe.Graphics.SmoothingMode = textsmoothingmode;
@@ -504,7 +504,7 @@ namespace ExtendedControls
                         {
                             if (distancetext.Length > 0)
                             {
-                                var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
+                                var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
                                 pe.Graphics.SmoothingMode = textsmoothingmode;
                                 pe.Graphics.DrawString(distancetext, this.Font, textb, new Rectangle(0, compass.Height, this.Width, 24), fmt);
                                 fmt.Dispose();

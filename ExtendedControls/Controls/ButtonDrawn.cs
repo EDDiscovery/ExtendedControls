@@ -203,7 +203,7 @@ namespace ExtendedControls
             drawnImageAttributesEnabled?.Dispose();
             drawnImageAttributesEnabled = null;
 
-            ControlHelpersStaticFunc.ComputeDrawnPanel(out drawnImageAttributesEnabled, out drawnImageAttributesDisabled, PanelDisabledScaling, remap, colormatrix);
+            DrawingHelpersStaticFunc.ComputeDrawnPanel(out drawnImageAttributesEnabled, out drawnImageAttributesDisabled, PanelDisabledScaling, remap, colormatrix);
 
             if (image != null)
                 Invalidate();
@@ -614,7 +614,7 @@ namespace ExtendedControls
                             {
                                 var txalign = Environment.OSVersion.Platform == PlatformID.Win32NT ? RtlTranslateAlignment(TextAlign) : TextAlign;      // MONO Bug cover over
 
-                                using (var fmt = ControlHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
+                                using (var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
                                 {
                                     using (var textb = new SolidBrush(cFore))
                                     {

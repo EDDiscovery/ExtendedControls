@@ -1048,7 +1048,7 @@ namespace ExtendedControls
                     {
                         Rectangle area = GetArea(t.Position);
                         //System.Diagnostics.Debug.WriteLine($"Title pos {t.Position} = {area} chart area {Bounds}");
-                        t.Font = ControlHelpersStaticFunc.GetFontToFit(t.Text, t.Font, new Size(area.Width-12, area.Height-4));     //12 pixels for borders etc and spacing etc.
+                        t.Font = DrawingHelpersStaticFunc.GetFontToFit(t.Text, t.Font, new Size(area.Width-12, area.Height-4));     //12 pixels for borders etc and spacing etc.
                     }
                 }
             }

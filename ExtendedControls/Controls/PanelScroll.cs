@@ -163,6 +163,13 @@ namespace ExtendedControls
             }
         }
 
+        // change child location including scroll pos without double update due to callback of Control_LocationChanged
+        public void ChangeChildLocation(Control c, Point abspos)     
+        {
+            ignorelocationchange++;
+            c.Location = new Point(abspos.X, abspos.Y - scrollpos );
+            ignorelocationchange--;
+        }
 
         private void Control_LocationChanged(object sender, EventArgs e)
         {

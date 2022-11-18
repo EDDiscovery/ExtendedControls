@@ -78,11 +78,11 @@ namespace ExtendedControls
 
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-                    using (GraphicsPath g1 = ControlHelpersStaticFunc.RectCutCorners(1, topline+1, ClientRectangle.Width-2, ClientRectangle.Height - topline - 1, 1,1 , textstart- 1, textlength))
+                    using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, topline+1, ClientRectangle.Width-2, ClientRectangle.Height - topline - 1, 1,1 , textstart- 1, textlength))
                     using (Pen pc1 = new Pen(color1, 1.0F))
                         e.Graphics.DrawPath(pc1, g1);
 
-                    using (GraphicsPath g2 = ControlHelpersStaticFunc.RectCutCorners(0, topline, ClientRectangle.Width, ClientRectangle.Height - topline - 1, 2, 2 , textstart, textlength))
+                    using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, topline, ClientRectangle.Width, ClientRectangle.Height - topline - 1, 2, 2 , textstart, textlength))
                     using (Pen pc2 = new Pen(color2, 1.0F))
                         e.Graphics.DrawPath(pc2, g2);
 
