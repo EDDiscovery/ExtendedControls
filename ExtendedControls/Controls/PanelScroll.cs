@@ -69,6 +69,19 @@ namespace ExtendedControls
                     return new Rectangle(base.DisplayRectangle.Left + ScrollBarWidth, base.DisplayRectangle.Top, base.DisplayRectangle.Width - ScrollBarWidth, base.DisplayRectangle.Height);
             }
         }
+        // change child location including scroll pos without double update due to callback of Control_LocationChanged
+        public void ChangeChildLocation(Control c, Point abspos)
+        {
+            ignorelocationchange++;
+            c.Location = new Point(abspos.X, abspos.Y - scrollpos);
+            ignorelocationchange--;
+        }
+
+        public void EnsureScrollBarZ()
+        {
+            if ( ScrollBar != null )
+                Controls.SetChildIndex(ScrollBar, 0);
+        }
 
         protected override void OnControlAdded(ControlEventArgs e)
         {
@@ -86,6 +99,12 @@ namespace ExtendedControls
             }
 
             e.Control.MouseWheel += Control_MouseWheel;         // grab the controls mouse wheel and direct to our scroll, including the ExtScrollBar
+
+            if (ScrollBar != null)
+            {
+                if (Controls.GetChildIndex(ScrollBar) != 0)         // ensure its always at front
+                    Controls.SetChildIndex(ScrollBar, 0);
+            }
 
             base.OnControlAdded(e);
         }
@@ -163,13 +182,6 @@ namespace ExtendedControls
             }
         }
 
-        // change child location including scroll pos without double update due to callback of Control_LocationChanged
-        public void ChangeChildLocation(Control c, Point abspos)     
-        {
-            ignorelocationchange++;
-            c.Location = new Point(abspos.X, abspos.Y - scrollpos );
-            ignorelocationchange--;
-        }
 
         private void Control_LocationChanged(object sender, EventArgs e)
         {
