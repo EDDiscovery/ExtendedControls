@@ -259,15 +259,21 @@ namespace ExtendedControls
 
         public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
         {
-            return Apply(ctrl, GetFont, nowindowsborderoverride);
+            System.Diagnostics.Debug.WriteLine($"Themer apply standard {ctrl.Name} Font {GetFont}");
+            var ret = Apply(ctrl, GetFont, nowindowsborderoverride);
+            //System.Diagnostics.Debug.WriteLine($"Finish standard themeing to {ctrl.Name}");
+            return ret;
         }
 
         public bool ApplyDialog(Control ctrl, bool nowindowsborderoverride = false)
         {
-            return Apply(ctrl, GetDialogFont, nowindowsborderoverride);
+            System.Diagnostics.Debug.WriteLine($"Themer apply dialog {ctrl.Name} Font {GetDialogFont}");
+            var ret = Apply(ctrl, GetDialogFont, nowindowsborderoverride);
+            //System.Diagnostics.Debug.WriteLine($"Finished dialog themeing to {ctrl.Name}");
+            return ret;
         }
 
-        public bool Apply(Control form, Font fnt, bool nowindowsborderoverride = false)
+        internal bool Apply(Control form, Font fnt, bool nowindowsborderoverride = false)
         {
             UpdateControls(form.Parent, form, fnt, 0, nowindowsborderoverride);
 
@@ -905,10 +911,18 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("                  " + level + " Control " + myControl.Name + " " + myControl.Location + " " + myControl.Size);
 
+            //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme begin sub controls of {myControl.Name} ");
+
             foreach (Control subC in myControl.Controls)
+            {
+                //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme sub controls of {myControl.Name} sub {subC.GetType().Name}");
+
                 UpdateControls(myControl, subC, fnt, level + 1);
+            }
 
             myControl.ResumeLayout();
+            //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme Control {myControl.Name} to {myControl.Bounds}");
+
         }
 
 

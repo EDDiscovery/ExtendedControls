@@ -27,7 +27,7 @@ namespace ExtendedControls
 
         // BorderColour != transparent to use ours
         // BorderStyle to set textbox style..  None for off.  Can use both if you wish 
-        public new string Name { get { return base.Name; } set { base.Name = value; textbox.Name = value; } }       // just so underlying control gets the same name
+        public new string Name { get { return base.Name; } set { base.Name = value; textbox.Name = value + "_textbox"; endbutton.Name = value + "_button"; } }       // just so underlying control gets the same name
 
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; InternalPositionControls(); Invalidate(true); } }
         public float BorderColorScaling { get; set; } = 0.5F;
