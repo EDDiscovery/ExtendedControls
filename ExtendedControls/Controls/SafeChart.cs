@@ -45,29 +45,40 @@ namespace ExtendedControls
 
         public ExtSafeChart()
         {
-            try
-            { 
-                chart = new ExtChart();
-                chart.Dock = DockStyle.Fill;
-                chart.CursorPositionChanged += (s, e) =>
-                {
-                    CursorPositionChanged?.Invoke(this, e.ChartArea.Name, e.Axis.AxisName, e.ChartArea.CursorX.Position);
-                };
+            bool made = false;
 
-                leftArrowButton = new ExtButton() { Name="SCL", Visible = false, Image = Properties.Resources.ArrowLeft};
-                leftArrowButton.Click += (s, e) => { ArrowButtonPressed?.Invoke(false); };
-                rightArrowButton = new ExtButton() { Name="SCR", Visible = false, Image = Properties.Resources.ArrowRight};
-                rightArrowButton.Click += (s, e) => { ArrowButtonPressed?.Invoke(true); };
-
-                this.Controls.Add(leftArrowButton);
-                this.Controls.Add(rightArrowButton);
-                this.Controls.Add(chart);
-            }
-            catch
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
             {
+                try
+                {
+                    chart = new ExtChart();
+                    chart.Dock = DockStyle.Fill;
+                    chart.CursorPositionChanged += (s, e) =>
+                    {
+                        CursorPositionChanged?.Invoke(this, e.ChartArea.Name, e.Axis.AxisName, e.ChartArea.CursorX.Position);
+                    };
+
+                    leftArrowButton = new ExtButton() { Name = "SCL", Visible = false, Image = Properties.Resources.ArrowLeft };
+                    leftArrowButton.Click += (s, e) => { ArrowButtonPressed?.Invoke(false); };
+                    rightArrowButton = new ExtButton() { Name = "SCR", Visible = false, Image = Properties.Resources.ArrowRight };
+                    rightArrowButton.Click += (s, e) => { ArrowButtonPressed?.Invoke(true); };
+
+                    this.Controls.Add(leftArrowButton);
+                    this.Controls.Add(rightArrowButton);
+                    this.Controls.Add(chart);
+
+                    made = true;
+                }
+                catch
+                {
+                }
+            }
+
+            if ( !made )
+            { 
                 Label l = new Label();
                 l.AutoSize = true;
-                l.Text = "This OS does not support charts";
+                l.Text = "<code This OS does not support charts>";
                 l.Location = new Point(10, 10);
                 this.Controls.Add(l);
             }
