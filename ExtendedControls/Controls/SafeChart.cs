@@ -89,6 +89,15 @@ namespace ExtendedControls
             chart?.SetBorder(width, style, b);
         }
 
+        public void BeginInit()
+        {
+            chart?.BeginInit();
+        }
+        public void EndInit()
+        {
+            chart?.EndInit();
+        }
+
         public Title AddTitle(string name, string text,
                                  Color? textcolor = null, Color? backcolor = null, Font font = null,
                                  Docking dockingpos = Docking.Top, ContentAlignment? alignment = null, ElementPosition position = null,
