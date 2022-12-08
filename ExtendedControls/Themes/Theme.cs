@@ -45,33 +45,42 @@ namespace ExtendedControls
         public enum CI     
         {
             form,
+
             button_back, button_text, button_border,
+
             grid_borderback, grid_bordertext,
             grid_cellbackground, grid_altcellbackground, grid_celltext, grid_altcelltext,
             grid_borderlines,
             grid_sliderback, grid_scrollarrow, grid_scrollbutton,
+            
             travelgrid_nonvisted, travelgrid_visited,
+            
             textbox_back, textbox_fore, textbox_highlight, textbox_success, textbox_border,
             textbox_sliderback, textbox_scrollarrow, textbox_scrollbutton,
+            
             checkbox, checkbox_tick,
+
             menu_back, menu_fore, menu_dropdownback, menu_dropdownfore,
+            
             label,
+            
             group_back, group_text, group_borderlines,
+            
             tabcontrol_borderlines,
+            
             toolstrip_back, toolstrip_border, unused_entry,     // previously assigned to toolstrip_checkbox thing
-            s_panel,
-            transparentcolorkey,
-            grid_highlightback,
+            
+            s_panel, transparentcolorkey, grid_highlightback,
         };
 
-        private string name;         // name of scheme
-        private Dictionary<CI, Color> colors;       // dictionary of colors, indexed by CI.
-        private bool windowsframe;
-        private double formopacity;
-        private string fontname;         // Font.. (empty means don't override)
-        private float fontsize;
-        private string buttonstyle;
-        private string textboxborderstyle;
+        private string name { get; set; }         // name of scheme
+        private Dictionary<CI, Color> colors { get; set;}       // dictionary of colors, indexed by CI.
+        private bool windowsframe { get; set; }
+        private double formopacity { get; set;}
+        private string fontname { get; set; }         // Font.. (empty means don't override)
+        private float fontsize { get; set; }
+        private string buttonstyle { get; set; }
+        private string textboxborderstyle { get; set;}
 
         public Theme()
         { 
@@ -98,7 +107,7 @@ namespace ExtendedControls
                                     Color sPanel, Color keycolor,
                                     bool wf, double op, string ft, float fs)             // ft = empty means don't set it
         {
-            name = n;
+            Name = n;
             colors = new Dictionary<CI, Color>();
             colors.Add(CI.form, f);
 
@@ -135,7 +144,7 @@ namespace ExtendedControls
 
         public Theme(string n)                                               // gets you windows default colours
         {
-            name = n;
+            Name = n;
             colors = new Dictionary<CI, Color>();
             colors.Add(CI.form, SystemColors.Menu);
             colors.Add(CI.button_back, Color.FromArgb(255, 225, 225, 225)); colors.Add(CI.button_text, SystemColors.ControlText); colors.Add(CI.button_border, SystemColors.ActiveBorder);
@@ -165,7 +174,7 @@ namespace ExtendedControls
         // copy constructor, takes a real copy, with overrides
         public Theme(Theme other, string newname = null, string newfont = null, float newfontsize = 0, double opaque = 0)
         {
-            name = (newname != null) ? newname : other.name;
+            Name = (newname != null) ? newname : other.Name;
             fontname = (newfont != null) ? newfont : other.fontname;
             fontsize = (newfontsize != 0) ? newfontsize : other.fontsize;
             windowsframe = other.windowsframe; formopacity = other.formopacity;
@@ -179,37 +188,69 @@ namespace ExtendedControls
         }
 
         public string Name { get { return name; } set { name = value; } }
-        public Color Form { get { return colors[CI.form]; } }
+        
+        public Color Form { get { return colors[CI.form]; } }       // in enum order..
+
         public Color ButtonBackColor { get { return colors[CI.button_back]; }  }
         public Color ButtonBorderColor { get { return colors[CI.button_border]; } }
         public Color ButtonTextColor { get { return colors[CI.button_text]; }  }
-        public Color GridBorderLines { get { return colors[CI.grid_borderlines]; }  }
+
         public Color GridBorderBack { get { return colors[CI.grid_borderback]; } }
-        public Color GridBorderText { get { return colors[CI.grid_bordertext]; }  }
+        public Color GridBorderText { get { return colors[CI.grid_bordertext]; } }
+        public Color GridCellBack { get { return colors[CI.grid_cellbackground]; } }
+        public Color GridCellAltBack { get { return colors[CI.grid_altcellbackground]; } }
         public Color GridCellText { get { return colors[CI.grid_celltext]; } }
-        public Color GridCellAltText { get { return colors[CI.grid_altcelltext]; }  }
-        public Color GridCellBack { get { return colors[CI.grid_cellbackground]; }  }
-        public Color GridCellAltBack { get { return colors[CI.grid_altcellbackground]; }  }
+        public Color GridCellAltText { get { return colors[CI.grid_altcelltext]; } }
+        public Color GridBorderLines { get { return colors[CI.grid_borderlines]; } }
+        public Color GridSliderBack { get { return colors[CI.grid_sliderback]; } }
+        public Color GridScrollArrow { get { return colors[CI.grid_scrollarrow]; } }
+        public Color GridScrollButton { get { return colors[CI.grid_scrollbutton]; } }
+
+        public Color KnownSystemColor { get { return colors[CI.travelgrid_visited]; } }
+        public Color UnknownSystemColor { get { return colors[CI.travelgrid_nonvisted]; } }
+
+        public Color TextBackColor { get { return colors[CI.textbox_back]; } }
         public Color TextBlockColor { get { return colors[CI.textbox_fore]; } }
         public Color TextBlockHighlightColor { get { return colors[CI.textbox_highlight]; }  }
         public Color TextBlockSuccessColor { get { return colors[CI.textbox_success]; } }
-        public Color TextBackColor { get { return colors[CI.textbox_back]; }  }
         public Color TextBlockBorderColor { get { return colors[CI.textbox_border]; } }
-        public Color KnownSystemColor { get { return colors[CI.travelgrid_visited]; } }
-        public Color UnknownSystemColor { get { return colors[CI.travelgrid_nonvisted]; }  }
+        public Color TextBlockSliderBack { get { return colors[CI.textbox_sliderback]; } }
+        public Color TextBlockScrollArrow { get { return colors[CI.textbox_scrollarrow]; } }
+        public Color TextBlockScrollButton { get { return colors[CI.textbox_scrollbutton]; } }
+
+        public Color CheckBox { get { return colors[CI.checkbox]; } }
+        public Color CheckBoxTick { get { return colors[CI.checkbox_tick]; } }
+
+        public Color MenuBack { get { return colors[CI.menu_back]; } }
+        public Color MenuFore { get { return colors[CI.menu_fore]; } }
+        public Color MenuDropdownBack { get { return colors[CI.menu_dropdownback]; } }
+        public Color MenuDropdownFore { get { return colors[CI.menu_dropdownfore]; } }
+
         public Color LabelColor { get { return colors[CI.label]; } }
+
+        public Color GroupBack { get { return colors[CI.group_back]; } }
+        public Color GroupFore { get { return colors[CI.group_text]; } }
+        public Color GroupBorder { get { return colors[CI.group_borderlines]; } }
+
+        public Color TabcontrolBorder { get { return colors[CI.tabcontrol_borderlines]; } }
+
+        public Color ToolstripBack { get { return colors[CI.toolstrip_back]; } }
+        public Color ToolstripBorder { get { return colors[CI.toolstrip_border]; } }
+
         public Color SPanelColor { get { return colors[CI.s_panel]; }  }
+        public Color TransparentColorKey { get { return colors[CI.transparentcolorkey]; } }
         public Color GridHighlightBack { get { return colors[CI.grid_highlightback]; }  }
-        public Color TransparentColorKey { get { return colors[CI.transparentcolorkey]; }  }
-        public string TextBoxBorderStyle { get { return textboxborderstyle; } set { textboxborderstyle = value; } }
-        public string ButtonStyle { get { return buttonstyle; } set { buttonstyle = value; } }
+
         public bool WindowsFrame { get { return windowsframe; } set { windowsframe = value; } }
         public double Opacity { get { return formopacity; } set { formopacity = value; }  }
         public string FontName { get { return fontname; }  set { fontname = value; } }
         public float FontSize { get { return fontsize; } set { fontsize = value; } }
+        public string ButtonStyle { get { return buttonstyle; } set { buttonstyle = value; } }
+        public string TextBoxBorderStyle { get { return textboxborderstyle; } set { textboxborderstyle = value; } }
+
         public void SetCustom()
-        { name = "Custom"; }                                // set so custom..
-        public bool IsCustom()  { return name.Equals("Custom"); }
+        { Name = "Custom"; }                                // set so custom..
+        public bool IsCustom()  { return Name.Equals("Custom"); }
         public void SetColor(CI name, Color c) { colors[name] = c; }
         public Color GetColor(CI name) { return colors[name]; }
 
@@ -320,7 +361,7 @@ namespace ExtendedControls
                 controltype.Name.Equals("ComboBox") || (controltype.Name.Equals("RichTextBox")))
                 )
             {
-                System.Diagnostics.Debug.Assert(false, myControl.Name + " of " + controltype.Name + " from " + parent.Name + " !!! Use the new controls in Controls folder - not the non visual themed ones!");
+                System.Diagnostics.Trace.WriteLine(myControl.Name + " of " + controltype.Name + " from " + parent.Name + " !!! Use the new controls in Controls folder - not the non visual themed ones!");
             }
             else if ( myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
             {
@@ -978,7 +1019,7 @@ namespace ExtendedControls
             if (defaultset == null)
                 defaultset = new Theme("Windows");          // if none given, use the basic windows set to get a default set
 
-            this.name = name;
+            this.Name = name;
 
             foreach (CI ck in Enum.GetValues(typeof(CI)))           // all enums
             {
