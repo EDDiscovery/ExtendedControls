@@ -115,6 +115,10 @@ namespace ExtendedControls
             foreach (var x in list)
                 AddStandardOption(x.Item1, x.Item2, x.Item3);
         }
+        public void AddStandardOption(Tuple<string, string, Image> ev)                // standard option
+        {
+            AddStandardOption(ev.Item1, ev.Item2, ev.Item3);
+        }
 
         public void SortStandardOptions()
         {
