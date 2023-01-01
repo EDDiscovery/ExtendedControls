@@ -71,7 +71,7 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine($"Deactivate time {timesince}");
             return timesince <= ms;
         }
-        public Size ScreenMargin { get; set; } = new Size(64, 64);
+        public Size ScreenMargin { get; set; } = new Size(16, 16);
 
         public int ItemCount { get { return controllist.Count; } }
 
@@ -375,10 +375,11 @@ namespace ExtendedControls
             {
                 var cl = controllist[i];
 
-                int fonth = (int)cl.label.Font.GetHeight() + 2;
+                int fonth = (int)cl.label.Font.GetHeight() + 2; // a little extra for label
 
                 Size iconsize = ImageSize.IsEmpty ? (cl.picturebox?.Image.Size ?? new Size(0,0)) : ImageSize;
                 int vspacing = Math.Max(fonth, iconsize.Height);
+                vspacing = Math.Max(vspacing, chkboxsize.Height);       // vspacing is the max of label, icon and checkbox
 
                 //cl.picturebox != null ? cl.picturebox.Image.Size : (fonth > defaultimagesize.Height) ? new Size((int)(defaultimagesize.Width * (float)fonth / defaultimagesize.Height), fonth) : defaultimagesize;
 
@@ -386,7 +387,7 @@ namespace ExtendedControls
 
                 int labx = chkboxsize.Width + HorizontalSpacing + (cl.picturebox != null ? (iconsize.Width + HorizontalSpacing) : 0);
 
-                // Y records vspacing on first entry only, see below for vpositioning
+                // Y is not holding Y position. Only use for Y is to record vspacing on first entry only, see below for vpositioning
                 var pos = new Tuple<Rectangle, Rectangle, Rectangle>(
                                 new Rectangle(HorizontalSpacing, vspacing, chkboxsize.Width, chkboxsize.Height),
                                 new Rectangle(chkboxsize.Width + HorizontalSpacing, 0 , iconsize.Width, iconsize.Height),
