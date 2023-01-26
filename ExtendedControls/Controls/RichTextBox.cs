@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,16 +10,11 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
-using BaseUtils.Win32Constants;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -68,6 +63,15 @@ namespace ExtendedControls
         public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
 
         public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(TextBox, text); } // only needed for dynamic changes..
+
+        // turning this on allows dropping of text or a file into the box to replace all text.
+        public override bool AllowDrop { get { return TextBox.AllowDrop; } set { TextBox.AllowDrop = value; } }
+        public void InstallStandardDragDrop()
+        {
+            DragEnter += ExtRichTextBox_DragEnter;
+            DragDrop += ExtRichTextBox_DragDrop;
+        }
+        public string DraggedFile { get; private set; }     // null until a file is dragged to it
 
         public delegate void OnTextBoxChanged(object sender, EventArgs e);
         public event OnTextBoxChanged TextBoxChanged;
@@ -157,6 +161,8 @@ namespace ExtendedControls
             TextBox.MouseMove += TextBox_MouseMove;
             TextBox.MouseEnter += TextBox_MouseEnter;
             TextBox.MouseLeave += TextBox_MouseLeave;
+            TextBox.DragEnter += TextBox_DragEnter;
+            TextBox.DragDrop += TextBox_DragDrop;
             TextBox.Show();
             ScrollBar.Show();
             TextBox.VScroll += OnVscrollChanged;
@@ -267,7 +273,7 @@ namespace ExtendedControls
             }
             else
             {
-                firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
+                firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(BaseUtils.Win32Constants.EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
             }
 
             ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
@@ -313,13 +319,13 @@ namespace ExtendedControls
             }
             else
             {
-                int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
+                int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(BaseUtils.Win32Constants.EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
                 int delta = scrollvalue - firstVisibleLine;
 
                 //Console.WriteLine("Scroll Bar:" + scrollvalue + " FVL: " + firstVisibleLine + " delta " + delta);
                 if (delta != 0)
                 {
-                    TextBox.SendMessage(EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
+                    TextBox.SendMessage(BaseUtils.Win32Constants.EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
                 }
             }
         }
@@ -348,10 +354,7 @@ namespace ExtendedControls
 
         #endregion
 
-        private void TextBox_MouseLeave(object sender, EventArgs e)             // using the text box mouse actions, pass thru to ours so registered handlers work
-        {
-            base.OnMouseLeave(e);
-        }
+
 
         private void TextBox_MouseEnter(object sender, EventArgs e)
         {
@@ -368,10 +371,59 @@ namespace ExtendedControls
             base.OnMouseDown(e);
         }
 
+        private void TextBox_MouseLeave(object sender, EventArgs e)             // using the text box mouse actions, pass thru to ours so registered handlers work
+        {
+            base.OnMouseLeave(e);
+        }
+
         private void TextBox_MouseUp(object sender, MouseEventArgs e)
         {
             base.OnMouseUp(e);
         }
+
+        protected virtual void TextBox_DragDrop(object sender, DragEventArgs e)
+        {
+            OnDragDrop(e);
+        }
+
+        protected virtual void TextBox_DragEnter(object sender, DragEventArgs e)
+        {
+            OnDragEnter(e);
+        }
+
+        private void ExtRichTextBox_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                if (files.Length > 0)
+                {
+                    string str = BaseUtils.FileHelpers.TryReadAllTextFromFile(files[0]);
+                    if (str != null)
+                    {
+                        TextBox.Text = str;
+                        DraggedFile = files[0];
+                    }
+
+                }
+            }
+            else if (e.Data.GetDataPresent(DataFormats.Text))
+            {
+                string text = (string)e.Data.GetData(DataFormats.Text);
+                TextBox.Text = text;
+                DraggedFile = null;
+            }
+        }
+
+        private void ExtRichTextBox_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop) || e.Data.GetDataPresent(DataFormats.Text))
+                e.Effect = DragDropEffects.Copy;
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
 
     }
 }

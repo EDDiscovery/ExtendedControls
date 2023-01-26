@@ -37,7 +37,10 @@ namespace ExtendedControls
         {
         }
 
-        public void Render(Size? margin = null)     // call this instead of the picturebox render
+        // call this instead of the picturebox render
+        // if resizepercentage > 0, it resizes to the % of the height of the parent.
+        // if 0, the size is set by the size of this control and not altered.
+        public void Render(int resizepercentage = 0, Size? margin = null)     
         {
             if (pbox != null)
             {
@@ -47,8 +50,12 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    pbox.Height = ClientRectangle.Height;
                     pbox.Render(false, margin: margin);
+                }
+
+                if (resizepercentage > 0)
+                {
+                    Height = Math.Max(4, Math.Min(pbox.Image.Size.Height, Parent.Height * resizepercentage / 100));
                 }
             }
 

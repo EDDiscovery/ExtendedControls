@@ -46,7 +46,8 @@ namespace ExtendedControls
         public Color MouseOverButtonColor { get; set; } = Color.Green;
         public Color MousePressedButtonColor { get; set; } = Color.Red;
 
-        public bool HideScrollBar { get { return hideScrollBar; } set { hideScrollBar = value; Visible = !HideScrollBar || DesignMode; } }
+        public bool AlwaysHideScrollBar { get { return alwaysHideScrollBar; } set { alwaysHideScrollBar = value; CalculateThumb(); } }
+        public bool HideScrollBar { get { return hideScrollBar; } set { hideScrollBar = value; CalculateThumb(); } }
 
         public bool IsScrollBarOn { get { return thumbenable; } }           // is it on?
 
@@ -487,11 +488,8 @@ namespace ExtendedControls
                 thumboffsetpx = Math.Min(thumboffsetpx, sliderrangepx);     // LIMIT, because we can go over slider range if value=maximum
 
                 thumbbuttonarea = new Rectangle(sliderarea.X, sliderarea.Y + thumboffsetpx, sliderarea.Width, thumbheight);
-                if (thumbenable == false)
-                {
-                    thumbenable = true;
-                    Visible = true;
-                }
+
+                thumbenable = true;
             }
             else
             {
@@ -501,10 +499,14 @@ namespace ExtendedControls
                     thumbmove = false;
                     mouseover = MouseOver.MouseOverNone;
                     mousepressed = MouseOver.MouseOverNone;
-                    if (HideScrollBar && !DesignMode)
-                        Visible = false;
                 }
             }
+
+            // if in DM, or not always hide, and thumb is on or hide scroll bar off
+            bool newvisible = DesignMode || (!AlwaysHideScrollBar && (thumbenable || !HideScrollBar));
+            if (newvisible != Visible)
+                Visible = newvisible;
+
         }
                                                            // for a 0-100 scroll bar, with lc=10, positions are 0 to 91 inclusive.
         private int UserMaximum { get { return Math.Max(maximum - largechange + 1, minimum); } }    // make sure it does not go below minimum whatever largechange is set to.
@@ -561,7 +563,9 @@ namespace ExtendedControls
         MouseEventArgs mouseargs;
         private static readonly object EVENT_SCROLL = new object();
         private static readonly object EVENT_VALUECHANGED = new object();
-        private bool hideScrollBar = false;                   // hide (make not visible) if no scroll needed
+        private bool hideScrollBar = false;                     // hide (make not visible) if no scroll needed
+        private bool alwaysHideScrollBar = false;               // always keep hidden
+
 
         #endregion
     }

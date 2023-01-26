@@ -389,7 +389,6 @@ namespace ExtendedControls
                     this.Size = new Size(newrender.Width, newrender.Height);
 
                 lastimage?.Dispose();
-                lastimage = null;
             }
             else
             {
