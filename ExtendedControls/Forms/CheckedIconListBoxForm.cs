@@ -63,14 +63,12 @@ namespace ExtendedControls
         public bool HideOnChange { get; set; } = false;             // hide when any is changed
         public bool MultipleColumnsAllowed { get; set; } = false;      // allow multiple columns
         public bool MultipleColumnsFitToScreen { get; set; } = false;      // if multiple columns, move left to fit
-
-        public long LastDeactivateTime { get; set; } = -Environment.TickCount;      // when we deactivate, we record last time
+        public BaseUtils.MSTicks LastDeactivateTime { get; private set; } = new BaseUtils.MSTicks();    // .Running if deactivated
         public bool DeactivatedWithin(long ms)                      // have we deactivated in this timeperiod. use for debouncing buttons if hiding
         {
-            long timesince = Environment.TickCount - LastDeactivateTime;
-            //System.Diagnostics.Debug.WriteLine($"Deactivate time {timesince}");
-            return timesince <= ms;
+            return LastDeactivateTime.IsRunning && LastDeactivateTime.TimeRunning < ms; // if running, and we are within ms from the time it started running, we have deactivated within
         }
+
         public Size ScreenMargin { get; set; } = new Size(16, 16);
 
         public int ItemCount { get { return controllist.Count; } }
@@ -509,6 +507,8 @@ namespace ExtendedControls
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
+            
+            LastDeactivateTime.Stop();          // indicate deact - this is really just to be nice with the .Running flag of the class
 
             //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Activated");
 
@@ -585,7 +585,7 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("Deactivate event start");
 
-            LastDeactivateTime = Environment.TickCount;
+            LastDeactivateTime.Run();     // start timer..
             timer.Stop();
             SaveSettingsEvent();
 

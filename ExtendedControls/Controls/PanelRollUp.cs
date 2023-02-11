@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -45,7 +43,7 @@ namespace ExtendedControls
         private ExtButtonDrawn hiddenmarker1;
         private ExtButtonDrawn hiddenmarker2;
 
-        long targetrolltickstart;     // when the roll is supposed to be in time
+        BaseUtils.MSTicks targetrolltimer= new BaseUtils.MSTicks();
         const int rolltimerinterval = 25;
 
         Action<ExtPanelRollUp, ExtCheckBox> PinStateChanged = null;
@@ -169,9 +167,9 @@ namespace ExtendedControls
                 mode = Mode.Down;
             else if (mode != Mode.Down)
             {
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll down, start animating, size " + unrolledheight);
+              //  System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll down, start animating, size " + unrolledheight);
                 mode = Mode.RollingDown;
-                targetrolltickstart = Environment.TickCount;
+                targetrolltimer.TimeoutAt(RollUpAnimationTime);
                 timer.Interval = rolltimerinterval;
                 DeployStarting?.Invoke(this, EventArgs.Empty);
                 timer.Start();
@@ -192,9 +190,9 @@ namespace ExtendedControls
                 mode = Mode.Up;
             else if (mode != Mode.Up )
             {
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll up, start animating , child size " + this.FindMaxSubControlArea(0, 0));
+               // System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll up, start animating , child size " + this.FindMaxSubControlArea(0, 0));
                 mode = Mode.RollingUp;
-                targetrolltickstart = Environment.TickCount;
+                targetrolltimer.TimeoutAt(RollUpAnimationTime);
                 timer.Interval = rolltimerinterval;
                 RetractStarting?.Invoke(this, EventArgs.Empty);
                 AutoHeightWidthDisable = true;  // disable Auto width/height controls on PanelAutoHeightWidth
@@ -322,12 +320,12 @@ namespace ExtendedControls
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            double rollpercent = (double)(Environment.TickCount - targetrolltickstart) / RollUpAnimationTime;
+            double rollpercent = targetrolltimer.Percentage;
             int rolldiff = unrolledheight - RolledUpHeight;
 
             bool inarea = this.IsHandleCreated && this.RectangleScreenCoords().Contains(MousePosition.X, MousePosition.Y);
 
-            //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent + " mode " + mode + " inarea " + inarea);
+           // System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent + " mode " + mode + " inarea " + inarea);
 
             if (mode == Mode.RollingUp)        // roll up animation, move one step on, check for end
             {
@@ -336,6 +334,7 @@ namespace ExtendedControls
 
                 if (Height == RolledUpHeight)    // end
                 {
+                    targetrolltimer.Stop();
                     timer.Stop();
                     foreach (Control c in Controls)
                     {
@@ -358,6 +357,7 @@ namespace ExtendedControls
 
                 if (Height == unrolledheight)        // end, everything is already visible.  hide the hidden marker
                 {
+                    targetrolltimer.Stop();
                     timer.Stop();
                     mode = Mode.Down;
                     hiddenmarkershouldbeshown = false;
