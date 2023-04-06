@@ -45,17 +45,25 @@ namespace ExtendedControls
             using (MessageBoxTheme msg = new MessageBoxTheme(text, caption, buttons, icon, windowicon))
             {
                 return msg.ShowDialog(Application.OpenForms[0]);
-            }   
+            }
         }
 
-        public string MessageText { get { return themeTextBox.Text; } set { themeTextBox.Text = value; } }
+        // show with custom text.  One custom gets DialogResult.OK, two gets 0: DR.Cancel, 1 : DR.OK, three gets 0:Ignore, 1:Retry, 2:Abort
+        static public DialogResult Show(IWin32Window window, string text, string caption, string[] custombuttons, MessageBoxIcon icon = MessageBoxIcon.None, Icon windowicon = null)
+        {
+            using (MessageBoxTheme msg = new MessageBoxTheme(text, caption, 
+                            custombuttons.Length == 1 ? MessageBoxButtons.OK : custombuttons.Length == 2 ? MessageBoxButtons.OKCancel : MessageBoxButtons.AbortRetryIgnore, 
+                            icon, windowicon, custombuttons))
+            {
+                return msg.ShowDialog(window);
+            }
+        }
 
-        //      public string MsgText { get { return msgText; } set { SetText(value); } }     // modeless update
+        public string MessageText { get { return themeTextBox.Text; } set { themeTextBox.Text = value; } }      // modeless set
 
-        MessageBoxButtons? buttons;     // The buttons that this dialog will display
-        MessageBoxIcon mbIcon;          // The icon that this dialog will show
 
-        public MessageBoxTheme(string text, string caption = null, MessageBoxButtons? buttons = MessageBoxButtons.OK, MessageBoxIcon messageBoxIcon = MessageBoxIcon.None, Icon formIcon = null)
+        private MessageBoxTheme(string text, string caption = null, MessageBoxButtons? buttons = MessageBoxButtons.OK, MessageBoxIcon messageBoxIcon = MessageBoxIcon.None, Icon formIcon = null ,
+                                string[] customtext = null)
         {
             InitializeComponent();
 
@@ -63,8 +71,6 @@ namespace ExtendedControls
 
             this.Text = labelCaption.Text = caption ?? "Warning".TxID(ECIDs.MessageBoxTheme_Warning);
             themeTextBox.Text = text;
-            this.buttons = buttons;
-            this.mbIcon = messageBoxIcon;
             if (formIcon != null)
                 this.Icon = formIcon;
 
@@ -92,15 +98,15 @@ namespace ExtendedControls
                     buttonExt1.Visible = buttonExt2.Visible = buttonExt3.Visible = false;
                     break;
                 case MessageBoxButtons.AbortRetryIgnore:
-                    buttonExt1.DialogResult = DialogResult.Ignore; buttonExt1.Text = "Ignore".TxID(ECIDs.MessageBoxTheme_Ignore);
-                    buttonExt2.DialogResult = DialogResult.Retry; buttonExt2.Text = "Retry".TxID(ECIDs.MessageBoxTheme_Retry);
-                    buttonExt3.DialogResult = DialogResult.Abort; buttonExt3.Text = "Abort".TxID(ECIDs.MessageBoxTheme_Abort);
+                    buttonExt1.DialogResult = DialogResult.Ignore; buttonExt1.Text = customtext != null ? customtext[0] : "Ignore".TxID(ECIDs.MessageBoxTheme_Ignore);
+                    buttonExt2.DialogResult = DialogResult.Retry; buttonExt2.Text = customtext != null ? customtext[1] : "Retry".TxID(ECIDs.MessageBoxTheme_Retry);
+                    buttonExt3.DialogResult = DialogResult.Abort; buttonExt3.Text = customtext != null ? customtext[2] : "Abort".TxID(ECIDs.MessageBoxTheme_Abort);
                     this.AcceptButton = buttonExt2;
                     this.CancelButton = buttonExt3;
                     break;
                 case MessageBoxButtons.OKCancel:
-                    buttonExt1.DialogResult = DialogResult.Cancel; buttonExt1.Text = "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel);
-                    buttonExt2.DialogResult = DialogResult.OK; buttonExt2.Text = "OK".TxID(ECIDs.MessageBoxTheme_OK);
+                    buttonExt1.DialogResult = DialogResult.Cancel; buttonExt1.Text = customtext != null ? customtext[0] : "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel);
+                    buttonExt2.DialogResult = DialogResult.OK; buttonExt2.Text = customtext != null ? customtext[1] : "OK".TxID(ECIDs.MessageBoxTheme_OK);
                     buttonExt3.Visible = false;
                     this.AcceptButton = buttonExt2;
                     this.CancelButton = buttonExt1;
@@ -125,7 +131,7 @@ namespace ExtendedControls
                     break;
                 case MessageBoxButtons.OK:
                 default:
-                    buttonExt1.DialogResult = DialogResult.OK; buttonExt1.Text = "OK".TxID(ECIDs.MessageBoxTheme_OK);
+                    buttonExt1.DialogResult = DialogResult.OK; buttonExt1.Text = customtext != null ? customtext[0] : "OK".TxID(ECIDs.MessageBoxTheme_OK);
                     buttonExt2.Visible = false;
                     buttonExt3.Visible = false;
                     this.AcceptButton = this.CancelButton = buttonExt1;
@@ -134,7 +140,7 @@ namespace ExtendedControls
 
             Image iconselected = null;                // If not null, this icon will be drawn on the left of this form. Set from mbIcon in OnLoad
 
-            switch (mbIcon)
+            switch (messageBoxIcon)
             {
                 // case MessageBoxIcon.Information:
                 case MessageBoxIcon.Asterisk:

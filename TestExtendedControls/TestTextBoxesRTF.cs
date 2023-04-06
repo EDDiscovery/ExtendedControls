@@ -43,7 +43,7 @@ namespace TestExtendedControls
 
             Theme.Current.ApplyStd(this);
 
-
+            extRichTextBox1.InstallStandardDragDrop();
         }
 
         int count = 0;
