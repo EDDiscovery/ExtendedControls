@@ -243,7 +243,7 @@ namespace ExtendedControls
         #region Paint
 
         private Bitmap compass = null;      // holds bitmap of compass
-        private int majortickcomputedheight = 1;    // holds what the centre tick height was
+        private int tickheight = 1;    // holds what the centre tick height was
         System.Drawing.Drawing2D.SmoothingMode textsmoothingmode;   // holds computed smoothing mode, dependent on back colour transparency
         private bool lastdrawnenablestate = true;
         private double pixelsperdegree = 1;                 // set by compass
@@ -275,28 +275,27 @@ namespace ExtendedControls
                 int yline = 0;
 
                 SizeF sz = g.MeasureString("360", Font);
-                int fontline = bitmapheight - (int)(sz.Height + 1);
-                majortickcomputedheight = fontline;
-                int smalltickdepth = majortickcomputedheight / 2;
 
-                System.Diagnostics.Debug.WriteLine($"Draw compass {Width} {WidthDegrees} = pix/deg {pixelsperdegree} bm {bitmapwidth} x {bitmapheight} bigtick {majortickcomputedheight} small {smalltickdepth} fontline {fontline}");
+                tickheight = bitmapheight - (int)(sz.Height + 1);
+
+                System.Diagnostics.Debug.WriteLine($"Draw compass {Width} {WidthDegrees} = pix/deg {pixelsperdegree} bm {bitmapwidth} x {bitmapheight} bigtick {tickheight}");
 
                 int stmajor = stencilmajortickat;
                 int stminor = stencilminortickat;
 
                 if ( autosetstencilticks )
                 {
-                    double minmajorticks = sz.Width / pixelsperdegree;        
-                    // System.Diagnostics.Debug.WriteLine("Major min ticks at {0} = {1}", sz.Width, minmajorticks);
-                    if (minmajorticks >= 40)
+                    double degreesusedbytext = sz.Width / pixelsperdegree;        
+                    //System.Diagnostics.Debug.WriteLine($"Text 360 uses {degreesusedbytext}");
+                    if (degreesusedbytext >= 40)
                     {
                         stmajor = 80; stminor = 20;
                     }
-                    else if (minmajorticks >= 20)
+                    else if (degreesusedbytext >= 20)
                     {
                         stmajor = 40; stminor = 10;
                     }
-                    else if (minmajorticks >= 10)
+                    else if (degreesusedbytext >= 10)
                     {
                         stmajor = 20; stminor = 5;
                     }
@@ -322,17 +321,18 @@ namespace ExtendedControls
                     if (majortick)
                     {
                         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                        g.DrawLine(p2, new Point(x, yline), new Point(x, yline + majortickcomputedheight));
+                        g.DrawLine(p2, new Point(x, yline), new Point(x, yline + tickheight));
                         g.SmoothingMode = textsmoothingmode;
-                        g.DrawString(ToVisual(d).ToStringInvariant(), this.Font, textb, new Rectangle(x - 30, fontline, 60, compass.Height - fontline), fmt);
+                        int xwidth = (int)(pixelsperdegree * stmajor);            // given pixels per degree and the no of degrees per major, we can work out area allows
+                        //g.DrawLine(p1, x - xwidth / 2, tickheight + 2, x + xwidth / 2, bitmapheight - 1); // for debug visualisation of area allowed for text
+                        g.DrawString(ToVisual(d).ToStringInvariant(), this.Font, textb, new Rectangle(x - xwidth/2, tickheight, xwidth, compass.Height - tickheight), fmt);
 
-                        //DEBUG g.DrawLine(p1, x - sz.Width / 2, fontline, x + sz.Width / 2, fontline);
                     }
 
                     if ( minortick )
                     {
                         g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                        g.DrawLine(p1, new Point(x, yline), new Point(x, yline + smalltickdepth));
+                        g.DrawLine(p1, new Point(x, yline), new Point(x, yline + tickheight/2));
                     }
 
                 }
@@ -397,7 +397,7 @@ namespace ExtendedControls
                     if (!CentreTickColor.IsFullyTransparent())
                     {
                         using (Pen p2 = new Pen(CentreTickColor, 4))
-                            pe.Graphics.DrawLine(p2, new Point(this.Width / 2, 0), new Point(this.Width / 2, majortickcomputedheight));
+                            pe.Graphics.DrawLine(p2, new Point(this.Width / 2, 0), new Point(this.Width / 2, tickheight));
                     }
 
                     string distancetext = (double.IsNaN(distance) ? "" : string.Format(distanceformat, distance)) + distancemessage;

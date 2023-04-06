@@ -23,6 +23,7 @@ namespace TestExtendedControls
             t.Tick += T_Tick;
 
             compassControl1.WidthDegrees = 180;
+            compassControl1.AutoSetStencilTicks = true;
             compassControl1.Bearing = bearing = 260;
             //compassControl1.Bug = double.NaN;
             compassControl1.Bug = 100;
@@ -145,8 +146,8 @@ namespace TestExtendedControls
 
         private void buttonresize_Click(object sender, EventArgs e)
         {
-            compassControl1.Font = new Font(compassControl1.Font.Name, 16);
-            compassControl1.Size = new Size(800, 150);
+            compassControl1.Font = new Font(compassControl1.Font.Name, 36);
+            compassControl1.Size = new Size(900, 250);
         }
 
         private void buttonresizesmall_Click(object sender, EventArgs e)
