@@ -56,7 +56,7 @@
             this.compassControl1 = new ExtendedControls.CompassControl();
             this.button24 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.buttonGS = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panel1
@@ -314,16 +314,15 @@
             this.compassControl1.BugColor = System.Drawing.Color.White;
             this.compassControl1.BugSizePixels = 10;
             this.compassControl1.CentreTickColor = System.Drawing.Color.Green;
-            this.compassControl1.CentreTickHeightPercentage = 60;
-            this.compassControl1.CompassHeightPercentage = 50;
             this.compassControl1.DisableMessage = "";
             this.compassControl1.Distance = double.NaN;
             this.compassControl1.DistanceFormat = "{0:0.##}";
+            this.compassControl1.GlideSlope = double.NaN;
             this.compassControl1.Location = new System.Drawing.Point(119, 104);
             this.compassControl1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.compassControl1.Name = "compassControl1";
             this.compassControl1.ShowNegativeDegrees = false;
-            this.compassControl1.Size = new System.Drawing.Size(481, 64);
+            this.compassControl1.Size = new System.Drawing.Size(524, 177);
             this.compassControl1.SlewRateDegreesSec = 0;
             this.compassControl1.SlewToBearing = 355D;
             this.compassControl1.StencilColor = System.Drawing.Color.Red;
@@ -331,7 +330,7 @@
             this.compassControl1.StencilMinorTicksAt = 5;
             this.compassControl1.TabIndex = 1;
             this.compassControl1.Text = "compassControl1";
-            this.compassControl1.TickHeightPercentage = 60;
+            this.compassControl1.TextBandRatioToFont = 1.5D;
             this.compassControl1.WidthDegrees = 360;
             // 
             // button24
@@ -354,22 +353,21 @@
             this.button25.UseVisualStyleBackColor = true;
             this.button25.Click += new System.EventHandler(this.buttondisable_Click);
             // 
-            // dateTimePicker1
+            // buttonGS
             // 
-            this.dateTimePicker1.CustomFormat = "yyyy/MM/dd HH:mm:ss";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(753, 161);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.ShowUpDown = true;
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 23);
-            this.dateTimePicker1.TabIndex = 4;
+            this.buttonGS.Location = new System.Drawing.Point(500, 573);
+            this.buttonGS.Name = "buttonGS";
+            this.buttonGS.Size = new System.Drawing.Size(100, 23);
+            this.buttonGS.TabIndex = 3;
+            this.buttonGS.Text = "GS on";
+            this.buttonGS.UseVisualStyleBackColor = true;
+            this.buttonGS.Click += new System.EventHandler(this.buttonGS_Click);
             // 
             // TestCompassControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1369, 741);
-            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button10);
@@ -380,6 +378,7 @@
             this.Controls.Add(this.button13);
             this.Controls.Add(this.button23);
             this.Controls.Add(this.button18);
+            this.Controls.Add(this.buttonGS);
             this.Controls.Add(this.button22);
             this.Controls.Add(this.button21);
             this.Controls.Add(this.button20);
@@ -435,6 +434,6 @@
         private System.Windows.Forms.Button button23;
         private System.Windows.Forms.Button button24;
         private System.Windows.Forms.Button button25;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Button buttonGS;
     }
 }

@@ -35,14 +35,12 @@ namespace ExtendedControls
         public int StencilMinorTicksAt { get { return stencilminortickat; } set { stencilminortickat = value; Restart(); } } // degrees
         public bool AutoSetStencilTicks { get { return autosetstencilticks; } set { autosetstencilticks = value; Restart(); } } 
 
-        // sizes - Percentages of the control, or percentages of the compass
-        public int CompassHeightPercentage { get { return compassheightpercentage; } set { compassheightpercentage = value; Restart(); } }
-        public int TickHeightPercentage { get { return tickheightpercentage; } set { tickheightpercentage = value; Invalidate(); } }   // of compass
-        public int CentreTickHeightPercentage { get { return centreticklengthpercentage; } set { centreticklengthpercentage = value; Invalidate(); } } // of compass
-
         // Bug
         public double Bug { get { return bug + degreeoffset; } set { MoveBugToBearing(value - degreeoffset); } }    // Nan to disable
         public int BugSizePixels { get { return bugsize; } set { bugsize = value; Invalidate(); } }  
+
+        // Text band size
+        public double TextBandRatioToFont { get { return textbandratio; } set { textbandratio = value; Restart(); } }
 
         // +180 or 360 is allowed as a sub for -180 or 0. Argument exception if out of range for both
         public double Bearing { get { return bearing + degreeoffset; } set { MoveToBearing(value - degreeoffset, false); } }   // go direct
@@ -87,7 +85,6 @@ namespace ExtendedControls
 
         #region Vars and Init
 
-        private Bitmap compass = null;      // holds bitmap of compass
         private double bearing = 0;       // always 0-360 internally
         private double slewtobearing = 0;  // where we are going
         private int slewrate = 10;          // degrees/sec
@@ -106,21 +103,10 @@ namespace ExtendedControls
         private Color bugcolor = Color.White;
         private int bugsize = 10;
         private int widthdegrees = 180;
-        private int compassheightpercentage = 60;           // of the control
-        private int tickheightpercentage = 60;              // of the compass height
-        private int centreticklengthpercentage = 60;       // of the compass height
-
-        private const int pixelstart = -5;
-        private double pixelsperdegree = 1;                 // reset on draw, may have called track to first
-        private int fontline;
-        private Label emergencydesignlabel;
-        private System.Drawing.Drawing2D.SmoothingMode textsmoothingmode;      // transparent backgrounds .. mean no antialising
-
+        private double textbandratio = 1.5;
         private System.Windows.Forms.Timer slewtimer;
         private System.Diagnostics.Stopwatch slewstopwatch;
         private double accumulateddegrees;
-
-        private bool lastdrawnenablestate = true;
 
         public CompassControl()
         {
@@ -234,17 +220,6 @@ namespace ExtendedControls
             Invalidate();
         }
 
-
-        protected override void OnResize(EventArgs e)
-        {
-            Restart();
-        }
-
-        private int ToVisual(double h)      // just correct the visual rep of degree.
-        {
-            int r = ((int)h + degreeoffset); return (r == -180) ? 180 : r;
-        }
-
         private void Restart()
         {
             compass?.Dispose();
@@ -252,126 +227,120 @@ namespace ExtendedControls
             Invalidate();
         }
 
-        // debug used to check accuracy of below - keep for now       int[] pixelatdegree = new int[360];       //            return pixelatdegree[(int)degree - pixelstart]; pixelatdegree[d - pixelstart] = x;
-
-        int Bitmappixel(double degree)      // handle the strange -5 pixelstart stuff
+        protected override void OnResize(EventArgs e)
         {
-            if (degree >= 360 + pixelstart)
-                degree -= 360;
-            return (int)((degree - pixelstart) * pixelsperdegree);
+            Restart();  // resize needs a new compass drawn
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);      
+            Restart();  // font change needs a new compass drawn
         }
 
         #endregion
 
         #region Paint
 
-        private void PaintCompass()
+        private Bitmap compass = null;      // holds bitmap of compass
+        private int majortickcomputedheight = 1;    // holds what the centre tick height was
+        System.Drawing.Drawing2D.SmoothingMode textsmoothingmode;   // holds computed smoothing mode, dependent on back colour transparency
+        private bool lastdrawnenablestate = true;
+        private double pixelsperdegree = 1;                 // set by compass
+
+        // paint compass to compass variable, return majortickcomputedheight
+        // compass is sizes to height-reserved/width of client area
+        private void PaintCompass(int bottomreserved)
         {
             compass?.Dispose();     // ensure we are clean
             compass = null;
 
             pixelsperdegree = (double)this.Width / (double)WidthDegrees;
 
-            int bitmapwidth = (int)(360 * pixelsperdegree);        // size of bitmap
-            int bitmapheight = Height * CompassHeightPercentage / 100;
+            int bitmapwidth = Math.Max(1, (int)(360 * pixelsperdegree));        // size of bitmap
+            int bitmapheight = Math.Max(1, Height - bottomreserved);
 
-            //System.Diagnostics.Debug.WriteLine("Compass width " + this.Width + " deg width " + WidthDegrees + " pix/deg " + pixelsperdegree);
+            compass = new Bitmap(bitmapwidth, bitmapheight);
 
-            if (!DesignMode)        // for some reason, FromImage craps it out
+            using (Graphics g = Graphics.FromImage(compass))
             {
-                compass = new Bitmap(bitmapwidth, bitmapheight);
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
 
-                using (Graphics g = Graphics.FromImage(compass))
+                if (!BackColor.IsFullyTransparent())
                 {
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-
-                    if (!BackColor.IsFullyTransparent())
-                    {
-                        using (Brush b = new SolidBrush(BackColor))
-                            g.FillRectangle(b, new Rectangle(0, 0, compass.Width, compass.Height));
-
-                        textsmoothingmode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    }
-                    else
-                        textsmoothingmode = System.Drawing.Drawing2D.SmoothingMode.None;
-
-                    int yline = 0;
-
-                    SizeF sz = g.MeasureString("360", Font);
-                    fontline = bitmapheight - (int)(sz.Height + 1);
-                    int bigtickdepth = bitmapheight * TickHeightPercentage / 100;
-                    int smalltickdepth = bigtickdepth / 2;
-
-                    int stmajor = stencilmajortickat;
-                    int stminor = stencilminortickat;
-
-                    if ( autosetstencilticks )
-                    {
-                        double minmajorticks = sz.Width / pixelsperdegree;        
-                       // System.Diagnostics.Debug.WriteLine("Major min ticks at {0} = {1}", sz.Width, minmajorticks);
-                        if (minmajorticks >= 40)
-                        {
-                            stmajor = 80; stminor = 20;
-                        }
-                        else if (minmajorticks >= 20)
-                        {
-                            stmajor = 40; stminor = 10;
-                        }
-                        else if (minmajorticks >= 10)
-                        {
-                            stmajor = 20; stminor = 5;
-                        }
-                        else 
-                        {
-                            stmajor = 10; stminor = 2;
-                        }
-                    }
-
-                    Color sc = Enabled ? StencilColor : StencilColor.Multiply(0.5F);
-                    Pen p1 = new Pen(sc, 1);
-                    Pen p2 = new Pen(sc, 2);
-                    Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(0.5F));
-                    var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
-
-                    for (int d = pixelstart; d < 360 + pixelstart; d++)
-                    {
-                        int x = (int)((d - pixelstart) * pixelsperdegree);
-
-                        bool majortick = d % stmajor == 0;
-                        bool minortick = (d % stminor == 0) && !majortick;
-
-                        if (majortick)
-                        {
-                            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                            g.DrawLine(p2, new Point(x, yline), new Point(x, yline + bigtickdepth));
-                            g.SmoothingMode = textsmoothingmode;
-                            g.DrawString(ToVisual(d).ToStringInvariant(), this.Font, textb, new Rectangle(x - 30, fontline, 60, compass.Height - fontline), fmt);
-
-                            //DEBUG g.DrawLine(p1, x - sz.Width / 2, fontline, x + sz.Width / 2, fontline);
-                        }
-
-                        if ( minortick )
-                        {
-                            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-                            g.DrawLine(p1, new Point(x, yline), new Point(x, yline + smalltickdepth));
-                        }
-
-                    }
-
-                    p1.Dispose();
-                    p2.Dispose();
-                    textb.Dispose();
-                    fmt.Dispose();
+                    using (Brush b = new SolidBrush(BackColor))
+                        g.FillRectangle(b, new Rectangle(0, 0, compass.Width, compass.Height));
                 }
-            }
-            else
-            {           // FromImage above crashes the designer.. 
-                emergencydesignlabel = new Label();
-                emergencydesignlabel.Location = new Point(10, 10);
-                emergencydesignlabel.AutoSize = true;
-                emergencydesignlabel.Text = "Compass.. FromImage crashes designer";
-                this.BackColor = Color.LightBlue;
-                Controls.Add(emergencydesignlabel);
+
+                int yline = 0;
+
+                SizeF sz = g.MeasureString("360", Font);
+                int fontline = bitmapheight - (int)(sz.Height + 1);
+                majortickcomputedheight = fontline;
+                int smalltickdepth = majortickcomputedheight / 2;
+
+                System.Diagnostics.Debug.WriteLine($"Draw compass {Width} {WidthDegrees} = pix/deg {pixelsperdegree} bm {bitmapwidth} x {bitmapheight} bigtick {majortickcomputedheight} small {smalltickdepth} fontline {fontline}");
+
+                int stmajor = stencilmajortickat;
+                int stminor = stencilminortickat;
+
+                if ( autosetstencilticks )
+                {
+                    double minmajorticks = sz.Width / pixelsperdegree;        
+                    // System.Diagnostics.Debug.WriteLine("Major min ticks at {0} = {1}", sz.Width, minmajorticks);
+                    if (minmajorticks >= 40)
+                    {
+                        stmajor = 80; stminor = 20;
+                    }
+                    else if (minmajorticks >= 20)
+                    {
+                        stmajor = 40; stminor = 10;
+                    }
+                    else if (minmajorticks >= 10)
+                    {
+                        stmajor = 20; stminor = 5;
+                    }
+                    else 
+                    {
+                        stmajor = 10; stminor = 2;
+                    }
+                }
+
+                Color sc = Enabled ? StencilColor : StencilColor.Multiply(0.5F);
+                Pen p1 = new Pen(sc, 1);
+                Pen p2 = new Pen(sc, 2);
+                Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(0.5F));
+                var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
+
+                for (int d = pixelstart; d < 360 + pixelstart; d++)
+                {
+                    int x = (int)((d - pixelstart) * pixelsperdegree);
+
+                    bool majortick = d % stmajor == 0;
+                    bool minortick = (d % stminor == 0) && !majortick;
+
+                    if (majortick)
+                    {
+                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                        g.DrawLine(p2, new Point(x, yline), new Point(x, yline + majortickcomputedheight));
+                        g.SmoothingMode = textsmoothingmode;
+                        g.DrawString(ToVisual(d).ToStringInvariant(), this.Font, textb, new Rectangle(x - 30, fontline, 60, compass.Height - fontline), fmt);
+
+                        //DEBUG g.DrawLine(p1, x - sz.Width / 2, fontline, x + sz.Width / 2, fontline);
+                    }
+
+                    if ( minortick )
+                    {
+                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+                        g.DrawLine(p1, new Point(x, yline), new Point(x, yline + smalltickdepth));
+                    }
+
+                }
+
+                p1.Dispose();
+                p2.Dispose();
+                textb.Dispose();
+                fmt.Dispose();
             }
         }
 
@@ -380,139 +349,161 @@ namespace ExtendedControls
         {
             base.OnPaint(pe);
 
-            if (compass == null || Enabled != lastdrawnenablestate)     // if enabled change (which we don't trap directly due to it being a lower control) redraw as well
+            if (DesignMode)        // FromImage craps out in designer, so turn this whole thing off
+                return;
+
+            var newtextsmoothingmode = BackColor.IsFullyTransparent() ? System.Drawing.Drawing2D.SmoothingMode.None : System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+            // these make the compass bitmap redraw
+
+            if (compass == null || Enabled != lastdrawnenablestate || newtextsmoothingmode != textsmoothingmode)
             {
-                PaintCompass();
+                SizeF sz = pe.Graphics.MeasureString("GgJjy", Font);
+                PaintCompass(Math.Min(Height / 2, (int)(sz.Height * textbandratio + 1)));
                 lastdrawnenablestate = Enabled;
+                textsmoothingmode = newtextsmoothingmode;
             }
 
-            if (compass != null)        // designer problems
+            //System.Diagnostics.Debug.WriteLine("Bearing {0} bug {1}", bearing, bug);
+
+            using (Brush textb = new SolidBrush(this.ForeColor))
             {
-                //System.Diagnostics.Debug.WriteLine("Compass width " + this.Width + " deg width " + WidthDegrees + " pix/deg " + pixelsperdegree);
+                double startdegree = bearing - WidthDegrees / 2;       // where do we start
 
-                //System.Diagnostics.Debug.WriteLine("Bearing {0} bug {1}", bearing, bug);
+                int p1start = Bitmappixel((360 + startdegree) % 360);       // this whole bit was a bit mind warping!
+                int p1width = Math.Min(compass.Width - p1start, this.Width);     // paint all you can up to compass end, limited by control width
+                int left = this.Width - p1width;                        // and this is what we need from the start of the image..
 
+                //System.Diagnostics.Debug.WriteLine("start {0} First paint {1} w {2} then {3}", startdegree, p1start, p1width, left);
 
-                using (Brush textb = new SolidBrush(this.ForeColor))
+                pe.Graphics.DrawImage(compass, new Rectangle(0, 0, p1width, compass.Height), p1start, 0, p1width, compass.Height, GraphicsUnit.Pixel);
+                if (left > 0)
+                    pe.Graphics.DrawImage(compass, new Rectangle(p1width, 0, left, compass.Height), 0, 0, left, compass.Height, GraphicsUnit.Pixel);
+
+                int textheight = Height - compass.Height;
+
+                if (!Enabled)
                 {
-                    double startdegree = bearing - WidthDegrees / 2;       // where do we start
-
-                    int p1start = Bitmappixel((360 + startdegree) % 360);       // this whole bit was a bit mind warping!
-                    int p1width = Math.Min(compass.Width - p1start, this.Width);     // paint all you can up to compass end, limited by control width
-                    int left = this.Width - p1width;                        // and this is what we need from the start of the image..
-
-                    //System.Diagnostics.Debug.WriteLine("start {0} First paint {1} w {2} then {3}", startdegree, p1start, p1width, left);
-
-                    pe.Graphics.DrawImage(compass, new Rectangle(0, 0, p1width, compass.Height), p1start, 0, p1width, compass.Height, GraphicsUnit.Pixel);
-                    if (left > 0)
-                        pe.Graphics.DrawImage(compass, new Rectangle(p1width, 0, left, compass.Height), 0, 0, left, compass.Height, GraphicsUnit.Pixel);
-
-                    if (!Enabled)
+                    if (disablemessage.Length > 0)
                     {
-                        if (disablemessage.Length > 0)
+                        var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
+                        pe.Graphics.SmoothingMode = textsmoothingmode;
+                        pe.Graphics.DrawString(disablemessage, this.Font, textb, new Rectangle(0, compass.Height, this.Width, textheight), fmt);
+                        fmt.Dispose();
+                    }
+                }
+                else
+                {
+                    if (!CentreTickColor.IsFullyTransparent())
+                    {
+                        using (Pen p2 = new Pen(CentreTickColor, 4))
+                            pe.Graphics.DrawLine(p2, new Point(this.Width / 2, 0), new Point(this.Width / 2, majortickcomputedheight));
+                    }
+
+                    string distancetext = (double.IsNaN(distance) ? "" : string.Format(distanceformat, distance)) + distancemessage;
+                    string glideslopetext = double.IsNaN(glideslope) ? "" : " (glideslope " + glideslope.ToString("0") + "°) ";
+
+                    if (!double.IsNaN(bug))     // if bug is running.
+                    {
+                        using (Brush bbrush = new SolidBrush(BugColor))
                         {
-                            var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
-                            pe.Graphics.SmoothingMode = textsmoothingmode;
-                            pe.Graphics.DrawString(disablemessage, this.Font, textb, new Rectangle(0, compass.Height, this.Width, 24), fmt);
-                            fmt.Dispose();
+                            int bugpixel = Bitmappixel(bug);                 // which pixel in the image is this?
+                            int bugx = (bugpixel >= p1start) ? (bugpixel - p1start) : (bugpixel + p1width); // adjust to account for image wrap
+                            double delta = (bug - bearing + 360) % 360;
+
+                            //System.Diagnostics.Debug.WriteLine("bug {0} {1} => {2} Delta {3}", p1start, bugpixel, bugx, delta);
+
+                            if (bugx < BugSizePixels || bugx >= this.Width - BugSizePixels)     // if not withing display range for bug
+                            {
+                                Rectangle textrectangle;
+                                StringFormat fmt;
+                                string text;
+
+                                int bugy = compass.Height + (Height - compass.Height) / 2;      // centre of bug
+
+                                bool itsleft = bugx < BugSizePixels || (delta > 180 && delta <= 270);
+
+                                if (itsleft)
+                                {
+                                    pe.Graphics.FillPolygon(bbrush, new Point[3] { new Point(0, bugy), new Point(BugSizePixels * 2, bugy - BugSizePixels), new Point(BugSizePixels * 2, bugy + BugSizePixels) });
+
+                                    int xmargin = BugSizePixels * 2;
+                                    textrectangle = new Rectangle(xmargin, compass.Height, this.Width - xmargin, textheight);
+                                    fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleLeft);
+                                    text = ToVisual(bug) + "° " + distancetext;
+                                }
+                                else
+                                {
+                                    pe.Graphics.FillPolygon(bbrush, new Point[3] { new Point(this.Width - 1, bugy), new Point(this.Width - 1 - BugSizePixels * 2, bugy + BugSizePixels), new Point(this.Width - 1 - BugSizePixels * 2, bugy - BugSizePixels) });
+
+                                    int xmargin = 2;
+                                    textrectangle = new Rectangle(0, compass.Height, this.Width - BugSizePixels * 2 - xmargin, textheight);
+                                    fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleRight);
+                                    text = distancetext + " " + ToVisual(bug) + "°";
+                                }
+
+                                pe.Graphics.SmoothingMode = textsmoothingmode;
+                                pe.Graphics.DrawString(text, this.Font, textb, textrectangle, fmt);
+
+                                fmt.Dispose();
+                            }
+                            else
+                            {
+                                int bugy = compass.Height;      // at top of bar, to compass bottom
+                                pe.Graphics.FillPolygon(bbrush, new Point[3] { new Point(bugx, bugy), new Point(bugx - BugSizePixels, bugy + BugSizePixels * 2), new Point(bugx + BugSizePixels, bugy + BugSizePixels * 2) });
+
+                                if (distancetext.Length > 0)  // if anything to paint
+                                {
+                                    Rectangle textrectangle;
+                                    StringFormat fmt;
+
+                                    if (bugx > this.Width / 2)    // left or right, dependent
+                                    {
+                                        fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleRight);
+                                        textrectangle = new Rectangle(0, compass.Height, bugx - BugSizePixels * 1, textheight);
+                                    }
+                                    else
+                                    {
+                                        int xs = bugx + BugSizePixels * 1;
+                                        textrectangle = new Rectangle(xs, compass.Height, this.Width - xs, textheight);
+                                        fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleLeft);
+                                    }
+
+                                    pe.Graphics.SmoothingMode = textsmoothingmode;
+                                    pe.Graphics.DrawString(distancetext + glideslopetext, this.Font, textb, textrectangle, fmt);
+                                    fmt.Dispose();
+                                }
+                            }
                         }
                     }
                     else
                     {
-                        if (!CentreTickColor.IsFullyTransparent())
+                        if (distancetext.Length > 0)
                         {
-                            using (Pen p2 = new Pen(CentreTickColor, 4))
-                                pe.Graphics.DrawLine(p2, new Point(this.Width / 2, 0), new Point(this.Width / 2, (compass.Height * centreticklengthpercentage / 100) - 1));
-                        }
-
-                        string distancetext = (double.IsNaN(distance) ? "" : string.Format(distanceformat, distance)) + distancemessage;
-                        string glideslopetext = double.IsNaN(glideslope) ? "" : " (glideslope " + glideslope.ToString("0") + "°) ";
-
-                        if (!double.IsNaN(bug))
-                        {
-                            using (Brush bbrush = new SolidBrush(BugColor))
-                            {
-                                int bugpixel = Bitmappixel(bug);                 // which pixel in the image is this?
-                                int bugx = (bugpixel >= p1start) ? (bugpixel - p1start) : (bugpixel + p1width); // adjust to account for image wrap
-                                double delta = (bug - bearing + 360) % 360;
-
-                                //System.Diagnostics.Debug.WriteLine("bug {0} {1} => {2} Delta {3}", p1start, bugpixel, bugx, delta);
-
-                                int bugy = compass.Height;
-
-                                if (bugx < BugSizePixels || bugx >= this.Width - BugSizePixels)
-                                {
-                                    Rectangle r;
-                                    StringFormat fmt;
-                                    string text;
-
-                                    bool itsleft = bugx < BugSizePixels || (delta > 180 && delta <= 270);
-                                    int xmargin = 2;
-
-                                    if (itsleft)
-                                    {
-                                        pe.Graphics.FillPolygon(bbrush, new Point[3] { new Point(0, bugy + BugSizePixels), new Point(BugSizePixels * 2, bugy), new Point(BugSizePixels * 2, bugy + BugSizePixels * 2) });
-                                        xmargin += BugSizePixels * 2;
-                                        r = new Rectangle(xmargin, bugy, this.Width - xmargin, BugSizePixels * 2);
-                                        fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleLeft);
-                                        text = ToVisual(bug) + "° " + distancetext;
-                                    }
-                                    else
-                                    {
-                                        pe.Graphics.FillPolygon(bbrush, new Point[3] { new Point(this.Width - 1, bugy + BugSizePixels), new Point(this.Width - 1 - BugSizePixels * 2, bugy), new Point(this.Width - 1 - BugSizePixels * 2, bugy + BugSizePixels * 2) });
-                                        r = new Rectangle(0, bugy, this.Width - BugSizePixels * 2 - xmargin, BugSizePixels * 2);
-                                        fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleRight);
-                                        text = distancetext + " " + ToVisual(bug) + "°";
-                                    }
-
-                                    pe.Graphics.SmoothingMode = textsmoothingmode;
-                                    pe.Graphics.DrawString(text, this.Font, textb, r, fmt);
-
-                                    fmt.Dispose();
-                                }
-                                else
-                                {
-                                    pe.Graphics.FillPolygon(bbrush, new Point[3] { new Point(bugx, bugy), new Point(bugx - BugSizePixels, bugy + BugSizePixels * 2), new Point(bugx + BugSizePixels, bugy + BugSizePixels * 2) });
-
-                                    if (distancetext.Length > 0)  // if anything to paint
-                                    {
-                                        SizeF sz = pe.Graphics.MeasureString(distancetext, Font);
-
-                                        Rectangle r;
-                                        StringFormat fmt;
-
-                                        if (bugx > this.Width / 2)    // left or right, dependent
-                                        {
-                                            fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleRight);
-                                            r = new Rectangle(0, bugy, bugx - BugSizePixels * 1, BugSizePixels * 2);
-                                        }
-                                        else
-                                        {
-                                            int xs = bugx + BugSizePixels * 1;
-                                            r = new Rectangle(xs, bugy, this.Width - xs, BugSizePixels * 2);
-                                            fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleLeft);
-                                        }
-
-                                        pe.Graphics.SmoothingMode = textsmoothingmode;
-                                        pe.Graphics.DrawString(distancetext + glideslopetext, this.Font, textb, r, fmt);
-                                        fmt.Dispose();
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (distancetext.Length > 0)
-                            {
-                                var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
-                                pe.Graphics.SmoothingMode = textsmoothingmode;
-                                pe.Graphics.DrawString(distancetext, this.Font, textb, new Rectangle(0, compass.Height, this.Width, 24), fmt);
-                                fmt.Dispose();
-                            }
+                            var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
+                            pe.Graphics.SmoothingMode = textsmoothingmode;
+                            pe.Graphics.DrawString(distancetext, this.Font, textb, new Rectangle(0, compass.Height, this.Width, 24), fmt);
+                            fmt.Dispose();
                         }
                     }
                 }
             }
+        }
+
+        // debug used to check accuracy of below - keep for now       int[] pixelatdegree = new int[360];       //            return pixelatdegree[(int)degree - pixelstart]; pixelatdegree[d - pixelstart] = x;
+
+        private int ToVisual(double h)      // just correct the visual rep of degree.
+        {
+            int r = ((int)h + degreeoffset); return (r == -180) ? 180 : r;
+        }
+
+        private const int pixelstart = -5;  // ?? can't remember why we need this
+
+        int Bitmappixel(double degree)      // handle the strange -5 pixelstart stuff
+        {
+            if (degree >= 360 + pixelstart)
+                degree -= 360;
+            return (int)((degree - pixelstart) * pixelsperdegree);
         }
 
         #endregion

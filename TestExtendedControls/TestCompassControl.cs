@@ -27,26 +27,11 @@ namespace TestExtendedControls
             //compassControl1.Bug = double.NaN;
             compassControl1.Bug = 100;
             compassControl1.ShowNegativeDegrees = false;
-            compassControl1.CompassHeightPercentage = 60;
-            compassControl1.TickHeightPercentage = 60;
-            compassControl1.CentreTickHeightPercentage = 100;
             compassControl1.Distance = 100.2;
             compassControl1.DistanceFormat = "{0:0.##} km";
             compassControl1.SlewRateDegreesSec = 40;
-
-            dateTimePicker1.Value = DateTime.Now;
-            dateTimePicker1.ValueChanged += DateTimePicker1_ValueChanged;
+            compassControl1.Font = new Font("Arial", 15);
            
-        }
-
-        private void DateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-            DateTime p = dateTimePicker1.Value;
-            DateTime pp = new DateTime(p.Year, p.Month, p.Day, p.Hour, p.Minute, p.Second, DateTimeKind.Local);
-            DateTime utc = p.ToUniversalTime();
-            DateTime local = p.ToLocalTime();
-            System.Diagnostics.Debug.WriteLine("Time is " + dateTimePicker1.Value);
-
         }
 
         private void T_Tick(object sender, EventArgs e)
@@ -161,14 +146,12 @@ namespace TestExtendedControls
         private void buttonresize_Click(object sender, EventArgs e)
         {
             compassControl1.Font = new Font(compassControl1.Font.Name, 16);
-            compassControl1.CompassHeightPercentage = 80;
-            compassControl1.Size = new Size(800, 200);
+            compassControl1.Size = new Size(800, 150);
         }
 
         private void buttonresizesmall_Click(object sender, EventArgs e)
         {
             compassControl1.Font = new Font(compassControl1.Font.Name, 8);
-            compassControl1.CompassHeightPercentage = 80;
             compassControl1.Size = new Size(200, 100);
             compassControl1.StencilMajorTicksAt = 30;
 
@@ -210,6 +193,11 @@ namespace TestExtendedControls
         {
             compassControl1.DisableMessage = "Compass is disabled";
             compassControl1.Enabled = false;
+        }
+
+        private void buttonGS_Click(object sender, EventArgs e)
+        {
+            compassControl1.GlideSlope = 20.0;
         }
     }
 }
