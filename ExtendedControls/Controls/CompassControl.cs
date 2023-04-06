@@ -276,7 +276,7 @@ namespace ExtendedControls
 
                 tickheight = bitmapheight - (int)(sz.Height + 1);
 
-                System.Diagnostics.Debug.WriteLine($"Draw compass {Width} {WidthDegrees} = pix/deg {pixelsperdegree} bm {bitmapwidth} x {bitmapheight} bigtick {tickheight}");
+                //System.Diagnostics.Debug.WriteLine($"Draw compass {Width} {WidthDegrees} = pix/deg {pixelsperdegree} bm {bitmapwidth} x {bitmapheight} bigtick {tickheight}");
 
                 int stmajor = stencilmajortickat;
                 int stminor = stencilminortickat;
