@@ -57,7 +57,7 @@ namespace ExtendedControls
         public string DisableMessage { get { return disablemessage; } set { disablemessage = value; Invalidate(); } } // below bar
 
         // optimised setters - do more at once
-        public void Set(double bearing, double bug, double distance, bool slewto = false )
+        public void Set(double bearing, double bug, double distance, double gs, bool slewto = false )
         {
             if (double.IsNaN(bearing))
                 Enabled = false;
@@ -72,9 +72,15 @@ namespace ExtendedControls
                     Invalidate();
                 }
 
-                if (this.bug != bug )
+                if (this.bug != bug)
                 {
                     MoveBugToBearing(bug);
+                }
+
+                if (gs != glideslope)
+                {
+                    glideslope = gs;
+                    Invalidate();
                 }
 
                 MoveToBearing(bearing, slewto);
@@ -399,7 +405,7 @@ namespace ExtendedControls
                     }
 
                     string distancetext = (double.IsNaN(distance) ? "" : string.Format(distanceformat, distance)) + distancemessage;
-                    string glideslopetext = double.IsNaN(glideslope) ? "" : " (glideslope " + glideslope.ToString("0") + "°) ";
+                    string glideslopetext = double.IsNaN(glideslope) ? "" : " (GS " + glideslope.ToString("0") + "°) ";
 
                     if (!double.IsNaN(bug))     // if bug is running.
                     {
