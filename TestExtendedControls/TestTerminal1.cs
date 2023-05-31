@@ -22,7 +22,6 @@ namespace TestExtendedControls
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-         // proc = new VT100Processor(terminal);
 
             terminal.AddText("Hello and welcome to this terminal program\r\nHow are you?\r\n");
             terminal.VTForeColor = Color.Yellow;
@@ -32,6 +31,13 @@ namespace TestExtendedControls
             proc = new ExtendedControls.VT100(terminal);
             terminal.CursorFlashes = false;
             terminal.CursorShape = ExtendedControls.Terminal.CursorShapeType.Block;
+            terminal.KeyPress += (s, kc) => { string str = proc.HandleKeyPress(kc.KeyChar); if (str != null) System.Diagnostics.Debug.WriteLine($"Key {str}"); };
+            terminal.KeyDown += (s, kd) => { string str = proc.HandleKeyDown(kd.KeyCode); if (str != null) System.Diagnostics.Debug.WriteLine($"KeyDown {str}"); };
+        }
+
+        private void Terminal_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         protected override void OnResize(EventArgs e)

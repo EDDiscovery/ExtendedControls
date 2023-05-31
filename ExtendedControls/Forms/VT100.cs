@@ -47,7 +47,8 @@ namespace ExtendedControls
         }
 
         public bool ReportCursorPosition { get; set; } = false; // set on ESC [ 6 n
-        public bool VT52 { get; set; } = true;                  // support VT52 codes
+        public bool VT52Rx { get; set; } = true;                // support VT52 codes on RX
+        public bool VT52Keys { get; set; } = false;             // use VT52 codes on keys out
         public bool SupportC1Codes { get; set; } = false;       // standard for 8 bits codes is 0x80-0x9F are equivalent to ESC N. in UTF-8 they are printable, so default disable
 
         public void Display(string s)
@@ -330,41 +331,41 @@ namespace ExtendedControls
             switch (ch)
             {
                 case 'A':       // cursor up VT52
-                    if (VT52)
+                    if (VT52Rx)
                         term.CursorUp(1);
                     break;
                 case 'B':       // cursor down VT52
-                    if (VT52)
+                    if (VT52Rx)
                         term.CursorDown(1);
                     break;
                 case 'C':       // cursor right VT52
-                    if (VT52)
+                    if (VT52Rx)
                         term.CursorForward(1);
                     break;
                 case 'D':       // cursor left VT52
-                    if (VT52)
+                    if (VT52Rx)
                         term.CursorBack(1);
                     break;
                 case 'E': // ESC NEL VT100 This sequence causes the active position to move to the first position on the next line downward. If the active position is at the bottom margin, a scroll up is performed.
-                    if (VT52)
+                    if (VT52Rx)
                         term.CursorNextLine(1,true);
                     break;
                 case 'H':       // cursor home VT52
-                    if (VT52)
+                    if (VT52Rx)
                         term.CursorPosition = new System.Drawing.Point(0, 0);
                     else
                         System.Diagnostics.Debug.WriteLine($"Unimplemented Set Tab");
                     break;
                 case 'I':       // Reverse line feed vt52
-                    if (VT52)
+                    if (VT52Rx)
                         term.CursorUp(1, true);
                     break;
                 case 'J':       // vt52
-                    if (VT52)
+                    if (VT52Rx)
                         term.ClearCursorToScreenEnd();
                     break;
                 case 'K':       // vt52
-                    if (VT52)
+                    if (VT52Rx)
                         term.ClearCursorToLineEnd();
                     break;
                 case 'P':
@@ -388,7 +389,7 @@ namespace ExtendedControls
                     state = TermState.APC;
                     break;
                 case 'M': // ESC RI Move the active position to the same horizontal position on the preceding line. If the active position is at the top margin, a scroll down is performed.
-                    if (VT52)
+                    if (VT52Rx)
                         term.CursorUp(1, true);
                     break;
 
@@ -500,6 +501,27 @@ namespace ExtendedControls
             System.Drawing.Color.FromArgb(255,255,255,255),
         };
 
+        public string HandleKeyPress(char key)
+        {
+            return new string(key, 1);
+        }
+
+        public string HandleKeyDown(System.Windows.Forms.Keys key)
+        {
+            switch(key)
+            {
+                //case System.Windows.Forms.Keys.Escape:                //  return "\u001b";        // not needed
+                case System.Windows.Forms.Keys.Up:
+                    return VT52Keys ? "\u001bA" : "\u001b[A";
+                case System.Windows.Forms.Keys.Down:
+                    return VT52Keys ? "\u001bB" : "\u001b[B";
+                case System.Windows.Forms.Keys.Right:
+                    return VT52Keys ? "\u001bC" : "\u001b[C";
+                case System.Windows.Forms.Keys.Left:
+                    return VT52Keys ? "\u001bD" : "\u001b[D";
+            }
+            return null;
+        }
 
     }
 }

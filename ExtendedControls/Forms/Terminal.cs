@@ -491,6 +491,20 @@ namespace ExtendedControls
             panelTermWindow.Size = TextArea;
         }
 
+        protected override bool IsInputKey(Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Right:
+                case Keys.Tab:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                    return true;
+            }
+            return base.IsInputKey(keyData);
+        }
+
         #endregion
 
         #region Helpers
@@ -659,8 +673,7 @@ namespace ExtendedControls
         {
             if (DesignMode)
             {
-                using (var br = new SolidBrush(Color.AliceBlue))
-                    e.Graphics.FillRectangle(br, ClientRectangle);
+                base.OnPaintBackground(e);  // does not appear to work perfectly, as design mode is not set
             }
         }
     }
