@@ -92,6 +92,12 @@
     <Compile Include="TestImageControl.Designer.cs">
       <DependentUpon>TestImageControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestTerminal1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestTerminal1.Designer.cs">
+      <DependentUpon>TestTerminal1.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestThemeSpeed.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -276,6 +282,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestImageControl.resx">
       <DependentUpon>TestImageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestTerminal1.resx">
+      <DependentUpon>TestTerminal1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestThemeSpeed.resx">
       <DependentUpon>TestThemeSpeed.cs</DependentUpon>
