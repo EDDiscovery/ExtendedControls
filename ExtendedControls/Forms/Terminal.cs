@@ -70,8 +70,7 @@ namespace ExtendedControls
             cursortimer.Interval = 250;
             cursortimer.Tick += Cursortimer_Tick;
 
-       //     BackColor = Color.Transparent;
-            //   SetStyle(ControlStyles.UserPaint, true);
+            panelTermWindow.Paint += PanelTermWindow_Paint;
         }
 
         public void AddTextClear(ref StringBuilder sb)
@@ -147,7 +146,7 @@ namespace ExtendedControls
             if ( debug)
                 System.Diagnostics.Debug.WriteLine($"Write {str} invalidate {invalidaterect} x {invalidaterect.Left / CellSize.Width} - {(invalidaterect.Right - 1) / CellSize.Width} y {invalidaterect.Top / CellSize.Height} - {(invalidaterect.Bottom - 1) / CellSize.Height} ");
             if (invalidaterect.Width > 0)
-                Invalidate(invalidaterect);
+                panelTermWindow.Invalidate(invalidaterect);
         }
 
         public void CR()
@@ -299,26 +298,7 @@ namespace ExtendedControls
 
         #region Painting
 
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            if (DesignMode)
-            {
-                using (var sb = new SolidBrush(Color.AliceBlue))
-                    e.Graphics.FillRectangle(sb, e.ClipRectangle);
-            }
-            else
-            {
-                //System.Diagnostics.Debug.WriteLine($"Paint background {e.ClipRectangle} client {ClientRectangle} {e.Graphics.Clip.GetBounds(e.Graphics)}");
-
-                if (!BackColor.IsFullyTransparent())        // optional fill
-                {
-                    using (var sb = new SolidBrush(BackColor))
-                        e.Graphics.FillRectangle(sb, e.ClipRectangle);
-                }
-            }
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
+        private void PanelTermWindow_Paint(object sender, PaintEventArgs e)
         {
             if (DesignMode)
             {
@@ -383,7 +363,7 @@ namespace ExtendedControls
         // immediate draw to cell
         private void DrawCell(int x, int y)
         {
-            using (Graphics gr = this.CreateGraphics())
+            using (Graphics gr = panelTermWindow.CreateGraphics())
             {
                 var cell = Data[y][x];
                 using (Brush fore = new SolidBrush(cell.ForeColor))
@@ -508,6 +488,7 @@ namespace ExtendedControls
             TextSize = new Size(xsize, ysize);
             TextArea = new Size(CellSize.Width * TextSize.Width, CellSize.Height * TextSize.Height);
             cursorpos = new Point(Math.Min(TextSize.Width - 1, cursorpos.X), Math.Min(TextSize.Height - 1, cursorpos.Y));
+            panelTermWindow.Size = TextArea;
         }
 
         #endregion
@@ -577,7 +558,7 @@ namespace ExtendedControls
 
             // we scroll the screen, and paint in the background of the part we moved, to minimise flicker
 
-            using (Graphics gr = this.CreateGraphics())
+            using (Graphics gr = panelTermWindow.CreateGraphics())
             {
                 using (Brush br = new SolidBrush(backcolor))
                 {
@@ -589,7 +570,7 @@ namespace ExtendedControls
                         //                        gr.CopyFromScreen(this.PointToScreen(new Point(0, offset)), new Point(0, 0), new Size(ClientRectangle.Width, h));
                         //gr.FillRectangle(br, new Rectangle(0, h,ClientRectangle.Width, offset));
              
-                        gr.CopyFromScreen(this.PointToScreen(new Point(0, offset)), new Point(0, 0), new Size(TextArea.Width, h));
+                        gr.CopyFromScreen(panelTermWindow.PointToScreen(new Point(0, offset)), new Point(0, 0), new Size(TextArea.Width, h));
                         gr.FillRectangle(br, new Rectangle(0, h,TextArea.Width, offset));
                     }
                     else if (dir > 0)
@@ -597,7 +578,7 @@ namespace ExtendedControls
                         int offset = CellSize.Height * dir;
                         //                        gr.CopyFromScreen(this.PointToScreen(new Point(0, 0)), new Point(0, offset), new Size(ClientRectangle.Width, ClientRectangle.Height - offset));
                         //                      gr.FillRectangle(br, new Rectangle(0, 0, ClientRectangle.Width, offset));
-                        gr.CopyFromScreen(this.PointToScreen(new Point(0, 0)), new Point(0, offset), new Size(TextArea.Width, TextArea.Height - offset));
+                        gr.CopyFromScreen(panelTermWindow.PointToScreen(new Point(0, 0)), new Point(0, offset), new Size(TextArea.Width, TextArea.Height - offset));
                         gr.FillRectangle(br, new Rectangle(0, 0, TextArea.Width, offset));
                     }
                 }
@@ -652,8 +633,8 @@ namespace ExtendedControls
 
         private CharCell[][] Data;
 
-        const int MaxTextWidth = 120;
-        const int MaxTextHeight = 25;
+        const int MaxTextWidth = 256;
+        const int MaxTextHeight = 128;
 
         [System.Diagnostics.DebuggerDisplay("Event '{Char}' {ForeColor} {BackColor}")]
         private class CharCell
@@ -670,6 +651,18 @@ namespace ExtendedControls
         }
 
         #endregion
+    }
+
+    public class PanelTerminal : Panel
+    {
+        protected override void OnPaintBackground(PaintEventArgs e)     // stop panel painting the background so we don't get a flick
+        {
+            if (DesignMode)
+            {
+                using (var br = new SolidBrush(Color.AliceBlue))
+                    e.Graphics.FillRectangle(br, ClientRectangle);
+            }
+        }
     }
 }
 

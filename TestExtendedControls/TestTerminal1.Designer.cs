@@ -37,6 +37,7 @@ namespace TestExtendedControls
             this.buttonClearSOL = new System.Windows.Forms.Button();
             this.buttonScrollDown = new System.Windows.Forms.Button();
             this.buttonScrollUp = new System.Windows.Forms.Button();
+            this.buttonFileFast = new System.Windows.Forms.Button();
             this.buttonFileStep = new System.Windows.Forms.Button();
             this.buttonFilePause = new System.Windows.Forms.Button();
             this.buttonFilePlay = new System.Windows.Forms.Button();
@@ -72,7 +73,6 @@ namespace TestExtendedControls
             this.buttonCursoroff = new System.Windows.Forms.Button();
             this.buttonTextWithBS = new System.Windows.Forms.Button();
             this.buttonResize = new System.Windows.Forms.Button();
-            this.buttonFileFast = new System.Windows.Forms.Button();
             this.terminal = new ExtendedControls.Terminal();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -108,7 +108,7 @@ namespace TestExtendedControls
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 100);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1098, 123);
+            this.panel2.Size = new System.Drawing.Size(1184, 123);
             this.panel2.TabIndex = 4;
             // 
             // comboBoxBackColour
@@ -209,6 +209,16 @@ namespace TestExtendedControls
             this.buttonScrollUp.Text = "Scroll Up";
             this.buttonScrollUp.UseVisualStyleBackColor = true;
             this.buttonScrollUp.Click += new System.EventHandler(this.buttonScrollUp_Click);
+            // 
+            // buttonFileFast
+            // 
+            this.buttonFileFast.Location = new System.Drawing.Point(744, 89);
+            this.buttonFileFast.Name = "buttonFileFast";
+            this.buttonFileFast.Size = new System.Drawing.Size(75, 23);
+            this.buttonFileFast.TabIndex = 0;
+            this.buttonFileFast.Text = "Fast";
+            this.buttonFileFast.UseVisualStyleBackColor = true;
+            this.buttonFileFast.Click += new System.EventHandler(this.buttonFileFast_Click);
             // 
             // buttonFileStep
             // 
@@ -393,7 +403,7 @@ namespace TestExtendedControls
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1098, 100);
+            this.panel1.Size = new System.Drawing.Size(1184, 100);
             this.panel1.TabIndex = 3;
             // 
             // buttonT1
@@ -576,25 +586,15 @@ namespace TestExtendedControls
             this.buttonResize.UseVisualStyleBackColor = true;
             this.buttonResize.Click += new System.EventHandler(this.buttonResize_Click);
             // 
-            // buttonFileFast
-            // 
-            this.buttonFileFast.Location = new System.Drawing.Point(744, 89);
-            this.buttonFileFast.Name = "buttonFileFast";
-            this.buttonFileFast.Size = new System.Drawing.Size(75, 23);
-            this.buttonFileFast.TabIndex = 0;
-            this.buttonFileFast.Text = "Fast";
-            this.buttonFileFast.UseVisualStyleBackColor = true;
-            this.buttonFileFast.Click += new System.EventHandler(this.buttonFileFast_Click);
-            // 
             // terminal
             // 
-            this.terminal.BackColor = System.Drawing.Color.Transparent;
+            this.terminal.BackColor = System.Drawing.Color.Maroon;
             this.terminal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.terminal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.terminal.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.terminal.Location = new System.Drawing.Point(0, 223);
             this.terminal.Name = "terminal";
-            this.terminal.Size = new System.Drawing.Size(1098, 554);
+            this.terminal.Size = new System.Drawing.Size(1184, 438);
             this.terminal.TabIndex = 0;
             this.terminal.VTBackColor = System.Drawing.Color.Black;
             this.terminal.VTForeColor = System.Drawing.Color.White;
@@ -603,7 +603,7 @@ namespace TestExtendedControls
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1098, 777);
+            this.ClientSize = new System.Drawing.Size(1184, 661);
             this.Controls.Add(this.terminal);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
