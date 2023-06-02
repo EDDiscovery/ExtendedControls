@@ -1,29 +1,15 @@
-﻿/*
- * Copyright © 2023-2023 robby @ github
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
- * ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
-
+﻿
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ExtendedControls
+namespace ConsoleTerminal
 {
-    public partial class Terminal : UserControl
+    public partial class Terminal : UserControl, ITerminal
     {
-        public Color VTBackColor { get { return backcolor; } set { backcolor = value; } }
+        public Color VTBackColor { get { return backcolor; } set { backcolor = value; }  }
         public Color VTForeColor { get { return forecolor; } set { forecolor = value; } }
 
         public Size TextSize { get; private set; }
@@ -36,7 +22,7 @@ namespace ExtendedControls
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public Point CursorPosition { get { return cursorpos; } set { WrapWithCursor(() => { cursorpos = new Point(value.X.Range(0, TextSize.Width - 1), value.Y.Range(0, TextSize.Height - 1)); }); } }
+        public Point CursorPosition { get { return cursorpos; } set { WrapFunction(() => { cursorpos = new Point(value.X.Range(0, TextSize.Width - 1), value.Y.Range(0, TextSize.Height - 1)); }); } }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -52,25 +38,24 @@ namespace ExtendedControls
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool CursorFlashes { get { return cursorflash; } set { SetupCursor(ShowCursor, CursorColor, CursorShape, value); ; } }
+        public bool CursorFlashes { get { return cursorflash; } set { SetupCursor(ShowCursor, CursorColor, CursorShape, value); } }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public int CursorFlashRate { get { return cursortimer.Interval; } set { cursortimer.Stop(); cursortimer.Interval = value; cursortimer.Start(); } }
 
         public Terminal()
         {
             InitializeComponent();
 
-            Data = new CharCell[MaxTextHeight][];
-
-            for (int y = 0; y < Data.Length; y++)
-            {
-                Data[y] = new CharCell[MaxTextWidth];
-                MakeLine(y);
-            }
-
             cursortimer = new Timer();
-            cursortimer.Interval = 250;
+            cursortimer.Interval = 500;
             cursortimer.Tick += Cursortimer_Tick;
 
-            panelTermWindow.Paint += PanelTermWindow_Paint;
+            bitmap = new Bitmap(1920, 1024);
+            ClearBitmap();
+            fmt.LineAlignment = StringAlignment.Center;
+            fmt.Alignment = StringAlignment.Center;
         }
 
         public void AddTextClear(ref StringBuilder sb)
@@ -83,15 +68,12 @@ namespace ExtendedControls
 
         public void AddText(string str)
         {
-            Rectangle invalidaterect = Rectangle.Empty;
             foreach (var ch in str)
             {
                 bool lfit = false;
                 if (ch == '\r')
                 {
                     cursorpos.X = 0;
-                    var rect = new Rectangle(0, cursorpos.Y * CellSize.Height, ClientRectangle.Width, CellSize.Height);
-                    invalidaterect = invalidaterect.Add(rect);
                 }
                 else if (ch == '\n')
                 {
@@ -102,18 +84,12 @@ namespace ExtendedControls
                     if (cursorpos.X > 0)
                     {
                         cursorpos.X--;
-                        Data[cursorpos.Y][cursorpos.X].Set(' ', forecolor, backcolor);
-                        var rect = new Rectangle(cursorpos.X * CellSize.Width, cursorpos.Y * CellSize.Height, CellSize.Width * 2, CellSize.Height);       // invalidate this backspace cell, and next one on
-                        invalidaterect = invalidaterect.Add(rect);
+                        DrawCell(' ');
                     }
                 }
                 else
                 {
-                    // invalidate the current and next cell
-                    var rect = new Rectangle(cursorpos.X * CellSize.Width, cursorpos.Y * CellSize.Height, CellSize.Width * 2, CellSize.Height);
-                    invalidaterect = invalidaterect.Add(rect);
-
-                    Data[cursorpos.Y][cursorpos.X].Set(ch, forecolor, backcolor);
+                    DrawCell(ch);       // overwrites the cursor
                     cursorpos.X++;
                     if (cursorpos.X >= TextSize.Width)
                     {
@@ -126,272 +102,211 @@ namespace ExtendedControls
                 {
                     if (++cursorpos.Y >= TextSize.Height)
                     {
+                        ScrollBitmap(-1);
                         cursorpos.Y--;
-                        ScrollData(-1);
-
-                        // we need to invalidate from the bottom to the previous row in not already set up
-                        int top = invalidaterect.Width == 0 ? Math.Max(0, (cursorpos.Y - 1) * CellSize.Height) : Math.Max(0, invalidaterect.Top - CellSize.Height);
-                        invalidaterect = new Rectangle(0, top, ClientRectangle.Width, ClientRectangle.Height - top);
-                    }
-                    else
-                    {
-                        // its not scrolled
-                        // we need to invalidate the previous and the current lines
-                        int top = invalidaterect.Width == 0 ? Math.Max(0, (cursorpos.Y - 1) * CellSize.Height) : invalidaterect.Top;
-                        invalidaterect = new Rectangle(0, top, ClientRectangle.Width, CellSize.Height * 2);
                     }
                 }
             }
 
-            if ( debug)
-                System.Diagnostics.Debug.WriteLine($"Write {str} invalidate {invalidaterect} x {invalidaterect.Left / CellSize.Width} - {(invalidaterect.Right - 1) / CellSize.Width} y {invalidaterect.Top / CellSize.Height} - {(invalidaterect.Bottom - 1) / CellSize.Height} ");
-            if (invalidaterect.Width > 0)
-                panelTermWindow.Invalidate(invalidaterect);
+            Refresh();
         }
 
         public void CR()
         {
-            WrapWithCursor(() => { cursorpos.X = 0; });
+            WrapFunction(() => { cursorpos.X = 0; });
         }
 
         public void LF()
         {
-            if (++cursorpos.Y >= TextSize.Height)
+            WrapFunction(() =>
             {
-                cursorpos.Y--;
-                ScrollData(-1);
-                // we need to invalidate from the bottom to the previous row
-                int top = Math.Max(0, (cursorpos.Y - 1) * CellSize.Height);
-                Invalidate(new Rectangle(0, top, ClientRectangle.Width, ClientRectangle.Height - top));
-            }
-            else
-            {
-                // its not scrolled
-                // we need to invalidate the previous and the current lines
-                int top = Math.Max(0, (cursorpos.Y - 1) * CellSize.Height);
-                Invalidate(new Rectangle(0, top, ClientRectangle.Width, CellSize.Height * 2));
-            }
+                if (++cursorpos.Y >= TextSize.Height)
+                {
+                    cursorpos.Y--;
+                    ScrollBitmap(-1);
+                }
+            });
         }
 
         public void CRLF()
         {
-            cursorpos.X = 0;
-            LF();
+            WrapFunction(() =>
+            {
+                cursorpos.X = 0;
+                if (++cursorpos.Y >= TextSize.Height)
+                {
+                    ScrollBitmap(-1);
+                    cursorpos.Y--;
+                }
+            });
         }
+        public void Home()
+        {
+            WrapFunction(() =>
+            {
+                CursorPosition = new Point(0, 0);
+            });
+        }
+
         public void BackSpace()
         {
             if (cursorpos.X > 0)
             {
-                WrapWithCursor(() =>
+                WrapFunction(() =>
                 {
                     cursorpos.X--;
-                    Data[cursorpos.Y][cursorpos.X].Set(' ', Color.Red, backcolor);
-                    DrawCell(cursorpos.X, cursorpos.Y);
+                    DrawCell(' ');
                 });
             }
         }
 
         public void TabForward(int tabspacing)
         {
-            WrapWithCursor(() => { cursorpos.X = Math.Min(TextSize.Width - 1, (cursorpos.X + tabspacing) / tabspacing * tabspacing); });
+            WrapFunction(() => { cursorpos.X = Math.Min(TextSize.Width - 1, (cursorpos.X + tabspacing) / tabspacing * tabspacing); });
         }
+
         public void CursorUp(int n, bool scrollonedge = false)
         {
-            if (scrollonedge && cursorpos.Y - n < 0)        // if need to scroll
+            WrapFunction(() =>
             {
-                CursorOff();
-                int scrollby = n - cursorpos.Y;
-                ScrollDown(scrollby);
-                cursorpos.Y = 0;
-            }
-            else
-                WrapWithCursor(() => { cursorpos.Y = Math.Max(0, cursorpos.Y - n); });
+                if (scrollonedge && cursorpos.Y - n < 0)        // if need to scroll
+                {
+                    int scrollby = n - cursorpos.Y;
+                    ScrollBitmap(scrollby);
+                    cursorpos.Y = 0;
+                }
+                else
+                {
+                    cursorpos.Y = Math.Max(0, cursorpos.Y - n);
+                }
+            });
         }
-        public void CursorDown(int n, bool scrollonedge  = false )
+        public void CursorDown(int n, bool scrollonedge = false)
         {
-            if (scrollonedge && cursorpos.Y + n >= TextSize.Height)        // if need to scroll
+            WrapFunction(() =>
             {
-                CursorOff();
-                int scrollby = cursorpos.Y + n - TextSize.Height + 1;
-                ScrollUp(scrollby);
-                cursorpos.Y = TextSize.Height - 1;
-            }
-            else
-                WrapWithCursor(() => { cursorpos.Y = Math.Min(TextSize.Height - 1, cursorpos.Y + n); });
+                if (scrollonedge && cursorpos.Y + n >= TextSize.Height)        // if need to scroll
+                {
+                    int scrollby = cursorpos.Y + n - TextSize.Height + 1;
+                    ScrollBitmap(scrollby);
+                    cursorpos.Y = TextSize.Height - 1;
+                }
+                else
+                {
+                    cursorpos.Y = Math.Min(TextSize.Height - 1, cursorpos.Y + n);
+                }
+            });
         }
+        
         public void CursorBack(int n)
         {
-            WrapWithCursor(() => { cursorpos.X = Math.Max(0, cursorpos.X - n); });
+            WrapFunction(() => { cursorpos.X = Math.Max(0, cursorpos.X - n); });
         }
         public void CursorForward(int n)
         {
-            WrapWithCursor(() => { cursorpos.X = Math.Min(TextSize.Width - 1, cursorpos.X + n); });
+            WrapFunction(() => { cursorpos.X = Math.Min(TextSize.Width - 1, cursorpos.X + n); });
         }
         public void CursorNextLine(int n, bool scrollonedge = false)
         {
-            if (scrollonedge && cursorpos.Y + n >= TextSize.Height)        // if need to scroll
+            WrapFunction(() =>
             {
-                CursorOff();
-                int scrollby = cursorpos.Y + n - TextSize.Height + 1;
-                ScrollUp(scrollby);
-                cursorpos.X = 0;
-                cursorpos.Y = TextSize.Height - 1;
-            }
-            else
-                WrapWithCursor(() => { cursorpos.X = 0; cursorpos.Y = Math.Min(TextSize.Height - 1, cursorpos.Y + n); });
+                if (scrollonedge && cursorpos.Y + n >= TextSize.Height)        // if need to scroll
+                {
+                    int scrollby = cursorpos.Y + n - TextSize.Height + 1;
+                    ScrollBitmap(scrollby);
+                    cursorpos.X = 0;
+                    cursorpos.Y = TextSize.Height - 1;
+                }
+                else
+                {
+                    cursorpos.X = 0; cursorpos.Y = Math.Min(TextSize.Height - 1, cursorpos.Y + n);
+                }
+            });
         }
 
         public void CursorPreviousLine(int n)
         {
-            WrapWithCursor(() => { cursorpos.X = 0; cursorpos.Y = Math.Max(0, cursorpos.Y - n); });
+            WrapFunction(() => { cursorpos.X = 0; cursorpos.Y = Math.Max(0, cursorpos.Y - n); });
         }
 
         public void ClearScreen()
         {
-            for (int y = 0; y < TextSize.Height; y++)
-                SetLineBlank(y);
-
+            ClearBitmap();
             Refresh();
         }
+
+
         public void ClearCursorToScreenEnd()
         {
-            int y = cursorpos.Y;
-            SetLineBlank(y++, cursorpos.X);
-            while (y <TextSize.Height)
-                SetLineBlank(y++);
-            Invalidate(GetTextRectangle(cursorpos.Y, TextSize.Height-1, 0, TextSize.Width - 1));
+            WrapFunction(() =>
+            {
+                int y = cursorpos.Y;
+                DrawBlank(y++, cursorpos.X, TextSize.Width - 1);
+                while (y < TextSize.Height)
+                    DrawBlank(y++, 0, TextSize.Width - 1);
+            });
         }
+
         public void ClearCursorToScreenStart()
         {
-            int y = cursorpos.Y;
-            SetLineBlank(y--, 0, cursorpos.X);
-            while (y >= 0)
-                SetLineBlank(y--);
-            Invalidate(GetTextRectangle(0, cursorpos.Y, 0, TextSize.Width - 1));
+            WrapFunction(() =>
+            {
+                int y = cursorpos.Y;
+                DrawBlank(y--, 0, cursorpos.X);
+                while (y >= 0)
+                    DrawBlank(y--, 0, TextSize.Width - 1);
+            });
         }
         public void ClearCursorToLineEnd()
         {
-            SetLineBlank(cursorpos.Y, cursorpos.X);
-            Invalidate(GetTextRectangle(cursorpos.Y, cursorpos.Y, cursorpos.X, TextSize.Width - 1));
+            WrapFunction(() =>
+            {
+                DrawBlank(cursorpos.Y, cursorpos.X, TextSize.Width - 1);
+            });
         }
         public void ClearCursorToLineStart()
         {
-            SetLineBlank(cursorpos.Y, 0, cursorpos.X);      // inclusive of .X
-            Invalidate(GetTextRectangle(cursorpos.Y, cursorpos.Y, 0, cursorpos.X));
+            WrapFunction(() =>
+            {
+                DrawBlank(cursorpos.Y, 0, cursorpos.X);
+            });
         }
         public void ClearLine()
         {
-            SetLineBlank(cursorpos.Y);
-            Invalidate(GetTextRectangle(cursorpos.Y, cursorpos.Y, 0, TextSize.Width - 1));
+            WrapFunction(() =>
+            {
+                DrawBlank(cursorpos.Y, 0, TextSize.Width-1);
+            });
         }
 
         public void ScrollUp(int count)
         {
-            ScrollData(-count);
-            Invalidate(GetTextRectangle(TextSize.Height - count, TextSize.Height + 0, 0, TextSize.Width));      // include extra line and char
+            WrapFunction(() => { ScrollBitmap(-Math.Min(TextSize.Height - 1, count)); });
         }
         public void ScrollDown(int count)
         {
-            ScrollData(count);
-            Invalidate(GetTextRectangle(0,count-1, 0, TextSize.Width));     // include extra char
+            WrapFunction(() => { ScrollBitmap(Math.Min(TextSize.Height - 1, count)); });
         }
 
         #region Painting
 
-        private void PanelTermWindow_Paint(object sender, PaintEventArgs e)
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (DesignMode)
-            {
-                using (var br = new SolidBrush(Color.Black))
-                    e.Graphics.DrawString("Terminal text display in design mode", Font, br, new Point(10, 10));
-                return;
-            }
-
-            Dictionary<Color, Brush> brushes = new Dictionary<Color, Brush>();
-
-            int startx = Math.Min(MaxTextWidth-1, e.ClipRectangle.Left / CellSize.Width);                     // inclusive
-            int stopx = Math.Min(MaxTextWidth-1, (e.ClipRectangle.Right - 1) / CellSize.Width);
-            int starty = Math.Min(MaxTextHeight-1, e.ClipRectangle.Top / CellSize.Height);
-            int stopy = Math.Min(MaxTextHeight-1, (e.ClipRectangle.Bottom - 1) / CellSize.Height);
-
-            if (debug)
-                System.Diagnostics.Debug.WriteLine($"Paint {e.ClipRectangle} client {ClientRectangle} paint x {startx}-{stopx} y {starty}-{stopy}");
-
-            for (int y = starty; y <= stopy; y++)
-            {
-                bool drawn = false;
-
-                for (int x = startx; x <= stopx; x++)
-                {
-                    CharCell c = Data[y][x];
-                    var rect = new Rectangle(x * CellSize.Width, y * CellSize.Height, CellSize.Width, CellSize.Height);
-
-                    if (!drawn && debug)
-                    {
-                        System.Diagnostics.Debug.Write($"Row {y}:{x}:");
-                        drawn = true;
-                    }
-
-                    if (!brushes.TryGetValue(c.ForeColor, out Brush fore))
-                    {
-                        fore = brushes[c.ForeColor] = new SolidBrush(c.ForeColor);
-                    }
-
-                    if (!brushes.TryGetValue(c.BackColor, out Brush back))
-                    {
-                        back = brushes[c.BackColor] = new SolidBrush(c.BackColor);
-                    }
-
-                    DrawCell(e.Graphics, rect, fore, back, c.Char, showcursor && cursoron && x == cursorpos.X && y == cursorpos.Y);
-
-                    if (drawn)
-                    {
-                        //System.Diagnostics.Debug.Write($"{x} ");
-                        System.Diagnostics.Debug.Write($"{c.Char}");
-                    }
-                }
-                if (drawn)
-                {
-                    System.Diagnostics.Debug.WriteLine($"");
-                }
-            }
-
-            foreach (var kvp in brushes)
-                kvp.Value.Dispose();
+            e.Graphics.DrawImage(bitmap, new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height),
+                            0, 0, Math.Min(ClientRectangle.Width, bitmap.Width), Math.Min(ClientRectangle.Height, bitmap.Height), GraphicsUnit.Pixel);
         }
 
-        // immediate draw to cell
-        private void DrawCell(int x, int y)
+        protected override void OnPaint(PaintEventArgs e)
         {
-            using (Graphics gr = panelTermWindow.CreateGraphics())
+            base.OnPaint(e);
+            if ( showcursor && cursorperiodison )
             {
-                var cell = Data[y][x];
-                using (Brush fore = new SolidBrush(cell.ForeColor))
-                {
-                    using (Brush back = new SolidBrush(cell.BackColor))
-                    {
-                        DrawCell(gr, new Rectangle(x * CellSize.Width, y * CellSize.Height, CellSize.Width, CellSize.Height),
-                                    fore, back, cell.Char, showcursor && cursoron);
-                    }
-                }
-            }
-        }
-
-        // draw a cell and the cursor if selected
-        private void DrawCell(Graphics gr, Rectangle rect, Brush fore, Brush back, char ch, bool drawcursor)
-        {
-            gr.FillRectangle(back, rect);
-
-            string str = new string(ch, 1);
-            gr.DrawString(str, Font, fore, rect);
-
-            if (drawcursor)
-            {
+                Rectangle rect = new Rectangle(CellSize.Width * cursorpos.X, CellSize.Height * cursorpos.Y, CellSize.Width, CellSize.Height);
                 if (cursorshape == CursorShapeType.LineLeft)
                 {
                     using (var pen = new Pen(cursorcolor, 1))
                     {
-                        gr.DrawLine(pen, new Point(rect.Left, rect.Top + 1), new Point(rect.Left, rect.Bottom - 1));
+                        e.Graphics.DrawLine(pen, new Point(rect.Left, rect.Top + 1), new Point(rect.Left, rect.Bottom - 1));
                     }
                 }
                 else
@@ -400,12 +315,42 @@ namespace ExtendedControls
 
                     using (var br = new SolidBrush(Color.FromArgb(180, cursorcolor)))
                     {
-                        gr.FillRectangle(br, rect);
+                        e.Graphics.FillRectangle(br, rect);
                     }
                 }
             }
         }
 
+        // draw to cell
+        private void DrawCell(char ch)
+        {
+            using (Graphics gr = Graphics.FromImage(bitmap))
+            {
+                using (Brush fore = new SolidBrush(forecolor))
+                {
+                    using (Brush back = new SolidBrush(backcolor))
+                    {
+                        Rectangle rect = new Rectangle(CellSize.Width * cursorpos.X, CellSize.Height * cursorpos.Y, CellSize.Width, CellSize.Height);
+                        string str = new string(ch, 1);
+                        gr.FillRectangle(back, rect);
+                        gr.DrawString(str, Font, fore, rect, fmt);
+                    }
+                }
+            }
+        }
+
+        // draw blank area
+        private void DrawBlank(int y, int xstartinc, int xendinc)
+        {
+            using (Graphics gr = Graphics.FromImage(bitmap))
+            {
+                using (Brush back = new SolidBrush(Color.Blue))
+                {
+                    Rectangle rect = new Rectangle(CellSize.Width * xstartinc, CellSize.Height * y, CellSize.Width * (xendinc-xstartinc+1), CellSize.Height);
+                    gr.FillRectangle(back, rect);
+                }
+            }
+        }
 
         #endregion
 
@@ -413,38 +358,24 @@ namespace ExtendedControls
 
         private void SetupCursor(bool onoff, Color colour, CursorShapeType shape, bool flsh)
         {
-            if (showcursor && cursoron)       // remove from screen
-            {
-                cursoron = false;
-                DrawCursorCell();
-            }
-
             showcursor = onoff;
-            cursoron = true;
+            cursorperiodison = true;
             cursorcolor = colour;
             cursorshape = shape;
             cursorflash = flsh;
 
-            if (showcursor)       // remove from screen
-            {
-                DrawCursorCell();
-            }
+            Refresh();
         }
 
         private void Cursortimer_Tick(object sender, EventArgs e)
         {
             if (showcursor && cursorflash)
             {
-                cursoron = !cursoron;
-                DrawCursorCell();
+                cursorperiodison = !cursorperiodison;
+                Refresh();
             }
         }
 
-        // immediate draw to cursor cell
-        private void DrawCursorCell()
-        {
-            DrawCell(cursorpos.X, cursorpos.Y);
-        }
 
         #endregion
 
@@ -475,20 +406,29 @@ namespace ExtendedControls
         protected override void OnFontChanged(EventArgs e)
         {
             base.OnResize(e);
+            ClearBitmap();
             SetSizes();
+            Refresh();
         }
 
         private void SetSizes()
         {
-            CellSize = new Size(Font.Height * 3 / 4, Font.Height);
-            int xsize = Math.Min(ClientRectangle.Width / CellSize.Width, MaxTextWidth);
+            using (Bitmap bmp = new Bitmap(1, 1))
+            {
+                using (Graphics gr = Graphics.FromImage(bmp))
+                {
+                    var size = gr.MeasureString("ABCDEFGHIJKLMNOPQRSTUVWXYZ", Font);
+                    CellSize = new Size((int)(size.Width/26)+3, (int)(size.Height)+1);
+                }
+            }
+
+            int xsize = Math.Min(ClientRectangle.Width / CellSize.Width, bitmap.Width/CellSize.Width);
             xsize = Math.Max(1, xsize);
-            int ysize = Math.Min(ClientRectangle.Height / CellSize.Height, MaxTextHeight);
+            int ysize = Math.Min(ClientRectangle.Height / CellSize.Height, bitmap.Height/CellSize.Height);
             ysize = Math.Max(1, ysize);
             TextSize = new Size(xsize, ysize);
             TextArea = new Size(CellSize.Width * TextSize.Width, CellSize.Height * TextSize.Height);
             cursorpos = new Point(Math.Min(TextSize.Width - 1, cursorpos.X), Math.Min(TextSize.Height - 1, cursorpos.Y));
-            panelTermWindow.Size = TextArea;
         }
 
         protected override bool IsInputKey(Keys keyData)
@@ -509,130 +449,46 @@ namespace ExtendedControls
 
         #region Helpers
 
-        // inclusive of line start/end and x start/end
-        private Rectangle GetTextRectangle(int linestart, int lineend, int xstart, int xend)
-        {
-            return new Rectangle(xstart * CellSize.Width, linestart * CellSize.Height, (xend - xstart + 1) * CellSize.Width, (lineend - linestart + 1) * CellSize.Height);
-        }
-
-        // inclusive of X start and end
-        private void SetLineBlank(int y, int xstart = 0, int xend = MaxTextWidth - 1)
-        {
-            for (int x = xstart; x <= xend; x++)
-            {
-                if ( debug)
-                    Data[y][x].Set("|.-.-"[x % 5], forecolor, backcolor);
-                else
-                    Data[y][x].Set(' ', forecolor, backcolor);
-            }
-        }
-
-        private void MakeLine(int y)
-        {
-            for (int x = 0; x < MaxTextWidth; x++)
-                Data[y][x] = new CharCell();
-            SetLineBlank(y);
-        }
-
         // scroll screen in -N (up) or +N (down) direction
-        private void ScrollData(int dir)
+        private void ScrollBitmap(int dir)
         {
-            if (dir < 0)      // scroll up
-            {
-                for (int y = 0; y < TextSize.Height; y++)
-                {
-                    int othery = y - dir;
-                    if (othery >= TextSize.Height)
-                    {
-                        Data[y] = new CharCell[MaxTextWidth];
-                        MakeLine(y);
-                    }
-                    else
-                        Data[y] = Data[othery];
-                }
+            int offset = CellSize.Height * Math.Abs(dir);
 
-                //int top = CellSize.Height * (TextSize.Height - 1 + dir); inv = new Rectangle(0, top, ClientRectangle.Width, ClientRectangle.Height - top);
-            }
-            else
-            {
-                for (int y = TextSize.Height - 1; y >= 0; y--)
-                {
-                    int othery = y - dir;
-                    if (othery < 0)
-                    {
-                        Data[y] = new CharCell[MaxTextWidth];
-                        MakeLine(y);
-                    }
-                    else
-                        Data[y] = Data[othery];
-                }
-
-                //inv = new Rectangle(0, 0, ClientRectangle.Width, CellSize.Height * dir);
-            }
-
-            // we scroll the screen, and paint in the background of the part we moved, to minimise flicker
-
-            using (Graphics gr = panelTermWindow.CreateGraphics())
+            using (Graphics gr = Graphics.FromImage(bitmap))
             {
                 using (Brush br = new SolidBrush(backcolor))
                 {
                     if (dir < 0)
                     {
-                        int offset = CellSize.Height * -dir;
-                        int h = TextArea.Height - offset;
-                        //int h = ClientRectangle.Height - offset;
-                        //                        gr.CopyFromScreen(this.PointToScreen(new Point(0, offset)), new Point(0, 0), new Size(ClientRectangle.Width, h));
-                        //gr.FillRectangle(br, new Rectangle(0, h,ClientRectangle.Width, offset));
-             
-                        gr.CopyFromScreen(panelTermWindow.PointToScreen(new Point(0, offset)), new Point(0, 0), new Size(TextArea.Width, h));
-                        gr.FillRectangle(br, new Rectangle(0, h,TextArea.Width, offset));
+                        gr.DrawImage(bitmap, new Rectangle(0, 0, TextArea.Width, TextArea.Height - offset), new Rectangle(0, offset, TextArea.Width, TextArea.Height - offset), GraphicsUnit.Pixel);
+                        gr.FillRectangle(br, new Rectangle(0, TextArea.Height - offset, TextArea.Width, offset));
                     }
-                    else if (dir > 0)
+                    else
                     {
-                        int offset = CellSize.Height * dir;
-                        //                        gr.CopyFromScreen(this.PointToScreen(new Point(0, 0)), new Point(0, offset), new Size(ClientRectangle.Width, ClientRectangle.Height - offset));
-                        //                      gr.FillRectangle(br, new Rectangle(0, 0, ClientRectangle.Width, offset));
-                        gr.CopyFromScreen(panelTermWindow.PointToScreen(new Point(0, 0)), new Point(0, offset), new Size(TextArea.Width, TextArea.Height - offset));
+                        gr.DrawImage(bitmap, new Rectangle(0, offset, TextArea.Width, TextArea.Height - offset), new Rectangle(0, 0, TextArea.Width, TextArea.Height - offset), GraphicsUnit.Pixel);
                         gr.FillRectangle(br, new Rectangle(0, 0, TextArea.Width, offset));
                     }
                 }
             }
+
         }
 
-        private void CursorOff()
+        void ClearBitmap()
         {
-            if (showcursor && cursoron)       // if cursor visible
-            {
-                cursoron = false;
-                DrawCursorCell();         // draw off
-                cursoron = true;
-            }
+            using (Graphics gr = Graphics.FromImage(bitmap))
+                gr.Clear(backcolor);
         }
 
-        private void WrapWithCursor(Action op)
+        // this is just so we can easily add more functionality to multiple funcs
+        private void WrapFunction(Action op)
         {
-            if (showcursor && cursoron)       // if cursor visible
-            {
-                cursoron = false;
-                DrawCursorCell();         // draw off
-            }
-
             op();
-
-            if (showcursor)
-            {
-                cursoron = true;            // now immediately on
-                cursortimer?.Stop(); cursortimer?.Start();
-                DrawCursorCell();
-            }
-
+            Refresh();
         }
 
         #endregion
 
         #region vars
-
-        private bool debug = false;
 
         private Color backcolor = Color.Black;
         private Color forecolor = Color.White;
@@ -640,42 +496,18 @@ namespace ExtendedControls
 
         private Point cursorpos;
         private bool showcursor = true;
-        private bool cursoron = true;
+        private bool cursorperiodison = true;
         private Color cursorcolor = Color.White;
         private bool cursorflash = true;
         private CursorShapeType cursorshape = CursorShapeType.LineLeft;
 
-        private CharCell[][] Data;
+        private StringFormat fmt = new StringFormat();
 
-        const int MaxTextWidth = 256;
-        const int MaxTextHeight = 128;
-
-        [System.Diagnostics.DebuggerDisplay("Event '{Char}' {ForeColor} {BackColor}")]
-        private class CharCell
-        {
-            public char Char;
-            public Color ForeColor;
-            public Color BackColor;
-
-            public CharCell()
-            {
-                Char = ' '; ForeColor = Color.Red; BackColor = Color.Black;
-            }
-            public void Set(char ch, Color fore, Color back) { Char = ch; ForeColor = fore; BackColor = back; }
-        }
+        private Bitmap bitmap = new Bitmap(20, 20);
 
         #endregion
     }
 
-    public class PanelTerminal : Panel
-    {
-        protected override void OnPaintBackground(PaintEventArgs e)     // stop panel painting the background so we don't get a flick
-        {
-            if (DesignMode)
-            {
-                base.OnPaintBackground(e);  // does not appear to work perfectly, as design mode is not set
-            }
-        }
-    }
+
 }
 

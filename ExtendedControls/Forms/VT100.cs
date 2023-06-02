@@ -1,25 +1,32 @@
-﻿/*
- * Copyright © 2023-2023 robby @ github
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
- * ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
-
+﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace ExtendedControls
+namespace ConsoleTerminal
 {
+    public interface ITerminal
+    {
+        System.Drawing.Point CursorPosition { get;  set; }
+        System.Drawing.Color VTBackColor { get; set; }
+        System.Drawing.Color VTForeColor { get; set; }
+        void AddTextClear(ref StringBuilder sb);
+        void TabForward(int tabspacing);
+        void CursorUp(int n, bool scrollonedge = false);
+        void CursorDown(int n, bool scrollonedge = false);
+        void CursorBack(int n);
+        void CursorForward(int n);
+        void CursorNextLine(int n, bool scrollonedge = false);
+        void CursorPreviousLine(int n);
+        void ClearScreen();
+        void ClearCursorToScreenEnd();
+        void ClearCursorToScreenStart();
+        void ClearCursorToLineEnd();
+        void ClearCursorToLineStart();
+        void ClearLine();
+        void ScrollUp(int count);
+        void ScrollDown(int count);
+    }
+
     public class VT100
     {
         // https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -41,10 +48,12 @@ namespace ExtendedControls
         // ESC 0x20-0x2F nF sequence    - !"#$%&'()*+'-./  - followed by additional bytes in 0x20-02xf, then a byte in 0x30-0x7e
 
 
-        public VT100(Terminal tr)
+        public VT100(ITerminal tr)
         {
             term = tr;
         }
+
+        public Action<string> EmitLine;                         // called each time a \r is encountered with a clean line, text only, no escape codes
 
         public bool ReportCursorPosition { get; set; } = false; // set on ESC [ 6 n
         public bool VT52Rx { get; set; } = true;                // support VT52 codes on RX
@@ -58,13 +67,26 @@ namespace ExtendedControls
             {
                 switch (state)
                 {
-                    case TermState.Normal:
+                    case DecodeState.Normal:
                         if ((ch >= 0x20 && ch <= 0x7F) ||      // normal chars
                               ch >= 0xa0 ||
                               (!SupportC1Codes && ch >= 0x80) ||       // if C1 is disabled
                               ch == '\b' || ch == '\n' || ch == '\r')     // normal chars, place in queue
                         {
                             sb.Append(ch);
+
+                            if (ch == '\b')
+                            {
+                                if (line.Length > 0)
+                                    line = line.Substring(0, line.Length - 1);
+                            }
+                            else if (ch == '\r')
+                            {
+                                EmitLine?.Invoke(line);         // send plain ASCII strings back if required for display
+                                line = "";
+                            }
+                            else if (ch >= 0x20)                // no escape chars, just plain text
+                                line += ch;
                         }
                         else if (ch == 0x7)                     // C0
                             Console.Beep(512, 100);
@@ -73,7 +95,7 @@ namespace ExtendedControls
                             term.AddTextClear(ref sb);          // emit and clear
 
                             if (ch == 0x1B)                     // Escape sequence
-                                state = TermState.Escape;
+                                state = DecodeState.Escape;
                             else if (ch >= 0x80 && ch <= 0x9f)  // C1 codes - if they got here..
                                 ProcessFe((char)(ch - 0x40));
                             else if (ch == 0x9)                 // C0
@@ -83,57 +105,57 @@ namespace ExtendedControls
                         }
                         break;
 
-                    case TermState.Escape:
+                    case DecodeState.Escape:
                         if (ch >= 0x40 && ch <= 0x5F)           // Fe codes @ A..Z [\]^_
                         {
                             command = "";                       // clear the command and string memory
                             instringescape = false;
-                            state = TermState.Normal;           // most codes result in end of sequence so set it
+                            state = DecodeState.Normal;           // most codes result in end of sequence so set it
                             ProcessFe(ch);                      // process it, it may result in change to another state below
                         }
                         else if (ch >= 0x60 && ch <= 0x7E)    // fs sequence `a..z{|}~DEL
                         {
-                            state = TermState.Normal;
+                            state = DecodeState.Normal;
                             ProcessFs(ch);
                         }
                         else if (ch >= 0x30 && ch <= 0x3F)    // fp sequence 0..9:;<=>?
                         {
-                            state = TermState.Normal;
+                            state = DecodeState.Normal;
                             ProcessFp(ch);
                         }
                         else if (ch >= 0x20 && ch <= 0x2f)    // nF sequence space !"#$%&'()*+'-./
                         {
-                            state = TermState.nF;
+                            state = DecodeState.nF;
                             command = new string(ch, 1);      // start nf sequence
                         }
                         else
                         {
                             System.Diagnostics.Debug.WriteLine($"Unknown ESC sequence '{ch}'");
-                            state = TermState.Normal;
+                            state = DecodeState.Normal;
                         }
                         break;
 
-                    case TermState.CSI:
+                    case DecodeState.CSI:
                         if (ch >= 0x40 && ch <= 0x7F)           // @ A..Z [\]^_   terminates code stream
                         {
-                            state = TermState.Normal;           // back to normal
+                            state = DecodeState.Normal;           // back to normal
                             CSI(ch);                            // process
                         }
                         else
                             command += ch;
                         break;
 
-                    case TermState.DCS:
-                    case TermState.PM:
-                    case TermState.OS:
-                    case TermState.SOS:
+                    case DecodeState.DCS:
+                    case DecodeState.PM:
+                    case DecodeState.OS:
+                    case DecodeState.SOS:
                         if (instringescape)                   // strings..
                         {
                             if (ch == '\\')
                             {
                                 // would issue command for termstate
                                 System.Diagnostics.Debug.WriteLine($"Issue {state} : `{command}`");
-                                state = TermState.Normal;
+                                state = DecodeState.Normal;
                             }
                             else
                                 instringescape = false;
@@ -144,12 +166,12 @@ namespace ExtendedControls
                             command += ch;
                         break;
 
-                    case TermState.nF:                      // nF sequence space !"#$%&'()*+'-./  repeat followed by 0x30-0x7E
+                    case DecodeState.nF:                      // nF sequence space !"#$%&'()*+'-./  repeat followed by 0x30-0x7E
                         command += ch;
                         if ( ch >= 0x30&&ch<=0x7E)          // if terminator, process
                         {
                             ProcessnF();
-                            state = TermState.Normal;
+                            state = DecodeState.Normal;
                         }
                         break;
                 }
@@ -234,10 +256,10 @@ namespace ExtendedControls
                         System.Diagnostics.Debug.WriteLine($"Unknown K code {value}");
                     break;
                 case 'S':
-                    term.ScrollUp(value ?? 1);
+                    term.ScrollUp(Math.Max(1,value ?? 1));      // think min value is 1
                     break;
                 case 'T':
-                    term.ScrollDown(value ?? 1);
+                    term.ScrollDown(Math.Max(value ?? 1,1));    // think min value is 1
                     break;
                 case 'm':
                     while (true)
@@ -369,24 +391,24 @@ namespace ExtendedControls
                         term.ClearCursorToLineEnd();
                     break;
                 case 'P':
-                    state = TermState.DCS;
+                    state = DecodeState.DCS;
                     break;
                 case '[':
-                    state = TermState.CSI;
+                    state = DecodeState.CSI;
                     break;
                 case '\\':      // ignore esc \, as its an ST end, used only after P[]
                     break;
                 case ']':
-                    state = TermState.OS;
+                    state = DecodeState.OS;
                     break;
                 case 'X':
-                    state = TermState.SOS;
+                    state = DecodeState.SOS;
                     break;
                 case '^':
-                    state = TermState.PM;      
+                    state = DecodeState.PM;      
                     break;
                 case '_':
-                    state = TermState.APC;
+                    state = DecodeState.APC;
                     break;
                 case 'M': // ESC RI Move the active position to the same horizontal position on the preceding line. If the active position is at the top margin, a scroll down is performed.
                     if (VT52Rx)
@@ -460,9 +482,11 @@ namespace ExtendedControls
             System.Diagnostics.Debug.WriteLine($"Unimplemented nf sequence '{command}'");
         }
 
-        private Terminal term;
-        private TermState state = TermState.Normal;
-        enum TermState
+        private ITerminal term;
+        private DecodeState state = DecodeState.Normal;
+        private string line;
+
+        enum DecodeState
         {
             Normal,
             Escape,         // Escape seen

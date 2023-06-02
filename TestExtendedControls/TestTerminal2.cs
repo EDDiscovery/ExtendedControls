@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace TestExtendedControls
 {
-    public partial class TestTerminal1 : Form
+    public partial class TestTerminal2 : Form
     {
-        ExtendedControls.VT100 proc;
+        ConsoleTerminal.VT100 proc;
 
-        public TestTerminal1()
+        public TestTerminal2()
         {
             InitializeComponent();
         }
@@ -23,14 +23,16 @@ namespace TestExtendedControls
         {
             base.OnShown(e);
 
+            terminal.Font = new Font("Consolas", 12);
+
             terminal.AddText("Hello and welcome to this terminal program\r\nHow are you?\r\n");
             terminal.VTForeColor = Color.Yellow;
             terminal.AddText("Hello in yellow\r\n");
             this.Text = $"Paint {terminal.ClientRectangle} text {terminal.TextSize} cell {terminal.CellSize}";
 
-            proc = new ExtendedControls.VT100(terminal);
+            proc = new ConsoleTerminal.VT100(terminal);
             terminal.CursorFlashes = false;
-            terminal.CursorShape = ExtendedControls.Terminal.CursorShapeType.Block;
+            terminal.CursorShape = ConsoleTerminal.Terminal.CursorShapeType.Block;
             terminal.KeyPress += (s, kc) => { string str = proc.HandleKeyPress(kc.KeyChar); if (str != null) System.Diagnostics.Debug.WriteLine($"Key {str}"); };
             terminal.KeyDown += (s, kd) => { string str = proc.HandleKeyDown(kd.KeyCode); if (str != null) System.Diagnostics.Debug.WriteLine($"KeyDown {str}"); };
         }
@@ -128,6 +130,11 @@ namespace TestExtendedControls
         {
             proc.Display($"\u001B[2K");
         }
+        private void buttonVTTextLF_Click(object sender, EventArgs e)
+        {
+            proc.Display("Hello there\r\n");
+
+        }
 
         private void comboBoxForeColour_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -150,13 +157,13 @@ namespace TestExtendedControls
 
         private void buttonCursorLine_Click(object sender, EventArgs e)
         {
-            terminal.CursorShape = ExtendedControls.Terminal.CursorShapeType.LineLeft;
+            terminal.CursorShape = ConsoleTerminal.Terminal.CursorShapeType.LineLeft;
             terminal.ShowCursor = true;
         }
 
         private void buttonCursorBlock_Click(object sender, EventArgs e)
         {
-            terminal.CursorShape = ExtendedControls.Terminal.CursorShapeType.Block;
+            terminal.CursorShape = ConsoleTerminal.Terminal.CursorShapeType.Block;
             terminal.ShowCursor = true;
         }
         private void buttonCursorBlink_Click(object sender, EventArgs e)
@@ -229,17 +236,16 @@ namespace TestExtendedControls
 
         private void buttonDownScroll_Click(object sender, EventArgs e)
         {
-            terminal.CursorDown(2, true);
+            terminal.ScrollDown(1);
         }
 
         private void buttonUpScroll_Click(object sender, EventArgs e)
         {
-            terminal.CursorUp(2, true);
+            terminal.ScrollUp(1);
         }
 
         StreamReader file;
         Timer playtimer;
-        bool pause = false;
 
         private void buttonFilePlay_Click(object sender, EventArgs e)
         {
@@ -288,5 +294,6 @@ namespace TestExtendedControls
         {
             playtimer.Interval = playtimer.Interval >= 100 ? 25 : 100;
         }
+
     }
 }

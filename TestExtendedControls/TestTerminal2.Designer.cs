@@ -1,7 +1,7 @@
 ﻿
 namespace TestExtendedControls
 {
-    partial class TestTerminal1
+    partial class TestTerminal2
     {
         /// <summary>
         /// Required designer variable.
@@ -73,7 +73,7 @@ namespace TestExtendedControls
             this.buttonCursoroff = new System.Windows.Forms.Button();
             this.buttonTextWithBS = new System.Windows.Forms.Button();
             this.buttonResize = new System.Windows.Forms.Button();
-            this.terminal = new ExtendedControls.Terminal();
+            this.terminal = new ConsoleTerminal.Terminal();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -378,6 +378,7 @@ namespace TestExtendedControls
             this.buttonVTTextLF.TabIndex = 0;
             this.buttonVTTextLF.Text = "TextLF";
             this.buttonVTTextLF.UseVisualStyleBackColor = true;
+            this.buttonVTTextLF.Click += new System.EventHandler(this.buttonVTTextLF_Click);
             // 
             // panel1
             // 
@@ -588,18 +589,15 @@ namespace TestExtendedControls
             // 
             // terminal
             // 
-            this.terminal.BackColor = System.Drawing.Color.Maroon;
-            this.terminal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.terminal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.terminal.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.terminal.Location = new System.Drawing.Point(0, 223);
             this.terminal.Name = "terminal";
             this.terminal.Size = new System.Drawing.Size(1184, 438);
-            this.terminal.TabIndex = 0;
+            this.terminal.TabIndex = 5;
             this.terminal.VTBackColor = System.Drawing.Color.Black;
             this.terminal.VTForeColor = System.Drawing.Color.White;
             // 
-            // TestTerminal1
+            // TestTerminal2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -607,7 +605,7 @@ namespace TestExtendedControls
             this.Controls.Add(this.terminal);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
-            this.Name = "TestTerminal1";
+            this.Name = "TestTerminal2";
             this.Text = "TestTerminal1";
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
@@ -617,8 +615,6 @@ namespace TestExtendedControls
         }
 
         #endregion
-
-        private ExtendedControls.Terminal terminal;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.ComboBox comboBoxForeColour;
         private System.Windows.Forms.TextBox textBoxCursorN;
@@ -663,5 +659,6 @@ namespace TestExtendedControls
         private System.Windows.Forms.Button buttonFilePause;
         private System.Windows.Forms.Button buttonFileStep;
         private System.Windows.Forms.Button buttonFileFast;
+        private ConsoleTerminal.Terminal terminal;
     }
 }

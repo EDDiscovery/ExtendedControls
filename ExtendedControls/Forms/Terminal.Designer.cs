@@ -1,5 +1,5 @@
 ﻿
-namespace ExtendedControls
+namespace ConsoleTerminal
 {
     partial class Terminal
     {
@@ -29,29 +29,18 @@ namespace ExtendedControls
         /// </summary>
         private void InitializeComponent()
         {
-            this.panelTermWindow = new ExtendedControls.PanelTerminal();
             this.SuspendLayout();
             // 
-            // panelTermWindow
-            // 
-            this.panelTermWindow.Location = new System.Drawing.Point(0, 0);
-            this.panelTermWindow.Name = "panelTermWindow";
-            this.panelTermWindow.Size = new System.Drawing.Size(200, 100);
-            this.panelTermWindow.TabIndex = 0;
-            // 
-            // Terminal
+            // TerminalBitmap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panelTermWindow);
-            this.Name = "Terminal";
+            this.Name = "TerminalBitmap";
             this.Size = new System.Drawing.Size(977, 602);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private PanelTerminal panelTermWindow;
     }
 }
