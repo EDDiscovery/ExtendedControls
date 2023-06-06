@@ -305,7 +305,8 @@ namespace ExtendedControls
             Activate();
         }
 
-        private void Activate()
+        // call after form show
+        public void Activate()
         {
             if (Items.Count == 0 || !Enabled)
                 return;
