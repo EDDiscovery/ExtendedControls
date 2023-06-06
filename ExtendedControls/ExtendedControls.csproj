@@ -156,7 +156,14 @@
     <Compile Include="Controls\PanelDropDown.Designer.cs">
       <DependentUpon>PanelDropDown.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Terminal.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Terminal.Designer.cs">
+      <DependentUpon>Terminal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TranslationIDs.cs" />
+    <Compile Include="Forms\VT100.cs" />
     <Compile Include="Themes\Theme.cs" />
     <Compile Include="Themes\ThemeList.cs" />
     <Compile Include="Themes\ThemeEditor.cs">
@@ -276,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MessageBoxTheme.resx">
       <DependentUpon>MessageBoxTheme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Terminal.resx">
+      <DependentUpon>Terminal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
