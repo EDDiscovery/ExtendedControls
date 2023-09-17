@@ -291,8 +291,11 @@ namespace ExtendedControls
 
                 // https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.handledmouseeventargs?view=windowsdesktop-6.0
                 // and Control.cs: 13199 WmMouseWheel
+                // note #3440 says mono does not handle this in the same way, so check its actually is a HandledMouseEventArgs
+                if ( e is HandledMouseEventArgs )
+                    ((HandledMouseEventArgs)e).Handled = true;      // we are actually passed this class, cast to it and set we handled it.
 
-                ((HandledMouseEventArgs)e).Handled = true;      // we are actually passed this class, cast to it and set we handled it.
+
             }
         }
 
