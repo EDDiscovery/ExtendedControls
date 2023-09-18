@@ -81,7 +81,7 @@ namespace ExtendedControls
 
         public void CancelAutoComplete()                     // Sometimes, the user is quicker than the timer, and has commited to a selection before the results even come back.
         {
-            System.Diagnostics.Debug.WriteLine("{0} Cancel autocomplete {1}", Environment.TickCount % 10000, Environment.StackTrace);
+            System.Diagnostics.Debug.WriteLine("{0} Cancel autocomplete", Environment.TickCount % 10000);
             if (waitforautotimer.Enabled)
             {
                 System.Diagnostics.Debug.WriteLine($".. timer running");
