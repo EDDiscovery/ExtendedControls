@@ -38,10 +38,9 @@ namespace TestExtendedControls
             list.Add("Efive");
 
             autoCompleteTextBox1.SetAutoCompletor(AutoList);
-            autoCompleteTextBox1.KeyUp += AutoCompleteTextBox1_KeyUp;
             autoCompleteTextBox2.SetAutoCompletor(AutoList);
             autoCompleteTextBox2.FlatStyle = FlatStyle.Popup;
-            autoCompleteTextBox2.KeyUp += AutoCompleteTextBox2_KeyUp;
+            autoCompleteTextBox2.AutoCompleteTimeout = 1000;
 
             comboBoxCustom1.Items.AddRange(list);
 
@@ -60,7 +59,7 @@ namespace TestExtendedControls
         private void Tick_Tick(object sender, EventArgs e)
         {
             var ac = ActiveControl;
-            System.Diagnostics.Debug.WriteLine($"Focus is {ac.Name} {ac.Text}");
+            //System.Diagnostics.Debug.WriteLine($"Focus is {ac.Name} {ac.Text}");
         }
 
         Timer tick = new Timer();
@@ -69,22 +68,14 @@ namespace TestExtendedControls
             System.Diagnostics.Debug.WriteLine("TAC Key down" + e.KeyValue);
         }
 
-        private void AutoCompleteTextBox2_KeyUp(object sender, KeyEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("TAC Answer " + autoCompleteTextBox2.Text);
-        }
-
-        private void AutoCompleteTextBox1_KeyUp(object sender, KeyEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("TAC Answer " + autoCompleteTextBox1.Text);
-        }
-
         public static void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
         {
             var res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
             SortedSet<string> ss = new SortedSet<string>();
             foreach (var x in res)
                 set.Add(x);
+
+            System.Threading.Thread.Sleep(2000);
         }
 
         public static void ReturnSystemAutoCompleteListDGV(string input, Object ctrl, SortedSet<string> set)
@@ -92,6 +83,8 @@ namespace TestExtendedControls
             List<string> res = (from x in list where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
             foreach (var x in res)
                 set.Add(x);
+
+            System.Threading.Thread.Sleep(2000);
         }
 
     }
