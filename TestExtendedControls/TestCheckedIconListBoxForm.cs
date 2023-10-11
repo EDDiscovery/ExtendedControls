@@ -52,8 +52,23 @@ namespace TestExtendedControls
             fgroup.MultipleColumnsAllowed = true;
             fgroup.MultipleColumnsFitToScreen = true;
             fgroup.BorderStyle = BorderStyle.Fixed3D;
-          //  fgroup.ImageSize = new Size(24, 24);
+            //  fgroup.ImageSize = new Size(24, 24);
+
+            extButtonWithCheckedIconListBoxGroup1.Init(new List<CheckedIconListBoxFormGroup.StandardOption>
+            {
+                new CheckedIconListBoxFormGroup.StandardOption("Tag1","Tag1",Properties.Resources.Addtab),
+                new CheckedIconListBoxFormGroup.StandardOption("Tag2","Tag2",Properties.Resources.BookmarkManager),
+                new CheckedIconListBoxFormGroup.StandardOption("Tag3","Tag2",Properties.Resources.BookmarkManager),
+                new CheckedIconListBoxFormGroup.StandardOption("Tag4","Tag2",Properties.Resources.BookmarkManager),
+            }, groupoptions, (s) => groupoptions = s,
+            groupoptions:new List<CheckedIconListBoxFormGroup.GroupOption>
+            {
+                new CheckedIconListBoxFormGroup.GroupOption("Tag1;Tag2","Option 1&2"),
+                new CheckedIconListBoxFormGroup.GroupOption("Tag3;Tag4","Option 3&4")
+            });
         }
+
+        string groupoptions = "";
 
         void Log(string s)
         {

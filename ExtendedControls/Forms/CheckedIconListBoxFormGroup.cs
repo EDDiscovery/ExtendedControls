@@ -61,12 +61,39 @@ namespace ExtendedControls
             groupoptions.Insert(0, o);
         }
 
-        public void AddGroupOptions(string groupswithids, object usertag, Image img = null)           // group options formatted in a string
+        public class GroupOption                                                 // alternate neater method
         {
-            string[] groups = groupswithids.Split('\u24C2');
+            public string Tag { get; set; }
+            public string Text { get; set; }
+            public Image Image { get; set; }
+            public Object UserTag { get; set; }
+
+            public bool AtTop { get; set; }
+
+            public GroupOption(string tag, string text, Image img = null, Object usertag = null, bool attop = false)
+            {
+                Tag = tag; Text = text; Image = img; UserTag = usertag; AtTop = attop;
+            }
+        }
+
+        public void AddGroupOptions(IEnumerable<GroupOption> list)                // standard option
+        {
+            foreach (var x in list)
+            {
+                if (x.AtTop)
+                    AddGroupOptionAtTop(x.Tag, x.Text, x.Image, x.UserTag);
+                else
+                    AddGroupOption(x.Tag, x.Text, x.Image, x.UserTag);
+            }
+        }
+
+        // group options formatted in a string
+        public void AddGroupOptions(string groupswithids, object usertag, Image img = null, char groupsepar = '\u24C2', char partsepar = '\u2713')
+        {
+            string[] groups = groupswithids.Split(groupsepar);
             foreach (var x in groups)
             {
-                int nsp = x.IndexOf('\u2713');
+                int nsp = x.IndexOf(partsepar);
                 if (nsp > 0)
                 {
                     var tag = x.Substring(nsp + 1);
@@ -118,6 +145,24 @@ namespace ExtendedControls
         public void AddStandardOption(Tuple<string, string, Image> ev)                // standard option
         {
             AddStandardOption(ev.Item1, ev.Item2, ev.Item3);
+        }
+
+        public class StandardOption                                                 // alternate neater method
+        {
+            public string Tag { get; set; }
+            public string Text { get; set; }
+            public Image Image { get; set; }
+
+            public StandardOption(string tag, string text, Image img = null)
+            {
+                Tag = tag; Text = text; Image = img;
+            }
+        }
+
+        public void AddStandardOptions(IEnumerable<StandardOption> list)                // standard option
+        {
+            foreach (var x in list)
+                AddStandardOption(x.Tag,x.Text,x.Image);
         }
 
         public void SortStandardOptions()

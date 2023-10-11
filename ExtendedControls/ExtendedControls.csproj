@@ -104,6 +104,9 @@
     <Compile Include="Controls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\ExtButtonWithCheckedIconListBoxGroup.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\CalendarForm.cs">
       <SubType>Form</SubType>
     </Compile>

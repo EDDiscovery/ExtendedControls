@@ -43,6 +43,7 @@
             this.extButton1 = new ExtendedControls.ExtButton();
             this.extRichTextBox1 = new ExtendedControls.ExtRichTextBox();
             this.extButton14 = new ExtendedControls.ExtButton();
+            this.extButtonWithCheckedIconListBoxGroup1 = new ExtendedControls.ExtButtonWithCheckedIconListBoxGroup();
             this.SuspendLayout();
             // 
             // extButton8
@@ -213,11 +214,21 @@
             this.extButton14.UseVisualStyleBackColor = true;
             this.extButton14.Click += new System.EventHandler(this.extButton14_Click);
             // 
-            // TestListBoxIcon
+            // extButtonWithCheckedIconListBoxGroup1
+            // 
+            this.extButtonWithCheckedIconListBoxGroup1.Image = global::TestExtendedControls.Properties.Resources.Addtab;
+            this.extButtonWithCheckedIconListBoxGroup1.Location = new System.Drawing.Point(497, 265);
+            this.extButtonWithCheckedIconListBoxGroup1.Name = "extButtonWithCheckedIconListBoxGroup1";
+            this.extButtonWithCheckedIconListBoxGroup1.Size = new System.Drawing.Size(42, 42);
+            this.extButtonWithCheckedIconListBoxGroup1.TabIndex = 3;
+            this.extButtonWithCheckedIconListBoxGroup1.UseVisualStyleBackColor = true;
+            // 
+            // TestCheckedIconListBoxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1014, 400);
+            this.Controls.Add(this.extButtonWithCheckedIconListBoxGroup1);
             this.Controls.Add(this.extRichTextBox1);
             this.Controls.Add(this.extButton8);
             this.Controls.Add(this.extButton7);
@@ -234,7 +245,7 @@
             this.Controls.Add(this.extButton3);
             this.Controls.Add(this.extButton1);
             this.Location = new System.Drawing.Point(100, 30);
-            this.Name = "TestListBoxIcon";
+            this.Name = "TestCheckedIconListBoxForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -257,5 +268,6 @@
         private ExtendedControls.ExtButton extButton13;
         private ExtendedControls.ExtRichTextBox extRichTextBox1;
         private ExtendedControls.ExtButton extButton14;
+        private ExtendedControls.ExtButtonWithCheckedIconListBoxGroup extButtonWithCheckedIconListBoxGroup1;
     }
 }
