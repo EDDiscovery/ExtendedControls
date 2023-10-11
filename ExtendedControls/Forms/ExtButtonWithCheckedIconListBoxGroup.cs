@@ -53,10 +53,8 @@ namespace ExtendedControls
             return currentsettings.Contains(setting + SettingsSplittingChar);     // we use ; as the setting char
         }
 
-        public bool IsNoneSet()
-        {
-            return currentsettings == "None" || currentsettings.Length == 0;
-        }
+        public bool IsNoneSet { get { return currentsettings == "None" + SettingsSplittingChar || currentsettings.Length == 0; } }
+        public bool IsAnySet { get { return !IsNoneSet; } }
 
         protected override void OnClick(EventArgs e)
         {
