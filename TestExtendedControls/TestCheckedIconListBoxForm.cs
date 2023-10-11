@@ -56,10 +56,11 @@ namespace TestExtendedControls
 
             extButtonWithCheckedIconListBoxGroup1.Init(new List<CheckedIconListBoxFormGroup.StandardOption>
             {
-                new CheckedIconListBoxFormGroup.StandardOption("Tag1","Tag1",Properties.Resources.Addtab),
-                new CheckedIconListBoxFormGroup.StandardOption("Tag2","Tag2",Properties.Resources.BookmarkManager),
-                new CheckedIconListBoxFormGroup.StandardOption("Tag3","Tag2",Properties.Resources.BookmarkManager),
-                new CheckedIconListBoxFormGroup.StandardOption("Tag4","Tag2",Properties.Resources.BookmarkManager),
+                new CheckedIconListBoxFormGroup.StandardOption("Tag1","Tag1",Properties.Resources.Addtab,"Tag5"),
+                new CheckedIconListBoxFormGroup.StandardOption("Tag2","Tag2",Properties.Resources.BookmarkManager,"Tag5"),
+                new CheckedIconListBoxFormGroup.StandardOption("Tag3","Tag3",Properties.Resources.BookmarkManager),
+                new CheckedIconListBoxFormGroup.StandardOption("Tag4","Tag4",Properties.Resources.BookmarkManager),
+                new CheckedIconListBoxFormGroup.StandardOption("Tag5","Tag5",Properties.Resources.BookmarkManager,"Tag2;Tag1"),
             }, groupoptions, (s) => groupoptions = s,
             groupoptions:new List<CheckedIconListBoxFormGroup.GroupOption>
             {

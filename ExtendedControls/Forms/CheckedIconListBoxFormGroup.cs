@@ -152,17 +152,19 @@ namespace ExtendedControls
             public string Tag { get; set; }
             public string Text { get; set; }
             public Image Image { get; set; }
+            public string ExclusiveTag { get; set; }
+            public bool DisableUncheck { get; set; }
 
-            public StandardOption(string tag, string text, Image img = null)
+            public StandardOption(string tag, string text, Image img = null, string exclusivetag = null, bool disableuncheck = false)
             {
-                Tag = tag; Text = text; Image = img;
+                Tag = tag; Text = text; Image = img; ExclusiveTag = exclusivetag; DisableUncheck = DisableUncheck;
             }
         }
 
         public void AddStandardOptions(IEnumerable<StandardOption> list)                // standard option
         {
             foreach (var x in list)
-                AddStandardOption(x.Tag,x.Text,x.Image);
+                AddStandardOption(x.Tag,x.Text,x.Image,x.ExclusiveTag,x.DisableUncheck);
         }
 
         public void SortStandardOptions()
