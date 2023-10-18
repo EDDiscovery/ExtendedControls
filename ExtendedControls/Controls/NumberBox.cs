@@ -28,8 +28,8 @@ namespace ExtendedControls
         public System.Globalization.CultureInfo FormatCulture { get { return culture; } set { culture = value; } }
 
         public int DelayBeforeNotification { get; set; } = 0;
-        public T Minimum { get; set; }
-        public T Maximum { get; set; }
+        public T Minimum { get { return minv; } set { minv = value; InErrorCondition = !IsValid; } }
+        public T Maximum { get { return maxv; } set { maxv = value; InErrorCondition = !IsValid; } }
 
         public bool IsValid { get { T v;  return ConvertFromString(base.Text,out v); } }        // is the text a valid value?
 
@@ -100,6 +100,8 @@ namespace ExtendedControls
         private System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
         private Timer timer;
         private static readonly object EVENT_VALUECHANGED = new object();
+        private T minv;
+        private T maxv;
         protected NumberBox<T> othernumber { get; set; } = null;             // attach to another box for validation
         protected int othercomparision { get; set; } = 0;              // aka -2 (<=) -1(<) 0 (=) 1 (>) 2 (>=)
 
@@ -252,10 +254,10 @@ namespace ExtendedControls
     {
         public NumberBoxLong()
         {
+            Format = "D";
             ValueNoChange = 0;
             Minimum = long.MinValue;
             Maximum = long.MaxValue;
-            Format = "D";
         }
 
         protected override string ConvertToString(long v)

@@ -21,6 +21,7 @@ namespace ExtendedControls
 {
     public class ExtRichTextBox : Panel
     {
+        #region Public Functions
         public class RichTextBoxBack : RichTextBox
         {
             public IntPtr SendMessage(int msg, IntPtr wparam, IntPtr lparam)
@@ -35,37 +36,37 @@ namespace ExtendedControls
         // if BorderColor is set, BackColor gets shown, with BorderColor on top.
         // BorderStyle is also applied by windows around the control, set to None for BorderColor only
 
-        public Color TextBoxForeColor { get { return TextBox.ForeColor; } set { TextBox.ForeColor = value; } }
-        public Color TextBoxBackColor { get { return TextBox.BackColor; } set { TextBox.BackColor = value; } }
+        public Color TextBoxForeColor { get { return textBox.ForeColor; } set { textBox.ForeColor = value; } }
+        public Color TextBoxBackColor { get { return textBox.BackColor; } set { textBox.BackColor = value; } }
         public Color BorderColor { get; set; } = Color.Transparent;
         public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
         public bool ShowLineCount { get; set; } = false;                // count lines
         public bool HideScrollBar { get; set; } = true;                   // hide if no scroll needed
 
-        public FlatStyle ScrollBarFlatStyle { get { return ScrollBar.FlatStyle; } set { ScrollBar.FlatStyle = value; } }
-        public Color ScrollBarBackColor { get { return ScrollBar.BackColor; } set { ScrollBar.BackColor = value; } }
-        public Color ScrollBarSliderColor { get { return ScrollBar.SliderColor; } set { ScrollBar.SliderColor = value; } }
-        public Color ScrollBarBorderColor { get { return ScrollBar.BorderColor; } set { ScrollBar.BorderColor = value; } }
-        public Color ScrollBarThumbBorderColor { get { return ScrollBar.ThumbBorderColor; } set { ScrollBar.ThumbBorderColor = value; } }
-        public Color ScrollBarArrowBorderColor { get { return ScrollBar.ArrowBorderColor; } set { ScrollBar.ArrowBorderColor = value; } }
-        public Color ScrollBarArrowButtonColor { get { return ScrollBar.ArrowButtonColor; } set { ScrollBar.ArrowButtonColor = value; } }
-        public Color ScrollBarThumbButtonColor { get { return ScrollBar.ThumbButtonColor; } set { ScrollBar.ThumbButtonColor = value; } }
-        public Color ScrollBarMouseOverButtonColor { get { return ScrollBar.MouseOverButtonColor; } set { ScrollBar.MouseOverButtonColor = value; } }
-        public Color ScrollBarMousePressedButtonColor { get { return ScrollBar.MousePressedButtonColor; } set { ScrollBar.MousePressedButtonColor = value; } }
-        public Color ScrollBarForeColor { get { return ScrollBar.ForeColor; } set { ScrollBar.ForeColor = value; } }
+        public FlatStyle ScrollBarFlatStyle { get { return scrollBar.FlatStyle; } set { scrollBar.FlatStyle = value; } }
+        public Color ScrollBarBackColor { get { return scrollBar.BackColor; } set { scrollBar.BackColor = value; } }
+        public Color ScrollBarSliderColor { get { return scrollBar.SliderColor; } set { scrollBar.SliderColor = value; } }
+        public Color ScrollBarBorderColor { get { return scrollBar.BorderColor; } set { scrollBar.BorderColor = value; } }
+        public Color ScrollBarThumbBorderColor { get { return scrollBar.ThumbBorderColor; } set { scrollBar.ThumbBorderColor = value; } }
+        public Color ScrollBarArrowBorderColor { get { return scrollBar.ArrowBorderColor; } set { scrollBar.ArrowBorderColor = value; } }
+        public Color ScrollBarArrowButtonColor { get { return scrollBar.ArrowButtonColor; } set { scrollBar.ArrowButtonColor = value; } }
+        public Color ScrollBarThumbButtonColor { get { return scrollBar.ThumbButtonColor; } set { scrollBar.ThumbButtonColor = value; } }
+        public Color ScrollBarMouseOverButtonColor { get { return scrollBar.MouseOverButtonColor; } set { scrollBar.MouseOverButtonColor = value; } }
+        public Color ScrollBarMousePressedButtonColor { get { return scrollBar.MousePressedButtonColor; } set { scrollBar.MousePressedButtonColor = value; } }
+        public Color ScrollBarForeColor { get { return scrollBar.ForeColor; } set { scrollBar.ForeColor = value; } }
 
-        public override string Text { get { return TextBox.Text; } set { TextBox.Text = value; EstimateLines(); UpdateScrollBar(); } }                // return only textbox text
-        public string[] Lines {  get { return TextBox.Lines; } }
+        public override string Text { get { return textBox.Text; } set { textBox.Text = value; EstimateLines(); UpdateScrollBar(); } }                // return only textbox text
+        public string[] Lines {  get { return textBox.Lines; } }
 
-        public string Rtf { get { return TextBox.Rtf; } set { TextBox.Rtf = value; UpdateScrollBar(); } }
-        public int LineCount { get { return TextBox.GetLineFromCharIndex(TextBox.Text.Length) + 1; } }
+        public string Rtf { get { return textBox.Rtf; } set { textBox.Rtf = value; UpdateScrollBar(); } }
+        public int LineCount { get { return textBox.GetLineFromCharIndex(textBox.Text.Length) + 1; } }
 
         public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
 
-        public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(TextBox, text); } // only needed for dynamic changes..
+        public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(textBox, text); } // only needed for dynamic changes..
 
         // turning this on allows dropping of text or a file into the box to replace all text.
-        public override bool AllowDrop { get { return TextBox.AllowDrop; } set { TextBox.AllowDrop = value; } }
+        public override bool AllowDrop { get { return textBox.AllowDrop; } set { textBox.AllowDrop = value; } }
         public void InstallStandardDragDrop()
         {
             DragEnter += ExtRichTextBox_DragEnter;
@@ -73,14 +74,16 @@ namespace ExtendedControls
         }
         public string DraggedFile { get; private set; }     // null until a file is dragged to it
 
+        public bool DetectUrls { get { return textBox.DetectUrls; } set { textBox.DetectUrls = value; } }
+        public Action<LinkClickedEventArgs> LinkClicked;
+
         public delegate void OnTextBoxChanged(object sender, EventArgs e);
         public event OnTextBoxChanged TextBoxChanged;
 
-        #region Public Functions
 
         public void Clear()
         {
-            TextBox.Clear();
+            textBox.Clear();
             PerformLayout();
         }
 
@@ -91,8 +94,8 @@ namespace ExtendedControls
                 s = linecounter + ":" + s;
                 linecounter++;
             }
-            TextBox.AppendText(s);
-            TextBox.ScrollToCaret();
+            textBox.AppendText(s);
+            textBox.ScrollToCaret();
             EstimateLines();
             UpdateScrollBar();
         }
@@ -105,70 +108,72 @@ namespace ExtendedControls
                 linecounter++;
             }
 
-            TextBox.SelectionStart = TextBox.TextLength;
-            TextBox.SelectionLength = 0;
-            TextBox.SelectionColor = c;
-            TextBox.AppendText(s);
-            TextBox.SelectionColor = TextBox.ForeColor;
-            TextBox.SelectionStart = TextBox.TextLength;
-            TextBox.SelectionLength = 0;
-            TextBox.ScrollToCaret();
+            textBox.SelectionStart = textBox.TextLength;
+            textBox.SelectionLength = 0;
+            textBox.SelectionColor = c;
+            textBox.AppendText(s);
+            textBox.SelectionColor = textBox.ForeColor;
+            textBox.SelectionStart = textBox.TextLength;
+            textBox.SelectionLength = 0;
+            textBox.ScrollToCaret();
             EstimateLines();
             UpdateScrollBar();
         }
 
         public void CopyFrom(ExtRichTextBox other)
         {
-            TextBox.Rtf = other.TextBox.Rtf;
+            textBox.Rtf = other.textBox.Rtf;
             EstimateLines();
         }
 
         public void SetTabs(int[] array)
         {
-            TextBox.SelectionTabs = array;
+            textBox.SelectionTabs = array;
         }
 
-        public bool ReadOnly { get { return TextBox.ReadOnly; } set { TextBox.ReadOnly = value; } }
+        public bool ReadOnly { get { return textBox.ReadOnly; } set { textBox.ReadOnly = value; } }
 
-        public string SelectedText { get { return TextBox.SelectedText; } }
-        public void Select(int s, int e) { TextBox.Select(s, e); }
-        public void CursorToEnd() { TextBox.Select(TextBox.TextLength, TextBox.TextLength); }
-        public void ScrollToCaret() { TextBox.ScrollToCaret(); }
-        public new void Focus() { TextBox.Focus(); }
+        public string SelectedText { get { return textBox.SelectedText; } }
+        public void Select(int s, int e) { textBox.Select(s, e); }
+        public void CursorToEnd() { textBox.Select(textBox.TextLength, textBox.TextLength); }
+        public void ScrollToCaret() { textBox.ScrollToCaret(); }
+        public new void Focus() { textBox.Focus(); }
 
-        public override ContextMenuStrip ContextMenuStrip { get { return TextBox.ContextMenuStrip; } set { TextBox.ContextMenuStrip = value; } }
+        public override ContextMenuStrip ContextMenuStrip { get { return textBox.ContextMenuStrip; } set { textBox.ContextMenuStrip = value; } }
 
         #endregion
 
         #region Implementation
 
-        private RichTextBoxBack TextBox;                 // Use these with caution.
-        private ExtScrollBar ScrollBar;
+        private RichTextBoxBack textBox;                 // Use these with caution.
+        private ExtScrollBar scrollBar;
         private int linecounter = 1;
 
         public ExtRichTextBox() : base()
         {
-            TextBox = new RichTextBoxBack();
-            ScrollBar = new ExtScrollBar();
-            Controls.Add(TextBox);
-            Controls.Add(ScrollBar);
-            TextBox.ScrollBars = RichTextBoxScrollBars.None;
-            TextBox.BorderStyle = BorderStyle.None;
-            TextBox.BackColor = BackColor;
-            TextBox.ForeColor = ForeColor;
-            TextBox.MouseUp += TextBox_MouseUp;
-            TextBox.MouseDown += TextBox_MouseDown;
-            TextBox.MouseMove += TextBox_MouseMove;
-            TextBox.MouseEnter += TextBox_MouseEnter;
-            TextBox.MouseLeave += TextBox_MouseLeave;
-            TextBox.DragEnter += TextBox_DragEnter;
-            TextBox.DragDrop += TextBox_DragDrop;
-            TextBox.Show();
-            ScrollBar.Show();
-            TextBox.VScroll += OnVscrollChanged;
-            TextBox.MouseWheel += new MouseEventHandler(MWheel);        // richtextbox without scroll bars do not handle mouse wheels
-            TextBox.TextChanged += TextChangeEventHandler;
-            ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
+            textBox = new RichTextBoxBack();
+            textBox.Name = "ExtRichTextBox_RTB";
+            scrollBar = new ExtScrollBar();
+            Controls.Add(textBox);
+            Controls.Add(scrollBar);
+            textBox.ScrollBars = RichTextBoxScrollBars.None;
+            textBox.BorderStyle = BorderStyle.None;
+            textBox.BackColor = BackColor;
+            textBox.ForeColor = ForeColor;
+            textBox.MouseUp += TextBox_MouseUp;
+            textBox.MouseDown += TextBox_MouseDown;
+            textBox.MouseMove += TextBox_MouseMove;
+            textBox.MouseEnter += TextBox_MouseEnter;
+            textBox.MouseLeave += TextBox_MouseLeave;
+            textBox.DragEnter += TextBox_DragEnter;
+            textBox.DragDrop += TextBox_DragDrop;
+            textBox.LinkClicked += TextBox_LinkClicked;
+            textBox.Show();
+            scrollBar.Show();
+            textBox.VScroll += OnVscrollChanged;
+            textBox.MouseWheel += new MouseEventHandler(MWheel);        // richtextbox without scroll bars do not handle mouse wheels
+            textBox.TextChanged += TextChangeEventHandler;
+            scrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -201,13 +206,13 @@ namespace ExtendedControls
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
             int textboxclienth = ClientRectangle.Height - bordersize * 2;
 
-            scrollbarvisibleonlayout = ScrollBar.IsScrollBarOn || DesignMode || !HideScrollBar;  // Hide must be on, or in design mode, or scroll bar is on due to values
+            scrollbarvisibleonlayout = scrollBar.IsScrollBarOn || DesignMode || !HideScrollBar;  // Hide must be on, or in design mode, or scroll bar is on due to values
 
-            TextBox.Location = new Point(bordersize, bordersize);
-            TextBox.Size = new Size(ClientRectangle.Width - (scrollbarvisibleonlayout ? ScrollBarWidth : 0) - bordersize * 2, textboxclienth);
+            textBox.Location = new Point(bordersize, bordersize);
+            textBox.Size = new Size(ClientRectangle.Width - (scrollbarvisibleonlayout ? ScrollBarWidth : 0) - bordersize * 2, textboxclienth);
 
-            ScrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
-            ScrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
+            scrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
+            scrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
         }
 
         protected override void OnFontChanged(EventArgs e)      // these events can change visible lines
@@ -242,12 +247,12 @@ namespace ExtendedControls
 
             if (Text.HasChars() && Text.Contains("\n"))                             // we need text to sense it
             {
-                int sl = TextBox.GetCharIndexFromPosition(new Point(0, 0));
-                sl = TextBox.GetLineFromCharIndex(sl);
+                int sl = textBox.GetCharIndexFromPosition(new Point(0, 0));
+                sl = textBox.GetLineFromCharIndex(sl);
                 for (int i = 1; i < ClientRectangle.Height; i++)
                 {
-                    int nl = TextBox.GetCharIndexFromPosition(new Point(0, i));     // look to see when line changes.. it may not if only one line
-                    nl = TextBox.GetLineFromCharIndex(nl);
+                    int nl = textBox.GetCharIndexFromPosition(new Point(0, i));     // look to see when line changes.. it may not if only one line
+                    nl = textBox.GetLineFromCharIndex(nl);
                     if (sl != nl)
                     {
                         foundlineheight = i;
@@ -267,24 +272,24 @@ namespace ExtendedControls
 
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
-                int firstVisibleChar = TextBox.GetCharIndexFromPosition(new Point(0,0));
-                firstVisibleLine = TextBox.GetLineFromCharIndex(firstVisibleChar);
+                int firstVisibleChar = textBox.GetCharIndexFromPosition(new Point(0,0));
+                firstVisibleLine = textBox.GetLineFromCharIndex(firstVisibleChar);
                 //System.Diagnostics.Debug.WriteLine("USB first VL:" + firstVisibleLine + " lines " + LineCount + " " + visiblelines );
             }
             else
             {
-                firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(BaseUtils.Win32Constants.EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
+                firstVisibleLine = unchecked((int)(long)textBox.SendMessage(BaseUtils.Win32Constants.EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
             }
 
-            ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
-            if (ScrollBar.IsScrollBarOn != scrollbarvisibleonlayout)     // need to relayout if scroll bars pop on
+            scrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
+            if (scrollBar.IsScrollBarOn != scrollbarvisibleonlayout)     // need to relayout if scroll bars pop on
                 PerformLayout();
         }
 
         public int EstimateVerticalSizeFromText()
         {
             int lastselpos = this.Text.Length;
-            int numberlines = (lastselpos >= 0) ? (TextBox.GetLineFromCharIndex(lastselpos) + 1) : 0;
+            int numberlines = (lastselpos >= 0) ? (textBox.GetLineFromCharIndex(lastselpos) + 1) : 0;
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
             int lineh = foundlineheight > 0 ? foundlineheight : (int)(Font.GetHeight() + 2);        // if we have an estimate, use it, else use Font Height
             int neededpixels = (int)(lineh * numberlines) + bordersize * 2 + 4;      // 4 extra for border area of this (bounds-client rect)
@@ -305,27 +310,27 @@ namespace ExtendedControls
 
         private void ScrollToBar()              // from the scrollbar, scroll first line to value
         {
-            int scrollvalue = ScrollBar.Value;
+            int scrollvalue = scrollBar.Value;
 
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
                 int line = scrollvalue + (lastscrollto<=scrollvalue ? visiblelines-1 : 0);
-                int index = TextBox.GetFirstCharIndexFromLine(line);         // MONO does not do EM.LiNESCROLL - this is the best we can do
+                int index = textBox.GetFirstCharIndexFromLine(line);         // MONO does not do EM.LiNESCROLL - this is the best we can do
                 lastscrollto = scrollvalue;
 
                 //System.Diagnostics.Debug.WriteLine("Scroll Bar:" + scrollvalue + " vl " + visiblelines + " goto " + line);
-                TextBox.Select(index , 0);
-                TextBox.ScrollToCaret();
+                textBox.Select(index , 0);
+                textBox.ScrollToCaret();
             }
             else
             {
-                int firstVisibleLine = unchecked((int)(long)TextBox.SendMessage(BaseUtils.Win32Constants.EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
+                int firstVisibleLine = unchecked((int)(long)textBox.SendMessage(BaseUtils.Win32Constants.EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
                 int delta = scrollvalue - firstVisibleLine;
 
                 //Console.WriteLine("Scroll Bar:" + scrollvalue + " FVL: " + firstVisibleLine + " delta " + delta);
                 if (delta != 0)
                 {
-                    TextBox.SendMessage(BaseUtils.Win32Constants.EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
+                    textBox.SendMessage(BaseUtils.Win32Constants.EM.LINESCROLL, IntPtr.Zero, (IntPtr)(delta));
                 }
             }
         }
@@ -333,9 +338,9 @@ namespace ExtendedControls
         protected virtual void MWheel(object sender, MouseEventArgs e)  // mouse, we move then scroll to bar
         {
             if (e.Delta > 0)
-                ScrollBar.ValueLimited--;                  // control takes care of end limits..
+                scrollBar.ValueLimited--;                  // control takes care of end limits..
             else
-                ScrollBar.ValueLimited++;           // end is UserLimit, not maximum
+                scrollBar.ValueLimited++;           // end is UserLimit, not maximum
 
             ScrollToBar();                          // go to scroll position
         }
@@ -343,7 +348,7 @@ namespace ExtendedControls
         protected override void OnGotFocus(EventArgs e)             // Focus on us is given to the text box.
         {
             base.OnGotFocus(e);
-            TextBox.Focus();
+            textBox.Focus();
         }
 
         protected void TextChangeEventHandler(object sender, EventArgs e)
@@ -402,7 +407,7 @@ namespace ExtendedControls
                     string str = BaseUtils.FileHelpers.TryReadAllTextFromFile(files[0]);
                     if (str != null)
                     {
-                        TextBox.Text = str;
+                        textBox.Text = str;
                         DraggedFile = files[0];
                     }
 
@@ -411,7 +416,7 @@ namespace ExtendedControls
             else if (e.Data.GetDataPresent(DataFormats.Text))
             {
                 string text = (string)e.Data.GetData(DataFormats.Text);
-                TextBox.Text = text;
+                textBox.Text = text;
                 DraggedFile = null;
             }
         }
@@ -422,6 +427,11 @@ namespace ExtendedControls
                 e.Effect = DragDropEffects.Copy;
             else
                 e.Effect = DragDropEffects.None;
+        }
+
+        private void TextBox_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            LinkClicked?.Invoke(e);
         }
 
 

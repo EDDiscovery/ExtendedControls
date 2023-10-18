@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017-2020 EDDiscovery development team
+ * Copyright © 2017-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,14 +10,11 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using BaseUtils.Win32;
 using BaseUtils.Win32Constants;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -25,6 +22,12 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
+    /// <summary>
+    /// Adds drag facility to smart sys menu form
+    /// any controls wanting to implement drag call OnCaptionMouseDown/Up 
+    /// Adds resize to borderless forms edges
+    /// Makes StartPositon CentereParent work in modalless forms
+    /// </summary>
     public class DraggableForm : SmartSysMenuForm
     {
         //The number of pixels from the top of the <see cref="SmartSysMenuForm"/> that will be interpreted as caption
@@ -41,30 +44,35 @@ namespace ExtendedControls
             KeyPreview = true;
         }
 
-
-        public void OnCaptionMouseDown(Control sender, MouseEventArgs e)        // call this in a mouse down handler to make it move the window
+        // call this in a mouse down handler to make it move the window
+        public void OnCaptionMouseDown(Control sender, MouseEventArgs e)        
         {
             SendMovementCapture(sender, e, true, HT.CAPTION);
         }
 
+        // call this in a mouse up handler to stop
         public void OnCaptionMouseUp(Control sender, MouseEventArgs e)
         {
             SendMovementCapture(sender, e, false, HT.CAPTION);
         }
 
-        public void PerformResizeMouseDown(Control sender, MouseEventArgs e, DockStyle s)        // call this in a mouse down handler to make it move the window
+        // call this in a mouse down handler to make it move the window
+        public void PerformResizeMouseDown(Control sender, MouseEventArgs e, DockStyle s)        
         {
             int ec = s == DockStyle.Top ? HT.TOP : s == DockStyle.Bottom ? HT.BOTTOM : s == DockStyle.Left ? HT.LEFT : HT.RIGHT;
             SendMovementCapture(sender, e, true, ec);
         }
 
-        public void PerformResizeMouseUp(Control sender, MouseEventArgs e, DockStyle s)        // call this in a mouse down handler to make it move the window
+        // call this in a mouse up handler to stop
+        public void PerformResizeMouseUp(Control sender, MouseEventArgs e, DockStyle s)        
         {
             int ec = s == DockStyle.Top ? HT.TOP : s == DockStyle.Bottom ? HT.BOTTOM : s == DockStyle.Left ? HT.LEFT : HT.RIGHT;
             SendMovementCapture(sender, e, false, ec);
         }
 
-        public void SendMovementCapture(Control sender, MouseEventArgs e, bool keydown, int eventcode = HT.CAPTION)
+        #region Private implementation
+
+        private void SendMovementCapture(Control sender, MouseEventArgs e, bool keydown, int eventcode = HT.CAPTION)
         {
             if (FormBorderStyle == FormBorderStyle.None)
             {
@@ -89,7 +97,14 @@ namespace ExtendedControls
             }
         }
 
-        #region Private implementation
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            bool nonmodalcentre = !Modal && StartPosition == FormStartPosition.CenterParent && Owner != null;
+            //System.Diagnostics.Debug.WriteLine($"Draggable form non modal centre {nonmodalcentre}");
+            if (nonmodalcentre)
+                this.Location = new Point(Owner.Location.X + Owner.Width / 2 - this.Width / 2, Owner.Location.Y + Owner.Height / 2 - this.Height / 2);
+        }
 
         protected override CreateParams CreateParams
         {

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,15 +10,12 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using BaseUtils.Win32Constants;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -29,17 +26,9 @@ namespace ExtendedControls
     {
         public string KeyList { get { return textBoxKeys.Text; } }
         public string ProcessSelected { get { return textBoxSendTo.Text.Equals(DefaultProcessID)? "" :textBoxSendTo.Text; } }    // Default means program default hence "", else target
-        public int DefaultDelay { get { int t; return textBoxDelay.Text.InvariantParse(out t) ? t : DefaultDelayID; } }     // -1 means program default, else number
+        public int DefaultDelay { get { return textBoxDefaultDelay.IsValid && textBoxDefaultDelay.Value>0 ? (int)textBoxDefaultDelay.Value : DefaultDelayID; } }     // -1 means program default, else number
 
         public const int DefaultDelayID = -1;
-
-        KeyFormMessageFilter keyformmessagefilter;
-        string basekeystroke = "";
-        
-        int curinsertpoint = 0;
-        string seperator;
-        const string DefaultProcessID = "Default";
-        BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser additionalkeyparser;
 
         public KeyForm()
         {
@@ -55,7 +44,6 @@ namespace ExtendedControls
                                 string separ = " ",   // and separ between entries
                                 string keystring = "", // current key string
                                 string process = "",  // empty means program default, return empty back
-                                int defdelay = 50,     // -1 means program default, return -1 back
                                 bool allowkeysedit = false,
                                 List<string> additionalkeys = null,
                                 BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser parser = null)
@@ -72,7 +60,8 @@ namespace ExtendedControls
             curinsertpoint = keystring.Length;
 
             textBoxSendTo.Text = process.Alt(DefaultProcessID);
-            textBoxNextDelay.Text = textBoxDelay.Text = defdelay != DefaultDelayID ? defdelay.ToStringInvariant() : "Default";
+            textBoxDefaultDelay.Value = 0 ;
+            textBoxCurrentKeyDelay.Text = "Default";
             radioButtonPress.Checked = true;
 
             if ( additionalkeys!=null )
@@ -87,9 +76,9 @@ namespace ExtendedControls
 
             if ( !showprocess)
             {
-                textBoxNextDelay.Visible = panelRadio.Visible = labelNextDelay.Visible = labelDelay.Visible = textBoxDelay.Visible = labelSendTo.Visible = textBoxSendTo.Visible = buttonTest.Visible = false;
+                textBoxCurrentKeyDelay.Visible = panelRadio.Visible = labelNextDelay.Visible = labelDelay.Visible = textBoxDefaultDelay.Visible = labelSendTo.Visible = textBoxSendTo.Visible = buttonTest.Visible = false;
 
-                int d = textBoxKeys.Top - textBoxDelay.Top;
+                int d = textBoxKeys.Top - textBoxDefaultDelay.Top;
                 foreach (Control c in new Control[] { buttonReset, buttonDelete, buttonNext, textBoxKeys, labelKeys })
                     c.Top -= d;     // shift down
 
@@ -128,7 +117,7 @@ namespace ExtendedControls
             {
                 keyformmessagefilter = new KeyFormMessageFilter(this);
                 Application.AddMessageFilter(keyformmessagefilter);
-                //System.Diagnostics.Debug.WriteLine("Make " + keyformmessagefilter.GetHashCode() + " for " + GetHashCode());
+                System.Diagnostics.Debug.WriteLine($"Make MF {keyformmessagefilter.GetHashCode()} for {GetHashCode()}");
             }
             else
             {
@@ -140,7 +129,7 @@ namespace ExtendedControls
         {
             if (keyformmessagefilter != null)
             {
-                //System.Diagnostics.Debug.WriteLine("Remove " + keyformmessagefilter.GetHashCode() + " for " + GetHashCode());
+                System.Diagnostics.Debug.WriteLine($"Remove MF {keyformmessagefilter.GetHashCode()} for {GetHashCode()}");
                 Application.RemoveMessageFilter(keyformmessagefilter);
                 keyformmessagefilter = null;
             }
@@ -153,7 +142,7 @@ namespace ExtendedControls
 
         public static void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
         {
-            Process[] pa = Process.GetProcesses();
+            System.Diagnostics.Process[] pa = System.Diagnostics.Process.GetProcesses();
             var res = (from e in pa where e.ProcessName.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select e.ProcessName);
             foreach (var r in res)
                 set.Add(r);
@@ -209,38 +198,37 @@ namespace ExtendedControls
 
             checkBoxKey.Text = basekeystroke.HasChars() ? basekeystroke : "Press Key".TxID(ECIDs.KeyForm_PK);
 
-            //System.Diagnostics.Debug.WriteLine("T" + textBoxKeys.Text + " at " + curinsertpoint + " " + fullname);
-
-            textBoxNextDelay.ReadOnly = (curinsertpoint == 0);
-
-            int nextdelay = textBoxNextDelay.Text.InvariantParseInt(DefaultDelay);      // if its an int, use it, else use default delay
+            System.Diagnostics.Debug.WriteLine($"Keyform DKS at {curinsertpoint}: {textBoxKeys.Text} ");
 
             string res = textBoxKeys.Text.Substring(0, curinsertpoint);
 
-            string partstring = "";
+            string curkeystring = "";
 
-            if (DefaultDelay != nextdelay)              // delay is different to default, so it must be signalled
-                partstring += "[" + nextdelay.ToStringInvariant() + "]";
+            if (textBoxCurrentKeyDelay.Text != "Default" && textBoxCurrentKeyDelay.Text.HasChars())              // delay is set
+                curkeystring += "[" + textBoxCurrentKeyDelay.Text + "]";
 
             if (radioButtonDown.Checked)
-                partstring += "!";
+                curkeystring += "!";
             else if (radioButtonUp.Checked)
-                partstring += "^";
+                curkeystring += "^";
 
-            string shifters = KeyObjectExtensions.ShiftersToString(shiftKey, altKey, ctrlKey);
-            string keyname = shifters;
-            keyname = keyname.AppendPrePad(basekeystroke, "+");
-            partstring += keyname;
-            //System.Diagnostics.Debug.WriteLine("Stroke " + partstring);
+            string keypart = KeyObjectExtensions.ShiftersToString(shiftKey, altKey, ctrlKey);
+            keypart = keypart.AppendPrePad(basekeystroke, "+");                           // basekeystroke may be empty
+            curkeystring += keypart;
+            System.Diagnostics.Debug.WriteLine($"  Keyform DKS Key Stroke {keypart} : {curkeystring}");
 
-            if (partstring.Length > 0)
-                res = res.AppendPrePad(partstring, seperator);
+            if (curkeystring.Length > 0)
+                res = res.AppendPrePad(curkeystring, seperator);
 
-            buttonNext.Enabled = keyname.Length > 0;
-            buttonDelete.Enabled = keyname.Length> 0 || curinsertpoint > 0;
+            buttonNext.Enabled = curkeystring.Length > 0;
+            buttonDelete.Enabled = curkeystring.Length> 0 || curinsertpoint > 0;
 
             textBoxKeys.Text = res;
+
+            System.Diagnostics.Debug.WriteLine($"  Keyform DKS Key text is {textBoxKeys.Text}");
             textBoxKeys.Select(res.Length, res.Length);
+
+            textBoxCurrentKeyDelay.ReadOnly = !curkeystring.HasChars();
         }
 
         void ResetCurrent()
@@ -249,6 +237,7 @@ namespace ExtendedControls
             SetToggle(checkBoxCtrl, false, false);
             SetToggle(checkBoxAlt, false, false);
             basekeystroke = "";
+            textBoxCurrentKeyDelay.Text = "Default";
             comboBoxKeySelector.Enabled = false;
             comboBoxKeySelector.SelectedIndex = -1;
             comboBoxKeySelector.Enabled = true;
@@ -262,7 +251,6 @@ namespace ExtendedControls
             DisplayKeyString();
         }
 
-
         private void comboBoxKeySelector_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxKeySelector.Enabled)
@@ -275,14 +263,12 @@ namespace ExtendedControls
         private void buttonNext_Click(object sender, EventArgs e)
         {
             curinsertpoint = textBoxKeys.Text.Length;
-            textBoxNextDelay.Text = textBoxDelay.Text;
             ResetCurrent();
         }
 
         private void buttonReset_Click(object sender, EventArgs e)
         {
             curinsertpoint = 0;
-            textBoxNextDelay.Text = textBoxDelay.Text;
             ResetCurrent();
         }
 
@@ -318,6 +304,18 @@ namespace ExtendedControls
                 MessageBoxTheme.Show(this, "No process names to send keys to".TxID(ECIDs.KeyForm_NOP));
         }
 
+        private void textBoxCurrentKeyDelay_Enter(object sender, EventArgs e)
+        {
+            textBox_Enter(sender, e);
+            // if we are enabled due to keys, and default, clear
+            if (!textBoxCurrentKeyDelay.ReadOnly && textBoxCurrentKeyDelay.Text == "Default")
+                textBoxCurrentKeyDelay.Text = "";
+        }
+        private void textBoxNextDelay_TextChanged(object sender, EventArgs e)
+        {
+            DisplayKeyString();
+        }
+
         private void textBox_Enter(object sender, EventArgs e)
         {
             checkBoxKey.Visible = false;
@@ -330,10 +328,6 @@ namespace ExtendedControls
             AddMF();
         }
 
-        private void textBoxNextDelay_TextChanged(object sender, EventArgs e)
-        {
-            DisplayKeyString();
-        }
 
         private void panelOuter_MouseDown(object sender, MouseEventArgs e)
         {
@@ -415,6 +409,13 @@ namespace ExtendedControls
                 AddMF();
             }
         }
+
+        private KeyFormMessageFilter keyformmessagefilter;
+        private string basekeystroke = "";      // current base key stroke
+        private int curinsertpoint = 0;     // this is the position in the string we are editing
+        private string seperator;           // separator between keystrokes
+        const string DefaultProcessID = "Default";
+        private BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser additionalkeyparser;
 
     }
 }

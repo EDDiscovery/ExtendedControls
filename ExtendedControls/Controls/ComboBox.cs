@@ -63,6 +63,7 @@ namespace ExtendedControls
         {
             //Text = "";
             this.cbsystem = new ComboBox();
+            this.cbsystem.Name = Name + "_SystemComboBox";
             this.cbsystem.Dock = DockStyle.Fill;
             this.cbsystem.SelectedIndexChanged += _cbsystem_SelectedIndexChanged;
             this.cbsystem.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -311,7 +312,7 @@ namespace ExtendedControls
             if (Items.Count == 0 || !Enabled)
                 return;
 
-            customdropdown = new ExtListBoxForm(this.Name);
+            customdropdown = new ExtListBoxForm(this.Name + "_Listbox");
 
             customdropdown.SelectionBackColor = this.DropDownBackgroundColor;
             customdropdown.MouseOverBackgroundColor = this.MouseOverBackgroundColor;

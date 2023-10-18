@@ -44,13 +44,13 @@
             this.buttonCancel = new ExtendedControls.ExtButton();
             this.labelCaption = new System.Windows.Forms.Label();
             this.panelOuter = new System.Windows.Forms.Panel();
+            this.textBoxDefaultDelay = new ExtendedControls.NumberBoxLong();
             this.comboBoxKeySelector = new ExtendedControls.ExtComboBox();
             this.panelRadio = new System.Windows.Forms.Panel();
             this.radioButtonUp = new ExtendedControls.ExtRadioButton();
             this.radioButtonDown = new ExtendedControls.ExtRadioButton();
             this.radioButtonPress = new ExtendedControls.ExtRadioButton();
-            this.textBoxNextDelay = new ExtendedControls.ExtTextBox();
-            this.textBoxDelay = new ExtendedControls.ExtTextBox();
+            this.textBoxCurrentKeyDelay = new ExtendedControls.ExtTextBox();
             this.labelNextDelay = new System.Windows.Forms.Label();
             this.labelSelKeys = new System.Windows.Forms.Label();
             this.labelDelay = new System.Windows.Forms.Label();
@@ -226,6 +226,7 @@
             this.textBoxSendTo.AutoCompleteCommentMarker = null;
             this.textBoxSendTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.textBoxSendTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxSendTo.AutoCompleteTimeout = 500;
             this.textBoxSendTo.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxSendTo.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxSendTo.BorderColorScaling = 0.5F;
@@ -299,10 +300,10 @@
             // panelOuter
             // 
             this.panelOuter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelOuter.Controls.Add(this.textBoxDefaultDelay);
             this.panelOuter.Controls.Add(this.comboBoxKeySelector);
             this.panelOuter.Controls.Add(this.panelRadio);
-            this.panelOuter.Controls.Add(this.textBoxNextDelay);
-            this.panelOuter.Controls.Add(this.textBoxDelay);
+            this.panelOuter.Controls.Add(this.textBoxCurrentKeyDelay);
             this.panelOuter.Controls.Add(this.checkBoxShift);
             this.panelOuter.Controls.Add(this.checkBoxCtrl);
             this.panelOuter.Controls.Add(this.checkBoxAlt);
@@ -323,6 +324,39 @@
             this.panelOuter.Size = new System.Drawing.Size(367, 322);
             this.panelOuter.TabIndex = 6;
             this.panelOuter.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelOuter_MouseDown);
+            // 
+            // textBoxDefaultDelay
+            // 
+            this.textBoxDefaultDelay.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxDefaultDelay.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxDefaultDelay.BackErrorColor = System.Drawing.Color.Red;
+            this.textBoxDefaultDelay.BorderColor = System.Drawing.Color.Transparent;
+            this.textBoxDefaultDelay.BorderColorScaling = 0.5F;
+            this.textBoxDefaultDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxDefaultDelay.ClearOnFirstChar = false;
+            this.textBoxDefaultDelay.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxDefaultDelay.DelayBeforeNotification = 0;
+            this.textBoxDefaultDelay.EndButtonEnable = true;
+            this.textBoxDefaultDelay.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxDefaultDelay.EndButtonImage")));
+            this.textBoxDefaultDelay.EndButtonVisible = false;
+            this.textBoxDefaultDelay.Format = "D";
+            this.textBoxDefaultDelay.InErrorCondition = true;
+            this.textBoxDefaultDelay.Location = new System.Drawing.Point(201, 122);
+            this.textBoxDefaultDelay.Maximum = ((long)(5000));
+            this.textBoxDefaultDelay.Minimum = ((long)(0));
+            this.textBoxDefaultDelay.Multiline = false;
+            this.textBoxDefaultDelay.Name = "textBoxDefaultDelay";
+            this.textBoxDefaultDelay.ReadOnly = false;
+            this.textBoxDefaultDelay.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxDefaultDelay.SelectionLength = 0;
+            this.textBoxDefaultDelay.SelectionStart = 0;
+            this.textBoxDefaultDelay.Size = new System.Drawing.Size(50, 23);
+            this.textBoxDefaultDelay.TabIndex = 7;
+            this.textBoxDefaultDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxDefaultDelay.Value = ((long)(0));
+            this.textBoxDefaultDelay.WordWrap = true;
+            this.textBoxDefaultDelay.Enter += new System.EventHandler(this.textBox_Enter);
+            this.textBoxDefaultDelay.Leave += new System.EventHandler(this.textBox_Leave);
             // 
             // comboBoxKeySelector
             // 
@@ -351,9 +385,9 @@
             this.panelRadio.Controls.Add(this.radioButtonUp);
             this.panelRadio.Controls.Add(this.radioButtonDown);
             this.panelRadio.Controls.Add(this.radioButtonPress);
-            this.panelRadio.Location = new System.Drawing.Point(247, 122);
+            this.panelRadio.Location = new System.Drawing.Point(266, 122);
             this.panelRadio.Name = "panelRadio";
-            this.panelRadio.Size = new System.Drawing.Size(100, 72);
+            this.panelRadio.Size = new System.Drawing.Size(81, 72);
             this.panelRadio.TabIndex = 5;
             // 
             // radioButtonUp
@@ -407,73 +441,44 @@
             this.radioButtonPress.UseVisualStyleBackColor = true;
             this.radioButtonPress.CheckedChanged += new System.EventHandler(this.radioButtonPress_CheckedChanged);
             // 
-            // textBoxNextDelay
+            // textBoxCurrentKeyDelay
             // 
-            this.textBoxNextDelay.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.textBoxNextDelay.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.textBoxNextDelay.BackErrorColor = System.Drawing.Color.Red;
-            this.textBoxNextDelay.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxNextDelay.BorderColorScaling = 0.5F;
-            this.textBoxNextDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxNextDelay.ClearOnFirstChar = false;
-            this.textBoxNextDelay.ControlBackground = System.Drawing.SystemColors.Control;
-            this.textBoxNextDelay.EndButtonEnable = true;
-            this.textBoxNextDelay.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxNextDelay.EndButtonImage")));
-            this.textBoxNextDelay.EndButtonVisible = false;
-            this.textBoxNextDelay.InErrorCondition = false;
-            this.textBoxNextDelay.Location = new System.Drawing.Point(185, 148);
-            this.textBoxNextDelay.Multiline = false;
-            this.textBoxNextDelay.Name = "textBoxNextDelay";
-            this.textBoxNextDelay.ReadOnly = false;
-            this.textBoxNextDelay.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.textBoxNextDelay.SelectionLength = 0;
-            this.textBoxNextDelay.SelectionStart = 0;
-            this.textBoxNextDelay.Size = new System.Drawing.Size(50, 20);
-            this.textBoxNextDelay.TabIndex = 4;
-            this.textBoxNextDelay.Text = "50";
-            this.textBoxNextDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.textBoxNextDelay.WordWrap = true;
-            this.textBoxNextDelay.TextChanged += new System.EventHandler(this.textBoxNextDelay_TextChanged);
-            this.textBoxNextDelay.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxNextDelay.Leave += new System.EventHandler(this.textBox_Leave);
-            // 
-            // textBoxDelay
-            // 
-            this.textBoxDelay.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.textBoxDelay.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.textBoxDelay.BackErrorColor = System.Drawing.Color.Red;
-            this.textBoxDelay.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxDelay.BorderColorScaling = 0.5F;
-            this.textBoxDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxDelay.ClearOnFirstChar = false;
-            this.textBoxDelay.ControlBackground = System.Drawing.SystemColors.Control;
-            this.textBoxDelay.EndButtonEnable = true;
-            this.textBoxDelay.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxDelay.EndButtonImage")));
-            this.textBoxDelay.EndButtonVisible = false;
-            this.textBoxDelay.InErrorCondition = false;
-            this.textBoxDelay.Location = new System.Drawing.Point(185, 122);
-            this.textBoxDelay.Multiline = false;
-            this.textBoxDelay.Name = "textBoxDelay";
-            this.textBoxDelay.ReadOnly = false;
-            this.textBoxDelay.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.textBoxDelay.SelectionLength = 0;
-            this.textBoxDelay.SelectionStart = 0;
-            this.textBoxDelay.Size = new System.Drawing.Size(50, 20);
-            this.textBoxDelay.TabIndex = 4;
-            this.textBoxDelay.Text = "50";
-            this.textBoxDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.textBoxDelay.WordWrap = true;
-            this.textBoxDelay.Enter += new System.EventHandler(this.textBox_Enter);
-            this.textBoxDelay.Leave += new System.EventHandler(this.textBox_Leave);
+            this.textBoxCurrentKeyDelay.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.textBoxCurrentKeyDelay.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxCurrentKeyDelay.BackErrorColor = System.Drawing.Color.Red;
+            this.textBoxCurrentKeyDelay.BorderColor = System.Drawing.Color.Transparent;
+            this.textBoxCurrentKeyDelay.BorderColorScaling = 0.5F;
+            this.textBoxCurrentKeyDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxCurrentKeyDelay.ClearOnFirstChar = true;
+            this.textBoxCurrentKeyDelay.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxCurrentKeyDelay.EndButtonEnable = true;
+            this.textBoxCurrentKeyDelay.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxCurrentKeyDelay.EndButtonImage")));
+            this.textBoxCurrentKeyDelay.EndButtonVisible = false;
+            this.textBoxCurrentKeyDelay.InErrorCondition = false;
+            this.textBoxCurrentKeyDelay.Location = new System.Drawing.Point(201, 148);
+            this.textBoxCurrentKeyDelay.Multiline = false;
+            this.textBoxCurrentKeyDelay.Name = "textBoxCurrentKeyDelay";
+            this.textBoxCurrentKeyDelay.ReadOnly = false;
+            this.textBoxCurrentKeyDelay.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.textBoxCurrentKeyDelay.SelectionLength = 0;
+            this.textBoxCurrentKeyDelay.SelectionStart = 0;
+            this.textBoxCurrentKeyDelay.Size = new System.Drawing.Size(50, 20);
+            this.textBoxCurrentKeyDelay.TabIndex = 4;
+            this.textBoxCurrentKeyDelay.Text = "50";
+            this.textBoxCurrentKeyDelay.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxCurrentKeyDelay.WordWrap = true;
+            this.textBoxCurrentKeyDelay.TextChanged += new System.EventHandler(this.textBoxNextDelay_TextChanged);
+            this.textBoxCurrentKeyDelay.Enter += new System.EventHandler(this.textBoxCurrentKeyDelay_Enter);
+            this.textBoxCurrentKeyDelay.Leave += new System.EventHandler(this.textBox_Leave);
             // 
             // labelNextDelay
             // 
             this.labelNextDelay.AutoSize = true;
             this.labelNextDelay.Location = new System.Drawing.Point(3, 148);
             this.labelNextDelay.Name = "labelNextDelay";
-            this.labelNextDelay.Size = new System.Drawing.Size(71, 13);
+            this.labelNextDelay.Size = new System.Drawing.Size(122, 13);
             this.labelNextDelay.TabIndex = 3;
-            this.labelNextDelay.Text = "Current Delay";
+            this.labelNextDelay.Text = "Current Key Delay String";
             // 
             // labelSelKeys
             // 
@@ -489,9 +494,9 @@
             this.labelDelay.AutoSize = true;
             this.labelDelay.Location = new System.Drawing.Point(3, 122);
             this.labelDelay.Name = "labelDelay";
-            this.labelDelay.Size = new System.Drawing.Size(78, 13);
+            this.labelDelay.Size = new System.Drawing.Size(157, 13);
             this.labelDelay.TabIndex = 3;
-            this.labelDelay.Text = "Start Delay(ms)";
+            this.labelDelay.Text = "Default Down Delay (0=Default)";
             // 
             // buttonDelete
             // 
@@ -544,9 +549,8 @@
         private System.Windows.Forms.Label labelCaption;
         private System.Windows.Forms.Panel panelOuter;
         private ExtButton buttonDelete;
-        private ExtTextBox textBoxDelay;
         private System.Windows.Forms.Label labelDelay;
-        private ExtTextBox textBoxNextDelay;
+        private ExtTextBox textBoxCurrentKeyDelay;
         private System.Windows.Forms.Label labelNextDelay;
         private System.Windows.Forms.Panel panelRadio;
         private ExtRadioButton radioButtonUp;
@@ -554,5 +558,6 @@
         private ExtRadioButton radioButtonPress;
         private ExtComboBox comboBoxKeySelector;
         private System.Windows.Forms.Label labelSelKeys;
+        private NumberBoxLong textBoxDefaultDelay;
     }
 }

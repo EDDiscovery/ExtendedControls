@@ -56,6 +56,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
+    <Compile Include="Controls\PanelNoTheme.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\SafeChart.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -128,9 +131,6 @@
     </Compile>
     <Compile Include="Controls\ImageViewer.Designer.cs">
       <DependentUpon>ImageViewer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PanelNoTheme.cs">
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\TreeView.cs">
       <SubType>Component</SubType>

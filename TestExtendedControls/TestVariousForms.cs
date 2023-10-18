@@ -253,7 +253,7 @@ namespace TestExtendedControls
             //     err = BaseUtils.EnhancedSendKeysParser.ParseKeys(events, "[1,2,3]#Insert", 200, 201, 202, addp);
 
             KeyForm f = new KeyForm();
-            f.Init(null, true, " ", "", "EliteDangerous64", -1, false,new List<string> { "AddOne" },addp);
+            f.Init(null, true, " ", "", "EliteDangerous64",  false,new List<string> { "AddOne" },addp);
             f.Show(this);
         }
 
@@ -261,7 +261,7 @@ namespace TestExtendedControls
         {
             Theme.Current.FontSize = 30;
             KeyForm f = new KeyForm();
-            f.Init(null, true, " ", "", "", -1, false);
+            f.Init(null, true, " ", "", "", false);
             f.Show(this);
 
         }

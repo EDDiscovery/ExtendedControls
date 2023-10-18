@@ -124,6 +124,7 @@ namespace ExtendedControls
             foreach (Image i in decals)
             {
                 PanelNoTheme d = new PanelNoTheme();        // use the no theme, we don't want the backcolor changed. Panels are themed with a back/fore colour.
+                d.Name = cb.Name + "_Decals";
                 d.BackgroundImage = i;
                 d.BackgroundImageLayout = ImageLayout.Stretch;
                 d.BackColor = cb.BackColor;
@@ -134,7 +135,7 @@ namespace ExtendedControls
             foreach (Image i in buttons)
             {
                 ExtButton b = new ExtButton();
-                b.Name = "CB2 " + butno;
+                b.Name = cb.Name + "_CB2_" + butno;
                 b.Image = i;
                 b.Tag = butno++;
                 b.BackColor = cb.BackColor;

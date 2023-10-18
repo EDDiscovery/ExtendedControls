@@ -95,6 +95,7 @@ namespace ExtendedControls
         {
             this.GotFocus += TextBoxBorder_GotFocus;
             textbox = new TextBox();
+            textbox.Name = "ExtTextBox_textbox";
             textbox.BorderStyle = BorderStyle.FixedSingle;
             backerrorcolor = Color.Red;
             backnormalcolor = textbox.BackColor;
@@ -103,7 +104,7 @@ namespace ExtendedControls
             SuspendLayout();
 
             endbutton = new ExtButton();                               // we only add it to controls list if shown.. to limit the load on the GUI
-            endbutton.Name = "EB";
+            endbutton.Name = "ExtTextBox_EndButton";
             endbutton.Image = Properties.Resources.ArrowDown;
             endbutton.Click += Dropdownbutton_Click;
             endbutton.MouseMove += Textbox_MouseMove;
@@ -114,7 +115,6 @@ namespace ExtendedControls
 
             // Enter and Leave is handled by this wrapper control itself, since when we leave the textbox, we leave this
             textbox.Click += Textbox_Click;
-            textbox.Name = "TB";
             textbox.DoubleClick += Textbox_DoubleClick;
             textbox.KeyUp += Textbox_KeyUp;
             textbox.KeyDown += Textbox_KeyDown;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2022 EDDiscovery development team
+ * Copyright © 2016-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -41,6 +41,9 @@ namespace ExtendedControls
         public static float DefaultFontSize = 8.25F;
 
         private static float minfontsize = 4;
+
+        // use TabIndex to also indicate no theme by setting tab index to this. Added so base winform controls can disable themeing
+        public const int TabIndexNoThemeIndicator = 9090;       
 
         public enum CI     
         {
@@ -300,7 +303,7 @@ namespace ExtendedControls
 
         public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
         {
-            System.Diagnostics.Debug.WriteLine($"Themer apply standard {ctrl.Name} Font {GetFont}");
+           // System.Diagnostics.Debug.WriteLine($"Themer apply standard {ctrl.Name} Font {GetFont}");
             var ret = Apply(ctrl, GetFont, nowindowsborderoverride);
             //System.Diagnostics.Debug.WriteLine($"Finish standard themeing to {ctrl.Name}");
             return ret;
@@ -308,7 +311,7 @@ namespace ExtendedControls
 
         public bool ApplyDialog(Control ctrl, bool nowindowsborderoverride = false)
         {
-            System.Diagnostics.Debug.WriteLine($"Themer apply dialog {ctrl.Name} Font {GetDialogFont}");
+            //System.Diagnostics.Debug.WriteLine($"Themer apply dialog {ctrl.Name} Font {GetDialogFont}");
             var ret = Apply(ctrl, GetDialogFont, nowindowsborderoverride);
             //System.Diagnostics.Debug.WriteLine($"Finished dialog themeing to {ctrl.Name}");
             return ret;
@@ -328,10 +331,6 @@ namespace ExtendedControls
 
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level, bool noborderoverride = false)    // parent can be null
         {
-            if (myControl is INoTheme)      // no action on this or below if of this interface class
-            {
-                return;
-            }
 
 #if DEBUG
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
@@ -348,20 +347,18 @@ namespace ExtendedControls
             Type controltype = myControl.GetType();
             string parentnamespace = parent?.GetType().Namespace ?? "NoParent";
 
-            if (myControl is Form)
+            if (myControl.TabIndex == TabIndexNoThemeIndicator)
+            {
+                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Tabindex indicates no theme!");
+                return;
+            }
+            else if (myControl is Form)
             {
                 Form f = myControl as Form;
                 f.FormBorderStyle = (WindowsFrame && !noborderoverride) ? FormBorderStyle.Sizable : FormBorderStyle.None;
                 f.Opacity = formopacity / 100;
                 f.BackColor = colors[CI.form];
                 f.Font = fnt;
-            }
-            else if (!parentnamespace.Equals("ExtendedControls") && (controltype.Name.Equals("Button") || controltype.Name.Equals("RadioButton") || controltype.Name.Equals("GroupBox") ||
-                controltype.Name.Equals("CheckBox") || controltype.Name.Equals("TextBox") ||
-                controltype.Name.Equals("ComboBox") || (controltype.Name.Equals("RichTextBox")))
-                )
-            {
-                System.Diagnostics.Trace.WriteLine(myControl.Name + " of " + controltype.Name + " from " + parent.Name + " !!! Use the new controls in Controls folder - not the non visual themed ones!");
             }
             else if ( myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
             {
@@ -402,6 +399,8 @@ namespace ExtendedControls
 
                 ctrl.Invalidate();
                 ctrl.PerformLayout();
+                
+                return;     // don't recurse, it has stuff inside it
             }
             else if (myControl is ExtTextBox)
             {
@@ -441,6 +440,8 @@ namespace ExtendedControls
                 }
 
                 ctrl.Invalidate();
+                
+                return;     // don't allow recursion inside since it has a textbox
             }
             else if (myControl is ExtButton)
             {
@@ -639,6 +640,7 @@ namespace ExtendedControls
                 }
 
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
+                return; // don't recurse.
             }
             else if (myControl is NumericUpDown)
             {                                                                   // BACK colour does not work..
@@ -673,8 +675,17 @@ namespace ExtendedControls
             }
             else if (myControl is Panel)
             {
-                myControl.BackColor = paneldebugmode ? Color.Blue : colors[CI.form];
-                myControl.ForeColor = colors[CI.label];
+                if (myControl is PanelNoTheme )      // this type indicates no theme
+                {
+                    //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Panel no theme!");
+                    return;
+                }
+                else
+                {
+                    //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " " + myControl.TabIndex + "Panel Theme It!");
+                    myControl.BackColor = paneldebugmode ? Color.Blue : colors[CI.form];
+                    myControl.ForeColor = colors[CI.label];
+                }
             }
             else if (myControl is Label)
             {
@@ -802,27 +813,32 @@ namespace ExtendedControls
                 if (ctrl.ContextMenuStrip != null)       // propergate font onto any attached context menus
                     ctrl.ContextMenuStrip.Font = fnt;
             }
-            else if (myControl is ExtScrollBar && !(parent is ExtListBox || parent is ExtRichTextBox))
-            {                   // selected items need VScroll controlled here. Others control it themselves
-                ExtScrollBar ctrl = (ExtScrollBar)myControl;
+            else if (myControl is ExtScrollBar )        
+            {
+                // selected items need VScroll controlled here. Others control it themselves
 
-                //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
-                if (textboxborderstyle.Equals(TextboxBorderStyles[3]))
-                {
-                    Color c1 = colors[CI.grid_scrollbutton];
-                    ctrl.BorderColor = colors[CI.grid_borderlines];
-                    ctrl.BackColor = colors[CI.form];
-                    ctrl.SliderColor = colors[CI.grid_sliderback];
-                    ctrl.BorderColor = ctrl.ThumbBorderColor =
-                            ctrl.ArrowBorderColor = colors[CI.grid_borderlines];
-                    ctrl.ArrowButtonColor = ctrl.ThumbButtonColor = c1;
-                    ctrl.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
-                    ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
-                    ctrl.ForeColor = colors[CI.grid_scrollarrow];
-                    ctrl.FlatStyle = FlatStyle.Popup;
+                if (!(parent is ExtListBox || parent is ExtRichTextBox))
+                {                   
+                    ExtScrollBar ctrl = (ExtScrollBar)myControl;
+
+                    //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
+                    if (textboxborderstyle.Equals(TextboxBorderStyles[3]))
+                    {
+                        Color c1 = colors[CI.grid_scrollbutton];
+                        ctrl.BorderColor = colors[CI.grid_borderlines];
+                        ctrl.BackColor = colors[CI.form];
+                        ctrl.SliderColor = colors[CI.grid_sliderback];
+                        ctrl.BorderColor = ctrl.ThumbBorderColor =
+                                ctrl.ArrowBorderColor = colors[CI.grid_borderlines];
+                        ctrl.ArrowButtonColor = ctrl.ThumbButtonColor = c1;
+                        ctrl.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
+                        ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
+                        ctrl.ForeColor = colors[CI.grid_scrollarrow];
+                        ctrl.FlatStyle = FlatStyle.Popup;
+                    }
+                    else
+                        ctrl.FlatStyle = FlatStyle.System;
                 }
-                else
-                    ctrl.FlatStyle = FlatStyle.System;
             }
             else if (myControl is ExtNumericUpDown)
             {
@@ -942,12 +958,72 @@ namespace ExtendedControls
                 compassControl.BugColor = colors[CI.textbox_fore].Multiply(0.8F);
                 compassControl.BackColor = colors[CI.form];
             }
+         
+            else if (myControl is Button wfb)
+            {
+                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                wfb.ForeColor = colors[CI.button_text];
+                wfb.BackColor = colors[CI.button_back];
+                wfb.FlatStyle = FlatStyle.Popup;
+                wfb.FlatAppearance.BorderColor = colors[CI.button_border];
+            }
+            else if (myControl is RadioButton wrb)
+            {
+                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                wrb.ForeColor = colors[CI.button_text];
+            }
+            else if (myControl is GroupBox wgb)
+            {
+                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                wgb.ForeColor = colors[CI.group_text];
+                wgb.BackColor = colors[CI.group_back];
+            }
+            else if (myControl is CheckBox wchb)
+            {
+                wchb.BackColor = GroupBoxOverride(parent, colors[CI.form]);
+
+                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                if (wchb.Appearance == Appearance.Button)
+                {
+                    wchb.ForeColor = colors[CI.button_text];
+                }
+                else
+                {
+                    wchb.ForeColor = colors[CI.checkbox];
+                }
+
+            }
+            else if (myControl is TextBox wtb)
+            {
+                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                wtb.ForeColor = colors[CI.textbox_fore];
+                wtb.BackColor = colors[CI.textbox_back];
+                wtb.BorderStyle = BorderStyle.FixedSingle;
+            }
+            else if (myControl is RichTextBox wrtb)
+            {
+                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                wrtb.ForeColor = colors[CI.textbox_fore];
+                wrtb.BackColor = colors[CI.textbox_back];
+            }
+            else if (myControl is ComboBox wcb)
+            {
+                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                wcb.ForeColor = colors[CI.button_text];
+                wcb.BackColor = colors[CI.button_back];
+            }
+            else if (myControl is ExtSplitterResizeParent)      // splitter, no theme
+            {
+
+            }
+            // these are not themed or are sub parts of other controls
+            else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar )
+            {
+                // ignore
+            }
             else
             {
-                if (!parentnamespace.Equals("ExtendedControls"))
-                {
-                    //Console.WriteLine("THEME: Unhandled control " + controltype.Name + ":" + myControl.Name + " from " + parent.Name);
-                }
+                System.Diagnostics.Trace.WriteLine($"Themer {myControl.Name}:{controltype.Name} from {parent.Name} Unknown control!");
             }
 
             //System.Diagnostics.Debug.WriteLine("                  " + level + " Control " + myControl.Name + " " + myControl.Location + " " + myControl.Size);
@@ -1143,10 +1219,5 @@ namespace ExtendedControls
                 return false;
             }
         }
-    }
-
-    public interface INoTheme       // attach to a class and it won't theme the class or its sub control
-    {
-
     }
 }
