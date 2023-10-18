@@ -335,7 +335,7 @@ namespace ExtendedControls
 #if DEBUG
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + (myControl.GetType().Name + ":" + myControl.Name??"") + " : " + myControl.GetHeirarchy(false));
-            //   System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
+            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
             myControl.SuspendLayout();
 
@@ -347,6 +347,7 @@ namespace ExtendedControls
             Type controltype = myControl.GetType();
             string parentnamespace = parent?.GetType().Namespace ?? "NoParent";
 
+            // this dodge allows no themeing on controls
             if (myControl.TabIndex == TabIndexNoThemeIndicator)
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Tabindex indicates no theme!");
@@ -360,9 +361,8 @@ namespace ExtendedControls
                 f.BackColor = colors[CI.form];
                 f.Font = fnt;
             }
-            else if ( myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
+            else if (myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
             {
-
             }
             else if (myControl is ExtRichTextBox)
             {
@@ -399,8 +399,8 @@ namespace ExtendedControls
 
                 ctrl.Invalidate();
                 ctrl.PerformLayout();
-                
-                return;     // don't recurse, it has stuff inside it
+
+                // we need to recurse as the RichText box needs themeing applied to make it work
             }
             else if (myControl is ExtTextBox)
             {
@@ -440,8 +440,8 @@ namespace ExtendedControls
                 }
 
                 ctrl.Invalidate();
-                
-                return;     // don't allow recursion inside since it has a textbox
+
+                // we need to recurse as the RichText box needs themeing applied to make it work
             }
             else if (myControl is ExtButton)
             {
@@ -476,7 +476,7 @@ namespace ExtendedControls
                     // if image, and no text or text over image centred (so over the image), background is form to make the back disappear
                     if (ctrl.Image != null && (ctrl.Text.Length == 0 || (ctrl.TextAlign == ContentAlignment.MiddleCenter && ctrl.ImageAlign == ContentAlignment.MiddleCenter)))
                     {
-                        if ( ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton )       // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
+                        if (ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton)       // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
                         {
                             ctrl.BackColor = ctrl.Parent.BackColor;
                             ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
@@ -560,13 +560,13 @@ namespace ExtendedControls
                 // the user can chose if titles/legends border and back is themed
 
                 ctrl.SetAllTitlesColorFont(colors[CI.grid_celltext], GetScaledFont(1.5f), colors[CI.grid_cellbackground],
-                                          Color.Empty,1,
-                                          colors[CI.group_borderlines],1,ChartDashStyle.Solid);
+                                          Color.Empty, 1,
+                                          colors[CI.group_borderlines], 1, ChartDashStyle.Solid);
 
-                ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt, colors[CI.grid_cellbackground].Multiply(1.2f), 6, Color.FromArgb(128,0,0,0),
-                                            colors[CI.grid_celltext], colors[CI.grid_cellbackground], fnt, StringAlignment.Center,LegendSeparatorStyle.Line, colors[CI.group_borderlines],
-                                            colors[CI.group_borderlines],ChartDashStyle.Solid,1,
-                                            LegendSeparatorStyle.Line, colors[CI.group_borderlines],1);
+                ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt, colors[CI.grid_cellbackground].Multiply(1.2f), 6, Color.FromArgb(128, 0, 0, 0),
+                                            colors[CI.grid_celltext], colors[CI.grid_cellbackground], fnt, StringAlignment.Center, LegendSeparatorStyle.Line, colors[CI.group_borderlines],
+                                            colors[CI.group_borderlines], ChartDashStyle.Solid, 1,
+                                            LegendSeparatorStyle.Line, colors[CI.group_borderlines], 1);
 
                 // we theme all chart areas, backwards, so chartarea0 is the one left selected            
                 for (int i = ctrl.ChartAreas.Count - 1; i >= 0; i--)
@@ -640,7 +640,8 @@ namespace ExtendedControls
                 }
 
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
-                return; // don't recurse.
+
+                // we need to recurse..
             }
             else if (myControl is NumericUpDown)
             {                                                                   // BACK colour does not work..
@@ -675,7 +676,7 @@ namespace ExtendedControls
             }
             else if (myControl is Panel)
             {
-                if (myControl is PanelNoTheme )      // this type indicates no theme
+                if (myControl is PanelNoTheme)      // this type indicates no theme
                 {
                     //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Panel no theme!");
                     return;
@@ -813,12 +814,11 @@ namespace ExtendedControls
                 if (ctrl.ContextMenuStrip != null)       // propergate font onto any attached context menus
                     ctrl.ContextMenuStrip.Font = fnt;
             }
-            else if (myControl is ExtScrollBar )        
+            else if (myControl is ExtScrollBar)
             {
                 // selected items need VScroll controlled here. Others control it themselves
-
-                if (!(parent is ExtListBox || parent is ExtRichTextBox))
-                {                   
+                if (!(parent is ExtListBox || parent is ExtRichTextBox))        
+                {
                     ExtScrollBar ctrl = (ExtScrollBar)myControl;
 
                     //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
@@ -892,7 +892,7 @@ namespace ExtendedControls
                 ctrl.updown.ForeColor = colors[CI.textbox_fore];
                 ctrl.updown.MouseOverColor = colors[CI.checkbox].Multiply(1.4F);
                 ctrl.updown.MouseSelectedColor = colors[CI.checkbox].Multiply(1.5F);
-                
+
                 ctrl.ResumeLayout();        // forgot to resume layout before (oct 22)!!!
                 return;     // don't do sub controls - we are in charge of them
             }
@@ -958,7 +958,7 @@ namespace ExtendedControls
                 compassControl.BugColor = colors[CI.textbox_fore].Multiply(0.8F);
                 compassControl.BackColor = colors[CI.form];
             }
-         
+
             else if (myControl is Button wfb)
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
@@ -1017,7 +1017,7 @@ namespace ExtendedControls
 
             }
             // these are not themed or are sub parts of other controls
-            else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar )
+            else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar)
             {
                 // ignore
             }
