@@ -347,11 +347,13 @@ namespace ExtendedControls
             Type controltype = myControl.GetType();
             string parentnamespace = parent?.GetType().Namespace ?? "NoParent";
 
+            bool dochildren = true;
+
             // this dodge allows no themeing on controls
             if (myControl.TabIndex == TabIndexNoThemeIndicator)
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Tabindex indicates no theme!");
-                return;
+                dochildren = false;
             }
             else if (myControl is Form)
             {
@@ -400,7 +402,7 @@ namespace ExtendedControls
                 ctrl.Invalidate();
                 ctrl.PerformLayout();
 
-                // we need to recurse as the RichText box needs themeing applied to make it work
+                dochildren = false;
             }
             else if (myControl is ExtTextBox)
             {
@@ -441,7 +443,7 @@ namespace ExtendedControls
 
                 ctrl.Invalidate();
 
-                // we need to recurse as the RichText box needs themeing applied to make it work
+                dochildren = false;
             }
             else if (myControl is ExtButton)
             {
@@ -545,6 +547,8 @@ namespace ExtendedControls
                 }
 
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
+
+                dochildren = false;
             }
             else if (myControl is ExtSafeChart)  // as a panel, we intercept to say okay before the panel. Item itself needs no themeing
             {
@@ -641,7 +645,7 @@ namespace ExtendedControls
 
                 ctrl.Repaint();            // force a repaint as the individual settings do not by design.
 
-                // we need to recurse..
+                dochildren = false;
             }
             else if (myControl is NumericUpDown)
             {                                                                   // BACK colour does not work..
@@ -679,7 +683,7 @@ namespace ExtendedControls
                 if (myControl is PanelNoTheme)      // this type indicates no theme
                 {
                     //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Panel no theme!");
-                    return;
+                    dochildren = false;
                 }
                 else
                 {
@@ -816,29 +820,25 @@ namespace ExtendedControls
             }
             else if (myControl is ExtScrollBar)
             {
-                // selected items need VScroll controlled here. Others control it themselves
-                if (!(parent is ExtListBox || parent is ExtRichTextBox))        
-                {
-                    ExtScrollBar ctrl = (ExtScrollBar)myControl;
+                ExtScrollBar ctrl = (ExtScrollBar)myControl;
 
-                    //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
-                    if (textboxborderstyle.Equals(TextboxBorderStyles[3]))
-                    {
-                        Color c1 = colors[CI.grid_scrollbutton];
-                        ctrl.BorderColor = colors[CI.grid_borderlines];
-                        ctrl.BackColor = colors[CI.form];
-                        ctrl.SliderColor = colors[CI.grid_sliderback];
-                        ctrl.BorderColor = ctrl.ThumbBorderColor =
-                                ctrl.ArrowBorderColor = colors[CI.grid_borderlines];
-                        ctrl.ArrowButtonColor = ctrl.ThumbButtonColor = c1;
-                        ctrl.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
-                        ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
-                        ctrl.ForeColor = colors[CI.grid_scrollarrow];
-                        ctrl.FlatStyle = FlatStyle.Popup;
-                    }
-                    else
-                        ctrl.FlatStyle = FlatStyle.System;
+                //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
+                if (textboxborderstyle.Equals(TextboxBorderStyles[3]))
+                {
+                    Color c1 = colors[CI.grid_scrollbutton];
+                    ctrl.BorderColor = colors[CI.grid_borderlines];
+                    ctrl.BackColor = colors[CI.form];
+                    ctrl.SliderColor = colors[CI.grid_sliderback];
+                    ctrl.BorderColor = ctrl.ThumbBorderColor =
+                            ctrl.ArrowBorderColor = colors[CI.grid_borderlines];
+                    ctrl.ArrowButtonColor = ctrl.ThumbButtonColor = c1;
+                    ctrl.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
+                    ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
+                    ctrl.ForeColor = colors[CI.grid_scrollarrow];
+                    ctrl.FlatStyle = FlatStyle.Popup;
                 }
+                else
+                    ctrl.FlatStyle = FlatStyle.System;
             }
             else if (myControl is ExtNumericUpDown)
             {
@@ -893,8 +893,7 @@ namespace ExtendedControls
                 ctrl.updown.MouseOverColor = colors[CI.checkbox].Multiply(1.4F);
                 ctrl.updown.MouseSelectedColor = colors[CI.checkbox].Multiply(1.5F);
 
-                ctrl.ResumeLayout();        // forgot to resume layout before (oct 22)!!!
-                return;     // don't do sub controls - we are in charge of them
+                dochildren = false;
             }
             else if (myControl is StatusStrip)
             {
@@ -1014,12 +1013,10 @@ namespace ExtendedControls
             }
             else if (myControl is ExtSplitterResizeParent)      // splitter, no theme
             {
-
             }
             // these are not themed or are sub parts of other controls
             else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar)
             {
-                // ignore
             }
             else
             {
@@ -1030,16 +1027,18 @@ namespace ExtendedControls
 
             //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme begin sub controls of {myControl.Name} ");
 
-            foreach (Control subC in myControl.Controls)
+            if (dochildren)
             {
-                //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme sub controls of {myControl.Name} sub {subC.GetType().Name}");
+                foreach (Control subC in myControl.Controls)
+                {
+                    //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme sub controls of {myControl.Name} sub {subC.GetType().Name}");
 
-                UpdateControls(myControl, subC, fnt, level + 1);
+                    UpdateControls(myControl, subC, fnt, level + 1);
+                }
             }
 
             myControl.ResumeLayout();
             //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme Control {myControl.Name} to {myControl.Bounds}");
-
         }
 
 
