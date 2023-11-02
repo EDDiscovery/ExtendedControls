@@ -279,5 +279,35 @@ namespace ExtendedControls
                 (c == FormatCulture.NumberFormat.NegativeSign[0] && SelectionStart == 0 && Minimum < 0));
         }
     }
+
+    public class NumberBoxInt : NumberBox<int>
+    {
+        public NumberBoxInt()
+        {
+            Format = "D";
+            ValueNoChange = 0;
+            Minimum = int.MinValue;
+            Maximum = int.MaxValue;
+        }
+
+        protected override string ConvertToString(int v)
+        {
+            return v.ToString(Format, FormatCulture);
+        }
+        protected override bool ConvertFromString(string t, out int number)
+        {
+            bool ok = int.TryParse(t, System.Globalization.NumberStyles.Integer, FormatCulture, out number) &&
+                            number >= Minimum && number <= Maximum;
+            if (ok && othernumber != null)
+                ok = number.CompareTo(othernumber.Value, othercomparision);
+            return ok;
+        }
+
+        protected override bool AllowedChar(char c)
+        {
+            return (char.IsDigit(c) || c == 8 ||
+                (c == FormatCulture.NumberFormat.NegativeSign[0] && SelectionStart == 0 && Minimum < 0));
+        }
+    }
 }
 

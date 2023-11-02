@@ -52,6 +52,8 @@
             this.extNumericUpDown1 = new ExtendedControls.ExtNumericUpDown();
             this.extButton6 = new ExtendedControls.ExtButton();
             this.extButton5 = new ExtendedControls.ExtButton();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -99,6 +101,7 @@
             this.extTextBoxAutoComplete1.AutoCompleteCommentMarker = null;
             this.extTextBoxAutoComplete1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.extTextBoxAutoComplete1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.extTextBoxAutoComplete1.AutoCompleteTimeout = 500;
             this.extTextBoxAutoComplete1.BackErrorColor = System.Drawing.Color.Red;
             this.extTextBoxAutoComplete1.BorderColor = System.Drawing.Color.Transparent;
             this.extTextBoxAutoComplete1.BorderColorScaling = 0.5F;
@@ -132,6 +135,7 @@
             // 
             this.extRichTextBox1.BorderColor = System.Drawing.Color.Transparent;
             this.extRichTextBox1.BorderColorScaling = 0.5F;
+            this.extRichTextBox1.DetectUrls = true;
             this.extRichTextBox1.HideScrollBar = true;
             this.extRichTextBox1.Location = new System.Drawing.Point(3, 28);
             this.extRichTextBox1.Name = "extRichTextBox1";
@@ -434,11 +438,34 @@
             this.extButton5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.extButton5.UseVisualStyleBackColor = false;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(3, 450);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(80, 17);
+            this.checkBox1.TabIndex = 8;
+            this.checkBox1.Text = "checkBox1";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox2.Location = new System.Drawing.Point(142, 450);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(80, 17);
+            this.checkBox2.TabIndex = 8;
+            this.checkBox2.Text = "checkBox2";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // TestMisc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(879, 666);
+            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.extGroupBox1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -457,6 +484,7 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -484,5 +512,7 @@
         private ExtendedControls.ExtNumericUpDown extNumericUpDown1;
         private ExtendedControls.ExtButton extButton5;
         private ExtendedControls.ExtButton extButton6;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }

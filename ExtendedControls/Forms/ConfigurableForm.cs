@@ -29,7 +29,7 @@ namespace ExtendedControls
         // Directly Supported Types (string name/base type)
         //      "button" ExtButton, "textbox" ExtTextBox, "checkbox" ExtCheckBox 
         //      "label" Label, "datetime" ExtDateTimePicker,
-        //      "numberboxdouble" NumberBoxDouble, "numberboxlong" NumberBoxLong, 
+        //      "numberboxdouble" NumberBoxDouble, "numberboxlong" NumberBoxLong, "numberboxint" NumberBoxInt, 
         //      "combobox" ExtComboBox
         // Or any type if you use Add(control, name..)
 
@@ -101,6 +101,7 @@ namespace ExtendedControls
 
             public ContentAlignment? textalign;  // label,button. nominal not applied
             public bool checkboxchecked;        // fill in for checkbox
+            public ContentAlignment contentalign = ContentAlignment.MiddleLeft;  // align for checkbox
             public bool textboxmultiline;       // fill in for textbox
             public bool textboxescapeonreport;  // escape characters back on reporting a text box Get()
             public bool clearonfirstchar;       // fill in for textbox
@@ -108,8 +109,8 @@ namespace ExtendedControls
             public string customdateformat;     // fill in for datetimepicker
             public double numberboxdoubleminimum = double.MinValue;   // for double box
             public double numberboxdoublemaximum = double.MaxValue;
-            public long numberboxlongminimum = long.MinValue;   // for long box
-            public long numberboxlongmaximum = long.MaxValue;
+            public long numberboxlongminimum = long.MinValue;   // for long and int box
+            public long numberboxlongmaximum = long.MaxValue; // for long and int box
             public string numberboxformat;      // for both number boxes
 
             public float PostThemeFontScale = 1.0f;   // post theme font scaler
@@ -236,6 +237,7 @@ namespace ExtendedControls
                 return null;
         }
 
+        // from supported controls
         public string Get(string controlname)      // return value of dialog control
         {
             Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
@@ -275,7 +277,19 @@ namespace ExtendedControls
             return null;
         }
 
-        public double? GetDouble(string controlname)     // Null if not valid
+        // from checkbox
+        public bool? GetBool(string controlname)
+        {
+            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t != null)
+            {
+                var cn = t.control as ExtendedControls.ExtCheckBox;
+                return cn.Checked;
+            }
+            return null;
+        }
+        // from numberbox, Null if not valid
+        public double? GetDouble(string controlname)
         {
             Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
@@ -287,7 +301,8 @@ namespace ExtendedControls
             return null;
         }
 
-        public long? GetLong(string controlname)     // Null if not valid
+        // from numberbox, Null if not valid
+        public long? GetLong(string controlname)     
         {
             Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
@@ -298,7 +313,19 @@ namespace ExtendedControls
             }
             return null;
         }
-
+        // from numberbox, Null if not valid
+        public int? GetInt(string controlname)     
+        {
+            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t != null)
+            {
+                var cn = t.control as ExtendedControls.NumberBoxInt;
+                if (cn.IsValid)
+                    return cn.Value;
+            }
+            return null;
+        }
+        // from DateTimePicker, Null if not valid
         public DateTime? GetDateTime(string controlname)
         {
             Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
@@ -450,7 +477,8 @@ namespace ExtendedControls
                 c.Size = ent.size;
                 c.Location = new Point(ent.pos.X, ent.pos.Y - yoffset);
                 c.Name = ent.controlname;
-                if (!(ent.text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong))        // everything but get text
+                if (!(ent.text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker 
+                        || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong || c is ExtendedControls.NumberBoxInt))        // everything but get text
                     c.Text = ent.text;
                 c.Tag = ent;     // point control tag at ent structure
                 //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size + " " + c.Text);
@@ -537,6 +565,34 @@ namespace ExtendedControls
                         }
                     };
                 }
+                else if (c is ExtendedControls.NumberBoxInt)
+                {
+                    ExtendedControls.NumberBoxInt cb = c as ExtendedControls.NumberBoxInt;
+                    cb.Minimum = ent.numberboxlongminimum == long.MinValue ? int.MinValue : (int)ent.numberboxlongminimum;
+                    cb.Maximum = ent.numberboxlongmaximum == long.MaxValue ? int.MaxValue : (int)ent.numberboxlongmaximum;
+                    int? v = ent.text.InvariantParseIntNull();
+                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
+                    if (ent.numberboxformat != null)
+                        cb.Format = ent.numberboxformat;
+                    cb.ReturnPressed += (box) =>
+                    {
+                        SwallowReturn = false;
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                        return SwallowReturn;
+                    };
+                    cb.ValidityChanged += (box, s) =>
+                    {
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.controlname + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
+                }
                 else if (c is ExtendedControls.ExtTextBox)
                 {
                     ExtendedControls.ExtTextBox tb = c as ExtendedControls.ExtTextBox;
@@ -561,6 +617,7 @@ namespace ExtendedControls
                 {
                     ExtendedControls.ExtCheckBox cb = c as ExtendedControls.ExtCheckBox;
                     cb.Checked = ent.checkboxchecked;
+                    cb.CheckAlign = ent.contentalign;
                     cb.Click += (sender, ev) =>
                     {
                         if (!ProgClose)
@@ -872,6 +929,8 @@ namespace ExtendedControls
                 ctype = typeof(ExtendedControls.NumberBoxLong);
             else if (type.Equals("numberboxdouble"))
                 ctype = typeof(ExtendedControls.NumberBoxDouble);
+            else if (type.Equals("numberboxint"))
+                ctype = typeof(ExtendedControls.NumberBoxInt);
             else
                 return "Unknown control type " + type;
 
