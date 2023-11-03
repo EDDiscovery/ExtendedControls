@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017-2019 EDDiscovery development team
+ * Copyright © 2017-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -144,6 +142,12 @@ namespace ExtendedControls
         {
             entries.Add(e);
         }
+        public void Add(ref int vpos, int vspacing, Entry e)               // add an entry..
+        {
+            e.pos.Y += vpos;
+            entries.Add(e);
+            vpos += vspacing;
+        }
 
         public void AddOK(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
         {
@@ -157,6 +161,20 @@ namespace ExtendedControls
             if (sz == null)
                 sz = new Size(80, 24);
             Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { anchor = anchor });
+        }
+
+        public void AddLabelAndEntry(string labeltext, Point labelpos, Size labelsize, Entry e)
+        {
+            Add(new Entry("L" + e.controlname, typeof(Label), labeltext, labelpos, labelsize, null));
+            Add(e);
+        }
+
+        public void AddLabelAndEntry(string labeltext, Point labelxvoff, ref int vpos, int vspacing, Size labelsize, Entry e)
+        {
+            Add(new Entry("L" + e.controlname, typeof(Label), labeltext, new Point(labelxvoff.X,vpos+labelxvoff.Y), labelsize, null));
+            e.pos.Y += vpos;
+            Add(e);
+            vpos += vspacing;
         }
 
         public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
@@ -394,6 +412,21 @@ namespace ExtendedControls
             }
 
             return false;
+        }
+
+        // are all entries on this table which could be invalid valid?
+        public bool IsAllValid()
+        {
+            foreach( var t in entries)
+            {
+                var c = t.control;
+                var cl = c as ExtendedControls.NumberBoxLong;
+                var cd = c as ExtendedControls.NumberBoxDouble;
+                var ci = c as ExtendedControls.NumberBoxInt;
+                if ((cl != null && cl.IsValid == false) || (cd != null && cd.IsValid == false) || (ci != null && ci.IsValid == false))
+                    return false;
+            }
+            return true;
         }
 
          #endregion
