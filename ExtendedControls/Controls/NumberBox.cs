@@ -1,5 +1,5 @@
 ﻿/*g
- * Copyright © 2016 - 2019 EDDiscovery development team
+ * Copyright © 2016 - 2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -22,14 +20,15 @@ namespace ExtendedControls
 {
     public abstract class NumberBox<T> : ExtTextBox
     {
-        public string Format { get { return format; } set { format = value; ignorechange = true; base.Text = ConvertToString(Value); ignorechange = false;  } }
+        public string Format { get { return format; } set { format = value; ignorechange = true; base.Text = ConvertToString(Value); ignorechange = false; Check();  } }
 
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public System.Globalization.CultureInfo FormatCulture { get { return culture; } set { culture = value; } }
+        public System.Globalization.CultureInfo FormatCulture { get { return culture; } set { culture = value; Check(); } }
+        public System.Globalization.NumberStyles NumberStyles { get { return numstyles; } set { numstyles = value; Check(); } }
 
         public int DelayBeforeNotification { get; set; } = 0;
-        public T Minimum { get { return minv; } set { minv = value; InErrorCondition = !IsValid; } }
-        public T Maximum { get { return maxv; } set { maxv = value; InErrorCondition = !IsValid; } }
+        public T Minimum { get { return minv; } set { minv = value; Check(); } }
+        public T Maximum { get { return maxv; } set { maxv = value; Check(); } }
 
         public bool IsValid { get { T v;  return ConvertFromString(base.Text,out v); } }        // is the text a valid value?
 
@@ -37,7 +36,7 @@ namespace ExtendedControls
         {
             othernumber = other;
             othercomparision = compare;
-            InErrorCondition = !IsValid;
+            Check();
         }
 
         public void SetBlank()          // Blanks it, but does not declare an error
@@ -52,6 +51,7 @@ namespace ExtendedControls
         {
             ignorechange = true;
             base.Text = ConvertToString(Value);
+            Check();
             ignorechange = false;
         }
 
@@ -94,10 +94,16 @@ namespace ExtendedControls
 
         #region Implementation
 
+        private void Check()
+        {
+            InErrorCondition = !IsValid;
+        }
+
         private T number;
         protected bool ignorechange = false;
         private string format = "N";
         private System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
+        private System.Globalization.NumberStyles numstyles = System.Globalization.NumberStyles.None;
         private Timer timer;
         private static readonly object EVENT_VALUECHANGED = new object();
         private T minv;
@@ -197,6 +203,8 @@ namespace ExtendedControls
             ValueNoChange = 0;
             Minimum = float.MinValue;
             Maximum = float.MaxValue;
+            NumberStyles = System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowThousands;
+            Format = "G";
         }
 
         protected override string ConvertToString(float v)
@@ -205,7 +213,7 @@ namespace ExtendedControls
         }
         protected override bool ConvertFromString(string t, out float number)
         {
-            bool ok = float.TryParse(t, System.Globalization.NumberStyles.Float, FormatCulture, out number) &&
+            bool ok = float.TryParse(t, NumberStyles, FormatCulture, out number) &&
                       number >= Minimum && number <= Maximum;
             if (ok && othernumber != null)
                 ok = number.CompareTo(othernumber.Value, othercomparision);
@@ -225,6 +233,8 @@ namespace ExtendedControls
         public NumberBoxDouble()
         {
             ValueNoChange = 0;
+            NumberStyles = System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowThousands;
+            Format = "G";
             Minimum = double.MinValue;
             Maximum = double.MaxValue;
         }
@@ -235,7 +245,7 @@ namespace ExtendedControls
         }
         protected override bool ConvertFromString(string t, out double number)
         {
-            bool ok = double.TryParse(t, System.Globalization.NumberStyles.Float, FormatCulture, out number) &&
+            bool ok = double.TryParse(t, NumberStyles, FormatCulture, out number) &&
                 number >= Minimum && number <= Maximum;
             if (ok && othernumber != null)
                 ok = number.CompareTo(othernumber.Value, othercomparision);
@@ -254,6 +264,7 @@ namespace ExtendedControls
     {
         public NumberBoxLong()
         {
+            NumberStyles = System.Globalization.NumberStyles.AllowThousands;
             Format = "D";
             ValueNoChange = 0;
             Minimum = long.MinValue;
@@ -266,7 +277,7 @@ namespace ExtendedControls
         }
         protected override bool ConvertFromString(string t, out long number)
         {
-            bool ok = long.TryParse(t, System.Globalization.NumberStyles.Integer, FormatCulture, out number) &&
+            bool ok = long.TryParse(t, NumberStyles, FormatCulture, out number) &&
                             number >= Minimum && number <= Maximum;
             if (ok && othernumber != null)
                 ok = number.CompareTo(othernumber.Value, othercomparision);
@@ -284,6 +295,7 @@ namespace ExtendedControls
     {
         public NumberBoxInt()
         {
+            NumberStyles = System.Globalization.NumberStyles.AllowThousands;
             Format = "D";
             ValueNoChange = 0;
             Minimum = int.MinValue;
@@ -296,7 +308,7 @@ namespace ExtendedControls
         }
         protected override bool ConvertFromString(string t, out int number)
         {
-            bool ok = int.TryParse(t, System.Globalization.NumberStyles.Integer, FormatCulture, out number) &&
+            bool ok = int.TryParse(t, NumberStyles, FormatCulture, out number) &&
                             number >= Minimum && number <= Maximum;
             if (ok && othernumber != null)
                 ok = number.CompareTo(othernumber.Value, othercomparision);
