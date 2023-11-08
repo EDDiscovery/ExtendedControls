@@ -94,6 +94,8 @@ namespace ExtendedControls
 
             public float PostThemeFontScale { get; set; } = 1.0f;   // post theme font scaler
 
+            public bool Enabled { get; set; } = true;
+
             public Entry(string nam, Type c, string t, Point p, Size s, string tt)
             {
                 ControlType = c; Text = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long";
@@ -601,6 +603,7 @@ namespace ExtendedControls
                 c.Size = ent.Size;
                 c.Location = new Point(ent.Location.X, ent.Location.Y - yoffset);
                 c.Name = ent.Name;
+                c.Enabled = ent.Enabled;
                 if (!(ent.Text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker
                         || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong || c is ExtendedControls.NumberBoxInt))        // everything but get text
                     c.Text = ent.Text;
