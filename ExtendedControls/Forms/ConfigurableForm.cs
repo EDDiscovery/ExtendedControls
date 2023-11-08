@@ -62,62 +62,63 @@ namespace ExtendedControls
 
         public class Entry
         {
-            public string controlname;                  // logical name of control
-            public Type controltype;                    // if non null, activate this type.  Else if null, control should be filled up with your specific type
+            public string Name {get; set;}                          // logical name of control
+            public Type ControlType {get; set;}                     // if non null, activate this type.  Else if null, Control should be filled up with your specific type
+            public Control Control { get; set; }                    // if controltype is set, don't set.  If controltype=null, pass your control type.
 
-            public string text;                         // for certain types, the text
-            public System.Drawing.Point pos;
-            public System.Drawing.Size size;
-            public string tooltip;                      // can be null.
-            public AnchorStyles anchor = AnchorStyles.None;
+            public string Text {get; set;}                          // for certain types, the text
+            public Point Location {get; set;}
+            public Size Size {get; set;}
+            public string ToolTip { get; set; }                     // can be null.
 
-            // ButtonExt, TextBoxBorder, Label, CheckBoxCustom, DateTime (t=time)
-            public Entry(string nam, Type c, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
+            public AnchorStyles Anchor { get; set; } = AnchorStyles.None;       // anchor to window
+
+            public ContentAlignment? TextAlign { get; set; }                    // label,button. nominal not applied
+            public ContentAlignment ContentAlign { get; set; } = ContentAlignment.MiddleLeft;  // align for checkbox
+
+            public bool CheckBoxChecked { get; set; }        // fill in for checkbox
+
+            public bool TextBoxMultiline { get; set; }       // fill in for textbox
+            public bool TextBoxEscapeOnReport { get; set; }  // escape characters back on reporting a text box Get()
+            public bool TextBoxClearOnFirstChar { get; set; }       // fill in for textbox
+
+            public string[] ComboBoxItems { get; set; }
+
+            public string CustomDateFormat { get; set; }     // fill in for datetimepicker
+
+            public double NumberBoxDoubleMinimum { get; set; } = double.MinValue;   // for double box
+            public double NumberBoxDoubleMaximum { get; set; } = double.MaxValue;
+            public long NumberBoxLongMinimum { get; set; } = long.MinValue;   // for long and int box
+            public long NumberBoxLongMaximum { get; set; } = long.MaxValue; // for long and int box
+            public string NumberBoxFormat { get; set; } = null;      // for both number boxes
+
+            public float PostThemeFontScale { get; set; } = 1.0f;   // post theme font scaler
+
+            public Entry(string nam, Type c, string t, Point p, Size s, string tt)
             {
-                controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long";
+                ControlType = c; Text = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long";
             }
-
-            public Entry(string nam, Type c, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, float fontscale, ContentAlignment align = ContentAlignment.MiddleCenter)
+            public Entry(string nam, Type c, string t, Point p, Size s, string tt, float fontscale, ContentAlignment align = ContentAlignment.MiddleCenter)
             {
-                controltype = c; text = t; pos = p; size = s; tooltip = tt; controlname = nam; customdateformat = "long"; PostThemeFontScale = fontscale; textalign = align;
+                ControlType = c; Text = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long"; PostThemeFontScale = fontscale; TextAlign = align;
             }
-
-
             // ComboBoxCustom
-            public Entry(string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt, List<string> comboitems)
+            public Entry(string nam, string t, Point p, Size s, string tt, List<string> comboitems)
             {
-                controltype = typeof(ExtendedControls.ExtComboBox); text = t; pos = p; size = s; tooltip = tt; controlname = nam;
-                comboboxitems = string.Join(",", comboitems);
+                ControlType = typeof(ExtComboBox); Text = t; Location = p; Size = s; ToolTip = tt; Name = nam;
+                ComboBoxItems = comboitems.ToArray();
             }
-
+            public Entry(string nam, string t, Point p, Size s, string tt, string[] comboitems)
+            {
+                ControlType = typeof(ExtComboBox); Text = t; Location = p; Size = s; ToolTip = tt; Name = nam;
+                ComboBoxItems = comboitems;
+            }
             // custom
-
             public Entry(Control c, string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
             {
-                controlname = nam; control = c; text = t; pos = p; size = s; tooltip = tt; textalign = ContentAlignment.TopLeft;
+                Name = nam; Control = c; Text = t; Location = p; Size = s; ToolTip = tt; TextAlign = ContentAlignment.TopLeft;
             }
-
-            public ContentAlignment? textalign;  // label,button. nominal not applied
-            public bool checkboxchecked;        // fill in for checkbox
-            public ContentAlignment contentalign = ContentAlignment.MiddleLeft;  // align for checkbox
-            public bool textboxmultiline;       // fill in for textbox
-            public bool textboxescapeonreport;  // escape characters back on reporting a text box Get()
-            public bool clearonfirstchar;       // fill in for textbox
-            public string comboboxitems;        // fill in for combobox. comma separ list.
-            public string customdateformat;     // fill in for datetimepicker
-            public double numberboxdoubleminimum = double.MinValue;   // for double box
-            public double numberboxdoublemaximum = double.MaxValue;
-            public long numberboxlongminimum = long.MinValue;   // for long and int box
-            public long numberboxlongmaximum = long.MaxValue; // for long and int box
-            public string numberboxformat;      // for both number boxes
-
-            public float PostThemeFontScale = 1.0f;   // post theme font scaler
-
-            public Control control; // if controltype is set, don't set.  If controltype=null, pass your control type.
         }
-
-        private System.ComponentModel.IContainer components = null;     // replicate normal component container, so controls which look this
-                                                                        // up for finding the tooltip can (TextBoxBorder)
 
         #region Public interface
 
@@ -137,14 +138,13 @@ namespace ExtendedControls
                 entries.Add(e);
             return errmsg;
         }
-
         public void Add(Entry e)               // add an entry..
         {
             entries.Add(e);
         }
-        public void Add(ref int vpos, int vspacing, Entry e)               // add an entry..
+        public void Add(ref int vpos, int vspacing, Entry e)               // add an entry with vpos increase
         {
-            e.pos.Y += vpos;
+            e.Location = new Point(e.Location.X, e.Location.Y + vpos);
             entries.Add(e);
             vpos += vspacing;
         }
@@ -153,30 +153,32 @@ namespace ExtendedControls
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".TxID(ECIDs.OK), p, sz.Value, tooltip) { anchor = anchor });
+            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".TxID(ECIDs.OK), p, sz.Value, tooltip) { Anchor = anchor });
         }
 
         public void AddCancel(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { anchor = anchor });
+            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { Anchor = anchor });
         }
 
         public void AddLabelAndEntry(string labeltext, Point labelpos, Size labelsize, Entry e)
         {
-            Add(new Entry("L" + e.controlname, typeof(Label), labeltext, labelpos, labelsize, null));
+            Add(new Entry("L" + e.Name, typeof(Label), labeltext, labelpos, labelsize, null));
             Add(e);
         }
 
+        // vpos sets the vertical position. Entry.pos sets the X and offset Y from vpos
         public void AddLabelAndEntry(string labeltext, Point labelxvoff, ref int vpos, int vspacing, Size labelsize, Entry e)
         {
-            Add(new Entry("L" + e.controlname, typeof(Label), labeltext, new Point(labelxvoff.X,vpos+labelxvoff.Y), labelsize, null));
-            e.pos.Y += vpos;
+            Add(new Entry("L" + e.Name, typeof(Label), labeltext, new Point(labelxvoff.X, vpos + labelxvoff.Y), labelsize, null));
+            e.Location = new Point(e.Location.X, e.Location.Y + vpos);
             Add(e);
             vpos += vspacing;
         }
 
+        // handle OK and Close/Escape/Cancel
         public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
         {
             Trigger += (dialogname, controlname, xtag) =>
@@ -188,6 +190,31 @@ namespace ExtendedControls
                 else
                     othertrigger?.Invoke(dialogname, controlname, xtag);
             };
+        }
+
+        // must call if you add new controls after shown in a trigger
+        public void UpdateDisplayAfterAddNewControls()
+        {
+            AddEntries(this.CurrentAutoScaleFactor());          // make new controls, and scale up by autoscalefactor
+            Theme.Current.Apply(this, Theme.Current.GetScaledFont(FontScale), ForceNoWindowsBorder);    // retheme
+            //this.DumpTree(0);
+            SizeWindow(); // and size window again
+        }
+
+        // move controls at or below up/down by move. positions are before scaling so as you specified on creation
+        public void MoveControls(int below, int move)
+        {
+            below = (int)(below * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up, round up a little
+            move = (int)(move * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up
+            //System.Diagnostics.Debug.WriteLine($"Shift {after} by {move}");
+            foreach (Control c in outerpanel.Controls)
+            {
+                if (c.Top >= below)
+                {
+                    //System.Diagnostics.Debug.WriteLine($".. shift {c.Name} at {c.Top} by {move}");
+                    c.Top += move;
+                }
+            }
         }
 
         // requestedsize.value < N force, >N minimum width
@@ -239,69 +266,86 @@ namespace ExtendedControls
 
         public T GetControl<T>(string controlname) where T : Control      // return value of dialog control
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
-                return (T)t.control;
+                return (T)t.Control;
             else
                 return null;
         }
 
         public Control GetControl(string controlname )
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
-                return t.control;
+                return t.Control;
             else
                 return null;
         }
 
         // from supported controls
-        public string Get(string controlname)      // return value of dialog control
+        public string Get(string controlname)      
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
-            {
-                Control c = t.control;
-                if (c is ExtendedControls.ExtTextBox )
-                {
-                    string s = (c as ExtendedControls.ExtTextBox).Text;
-                    if (t.textboxescapeonreport)
-                        s = s.EscapeControlChars();
-                    return s;
-                }
-                else if (c is Label)
-                    return (c as Label).Text;
-                else if (c is ExtendedControls.ExtCheckBox)
-                    return (c as ExtendedControls.ExtCheckBox).Checked ? "1" : "0";
-                else if (c is ExtendedControls.ExtDateTimePicker)
-                    return (c as ExtendedControls.ExtDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                else if (c is ExtendedControls.NumberBoxDouble)
-                {
-                    var cn = c as ExtendedControls.NumberBoxDouble;
-                    return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
-                }
-                else if (c is ExtendedControls.NumberBoxLong)
-                {
-                    var cn = c as ExtendedControls.NumberBoxLong;
-                    return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
-                }
-                else if (c is ExtendedControls.ExtComboBox)
-                {
-                    ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
-                    return (cb.SelectedIndex != -1) ? cb.Text : "";
-                }
-            }
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            return t != null ? Get(t) : null;
+        }
 
-            return null;
+        // from supported controls, a list of results
+        public List<string> GetList(string startingcontrolname)    
+        {
+            var list = entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x=>x);
+            List<string> res = new List<string>();
+            foreach (var e in list)
+                res.Add(Get(e));
+            return res;
+        }
+
+        public string Get(Entry t)      // return value of dialog control
+        {
+            Control c = t.Control;
+            if (c is ExtendedControls.ExtTextBox)
+            {
+                string s = (c as ExtendedControls.ExtTextBox).Text;
+                if (t.TextBoxEscapeOnReport)
+                    s = s.EscapeControlChars();
+                return s;
+            }
+            else if (c is Label)
+                return (c as Label).Text;
+            else if (c is ExtendedControls.ExtCheckBox)
+                return (c as ExtendedControls.ExtCheckBox).Checked ? "1" : "0";
+            else if (c is ExtendedControls.ExtDateTimePicker)
+                return (c as ExtendedControls.ExtDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            else if (c is ExtendedControls.NumberBoxDouble)
+            {
+                var cn = c as ExtendedControls.NumberBoxDouble;
+                return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
+            }
+            else if (c is ExtendedControls.NumberBoxLong)
+            {
+                var cn = c as ExtendedControls.NumberBoxLong;
+                return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
+            }
+            else if (c is ExtendedControls.NumberBoxInt)
+            {
+                var cn = c as ExtendedControls.NumberBoxInt;
+                return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
+            }
+            else if (c is ExtendedControls.ExtComboBox)
+            {
+                ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
+                return (cb.SelectedIndex != -1) ? cb.Text : "";
+            }
+            else
+                return null;
         }
 
         // from checkbox
         public bool? GetBool(string controlname)
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                var cn = t.control as ExtendedControls.ExtCheckBox;
+                var cn = t.Control as ExtendedControls.ExtCheckBox;
                 return cn.Checked;
             }
             return null;
@@ -309,10 +353,10 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public double? GetDouble(string controlname)
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                var cn = t.control as ExtendedControls.NumberBoxDouble;
+                var cn = t.Control as ExtendedControls.NumberBoxDouble;
                 if (cn.IsValid)
                     return cn.Value;
             }
@@ -322,10 +366,10 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public long? GetLong(string controlname)     
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                var cn = t.control as ExtendedControls.NumberBoxLong;
+                var cn = t.Control as ExtendedControls.NumberBoxLong;
                 if (cn.IsValid)
                     return cn.Value;
             }
@@ -334,10 +378,10 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public int? GetInt(string controlname)     
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                var cn = t.control as ExtendedControls.NumberBoxInt;
+                var cn = t.Control as ExtendedControls.NumberBoxInt;
                 if (cn.IsValid)
                     return cn.Value;
             }
@@ -346,10 +390,10 @@ namespace ExtendedControls
         // from DateTimePicker, Null if not valid
         public DateTime? GetDateTime(string controlname)
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                ExtDateTimePicker c = t.control as ExtDateTimePicker;
+                ExtDateTimePicker c = t.Control as ExtDateTimePicker;
                 if (c != null)
                     return c.Value;
             }
@@ -359,10 +403,10 @@ namespace ExtendedControls
 
         public bool Set(string controlname, string value)      // set value of dialog control
         {
-            Entry t = entries.Find(x => x.controlname.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                Control c = t.control;
+                Control c = t.Control;
                 if (c is ExtendedControls.ExtTextBox )
                 {
                     (c as ExtendedControls.ExtTextBox).Text = value;
@@ -419,7 +463,7 @@ namespace ExtendedControls
         {
             foreach( var t in entries)
             {
-                var c = t.control;
+                var c = t.Control;
                 var cl = c as ExtendedControls.NumberBoxLong;
                 var cd = c as ExtendedControls.NumberBoxDouble;
                 var ci = c as ExtendedControls.NumberBoxInt;
@@ -454,24 +498,24 @@ namespace ExtendedControls
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
             //outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
-            outer = new ExtPanelScroll() { Name = "Outer", BorderStyle = PanelBorderStyle, Margin = new Padding(0), Padding = new Padding(0) };
-            outer.MouseDown += FormMouseDown;
-            outer.MouseUp += FormMouseUp;
-            Controls.Add(outer);
+            outerpanel = new ExtPanelScroll() { Name = "Outer", BorderStyle = PanelBorderStyle, Margin = new Padding(0), Padding = new Padding(0) };
+            outerpanel.MouseDown += FormMouseDown;
+            outerpanel.MouseUp += FormMouseUp;
+            Controls.Add(outerpanel);
 
             ExtScrollBar scr = new ExtScrollBar();
             scr.HideScrollBar = true;
-            outer.Controls.Add(scr);
+            outerpanel.Controls.Add(scr);
 
             this.Text = caption;
 
-            int yoffset = 0;                            // adjustment to move controls up if windows frame present.
+            yoffset = 0;                            // adjustment to move controls up if windows frame present.
             
             if (theme.WindowsFrame && !ForceNoWindowsBorder)
             {
                 yoffset = int.MaxValue;
                 for (int i = 0; i < entries.Count; i++)             // find minimum control Y
-                    yoffset = Math.Min(yoffset, entries[i].pos.Y);
+                    yoffset = Math.Min(yoffset, entries[i].Location.Y);
 
                 yoffset -= 8;           // place X spaces below top
             }
@@ -481,7 +525,7 @@ namespace ExtendedControls
                 titlelabel.MouseDown += FormMouseDown;
                 titlelabel.MouseUp += FormMouseUp;
                 titlelabel.Name = "title";
-                outer.Controls.Add(titlelabel);
+                outerpanel.Controls.Add(titlelabel);
 
                 if (closeicon)
                 {
@@ -495,216 +539,14 @@ namespace ExtendedControls
                         }
                     };
 
-                    outer.Controls.Add(closebutton);            // add now so it gets themed
+                    outerpanel.Controls.Add(closebutton);            // add now so it gets themed
                 }
             }
 
-            ToolTip tt = new ToolTip(components);
-            tt.ShowAlways = true;
+            tooltipcontrol = new ToolTip(components);
+            tooltipcontrol.ShowAlways = true;
 
-            for (int i = 0; i < entries.Count; i++)
-            {
-                Entry ent = entries[i];
-                Control c = ent.controltype != null ? (Control)Activator.CreateInstance(ent.controltype) : ent.control;
-                ent.control = c;
-                c.Size = ent.size;
-                c.Location = new Point(ent.pos.X, ent.pos.Y - yoffset);
-                c.Name = ent.controlname;
-                if (!(ent.text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker 
-                        || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong || c is ExtendedControls.NumberBoxInt))        // everything but get text
-                    c.Text = ent.text;
-                c.Tag = ent;     // point control tag at ent structure
-                //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size + " " + c.Text);
-                outer.Controls.Add(c);
-                if (ent.tooltip != null)
-                    tt.SetToolTip(c, ent.tooltip);
-
-                if (c is Label)
-                {
-                    Label l = c as Label;
-                    if (ent.textalign.HasValue)
-                        l.TextAlign = ent.textalign.Value;
-                    l.MouseDown += (md1, md2) => { OnCaptionMouseDown((Control)md1, md2); };        // make em draggable
-                    l.MouseUp += (md1, md2) => { OnCaptionMouseUp((Control)md1, md2); };
-                }
-                else if (c is ExtendedControls.ExtButton)
-                {
-                    ExtendedControls.ExtButton b = c as ExtendedControls.ExtButton;
-                    if (ent.textalign.HasValue)
-                        b.TextAlign = ent.textalign.Value;
-                    b.Click += (sender, ev) =>
-                    {
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(((Control)sender).Tag);
-                            Trigger?.Invoke(logicalname, en.controlname, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                    };
-                }
-                else if (c is ExtendedControls.NumberBoxDouble)
-                {
-                    ExtendedControls.NumberBoxDouble cb = c as ExtendedControls.NumberBoxDouble;
-                    cb.Minimum = ent.numberboxdoubleminimum;
-                    cb.Maximum = ent.numberboxdoublemaximum;
-                    double? v = ent.text.InvariantParseDoubleNull();
-                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
-                    if (ent.numberboxformat != null)
-                        cb.Format = ent.numberboxformat;
-                    cb.ReturnPressed += (box) =>
-                    {
-                        SwallowReturn = false;
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(box.Tag);
-                            Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-
-                        return SwallowReturn;
-                    };
-                    cb.ValidityChanged += (box, s) =>
-                    {
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(box.Tag);
-                            Trigger?.Invoke(logicalname, en.controlname + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                    };
-                }
-                else if (c is ExtendedControls.NumberBoxLong)
-                {
-                    ExtendedControls.NumberBoxLong cb = c as ExtendedControls.NumberBoxLong;
-                    cb.Minimum = ent.numberboxlongminimum;
-                    cb.Maximum = ent.numberboxlongmaximum;
-                    long? v = ent.text.InvariantParseLongNull();
-                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
-                    if (ent.numberboxformat != null)
-                        cb.Format = ent.numberboxformat;
-                    cb.ReturnPressed += (box) =>
-                    {
-                        SwallowReturn = false;
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(box.Tag);
-                            Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                        return SwallowReturn;
-                    };
-                    cb.ValidityChanged += (box, s) =>
-                    {
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(box.Tag);
-                            Trigger?.Invoke(logicalname, en.controlname + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                    };
-                }
-                else if (c is ExtendedControls.NumberBoxInt)
-                {
-                    ExtendedControls.NumberBoxInt cb = c as ExtendedControls.NumberBoxInt;
-                    cb.Minimum = ent.numberboxlongminimum == long.MinValue ? int.MinValue : (int)ent.numberboxlongminimum;
-                    cb.Maximum = ent.numberboxlongmaximum == long.MaxValue ? int.MaxValue : (int)ent.numberboxlongmaximum;
-                    int? v = ent.text.InvariantParseIntNull();
-                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
-                    if (ent.numberboxformat != null)
-                        cb.Format = ent.numberboxformat;
-                    cb.ReturnPressed += (box) =>
-                    {
-                        SwallowReturn = false;
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(box.Tag);
-                            Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                        return SwallowReturn;
-                    };
-                    cb.ValidityChanged += (box, s) =>
-                    {
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(box.Tag);
-                            Trigger?.Invoke(logicalname, en.controlname + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                    };
-                }
-                else if (c is ExtendedControls.ExtTextBox)
-                {
-                    ExtendedControls.ExtTextBox tb = c as ExtendedControls.ExtTextBox;
-                    tb.Multiline = tb.WordWrap = ent.textboxmultiline;
-                    tb.Size = ent.size;     // restate size in case multiline is on
-                    tb.ClearOnFirstChar = ent.clearonfirstchar;
-                    tb.ReturnPressed += (box) =>
-                    {
-                        SwallowReturn = false;
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(box.Tag);
-                            Trigger?.Invoke(logicalname, en.controlname + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                        return SwallowReturn;
-                    };
-
-                    if (tb.ClearOnFirstChar)
-                        tb.SelectEnd();
-                }
-                else if (c is ExtendedControls.ExtCheckBox)
-                {
-                    ExtendedControls.ExtCheckBox cb = c as ExtendedControls.ExtCheckBox;
-                    cb.Checked = ent.checkboxchecked;
-                    cb.CheckAlign = ent.contentalign;
-                    cb.Click += (sender, ev) =>
-                    {
-                        if (!ProgClose)
-                        {
-                            Entry en = (Entry)(((Control)sender).Tag);
-                            Trigger?.Invoke(logicalname, en.controlname, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                    };
-                }
-
-
-                if (c is ExtendedControls.ExtDateTimePicker)
-                {
-                    ExtendedControls.ExtDateTimePicker dt = c as ExtendedControls.ExtDateTimePicker;
-                    DateTime t;
-                    if (DateTime.TryParse(ent.text, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out t))     // assume local, so no conversion
-                        dt.Value = t;
-
-                    switch (ent.customdateformat.ToLowerInvariant())
-                    {
-                        case "short":
-                            dt.Format = DateTimePickerFormat.Short;
-                            break;
-                        case "long":
-                            dt.Format = DateTimePickerFormat.Long;
-                            break;
-                        case "time":
-                            dt.Format = DateTimePickerFormat.Time;
-                            break;
-                        default:
-                            dt.CustomFormat = ent.customdateformat;
-                            break;
-                    }
-                }
-
-                if (c is ExtendedControls.ExtComboBox)
-                {
-                    ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
-
-                    cb.Items.AddRange(ent.comboboxitems.Split(','));
-                    if (cb.Items.Contains(ent.text))
-                        cb.SelectedItem = ent.text;
-                    cb.SelectedIndexChanged += (sender, ev) =>
-                    {
-                        Control ctr = (Control)sender;
-                        if (ctr.Enabled && !ProgClose)
-                        {
-                            Entry en = (Entry)(ctr.Tag);
-                            Trigger?.Invoke(logicalname, en.controlname, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-                    };
-
-                }
-            }
+            AddEntries();
 
             ShowInTaskbar = false;
 
@@ -714,10 +556,10 @@ namespace ExtendedControls
 
             // outer.FindMaxSubControlArea(0, 0,null,true); // debug
 
-            //this.DumpTree(0);
             theme.Apply(this, theme.GetScaledFont(FontScale), ForceNoWindowsBorder);
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
-            //this.DumpTree(0);
+            this.DumpTree(0);
+            //System.Diagnostics.Debug.WriteLine($"ConfigurableForm autoscale {this.CurrentAutoScaleDimensions} {this.AutoScaleDimensions} {this.CurrentAutoScaleFactor()}");
 
             if (Transparent)
             {
@@ -732,7 +574,7 @@ namespace ExtendedControls
             {
                 if (entries[i].PostThemeFontScale != 1.0f)
                 {
-                    entries[i].control.Font = new Font(entries[i].control.Font.Name, entries[i].control.Font.SizeInPoints * entries[i].PostThemeFontScale);
+                    entries[i].Control.Font = new Font(entries[i].Control.Font.Name, entries[i].Control.Font.SizeInPoints * entries[i].PostThemeFontScale);
                 }
             }
 
@@ -743,11 +585,231 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine("Bounds " + Bounds + " ClientRect " + ClientRectangle);
             //System.Diagnostics.Debug.WriteLine("Outer Bounds " + outer.Bounds + " ClientRect " + outer.ClientRectangle);
         }
+    
+        private void AddEntries(SizeF? factor = null)
+        {
+            for (int i = 0; i < entries.Count; i++)
+            {
+                Entry ent = entries[i];
+
+                if (ent.Control != null && outerpanel.Controls.Contains(ent.Control))       // don't double add
+                    continue;
+
+                Control c = ent.ControlType != null ? (Control)Activator.CreateInstance(ent.ControlType) : ent.Control;
+
+                ent.Control = c;
+                c.Size = ent.Size;
+                c.Location = new Point(ent.Location.X, ent.Location.Y - yoffset);
+                c.Name = ent.Name;
+                if (!(ent.Text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker
+                        || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong || c is ExtendedControls.NumberBoxInt))        // everything but get text
+                    c.Text = ent.Text;
+                c.Tag = ent;     // point control tag at ent structure
+                //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size + " " + c.Text);
+                outerpanel.Controls.Add(c);
+                if (ent.ToolTip != null)
+                    tooltipcontrol.SetToolTip(c, ent.ToolTip);
+
+                if (factor != null)     // when adding, form scaling has already been done, so we need to scale manually
+                    c.Scale(factor.Value);
+
+                if (c is Label)
+                {
+                    Label l = c as Label;
+                    if (ent.TextAlign.HasValue)
+                        l.TextAlign = ent.TextAlign.Value;
+                    l.MouseDown += (md1, md2) => { OnCaptionMouseDown((Control)md1, md2); };        // make em draggable
+                    l.MouseUp += (md1, md2) => { OnCaptionMouseUp((Control)md1, md2); };
+                }
+                else if (c is ExtendedControls.ExtButton)
+                {
+                    ExtendedControls.ExtButton b = c as ExtendedControls.ExtButton;
+                    if (ent.TextAlign.HasValue)
+                        b.TextAlign = ent.TextAlign.Value;
+                    b.Click += (sender, ev) =>
+                    {
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(((Control)sender).Tag);
+                            Trigger?.Invoke(logicalname, en.Name, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
+                }
+                else if (c is ExtendedControls.NumberBoxDouble)
+                {
+                    ExtendedControls.NumberBoxDouble cb = c as ExtendedControls.NumberBoxDouble;
+                    cb.Minimum = ent.NumberBoxDoubleMinimum;
+                    cb.Maximum = ent.NumberBoxDoubleMaximum;
+                    double? v = ent.Text.InvariantParseDoubleNull();
+                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
+                    if (ent.NumberBoxFormat != null)
+                        cb.Format = ent.NumberBoxFormat;
+                    cb.ReturnPressed += (box) =>
+                    {
+                        SwallowReturn = false;
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.Name + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+
+                        return SwallowReturn;
+                    };
+                    cb.ValidityChanged += (box, s) =>
+                    {
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.Name + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
+                }
+                else if (c is ExtendedControls.NumberBoxLong)
+                {
+                    ExtendedControls.NumberBoxLong cb = c as ExtendedControls.NumberBoxLong;
+                    cb.Minimum = ent.NumberBoxLongMinimum;
+                    cb.Maximum = ent.NumberBoxLongMaximum;
+                    long? v = ent.Text.InvariantParseLongNull();
+                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
+                    if (ent.NumberBoxFormat != null)
+                        cb.Format = ent.NumberBoxFormat;
+                    cb.ReturnPressed += (box) =>
+                    {
+                        SwallowReturn = false;
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.Name + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                        return SwallowReturn;
+                    };
+                    cb.ValidityChanged += (box, s) =>
+                    {
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.Name + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
+                }
+                else if (c is ExtendedControls.NumberBoxInt)
+                {
+                    ExtendedControls.NumberBoxInt cb = c as ExtendedControls.NumberBoxInt;
+                    cb.Minimum = ent.NumberBoxLongMinimum == long.MinValue ? int.MinValue : (int)ent.NumberBoxLongMinimum;
+                    cb.Maximum = ent.NumberBoxLongMaximum == long.MaxValue ? int.MaxValue : (int)ent.NumberBoxLongMaximum;
+                    int? v = ent.Text.InvariantParseIntNull();
+                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
+                    if (ent.NumberBoxFormat != null)
+                        cb.Format = ent.NumberBoxFormat;
+                    cb.ReturnPressed += (box) =>
+                    {
+                        SwallowReturn = false;
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.Name + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                        return SwallowReturn;
+                    };
+                    cb.ValidityChanged += (box, s) =>
+                    {
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.Name + ":Validity:" + s.ToString(), this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
+                }
+                else if (c is ExtendedControls.ExtTextBox)
+                {
+                    ExtendedControls.ExtTextBox tb = c as ExtendedControls.ExtTextBox;
+                    tb.Multiline = tb.WordWrap = ent.TextBoxMultiline;
+                    tb.Size = ent.Size;     // restate size in case multiline is on
+                    tb.ClearOnFirstChar = ent.TextBoxClearOnFirstChar;
+                    tb.ReturnPressed += (box) =>
+                    {
+                        SwallowReturn = false;
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(box.Tag);
+                            Trigger?.Invoke(logicalname, en.Name + ":Return", this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                        return SwallowReturn;
+                    };
+
+                    if (tb.ClearOnFirstChar)
+                        tb.SelectEnd();
+                }
+                else if (c is ExtendedControls.ExtCheckBox)
+                {
+                    ExtendedControls.ExtCheckBox cb = c as ExtendedControls.ExtCheckBox;
+                    cb.Checked = ent.CheckBoxChecked;
+                    cb.CheckAlign = ent.ContentAlign;
+                    cb.Click += (sender, ev) =>
+                    {
+                        if (!ProgClose)
+                        {
+                            Entry en = (Entry)(((Control)sender).Tag);
+                            Trigger?.Invoke(logicalname, en.Name, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
+                }
+
+
+                if (c is ExtendedControls.ExtDateTimePicker)
+                {
+                    ExtendedControls.ExtDateTimePicker dt = c as ExtendedControls.ExtDateTimePicker;
+                    DateTime t;
+                    if (DateTime.TryParse(ent.Text, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out t))     // assume local, so no conversion
+                        dt.Value = t;
+
+                    switch (ent.CustomDateFormat.ToLowerInvariant())
+                    {
+                        case "short":
+                            dt.Format = DateTimePickerFormat.Short;
+                            break;
+                        case "long":
+                            dt.Format = DateTimePickerFormat.Long;
+                            break;
+                        case "time":
+                            dt.Format = DateTimePickerFormat.Time;
+                            break;
+                        default:
+                            dt.CustomFormat = ent.CustomDateFormat;
+                            break;
+                    }
+                }
+
+                if (c is ExtendedControls.ExtComboBox)
+                {
+                    ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
+
+                    cb.Items.AddRange(ent.ComboBoxItems);
+                    if (cb.Items.Contains(ent.Text))
+                        cb.SelectedItem = ent.Text;
+                    cb.SelectedIndexChanged += (sender, ev) =>
+                    {
+                        Control ctr = (Control)sender;
+                        if (ctr.Enabled && !ProgClose)
+                        {
+                            Entry en = (Entry)(ctr.Tag);
+                            Trigger?.Invoke(logicalname, en.Name, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
+                        }
+                    };
+
+                }
+            }
+
+        }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            SizeWindow();
+        }
 
+        private void SizeWindow()
+        { 
             int boundsh = Bounds.Height - ClientRectangle.Height;                   // allow for window border..  Only works after OnLoad.
             int boundsw = Bounds.Width - ClientRectangle.Width;
             int outerh = 2 + BorderMargin;
@@ -759,11 +821,15 @@ namespace ExtendedControls
 
             // measure the items after scaling. Exclude the scroll bar. Add on bounds/outers/margin
 
-            Size measureitemsinwindow = outer.FindMaxSubControlArea(boundsw + outerw + (int)(RightMargin * currentautocale.Width),
+            if ( closebutton!=null )
+                closebutton.Location = new Point(0, 0);     // set it back to 0,0 to ensure it does not influence find max
+
+            Size measureitemsinwindow = outerpanel.FindMaxSubControlArea(boundsw + outerw + (int)(RightMargin * currentautocale.Width),
                                                                    boundsh + outerh + (int)(BottomMargin * currentautocale.Height),
-                                                                   new Type[] { typeof(ExtScrollBar) }, false);
+                                                                   new Type[] { typeof(ExtScrollBar) }, true);
 
 
+            System.Diagnostics.Debug.WriteLine($"Size Controls {boundsh} {boundsw} {outerh} {outerw} wdata {measureitemsinwindow}");
             // now position in the screen, allowing for a scroll bar if required due to height restricted
 
             MinimumSize = minsize;       // setting this allows for small windows
@@ -777,9 +843,9 @@ namespace ExtendedControls
 
             int scrollbarsizeifheightnotacheived = 0;
             if (AllowResize)                                                        // if resizable, must allow for scroll bar
-                widthw += outer.ScrollBarWidth;
+                widthw += outerpanel.ScrollBarWidth;
             else
-                scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
+                scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? outerpanel.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
 
             widthw += ExtraMarginRightBottom.Width;
 
@@ -796,22 +862,22 @@ namespace ExtendedControls
 
             this.PositionSizeWithinScreen(widthw, height, false, new Size(64,64), halign, valign, scrollbarsizeifheightnotacheived);
 
-            outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
-            outer.Location = new Point(BorderMargin, BorderMargin);
+            outerpanel.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
+            outerpanel.Location = new Point(BorderMargin, BorderMargin);
 
             if (closebutton != null)      // now position close at correct place, its not contributed to overall size
             {
-                closebutton.Location = new Point(outer.Width - closebutton.Width - (AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0), Font.ScalePixels(4));
+                closebutton.Location = new Point(outerpanel.Width - closebutton.Width - (AllowSpaceForScrollBar ? outerpanel.ScrollBarWidth : 0), Font.ScalePixels(4));
                 closebutton.Padding = new Padding(Font.ScalePixels(4));
             }
 
             for (int i = 0; i < entries.Count; i++)     // record nominal pos after all positioning done
             {
-                entries[i].pos = entries[i].control.Location;
-                entries[i].size = entries[i].control.Size;
+                entries[i].Location = entries[i].Control.Location;
+                entries[i].Size = entries[i].Control.Size;
             }
 
-            initialsize = outer.Size;
+            initialsize = outerpanel.Size;
 
             resizerepositionon = true;
 
@@ -820,7 +886,7 @@ namespace ExtendedControls
 
         protected override void OnShown(EventArgs e)
         {
-            Control firsttextbox = outer.Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete), typeof(NumberBoxDouble), typeof(NumberBoxFloat), typeof(NumberBoxLong) });
+            Control firsttextbox = outerpanel.Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete), typeof(NumberBoxDouble), typeof(NumberBoxFloat), typeof(NumberBoxLong) });
             if (firsttextbox != null)
                 firsttextbox.Focus();       // focus on first text box
             base.OnShown(e);
@@ -842,18 +908,18 @@ namespace ExtendedControls
 
             if (!ProgClose && resizerepositionon)
             {
-                outer.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
+                outerpanel.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
 
                 if (closebutton != null)      // now position close at correct logical place
-                    closebutton.Location = new Point(outer.Width - closebutton.Width - (AllowSpaceForScrollBar ? outer.ScrollBarWidth : 0), Font.ScalePixels(4));
+                    closebutton.Location = new Point(outerpanel.Width - closebutton.Width - (AllowSpaceForScrollBar ? outerpanel.ScrollBarWidth : 0), Font.ScalePixels(4));
 
-                int widthdelta = outer.Width - initialsize.Width;
-                int heightdelta = outer.Height - initialsize.Height;
+                int widthdelta = outerpanel.Width - initialsize.Width;
+                int heightdelta = outerpanel.Height - initialsize.Height;
                 //System.Diagnostics.Debug.WriteLine(Environment.NewLine + "Resize {0} {1} so {2}", widthdelta, heightdelta, outer.ScrollOffset);
 
                 foreach ( var en in entries)
                 {
-                    en.control.ApplyAnchor(en.anchor, en.pos, en.size, widthdelta, heightdelta);
+                    en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, widthdelta, heightdelta);
                 }
 
                 Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, Resize, the caller tag
@@ -990,51 +1056,51 @@ namespace ExtendedControls
                 if (ctype == typeof(ExtendedControls.ExtTextBox))
                 {
                     int? v = sp.NextWordComma().InvariantParseIntNull();
-                    entry.textboxmultiline = v.HasValue && v.Value != 0;
-                    if (entry.textboxmultiline)
+                    entry.TextBoxMultiline = v.HasValue && v.Value != 0;
+                    if (entry.TextBoxMultiline)
                     {
-                        entry.textboxescapeonreport = true;
-                        entry.text = entry.text.ReplaceEscapeControlChars();        // New! if multiline, replace escape control chars
+                        entry.TextBoxEscapeOnReport = true;
+                        entry.Text = entry.Text.ReplaceEscapeControlChars();        // New! if multiline, replace escape control chars
                     }
 
                     v = sp.NextWordComma().InvariantParseIntNull();
-                    entry.clearonfirstchar = v.HasValue && v.Value != 0;
+                    entry.TextBoxClearOnFirstChar = v.HasValue && v.Value != 0;
                 }
                 else if (ctype == typeof(ExtendedControls.ExtCheckBox))
                 {
                     int? v = sp.NextWordComma().InvariantParseIntNull();
-                    entry.checkboxchecked = v.HasValue && v.Value != 0;
+                    entry.CheckBoxChecked = v.HasValue && v.Value != 0;
                 }
             }
 
             if (ctype == typeof(ExtendedControls.ExtComboBox))
             {
-                entry.comboboxitems = sp.LineLeft.Trim();
-                if (tip == null || entry.comboboxitems.Length == 0)
+                entry.ComboBoxItems = sp.LineLeft.Trim().Split(",");
+                if (tip == null || entry.ComboBoxItems.Length == 0)
                     return "Missing parameters for combobox";
             }
             
             if (ctype == typeof(ExtendedControls.ExtDateTimePicker))
             {
-                entry.customdateformat = sp.NextWord();
+                entry.CustomDateFormat = sp.NextWord();
             }
 
             if (ctype == typeof(ExtendedControls.NumberBoxDouble))
             {
                 double? min = sp.NextWordComma().InvariantParseDoubleNull();
                 double? max = sp.NextWordComma().InvariantParseDoubleNull();
-                entry.numberboxdoubleminimum = min.HasValue ? min.Value : double.MinValue;
-                entry.numberboxdoublemaximum = max.HasValue ? max.Value : double.MaxValue;
-                entry.numberboxformat = sp.NextWordComma();
+                entry.NumberBoxDoubleMinimum = min.HasValue ? min.Value : double.MinValue;
+                entry.NumberBoxDoubleMaximum = max.HasValue ? max.Value : double.MaxValue;
+                entry.NumberBoxFormat = sp.NextWordComma();
             }
 
             if (ctype == typeof(ExtendedControls.NumberBoxLong))
             {
                 long? min = sp.NextWordComma().InvariantParseLongNull();
                 long? max = sp.NextWordComma().InvariantParseLongNull();
-                entry.numberboxlongminimum = min.HasValue ? min.Value : long.MinValue;
-                entry.numberboxlongmaximum = max.HasValue ? max.Value : long.MaxValue;
-                entry.numberboxformat = sp.NextWordComma();
+                entry.NumberBoxLongMinimum = min.HasValue ? min.Value : long.MinValue;
+                entry.NumberBoxLongMaximum = max.HasValue ? max.Value : long.MaxValue;
+                entry.NumberBoxFormat = sp.NextWordComma();
             }
 
             lastpos = new System.Drawing.Point(x.Value, y.Value);
@@ -1042,6 +1108,9 @@ namespace ExtendedControls
         }
 
         #endregion
+
+        private System.ComponentModel.IContainer components = null;     // replicate normal component container, so controls which look this
+                                                                        // up for finding the tooltip can (TextBoxBorder)
 
         private List<Entry> entries;
         private Object callertag;
@@ -1057,7 +1126,7 @@ namespace ExtendedControls
         private Size maxsize;
         private Size requestedsize;
 
-        private ExtPanelScroll outer;
+        private ExtPanelScroll outerpanel;
         private ExtButtonDrawn closebutton;
         private Label titlelabel;
         private bool resizerepositionon;
@@ -1066,5 +1135,7 @@ namespace ExtendedControls
         private Timer timer;
         private int panelshowcounter;
 
+        private int yoffset;
+        private ToolTip tooltipcontrol;
     }
 }

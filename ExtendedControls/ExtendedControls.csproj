@@ -56,6 +56,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
+    <Compile Include="Controls\FlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\PanelNoTheme.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -50,6 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestFlowBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestFlowBox.Designer.cs">
+      <DependentUpon>TestFlowBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestAutoScaleCompositeButtons.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -262,6 +268,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestFlowBox.resx">
+      <DependentUpon>TestFlowBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestAutoScaleCompositeButtons.resx">
       <DependentUpon>TestAutoScaleCompositeButtons.cs</DependentUpon>
     </EmbeddedResource>

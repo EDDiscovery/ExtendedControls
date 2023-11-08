@@ -362,6 +362,7 @@ namespace ExtendedControls
                 f.Opacity = formopacity / 100;
                 f.BackColor = colors[CI.form];
                 f.Font = fnt;
+                //System.Diagnostics.Debug.WriteLine($"Form scaling now {f.CurrentAutoScaleDimensions} {f.AutoScaleDimensions} {f.CurrentAutoScaleFactor()}");
             }
             else if (myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
             {

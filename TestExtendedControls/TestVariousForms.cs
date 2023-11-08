@@ -58,7 +58,7 @@ namespace TestExtendedControls
             f.Add(new ExtendedControls.ConfigurableForm.Entry("rlabel", typeof(Label), "Receive", new Point(20, 110), new Size(width - 40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
 
             var panelbox = new GroupBox() { ForeColor = Color.Red };
-            f.Add(new ExtendedControls.ConfigurableForm.Entry(panelbox, "panel", "g1", new Point(10, 150), new Size(width - 10, 100), "") { anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left });
+            f.Add(new ExtendedControls.ConfigurableForm.Entry(panelbox, "panel", "g1", new Point(10, 150), new Size(width - 10, 100), "") { Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left });
 
             f.AddOK(new Point(width - 100, 270), anchor: AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom);
             f.AddCancel(new Point(20, 270), anchor: AnchorStyles.Right | AnchorStyles.Bottom);
@@ -89,7 +89,7 @@ namespace TestExtendedControls
             Form parent = this;
 
             f.Add(new ExtendedControls.ConfigurableForm.Entry("L", typeof(Label), "Jump to:", new Point(10, 40), new Size(140, 24), ""));
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { numberboxdoubleminimum = 0, numberboxformat = "0" });
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxDoubleMinimum = 0, NumberBoxFormat = "0" });
 
             f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept"));
             f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(width - 200, 70), new Size(80, 24), "Press to Cancel"));
@@ -459,6 +459,39 @@ namespace TestExtendedControls
 
         }
 
+        private void extButton38_Click(object sender, EventArgs e)
+        {
+            ExtendedControls.ConfigurableForm f = new ExtendedControls.ConfigurableForm();
+
+            int width = 430;
+            Form parent = this;
+
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("add", typeof(ExtButton), "Add+", new Point(10, 40), new Size(140, 24), ""));
+
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept"));
+
+            f.InstallStandardTriggers();
+
+            int newpos = 70;
+            f.Trigger += (formname, ctrlname, tag) =>
+            {
+                if (ctrlname == "add")
+                {
+                    f.MoveControls(newpos-15, 30);      // the -15 just ensures any rounding won't affect picking ok
+                    f.Add(new ExtendedControls.ConfigurableForm.Entry("newc", typeof(ExtButton), "NB", new Point(10, newpos), new Size(140, 24), ""));
+                    f.UpdateDisplayAfterAddNewControls();
+                    newpos += 30;
+                }
+            };
+
+            DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Dynamic", closeicon: true);
+
+            if (res == DialogResult.OK)
+            {
+
+            }
+
+        }
     }
 }
 
