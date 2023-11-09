@@ -141,7 +141,11 @@ namespace ExtendedControls
                     if (DelayBeforeNotification <= 0)
                     {
                         EventHandler handler = (EventHandler)Events[EVENT_VALUECHANGED];
-                        if (handler != null) handler(this, new EventArgs());
+                        if (handler != null)
+                        {
+                            //System.Diagnostics.Debug.WriteLine($"Number Box {this.Name} changed {number}");
+                            handler(this, new EventArgs());
+                        }
                     }
                     else
                     {
@@ -170,7 +174,11 @@ namespace ExtendedControls
             timer.Stop();
 
             EventHandler handler = (EventHandler)Events[EVENT_VALUECHANGED];
-            if (handler != null) handler(this, new EventArgs());
+            if (handler != null)
+            {
+                //System.Diagnostics.Debug.WriteLine($"Number Box {this.Name} delay changed {number}");
+                handler(this, new EventArgs());
+            }
         }
 
         protected override void OnKeyPress(KeyPressEventArgs e) // limit keys to whats allowed for a double
@@ -193,6 +201,28 @@ namespace ExtendedControls
             base.OnLeave(e);
         }
 
+        protected bool CheckChar(char c, bool allowneg)
+        {
+            char numgroup = FormatCulture.NumberFormat.CurrencyGroupSeparator[0];
+            if (numgroup == '\u00a0')       // fix non breaking space
+                numgroup = ' ';
+
+            //System.Diagnostics.Debug.WriteLine($"Char {c} allowneg {allowneg} {NumberStyles}");
+
+            return char.IsDigit(c) || c == 8 ||
+
+              (c == FormatCulture.NumberFormat.CurrencyDecimalSeparator[0] && Text.IndexOf(FormatCulture.NumberFormat.CurrencyDecimalSeparator, StringComparison.Ordinal) == -1 &&
+                                  (NumberStyles & System.Globalization.NumberStyles.AllowDecimalPoint) != 0) ||
+
+              (c == FormatCulture.NumberFormat.NegativeSign[0] && (SelectionStart == 0 || (SelectionStart == 1 && Text.Length > 0 && Text[0] == FormatCulture.NumberFormat.CurrencySymbol[0]))
+                          && allowneg && (NumberStyles & System.Globalization.NumberStyles.AllowLeadingSign) != 0) ||
+
+              (c == numgroup && (NumberStyles & System.Globalization.NumberStyles.AllowThousands) != 0) ||
+
+              (c == FormatCulture.NumberFormat.CurrencySymbol[0] && SelectionStart == 0 && (NumberStyles & System.Globalization.NumberStyles.AllowCurrencySymbol) != 0) ||
+
+              ((c == 'E' || c == 'e') && (NumberStyles & System.Globalization.NumberStyles.AllowExponent) != 0);
+        }
         #endregion
     }
 
@@ -203,7 +233,7 @@ namespace ExtendedControls
             ValueNoChange = 0;
             Minimum = float.MinValue;
             Maximum = float.MaxValue;
-            NumberStyles = System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowThousands;
+            NumberStyles = System.Globalization.NumberStyles.AllowLeadingSign | System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowThousands;
             Format = "G";
         }
 
@@ -217,14 +247,13 @@ namespace ExtendedControls
                       number >= Minimum && number <= Maximum;
             if (ok && othernumber != null)
                 ok = number.CompareTo(othernumber.Value, othercomparision);
+            System.Diagnostics.Debug.WriteLine($"Number Box {ok}: {number}");
             return ok;
         }
 
         protected override bool AllowedChar(char c)
         {
-            return (char.IsDigit(c) || c == 8 ||
-                    (c == FormatCulture.NumberFormat.CurrencyDecimalSeparator[0] && Text.IndexOf(FormatCulture.NumberFormat.CurrencyDecimalSeparator, StringComparison.Ordinal) == -1) ||
-                    (c == FormatCulture.NumberFormat.NegativeSign[0] && SelectionStart == 0 && Minimum < 0));
+            return CheckChar(c, Minimum < 0);
         }
     }
 
@@ -233,7 +262,7 @@ namespace ExtendedControls
         public NumberBoxDouble()
         {
             ValueNoChange = 0;
-            NumberStyles = System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowThousands;
+            NumberStyles = System.Globalization.NumberStyles.AllowLeadingSign | System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowThousands;
             Format = "G";
             Minimum = double.MinValue;
             Maximum = double.MaxValue;
@@ -254,9 +283,7 @@ namespace ExtendedControls
 
         protected override bool AllowedChar(char c)
         {
-            return (char.IsDigit(c) || c == 8 ||
-                (c == FormatCulture.NumberFormat.CurrencyDecimalSeparator[0] && Text.IndexOf(FormatCulture.NumberFormat.CurrencyDecimalSeparator) == -1) ||
-                (c == FormatCulture.NumberFormat.NegativeSign[0] && SelectionStart == 0 && Minimum < 0));
+            return CheckChar(c, Minimum < 0);
         }
     }
 
@@ -264,7 +291,7 @@ namespace ExtendedControls
     {
         public NumberBoxLong()
         {
-            NumberStyles = System.Globalization.NumberStyles.AllowThousands;
+            NumberStyles = System.Globalization.NumberStyles.AllowThousands | System.Globalization.NumberStyles.AllowLeadingSign;
             Format = "D";
             ValueNoChange = 0;
             Minimum = long.MinValue;
@@ -286,8 +313,7 @@ namespace ExtendedControls
 
         protected override bool AllowedChar(char c)
         {
-            return (char.IsDigit(c) || c == 8 ||
-                (c == FormatCulture.NumberFormat.NegativeSign[0] && SelectionStart == 0 && Minimum < 0));
+            return CheckChar(c, Minimum < 0);
         }
     }
 
@@ -295,7 +321,7 @@ namespace ExtendedControls
     {
         public NumberBoxInt()
         {
-            NumberStyles = System.Globalization.NumberStyles.AllowThousands;
+            NumberStyles = System.Globalization.NumberStyles.AllowThousands | System.Globalization.NumberStyles.AllowLeadingSign;
             Format = "D";
             ValueNoChange = 0;
             Minimum = int.MinValue;
@@ -317,8 +343,7 @@ namespace ExtendedControls
 
         protected override bool AllowedChar(char c)
         {
-            return (char.IsDigit(c) || c == 8 ||
-                (c == FormatCulture.NumberFormat.NegativeSign[0] && SelectionStart == 0 && Minimum < 0));
+            return CheckChar(c, Minimum < 0);
         }
     }
 }

@@ -37,9 +37,10 @@ namespace TestExtendedControls
             textBoxDouble2.FormatCulture = CultureInfo.GetCultureInfo("fr");
             numberBoxLong1.FormatCulture = CultureInfo.GetCultureInfo("en-gb");
 
-            numberBoxLong1.Minimum = 1000;
+            numberBoxLong1.Minimum = -1000;
             numberBoxLong1.Maximum = 2000;
             numberBoxLong1.ValueNoChange = 1100;
+            numberBoxLong1.NumberStyles = NumberStyles.AllowThousands | NumberStyles.AllowCurrencySymbol | NumberStyles.AllowLeadingSign;
 
             numberBoxLong2.Minimum = 1000;
             numberBoxLong2.Maximum = 2000;
@@ -50,9 +51,10 @@ namespace TestExtendedControls
             textBoxDouble1.Maximum = 20.0;
             textBoxDouble1.ValueNoChange = 1.1;
 
-            textBoxDouble2.Minimum = 10.0;
-            textBoxDouble2.Maximum = 20.0;
+            textBoxDouble2.Minimum = -10000.0;
+            textBoxDouble2.Maximum = 20e6;
             textBoxDouble2.ValueNoChange = 12.1;
+            textBoxDouble2.NumberStyles = NumberStyles.AllowThousands | NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent;
 
 
             extRichTextBox1.HideScrollBar = true;
@@ -132,6 +134,18 @@ namespace TestExtendedControls
         {
             font = (string)extComboBoxFont.SelectedItem;
             extRichTextBox1.Font = new Font(font, fontsize);
+
+        }
+
+        private void textBoxDouble1_ValueChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("d1 is " + textBoxDouble1.Value);
+
+        }
+
+        private void textBoxDouble2_ValueChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("d2 is " + textBoxDouble2.Value);
 
         }
     }

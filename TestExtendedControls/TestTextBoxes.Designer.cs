@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTextBoxes));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.extComboBoxFont = new ExtendedControls.ExtComboBox();
             this.extComboBoxFontSize = new ExtendedControls.ExtComboBox();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
@@ -41,7 +42,6 @@
             this.extTextBox1 = new ExtendedControls.ExtTextBox();
             this.buttonExt1 = new ExtendedControls.ExtButton();
             this.buttonExt2 = new ExtendedControls.ExtButton();
-            this.extComboBoxFont = new ExtendedControls.ExtComboBox();
             this.SuspendLayout();
             // 
             // panel1
@@ -51,6 +51,30 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(48, 48);
             this.panel1.TabIndex = 0;
+            // 
+            // extComboBoxFont
+            // 
+            this.extComboBoxFont.BorderColor = System.Drawing.Color.White;
+            this.extComboBoxFont.ButtonColorScaling = 0.5F;
+            this.extComboBoxFont.DataSource = null;
+            this.extComboBoxFont.DisableBackgroundDisabledShadingGradient = false;
+            this.extComboBoxFont.DisplayMember = "";
+            this.extComboBoxFont.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.extComboBoxFont.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extComboBoxFont.Location = new System.Drawing.Point(443, 362);
+            this.extComboBoxFont.MouseOverBackgroundColor = System.Drawing.Color.Silver;
+            this.extComboBoxFont.Name = "extComboBoxFont";
+            this.extComboBoxFont.ScrollBarButtonColor = System.Drawing.Color.LightGray;
+            this.extComboBoxFont.ScrollBarColor = System.Drawing.Color.LightGray;
+            this.extComboBoxFont.SelectedIndex = -1;
+            this.extComboBoxFont.SelectedItem = null;
+            this.extComboBoxFont.SelectedValue = null;
+            this.extComboBoxFont.Size = new System.Drawing.Size(75, 21);
+            this.extComboBoxFont.TabIndex = 69;
+            this.extComboBoxFont.Text = "font";
+            this.extComboBoxFont.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.extComboBoxFont.ValueMember = "";
+            this.extComboBoxFont.SelectedIndexChanged += new System.EventHandler(this.extComboBoxFont_SelectedIndexChanged);
             // 
             // extComboBoxFontSize
             // 
@@ -117,6 +141,8 @@
             this.textBoxDouble1.Minimum = -1.7976931348623157E+308D;
             this.textBoxDouble1.Multiline = false;
             this.textBoxDouble1.Name = "textBoxDouble1";
+            this.textBoxDouble1.NumberStyles = ((System.Globalization.NumberStyles)(((System.Globalization.NumberStyles.AllowLeadingSign | System.Globalization.NumberStyles.AllowDecimalPoint) 
+            | System.Globalization.NumberStyles.AllowThousands)));
             this.textBoxDouble1.ReadOnly = false;
             this.textBoxDouble1.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.textBoxDouble1.SelectionLength = 0;
@@ -126,6 +152,7 @@
             this.textBoxDouble1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.textBoxDouble1.Value = 0D;
             this.textBoxDouble1.WordWrap = true;
+            this.textBoxDouble1.ValueChanged += new System.EventHandler(this.textBoxDouble1_ValueChanged);
             // 
             // textBoxDouble2
             // 
@@ -148,6 +175,8 @@
             this.textBoxDouble2.Minimum = -1.7976931348623157E+308D;
             this.textBoxDouble2.Multiline = false;
             this.textBoxDouble2.Name = "textBoxDouble2";
+            this.textBoxDouble2.NumberStyles = ((System.Globalization.NumberStyles)(((System.Globalization.NumberStyles.AllowLeadingSign | System.Globalization.NumberStyles.AllowDecimalPoint) 
+            | System.Globalization.NumberStyles.AllowThousands)));
             this.textBoxDouble2.ReadOnly = false;
             this.textBoxDouble2.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.textBoxDouble2.SelectionLength = 0;
@@ -157,6 +186,7 @@
             this.textBoxDouble2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.textBoxDouble2.Value = 0D;
             this.textBoxDouble2.WordWrap = true;
+            this.textBoxDouble2.ValueChanged += new System.EventHandler(this.textBoxDouble2_ValueChanged);
             // 
             // numberBoxLong2
             // 
@@ -179,6 +209,7 @@
             this.numberBoxLong2.Minimum = ((long)(-9223372036854775808));
             this.numberBoxLong2.Multiline = false;
             this.numberBoxLong2.Name = "numberBoxLong2";
+            this.numberBoxLong2.NumberStyles = ((System.Globalization.NumberStyles)((System.Globalization.NumberStyles.AllowLeadingSign | System.Globalization.NumberStyles.AllowThousands)));
             this.numberBoxLong2.ReadOnly = false;
             this.numberBoxLong2.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.numberBoxLong2.SelectionLength = 0;
@@ -211,6 +242,7 @@
             this.numberBoxLong1.Minimum = ((long)(-9223372036854775808));
             this.numberBoxLong1.Multiline = false;
             this.numberBoxLong1.Name = "numberBoxLong1";
+            this.numberBoxLong1.NumberStyles = ((System.Globalization.NumberStyles)((System.Globalization.NumberStyles.AllowLeadingSign | System.Globalization.NumberStyles.AllowThousands)));
             this.numberBoxLong1.ReadOnly = false;
             this.numberBoxLong1.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.numberBoxLong1.SelectionLength = 0;
@@ -227,12 +259,14 @@
             this.extRichTextBox1.BackColor = System.Drawing.Color.Transparent;
             this.extRichTextBox1.BorderColor = System.Drawing.Color.OrangeRed;
             this.extRichTextBox1.BorderColorScaling = 0.5F;
+            this.extRichTextBox1.DetectUrls = true;
             this.extRichTextBox1.HideScrollBar = true;
             this.extRichTextBox1.Location = new System.Drawing.Point(31, 146);
             this.extRichTextBox1.Name = "extRichTextBox1";
             this.extRichTextBox1.ReadOnly = false;
-            this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 Microsoft S" +
-    "ans Serif;}}\r\n\\viewkind4\\uc1\\pard\\f0\\fs17\\par\r\n}\r\n";
+            this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
+    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
+    "d\\f0\\fs17\\par\r\n}\r\n";
             this.extRichTextBox1.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
             this.extRichTextBox1.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
             this.extRichTextBox1.ScrollBarBackColor = System.Drawing.SystemColors.Control;
@@ -306,30 +340,6 @@
             this.buttonExt2.TabIndex = 0;
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
-            // 
-            // extComboBoxFont
-            // 
-            this.extComboBoxFont.BorderColor = System.Drawing.Color.White;
-            this.extComboBoxFont.ButtonColorScaling = 0.5F;
-            this.extComboBoxFont.DataSource = null;
-            this.extComboBoxFont.DisableBackgroundDisabledShadingGradient = false;
-            this.extComboBoxFont.DisplayMember = "";
-            this.extComboBoxFont.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.extComboBoxFont.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extComboBoxFont.Location = new System.Drawing.Point(443, 362);
-            this.extComboBoxFont.MouseOverBackgroundColor = System.Drawing.Color.Silver;
-            this.extComboBoxFont.Name = "extComboBoxFont";
-            this.extComboBoxFont.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.extComboBoxFont.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.extComboBoxFont.SelectedIndex = -1;
-            this.extComboBoxFont.SelectedItem = null;
-            this.extComboBoxFont.SelectedValue = null;
-            this.extComboBoxFont.Size = new System.Drawing.Size(75, 21);
-            this.extComboBoxFont.TabIndex = 69;
-            this.extComboBoxFont.Text = "font";
-            this.extComboBoxFont.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.extComboBoxFont.ValueMember = "";
-            this.extComboBoxFont.SelectedIndexChanged += new System.EventHandler(this.extComboBoxFont_SelectedIndexChanged);
             // 
             // TestTextBoxes
             // 
