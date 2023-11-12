@@ -60,13 +60,20 @@ namespace ExtendedControls
         public Size ExtraMarginRightBottom { get; set; } = new Size(16, 16);
         public float FontScale { get; set; } = 1.0f;
 
+        [System.Diagnostics.DebuggerDisplay("{Name} {Location} {Size }")]
         public class Entry
         {
             public string Name {get; set;}                          // logical name of control
             public Type ControlType {get; set;}                     // if non null, activate this type.  Else if null, Control should be filled up with your specific type
             public Control Control { get; set; }                    // if controltype is set, don't set.  If controltype=null, pass your control type.
 
-            public string Text {get; set;}                          // for certain types, the text
+            public string TextValue {get; set;}                     // textboxes, comboxbox def value, label, button, checkbox
+                                                                    // For number boxes, the invariant value, or Null use Double or Long
+                                                                    // for Dates, the invariant culture assumed local
+            public double DoubleValue { get; set; }                 // if its a number box double, set this, Text=null
+            public long LongValue { get; set; }                      // if its a number box long or int, set this, Text=null
+            public DateTime DateTimeValue { get; set; }             // if its a date time, set this, Text=null
+
             public Point Location {get; set;}
             public Size Size {get; set;}
             public string ToolTip { get; set; }                     // can be null.
@@ -94,31 +101,52 @@ namespace ExtendedControls
 
             public float PostThemeFontScale { get; set; } = 1.0f;   // post theme font scaler
 
-            public bool Enabled { get; set; } = true;
+            public bool Enabled { get; set; } = true;       // is control enabled?
 
+
+            // general
             public Entry(string nam, Type c, string t, Point p, Size s, string tt)
             {
-                ControlType = c; Text = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long";
+                ControlType = c; TextValue = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long";
             }
             public Entry(string nam, Type c, string t, Point p, Size s, string tt, float fontscale, ContentAlignment align = ContentAlignment.MiddleCenter)
             {
-                ControlType = c; Text = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long"; PostThemeFontScale = fontscale; TextAlign = align;
+                ControlType = c; TextValue = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long"; PostThemeFontScale = fontscale; TextAlign = align;
             }
+            // number boxes
+            public Entry(string nam, int t, Point p, Size s, string tt)
+            {
+                ControlType = typeof(NumberBoxInt); LongValue = t; Location = p; Size = s; ToolTip = tt; Name = nam; 
+            }
+            public Entry(string nam, long t, Point p, Size s, string tt)
+            {
+                ControlType = typeof(NumberBoxLong); LongValue = t; Location = p; Size = s; ToolTip = tt; Name = nam; 
+            }
+            public Entry(string nam, double t, Point p, Size s, string tt)
+            {
+                ControlType = typeof(NumberBoxDouble); DoubleValue = t; Location = p; Size = s; ToolTip = tt; Name = nam;
+            }
+            // checkbox
+            public Entry(string nam, bool t, string text, Point p, Size s, string tt)
+            {
+                ControlType = typeof(ExtCheckBox); TextValue = text; CheckBoxChecked = t; Location = p; Size = s; ToolTip = tt; Name = nam;
+            }
+            // Date time
+            public Entry(string nam, DateTime t, Point p, Size s, string tt)
+            {
+                ControlType = typeof(ExtDateTimePicker); DateTimeValue = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long";
+            }
+
             // ComboBoxCustom
-            public Entry(string nam, string t, Point p, Size s, string tt, List<string> comboitems)
+            public Entry(string nam, string t, Point p, Size s, string tt, IEnumerable<string> comboitems)
             {
-                ControlType = typeof(ExtComboBox); Text = t; Location = p; Size = s; ToolTip = tt; Name = nam;
+                ControlType = typeof(ExtComboBox); TextValue = t; Location = p; Size = s; ToolTip = tt; Name = nam;
                 ComboBoxItems = comboitems.ToArray();
-            }
-            public Entry(string nam, string t, Point p, Size s, string tt, string[] comboitems)
-            {
-                ControlType = typeof(ExtComboBox); Text = t; Location = p; Size = s; ToolTip = tt; Name = nam;
-                ComboBoxItems = comboitems;
             }
             // custom
             public Entry(Control c, string nam, string t, System.Drawing.Point p, System.Drawing.Size s, string tt)
             {
-                Name = nam; Control = c; Text = t; Location = p; Size = s; ToolTip = tt; TextAlign = ContentAlignment.TopLeft;
+                Name = nam; Control = c; TextValue = t; Location = p; Size = s; ToolTip = tt; TextAlign = ContentAlignment.TopLeft;
             }
         }
 
@@ -155,14 +183,14 @@ namespace ExtendedControls
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("OK", typeof(ExtendedControls.ExtButton), "OK".TxID(ECIDs.OK), p, sz.Value, tooltip) { Anchor = anchor });
+            Add(new Entry("OK", typeof(ExtButton), "OK".TxID(ECIDs.OK), p, sz.Value, tooltip) { Anchor = anchor });
         }
 
         public void AddCancel(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { Anchor = anchor });
+            Add(new Entry("Cancel", typeof(ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { Anchor = anchor });
         }
 
         public void AddLabelAndEntry(string labeltext, Point labelpos, Size labelsize, Entry e)
@@ -194,6 +222,17 @@ namespace ExtendedControls
             };
         }
 
+        // remove a control from the list, both visually and from entries
+        public void RemoveEntry(string controlname)
+        {
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if ( t?.Control != null )
+            {
+                outerpanel.Controls.Remove(t.Control);
+                entries.Remove(t);
+            }
+        }
+
         // must call if you add new controls after shown in a trigger
         public void UpdateDisplayAfterAddNewControls()
         {
@@ -204,18 +243,36 @@ namespace ExtendedControls
         }
 
         // move controls at or below up/down by move. positions are before scaling so as you specified on creation
-        public void MoveControls(int below, int move)
+        public void MoveControls(int atorbelow, int move)
         {
-            below = (int)(below * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up, round up a little
+            System.Diagnostics.Debug.WriteLine($"Shift {atorbelow} by {move}");
+            atorbelow = (int)(atorbelow * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up, round up a little
             move = (int)(move * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up
-            //System.Diagnostics.Debug.WriteLine($"Shift {after} by {move}");
+            MoveControlsAt(atorbelow, move);
+        }
+
+        // move all controls at or below this control. Offset is before scaling
+        public void MoveControls(string controlname, int move, int offset = -10)
+        {
+            move = (int)(move * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up
+            offset = (int)(offset * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up
+
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t != null)
+                MoveControlsAt(t.Location.Y + offset, move);
+        }
+
+        // move controls at or below up/down by move. positions/move are after scaling 
+        public void MoveControlsAt(int atorbelow, int move)
+        {
+            //System.Diagnostics.Debug.WriteLine($"Move Scaled {atorbelow} by {move}");
             foreach (Control c in outerpanel.Controls)
             {
-                if (c.Top >= below)
+                if (c.Top >= atorbelow)
                 {
                     //System.Diagnostics.Debug.WriteLine($".. shift {c.Name} at {c.Top} by {move}");
                     c.Top += move;
-                }
+               }
             }
         }
 
@@ -304,37 +361,37 @@ namespace ExtendedControls
         public string Get(Entry t)      // return value of dialog control
         {
             Control c = t.Control;
-            if (c is ExtendedControls.ExtTextBox)
+            if (c is ExtTextBox)
             {
-                string s = (c as ExtendedControls.ExtTextBox).Text;
+                string s = (c as ExtTextBox).Text;
                 if (t.TextBoxEscapeOnReport)
                     s = s.EscapeControlChars();
                 return s;
             }
             else if (c is Label)
                 return (c as Label).Text;
-            else if (c is ExtendedControls.ExtCheckBox)
-                return (c as ExtendedControls.ExtCheckBox).Checked ? "1" : "0";
-            else if (c is ExtendedControls.ExtDateTimePicker)
-                return (c as ExtendedControls.ExtDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            else if (c is ExtendedControls.NumberBoxDouble)
+            else if (c is ExtCheckBox)
+                return (c as ExtCheckBox).Checked ? "1" : "0";
+            else if (c is ExtDateTimePicker)
+                return (c as ExtDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            else if (c is NumberBoxDouble)
             {
-                var cn = c as ExtendedControls.NumberBoxDouble;
+                var cn = c as NumberBoxDouble;
                 return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
             }
-            else if (c is ExtendedControls.NumberBoxLong)
+            else if (c is NumberBoxLong)
             {
-                var cn = c as ExtendedControls.NumberBoxLong;
+                var cn = c as NumberBoxLong;
                 return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
             }
-            else if (c is ExtendedControls.NumberBoxInt)
+            else if (c is NumberBoxInt)
             {
-                var cn = c as ExtendedControls.NumberBoxInt;
+                var cn = c as NumberBoxInt;
                 return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
             }
-            else if (c is ExtendedControls.ExtComboBox)
+            else if (c is ExtComboBox)
             {
-                ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
+                ExtComboBox cb = c as ExtComboBox;
                 return (cb.SelectedIndex != -1) ? cb.Text : "";
             }
             else
@@ -347,7 +404,7 @@ namespace ExtendedControls
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                var cn = t.Control as ExtendedControls.ExtCheckBox;
+                var cn = t.Control as ExtCheckBox;
                 return cn.Checked;
             }
             return null;
@@ -358,7 +415,7 @@ namespace ExtendedControls
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                var cn = t.Control as ExtendedControls.NumberBoxDouble;
+                var cn = t.Control as NumberBoxDouble;
                 if (cn.IsValid)
                     return cn.Value;
             }
@@ -371,7 +428,7 @@ namespace ExtendedControls
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                var cn = t.Control as ExtendedControls.NumberBoxLong;
+                var cn = t.Control as NumberBoxLong;
                 if (cn.IsValid)
                     return cn.Value;
             }
@@ -383,7 +440,7 @@ namespace ExtendedControls
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
-                var cn = t.Control as ExtendedControls.NumberBoxInt;
+                var cn = t.Control as NumberBoxInt;
                 if (cn.IsValid)
                     return cn.Value;
             }
@@ -409,9 +466,9 @@ namespace ExtendedControls
             if (t != null)
             {
                 Control c = t.Control;
-                if (c is ExtendedControls.ExtTextBox )
+                if (c is ExtTextBox )
                 {
-                    (c as ExtendedControls.ExtTextBox).Text = value;
+                    (c as ExtTextBox).Text = value;
                     return true;
                 }
                 else if ( c is Label)
@@ -419,14 +476,14 @@ namespace ExtendedControls
                     (c as Label).Text = value;
                     return true;
                 }
-                else if (c is ExtendedControls.ExtCheckBox)
+                else if (c is ExtCheckBox)
                 {
-                    (c as ExtendedControls.ExtCheckBox).Checked = !value.Equals("0");
+                    (c as ExtCheckBox).Checked = !value.Equals("0");
                     return true;
                 }
-                else if (c is ExtendedControls.ExtComboBox)
+                else if (c is ExtComboBox)
                 {
-                    ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
+                    ExtComboBox cb = c as ExtComboBox;
                     if (cb.Items.Contains(value))
                     {
                         cb.Enabled = false;
@@ -435,9 +492,9 @@ namespace ExtendedControls
                         return true;
                     }
                 }
-                else if (c is ExtendedControls.NumberBoxDouble)
+                else if (c is NumberBoxDouble)
                 {
-                    var cn = c as ExtendedControls.NumberBoxDouble;
+                    var cn = c as NumberBoxDouble;
                     double? v = value.InvariantParseDoubleNull();
                     if (v.HasValue)
                     {
@@ -445,9 +502,9 @@ namespace ExtendedControls
                         return true;
                     }
                 }
-                else if (c is ExtendedControls.NumberBoxLong)
+                else if (c is NumberBoxLong)
                 {
-                    var cn = c as ExtendedControls.NumberBoxLong;
+                    var cn = c as NumberBoxLong;
                     long? v = value.InvariantParseLongNull();
                     if (v.HasValue)
                     {
@@ -466,9 +523,9 @@ namespace ExtendedControls
             foreach( var t in entries)
             {
                 var c = t.Control;
-                var cl = c as ExtendedControls.NumberBoxLong;
-                var cd = c as ExtendedControls.NumberBoxDouble;
-                var ci = c as ExtendedControls.NumberBoxInt;
+                var cl = c as NumberBoxLong;
+                var cd = c as NumberBoxDouble;
+                var ci = c as NumberBoxInt;
                 if ((cl != null && cl.IsValid == false) || (cd != null && cd.IsValid == false) || (ci != null && ci.IsValid == false))
                     return false;
             }
@@ -560,7 +617,7 @@ namespace ExtendedControls
 
             theme.Apply(this, theme.GetScaledFont(FontScale), ForceNoWindowsBorder);
             //theme.Apply(this, new Font("ms Sans Serif", 16f));
-            this.DumpTree(0);
+            //this.DumpTree(0);
             //System.Diagnostics.Debug.WriteLine($"ConfigurableForm autoscale {this.CurrentAutoScaleDimensions} {this.AutoScaleDimensions} {this.CurrentAutoScaleFactor()}");
 
             if (Transparent)
@@ -599,22 +656,24 @@ namespace ExtendedControls
 
                 Control c = ent.ControlType != null ? (Control)Activator.CreateInstance(ent.ControlType) : ent.Control;
 
+                //System.Diagnostics.Debug.WriteLine($"Add Control {ent.Name} of {c.GetType()} at {ent.Location} {ent.Size} {ent.TextValue}");
+
                 ent.Control = c;
                 c.Size = ent.Size;
                 c.Location = new Point(ent.Location.X, ent.Location.Y - yoffset);
                 c.Name = ent.Name;
                 c.Enabled = ent.Enabled;
-                if (!(ent.Text == null || c is ExtendedControls.ExtComboBox || c is ExtendedControls.ExtDateTimePicker
-                        || c is ExtendedControls.NumberBoxDouble || c is ExtendedControls.NumberBoxLong || c is ExtendedControls.NumberBoxInt))        // everything but get text
-                    c.Text = ent.Text;
+                if (!(ent.TextValue == null || c is ExtComboBox || c is ExtDateTimePicker
+                        || c is NumberBoxDouble || c is NumberBoxLong || c is NumberBoxInt))        // everything but get text
+                    c.Text = ent.TextValue;
                 c.Tag = ent;     // point control tag at ent structure
-                //System.Diagnostics.Debug.WriteLine("Control " + c.GetType().ToString() + " at " + c.Location + " " + c.Size + " " + c.Text);
+                
+                
                 outerpanel.Controls.Add(c);
                 if (ent.ToolTip != null)
                     tooltipcontrol.SetToolTip(c, ent.ToolTip);
 
-                if (factor != null)     // when adding, form scaling has already been done, so we need to scale manually
-                    c.Scale(factor.Value);
+                //System.Diagnostics.Debug.WriteLine($".. Control {ent.Name} of {c.GetType()} at {c.Location} {c.Size}");
 
                 if (c is Label)
                 {
@@ -624,9 +683,9 @@ namespace ExtendedControls
                     l.MouseDown += (md1, md2) => { OnCaptionMouseDown((Control)md1, md2); };        // make em draggable
                     l.MouseUp += (md1, md2) => { OnCaptionMouseUp((Control)md1, md2); };
                 }
-                else if (c is ExtendedControls.ExtButton)
+                else if (c is ExtButton)
                 {
-                    ExtendedControls.ExtButton b = c as ExtendedControls.ExtButton;
+                    ExtButton b = c as ExtButton;
                     if (ent.TextAlign.HasValue)
                         b.TextAlign = ent.TextAlign.Value;
                     b.Click += (sender, ev) =>
@@ -638,12 +697,12 @@ namespace ExtendedControls
                         }
                     };
                 }
-                else if (c is ExtendedControls.NumberBoxDouble)
+                else if (c is NumberBoxDouble)
                 {
-                    ExtendedControls.NumberBoxDouble cb = c as ExtendedControls.NumberBoxDouble;
+                    NumberBoxDouble cb = c as NumberBoxDouble;
                     cb.Minimum = ent.NumberBoxDoubleMinimum;
                     cb.Maximum = ent.NumberBoxDoubleMaximum;
-                    double? v = ent.Text.InvariantParseDoubleNull();
+                    double? v = ent.TextValue == null ? ent.DoubleValue : ent.TextValue.InvariantParseDoubleNull();
                     cb.Value = v.HasValue ? v.Value : cb.Minimum;
                     if (ent.NumberBoxFormat != null)
                         cb.Format = ent.NumberBoxFormat;
@@ -667,12 +726,12 @@ namespace ExtendedControls
                         }
                     };
                 }
-                else if (c is ExtendedControls.NumberBoxLong)
+                else if (c is NumberBoxLong)
                 {
-                    ExtendedControls.NumberBoxLong cb = c as ExtendedControls.NumberBoxLong;
+                    NumberBoxLong cb = c as NumberBoxLong;
                     cb.Minimum = ent.NumberBoxLongMinimum;
                     cb.Maximum = ent.NumberBoxLongMaximum;
-                    long? v = ent.Text.InvariantParseLongNull();
+                    long? v = ent.TextValue == null ?  ent.LongValue : ent.TextValue.InvariantParseLongNull();
                     cb.Value = v.HasValue ? v.Value : cb.Minimum;
                     if (ent.NumberBoxFormat != null)
                         cb.Format = ent.NumberBoxFormat;
@@ -695,12 +754,12 @@ namespace ExtendedControls
                         }
                     };
                 }
-                else if (c is ExtendedControls.NumberBoxInt)
+                else if (c is NumberBoxInt)
                 {
-                    ExtendedControls.NumberBoxInt cb = c as ExtendedControls.NumberBoxInt;
+                    NumberBoxInt cb = c as NumberBoxInt;
                     cb.Minimum = ent.NumberBoxLongMinimum == long.MinValue ? int.MinValue : (int)ent.NumberBoxLongMinimum;
                     cb.Maximum = ent.NumberBoxLongMaximum == long.MaxValue ? int.MaxValue : (int)ent.NumberBoxLongMaximum;
-                    int? v = ent.Text.InvariantParseIntNull();
+                    int? v = ent.TextValue == null ? (int)ent.LongValue : ent.TextValue.InvariantParseIntNull();
                     cb.Value = v.HasValue ? v.Value : cb.Minimum;
                     if (ent.NumberBoxFormat != null)
                         cb.Format = ent.NumberBoxFormat;
@@ -723,11 +782,14 @@ namespace ExtendedControls
                         }
                     };
                 }
-                else if (c is ExtendedControls.ExtTextBox)
+                else if (c is ExtTextBox)
                 {
-                    ExtendedControls.ExtTextBox tb = c as ExtendedControls.ExtTextBox;
+                    ExtTextBox tb = c as ExtTextBox;
                     tb.Multiline = tb.WordWrap = ent.TextBoxMultiline;
-                    tb.Size = ent.Size;     // restate size in case multiline is on
+
+                    // this was here, but no idea why. removing as the multiline instances seem good
+                    //tb.Size = ent.Size;     
+
                     tb.ClearOnFirstChar = ent.TextBoxClearOnFirstChar;
                     tb.ReturnPressed += (box) =>
                     {
@@ -743,9 +805,9 @@ namespace ExtendedControls
                     if (tb.ClearOnFirstChar)
                         tb.SelectEnd();
                 }
-                else if (c is ExtendedControls.ExtCheckBox)
+                else if (c is ExtCheckBox)
                 {
-                    ExtendedControls.ExtCheckBox cb = c as ExtendedControls.ExtCheckBox;
+                    ExtCheckBox cb = c as ExtCheckBox;
                     cb.Checked = ent.CheckBoxChecked;
                     cb.CheckAlign = ent.ContentAlign;
                     cb.Click += (sender, ev) =>
@@ -757,13 +819,14 @@ namespace ExtendedControls
                         }
                     };
                 }
-
-
-                if (c is ExtendedControls.ExtDateTimePicker)
+                else if (c is ExtDateTimePicker)
                 {
-                    ExtendedControls.ExtDateTimePicker dt = c as ExtendedControls.ExtDateTimePicker;
+                    ExtDateTimePicker dt = c as ExtDateTimePicker;
                     DateTime t;
-                    if (DateTime.TryParse(ent.Text, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out t))     // assume local, so no conversion
+
+                    if (ent.TextValue == null)
+                        t = ent.DateTimeValue;
+                    else if (DateTime.TryParse(ent.TextValue, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out t))     // assume local, so no conversion
                         dt.Value = t;
 
                     switch (ent.CustomDateFormat.ToLowerInvariant())
@@ -782,14 +845,13 @@ namespace ExtendedControls
                             break;
                     }
                 }
-
-                if (c is ExtendedControls.ExtComboBox)
+                else if (c is ExtComboBox)
                 {
-                    ExtendedControls.ExtComboBox cb = c as ExtendedControls.ExtComboBox;
+                    ExtComboBox cb = c as ExtComboBox;
 
                     cb.Items.AddRange(ent.ComboBoxItems);
-                    if (cb.Items.Contains(ent.Text))
-                        cb.SelectedItem = ent.Text;
+                    if (cb.Items.Contains(ent.TextValue))
+                        cb.SelectedItem = ent.TextValue;
                     cb.SelectedIndexChanged += (sender, ev) =>
                     {
                         Control ctr = (Control)sender;
@@ -799,7 +861,11 @@ namespace ExtendedControls
                             Trigger?.Invoke(logicalname, en.Name, this.callertag);       // pass back the logical name of dialog, the name of the control, the caller tag
                         }
                     };
+                }
 
+                if (factor != null)     // when adding, form scaling has already been done, so we need to scale manually
+                {
+                    c.Scale(factor.Value);
                 }
             }
 
@@ -822,6 +888,8 @@ namespace ExtendedControls
 
             var currentautocale = this.CurrentAutoScaleFactor();            // how much did we scale up?
 
+            //System.Diagnostics.Debug.WriteLine($"Perform size {currentautocale}");
+
             // measure the items after scaling. Exclude the scroll bar. Add on bounds/outers/margin
 
             if ( closebutton!=null )
@@ -829,10 +897,10 @@ namespace ExtendedControls
 
             Size measureitemsinwindow = outerpanel.FindMaxSubControlArea(boundsw + outerw + (int)(RightMargin * currentautocale.Width),
                                                                    boundsh + outerh + (int)(BottomMargin * currentautocale.Height),
-                                                                   new Type[] { typeof(ExtScrollBar) }, true);
+                                                                   new Type[] { typeof(ExtScrollBar) }, false);
 
 
-            System.Diagnostics.Debug.WriteLine($"Size Controls {boundsh} {boundsw} {outerh} {outerw} wdata {measureitemsinwindow}");
+            //System.Diagnostics.Debug.WriteLine($"Size Controls {boundsh} {boundsw} {outerh} {outerw} wdata {measureitemsinwindow}");
             // now position in the screen, allowing for a scroll bar if required due to height restricted
 
             MinimumSize = minsize;       // setting this allows for small windows
@@ -1016,23 +1084,23 @@ namespace ExtendedControls
             if (type == null)
                 return "Missing type";
             else if (type.Equals("button"))
-                ctype = typeof(ExtendedControls.ExtButton);
+                ctype = typeof(ExtButton);
             else if (type.Equals("textbox"))
-                ctype = typeof(ExtendedControls.ExtTextBox);
+                ctype = typeof(ExtTextBox);
             else if (type.Equals("checkbox"))
-                ctype = typeof(ExtendedControls.ExtCheckBox);
+                ctype = typeof(ExtCheckBox);
             else if (type.Equals("label"))
                 ctype = typeof(System.Windows.Forms.Label);
             else if (type.Equals("combobox"))
-                ctype = typeof(ExtendedControls.ExtComboBox);
+                ctype = typeof(ExtComboBox);
             else if (type.Equals("datetime"))
-                ctype = typeof(ExtendedControls.ExtDateTimePicker);
+                ctype = typeof(ExtDateTimePicker);
             else if (type.Equals("numberboxlong"))
-                ctype = typeof(ExtendedControls.NumberBoxLong);
+                ctype = typeof(NumberBoxLong);
             else if (type.Equals("numberboxdouble"))
-                ctype = typeof(ExtendedControls.NumberBoxDouble);
+                ctype = typeof(NumberBoxDouble);
             else if (type.Equals("numberboxint"))
-                ctype = typeof(ExtendedControls.NumberBoxInt);
+                ctype = typeof(NumberBoxInt);
             else
                 return "Unknown control type " + type;
 
@@ -1056,39 +1124,39 @@ namespace ExtendedControls
 
             if (tip != null)        // must have a tip for these..
             {
-                if (ctype == typeof(ExtendedControls.ExtTextBox))
+                if (ctype == typeof(ExtTextBox))
                 {
                     int? v = sp.NextWordComma().InvariantParseIntNull();
                     entry.TextBoxMultiline = v.HasValue && v.Value != 0;
                     if (entry.TextBoxMultiline)
                     {
                         entry.TextBoxEscapeOnReport = true;
-                        entry.Text = entry.Text.ReplaceEscapeControlChars();        // New! if multiline, replace escape control chars
+                        entry.TextValue = entry.TextValue.ReplaceEscapeControlChars();        // New! if multiline, replace escape control chars
                     }
 
                     v = sp.NextWordComma().InvariantParseIntNull();
                     entry.TextBoxClearOnFirstChar = v.HasValue && v.Value != 0;
                 }
-                else if (ctype == typeof(ExtendedControls.ExtCheckBox))
+                else if (ctype == typeof(ExtCheckBox))
                 {
                     int? v = sp.NextWordComma().InvariantParseIntNull();
                     entry.CheckBoxChecked = v.HasValue && v.Value != 0;
                 }
             }
 
-            if (ctype == typeof(ExtendedControls.ExtComboBox))
+            if (ctype == typeof(ExtComboBox))
             {
                 entry.ComboBoxItems = sp.LineLeft.Trim().Split(",");
                 if (tip == null || entry.ComboBoxItems.Length == 0)
                     return "Missing parameters for combobox";
             }
             
-            if (ctype == typeof(ExtendedControls.ExtDateTimePicker))
+            if (ctype == typeof(ExtDateTimePicker))
             {
                 entry.CustomDateFormat = sp.NextWord();
             }
 
-            if (ctype == typeof(ExtendedControls.NumberBoxDouble))
+            if (ctype == typeof(NumberBoxDouble))
             {
                 double? min = sp.NextWordComma().InvariantParseDoubleNull();
                 double? max = sp.NextWordComma().InvariantParseDoubleNull();
@@ -1097,7 +1165,7 @@ namespace ExtendedControls
                 entry.NumberBoxFormat = sp.NextWordComma();
             }
 
-            if (ctype == typeof(ExtendedControls.NumberBoxLong))
+            if (ctype == typeof(NumberBoxLong))
             {
                 long? min = sp.NextWordComma().InvariantParseLongNull();
                 long? max = sp.NextWordComma().InvariantParseLongNull();
