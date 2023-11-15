@@ -39,6 +39,7 @@
             this.Column1 = new ExtendedControls.ExtDataGridViewColumnAutoComplete();
             this.Column2 = new ExtendedControls.ExtDataGridViewColumnAutoComplete();
             this.extTextBox1 = new ExtendedControls.ExtTextBox();
+            this.extTextBoxAutoComplete1 = new ExtendedControls.ExtTextBoxAutoComplete();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewColumnHider1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,6 +48,7 @@
             this.autoCompleteTextBox1.AutoCompleteCommentMarker = null;
             this.autoCompleteTextBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.autoCompleteTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.autoCompleteTextBox1.AutoCompleteTimeout = 500;
             this.autoCompleteTextBox1.BackErrorColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox1.BorderColor = System.Drawing.Color.Transparent;
             this.autoCompleteTextBox1.BorderColorScaling = 0.5F;
@@ -59,7 +61,7 @@
             this.autoCompleteTextBox1.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox1.EndButtonEnable = false;
-            this.autoCompleteTextBox1.EndButtonImage = null;
+            this.autoCompleteTextBox1.EndButtonSize16ths = 10;
             this.autoCompleteTextBox1.EndButtonVisible = false;
             this.autoCompleteTextBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.autoCompleteTextBox1.InErrorCondition = false;
@@ -85,7 +87,7 @@
             this.comboBoxCustom1.DisplayMember = "";
             this.comboBoxCustom1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustom1.Location = new System.Drawing.Point(40, 157);
+            this.comboBoxCustom1.Location = new System.Drawing.Point(40, 168);
             this.comboBoxCustom1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustom1.Name = "comboBoxCustom1";
             this.comboBoxCustom1.ScrollBarButtonColor = System.Drawing.Color.LightGray;
@@ -104,6 +106,7 @@
             this.autoCompleteTextBox2.AutoCompleteCommentMarker = null;
             this.autoCompleteTextBox2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.autoCompleteTextBox2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.autoCompleteTextBox2.AutoCompleteTimeout = 500;
             this.autoCompleteTextBox2.BackErrorColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox2.BorderColor = System.Drawing.Color.Transparent;
             this.autoCompleteTextBox2.BorderColorScaling = 0.5F;
@@ -116,8 +119,8 @@
             this.autoCompleteTextBox2.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox2.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.autoCompleteTextBox2.EndButtonEnable = false;
-            this.autoCompleteTextBox2.EndButtonImage = null;
-            this.autoCompleteTextBox2.EndButtonVisible = false;
+            this.autoCompleteTextBox2.EndButtonSize16ths = 10;
+            this.autoCompleteTextBox2.EndButtonVisible = true;
             this.autoCompleteTextBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.autoCompleteTextBox2.InErrorCondition = false;
             this.autoCompleteTextBox2.Location = new System.Drawing.Point(40, 87);
@@ -145,6 +148,7 @@
             this.textBoxBorder1.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorder1.EndButtonEnable = true;
             this.textBoxBorder1.EndButtonImage = null;
+            this.textBoxBorder1.EndButtonSize16ths = 10;
             this.textBoxBorder1.EndButtonVisible = false;
             this.textBoxBorder1.InErrorCondition = false;
             this.textBoxBorder1.Location = new System.Drawing.Point(40, 222);
@@ -162,7 +166,9 @@
             // 
             // dataGridViewColumnHider1
             // 
+            this.dataGridViewColumnHider1.AllowRowHeaderVisibleSelection = false;
             this.dataGridViewColumnHider1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewColumnHider1.AutoSortByColumnName = false;
             this.dataGridViewColumnHider1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewColumnHider1.ColumnReorder = true;
             this.dataGridViewColumnHider1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -170,6 +176,7 @@
             this.Column2});
             this.dataGridViewColumnHider1.Location = new System.Drawing.Point(40, 300);
             this.dataGridViewColumnHider1.Name = "dataGridViewColumnHider1";
+            this.dataGridViewColumnHider1.PerColumnWordWrapControl = true;
             this.dataGridViewColumnHider1.RowHeaderMenuStrip = null;
             this.dataGridViewColumnHider1.SingleRowSelect = true;
             this.dataGridViewColumnHider1.Size = new System.Drawing.Size(638, 150);
@@ -197,6 +204,7 @@
             this.extTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.extTextBox1.EndButtonEnable = true;
             this.extTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("extTextBox1.EndButtonImage")));
+            this.extTextBox1.EndButtonSize16ths = 10;
             this.extTextBox1.EndButtonVisible = false;
             this.extTextBox1.InErrorCondition = false;
             this.extTextBox1.Location = new System.Drawing.Point(512, 52);
@@ -212,11 +220,47 @@
             this.extTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.extTextBox1.WordWrap = true;
             // 
+            // extTextBoxAutoComplete1
+            // 
+            this.extTextBoxAutoComplete1.AutoCompleteCommentMarker = null;
+            this.extTextBoxAutoComplete1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.extTextBoxAutoComplete1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.extTextBoxAutoComplete1.AutoCompleteTimeout = 500;
+            this.extTextBoxAutoComplete1.BackErrorColor = System.Drawing.Color.Red;
+            this.extTextBoxAutoComplete1.BorderColor = System.Drawing.Color.Transparent;
+            this.extTextBoxAutoComplete1.BorderColorScaling = 0.5F;
+            this.extTextBoxAutoComplete1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.extTextBoxAutoComplete1.ClearOnFirstChar = false;
+            this.extTextBoxAutoComplete1.ControlBackground = System.Drawing.SystemColors.Control;
+            this.extTextBoxAutoComplete1.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.extTextBoxAutoComplete1.DropDownBorderColor = System.Drawing.Color.Green;
+            this.extTextBoxAutoComplete1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
+            this.extTextBoxAutoComplete1.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
+            this.extTextBoxAutoComplete1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
+            this.extTextBoxAutoComplete1.EndButtonEnable = false;
+            this.extTextBoxAutoComplete1.EndButtonSize16ths = 10;
+            this.extTextBoxAutoComplete1.EndButtonVisible = false;
+            this.extTextBoxAutoComplete1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extTextBoxAutoComplete1.InErrorCondition = false;
+            this.extTextBoxAutoComplete1.Location = new System.Drawing.Point(40, 128);
+            this.extTextBoxAutoComplete1.Multiline = false;
+            this.extTextBoxAutoComplete1.Name = "extTextBoxAutoComplete1";
+            this.extTextBoxAutoComplete1.ReadOnly = false;
+            this.extTextBoxAutoComplete1.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.extTextBoxAutoComplete1.SelectionLength = 0;
+            this.extTextBoxAutoComplete1.SelectionStart = 0;
+            this.extTextBoxAutoComplete1.Size = new System.Drawing.Size(306, 32);
+            this.extTextBoxAutoComplete1.TabIndex = 5;
+            this.extTextBoxAutoComplete1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.extTextBoxAutoComplete1.TextChangedEvent = "";
+            this.extTextBoxAutoComplete1.WordWrap = true;
+            // 
             // TestAutoComplete
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 509);
+            this.Controls.Add(this.extTextBoxAutoComplete1);
             this.Controls.Add(this.extTextBox1);
             this.Controls.Add(this.dataGridViewColumnHider1);
             this.Controls.Add(this.textBoxBorder1);
@@ -241,5 +285,6 @@
         private ExtendedControls.ExtDataGridViewColumnAutoComplete Column1;
         private ExtendedControls.ExtDataGridViewColumnAutoComplete Column2;
         private ExtendedControls.ExtTextBox extTextBox1;
+        private ExtendedControls.ExtTextBoxAutoComplete extTextBoxAutoComplete1;
     }
 }

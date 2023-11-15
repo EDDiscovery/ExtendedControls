@@ -329,6 +329,9 @@ namespace ExtendedControls
             return WindowsFrame;
         }
 
+        const float mouseoverscaling = 1.3F;
+        const float mouseselectedscaling = 1.5F;
+
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level, bool noborderoverride = false)    // parent can be null
         {
 
@@ -339,8 +342,6 @@ namespace ExtendedControls
 #endif
             myControl.SuspendLayout();
 
-            float mouseoverscaling = 1.3F;
-            float mouseselectedscaling = 1.5F;
 
             const bool paneldebugmode = false;      // set for some help in those pesky panels
 
@@ -442,66 +443,18 @@ namespace ExtendedControls
                         actb.FlatStyle = FlatStyle.Popup;
                 }
 
+                ThemeButton(ctrl.EndButton);
+                ctrl.EndButton.FlatAppearance.BorderColor =             // override some of them to make back of button disappear
+                ctrl.EndButton.BackColor = colors[CI.textbox_back];
+                ctrl.EndButton.ButtonColorScaling = ctrl.EndButton.ButtonDisabledScaling = 1.0F;
+
                 ctrl.Invalidate();
 
                 dochildren = false;
             }
             else if (myControl is ExtButton)
             {
-                ExtButton ctrl = (ExtButton)myControl;
-                ctrl.ForeColor = colors[CI.button_text];
-                ctrl.AutoSize = true;
-
-                if (buttonstyle.Equals(ButtonStyles[0])) // system
-                {
-                    ctrl.FlatStyle = (ctrl.Image != null) ? FlatStyle.Standard : FlatStyle.System;
-                    ctrl.UseVisualStyleBackColor = true;           // this makes it system..
-                }
-                else
-                {
-                    ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
-
-                    if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
-                    {
-                        System.Drawing.Imaging.ColorMap colormap1 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                        colormap1.OldColor = Color.FromArgb(134, 134, 134);                                      // gray is defined as the forecolour
-                        colormap1.NewColor = ctrl.ForeColor;
-                        //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap1.OldColor + " to " + colormap1.NewColor);
-
-                        System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                        colormap2.OldColor = Color.FromArgb(255, 255, 255);                                      // and white is defined as the forecolour
-                        colormap2.NewColor = ctrl.ForeColor;
-                        //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap2.OldColor + " to " + colormap2.NewColor);
-
-                        ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap1, colormap2 });     // used ButtonDisabledScaling note!
-                    }
-
-                    // if image, and no text or text over image centred (so over the image), background is form to make the back disappear
-                    if (ctrl.Image != null && (ctrl.Text.Length == 0 || (ctrl.TextAlign == ContentAlignment.MiddleCenter && ctrl.ImageAlign == ContentAlignment.MiddleCenter)))
-                    {
-                        if (ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton)       // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
-                        {
-                            ctrl.BackColor = ctrl.Parent.BackColor;
-                            ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
-                        }
-                        else
-                            ctrl.BackColor = colors[CI.form];
-                    }
-                    else
-                    {
-                        ctrl.BackColor = colors[CI.button_back];       // else its a graduated back
-                    }
-
-                    ctrl.FlatAppearance.BorderColor = (ctrl.Image != null) ? colors[CI.form] : colors[CI.button_border];
-                    ctrl.FlatAppearance.BorderSize = 1;
-                    ctrl.FlatAppearance.MouseOverBackColor = colors[CI.button_back].Multiply(mouseoverscaling);
-                    ctrl.FlatAppearance.MouseDownBackColor = colors[CI.button_back].Multiply(mouseselectedscaling);
-
-                    if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                        ctrl.FlatStyle = FlatStyle.Flat;
-                    else
-                        ctrl.FlatStyle = FlatStyle.Popup;
-                }
+                ThemeButton(myControl);
             }
             else if (myControl is ExtTabControl)
             {
@@ -1042,6 +995,64 @@ namespace ExtendedControls
             //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme Control {myControl.Name} to {myControl.Bounds}");
         }
 
+        private void ThemeButton(Control myControl)
+        {
+            ExtButton ctrl = (ExtButton)myControl;
+            ctrl.ForeColor = colors[CI.button_text];
+            ctrl.AutoSize = true;
+
+            if (buttonstyle.Equals(ButtonStyles[0])) // system
+            {
+                ctrl.FlatStyle = (ctrl.Image != null) ? FlatStyle.Standard : FlatStyle.System;
+                ctrl.UseVisualStyleBackColor = true;           // this makes it system..
+            }
+            else
+            {
+                ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
+
+                if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
+                {
+                    System.Drawing.Imaging.ColorMap colormap1 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
+                    colormap1.OldColor = Color.FromArgb(134, 134, 134);                                      // gray is defined as the forecolour
+                    colormap1.NewColor = ctrl.ForeColor;
+                    //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap1.OldColor + " to " + colormap1.NewColor);
+
+                    System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
+                    colormap2.OldColor = Color.FromArgb(255, 255, 255);                                      // and white is defined as the forecolour
+                    colormap2.NewColor = ctrl.ForeColor;
+                    //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap2.OldColor + " to " + colormap2.NewColor);
+
+                    ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap1, colormap2 });     // used ButtonDisabledScaling note!
+                }
+
+                // if image, and no text or text over image centred (so over the image), background is form to make the back disappear
+                if (ctrl.Image != null && (ctrl.Text.Length == 0 || (ctrl.TextAlign == ContentAlignment.MiddleCenter && ctrl.ImageAlign == ContentAlignment.MiddleCenter)))
+                {
+                    if (ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton)       // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
+                    {
+                        ctrl.BackColor = ctrl.Parent.BackColor;
+                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
+                    }
+                    else
+                        ctrl.BackColor = colors[CI.form];
+                }
+                else
+                {
+                    ctrl.BackColor = colors[CI.button_back];       // else its a graduated back
+                }
+
+                ctrl.FlatAppearance.BorderColor = (ctrl.Image != null) ? colors[CI.form] : colors[CI.button_border];
+                ctrl.FlatAppearance.BorderSize = 1;
+                ctrl.FlatAppearance.MouseOverBackColor = colors[CI.button_back].Multiply(mouseoverscaling);
+                ctrl.FlatAppearance.MouseDownBackColor = colors[CI.button_back].Multiply(mouseselectedscaling);
+
+                if (buttonstyle.Equals(ButtonStyles[1])) // flat
+                    ctrl.FlatStyle = FlatStyle.Flat;
+                else
+                    ctrl.FlatStyle = FlatStyle.Popup;
+            }
+
+        }
 
         private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)
         {

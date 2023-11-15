@@ -38,9 +38,13 @@ namespace TestExtendedControls
             list.Add("Efive");
 
             autoCompleteTextBox1.SetAutoCompletor(AutoList);
+            autoCompleteTextBox1.EndButtonVisible = true;
             autoCompleteTextBox2.SetAutoCompletor(AutoList);
             autoCompleteTextBox2.FlatStyle = FlatStyle.Popup;
             autoCompleteTextBox2.AutoCompleteTimeout = 1000;
+
+            extTextBoxAutoComplete1.SetAutoCompletor(AutoList);
+            extTextBoxAutoComplete1.EndButtonVisible = true;
 
             comboBoxCustom1.Items.AddRange(list);
 
@@ -75,7 +79,7 @@ namespace TestExtendedControls
             foreach (var x in res)
                 set.Add(x);
 
-            System.Threading.Thread.Sleep(2000);
+          //  System.Threading.Thread.Sleep(2000);
         }
 
         public static void ReturnSystemAutoCompleteListDGV(string input, Object ctrl, SortedSet<string> set)
@@ -84,7 +88,7 @@ namespace TestExtendedControls
             foreach (var x in res)
                 set.Add(x);
 
-            System.Threading.Thread.Sleep(2000);
+          //  System.Threading.Thread.Sleep(2000);
         }
 
     }

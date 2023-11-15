@@ -78,15 +78,16 @@ namespace ExtendedControls
                 }
             }
         }
+        public bool EndButtonEnable { get { return endbutton.Enabled; } set { endbutton.Enabled = value; this.Invalidate(true); Update(); } }
+        public Image EndButtonImage { get { return endbutton.Image; } set { endbutton.Image = value; } }     // if you want something else.. keep it small
+        public ExtButton EndButton { get { return endbutton; } }        // for themeing
+        public int EndButtonSize16ths { get { return endbuttonsize; } set { endbuttonsize = value;Invalidate(); } }
 
         public new void Invalidate()
         {
             textbox.Invalidate();
             endbutton.Invalidate();
         }
-
-        public bool EndButtonEnable { get { return endbutton.Enabled; } set { endbutton.Enabled = value; this.Invalidate(true); Update();  } }
-        public Image EndButtonImage { get { return endbutton.Image; } set { endbutton.Image = value; } }     // if you want something else.. keep it small
 
         public Action<ExtTextBox> EndButtonClick = null;                              // if the button is pressed
 
@@ -152,7 +153,7 @@ namespace ExtendedControls
             if (ClientRectangle.Width > 0)
             {
                 int bsize = OurBorder ? borderoffset : 0;
-                int butwidth = endbuttontoshow ? (Height*2/4) : 0;
+                int butwidth = endbuttontoshow ? (Height*endbuttonsize/16) : 0;
                 int clientcentre = Height / 2;
 
                 textbox.Size = new Size(ClientRectangle.Width - bsize * 2 - butwidth, ClientRectangle.Height - bsize * 2);
@@ -407,6 +408,7 @@ namespace ExtendedControls
 
         private ExtButton endbutton;
         private bool endbuttontoshow = false; // you can't trust visible
+        private int endbuttonsize = 10;
 
         #endregion
     }

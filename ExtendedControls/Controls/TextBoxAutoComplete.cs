@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace ExtendedControls
 {
@@ -47,6 +48,10 @@ namespace ExtendedControls
         public void SetAutoCompletor(PerformAutoComplete p, bool endbuttonvisible ) { AutoCompleteFunction = p; EndButtonVisible = endbuttonvisible; }
         public string AutoCompleteCommentMarker { get; set; } = null;       // text after this is comments not autocomplete text
 
+
+        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new Image EndButtonImage { get { return base.EndButtonImage; } set { base.EndButtonImage = value; } }    
+
         public ExtTextBoxAutoComplete() : base()
         {
             TextChanged += TextChangeEventHandler;
@@ -71,6 +76,8 @@ namespace ExtendedControls
             };
 
             ReturnPressed += (e) => { return true; };       // this stops the ding on return press. If someone else overrides this, they need to return true
+
+            EndButtonImage = Properties.Resources.ArrowDown;
         }
 
         public void AutoComplete(string autocomplete)           // call to autocomplete this
