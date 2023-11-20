@@ -49,6 +49,8 @@ namespace ExtendedControls
         OK,
         Cancel,
 
+        Disabled,
+
         MessageBoxTheme_OK,
         MessageBoxTheme_Cancel,
         MessageBoxTheme_Warning,

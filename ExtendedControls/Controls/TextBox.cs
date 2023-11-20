@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2020 EDDiscovery development team
+ * Copyright © 2016-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -42,10 +40,12 @@ namespace ExtendedControls
         public bool WordWrap { get { return textbox.WordWrap; } set { textbox.WordWrap = value; } }
         public bool Multiline { get { return textbox.Multiline; } set { textbox.Multiline = value; InternalPositionControls(); } }
         public bool ReadOnly { get { return textbox.ReadOnly; } set { textbox.ReadOnly = value; } }
-        public bool ClearOnFirstChar { get; set; } = false;
-        public System.Windows.Forms.ScrollBars ScrollBars { get { return textbox.ScrollBars; } set { textbox.ScrollBars = value; } }
+        public bool ClearOnFirstChar { get { return clearonfirstchar; } set { clearonfirstchar = value; if (clearonfirstchar) KeysPressed = 0; } } 
+
+        public ScrollBars ScrollBars { get { return textbox.ScrollBars; } set { textbox.ScrollBars = value; } }
 
         public override string Text { get { return textbox.Text; } set { textbox.Text = value; } }
+        public string TextNoChange { get { return textbox.Text; } set { nonreentrantchange = false;  textbox.Text = value; nonreentrantchange = true; } }
 
         public void SelectAll() { textbox.SelectAll(); }
         public int SelectionStart { get { return textbox.SelectionStart; } set { textbox.SelectionStart = value; } }
@@ -56,8 +56,8 @@ namespace ExtendedControls
 
         public HorizontalAlignment TextAlign { get { return textbox.TextAlign; } set { textbox.TextAlign = value; } }
 
-        public System.Windows.Forms.AutoCompleteMode AutoCompleteMode { get { return textbox.AutoCompleteMode; } set { textbox.AutoCompleteMode = value; } }
-        public System.Windows.Forms.AutoCompleteSource AutoCompleteSource { get { return textbox.AutoCompleteSource; } set { textbox.AutoCompleteSource = value; } }
+        public AutoCompleteMode AutoCompleteMode { get { return textbox.AutoCompleteMode; } set { textbox.AutoCompleteMode = value; } }
+        public AutoCompleteSource AutoCompleteSource { get { return textbox.AutoCompleteSource; } set { textbox.AutoCompleteSource = value; } }
 
         public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(textbox, text); } // only needed for dynamic changes..
 
@@ -353,11 +353,16 @@ namespace ExtendedControls
             {
                 if (ReturnPressed != null)
                 {
-                    e.Handled = ReturnPressed.Invoke(this);
+                    e.Handled = OnReturnPressed();
                 }
             }
 
             OnKeyPress(e);
+        }
+
+        protected virtual bool OnReturnPressed()
+        {
+            return ReturnPressed?.Invoke(this) ?? false;
         }
 
         private void Textbox_KeyDown(object sender, KeyEventArgs e)
@@ -379,7 +384,8 @@ namespace ExtendedControls
                 if (ClearOnFirstChar && KeysPressed == 1)
                 {
                     nonreentrantchange = false;
-                    textbox.Text = "" + lastkey;
+                    if ( char.IsLetter(lastkey) )
+                        textbox.Text = "" + lastkey;
                     textbox.Select(1, 1);
                     nonreentrantchange = true;
                 }
@@ -409,6 +415,7 @@ namespace ExtendedControls
         private ExtButton endbutton;
         private bool endbuttontoshow = false; // you can't trust visible
         private int endbuttonsize = 10;
+        private bool clearonfirstchar = false;
 
         #endregion
     }

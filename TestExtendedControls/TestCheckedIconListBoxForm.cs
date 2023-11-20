@@ -30,20 +30,11 @@ namespace TestExtendedControls
 
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
 
-            //fgroup.AddAllNone();
-            //fgroup.AddGroupOption("T1;T2", "T1+2");
-
             for (int i = 0; i < 250; i++)
             {
                 fgroup.AddStandardOption("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length]);
             }
 
-       //     fgroup.SortStandardOptions();
-
-         //   fgroup.AddStandardOptionAtTop("B1", "Button1", button: true);
-
-           // fgroup.AddGroupOption("T1;T2;T3;T4;", "G1-4");
-          //  fgroup.AddGroupOption("T5;T6;T7;T8;", "G5-8");
             fgroup.CheckedChanged += F_CheckedChanged;
             fgroup.SaveSettings += F_SaveSettings;
             fgroup.ButtonPressed += F_ButtonPressed;
@@ -65,8 +56,9 @@ namespace TestExtendedControls
             groupoptions:new List<CheckedIconListBoxFormGroup.GroupOption>
             {
                 new CheckedIconListBoxFormGroup.GroupOption("Tag1;Tag2","Option 1&2"),
-                new CheckedIconListBoxFormGroup.GroupOption("Tag3;Tag4","Option 3&4")
-            });
+                new CheckedIconListBoxFormGroup.GroupOption("Tag3;Tag4","Option 3&4"),
+                new CheckedIconListBoxFormGroup.GroupOption("Special","Special",exclusive:"All")
+            }, disabled:"");
         }
 
         string groupoptions = "";
@@ -166,6 +158,8 @@ namespace TestExtendedControls
 
         }
 
+        string selformsettings = "All";
+
         CheckedIconListBoxFormGroup MakeSelForm(float size, bool group)
         {
             CheckedIconListBoxFormGroup f = new CheckedIconListBoxFormGroup();
@@ -173,9 +167,10 @@ namespace TestExtendedControls
             var imglist = new Image[] { Properties.Resources.edlogo24, Properties.Resources.Logo8bpp48, Properties.Resources.galaxy_white, Properties.Resources.Logo8bpp48rot, Properties.Resources.galaxy_red, };
 
             f.AddAllNone();
+            f.AddDisabled();
             f.AddGroupOption("T1;T2", "T1+2");
 
-            for (int i = 0; i <10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 f.AddStandardOption("T" + i.ToString(), "Tx" + i.ToString(), imglist[i % imglist.Length]);
             }
@@ -193,8 +188,12 @@ namespace TestExtendedControls
             f.CheckedChanged += F_CheckedChanged;
             f.SaveSettings += F_SaveSettings;
             f.ButtonPressed += F_ButtonPressed;
+            f.SaveSettings += (s, t) => { selformsettings = s; };
+           // f.CloseOnDeactivate = false;
             Theme.Current.FontSize = size;
-            f.Create("All", true);
+            f.Create(selformsettings, true);
+
+           
 
             return f;
         }

@@ -31,12 +31,14 @@ namespace ExtendedControls
                             string currentsettings, Action<string> settingschanged,
                             bool allornoneshown = true, 
                             bool allornonback = false,
+                            string disabled = null,            // either "" default, or text to use
                             Size? imagesize = null, Size? screenmargin = null, Size? closeboundaryregion = null,
                             IEnumerable<CheckedIconListBoxFormGroup.GroupOption> groupoptions = null)
         {
             this.list = standardoptions;
             this.glist = groupoptions;
             this.allornone = allornoneshown;
+            this.disabled = disabled;
             this.allornoneback = allornonback;
             this.imagesize = imagesize;
             this.screenmargin = screenmargin;
@@ -50,7 +52,7 @@ namespace ExtendedControls
         // individual setting, or All or None if allofnoneback is true
         public bool IsSet(string setting)
         {
-            return currentsettings.Contains(setting + SettingsSplittingChar);     // we use ; as the setting char
+            return currentsettings.Contains(setting + SettingsSplittingChar);     // we use ; as the default setting char
         }
 
         public bool IsNoneSet { get { return currentsettings == "None" + SettingsSplittingChar || currentsettings.Length == 0; } }
@@ -64,6 +66,8 @@ namespace ExtendedControls
 
             if (allornone)
                 DropDown.AddAllNone();
+            if (disabled!=null)
+                DropDown.AddDisabled(disabled.HasChars() ? disabled :null);
             DropDown.AllOrNoneBack = allornoneback;
             DropDown.SettingsSplittingChar = SettingsSplittingChar;
             if (glist != null)
@@ -91,6 +95,7 @@ namespace ExtendedControls
         private IEnumerable<CheckedIconListBoxFormGroup.StandardOption> list;
         private IEnumerable<CheckedIconListBoxFormGroup.GroupOption> glist;
         private bool allornone;
+        private string disabled;
         private Size? imagesize;
         private Size? screenmargin;
         private Size? closeboundaryregion;

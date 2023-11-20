@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,9 +10,8 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -55,10 +54,9 @@ namespace ExtendedControls
         public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
 
         // All modes
+        public int SelectedIndex { get { return selectedindex; } set { if (value != selectedindex) { selectedindex = value; Invalidate(); } } }
 
-        public int SelectedIndex { get; set; } = -1;
-
-        public delegate void OnSelectedIndexChanged(object sender, EventArgs e);
+        public delegate void OnSelectedIndexChanged(object sender, EventArgs e, bool key);
         public event OnSelectedIndexChanged SelectedIndexChanged;
 
         public delegate void OnKeyPressed(object sender, KeyPressEventArgs e);
@@ -66,16 +64,6 @@ namespace ExtendedControls
 
         public delegate void OnAnyOtherKeyPressed(object sender, KeyEventArgs e);
         public event OnAnyOtherKeyPressed OtherKeyPressed;
-
-        // privates
-
-        private ListBox lbsys;
-        private List<string> items;
-        private List<Image> imageitems;
-        private int itemheight;     // autoset
-        private FlatStyle flatstyle = FlatStyle.System;
-
-        #region Implementation
 
         public ExtListBox() : base()
         {
@@ -102,17 +90,6 @@ namespace ExtendedControls
             this.Invalidate();
         }
 
-        protected override void OnLayout(LayoutEventArgs levent)
-        {
-            base.OnLayout(levent);
-            if (lbsys != null && flatstyle == FlatStyle.System && this.Width > 0)
-            {
-                lbsys.Width = this.Width;
-                lbsys.Height = this.Height;
-                lbsys.ItemHeight = (int)Font.GetHeight() + 2;
-            }
-        }
-
         // Measure width and height of line, maximum to items and imageitems.
         public Size MeasureItems(Graphics g)
         {
@@ -125,6 +102,18 @@ namespace ExtendedControls
                     p.Width += FitImagesToItemHeight ? (int)(Font.GetHeight() + 2) : maxwidth;
                 }
                 return p;
+            }
+        }
+
+        #region Implementation
+        protected override void OnLayout(LayoutEventArgs levent)
+        {
+            base.OnLayout(levent);
+            if (lbsys != null && flatstyle == FlatStyle.System && this.Width > 0)
+            {
+                lbsys.Width = this.Width;
+                lbsys.Height = this.Height;
+                lbsys.ItemHeight = (int)Font.GetHeight() + 2;
             }
         }
 
@@ -299,7 +288,6 @@ namespace ExtendedControls
             }
         }
 
-
         private void Lbsys_DrawItem(object sender, DrawItemEventArgs e) // for system draw with ICON
         {
             e.DrawBackground();
@@ -345,7 +333,6 @@ namespace ExtendedControls
             e.DrawFocusRectangle();
         }
 
-
         protected void vScroll(object sender, ScrollEventArgs e)
         {
             if (firstindex != e.NewValue)
@@ -368,7 +355,7 @@ namespace ExtendedControls
 
                 SelectedIndex = index;
                 if (SelectedIndexChanged != null)
-                    SelectedIndexChanged(this, new EventArgs());
+                    SelectedIndexChanged(this, new EventArgs(), false);
             }
         }
 
@@ -468,8 +455,7 @@ namespace ExtendedControls
                 if ((e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return) || (e.Alt && (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down)))
                 {
                     SelectedIndex = focusindex;
-                    if (SelectedIndexChanged != null)
-                        SelectedIndexChanged(this, new EventArgs());
+                    SelectedIndexChanged?.Invoke(this, new EventArgs(), true);
                 }
                 else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right)
                     FocusDownOne();
@@ -479,18 +465,15 @@ namespace ExtendedControls
 
             if (e.KeyCode == Keys.Escape || e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
             {
-                if (OtherKeyPressed != null)
-                    OtherKeyPressed(this, e);
+                OtherKeyPressed?.Invoke(this, e);
             }
         }
 
         private void lbsys_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedIndex = lbsys.SelectedIndex;
-            if (SelectedIndexChanged != null)
-                SelectedIndexChanged(this, new EventArgs());
+            SelectedIndexChanged?.Invoke(this, new EventArgs(), true);
         }
-
 
         public void Repaint()
         {
@@ -507,6 +490,12 @@ namespace ExtendedControls
         private int displayableitems = -1;
         private int firstindex = -1;
         private int focusindex = -1;
+        private int selectedindex = -1;
+        private ListBox lbsys;
+        private List<string> items;
+        private List<Image> imageitems;
+        private int itemheight;     // autoset
+        private FlatStyle flatstyle = FlatStyle.System;
     }
 }
 

@@ -39,6 +39,7 @@ namespace TestExtendedControls
 
             autoCompleteTextBox1.SetAutoCompletor(AutoList);
             autoCompleteTextBox1.EndButtonVisible = true;
+            autoCompleteTextBox1.ReturnPressed += (box) => { System.Diagnostics.Debug.WriteLine($"Return pressed {autoCompleteTextBox1.Text}"); return true; };
             autoCompleteTextBox2.SetAutoCompletor(AutoList);
             autoCompleteTextBox2.FlatStyle = FlatStyle.Popup;
             autoCompleteTextBox2.AutoCompleteTimeout = 1000;

@@ -39,25 +39,35 @@ namespace ExtendedControls
         public List<Options> GroupOptionsWithUserTag() { return groupoptions.Where(x=>x.UserTag!=null).ToList(); }
         public List<Options> StandardOptions() { return standardoptions; }
 
+
         public string GetChecked() { return GetChecked(groupoptions.Count, AllOrNoneBack); }
 
         public long LongConfigurationValue { get; private set; }                    // if using long as the tag, this is the accumulated long value of all bits
 
         public void AddAllNone()
         {
-            AddGroupOptionAtTop("None", "None".TxID(ECIDs.None), Properties.Resources.None);
-            AddGroupOptionAtTop("All", "All".TxID(ECIDs.All), Properties.Resources.All);       // displayed, translate
+            AddGroupOptionAtTop(None, "None".TxID(ECIDs.None), Properties.Resources.None);
+            AddGroupOptionAtTop(All, "All".TxID(ECIDs.All), Properties.Resources.All);       // displayed, translate
         }
 
-        public void AddGroupOption(string tags, string text, Image img = null, object usertag = null)      // group option
+
+        public const string Disabled = "Disabled";
+        public void AddDisabled(string differenttext = null)
         {
-            var o = new Options() { Tag = tags, Text = text, Image = img, UserTag = usertag };
+            AddGroupOptionAtTop(Disabled, differenttext.HasChars() ? differenttext : "Disabled".TxID(ECIDs.Disabled), Properties.Resources.Disabled,exclusive:All);
+        }
+
+        // group option
+        // set exclusive to All to make the group button exclusive, clear all other items
+        public void AddGroupOption(string tags, string text, Image img = null, object usertag = null, string exclusive = null)
+        {
+            var o = new Options() { Tag = tags, Text = text, Image = img, UserTag = usertag , Exclusive = exclusive };
             groupoptions.Add(o);
         }
 
-        public void AddGroupOptionAtTop(string tag, string text, Image img = null , object usertag = null)      // group option
+        public void AddGroupOptionAtTop(string tag, string text, Image img = null , object usertag = null, string exclusive = null)
         {
-            var o = new Options() { Tag = tag, Text = text, Image = img , UserTag = usertag};
+            var o = new Options() { Tag = tag, Text = text, Image = img , UserTag = usertag, Exclusive = exclusive};
             groupoptions.Insert(0, o);
         }
 
@@ -67,12 +77,12 @@ namespace ExtendedControls
             public string Text { get; set; }
             public Image Image { get; set; }
             public Object UserTag { get; set; }
-
             public bool AtTop { get; set; }
+            public string Exclusive { get; set; }
 
-            public GroupOption(string tag, string text, Image img = null, Object usertag = null, bool attop = false)
+            public GroupOption(string tag, string text, Image img = null, Object usertag = null, bool attop = false, string exclusive = null)
             {
-                Tag = tag; Text = text; Image = img; UserTag = usertag; AtTop = attop;
+                Tag = tag; Text = text; Image = img; UserTag = usertag; AtTop = attop; Exclusive = exclusive;
             }
         }
 
@@ -81,9 +91,9 @@ namespace ExtendedControls
             foreach (var x in list)
             {
                 if (x.AtTop)
-                    AddGroupOptionAtTop(x.Tag, x.Text, x.Image, x.UserTag);
+                    AddGroupOptionAtTop(x.Tag, x.Text, x.Image, x.UserTag,x.Exclusive);
                 else
-                    AddGroupOption(x.Tag, x.Text, x.Image, x.UserTag);
+                    AddGroupOption(x.Tag, x.Text, x.Image, x.UserTag,x.Exclusive);
             }
         }
 
@@ -283,20 +293,45 @@ namespace ExtendedControls
 
         #region Implementation
 
+        private string GetCurrentGroupSetting(bool allornone)
+        {
+            string list = null;
+
+            foreach (var eo in groupoptions)
+            {
+                if (eo.Exclusive?.Equals(All) ?? false)         // exclusive option
+                {
+                    if (IsChecked(new string[] { eo.Tag }))    // and checked, list is this
+                        list = eo.Tag;
+                }
+            }
+
+            if (list == null)                                 // no exclusive options, so
+                list = GetChecked(groupoptions.Count,allornone);          // get the set options from the standard grouping, using All/None
+
+            return list;
+        }
+
         private void SetGroupOptions()
         {
-            string list = GetChecked(groupoptions.Count);       // using All or None.. on items beyond reserved entries
-                                                                     //            System.Diagnostics.Debug.WriteLine("Checked" + list);
+            // using All or None.. on items beyond reserved entries
+            string list = GetCurrentGroupSetting(true);
+            System.Diagnostics.Debug.WriteLine($"Set Group Options on {list}");
+
             int pos = 0;
             foreach (var eo in groupoptions)
             {
-                if (eo.Tag == "All")
+                if (eo.Tag == All)
                 {
-                    SetChecked(pos, list.Equals("All"));
+                    SetChecked(pos, list.Equals(All));
                 }
-                else if (eo.Tag == "None")
+                else if (eo.Tag == None)
                 {
-                    SetChecked(pos, list.Equals("None"));
+                    SetChecked(pos, list.Equals(None));
+                }
+                else if ( eo.Tag == list)       // if an exclusive group option set list equal to this
+                {
+                    SetChecked(pos, true);
                 }
                 else if (list.MatchesAllItemsInList(eo.Tag, SettingsSplittingChar))        // exactly, tick
                 {
@@ -330,21 +365,39 @@ namespace ExtendedControls
                         SetCheckedFromToEnd(groupoptions.Count, false);   // if not shift, we clear all, and apply this tag
 
                     string tag = groupoptions[e.Index].Tag;
-                    if (tag == "All")
+                    bool exclusiveoption = groupoptions[e.Index].Exclusive?.Equals(All) ?? false;
+
+                    foreach (var eo in groupoptions)
+                    {
+                        if (eo.Exclusive?.Equals(All) ?? false)         // if exclusive option
+                            SetChecked(eo.Tag, tag == eo.Tag);          // its on if we clicked on it, else off
+                    }
+
+                    if (tag == All)                                     // set up state of standard options
                         SetCheckedFromToEnd(groupoptions.Count, true);
-                    else if (tag == "None")
+                    else if (tag == None || exclusiveoption)
                         SetCheckedFromToEnd(groupoptions.Count, false);
                     else
                         SetChecked(tag);
                 }
+                else
+                {
+                    foreach (var eo in groupoptions)
+                    {
+                        if (eo.Exclusive?.Equals(All) ?? false)         // we have set something else, so clear all exclusive options
+                            SetChecked(eo.Tag, false);
+                    }
+                }
             }
             else
             {
-                if (e.Index < groupoptions.Count)        // off on this clears the entries of it only
+                if (e.Index < groupoptions.Count)               // off on this clears the entries of it only
                 {
                     string tag = groupoptions[e.Index].Tag;
-                    if (tag != "All" && tag != "None ")
-                        SetChecked(tag, false);
+                    bool exclusiveoption = groupoptions[e.Index].Exclusive?.Equals(All) ?? false;
+
+                    if (exclusiveoption)                       // clicking on exclusive option does not turn it off
+                        SetChecked(tag, true);
                 }
             }
 
@@ -353,8 +406,9 @@ namespace ExtendedControls
 
         protected override void SaveSettingsEvent()     // override to handle group returns
         {
-            //System.Diagnostics.Debug.WriteLine("SF Deactivate save settings");
-            SaveSettings?.Invoke(GetChecked(groupoptions.Count, AllOrNoneBack), Tag);
+            string settings = GetCurrentGroupSetting(AllOrNoneBack);
+            System.Diagnostics.Debug.WriteLine($"SF Save settings `{settings}`");
+            SaveSettings?.Invoke(settings, Tag);
         }
 
         private List<Options> groupoptions = new List<Options>();

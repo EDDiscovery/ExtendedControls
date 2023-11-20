@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,19 +10,15 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-
 using System.Windows.Forms;
-
 
 namespace ExtendedControls
 {
@@ -55,7 +51,7 @@ namespace ExtendedControls
         public string DisplayMember { get { return cbsystem.DisplayMember; } set { cbsystem.DisplayMember = value; } }
         public object SelectedItem { get { return cbsystem.SelectedItem; } set { cbsystem.SelectedItem = value; base.Text = cbsystem.Text; Invalidate(); } }
         public object SelectedValue { get { return cbsystem.SelectedValue; } set { cbsystem.SelectedValue = value; } }
-        public new System.Drawing.Size Size { get { return cbsystem.Size; } set { cbsystem.Size = value; base.Size = value; } }
+        public new Size Size { get { return cbsystem.Size; } set { cbsystem.Size = value; base.Size = value; } }
 
         public event EventHandler SelectedIndexChanged;
 
@@ -65,7 +61,7 @@ namespace ExtendedControls
             this.cbsystem = new ComboBox();
             this.cbsystem.Name = Name + "_SystemComboBox";
             this.cbsystem.Dock = DockStyle.Fill;
-            this.cbsystem.SelectedIndexChanged += _cbsystem_SelectedIndexChanged;
+            this.cbsystem.SelectedIndexChanged += cbsystem_SelectedIndexChanged;
             this.cbsystem.DropDownStyle = ComboBoxStyle.DropDownList;
             this.cbsystem.MouseLeave += cbsystem_MouseLeave;
             this.cbsystem.MouseEnter += cbsystem_MouseEnter;
@@ -268,25 +264,27 @@ namespace ExtendedControls
             base.OnKeyDown(e);
             //System.Diagnostics.Debug.WriteLine("Key press " + e.KeyCode + " Focus " + Focused );
 
-            if (this.FlatStyle != FlatStyle.System && this.Items.Count>0)
+            if (this.FlatStyle != FlatStyle.System && this.Items.Count > 0)
             {
                 if (SelectedIndex < 0)
                     SelectedIndex = 0;
 
                 if (e.Alt && (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down))
+                {
                     Activate();
+                }
                 else if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Left)
                 {
-                    if ( SelectedIndex>0)
+                    if (SelectedIndex > 0)
                     {
-                        cbsystem.SelectedIndex = SelectedIndex-1;            // triggers _cbsystem_SelectedIndexChanged
+                        cbsystem.SelectedIndex = SelectedIndex - 1;            // triggers _cbsystem_SelectedIndexChanged
                     }
                 }
                 else if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Right)
                 {
-                    if ( SelectedIndex<this.Items.Count-1)
+                    if (SelectedIndex < this.Items.Count - 1)
                     {
-                        cbsystem.SelectedIndex = SelectedIndex+1;            // triggers _cbsystem_SelectedIndexChanged
+                        cbsystem.SelectedIndex = SelectedIndex + 1;            // triggers _cbsystem_SelectedIndexChanged
                     }
                 }
             }
@@ -347,7 +345,7 @@ namespace ExtendedControls
             this.Invalidate(true);
         }
 
-        private void customdropdown_SelectedIndexChanged(object sender, EventArgs e)
+        private void customdropdown_SelectedIndexChanged(object sender, EventArgs e, bool key)
         {
             int selectedindex = customdropdown.SelectedIndex;
             isActivated = false;            // call has already closed the custom drop down..
@@ -355,7 +353,7 @@ namespace ExtendedControls
             if (cbsystem.SelectedIndex != selectedindex)
                 cbsystem.SelectedIndex = selectedindex; // triggers _cbsystem_SelectedIndexChanged, but only if we change the index..
             else
-                _cbsystem_SelectedIndexChanged(sender, e);      // otherwise, fire it off manually.. this is what the system box does, if the user clicks on it, fires it off
+                cbsystem_SelectedIndexChanged(sender, e);      // otherwise, fire it off manually.. this is what the system box does, if the user clicks on it, fires it off
             Focus();
 
             base.OnMouseLeave(e);    // same as mouse 
@@ -371,7 +369,7 @@ namespace ExtendedControls
             }
         }
 
-        private void _cbsystem_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbsystem_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.Text = cbsystem.Text;
             this.Invalidate(true);

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2020 EDDiscovery development team
+ * Copyright © 2016-2023 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,9 +10,8 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +24,9 @@ namespace ExtendedControls
     public class ExtTextBoxAutoComplete : ExtTextBox
     {
         #region Public IF
+
+        // either use TextChanged event
+        // or ReturnPressed
 
         // programatic change of text does not make autocomplete execute.
         public override string Text { get { return base.Text; } set { tempdisableauto = true; base.Text = value; tempdisableauto = false; } }
@@ -48,9 +50,10 @@ namespace ExtendedControls
         public void SetAutoCompletor(PerformAutoComplete p, bool endbuttonvisible ) { AutoCompleteFunction = p; EndButtonVisible = endbuttonvisible; }
         public string AutoCompleteCommentMarker { get; set; } = null;       // text after this is comments not autocomplete text
 
-
         [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public new Image EndButtonImage { get { return base.EndButtonImage; } set { base.EndButtonImage = value; } }    
+        public new Image EndButtonImage { get { return base.EndButtonImage; } set { base.EndButtonImage = value; } }
+
+        // OnReturnPressed is sent on return or on click
 
         public ExtTextBoxAutoComplete() : base()
         {
@@ -74,8 +77,6 @@ namespace ExtendedControls
                     CancelAutoComplete();                           // rollup
                 }
             };
-
-            ReturnPressed += (e) => { return true; };       // this stops the ding on return press. If someone else overrides this, they need to return true
 
             EndButtonImage = Properties.Resources.ArrowDown;
         }
@@ -249,7 +250,7 @@ namespace ExtendedControls
             Focus();
         }
 
-        private void cbdropdown_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbdropdown_SelectedIndexChanged(object sender, EventArgs e, bool key)
         {
             int selectedindex = cbdropdown.SelectedIndex;
             if (selectedindex >= 0 && selectedindex < cbdropdown.Items.Count)
@@ -263,11 +264,14 @@ namespace ExtendedControls
                         txt = txt.Left(index).TrimEnd();
                 }
 
-                this.Text = txt;
+                this.Text = txt;            // firing text changed
                 this.Select(this.Text.Length, this.Text.Length);
 
                 CancelAutoComplete();
                 Focus();
+
+                if ( !key )
+                    OnReturnPressed();     // click hit if we did not do it via a key
             }
         }
 
@@ -292,6 +296,7 @@ namespace ExtendedControls
             if (cbdropdown != null)        // pass certain keys to the shown drop down
             {
                 System.Diagnostics.Debug.WriteLine("{0} {1} hit with drop down", Environment.TickCount % 10000, e.KeyCode);
+
                 if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Up || e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
                 {
                     cbdropdown.KeyDownAction(e);

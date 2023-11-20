@@ -85,6 +85,9 @@ namespace ExtendedControls
 
         public char SettingsSplittingChar { get; set; } = ';';      // what char is used for split settings
 
+        public const string All = "All";
+        public const string None = "None";
+
         // this will speed up multiple adds a touch
         public void StartAdd()
         {
@@ -135,6 +138,7 @@ namespace ExtendedControls
                 {
                     if (taglist.Contains(controllist[i].tag))
                     {
+                        //System.Diagnostics.Debug.WriteLine($"Set check {controllist[i].tag} to {state}");
                         controllist[i].extcheckbox.CheckState = state;
                     }
                 }
@@ -172,6 +176,22 @@ namespace ExtendedControls
             ignorechangeevent = false;
         }
 
+        public bool IsChecked(string[] taglist)    // empty array is okay
+        {
+            if (taglist != null)
+            {
+                for (int i = 0; i < controllist.Count; i++)
+                {
+                    if (taglist.Contains(controllist[i].tag) && controllist[i].extcheckbox?.Checked == true )
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+
         public string GetChecked(int ignore = 0, bool allornone = true)            // semicolon list of options with trailing ;, or All, or None if selected
         {
             string ret = "";
@@ -196,9 +216,9 @@ namespace ExtendedControls
             if (allornone)
             {
                 if (total == totalchecks)
-                    ret = "All";
+                    ret = All;
                 if (ret.Length == 0)
-                    ret = "None";
+                    ret = None;
             }
 
             return ret;
@@ -538,11 +558,11 @@ namespace ExtendedControls
                 if (cb.Checked && controllist[index].exclusivetags != null)      // if checking, and we have tags which must be turned off
                 {
                     ignorechangeevent = true;
-                    if (controllist[index].exclusivetags.Equals("All"))     // turn off all but us
+                    if (controllist[index].exclusivetags.Equals(All))     // turn off all but us
                     {
                         for(int ix = 0; ix < controllist.Count; ix++)
                         {
-                            if ( ix != index && controllist[ix].tag != "All" && controllist[ix].tag != "None")
+                            if (controllist[ix].extcheckbox != null && ix != index && controllist[ix].tag != All && controllist[ix].tag != None)
                                 controllist[ix].extcheckbox.Checked = false;
                         }
                     }
