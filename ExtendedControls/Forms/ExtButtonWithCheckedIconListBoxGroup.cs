@@ -47,6 +47,14 @@ namespace ExtendedControls
             this.currentsettings = currentsettings;
         }
 
+        // All/None with all items back, and a default closing area
+        public void InitAllNoneAllBack(IEnumerable<CheckedIconListBoxFormGroup.StandardOption> standardoptions,
+                             string currentsettings, Action<string> settingschanged, bool disabled = true)
+        {
+            Init(standardoptions, currentsettings, settingschanged, true, false, disabled ? "" : null, closeboundaryregion: new System.Drawing.Size(64, 64));
+        }
+
+
         public char SettingsSplittingChar { get; set; } = ';';      // what char is used for split settings
 
         // individual setting, or All or None if allofnoneback is true
