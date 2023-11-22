@@ -348,14 +348,41 @@ namespace ExtendedControls
             return t != null ? Get(t) : null;
         }
 
-        // from supported controls, a list of results
-        public List<string> GetList(string startingcontrolname)    
+        // from controls starting with this name, get the current values as string
+        public List<string> GetList(string startingcontrolname)
         {
-            var list = entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x=>x);
+            var list = entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x);
             List<string> res = new List<string>();
             foreach (var e in list)
                 res.Add(Get(e));
             return res;
+        }
+
+        // from controls starting with this name, get the names of the ones checked
+        public List<string> GetCheckedList(string startingcontrolname)
+        {
+            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x);
+            List<string> res = new List<string>();
+            foreach (var e in elist)
+            {
+                if ((e.Control as ExtCheckBox).Checked)
+                    res.Add(e.Name);
+            }
+            return res;
+        }
+        
+        // from controls starting with this name, get the state of the checks
+        public bool[] GetCheckedBools(string startingcontrolname)
+        {
+            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            var result = new bool[elist.Length];
+            int i = 0;
+            foreach (var e in elist)
+            {
+                var ctr = e.Control as ExtCheckBox;
+                result[i++] = ctr.Checked;
+            }
+            return result;
         }
 
         public string Get(Entry t)      // return value of dialog control

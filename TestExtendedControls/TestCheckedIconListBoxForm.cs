@@ -52,7 +52,7 @@ namespace TestExtendedControls
                 new CheckedIconListBoxFormGroup.StandardOption("Tag3","Tag3",Properties.Resources.BookmarkManager),
                 new CheckedIconListBoxFormGroup.StandardOption("Tag4","Tag4",Properties.Resources.BookmarkManager),
                 new CheckedIconListBoxFormGroup.StandardOption("Tag5","Tag5",Properties.Resources.BookmarkManager,"Tag2;Tag1"),
-            }, groupoptions, (s) => groupoptions = s,
+            }, groupoptions, (s,ch) => groupoptions = s,
             groupoptions:new List<CheckedIconListBoxFormGroup.GroupOption>
             {
                 new CheckedIconListBoxFormGroup.GroupOption("Tag1;Tag2","Option 1&2"),

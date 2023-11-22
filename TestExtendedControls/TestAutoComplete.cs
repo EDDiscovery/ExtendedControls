@@ -92,6 +92,11 @@ namespace TestExtendedControls
           //  System.Threading.Thread.Sleep(2000);
         }
 
+        private void extButton1_Click(object sender, EventArgs e)
+        {
+            autoCompleteTextBox1.ClearOnFirstChar = true;
+
+        }
     }
 
 }

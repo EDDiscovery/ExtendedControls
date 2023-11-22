@@ -28,7 +28,8 @@ namespace ExtendedControls
 
         // call to init, drop down will be activated by OnClick.
         public void Init(IEnumerable<CheckedIconListBoxFormGroup.StandardOption> standardoptions, 
-                            string currentsettings, Action<string> settingschanged,
+                            string startsetting,                 // start setting
+                            Action<string,bool> settingschanged,    // callback to say settings changed.
                             bool allornoneshown = true, 
                             bool allornonback = false,
                             string disabled = null,            // either "" default, or text to use
@@ -44,18 +45,21 @@ namespace ExtendedControls
             this.screenmargin = screenmargin;
             this.closeboundaryregion = closeboundaryregion;
             this.putsettings = settingschanged;
-            this.currentsettings = currentsettings;
+            this.currentsettings = startsetting;
         }
 
         // All/None with all items back, and a default closing area
         public void InitAllNoneAllBack(IEnumerable<CheckedIconListBoxFormGroup.StandardOption> standardoptions,
-                             string currentsettings, Action<string> settingschanged, bool disabled = true)
+                             string startsettings, Action<string,bool> settingschanged, bool disabled = true)
         {
-            Init(standardoptions, currentsettings, settingschanged, true, false, disabled ? "" : null, closeboundaryregion: new System.Drawing.Size(64, 64));
+            Init(standardoptions, startsettings, settingschanged, true, false, disabled ? "" : null, closeboundaryregion: new System.Drawing.Size(64, 64));
         }
 
 
         public char SettingsSplittingChar { get; set; } = ';';      // what char is used for split settings
+
+        public string Get() { return currentsettings; }
+        public bool Set(string value) { if (value != currentsettings) { currentsettings = value; return true; } else return false; }
 
         // individual setting, or All or None if allofnoneback is true
         public bool IsSet(string setting)
@@ -65,6 +69,7 @@ namespace ExtendedControls
 
         public bool IsNoneSet { get { return currentsettings == "None" + SettingsSplittingChar || currentsettings.Length == 0; } }
         public bool IsAnySet { get { return !IsNoneSet; } }
+        public bool IsDisabled { get { return currentsettings == CheckedIconListBoxFormGroup.Disabled; } }
 
         protected override void OnClick(EventArgs e)
         {
@@ -93,7 +98,7 @@ namespace ExtendedControls
             {
                 bool changed = currentsettings != newsetting;
                 currentsettings = newsetting;
-                putsettings(newsetting);
+                putsettings(newsetting,changed);
                 ValueChanged?.Invoke(newsetting,changed);
             };
 
@@ -108,7 +113,7 @@ namespace ExtendedControls
         private Size? screenmargin;
         private Size? closeboundaryregion;
         private CheckedIconListBoxFormGroup DropDown = null;
-        private Action<string> putsettings;
+        private Action<string,bool> putsettings;
         private bool allornoneback;
         private string currentsettings;
 

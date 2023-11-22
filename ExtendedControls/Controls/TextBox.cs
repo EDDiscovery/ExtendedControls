@@ -378,14 +378,16 @@ namespace ExtendedControls
         bool nonreentrantchange = true;
         protected virtual void Textbox_TextChanged(object sender, EventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine("TB Text changed " + nonreentrantchange);
             if (nonreentrantchange == true)
             {
+              //  System.Diagnostics.Debug.WriteLine($"TB Text changed {KeysPressed} {ClearOnFirstChar} {lastkey} ");
                 if (ClearOnFirstChar && KeysPressed == 1)
                 {
                     nonreentrantchange = false;
-                    if ( char.IsLetter(lastkey) )
+                    if (char.IsLetter(lastkey))
                         textbox.Text = "" + lastkey;
+                    else
+                        textbox.Text = "";
                     textbox.Select(1, 1);
                     nonreentrantchange = true;
                 }
