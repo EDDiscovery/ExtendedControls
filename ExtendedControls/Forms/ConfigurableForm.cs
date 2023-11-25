@@ -372,7 +372,7 @@ namespace ExtendedControls
         }
         
         // from controls starting with this name, get the state of the checks
-        public bool[] GetCheckedBools(string startingcontrolname)
+        public bool[] GetCheckBoxBools(string startingcontrolname)
         {
             var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
             var result = new bool[elist.Length];
@@ -542,6 +542,17 @@ namespace ExtendedControls
             }
 
             return false;
+        }
+
+        // from controls starting with this name, get the names of the ones checked
+        public void SetCheckedList(IEnumerable<string> controlnames,bool state)
+        {
+            var cnames = controlnames.ToArray();
+            var elist = entries.Where(x => x.Control is ExtCheckBox && Array.IndexOf(cnames,x.Name)>=0).Select(x => x);
+            foreach (var e in elist)
+            {
+                (e.Control as ExtCheckBox).Checked = state;
+            }
         }
 
         // are all entries on this table which could be invalid valid?
