@@ -22,6 +22,8 @@ namespace ExtendedControls
 {
     public class ConfigurableForm : DraggableForm
     {
+        #region Properties
+
         // You give an array of Entries describing the controls
         // either added programatically by Add(entry) or via a string descriptor Add(string) (See action document for string descriptor format)
         // Directly Supported Types (string name/base type)
@@ -59,6 +61,12 @@ namespace ExtendedControls
         public BorderStyle PanelBorderStyle { get; set; } = BorderStyle.FixedSingle;
         public Size ExtraMarginRightBottom { get; set; } = new Size(16, 16);
         public float FontScale { get; set; } = 1.0f;
+        public int TopPanelHeight { get; set; } = 0;        // in design units, 0 = off
+        public int BottomPanelHeight { get; set; } = 0;     // in design units, 0 = off
+
+        #endregion
+
+        #region Entries 
 
         [System.Diagnostics.DebuggerDisplay("{Name} {Location} {Size }")]
         public class Entry
@@ -71,12 +79,15 @@ namespace ExtendedControls
                                                                     // For number boxes, the invariant value, or Null use Double or Long
                                                                     // for Dates, the invariant culture assumed local
             public double DoubleValue { get; set; }                 // if its a number box double, set this, Text=null
-            public long LongValue { get; set; }                      // if its a number box long or int, set this, Text=null
+            public long LongValue { get; set; }                     // if its a number box long or int, set this, Text=null
             public DateTime DateTimeValue { get; set; }             // if its a date time, set this, Text=null
 
             public Point Location {get; set;}
             public Size Size {get; set;}
             public string ToolTip { get; set; }                     // can be null.
+            public bool Enabled { get; set; } = true;       // is control enabled?
+            public enum PanelType { Top, Scroll, Bottom }
+            public PanelType Panel { get; set; } = PanelType.Scroll;        // which panel to add to
 
             public AnchorStyles Anchor { get; set; } = AnchorStyles.None;       // anchor to window
 
@@ -100,9 +111,6 @@ namespace ExtendedControls
             public string NumberBoxFormat { get; set; } = null;      // for both number boxes
 
             public float PostThemeFontScale { get; set; } = 1.0f;   // post theme font scaler
-
-            public bool Enabled { get; set; } = true;       // is control enabled?
-
 
             // general
             public Entry(string nam, Type c, string t, Point p, Size s, string tt)
@@ -150,6 +158,8 @@ namespace ExtendedControls
             }
         }
 
+        #endregion
+
         #region Public interface
 
         public ConfigurableForm()
@@ -179,33 +189,54 @@ namespace ExtendedControls
             vpos += vspacing;
         }
 
-        public void AddOK(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
+        public void AddOK(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None, Entry.PanelType paneltype = Entry.PanelType.Scroll)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("OK", typeof(ExtButton), "OK".TxID(ECIDs.OK), p, sz.Value, tooltip) { Anchor = anchor });
+            Add(new Entry("OK", typeof(ExtButton), "OK".TxID(ECIDs.OK), p, sz.Value, tooltip) { Anchor = anchor, Panel = paneltype });
         }
 
-        public void AddCancel(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None)
+        public void AddCancel(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None, Entry.PanelType paneltype = Entry.PanelType.Scroll)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("Cancel", typeof(ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { Anchor = anchor });
+            Add(new Entry("Cancel", typeof(ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { Anchor = anchor, Panel = paneltype });
         }
 
         public void AddLabelAndEntry(string labeltext, Point labelpos, Size labelsize, Entry e)
         {
-            Add(new Entry("L" + e.Name, typeof(Label), labeltext, labelpos, labelsize, null));
+            Add(new Entry("L" + e.Name, typeof(Label), labeltext, labelpos, labelsize, null) { Panel = e.Panel });
             Add(e);
         }
 
         // vpos sets the vertical position. Entry.pos sets the X and offset Y from vpos
         public void AddLabelAndEntry(string labeltext, Point labelxvoff, ref int vpos, int vspacing, Size labelsize, Entry e)
         {
-            Add(new Entry("L" + e.Name, typeof(Label), labeltext, new Point(labelxvoff.X, vpos + labelxvoff.Y), labelsize, null));
+            Add(new Entry("L" + e.Name, typeof(Label), labeltext, new Point(labelxvoff.X, vpos + labelxvoff.Y), labelsize, null) { Panel = e.Panel });
             e.Location = new Point(e.Location.X, e.Location.Y + vpos);
             Add(e);
             vpos += vspacing;
+        }
+
+        // add bool array of names and tags to scroll panel
+        // optionally prefix the tags, and offset into the bools array
+        public int AddBools(string[] tags, string[] names, bool[] bools, int vposstart, int vspacing, int depth, int xstart, int xspacing, string tagprefix = "", int boolsoffset = 0, Entry.PanelType paneltype = Entry.PanelType.Scroll)
+        {
+            int vpos = vposstart;
+            int max = 0;
+            for ( int i = 0; i < tags.Length; i++)
+            {
+               //  System.Diagnostics.Debug.WriteLine($"Add {i} {boolsoffset+i} {tags[i]} {names[i]} at {new Point(xstart, vpos)}");
+                Add(ref vpos, vspacing, new ConfigurableForm.Entry(tagprefix + tags[i], bools[boolsoffset + i], names[i], new Point(xstart, 0), new Size(xspacing, vspacing - 2), "Search for " + names[i]) { Panel = paneltype });
+                max = Math.Max(vpos, max);
+                if (vpos - vposstart > depth)
+                {
+                    vpos = vposstart;
+                    xstart += xspacing;
+                }
+            }
+
+            return max;
         }
 
         // handle OK and Close/Escape/Cancel
@@ -228,7 +259,7 @@ namespace ExtendedControls
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if ( t?.Control != null )
             {
-                outerpanel.Controls.Remove(t.Control);
+                t.Control.Parent.Controls.Remove(t.Control);
                 entries.Remove(t);
             }
         }
@@ -262,11 +293,11 @@ namespace ExtendedControls
                 MoveControlsAt(t.Location.Y + offset, move);
         }
 
-        // move controls at or below up/down by move. positions/move are after scaling 
+        // move scroll panel controls at or below up/down by move. positions/move are after scaling 
         public void MoveControlsAt(int atorbelow, int move)
         {
             //System.Diagnostics.Debug.WriteLine($"Move Scaled {atorbelow} by {move}");
-            foreach (Control c in outerpanel.Controls)
+            foreach (Control c in scrollpanel.Controls)
             {
                 if (c.Top >= atorbelow)
                 {
@@ -323,6 +354,7 @@ namespace ExtendedControls
             base.Close();
         }
 
+        // get control of name as type
         public T GetControl<T>(string controlname) where T : Control      // return value of dialog control
         {
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
@@ -332,6 +364,7 @@ namespace ExtendedControls
                 return null;
         }
 
+        // get control by name
         public Control GetControl(string controlname )
         {
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
@@ -341,50 +374,7 @@ namespace ExtendedControls
                 return null;
         }
 
-        // from supported controls
-        public string Get(string controlname)      
-        {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            return t != null ? Get(t) : null;
-        }
-
-        // from controls starting with this name, get the current values as string
-        public List<string> GetList(string startingcontrolname)
-        {
-            var list = entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x);
-            List<string> res = new List<string>();
-            foreach (var e in list)
-                res.Add(Get(e));
-            return res;
-        }
-
-        // from controls starting with this name, get the names of the ones checked
-        public List<string> GetCheckedList(string startingcontrolname)
-        {
-            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x);
-            List<string> res = new List<string>();
-            foreach (var e in elist)
-            {
-                if ((e.Control as ExtCheckBox).Checked)
-                    res.Add(e.Name);
-            }
-            return res;
-        }
-        
-        // from controls starting with this name, get the state of the checks
-        public bool[] GetCheckBoxBools(string startingcontrolname)
-        {
-            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
-            var result = new bool[elist.Length];
-            int i = 0;
-            foreach (var e in elist)
-            {
-                var ctr = e.Control as ExtCheckBox;
-                result[i++] = ctr.Checked;
-            }
-            return result;
-        }
-
+        // Get by entry the value of the item as a string
         public string Get(Entry t)      // return value of dialog control
         {
             Control c = t.Control;
@@ -423,6 +413,23 @@ namespace ExtendedControls
             }
             else
                 return null;
+        }
+
+        // Return Get() by controlname
+        public string Get(string controlname)
+        {
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            return t != null ? Get(t) : null;
+        }
+
+        // Return Get() from controls starting with this name
+        public string[] GetByStartingName(string startingcontrolname)
+        {
+            var list = entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            string[] res = new string[list.Length];
+            for (int i = 0; i < list.Length; i++)
+                res[i] = Get(list[i]);
+            return res;
         }
 
         // from checkbox
@@ -487,7 +494,36 @@ namespace ExtendedControls
             return null;
         }
 
-        public bool Set(string controlname, string value)      // set value of dialog control
+        // from ExtCheckBox controls starting with this name, get the names of the ones checked
+        public string[] GetCheckedListNames(string startingcontrolname)
+        {
+            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked).Select(x => x.Name).ToArray();
+            return elist;
+        }
+
+        // from extCheckBox controls starting with this name, get the entries of ones checked
+        public Entry[] GetCheckedListEntries(string startingcontrolname)
+        {
+            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked);
+            return elist.ToArray();
+        }
+
+        // from ExtCheckBox controls starting with this name, get a bool array describing the check state
+        public bool[] GetCheckBoxBools(string startingcontrolname)
+        {
+            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            var result = new bool[elist.Length];
+            int i = 0;
+            foreach (var e in elist)
+            {
+                var ctr = e.Control as ExtCheckBox;
+                result[i++] = ctr.Checked;
+            }
+            return result;
+        }
+
+        // Set value of control by string value
+        public bool Set(string controlname, string value)      
         {
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
@@ -544,14 +580,37 @@ namespace ExtendedControls
             return false;
         }
 
-        // from controls starting with this name, get the names of the ones checked
+        // from controls starting with this name, set the names of the ones checked
         public void SetCheckedList(IEnumerable<string> controlnames,bool state)
         {
             var cnames = controlnames.ToArray();
-            var elist = entries.Where(x => x.Control is ExtCheckBox && Array.IndexOf(cnames,x.Name)>=0).Select(x => x);
+            var elist = entries.Where(x => x.Control is ExtCheckBox && Array.IndexOf(cnames, x.Name) >= 0).Select(x => x);
             foreach (var e in elist)
             {
                 (e.Control as ExtCheckBox).Checked = state;
+            }
+        }
+
+        // radio button this set, to 1 entry, or to N max
+        public void RadioButton(string startingcontrolname, string controlhit , int max = 1)
+        {
+            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+
+            if (max == 1)
+            {
+                foreach (var x in elist)
+                {
+                    ((ExtCheckBox)x.Control).Checked = x.Name == controlhit;
+                }
+            }
+            else
+            {
+                var numchecked = elist.Where(x => ((ExtCheckBox)x.Control).Checked).Count();
+                if ( numchecked>max)
+                {
+                    var chkbox = GetControl<ExtCheckBox>(controlhit);
+                    chkbox.Checked = false;
+                }
             }
         }
 
@@ -594,15 +653,33 @@ namespace ExtendedControls
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            //outer = new ExtPanelScroll() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.FixedSingle, Margin = new Padding(0), Padding = new Padding(0) };
-            outerpanel = new ExtPanelScroll() { Name = "Outer", BorderStyle = PanelBorderStyle, Margin = new Padding(0), Padding = new Padding(0) };
-            outerpanel.MouseDown += FormMouseDown;
-            outerpanel.MouseUp += FormMouseUp;
-            Controls.Add(outerpanel);
+            scrollpanel = new ExtPanelScroll() { Name = "ScrollPanel", BorderStyle = PanelBorderStyle, Margin = new Padding(0), Padding = new Padding(0)};
+            scrollpanel.MouseDown += FormMouseDown;
+            scrollpanel.MouseUp += FormMouseUp;
+            Controls.Add(scrollpanel);
 
-            ExtScrollBar scr = new ExtScrollBar();
+            Panel titleclosepanel = scrollpanel;
+
+            if (TopPanelHeight > 0)
+            {
+                toppanel = new Panel() { Name = "TopPanel", BorderStyle = PanelBorderStyle, Size = new Size(100, TopPanelHeight) }; // we size now so its scaled by the themer, we never use the variables again
+                toppanel.MouseDown += FormMouseDown;
+                toppanel.MouseUp += FormMouseUp;
+                Controls.Add(toppanel);
+                titleclosepanel = toppanel;
+            }
+
+            if (BottomPanelHeight > 0)
+            {
+                bottompanel = new Panel() { Name = "BottomPanel", BorderStyle = PanelBorderStyle, Size = new Size(100, BottomPanelHeight) };// we size now so its scaled
+                bottompanel.MouseDown += FormMouseDown;
+                bottompanel.MouseUp += FormMouseUp;
+                Controls.Add(bottompanel);
+            }
+
+            ExtScrollBar scr = new ExtScrollBar() {Name="ScrollPanelScrollBar"};
             scr.HideScrollBar = true;
-            outerpanel.Controls.Add(scr);
+            scrollpanel.Controls.Add(scr);
 
             this.Text = caption;
 
@@ -622,7 +699,7 @@ namespace ExtendedControls
                 titlelabel.MouseDown += FormMouseDown;
                 titlelabel.MouseUp += FormMouseUp;
                 titlelabel.Name = "title";
-                outerpanel.Controls.Add(titlelabel);
+                titleclosepanel.Controls.Add(titlelabel);
 
                 if (closeicon)
                 {
@@ -636,7 +713,7 @@ namespace ExtendedControls
                         }
                     };
 
-                    outerpanel.Controls.Add(closebutton);            // add now so it gets themed
+                    titleclosepanel.Controls.Add(closebutton);            // add now so it gets themed
                 }
             }
 
@@ -654,9 +731,14 @@ namespace ExtendedControls
             // outer.FindMaxSubControlArea(0, 0,null,true); // debug
 
             theme.Apply(this, theme.GetScaledFont(FontScale), ForceNoWindowsBorder);
-            //theme.Apply(this, new Font("ms Sans Serif", 16f));
+
             //this.DumpTree(0);
             //System.Diagnostics.Debug.WriteLine($"ConfigurableForm autoscale {this.CurrentAutoScaleDimensions} {this.AutoScaleDimensions} {this.CurrentAutoScaleFactor()}");
+            //System.Diagnostics.Debug.WriteLine($"Toppanel height {toppanel?.Height} bottom {bottompanel?.Height}");
+
+            // if ( toppanel!= null )  toppanel.BackColor = Color.FromArgb(255, 80, 40, 40);
+            // if ( bottompanel != null ) bottompanel.BackColor = Color.FromArgb(255, 40, 80, 40);
+            //scrollpanel.BackColor = Color.FromArgb(255, 80, 40, 40);
 
             if (Transparent)
             {
@@ -683,14 +765,184 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine("Outer Bounds " + outer.Bounds + " ClientRect " + outer.ClientRectangle);
         }
     
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            SizeWindow();
+        }
+
+        private void SizeWindow()
+        { 
+            int boundsh = Bounds.Height - ClientRectangle.Height;                   // allow for window border..  Only works after OnLoad.
+            int boundsw = Bounds.Width - ClientRectangle.Width;
+
+            // get the scaling factor, we adjust the right/bottom margins accordingly
+
+            var currentautocale = this.CurrentAutoScaleFactor();            // how much did we scale up?
+
+            //System.Diagnostics.Debug.WriteLine($"Perform size {currentautocale}");
+
+            if ( closebutton!=null )
+                closebutton.Location = new Point(0, 0);     // set it back to 0,0 to ensure it does not influence find max
+
+            // measure the items after scaling in scroll panel. Exclude the scroll bar.
+            Size measureitemsinwindow = scrollpanel.FindMaxSubControlArea(0, 0, new Type[] { typeof(ExtScrollBar) }, false);
+
+            if (toppanel != null)       // width check on this
+            {
+                Size s = toppanel.FindMaxSubControlArea(0, 0, null, false);
+                measureitemsinwindow.Width = Math.Max(measureitemsinwindow.Width, s.Width);
+            }
+
+            if (bottompanel != null)    // and on bottom
+            {
+                Size s = bottompanel.FindMaxSubControlArea(0, 0, null, false);
+                measureitemsinwindow.Width = Math.Max(measureitemsinwindow.Width, s.Width);
+            }
+
+            measureitemsinwindow.Width += boundsw + 2 + BorderMargin * 2 + (int)(RightMargin * currentautocale.Width);        // extra width due to bounds
+            measureitemsinwindow.Height += boundsh + 2 + BorderMargin * 2 + (int)(BottomMargin * currentautocale.Height);
+
+            if (toppanel != null)
+                measureitemsinwindow.Height += toppanel.Height + BorderMargin;       // border margin at top
+
+            if (bottompanel != null)
+                measureitemsinwindow.Height += bottompanel.Height + BorderMargin;    // border margin at bottom
+
+            //System.Diagnostics.Debug.WriteLine($"Size Controls {boundsh} {boundsw} {outerh} {outerw} wdata {measureitemsinwindow}");
+            // now position in the screen, allowing for a scroll bar if required due to height restricted
+
+            MinimumSize = minsize;       // setting this allows for small windows
+
+            if (maxsize.Width < 32000)       // only set if not stupid (i.e default). If you set it stupid, it sure screws up the system when double click max
+                MaximumSize = maxsize;      // and force limits
+
+            int widthw = measureitemsinwindow.Width;
+            if (closebutton != null && AllowSpaceForCloseButton)
+                widthw += closebutton.Width;
+
+            int scrollbarsizeifheightnotacheived = 0;
+            if (AllowResize)                                                        // if resizable, must allow for scroll bar
+                widthw += scrollpanel.ScrollBarWidth;
+            else
+                scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? scrollpanel.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
+
+            widthw += ExtraMarginRightBottom.Width;
+
+            if (requestedsize.Width < 0)
+                widthw = -requestedsize.Width;
+            else
+                widthw = Math.Max(requestedsize.Width, widthw);
+
+            int height = measureitemsinwindow.Height + ExtraMarginRightBottom.Height;
+            if (requestedsize.Height < 0)
+                height = -requestedsize.Height;
+            else
+                height = Math.Max(requestedsize.Height, height);
+
+            this.PositionSizeWithinScreen(widthw, height, false, new Size(64,64), halign, valign, scrollbarsizeifheightnotacheived);
+
+            PositionPanels();
+
+            for (int i = 0; i < entries.Count; i++)     // record nominal pos after all positioning done
+            {
+                entries[i].Location = entries[i].Control.Location;
+                entries[i].Size = entries[i].Control.Size;
+            }
+
+            initialscrollpanelsize = scrollpanel.Size;
+
+            resizerepositionon = true;
+
+           // System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
+        }
+
+        private void PositionPanels()
+        {
+            int toppanelh = toppanel != null ? toppanel.Height + BorderMargin : 0;       // top margin only
+            int bottompanelh = bottompanel != null ? bottompanel.Height + BorderMargin : 0; // bottom margin only
+            int scrollpanelh = ClientRectangle.Height - toppanelh - bottompanelh - BorderMargin * 2;    // 2 margins around this
+            int width = ClientRectangle.Width - BorderMargin * 2;
+            int hpos = 0;
+
+            if (toppanel != null)
+            {
+                toppanel.Location = new Point(BorderMargin, BorderMargin);
+                toppanel.Size = new Size(width, toppanel.Height);
+                hpos += toppanel.Height + BorderMargin;
+            }
+
+            scrollpanel.Location = new Point(BorderMargin, hpos + BorderMargin);
+            scrollpanel.Size = new Size(width, scrollpanelh);
+            hpos += scrollpanelh + BorderMargin;
+
+            if (bottompanel != null)
+            {
+                bottompanel.Location = new Point(BorderMargin, hpos+BorderMargin);
+                bottompanel.Size = new Size(width, bottompanel.Height);
+            }
+
+            if (closebutton != null)      // now position close at correct logical place
+            {
+                if (closebutton.Parent == toppanel)
+                    closebutton.Location = new Point(toppanel.Width - closebutton.Width - Font.ScalePixels(6), Font.ScalePixels(6));
+                else
+                    closebutton.Location = new Point(scrollpanel.Width - closebutton.Width - (AllowSpaceForScrollBar ? scrollpanel.ScrollBarWidth : 0) - Font.ScalePixels(8), Font.ScalePixels(4));
+            }
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            Control firsttextbox = scrollpanel.Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete), typeof(NumberBoxDouble), typeof(NumberBoxFloat), typeof(NumberBoxLong) });
+            if (firsttextbox != null)
+                firsttextbox.Focus();       // focus on first text box
+            base.OnShown(e);
+            //System.Diagnostics.Debug.WriteLine("Form Shown " + Bounds + " " + ClientRectangle);
+        }
+
+        protected override void OnMove(EventArgs e)
+        {
+            base.OnMove(e);
+
+            if (!ProgClose && resizerepositionon )
+                Trigger?.Invoke(logicalname, "Reposition", this.callertag);       // pass back the logical name of dialog, Moved, the caller tag
+        }
+
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            if (!ProgClose && resizerepositionon)
+            {
+                PositionPanels();
+
+                int widthdelta = scrollpanel.Width - initialscrollpanelsize.Width;
+                int heightdelta = scrollpanel.Height - initialscrollpanelsize.Height;
+                //System.Diagnostics.Debug.WriteLine(Environment.NewLine + "Resize {0} {1} so {2}", widthdelta, heightdelta, outer.ScrollOffset);
+
+                foreach ( var en in entries)
+                {
+                    if ( en.Control.Parent == scrollpanel)
+                        en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, widthdelta, heightdelta);
+                }
+
+                Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, Resize, the caller tag
+            }
+        }
+
         private void AddEntries(SizeF? factor = null)
         {
             for (int i = 0; i < entries.Count; i++)
             {
                 Entry ent = entries[i];
 
-                if (ent.Control != null && outerpanel.Controls.Contains(ent.Control))       // don't double add
+                if (ent.Control != null && (scrollpanel.Controls.Contains(ent.Control) ||
+                                (toppanel != null && toppanel.Controls.Contains(ent.Control)) ||
+                                (bottompanel != null && bottompanel.Controls.Contains(ent.Control))))
+                {
                     continue;
+                }                            
 
                 Control c = ent.ControlType != null ? (Control)Activator.CreateInstance(ent.ControlType) : ent.Control;
 
@@ -705,9 +957,14 @@ namespace ExtendedControls
                         || c is NumberBoxDouble || c is NumberBoxLong || c is NumberBoxInt))        // everything but get text
                     c.Text = ent.TextValue;
                 c.Tag = ent;     // point control tag at ent structure
-                
-                
-                outerpanel.Controls.Add(c);
+
+                if (ent.Panel == Entry.PanelType.Top && toppanel != null)
+                    toppanel.Controls.Add(c);
+                else if (ent.Panel == Entry.PanelType.Bottom && bottompanel != null)
+                    bottompanel.Controls.Add(c);
+                else 
+                    scrollpanel.Controls.Add(c);
+
                 if (ent.ToolTip != null)
                     tooltipcontrol.SetToolTip(c, ent.ToolTip);
 
@@ -769,7 +1026,7 @@ namespace ExtendedControls
                     NumberBoxLong cb = c as NumberBoxLong;
                     cb.Minimum = ent.NumberBoxLongMinimum;
                     cb.Maximum = ent.NumberBoxLongMaximum;
-                    long? v = ent.TextValue == null ?  ent.LongValue : ent.TextValue.InvariantParseLongNull();
+                    long? v = ent.TextValue == null ? ent.LongValue : ent.TextValue.InvariantParseLongNull();
                     cb.Value = v.HasValue ? v.Value : cb.Minimum;
                     if (ent.NumberBoxFormat != null)
                         cb.Format = ent.NumberBoxFormat;
@@ -907,132 +1164,6 @@ namespace ExtendedControls
                 }
             }
 
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            SizeWindow();
-        }
-
-        private void SizeWindow()
-        { 
-            int boundsh = Bounds.Height - ClientRectangle.Height;                   // allow for window border..  Only works after OnLoad.
-            int boundsw = Bounds.Width - ClientRectangle.Width;
-            int outerh = 2 + BorderMargin;
-            int outerw = 2 + BorderMargin;
-
-            // get the scaling factor, we adjust the right/bottom margins accordingly
-
-            var currentautocale = this.CurrentAutoScaleFactor();            // how much did we scale up?
-
-            //System.Diagnostics.Debug.WriteLine($"Perform size {currentautocale}");
-
-            // measure the items after scaling. Exclude the scroll bar. Add on bounds/outers/margin
-
-            if ( closebutton!=null )
-                closebutton.Location = new Point(0, 0);     // set it back to 0,0 to ensure it does not influence find max
-
-            Size measureitemsinwindow = outerpanel.FindMaxSubControlArea(boundsw + outerw + (int)(RightMargin * currentautocale.Width),
-                                                                   boundsh + outerh + (int)(BottomMargin * currentautocale.Height),
-                                                                   new Type[] { typeof(ExtScrollBar) }, false);
-
-
-            //System.Diagnostics.Debug.WriteLine($"Size Controls {boundsh} {boundsw} {outerh} {outerw} wdata {measureitemsinwindow}");
-            // now position in the screen, allowing for a scroll bar if required due to height restricted
-
-            MinimumSize = minsize;       // setting this allows for small windows
-
-            if (maxsize.Width < 32000)       // only set if not stupid (i.e default). If you set it stupid, it sure screws up the system when double click max
-                MaximumSize = maxsize;      // and force limits
-
-            int widthw = measureitemsinwindow.Width;
-            if (closebutton != null && AllowSpaceForCloseButton)
-                widthw += closebutton.Width;
-
-            int scrollbarsizeifheightnotacheived = 0;
-            if (AllowResize)                                                        // if resizable, must allow for scroll bar
-                widthw += outerpanel.ScrollBarWidth;
-            else
-                scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? outerpanel.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
-
-            widthw += ExtraMarginRightBottom.Width;
-
-            if (requestedsize.Width < 0)
-                widthw = -requestedsize.Width;
-            else
-                widthw = Math.Max(requestedsize.Width, widthw);
-
-            int height = measureitemsinwindow.Height + ExtraMarginRightBottom.Height;
-            if (requestedsize.Height < 0)
-                height = -requestedsize.Height;
-            else
-                height = Math.Max(requestedsize.Height, height);
-
-            this.PositionSizeWithinScreen(widthw, height, false, new Size(64,64), halign, valign, scrollbarsizeifheightnotacheived);
-
-            outerpanel.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
-            outerpanel.Location = new Point(BorderMargin, BorderMargin);
-
-            if (closebutton != null)      // now position close at correct place, its not contributed to overall size
-            {
-                closebutton.Location = new Point(outerpanel.Width - closebutton.Width - (AllowSpaceForScrollBar ? outerpanel.ScrollBarWidth : 0), Font.ScalePixels(4));
-                closebutton.Padding = new Padding(Font.ScalePixels(4));
-            }
-
-            for (int i = 0; i < entries.Count; i++)     // record nominal pos after all positioning done
-            {
-                entries[i].Location = entries[i].Control.Location;
-                entries[i].Size = entries[i].Control.Size;
-            }
-
-            initialsize = outerpanel.Size;
-
-            resizerepositionon = true;
-
-           // System.Diagnostics.Debug.WriteLine("Form Load " + Bounds + " " + ClientRectangle + " Font " + Font);
-        }
-
-        protected override void OnShown(EventArgs e)
-        {
-            Control firsttextbox = outerpanel.Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete), typeof(NumberBoxDouble), typeof(NumberBoxFloat), typeof(NumberBoxLong) });
-            if (firsttextbox != null)
-                firsttextbox.Focus();       // focus on first text box
-            base.OnShown(e);
-            //System.Diagnostics.Debug.WriteLine("Form Shown " + Bounds + " " + ClientRectangle);
-
-        }
-
-        protected override void OnMove(EventArgs e)
-        {
-            base.OnMove(e);
-
-            if (!ProgClose && resizerepositionon )
-                Trigger?.Invoke(logicalname, "Reposition", this.callertag);       // pass back the logical name of dialog, Moved, the caller tag
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-
-            if (!ProgClose && resizerepositionon)
-            {
-                outerpanel.Size = new Size(ClientRectangle.Width - BorderMargin * 2, ClientRectangle.Height - BorderMargin * 2);
-
-                if (closebutton != null)      // now position close at correct logical place
-                    closebutton.Location = new Point(outerpanel.Width - closebutton.Width - (AllowSpaceForScrollBar ? outerpanel.ScrollBarWidth : 0), Font.ScalePixels(4));
-
-                int widthdelta = outerpanel.Width - initialsize.Width;
-                int heightdelta = outerpanel.Height - initialsize.Height;
-                //System.Diagnostics.Debug.WriteLine(Environment.NewLine + "Resize {0} {1} so {2}", widthdelta, heightdelta, outer.ScrollOffset);
-
-                foreach ( var en in entries)
-                {
-                    en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, widthdelta, heightdelta);
-                }
-
-                Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, Resize, the caller tag
-            }
         }
 
         private void CheckMouse(object sender, EventArgs e)     // best way of knowing your inside the client.. using mouseleave/enter with transparency does not work..
@@ -1218,6 +1349,8 @@ namespace ExtendedControls
 
         #endregion
 
+        #region Variables
+
         private System.ComponentModel.IContainer components = null;     // replicate normal component container, so controls which look this
                                                                         // up for finding the tooltip can (TextBoxBorder)
 
@@ -1235,16 +1368,20 @@ namespace ExtendedControls
         private Size maxsize;
         private Size requestedsize;
 
-        private ExtPanelScroll outerpanel;
+        private Panel toppanel;
+        private Panel bottompanel;
+        private ExtPanelScroll scrollpanel;
         private ExtButtonDrawn closebutton;
         private Label titlelabel;
         private bool resizerepositionon;
-        private Size initialsize;
+        private Size initialscrollpanelsize;
 
         private Timer timer;
         private int panelshowcounter;
 
         private int yoffset;
         private ToolTip tooltipcontrol;
+
+        #endregion
     }
 }

@@ -66,6 +66,7 @@
             this.extButton36 = new ExtendedControls.ExtButton();
             this.extButton37 = new ExtendedControls.ExtButton();
             this.extButton38 = new ExtendedControls.ExtButton();
+            this.extButton39 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // extButton24
@@ -448,6 +449,16 @@
             this.extButton38.UseVisualStyleBackColor = true;
             this.extButton38.Click += new System.EventHandler(this.extButton38_Click);
             // 
+            // extButton39
+            // 
+            this.extButton39.Location = new System.Drawing.Point(239, 209);
+            this.extButton39.Name = "extButton39";
+            this.extButton39.Size = new System.Drawing.Size(183, 23);
+            this.extButton39.TabIndex = 1;
+            this.extButton39.Text = "ConfForm-LargeAmount";
+            this.extButton39.UseVisualStyleBackColor = true;
+            this.extButton39.Click += new System.EventHandler(this.extButton39_Click);
+            // 
             // TestVariousForms
             // 
             this.ClientSize = new System.Drawing.Size(854, 605);
@@ -464,6 +475,7 @@
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton4);
             this.Controls.Add(this.extButton3);
+            this.Controls.Add(this.extButton39);
             this.Controls.Add(this.extButton38);
             this.Controls.Add(this.extButton9);
             this.Controls.Add(this.extButton8);
@@ -534,5 +546,6 @@
         private ExtendedControls.ExtButton extButton36;
         private ExtendedControls.ExtButton extButton37;
         private ExtendedControls.ExtButton extButton38;
+        private ExtendedControls.ExtButton extButton39;
     }
 }

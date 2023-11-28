@@ -492,6 +492,46 @@ namespace TestExtendedControls
             }
 
         }
+
+        private void extButton39_Click(object sender, EventArgs e)
+        {
+            int number = 10;
+            bool[] state = new bool[number];
+            string[] names = new string[number];
+            for (int i = 0; i < number; i++)
+                names[i] = "S_" + i;
+
+            ExtendedControls.ConfigurableForm f = new ExtendedControls.ConfigurableForm();
+
+            Form parent = this;
+
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { Panel = ConfigurableForm.Entry.PanelType.Top });
+            f.AddOK(new Point(10, 10), paneltype: ConfigurableForm.Entry.PanelType.Bottom);
+            f.AddBools(names,names, state, 4, 24, 150, 4, 150, "B_");
+            f.InstallStandardTriggers();
+
+            f.Trigger += (formname, ctrlname, tag) =>
+            {
+            };
+
+            f.TopPanelHeight = 100;
+            f.BottomPanelHeight = 80;
+            f.AllowResize = true;
+            f.BorderMargin = 5;
+
+            //Theme.Current.FontSize = 8f;
+            //Theme.Current.FontName = "MS Sans Serif";
+            //Theme.Current.WindowsFrame = true;
+
+            DialogResult res = f.ShowDialogCentred(parent, parent.Icon, "Big List", closeicon: true);
+
+            if (res == DialogResult.OK)
+            {
+
+            }
+
+
+        }
     }
 }
 
