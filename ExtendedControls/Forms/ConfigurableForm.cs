@@ -239,6 +239,27 @@ namespace ExtendedControls
             return max;
         }
 
+        // add array of names and tags to scroll panel, using a hashset to work out what is checked
+        // optionally prefix the tags, and offset into the bools array
+        public int AddBools(string[] tags, string[] names, HashSet<string> ischecked, int vposstart, int vspacing, int depth, int xstart, int xspacing, string tagprefix = "", Entry.PanelType paneltype = Entry.PanelType.Scroll)
+        {
+            int vpos = vposstart;
+            int max = 0;
+            for (int i = 0; i < tags.Length; i++)
+            {
+                //  System.Diagnostics.Debug.WriteLine($"Add {i} {boolsoffset+i} {tags[i]} {names[i]} at {new Point(xstart, vpos)}");
+                Add(ref vpos, vspacing, new ConfigurableForm.Entry(tagprefix + tags[i], ischecked.Contains(tags[i]), names[i], new Point(xstart, 0), new Size(xspacing, vspacing - 2), "Search for " + names[i]) { Panel = paneltype });
+                max = Math.Max(vpos, max);
+                if (vpos - vposstart > depth)
+                {
+                    vpos = vposstart;
+                    xstart += xspacing;
+                }
+            }
+
+            return max;
+        }
+
         // handle OK and Close/Escape/Cancel
         public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
         {
@@ -494,14 +515,14 @@ namespace ExtendedControls
             return null;
         }
 
-        // from ExtCheckBox controls starting with this name, get the names of the ones checked
-        public string[] GetCheckedListNames(string startingcontrolname)
+        // from ExtCheckBox controls starting with this name, get the names of the ones checked, removing the prefix unless told not too
+        public string[] GetCheckedListNames(string startingcontrolname, bool removeprefix = true)
         {
-            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked).Select(x => x.Name).ToArray();
+            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked).Select(x => removeprefix ? x.Name.Substring(startingcontrolname.Length) : x.Name).ToArray();
             return elist;
         }
 
-        // from extCheckBox controls starting with this name, get the entries of ones checked
+        // from ExtCheckBox controls starting with this name, get the entries of ones checked
         public Entry[] GetCheckedListEntries(string startingcontrolname)
         {
             var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked);
