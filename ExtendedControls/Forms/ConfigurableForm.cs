@@ -328,8 +328,24 @@ namespace ExtendedControls
             }
         }
 
-        // requestedsize.value < N force, >N minimum width
+        // Helper to create a standard dialog, centred, with a top panel area, with standard triggers, and OK is enabled when all is valid
+        // you need to add OK yourself.
 
+        public static void ShowDialogCentred(Action<ConfigurableForm> addtoform, Action<ConfigurableForm> okpressed, Control frm, string title, int toppanelheight = 0, int botpanelheight = 0)
+        {
+            ConfigurableForm f = new ConfigurableForm();
+            f.TopPanelHeight = toppanelheight;
+            f.BottomPanelHeight = botpanelheight;
+            addtoform(f);
+            f.InstallStandardTriggers();
+            f.Trigger += (name, text, obj) => { f.GetControl("OK").Enabled = f.IsAllValid(); };
+            if (f.ShowDialogCentred(frm.FindForm(), frm.FindForm().Icon, title, closeicon: true) == DialogResult.OK)
+            {
+                okpressed(f);
+            }
+        }
+
+        // requestedsize.value < N force, >N minimum width
         public DialogResult ShowDialogCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null, Action callback = null, bool closeicon = false,
                                               Size? minsize = null, Size? maxsize = null, Size? requestedsize = null)
         {
