@@ -201,7 +201,11 @@ namespace TestExtendedControls
                     ));
 
                 List<TypeHelpers.PropertyNameInfo> vars = new List<TypeHelpers.PropertyNameInfo>();
-                vars.Add(new TypeHelpers.PropertyNameInfo("Pone", "Para one", ConditionEntry.MatchType.NumericEquals));
+                vars.Add(new TypeHelpers.PropertyNameInfo("Pone", "Para one wkwkw wkwkw long explanation of text here to a very long length to see what the darn this does and does again and again and again until the very end" +
+                    " here to a very long length to see what the darn this does and does again and again and again until the very end" +
+                    " here to a very long length to see what the darn this does and does again and again and again until the very end" +
+                    " here to a very long length to see what the darn this does and does again and again and again until the very end" 
+                    , ConditionEntry.MatchType.NumericEquals));
                 vars.Add(new TypeHelpers.PropertyNameInfo("Ptwo", "Para two", ConditionEntry.MatchType.NumericEquals));
                 vars.Add(new TypeHelpers.PropertyNameInfo("Pthree", "Para three", ConditionEntry.MatchType.NumericEquals));
                 vars.Add(new TypeHelpers.PropertyNameInfo("Sone", "Para one", ConditionEntry.MatchType.Equals));

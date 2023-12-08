@@ -34,6 +34,8 @@ namespace ExtendedConditionsForms
         public int AutoCompleteStringCropLength { get; set; } = 132;                // max length of autocomplete strings, limiting visual display
         public bool AutoCompleteOnMatch { get; set; } = false;                  // if to offer autocomplete on match 
 
+        public string AutoCompleteCommentMarker { get; set; } = " | ";                      // marker to seperate comments and autocomplete string
+
         public int Groups { get { return groups.Count; } }
         public Action<int> onChangeInGroups;                        // called if any change in group numbers
 
@@ -301,7 +303,7 @@ namespace ExtendedConditionsForms
 
             c.fname.EndButtonVisible = true;
             c.fname.SetAutoCompletor(AutoCompletor);
-            c.fname.AutoCompleteCommentMarker = commentmarker;
+            c.fname.AutoCompleteCommentMarker = AutoCompleteCommentMarker;
             c.fname.Tag = new Tuple<Group, Group.Conditions>(g, c);               // use this tag to save the group and group condition classes, this is used by the autocompleter
 
             g.panel.Controls.Add(c.fname);                                      // 1st control
@@ -322,7 +324,7 @@ namespace ExtendedConditionsForms
                 var tba = new ExtendedControls.ExtTextBoxAutoComplete();
                 tba.EndButtonVisible = true;
                 tba.SetAutoCompletor(AutoCompletor);
-                tba.AutoCompleteCommentMarker = commentmarker;
+                tba.AutoCompleteCommentMarker = AutoCompleteCommentMarker;
                 tba.Tag = new Tuple<Group, Group.Conditions>(g, c);               // the autocomplete code below needs the tag
                 c.value = tba;
             }
@@ -675,7 +677,7 @@ namespace ExtendedConditionsForms
                         string chelp = (x.Help ?? "").AppendPrePad(x.Comment, " | ");
                         chelp = chelp.Replace("\n", " ");
                         chelp = chelp.Truncate(0, AutoCompleteStringCropLength, "..");
-                        set.Add(x.Name.AppendPrePad(chelp,commentmarker));
+                        set.Add(x.Name.AppendPrePad(chelp,AutoCompleteCommentMarker));
                     }
                 }
             }
@@ -733,7 +735,6 @@ namespace ExtendedConditionsForms
 
         private const int panelxmargin = 3;
         private const int panelymargin = 3;
-        private const string commentmarker = " | ";
 
         #endregion
 
