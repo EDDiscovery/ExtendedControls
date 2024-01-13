@@ -80,7 +80,7 @@ namespace ExtendedControls.Controls
                 else
                     imgctrl.Size = new Size(right - left, imgctrl.Height);  // don't change the height, but change the width to suit.
 
-                System.Diagnostics.Debug.WriteLine($"ICS layout imgctrl {imgctrl.Bounds} scroll panel {Bounds} sizing {right - left}");
+               // System.Diagnostics.Debug.WriteLine($"ICS layout imgctrl {imgctrl.Bounds} scroll panel {Bounds} sizing {right - left}");
             }
 
             UpdateScrollBar();

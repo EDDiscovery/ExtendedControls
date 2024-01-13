@@ -887,6 +887,9 @@ namespace ExtendedControls
                 ts.EmptyColor = colors[CI.button_back];
                 ts.SelectedBackColor = colors[CI.button_back];
             }
+            else if (myControl is Controls.ImageControl)      // no theme
+            {
+            }
             else if (myControl is TreeView)
             {
                 TreeView ctrl = myControl as TreeView;
