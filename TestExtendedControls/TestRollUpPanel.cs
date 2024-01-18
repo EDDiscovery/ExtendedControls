@@ -63,5 +63,10 @@ namespace TestExtendedControls
             //System.Diagnostics.Debug.WriteLine($"");
             //PerformLayout();
         }
+
+        private void extButton4_Click(object sender, EventArgs e)
+        {
+            rolluppanel.SetVisibility(extButton3, !rolluppanel.IsSetVisible(extButton3));
+        }
     }
 }

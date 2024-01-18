@@ -20,7 +20,6 @@ using System.Windows.Forms;
 namespace ExtendedControls
 {
     public class ExtPanelRollUp : ExtPanelAutoHeightWidth
-    //public class ExtPanelRollUp : Panel
     {
         public int RollUpDelay { get; set; } = 1000;            // before rolling
         public int UnrollHoverDelay { get; set; } = 1000;       // set to large value and forces click to open functionality
@@ -33,27 +32,10 @@ namespace ExtendedControls
 
         public bool PinState { get { return pinbutton.Checked; } set { SetPinState(value); } }
 
-
         public event EventHandler DeployStarting;
         public event EventHandler DeployCompleted;
         public event EventHandler RetractStarting;
         public event EventHandler RetractCompleted;
-
-        private ExtCheckBox pinbutton;        // public so you can theme them with colour/IAs
-        private ExtButtonDrawn hiddenmarker1;
-        private ExtButtonDrawn hiddenmarker2;
-
-        BaseUtils.MSTicks targetrolltimer= new BaseUtils.MSTicks();
-        const int rolltimerinterval = 25;
-
-        Action<ExtPanelRollUp, ExtCheckBox> PinStateChanged = null;
-
-        enum Mode { Up, UpAwaitRollDecision, Down, DownAwaitRollDecision, RollingUp, RollingDown };
-        private int unrolledheight;     // on resize, and down, its set.
-        Mode mode;
-        Timer timer;
-        bool hiddenmarkershow = true;           // if to show it at all.
-        bool hiddenmarkershouldbeshown = false; // if to show it now
 
         public ExtPanelRollUp()
         {
@@ -159,6 +141,25 @@ namespace ExtendedControls
             pinbutton.ImageUnchecked = down;
         }
 
+        // this panel controls visibility of its children.  Thus you can't use control.visible. use these to find out visiblity state and set it
+        // only applicable for direct children of this control. Grandchildren can be controlled normally
+
+        public void SetVisibility(Control c, bool visible)
+        {
+            System.Diagnostics.Debug.Assert(Controls.Contains(c));
+            c.Visible = visible;
+            visibleState[c] = visible;
+        }
+
+        // is it going to be visible when rolled down?
+        public bool IsSetVisible(Control c)
+        {
+            if (visibleState.TryGetValue(c, out bool res))
+                return res;
+            else
+                return true;
+        }
+
         public void RollDown()      // start the roll down..
         {
             timer.Stop();
@@ -176,8 +177,11 @@ namespace ExtendedControls
 
                 foreach (Control c in Controls)     // everything except hidden marker visible
                 {
-                    if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2))
+                    if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2)      // if not hidden markers
+                            && IsSetVisible(c))     // and control is set visible
+                    {
                         c.Visible = true;
+                    }
                 }
             }
         }
@@ -214,9 +218,6 @@ namespace ExtendedControls
                 this.AutoSize = false;          // and we must not be..
             }
         }
-
-        bool wasautosized = false;
-        List<Panel> autosizedpanels = new List<Panel>();
 
         private void StartRollUpTimer()
         {
@@ -338,7 +339,8 @@ namespace ExtendedControls
                     timer.Stop();
                     foreach (Control c in Controls)
                     {
-                        if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2))       // everything hidden but hm
+                        // everything hidden but hm
+                        if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2))       
                             c.Visible = false;
                     }
 
@@ -400,13 +402,33 @@ namespace ExtendedControls
             }
         }
 
-
         private void SetPin(bool vis)
         {
             int sz = Font.ScalePixels(32);
             pinbutton.Size = new Size(sz, sz);
             pinbutton.Visible = vis;
         }
+
+        private bool wasautosized = false;
+        private List<Panel> autosizedpanels = new List<Panel>();
+
+        private ExtCheckBox pinbutton;        // public so you can theme them with colour/IAs
+        private ExtButtonDrawn hiddenmarker1;
+        private ExtButtonDrawn hiddenmarker2;
+
+        private BaseUtils.MSTicks targetrolltimer = new BaseUtils.MSTicks();
+        private const int rolltimerinterval = 25;
+
+        private Action<ExtPanelRollUp, ExtCheckBox> PinStateChanged = null;
+
+        private enum Mode { Up, UpAwaitRollDecision, Down, DownAwaitRollDecision, RollingUp, RollingDown };
+        private Mode mode;
+        private int unrolledheight;     // on resize, and down, its set.
+        private Timer timer;
+        private bool hiddenmarkershow = true;           // if to show it at all.
+        private bool hiddenmarkershouldbeshown = false; // if to show it now
+
+        private Dictionary<Control, bool> visibleState = new Dictionary<Control, bool>();       // presume all visible unless this is set
 
     }
 }

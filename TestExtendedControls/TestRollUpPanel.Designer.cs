@@ -49,6 +49,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.extButton3 = new ExtendedControls.ExtButton();
+            this.extButton4 = new ExtendedControls.ExtButton();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
             this.panel1.SuspendLayout();
@@ -61,6 +63,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.Controls.Add(this.extButton4);
             this.panel1.Controls.Add(this.extButton2);
             this.panel1.Controls.Add(this.extButton1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -184,6 +187,7 @@
             this.rolluppanel.AutoHeightWidthDisable = false;
             this.rolluppanel.AutoWidth = false;
             this.rolluppanel.Controls.Add(this.flowLayoutPanel2);
+            this.rolluppanel.Controls.Add(this.extButton3);
             this.rolluppanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.rolluppanel.HiddenMarkerWidth = 0;
             this.rolluppanel.Location = new System.Drawing.Point(0, 100);
@@ -200,7 +204,6 @@
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.AutoSize = true;
             this.flowLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel2.BackColor = System.Drawing.Color.Bisque;
             this.flowLayoutPanel2.Controls.Add(this.label8);
@@ -210,10 +213,9 @@
             this.flowLayoutPanel2.Controls.Add(this.label12);
             this.flowLayoutPanel2.Controls.Add(this.label13);
             this.flowLayoutPanel2.Controls.Add(this.label14);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(941, 40);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(786, 40);
             this.flowLayoutPanel2.TabIndex = 5;
             this.flowLayoutPanel2.Resize += new System.EventHandler(this.flowLayoutPanel2_Resize);
             // 
@@ -280,9 +282,28 @@
             this.label14.TabIndex = 3;
             this.label14.Text = "Just to show roll up";
             // 
+            // extButton3
+            // 
+            this.extButton3.Location = new System.Drawing.Point(830, 6);
+            this.extButton3.Name = "extButton3";
+            this.extButton3.Size = new System.Drawing.Size(75, 23);
+            this.extButton3.TabIndex = 4;
+            this.extButton3.Text = "Hide this";
+            this.extButton3.UseVisualStyleBackColor = true;
+            // 
+            // extButton4
+            // 
+            this.extButton4.Location = new System.Drawing.Point(662, 5);
+            this.extButton4.Name = "extButton4";
+            this.extButton4.Size = new System.Drawing.Size(75, 23);
+            this.extButton4.TabIndex = 5;
+            this.extButton4.Text = "Hide this";
+            this.extButton4.UseVisualStyleBackColor = true;
+            this.extButton4.Click += new System.EventHandler(this.extButton4_Click);
+            // 
             // extButton2
             // 
-            this.extButton2.Location = new System.Drawing.Point(94, 0);
+            this.extButton2.Location = new System.Drawing.Point(94, 5);
             this.extButton2.Name = "extButton2";
             this.extButton2.Size = new System.Drawing.Size(75, 23);
             this.extButton2.TabIndex = 4;
@@ -292,7 +313,7 @@
             // 
             // extButton1
             // 
-            this.extButton1.Location = new System.Drawing.Point(0, 0);
+            this.extButton1.Location = new System.Drawing.Point(0, 5);
             this.extButton1.Name = "extButton1";
             this.extButton1.Size = new System.Drawing.Size(75, 23);
             this.extButton1.TabIndex = 3;
@@ -318,7 +339,6 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.rolluppanel.ResumeLayout(false);
-            this.rolluppanel.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
@@ -350,5 +370,7 @@
         private System.Windows.Forms.Panel panelBot;
         private System.Windows.Forms.Panel panelMid;
         private ExtendedControls.ExtPanelAutoHeightWidth extPanelAutoHeight1;
+        private ExtendedControls.ExtButton extButton4;
+        private ExtendedControls.ExtButton extButton3;
     }
 }
