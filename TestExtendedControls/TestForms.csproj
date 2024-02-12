@@ -50,6 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestProgressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestProgressBar.Designer.cs">
+      <DependentUpon>TestProgressBar.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestFlowBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -268,6 +274,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestProgressBar.resx">
+      <DependentUpon>TestProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestFlowBox.resx">
       <DependentUpon>TestFlowBox.cs</DependentUpon>
     </EmbeddedResource>
