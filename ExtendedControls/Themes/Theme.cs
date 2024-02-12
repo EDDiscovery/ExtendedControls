@@ -809,6 +809,8 @@ namespace ExtendedControls
                 ctrl.updown.MouseOverColor = c1.Multiply(mouseoverscaling);
                 ctrl.updown.MouseSelectedColor = c1.Multiply(mouseselectedscaling);
                 ctrl.Invalidate();
+
+                dochildren = false;
             }
             else if (myControl is PictureBox)
             {
@@ -853,6 +855,7 @@ namespace ExtendedControls
             {
                 myControl.BackColor = colors[CI.form];
                 myControl.ForeColor = colors[CI.label];
+                dochildren = false;
             }
             else if (myControl is ToolStrip)    // MenuStrip is a tool stip
             {
@@ -869,8 +872,6 @@ namespace ExtendedControls
                         i.ForeColor = colors[CI.textbox_fore];
                         i.BackColor = colors[CI.textbox_back];
                     }
-
-                    //??                    i.Font = fnt;
                 }
             }
             else if (myControl is TabStrip)
@@ -972,7 +973,7 @@ namespace ExtendedControls
             {
             }
             // these are not themed or are sub parts of other controls
-            else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar)
+            else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar )
             {
             }
             else
@@ -989,7 +990,6 @@ namespace ExtendedControls
                 foreach (Control subC in myControl.Controls)
                 {
                     //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme sub controls of {myControl.Name} sub {subC.GetType().Name}");
-
                     UpdateControls(myControl, subC, fnt, level + 1);
                 }
             }
