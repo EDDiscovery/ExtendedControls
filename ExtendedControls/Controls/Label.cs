@@ -14,6 +14,7 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -25,7 +26,7 @@ namespace ExtendedControls
 
     public class ExtLabel : Label
     {
-        private new Color BackColor {get;set;}          // DONT - has no meaning for this label
+        private new Color BackColor { get; set; }          // DONT - has no meaning for this label
 
         public Color TextBackColor { get { return textbackcolor; } set { textbackcolor = value; Invalidate(); } }      // area of text box only
         private Color textbackcolor = Color.Transparent;
@@ -67,6 +68,60 @@ namespace ExtendedControls
 
                         Rectangle pos = TextAlign.ImagePositionFromContentAlignment(ClientRectangle, mp.Size, true);
                         pe.Graphics.DrawImageUnscaled(mp, pos.Left, pos.Top);
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Fixed Width label with auto calculated height
+    /// </summary>
+    public class ExtLabelAutoHeight : Label
+    {
+        public ExtLabelAutoHeight()
+        {
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            SizeIt();
+           // System.Diagnostics.Debug.WriteLine($"Resized to {Size} ");
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+            SizeIt();
+           // System.Diagnostics.Debug.WriteLine($"text changed to {Size} ");
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            SizeIt();
+           // System.Diagnostics.Debug.WriteLine($"font changed to {Size} ");
+        }
+
+        private void SizeIt()
+        {
+            if (Text.HasChars())
+            {
+                using (StringFormat fmt = new StringFormat())
+                {
+                    // https://stackoverflow.com/questions/1203087/why-is-graphics-measurestring-returning-a-higher-than-expected-number
+                    // https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.textrenderer.measuretext?view=netframework-4.8&devlangs=csharp&f1url=%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(System.Windows.Forms.TextRenderer.MeasureText)%3Bk(TargetFrameworkMoniker-.NETFramework%2CVersion%253Dv4.8)%3Bk(DevLang-csharp)%26rd%3Dtrue
+                    // use this render measure, its more accurate with windows controls. 
+                    // Application.SetCompatibleTextRenderingDefault(false) is default, so items use GDI TextRender
+                    // this means some of the other code is out of date, heh-ho.
+
+                    Size newsize = TextRenderer.MeasureText(Text, Font, new Size(this.Width, 1280), TextFormatFlags.WordBreak);
+
+                    if (newsize != Size)
+                    {
+                        //System.Diagnostics.Debug.WriteLine($"current size {Size} new size {newsize}");
+                        ClientSize = new Size(this.Width, newsize.Height);
                     }
                 }
             }
