@@ -78,6 +78,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderText.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderText.EndButtonEnable = true;
             this.textBoxBorderText.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderText.EndButtonImage")));
+            this.textBoxBorderText.EndButtonSize16ths = 10;
             this.textBoxBorderText.EndButtonVisible = false;
             this.textBoxBorderText.InErrorCondition = false;
             this.textBoxBorderText.Location = new System.Drawing.Point(12, 37);
@@ -90,6 +91,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderText.Size = new System.Drawing.Size(364, 24);
             this.textBoxBorderText.TabIndex = 0;
             this.textBoxBorderText.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxBorderText.TextNoChange = "";
             this.textBoxBorderText.WordWrap = false;
             // 
             // buttonExtBrowse
@@ -233,7 +235,7 @@ namespace ExtendedAudioForms
             // 
             // buttonExtDevice
             // 
-            this.buttonExtDevice.Location = new System.Drawing.Point(382, 92);
+            this.buttonExtDevice.Location = new System.Drawing.Point(381, 82);
             this.buttonExtDevice.Name = "buttonExtDevice";
             this.buttonExtDevice.Size = new System.Drawing.Size(75, 23);
             this.buttonExtDevice.TabIndex = 50;
@@ -253,6 +255,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderStartTrigger.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderStartTrigger.EndButtonEnable = true;
             this.textBoxBorderStartTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderStartTrigger.EndButtonImage")));
+            this.textBoxBorderStartTrigger.EndButtonSize16ths = 10;
             this.textBoxBorderStartTrigger.EndButtonVisible = false;
             this.textBoxBorderStartTrigger.InErrorCondition = false;
             this.textBoxBorderStartTrigger.Location = new System.Drawing.Point(116, 116);
@@ -265,6 +268,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderStartTrigger.Size = new System.Drawing.Size(100, 20);
             this.textBoxBorderStartTrigger.TabIndex = 49;
             this.textBoxBorderStartTrigger.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxBorderStartTrigger.TextNoChange = "";
             this.textBoxBorderStartTrigger.WordWrap = true;
             // 
             // labelStartTrigger
@@ -288,6 +292,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderEndTrigger.ControlBackground = System.Drawing.SystemColors.Control;
             this.textBoxBorderEndTrigger.EndButtonEnable = true;
             this.textBoxBorderEndTrigger.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderEndTrigger.EndButtonImage")));
+            this.textBoxBorderEndTrigger.EndButtonSize16ths = 10;
             this.textBoxBorderEndTrigger.EndButtonVisible = false;
             this.textBoxBorderEndTrigger.InErrorCondition = false;
             this.textBoxBorderEndTrigger.Location = new System.Drawing.Point(357, 116);
@@ -300,6 +305,7 @@ namespace ExtendedAudioForms
             this.textBoxBorderEndTrigger.Size = new System.Drawing.Size(100, 20);
             this.textBoxBorderEndTrigger.TabIndex = 47;
             this.textBoxBorderEndTrigger.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxBorderEndTrigger.TextNoChange = "";
             this.textBoxBorderEndTrigger.WordWrap = true;
             // 
             // comboBoxCustomPriority
