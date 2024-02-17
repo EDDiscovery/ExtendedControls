@@ -77,7 +77,7 @@ namespace ExtendedControls
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
         public bool RightAlignedToLocation { get; set; } = false;
 
-        public Action<CheckedIconListBoxForm, ItemCheckEventArgs, Object> CheckedChanged;       // called after save back to say fully changed.
+        public Action<CheckedIconListBoxForm, ItemCheckEventArgs, Object> CheckedChanged;      
         public Action<int,string,string,object,MouseEventArgs> ButtonPressed;        // called if right click on panel/icon, or if a button has been defined
 
         public Action<string, Object> SaveSettings;                // Action on close or hide

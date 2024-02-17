@@ -812,6 +812,26 @@ namespace ExtendedControls
 
                 dochildren = false;
             }
+            else if (myControl is CheckedIconUserControl)
+            {
+                CheckedIconUserControl ctrl = (CheckedIconUserControl)myControl;
+                ctrl.BackColor = colors[CI.form];
+                ctrl.ForeColor = colors[CI.textbox_fore];
+                ctrl.BorderColor = colors[CI.grid_borderlines];
+                ctrl.BackColor = colors[CI.form];
+                ctrl.SliderColor = colors[CI.grid_sliderback];
+                ctrl.BorderColor = ctrl.ThumbBorderColor =
+                        ctrl.ArrowBorderColor = colors[CI.grid_borderlines];
+                Color c1 = colors[CI.grid_scrollbutton];
+                ctrl.ArrowButtonColor = ctrl.ThumbButtonColor = c1;
+                ctrl.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
+                ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
+                ctrl.CheckBoxColor = colors[CI.checkbox];
+                ctrl.CheckBoxInnerColor = colors[CI.checkbox].Multiply(1.5F);
+                ctrl.MouseOverColor = colors[CI.checkbox].Multiply(1.4F);
+                ctrl.TickBoxReductionRatio = 0.75f;
+                ctrl.CheckColor = colors[CI.checkbox_tick];
+            }
             else if (myControl is PictureBox)
             {
                 PictureBox ctrl = (PictureBox)myControl;

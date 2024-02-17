@@ -22,12 +22,23 @@ namespace TestExtendedControls
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
             Theme.Current.WindowsFrame = true;
-            Theme.Current.ApplyStd(this);
+          //  Theme.Current.ApplyStd(this);
 
-            extScrollBar1.HideScrollBar = true;
-            extScrollBar1.SmallChange = 16;
-            extScrollBar2.HideScrollBar = true;
-            extPictureBoxScroll2.ScrollBarEnabled = false;
+            extScrollBarForPanel2.HideScrollBar = true;
+            extScrollBarForPanel2.SmallChange = 16;
+            extScrollBarForPanel3.HideScrollBar = true;
+            extPictureBoxScroll3.ScrollBarEnabled = false;
+
+            extPictureBox4.AddTextAutoSize(new Point(0, 0), new Size(2000, 2000), "Hello", Font, Color.Red, Color.White,1);
+            ExtPictureBox.CheckBox chk1 = new ExtPictureBox.CheckBox();
+            chk1.Location = new Rectangle(20, 20, 150, 32);
+            chk1.Font = new Font("MS sans serif", 8.75f);
+            chk1.Text = "tickbox";
+            chk1.CheckState = CheckState.Checked;
+            extPictureBox4.Add(chk1);
+            extPictureBox4.FillColor = Color.AliceBlue;
+            extPictureBox4.Render(minsize: extPictureBox4.Size);
+
         }
 
         int vpos = 5;
@@ -43,8 +54,8 @@ namespace TestExtendedControls
                 vpos += 30;
             }
             extPictureBox1.Render();
-            extPictureBoxScroll1.Render();
             extPictureBoxScroll2.Render();
+            extPictureBoxScroll3.Render();
         }
 
         private void extButton1_Click(object sender, EventArgs e)
@@ -55,8 +66,8 @@ namespace TestExtendedControls
             vpos += 30;
 
             extPictureBox1.Render();
-            extPictureBoxScroll1.Render();
             extPictureBoxScroll2.Render();
+            extPictureBoxScroll3.Render();
             extButton1.Text = vpos.ToString();
         }
 

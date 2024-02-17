@@ -50,6 +50,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestCheckedIconNewListBoxForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestCheckedIconNewListBoxForm.Designer.cs">
+      <DependentUpon>TestCheckedIconNewListBoxForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestCheckedIconPictureGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestCheckedIconPictureGroup.Designer.cs">
+      <DependentUpon>TestCheckedIconPictureGroup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestCheckedIconPicture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestCheckedIconPicture.Designer.cs">
+      <DependentUpon>TestCheckedIconPicture.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestLabel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -280,6 +298,15 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestCheckedIconNewListBoxForm.resx">
+      <DependentUpon>TestCheckedIconNewListBoxForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestCheckedIconPictureGroup.resx">
+      <DependentUpon>TestCheckedIconPictureGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestCheckedIconPicture.resx">
+      <DependentUpon>TestCheckedIconPicture.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestLabel.resx">
       <DependentUpon>TestLabel.cs</DependentUpon>
     </EmbeddedResource>

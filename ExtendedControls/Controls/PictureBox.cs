@@ -29,11 +29,6 @@ namespace ExtendedControls
 
         public Color FillColor = Color.Transparent;         // fill the bitmap with this colour before pasting the bitmaps in
 
-        private ImageElement elementin = null;
-        private Timer hovertimer = new Timer();
-        private ToolTip hovertip = null;
-        private Point hoverpos;
-
         public List<ImageElement> Elements { get; private set; } = new List<ImageElement>();
 
         #region Interface
@@ -50,17 +45,21 @@ namespace ExtendedControls
 
         public void Add(ImageElement i)
         {
+            i.Parent = this;
             Elements.Add(i);
         }
 
         public void AddDrawFirst(ImageElement i)        // add to front of queue, draw first
         {
+            i.Parent = this;
             Elements.Insert(0, i);
         }
 
         public void AddRange(List<ImageElement> list)
         {
             Elements.AddRange(list);
+            foreach (var x in list)
+                x.Parent = this;
         }
 
         // topleft, autosized
@@ -160,7 +159,7 @@ namespace ExtendedControls
             return new Size(maxw, maxh);
         }
 
-
+        // taking image elements, draw to main bitmap, with minimum size of image, and margin
         public Bitmap RenderBitmap(Size? minsize = null, Size? margin = null)
         {
             Size size = DisplaySize();
@@ -197,7 +196,12 @@ namespace ExtendedControls
                         {
                             if (i.Image != null)
                             {
+                               // System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location}");
                                 gr.DrawImage(i.Image, i.Location);
+                            }
+                            else
+                            {
+                             //   System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location} no image");
                             }
 
                             i.OwnerDrawCallback?.Invoke(gr, i);
@@ -231,6 +235,45 @@ namespace ExtendedControls
             {
                 Image?.Dispose();
                 Image = null;       // nothing, null image
+            }
+        }
+
+        public void Refresh(Rectangle area)
+        {
+            if (Image == null)      // not rendered yet
+                return;
+
+            SortedList<int,ImageElement> indexes = new SortedList<int,ImageElement>();
+
+            for (int ix = 0; ix < Elements.Count;)
+            {
+                ImageElement i = Elements[ix];
+
+                // if not tried before, and overlays
+                if (!indexes.ContainsKey(ix) && i.Visible && i.Location.IntersectsWith(area))
+                {
+                   // System.Diagnostics.Debug.WriteLine($"ReDraw {i.Location}");
+                    indexes.Add(ix, i);
+                    area.Intersect(i.Location);         // increase area
+                    ix = 0;
+                }
+                else
+                    ix++;
+            }
+
+            using (Graphics gr = Graphics.FromImage(Image))
+            {
+                foreach (var kvp in indexes)        // in order, since its a sorted list
+                {
+                    if (kvp.Value.Image != null)
+                    {
+                        gr.DrawImage(kvp.Value.Image, kvp.Value.Location);
+                    }
+
+                    kvp.Value.OwnerDrawCallback?.Invoke(gr, kvp.Value);
+                }
+                if (indexes.Count > 0)
+                    Invalidate();
             }
         }
 
@@ -295,11 +338,13 @@ namespace ExtendedControls
 
             if (elementin != null && !elementin.Location.Contains(eventargs.Location))       // go out..
             {
+                //System.Diagnostics.Debug.WriteLine("Leave element " + elementin.Location);
+                elementin.MouseOver = false;
+
                 LeaveElement?.Invoke(this, eventargs, elementin, elementin.Tag);
+                elementin.Leave?.Invoke(this,elementin);
 
-                elementin.Leave?.Invoke();
-
-                if (elementin.AltImage != null && elementin.MouseOver && elementin.InAltImage)
+                if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && elementin.InAltImage)
                 {
                     elementin.SwapImages(Image);
                     Invalidate();
@@ -316,11 +361,12 @@ namespace ExtendedControls
                     if (i.Visible && i.Location.Contains(eventargs.Location))
                     {
                         elementin = i;
+                        elementin.MouseOver = true;
 
-                        elementin.Enter?.Invoke();
-                        System.Diagnostics.Debug.WriteLine("Enter element " + elementin.Location);
+                        elementin.Enter?.Invoke(this,elementin);
+                        //System.Diagnostics.Debug.WriteLine("Enter element " + elementin.Location);
 
-                        if (elementin.AltImage != null && elementin.MouseOver && !elementin.InAltImage)
+                        if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && !elementin.InAltImage)
                         {
                             elementin.SwapImages(Image);
                             Invalidate();
@@ -343,6 +389,34 @@ namespace ExtendedControls
             }
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            elementin?.MouseDown?.Invoke(this, elementin,e);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+            elementin?.MouseUp?.Invoke(this, elementin,e);
+        }
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
+            base.OnMouseClick(e);
+
+            Focus();
+
+            ClearHoverTip();
+
+            elementin?.Click?.Invoke(this, elementin,e);
+
+            ClickElement?.Invoke(this, e, elementin, elementin?.Tag);          // null if no element clicked
+        }
+
+        #endregion
+
+        #region Hover
         private void ClearHoverTip()
         {
             hovertimer.Stop();
@@ -371,21 +445,13 @@ namespace ExtendedControls
             }
         }
 
-        protected override void OnMouseClick(MouseEventArgs e)
-        {
-            base.OnMouseClick(e);
-
-            Focus();
-
-            ClearHoverTip();
-
-            elementin?.Click?.Invoke();
-
-            ClickElement?.Invoke(this, e, elementin, elementin?.Tag);          // null if no element clicked
-        }
-
         #endregion
 
+
+        private ImageElement elementin = null;
+        private Timer hovertimer = new Timer();
+        private ToolTip hovertip = null;
+        private Point hoverpos;
     }
 }
 
