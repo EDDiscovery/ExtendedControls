@@ -224,7 +224,7 @@ namespace ExtendedControls
             if (taglist != null)
             {
                 var list = taglist.SplitNoEmptyStrings(SettingsSplittingChar);
-                if (list.Count >= 1 && list[0] == All)      
+                if (list.Length >= 1 && list[0] == All)      
                     Set(CheckState.Checked);
                 else
                     Set(list, state);
