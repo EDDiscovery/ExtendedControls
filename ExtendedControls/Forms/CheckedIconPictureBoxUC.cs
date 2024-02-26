@@ -23,7 +23,8 @@ namespace ExtendedControls
     public class CheckedIconUserControl : UserControl
     {
         public bool SlideLeft { get; set; } = false;              // if bigger than allowed space, allow slide left
-        public bool MultipleColumns { get; set; } = false;      // allow multiple columns
+        public bool SlideUp { get; set; } = false;                // if bigger than allowed space, allow slide up
+        public bool MultipleColumns { get; set; } = false;          // allow multiple columns
         public Size ScreenMargin { get; set; } = new Size(16, 16);
 
         public List<Item> ItemList { get; private set; }
@@ -450,6 +451,7 @@ namespace ExtendedControls
             pictureboxscroll.Controls.Add(picturebox);
             pictureboxscroll.Controls.Add(sb);
             pictureboxscroll.Dock = DockStyle.Fill;
+            sb.HideScrollBar = true;
             Controls.Add(pictureboxscroll);
         }
 
@@ -546,21 +548,22 @@ namespace ExtendedControls
 
             // find screen for non fixedsize
             Rectangle screen = Screen.FromPoint(preferredxy).WorkingArea;
-            System.Diagnostics.Debug.WriteLine($"Render at {preferredxy} screensize {screen} icon {firsticonsize} chkbox {chkboxsize} ");
+            //System.Diagnostics.Debug.WriteLine($"Render at {preferredxy} screensize {screen} icon {firsticonsize} chkbox {chkboxsize} ");
 
             // work out available pixels left and down. Or if fixedsize, its those pixels
             int vavailable = fixedsize != null ? fixedsize.Value.Height : screen.Y + screen.Height - ScreenMargin.Width - preferredxy.Y;
             int wavailable = fixedsize != null ? fixedsize.Value.Width : screen.X + screen.Width - ScreenMargin.Height - preferredxy.X;
 
-            System.Diagnostics.Debug.WriteLine($".. max w single col {maxwidthsinglecol} total vert height {vheightsinglecol} wavailable {wavailable} vavailable {vavailable}");
+            //System.Diagnostics.Debug.WriteLine($".. max w single col {maxwidthsinglecol} total vert height {vheightsinglecol} wavailable {wavailable} vavailable {vavailable} Screenmargin {ScreenMargin}");
 
+            bool slidup = false;
             if (MultipleColumns && vheightsinglecol >= vavailable)               // if we have multiple columns, and we need them
             {
                 int estcolsneeded = (int)Math.Ceiling((double)vheightsinglecol / vavailable);        // this is how many we need with the vheight we have
                 int pixelsright = wavailable - pictureboxscroll.ScrollBarWidth; // pixels for the controls, excluding the scroll bar
                 int colstoright = pixelsright / maxwidthsinglecol;      // number we can do to the right
 
-                System.Diagnostics.Debug.WriteLine($".. multicol pixels to right {pixelsright} needed cols {estcolsneeded} colrtoright {colstoright}");
+                //System.Diagnostics.Debug.WriteLine($".. multicol pixels to right {pixelsright} col width {maxwidthsinglecol} needed cols {estcolsneeded} colrtoright {colstoright}");
 
                 if (estcolsneeded < colstoright)      // if we have estimated less than cols available to the right, its good and can allow for 1 cols growth
                 {
@@ -573,18 +576,39 @@ namespace ExtendedControls
                 }
                 else if (SlideLeft && fixedsize == null)    // if we want to slide left to accomodate. Can't do that on fixed size
                 {
-                    int maxwidth = screen.Width - ScreenMargin.Width * 2 - sb.Width - 16;       // 16 is to give a bit
+                    int maxwidth = screen.Width - ScreenMargin.Width * 2 - pictureboxscroll.ScrollBarWidth - 16;       // 16 is to give a bit
                     int colsonscreen = maxwidth / maxwidthsinglecol;       // this is maximum which the screen can support
 
-                    estcolstodisplay = Math.Min(colsonscreen, estcolsneeded);     // pick the minimum of needed vs available
+                    //System.Diagnostics.Debug.WriteLine($".. slideleft width {maxwidth} giving {colsonscreen} cols");
+                    if ( estcolsneeded <= colsonscreen)     // if we have enough cols
+                    {
+                        estcolstodisplay = estcolsneeded;   // we give them all 
+                    }
+                    else
+                    {
+                        if (SlideUp)
+                        {
+                            vavailable = screen.Height - 2 * ScreenMargin.Height;       // give all available
+                            estcolsneeded = (int)Math.Ceiling((double)vheightsinglecol / vavailable);        // this is how many we need with the vheight we have
+                            estcolstodisplay = Math.Min(estcolsneeded, colsonscreen);
+                            slidup = true;
+                            //System.Diagnostics.Debug.WriteLine($".. slideup max v available {vavailable} giving cols {estcolsneeded} needed, estcolstodisplay {estcolstodisplay}");
+                        }
+                        else
+                            estcolstodisplay = colsonscreen;
+                    }
 
                     checkvspacing = estcolstodisplay < colsonscreen;          // if we have more cols that estimated, we can afford an overflow due to vspacing 
 
-                    System.Diagnostics.Debug.WriteLine($".. fittoscreen width available {maxwidth} giving cols {colsonscreen} columns available, cols needed {estcolsneeded} vspacingallowed {checkvspacing}");
+                    //System.Diagnostics.Debug.WriteLine($".. fittoscreen width available {maxwidth} giving cols {colsonscreen} columns available, cols needed {estcolsneeded} vspacingallowed {checkvspacing}");
 
                     preferredxy.X = Math.Max(screen.X, screen.Right - 16 - sb.Width - maxwidthsinglecol * estcolstodisplay);
 
-                    System.Diagnostics.Debug.WriteLine($".. move X to {preferredxy.X}");
+                    //System.Diagnostics.Debug.WriteLine($".. move X to {preferredxy.X}");
+
+                    // now lets reestimate.
+                    wavailable = fixedsize != null ? fixedsize.Value.Width : screen.X + screen.Width - ScreenMargin.Height - preferredxy.X;
+
                 }
                 else
                 {
@@ -592,9 +616,9 @@ namespace ExtendedControls
                 }
             }
 
-            int itemspercolumn = (int)Math.Ceiling((double)ItemList.Count / estcolstodisplay);
+            int itemspercolumn = (int)Math.Ceiling((double)ItemList.Count / estcolstodisplay);  // floating point divide with rounding up
 
-            System.Diagnostics.Debug.WriteLine($".. decided Cols {estcolstodisplay} allow vspacing {checkvspacing} items/col {itemspercolumn}");
+            //System.Diagnostics.Debug.WriteLine($".. decided Cols {estcolstodisplay} allow vspacing {checkvspacing} items/col {itemspercolumn}");
 
             // try and make it as boxy as can be by estimating the number of items per column
 
@@ -649,7 +673,7 @@ namespace ExtendedControls
 
             if (fixedsize == null)      // if not in fixed size mode, return the screen rectangle clipping to size.
             {
-                var rect = preferredxy.CalculateRectangleWithinScreen(picturebox.Image.Width + sb.Width, picturebox.Image.Height, true, ScreenMargin);
+                var rect = preferredxy.CalculateRectangleWithinScreen(picturebox.Image.Width + sb.Width, picturebox.Image.Height, !slidup, ScreenMargin);
                 return rect;
             }
             else

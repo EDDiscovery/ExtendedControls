@@ -208,7 +208,9 @@ namespace TestExtendedControls
                 frm8 = new CheckedIconNewListBoxForm();
                 frm8.UC.AddButton("button1", "Button 1");
                 frm8.UC.AddButton("button2", "Button 2");
-                for (int i = 0; i < 200; i++)
+
+                // 420 full
+                for (int i = 0; i <440; i++)
                 {
                     frm8.UC.Add($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
                 }
@@ -271,6 +273,8 @@ namespace TestExtendedControls
                 frm8.UC.Set(persistent8);
                 frm8.CloseOnDeactivate = false;
                 frm8.HideOnDeactivate = true;
+                frm8.UC.SlideLeft = true;
+                frm8.UC.SlideUp = true;
             }
 
             frm8.UC.Enable("t100", false);
