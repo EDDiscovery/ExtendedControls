@@ -343,12 +343,14 @@ namespace ExtendedControls
 
         public class Label : ImageElement
         {
-            public string Text { get { return text; } set { text = value; Parent?.Refresh(Location); } }
-            public Font Font { get { return font; } set { font = value; Parent?.Refresh(Location); } }
+            public string Text { get { return text; } set { text = value; PerformAutoSize(); Parent?.Refresh(Location); } }
+            public Font Font { get { return font; } set { font = value; PerformAutoSize(); Parent?.Refresh(Location); } }
             public Color ForeColor { get; set; } = Color.Blue;          // Normal only border area colour
             public Color BackColor { get; set; } = Color.White;          // Normal only border area colour
             public bool Enabled { get { return enabled; } set { enabled = value; Parent?.Refresh(Location); } }
             public float DisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
+
+            public bool AutoSize { get; set; } = true;
 
             private string text = "";
             private Font font;
@@ -357,6 +359,15 @@ namespace ExtendedControls
             public Label()
             {
                 OwnerDrawCallback += (gr, ie) => { Draw(gr, ie); };
+            }
+
+            public void PerformAutoSize()
+            {
+                if (AutoSize && Text.HasChars() && Font != null)
+                {
+                    var sizef = BaseUtils.BitMapHelpers.MeasureStringInBitmap(Text, Font);
+                    Size = new Size((int)sizef.Width + 1, (int)sizef.Height + 1);
+                }
             }
 
             private void Draw(Graphics dgr, ImageElement ie)

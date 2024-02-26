@@ -502,12 +502,11 @@ namespace ExtendedControls
 
                 int labx = chkboxsize.Width + HorizontalSpacing + (cl.Image != null ? (iconsize.Width + HorizontalSpacing) : 0);
 
-                cl.label.Text = cl.Text;
+                // label is in autosize mode, setting Text and Font will size it
+                cl.label.Text = cl.Text;        
                 cl.label.Font = this.Font;
                 cl.label.ForeColor = this.ForeColor;
                 cl.label.BackColor = BackColor;
-                SizeF stringsize = BaseUtils.BitMapHelpers.MeasureStringInBitmap(cl.Text, this.Font);
-                cl.label.Size = new Size((int)stringsize.Width+2, (int)stringsize.Height+1 );
 
                 if (!cl.Button)
                 {

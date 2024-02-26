@@ -76,18 +76,18 @@ namespace ExtendedControls
 
         public new void Show(IWin32Window parent)
         {
-            // intercept this while hidden, and check if we need a relayout
-            // if we were shown, and we moved, or we were altered
-            if ((!lastbounds.IsEmpty && SetLocation != this.Location) || forceredraw)
-            {
-                //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCount} Previously shown but now moved or cleared");
-                ReDraw();
-            }
-
-            if ( ApplyTheme)
+            if (ApplyTheme)
             {
                 Theme.Current?.ApplyStd(this);
                 FormBorderStyle = FormBorderStyle.None;
+            }
+
+            // if we moved from last redraw, or we were altered and we have displayed, or the font has changed
+            // we won't OnLoad, so we need to redraw here
+            if ((!lastbounds.IsEmpty && SetLocation != this.Location) || (forceredraw && !lastbounds.IsEmpty) || ( lastfont != null && lastfont != Font))
+            {
+                //System.Diagnostics.Debug.WriteLine($"ListBoxNewForm Previously shown but now moved/altered/font");
+                ReDraw();
             }
 
             base.Show(parent);
@@ -96,6 +96,7 @@ namespace ExtendedControls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            //System.Diagnostics.Debug.WriteLine($"ListBoxNewForm OnLoad draw");
             ReDraw();
         }
 
@@ -108,6 +109,8 @@ namespace ExtendedControls
             Location = rect.Location;
             ClientSize = rect.Size;
             lastbounds = rect;
+            lastfont = Font;
+            forceredraw = false;
         }
 
         protected override void OnActivated(EventArgs e)
@@ -225,9 +228,12 @@ namespace ExtendedControls
 
 
         private Timer timer = new Timer();      // timer to monitor for entry into form when transparent.. only sane way in forms
-        private Rectangle lastbounds;       // last bounds the position was done on
-        private bool forceredraw = false;       // force reposition 
         private bool mousebuttonsdown = false;
         private int closedowncount = 0;
+
+        private Rectangle lastbounds;       // last bounds the position was done on
+        private Font lastfont;  // last font
+        private bool forceredraw = false;       // force reposition 
+
     }
 }

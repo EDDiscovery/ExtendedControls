@@ -138,6 +138,7 @@ namespace TestExtendedControls
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent5 = s; };
             frm.UC.Set(persistent5);
             frm.ApplyTheme = false;
+            Theme.Current.FontSize = 8.25f;
             frm.Show(this);
 
         }
@@ -160,6 +161,7 @@ namespace TestExtendedControls
             frm.AllOrNoneBack = true;
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent6 = s; };
             frm.UC.Set(persistent6);
+            Theme.Current.FontSize = 12;
             frm.Show(this);
         }
 
