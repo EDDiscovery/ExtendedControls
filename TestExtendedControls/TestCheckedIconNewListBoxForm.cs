@@ -213,6 +213,54 @@ namespace TestExtendedControls
                 frm8.UC.AddAllNone();
                 frm8.UC.AddGroupItem("t1;t2;t3", "1-3");
                 frm8.UC.AddGroupItem("t100;t101;t102", "100-102");
+
+                frm8.UC.AddStringListDefinitions("T20-23:t20;t21;t22;t23!T30-T33:t30;t31;t32;t33", "useritem", true, null, '!', ':');
+                frm8.UC.AddButton("creategroup", "Create Group", attop: true);
+                frm8.UC.AddButton("removegroups", "Remove All Groups", attop: true);
+
+                frm8.UC.ButtonPressed += (index, stag, text, usertag, ea) =>
+                {
+                    if (ea.Button == MouseButtons.Right)
+                    {
+                        if (usertag is string) // a marker that this is a user group
+                        {
+                            frm8.Hide();
+
+                            if (ExtendedControls.MessageBoxTheme.Show($"Confirm removal of " + text, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                            {
+                                frm8.UC.Remove(index);
+                                frm8.ForceRedrawOnNextShow();
+                            }
+                        }
+                    }
+                    else if (ea.Button == MouseButtons.Left)
+                    {
+                        if (stag == "creategroup")
+                        {
+                            frm8.Hide();
+
+                            string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(null, "", "", "Enter name of new group", this.Icon);
+                            if (promptValue != null)
+                            {
+                                string cursettings = frm8.GetChecked();
+                                frm8.UC.AddGroupItem(cursettings, promptValue, null, usertag: "useritem");
+                                frm8.ForceRedrawOnNextShow();
+                            }
+                        }
+                        else if ( stag == "removegroups")
+                        {
+                            frm8.Hide();
+
+                            if (ExtendedControls.MessageBoxTheme.Show($"Confirm removal of all groups", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                            {
+                                frm8.UC.RemoveUserTags("useritem");
+                                frm8.ForceRedrawOnNextShow();
+                            }
+
+                        }
+                    }
+                };
+
                 frm8.UC.MultipleColumns = true;
                 frm8.CloseBoundaryRegion = new Size(64, 64);
                 frm8.UC.CheckedChanged += (uc, ie, o) => { AddText($"Check {ie.Index}"); };
@@ -223,6 +271,8 @@ namespace TestExtendedControls
                 frm8.HideOnDeactivate = true;
             }
 
+            frm8.UC.Enable("t100", false);
+            frm8.UC.Enable("removegroups", frm8.UC.UserTags("useritem").Count()>0);
             frm8.PositionBelow(extButton8);
             frm8.Show(this);
 

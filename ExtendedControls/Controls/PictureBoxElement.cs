@@ -216,7 +216,7 @@ namespace ExtendedControls
             public Color MouseOverColor { get; set; } = Color.CornflowerBlue; // both - Mouse over 
             public float CheckBoxDisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
 
-            public Action<CheckBox> CheckChanged;                           // check has changed
+            public Action<CheckBox> CheckChanged;                           // check has changed, only if Enabled
 
             private string text = "";
             private Font font;
@@ -231,14 +231,14 @@ namespace ExtendedControls
                 Leave += (pb, ie) => {  pb.Refresh(Location); };
                 Click += (pb, ie,bt) =>
                 {
-                    if (bt.Button == MouseButtons.Left)
+                    if (bt.Button == MouseButtons.Left && Enabled)
                     {
                         if (CheckState != CheckState.Checked)
                             CheckState = CheckState.Checked;
                         else
                             CheckState = CheckState.Unchecked;
                         pb.Refresh(Location);
-                        CheckChanged(this);
+                        CheckChanged?.Invoke(this);
                     }
                 };
 
@@ -340,6 +340,53 @@ namespace ExtendedControls
                 dgr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
             }
         }
+
+        public class Label : ImageElement
+        {
+            public string Text { get { return text; } set { text = value; Parent?.Refresh(Location); } }
+            public Font Font { get { return font; } set { font = value; Parent?.Refresh(Location); } }
+            public Color ForeColor { get; set; } = Color.Blue;          // Normal only border area colour
+            public Color BackColor { get; set; } = Color.White;          // Normal only border area colour
+            public bool Enabled { get { return enabled; } set { enabled = value; Parent?.Refresh(Location); } }
+            public float DisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
+
+            private string text = "";
+            private Font font;
+            private bool enabled = true;
+
+            public Label()
+            {
+                OwnerDrawCallback += (gr, ie) => { Draw(gr, ie); };
+            }
+
+            private void Draw(Graphics dgr, ImageElement ie)
+            {
+                var ClientRectangle = ie.Location;
+
+                using (Brush br = new SolidBrush(this.BackColor))
+                    dgr.FillRectangle(br, ClientRectangle);
+
+                Rectangle textarea = ClientRectangle;
+
+                if (Font != null)
+                {
+                    dgr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.FitBlackBox })
+                    {
+                        if (this.Text.HasChars())
+                        {
+                            using (Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(DisabledScaling)))
+                            {
+                                dgr.DrawString(this.Text, Font, textb, textarea, fmt);
+                            }
+                        }
+                    }
+                    dgr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+                }
+
+            }
+        }
+
     }
 }
 

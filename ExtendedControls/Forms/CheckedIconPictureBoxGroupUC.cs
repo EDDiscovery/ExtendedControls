@@ -20,11 +20,10 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
+    // Enhances the base system with group functionality
+
     public class CheckedIconGroupUserControl : CheckedIconUserControl
     {
-        public List<Item> GroupOptions() { return ItemList.Where(x => x.Group).ToList(); }
-        public List<Item> GroupOptionsWithUserTag() { return ItemList.Where(x => x.Group && x.UserTag != null).ToList(); }
-        public List<Item> StandardOptions() { return ItemList.Where(x => !x.Group).ToList(); }
 
         public void AddAllNone()
         {
@@ -48,37 +47,8 @@ namespace ExtendedControls
             Add(tags, text, img, usertag: usertag, exclusive: exclusive, group: true, attop: true);
         }
 
-        // Add grouped items formatted in a string, all with the same usertag and image
-        // with configurable group and part separators
-        public void AddGroupItems(string groupswithids, object usertag, Image img = null, char groupsepar = '\u24C2', char partsepar = '\u2713')
-        {
-            string[] groups = groupswithids.Split(groupsepar);
-            foreach (var x in groups)
-            {
-                int nsp = x.IndexOf(partsepar);
-                if (nsp > 0)
-                {
-                    var tag = x.Substring(nsp + 1);
-                    var name = x.Substring(0, nsp);
-                    AddGroupItem(tag, name, img, usertag: usertag);        // use the usertag and just put a marker in it
-                }
-            }
-        }
-
-        // given a specific usertag, find group definition string
-        public string GetUserGroupDefinition(object usertag, char groupsepar = '\u24C2', char partsepar = '\u2713')                    
-        {
-            string ret = "";
-            foreach (var x in GroupOptions())
-            {
-                if (x.UserTag != null && x.UserTag.Equals(usertag))
-                    ret = ret.AppendPrePad($"{x.Text}{partsepar}{x.Tag}", new string(groupsepar,1));
-            }
-            return ret;
-        }
-
         // Get checked including any group override settings
-        public string GetCheckedGroup(bool allornone)
+        public override string GetChecked(bool allornone)
         {
             string list = null;
 
@@ -92,7 +62,7 @@ namespace ExtendedControls
             }
 
             if (list == null)                                 // no exclusive options, so
-                list = GetChecked(allornone);                 // get the set options from the standard grouping, using All/None
+                list = base.GetChecked(allornone);            // get the set options from the standard grouping, using All/None
 
             return list;
         }
@@ -160,7 +130,7 @@ namespace ExtendedControls
         private void SetGroupOptions()
         {
             // using All or None.. on items beyond reserved entries
-            string list = GetCheckedGroup(true);
+            string list = GetChecked(true);
             //System.Diagnostics.Debug.WriteLine($"Set Group Options on {list}");
 
             int pos = 0;

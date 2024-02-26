@@ -37,9 +37,12 @@ namespace ExtendedControls
         public Size CloseBoundaryRegion { get; set; } = new Size(0, 0);     // set size >0 to enable boundary close
 
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported, else its all entries or empty list
-        public Action<string, Object> SaveSettings;                // Action on close or hide
 
-        public CheckedIconGroupUserControl UC { get; private set; }       // use this to add to
+        // Called on close or hide
+        public Action<string, Object> SaveSettings;                
+
+        // ** use UC.Add or UC.Remove to add/remove items. If you do, use ForceRedrawOnNextShow to indicate it needs a redraw
+        public CheckedIconGroupUserControl UC { get; private set; }       
 
         public CheckedIconNewListBoxForm()
         {
@@ -50,7 +53,20 @@ namespace ExtendedControls
             timer.Interval = 100;
             timer.Tick += CheckMouse;
         }
-        
+
+
+        // Get the chekced list taking into account the grouping And the AllOrNoneBack
+        public string GetChecked()
+        {
+            return UC.GetChecked(AllOrNoneBack);
+        }
+
+        // Call if you altered the Item List and force a redraw on next Show.
+        public void ForceRedrawOnNextShow()
+        {
+            forceredraw = true;
+        }
+
         public void Show(string settings, Control positionunder, IWin32Window parent)
         {
             UC.Set(settings);
@@ -61,11 +77,11 @@ namespace ExtendedControls
         public new void Show(IWin32Window parent)
         {
             // intercept this while hidden, and check if we need a relayout
-            // if we were shown, and we moved, or we were cleared
-            if ((!lastbounds.IsEmpty && SetLocation != this.Location) || forcereposition)
+            // if we were shown, and we moved, or we were altered
+            if ((!lastbounds.IsEmpty && SetLocation != this.Location) || forceredraw)
             {
                 //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCount} Previously shown but now moved or cleared");
-                Position();
+                ReDraw();
             }
 
             if ( ApplyTheme)
@@ -80,13 +96,15 @@ namespace ExtendedControls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            Position();
+            ReDraw();
         }
 
-        private void Position()
+
+        // called to redraw and then reposition dependent on what was drawn
+        private void ReDraw()
         { 
             var location = SetLocation.X != int.MinValue ? SetLocation : Location;
-            var rect = UC.Render(location);              // we give max size, it gives client size wanted..
+            var rect = UC.Render(location);             
             Location = rect.Location;
             ClientSize = rect.Size;
             lastbounds = rect;
@@ -101,7 +119,9 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Activated");
 
             if (!CloseBoundaryRegion.IsEmpty)
+            {
                 timer.Start();
+            }
             else
             {
                 //System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
@@ -160,7 +180,7 @@ namespace ExtendedControls
 
         protected virtual void SaveSettingsEvent()
         {
-            string settings = UC.GetCheckedGroup(AllOrNoneBack);
+            string settings = UC.GetChecked(AllOrNoneBack);
             SaveSettings?.Invoke(settings, Tag);     // at this level, we return all items.
         }
 
@@ -206,7 +226,7 @@ namespace ExtendedControls
 
         private Timer timer = new Timer();      // timer to monitor for entry into form when transparent.. only sane way in forms
         private Rectangle lastbounds;       // last bounds the position was done on
-        private bool forcereposition = false;       // force reposition 
+        private bool forceredraw = false;       // force reposition 
         private bool mousebuttonsdown = false;
         private int closedowncount = 0;
     }

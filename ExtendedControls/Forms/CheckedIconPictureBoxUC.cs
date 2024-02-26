@@ -38,8 +38,8 @@ namespace ExtendedControls
         public Size CheckBoxSize { get; set; } = Size.Empty;                  // if not set, ImageSize sets the size, or first image, else 24/24
         public Size ImageSize { get; set; } = Size.Empty;                     // if not set, each image sets its size. 
         public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
-        public int VerticalSpacing { get; set; } = 4;
-        public int HorizontalSpacing { get; set; } = 4;
+        public int VerticalSpacing { get; set; } = 3;
+        public int HorizontalSpacing { get; set; } = 3;
 
         // Colours for Scroll bar
         public Color BorderColor { get { return sb.BorderColor; } set { sb.BorderColor = value; } }
@@ -67,6 +67,8 @@ namespace ExtendedControls
         public const string All = "All";
         public const string None = "None";
 
+
+        [System.Diagnostics.DebuggerDisplay("{Tag}:{Text} Grp:{Group} Btn:{Button}")]
         public class Item
         {
             public bool Group { get; set; }
@@ -84,7 +86,9 @@ namespace ExtendedControls
 
             public object UserTag { get; set; }
 
-            public ExtPictureBox.ImageElement label;
+            // these are for internal use only
+
+            public ExtPictureBox.Label label;
             public ExtPictureBox.CheckBox checkbox;
             public ExtPictureBox.ImageElement icon;
 
@@ -95,31 +99,20 @@ namespace ExtendedControls
             }
         }
 
+        public List<Item> GroupOptions() { return ItemList.Where(x => x.Group).ToList(); }
+        public List<Item> GroupOptionsWithUserTag() { return ItemList.Where(x => x.Group && x.UserTag != null).ToList(); }
+        public List<Item> StandardOptions() { return ItemList.Where(x => !x.Group).ToList(); }
+        public List<Item> UserTags(object usertag) { return ItemList.Where(x => x.UserTag == usertag).ToList(); }
+
+
         public void Add(string tag, string text, Image img = null, bool attop = false, string exclusive = null,
                                 bool disableuncheck = false, bool button = false, object usertag = null, bool group = false)
         {
             var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusive, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag};
-            cl.label = new ExtPictureBox.ImageElement();
+            cl.label = new ExtPictureBox.Label();
             cl.label.Click += (sender, el, e) =>
             {
-                if (cl.checkbox != null && e.Button == MouseButtons.Left)
-                {
-                    cl.checkbox.CheckState = cl.checkbox.CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                    picturebox.Refresh(cl.checkbox.Location);
-                }
-                else
-                    ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
-            };
-            if (!cl.Button)
-            {
-                cl.checkbox = new ExtPictureBox.CheckBox();
-                cl.checkbox.CheckChanged += CheckedIconListBoxForm_CheckedChanged;
-                cl.checkbox.MouseDown += (s, el, e) => { if (e.Button == MouseButtons.Right) ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e); };
-            }
-            if (img != null)
-            {
-                cl.icon = new ExtPictureBox.ImageElement();
-                cl.icon.Click += (sender, el, e) =>
+                if (cl.label.Enabled)       // will get clicks even if disabled
                 {
                     if (cl.checkbox != null && e.Button == MouseButtons.Left)
                     {
@@ -128,6 +121,29 @@ namespace ExtendedControls
                     }
                     else
                         ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                }
+            };
+            if (!cl.Button)
+            {
+                cl.checkbox = new ExtPictureBox.CheckBox();
+                cl.checkbox.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
+                cl.checkbox.MouseDown += (s, el, e) => { if (e.Button == MouseButtons.Right) ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e); };
+            }
+            if (img != null)
+            {
+                cl.icon = new ExtPictureBox.ImageElement();
+                cl.icon.Click += (sender, el, e) =>
+                {
+                    if (cl.label.Enabled)       // will get clicks even if disabled, use label to tell
+                    {
+                        if (cl.checkbox != null && e.Button == MouseButtons.Left)
+                        {
+                            cl.checkbox.CheckState = cl.checkbox.CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
+                            picturebox.Refresh(cl.checkbox.Location);
+                        }
+                        else
+                            ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                    }
                 };
             }
 
@@ -153,12 +169,6 @@ namespace ExtendedControls
             Add(ev.Item1, ev.Item2, ev.Item3);
         }
 
-        // add a button
-        public void AddButton(string tag, string text, Image img = null, object usertag = null)
-        {
-            Add(tag, text, img, button: true, usertag: usertag);
-        }
-
         // add options from array/list.
         // If force group is on, item is added as a group item, not a normal item
         // if at top, insert at top all items
@@ -175,6 +185,40 @@ namespace ExtendedControls
                 Add(x.Item1, x.Item2, x.Item3);
         }
 
+        // Add items formatted in a string as name<partssepar>tag<itemssepar>..
+        // all with the same usertag and image
+        // group = true, its a group item
+        public void AddStringListDefinitions(string namesidslist, object usertag, bool group = true, Image img = null, char itemssepar = '\u24C2', char partsepar = '\u2713')
+        {
+            string[] items = namesidslist.Split(itemssepar);
+            foreach (var x in items)
+            {
+                int nsp = x.IndexOf(partsepar);
+                if (nsp > 0)
+                {
+                    var tag = x.Substring(nsp + 1);     // post partssepar
+                    var name = x.Substring(0, nsp);     // pre 
+                    Add(tag, name, img, group: group, usertag: usertag);
+                }
+            }
+        }
+
+        // given a specific usertag, make a list of name<partssepar>tag<itemssepar>..
+        public string GetUserTagDefinitions(object usertag, char itemssepar = '\u24C2', char partsepar = '\u2713')
+        {
+            string ret = "";
+            foreach (var x in ItemList.Where(x=>x.UserTag == usertag))      // for all user tag items
+            {
+                ret = ret.AppendPrePad($"{x.Text}{partsepar}{x.Tag}", new string(itemssepar, 1));
+            }
+            return ret;
+        }
+
+        // add a button
+        public void AddButton(string tag, string text, Image img = null, object usertag = null, bool attop = false)
+        {
+            Add(tag, text, img, button: true, usertag: usertag, attop: attop);
+        }
 
         // use a long tag (bit field, 1,2,4,8 etc).  Use SettingsStringToLong to convert back
         // if using long as the tag, this is the accumulated long value of all bits
@@ -187,6 +231,7 @@ namespace ExtendedControls
             Add(tag.ToStringInvariant(), text, img, attop, exclusive, disableuncheck, button, usertag);
         }
 
+
         // if using long as the tag, use this to convert the 1;2;4; value back to long
         public static long SettingsStringToLong(string s, char splitchar = ';')
         {
@@ -197,6 +242,59 @@ namespace ExtendedControls
                 v |= str.InvariantParseLong(0);
             }
             return v;
+        }
+
+        // removing an entry by index. From a form, use ForceRedrawOnNextShow() to make the form update
+        public void Remove(int index)
+        {
+            ItemList.RemoveAt(index);
+        }
+
+        // removing an entry by tag. From a form, use ForceRedrawOnNextShow() to make the form update
+        public bool Remove(string tag)
+        {
+            int index = ItemList.FindIndex(x => x.Tag == tag);
+            if (index >= 0)
+                ItemList.RemoveAt(index);
+            return index >= 0;
+        }
+
+        // removing entries by usertag. All are removed with this tag.  Returnn number removed.
+        // From a form, use ForceRedrawOnNextShow() to make the form update
+        public int RemoveUserTags(object usertag)
+        {
+            var items = ItemList.Where(x => x.UserTag == usertag).ToList();
+            foreach (var i in items)
+                ItemList.Remove(i);
+            return items.Count();
+        }
+
+        // Enable item
+
+        public void Enable(int index, bool enable)
+        {
+            if (ItemList[index].checkbox!=null)
+                ItemList[index].checkbox.Enabled = enable;
+            ItemList[index].label.Enabled = enable;
+        }
+
+        public bool Enable(string tag, bool enable)
+        {
+            int index = ItemList.FindIndex(x => x.Tag == tag);
+            if (index >= 0)
+                Enable(index, enable);
+            return index >= 0;
+        }
+        public int EnableByUserTags(object usertag, bool enable)
+        {
+            var items = ItemList.Where(x => x.UserTag == usertag).ToList();
+            foreach (var i in items)
+            {
+                if ( i.checkbox != null)
+                    i.checkbox.Enabled = enable;
+                i.label.Enabled = enable;
+            }
+            return items.Count();
         }
 
         // sorts non grouped items only
@@ -311,7 +409,7 @@ namespace ExtendedControls
         // List of options separated by SettingsSplittingChar with  SettingsSplittingChar at end, or
         // All, or None if all/none are selected and allornone = true
         // group options are ignored
-        public string GetChecked(bool allornone = true)
+        public virtual string GetChecked(bool allornone)
         {
             string ret = "";
 
@@ -404,7 +502,12 @@ namespace ExtendedControls
 
                 int labx = chkboxsize.Width + HorizontalSpacing + (cl.Image != null ? (iconsize.Width + HorizontalSpacing) : 0);
 
-                cl.label.TextAutoSize(new Point(0, 0), new Size(2000, 2000), cl.Text, this.Font, this.ForeColor, BackColor, 1);
+                cl.label.Text = cl.Text;
+                cl.label.Font = this.Font;
+                cl.label.ForeColor = this.ForeColor;
+                cl.label.BackColor = BackColor;
+                SizeF stringsize = BaseUtils.BitMapHelpers.MeasureStringInBitmap(cl.Text, this.Font);
+                cl.label.Size = new Size((int)stringsize.Width+2, (int)stringsize.Height+1 );
 
                 if (!cl.Button)
                 {
