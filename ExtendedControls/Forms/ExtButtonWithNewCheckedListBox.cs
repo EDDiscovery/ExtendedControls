@@ -71,7 +71,7 @@ namespace ExtendedControls
 
         public bool IsNoneSet { get { return currentsettings == "None" + SettingsSplittingChar || currentsettings.Length == 0; } }
         public bool IsAnySet { get { return !IsNoneSet; } }
-        public bool IsDisabled { get { return currentsettings == CheckedIconListBoxFormGroup.Disabled; } }
+        public bool IsDisabled { get { return currentsettings == CheckedIconGroupUserControl.Disabled; } }
 
         protected override void OnClick(EventArgs e)
         {
