@@ -366,7 +366,7 @@ namespace ExtendedControls
                 if (AutoSize && Text.HasChars() && Font != null)
                 {
                     var sizef = BaseUtils.BitMapHelpers.MeasureStringInBitmap(Text, Font);
-                    Size = new Size((int)sizef.Width + 1, (int)sizef.Height + 1);
+                    Size = new Size((int)sizef.Width + 2, (int)sizef.Height + 1);
                 }
             }
 

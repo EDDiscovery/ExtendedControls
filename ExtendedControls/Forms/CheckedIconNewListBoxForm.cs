@@ -33,10 +33,10 @@ namespace ExtendedControls
         public BaseUtils.MSTicks LastDeactivateTime { get; private set; } = new BaseUtils.MSTicks();    // .Running if deactivated
 
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
-        public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location (FitToScreen may slide this left/up)
+        public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location (SlideLeft/SlideUp may change this)
         public Size CloseBoundaryRegion { get; set; } = new Size(0, 0);     // set size >0 to enable boundary close
 
-        public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported, else its all entries or empty list
+        public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported by GetChecked, else its all entries or empty list
 
         // Called on close or hide
         public Action<string, Object> SaveSettings;                
@@ -54,8 +54,7 @@ namespace ExtendedControls
             timer.Tick += CheckMouse;
         }
 
-
-        // Get the chekced list taking into account the grouping And the AllOrNoneBack
+        // Get the checked list taking into account the grouping And the AllOrNoneBack
         public string GetChecked()
         {
             return UC.GetChecked(AllOrNoneBack);
@@ -67,13 +66,62 @@ namespace ExtendedControls
             forceredraw = true;
         }
 
-        public void Show(string settings, Control positionunder, IWin32Window parent)
+        // show with settings as a list;list of tags under this control
+        public void Show(string settings, Control positionunder, IWin32Window parent, Object tag = null)
         {
             UC.Set(settings);
+            Tag = tag;
             PositionBelow(positionunder);
             Show(parent);
         }
 
+        // show with settings as a list;list of tags at this point
+        public void Show(string settings, Point point, IWin32Window parent, Object tag = null)         // quick form version
+        {
+            UC.Set(settings);
+            Tag = tag;
+            SetLocation = point;
+            Show(parent);
+        }
+
+        // given an enum list, and a set of bools indicating if each is set or not, show
+        public void Show(Type ofenum, bool[] ctrlset, Control positionunder, IWin32Window parent, Object tag = null)
+        {
+            string settings = "";
+
+            foreach (var v in Enum.GetValues(ofenum))
+            {
+                if (ctrlset[(int)v])
+                    settings += v.ToString() + UC.SettingsSplittingChar;
+            }
+
+            UC.Set(settings);
+            Tag = tag;
+            PositionBelow(positionunder);
+            Show(parent);
+        }
+
+        // show using a long to control - the tags should be numeric decimal versions of the flags
+        // if no flags are set, then you can use a default standard option
+        public void Show(long value, Control positionunder, IWin32Window parent, Object tag = null, int setonfornoflags = -1)
+        {
+            string settings = "";
+            for (int i = 0; i < 63; i++)
+            {
+                if ((value & (1L << i)) != 0)
+                    settings += (1L << i).ToStringInvariant() + UC.SettingsSplittingChar;
+            }
+
+            if (settings == "" && setonfornoflags >= 0)     // if nothing on and we have a default
+               settings = UC.ItemList[setonfornoflags].Tag;
+
+            UC.Set(settings);
+            Tag = tag;
+            PositionBelow(positionunder);
+            Show(parent);
+        }
+
+        // basic show
         public new void Show(IWin32Window parent)
         {
             if (ApplyTheme)

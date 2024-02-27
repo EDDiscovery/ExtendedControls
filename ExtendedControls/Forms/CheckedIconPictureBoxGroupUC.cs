@@ -24,7 +24,6 @@ namespace ExtendedControls
 
     public class CheckedIconGroupUserControl : CheckedIconUserControl
     {
-
         public void AddAllNone()
         {
             AddGroupItemAtTop(None, "None".TxID(ECIDs.None), Properties.Resources.None);
@@ -39,12 +38,12 @@ namespace ExtendedControls
 
         public void AddGroupItem(string tags, string text, Image img = null, object usertag = null, string exclusive = null)
         {
-            Add(tags, text, img, usertag: usertag, exclusive: exclusive, group: true);
+            Add(tags, text, img, usertag: usertag, exclusivetags: exclusive, group: true);
         }
 
         public void AddGroupItemAtTop(string tags, string text, Image img = null, object usertag = null, string exclusive = null)
         {
-            Add(tags, text, img, usertag: usertag, exclusive: exclusive, group: true, attop: true);
+            Add(tags, text, img, usertag: usertag, exclusivetags: exclusive, group: true, attop: true);
         }
 
         // Get checked including any group override settings

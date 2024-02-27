@@ -24,22 +24,32 @@ namespace ExtendedControls
     {
         public bool SlideLeft { get; set; } = false;              // if bigger than allowed space, allow slide left
         public bool SlideUp { get; set; } = false;                // if bigger than allowed space, allow slide up
-        public bool MultipleColumns { get; set; } = false;          // allow multiple columns
+        public bool MultipleColumns { get; set; } = false;        // allow multiple columns
+        public bool MultiColumnSlide { get { return MultipleColumns; } set { MultipleColumns = SlideUp = SlideLeft = value; } } // multicolumn with slide
         public Size ScreenMargin { get; set; } = new Size(16, 16);
 
+        // Holds the item list, and various accessors to it
         public List<Item> ItemList { get; private set; }
         public int Count { get { return ItemList.Count; } }
         public int CountGroup { get { return ItemList.Where(x => x.Group).Count(); } }
+        public List<Item> GroupOptions() { return ItemList.Where(x => x.Group).ToList(); }
+        public List<Item> GroupOptionsWithUserTag() { return ItemList.Where(x => x.Group && x.UserTag != null).ToList(); }
+        public List<Item> StandardOptions() { return ItemList.Where(x => !x.Group).ToList(); }
+        public List<Item> UserTags(object usertag) { return ItemList.Where(x => x.UserTag == usertag).ToList(); }
+        public string[] TagList() { return ItemList.Where(x => !x.Group).Select(x => x.Tag).ToArray(); }        // tags of non group items
 
-        // Colours for check box
+        // back colour of picture box
+        public override Color BackColor { get => base.BackColor; set { picturebox.FillColor = base.BackColor = value; } }
+
+        // Check box control for check box
         public Color CheckBoxColor { get; set; } = Color.Gray;
         public Color CheckBoxInnerColor { get; set; } = Color.White;
         public Color CheckColor { get; set; } = Color.DarkBlue;
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
         public Size CheckBoxSize { get; set; } = Size.Empty;                  // if not set, ImageSize sets the size, or first image, else 24/24
-        public Size ImageSize { get; set; } = Size.Empty;                     // if not set, each image sets its size. 
         public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
-        public int VerticalSpacing { get; set; } = 3;
+        public Size ImageSize { get; set; } = Size.Empty;                     // if not set, each image sets its size. 
+        public int VerticalSpacing { get; set; } = 3;           // padding..
         public int HorizontalSpacing { get; set; } = 3;
 
         // Colours for Scroll bar
@@ -58,16 +68,17 @@ namespace ExtendedControls
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
-        public Action<CheckedIconUserControl, ItemCheckEventArgs, Object> CheckedChanged;       // called after save back to say fully changed.
-        public Action<int,string,string,object,MouseEventArgs> ButtonPressed;        // called if right click on panel/icon, or if a button has been defined
+        // check box changed : index, Tag, Text, userTag, change args
+        public Action<int, string, string, object, ItemCheckEventArgs> CheckedChanged { get; set; }       // check box changed
+        // index, Tag, Text, UserTag, button args
+        public Action<int,string,string,object,MouseEventArgs> ButtonPressed { get; set; }
 
-        public override Color BackColor { get => base.BackColor; set { picturebox.FillColor = base.BackColor = value; } }
+        // what char is used for split settings
+        public char SettingsSplittingChar { get; set; } = ';';      
 
-        public char SettingsSplittingChar { get; set; } = ';';      // what char is used for split settings
-
+        // default tags for all/none
         public const string All = "All";
         public const string None = "None";
-
 
         [System.Diagnostics.DebuggerDisplay("{Tag}:{Text} Grp:{Group} Btn:{Button}")]
         public class Item
@@ -76,16 +87,15 @@ namespace ExtendedControls
             public string Tag { get; set; }
             public string Text { get; set; }
             public Image Image { get; set; }
+            public object UserTag { get; set; }
 
             // for Group=false, turn off these tags when checked
             // For Group=true, and this is set All, then when returing GetCheckedGroup, and this is checked, return this tag as the setting.
             public string Exclusive { get; set; }       
-            // Radio button use, don't allow this item to become unchecked. Group = false.   For radio buttons, set exclusive to turn off the other radio buttons
+            // Radio button use, don't allow this item to become unchecked. Group = false.   For radio buttons, set exclusive to All to turn off the other radio buttons
             public bool DisableUncheck { get; set; }
-            // Its a button not a check box
+            // Its a button not a check box but a button type label
             public bool Button { get; set; }
-
-            public object UserTag { get; set; }
 
             // these are for internal use only
 
@@ -100,16 +110,11 @@ namespace ExtendedControls
             }
         }
 
-        public List<Item> GroupOptions() { return ItemList.Where(x => x.Group).ToList(); }
-        public List<Item> GroupOptionsWithUserTag() { return ItemList.Where(x => x.Group && x.UserTag != null).ToList(); }
-        public List<Item> StandardOptions() { return ItemList.Where(x => !x.Group).ToList(); }
-        public List<Item> UserTags(object usertag) { return ItemList.Where(x => x.UserTag == usertag).ToList(); }
-
-
-        public void Add(string tag, string text, Image img = null, bool attop = false, string exclusive = null,
+        // the main add
+        public void Add(string tag, string text, Image img = null, bool attop = false, string exclusivetags = null,
                                 bool disableuncheck = false, bool button = false, object usertag = null, bool group = false)
         {
-            var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusive, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag};
+            var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag};
             cl.label = new ExtPictureBox.Label();
             cl.label.Click += (sender, el, e) =>
             {
@@ -164,6 +169,12 @@ namespace ExtendedControls
             }
         }
 
+        // a Radio style button
+        public void AddRadio(string tag, string text, Image img = null, bool attop = false, object usertag = null)
+        {
+            Add(tag, text, img, attop, All, true, false, usertag);
+        }
+
         // add as a tuple
         public void Add(Tuple<string, string, Image> ev)
         {
@@ -179,17 +190,17 @@ namespace ExtendedControls
                 Add(x.Tag, x.Text, x.Image, attop, x.Exclusive, x.DisableUncheck, x.Button,x.UserTag,forcegroup ? true : x.Group);
         }
 
-        // add multiple items as a tuple
-        public void Add(List<Tuple<string, string, Image>> list)
+        // add multiple items as a tuple 
+        public void Add(List<Tuple<string, string, Image>> list, bool group = false)
         {
             foreach (var x in list)
-                Add(x.Item1, x.Item2, x.Item3);
+                Add(x.Item1, x.Item2, x.Item3,group:group);
         }
 
         // Add items formatted in a string as name<partssepar>tag<itemssepar>..
-        // all with the same usertag and image
+        // all stored with the same usertag and image
         // group = true, its a group item
-        public void AddStringListDefinitions(string namesidslist, object usertag, bool group = true, Image img = null, char itemssepar = '\u24C2', char partsepar = '\u2713')
+        public void AddStringListDefinitions(string namesidslist, object usertag, bool group = false, Image img = null, char itemssepar = '\u24C2', char partsepar = '\u2713')
         {
             string[] items = namesidslist.Split(itemssepar);
             foreach (var x in items)
@@ -223,15 +234,20 @@ namespace ExtendedControls
 
         // use a long tag (bit field, 1,2,4,8 etc).  Use SettingsStringToLong to convert back
         // if using long as the tag, this is the accumulated long value of all bits
-        public long LongConfigurationValue { get; private set; }                    
+        public long LongConfigurationValue { get; private set; }
         // add a long tag item
-        public void Add(long tag, string text, Image img = null, bool attop = false, string exclusive = null,
+        public void Add(long tag, string text, Image img = null, bool attop = false, string exclusivetags = null,
                         bool disableuncheck = false, bool button = false, object usertag = null)
         {
             LongConfigurationValue |= tag;
-            Add(tag.ToStringInvariant(), text, img, attop, exclusive, disableuncheck, button, usertag);
+            Add(tag.ToStringInvariant(), text, img, attop, exclusivetags, disableuncheck, button, usertag);
         }
 
+        public void AddRadio(long tag, string text, Image img = null, bool attop = false, object usertag = null)
+        {
+            LongConfigurationValue |= tag;
+            Add(tag.ToStringInvariant(), text, img, attop, All, true, false, usertag);
+        }
 
         // if using long as the tag, use this to convert the 1;2;4; value back to long
         public static long SettingsStringToLong(string s, char splitchar = ';')
@@ -311,12 +327,6 @@ namespace ExtendedControls
             ItemList.AddRange(std);
         }
 
-        // non group tags
-        public string[] TagList()
-        {
-            return ItemList.Where(x=>!x.Group).Select(x => x.Tag).ToArray();
-        }
-
         // using SettingsSplittingChar as the separator, respects All or All; as a tag for all
         public void Set(string taglist, bool state = true)        
         {
@@ -361,7 +371,6 @@ namespace ExtendedControls
                 if (ItemList[i].checkbox != null && ItemList[i].Group == false)
                     ItemList[i].checkbox.CheckState = state;
             }
-
         }
 
         // can set any item incl group
@@ -601,14 +610,6 @@ namespace ExtendedControls
                     checkvspacing = estcolstodisplay < colsonscreen;          // if we have more cols that estimated, we can afford an overflow due to vspacing 
 
                     //System.Diagnostics.Debug.WriteLine($".. fittoscreen width available {maxwidth} giving cols {colsonscreen} columns available, cols needed {estcolsneeded} vspacingallowed {checkvspacing}");
-
-                    preferredxy.X = Math.Max(screen.X, screen.Right - 16 - sb.Width - maxwidthsinglecol * estcolstodisplay);
-
-                    //System.Diagnostics.Debug.WriteLine($".. move X to {preferredxy.X}");
-
-                    // now lets reestimate.
-                    wavailable = fixedsize != null ? fixedsize.Value.Width : screen.X + screen.Width - ScreenMargin.Height - preferredxy.X;
-
                 }
                 else
                 {
@@ -673,6 +674,7 @@ namespace ExtendedControls
 
             if (fixedsize == null)      // if not in fixed size mode, return the screen rectangle clipping to size.
             {
+                // this will slide left if required to fit the box into the screen
                 var rect = preferredxy.CalculateRectangleWithinScreen(picturebox.Image.Width + sb.Width, picturebox.Image.Height, !slidup, ScreenMargin);
                 return rect;
             }
@@ -718,9 +720,9 @@ namespace ExtendedControls
 
             var prevstate = cb.Checked ? CheckState.Unchecked : CheckState.Checked;
 
-            ItemCheckEventArgs i = new ItemCheckEventArgs(index, cb.CheckState, prevstate);
-            CheckChangedEvent(cb, i);       // derived classes first.
-            CheckedChanged?.Invoke(this, i, Tag);
+            ItemCheckEventArgs eventargs = new ItemCheckEventArgs(index, cb.CheckState, prevstate);
+            CheckChangedEvent(cb, eventargs);       // derived classes first.
+            CheckedChanged?.Invoke(index,ItemList[index].Tag, ItemList[index].Text, ItemList[index].UserTag, eventargs);
         }
 
         protected virtual void CheckChangedEvent(ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) { }

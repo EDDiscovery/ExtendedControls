@@ -250,6 +250,7 @@ namespace ExtendedControls
         public float FontSize { get { return fontsize; } set { fontsize = value; } }
         public string ButtonStyle { get { return buttonstyle; } set { buttonstyle = value; } }
         public string TextBoxBorderStyle { get { return textboxborderstyle; } set { textboxborderstyle = value; } }
+        public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
 
         public void SetCustom()
         { Name = "Custom"; }                                // set so custom..

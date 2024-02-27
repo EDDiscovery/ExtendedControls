@@ -33,7 +33,8 @@ namespace ExtendedControls
                             bool allornoneshown = true, 
                             bool allornonback = false,
                             string disabled = null,            // either "" default, or text to use
-                            Size? imagesize = null, Size? screenmargin = null, Size? closeboundaryregion = null,
+                            Size? imagesize = null, Size? screenmargin = null, Size? closeboundaryregion = null, 
+                            bool multicolumns = false,
                             IEnumerable<CheckedIconUserControl.Item> groupoptions = null)
         {
             this.list = standardoptions;
@@ -46,13 +47,14 @@ namespace ExtendedControls
             this.closeboundaryregion = closeboundaryregion;
             this.putsettings = settingschanged;
             this.currentsettings = startsetting;
+            this.multicolumns = multicolumns;
         }
 
         // All/None with all items back, and a default closing area
         public void InitAllNoneAllBack(IEnumerable<CheckedIconUserControl.Item> standardoptions,
                              string startsettings, Action<string,bool> settingschanged, bool disabled = true)
         {
-            Init(standardoptions, startsettings, settingschanged, true, false, disabled ? "" : null, closeboundaryregion: new System.Drawing.Size(64, 64));
+            Init(standardoptions, startsettings, settingschanged, true, false, disabled ? "" : null, closeboundaryregion: new System.Drawing.Size(64, 64), multicolumns:true);
         }
 
 
@@ -93,7 +95,9 @@ namespace ExtendedControls
                 DropDown.UC.ScreenMargin = screenmargin.Value;
             if (closeboundaryregion.HasValue)
                 DropDown.CloseBoundaryRegion = closeboundaryregion.Value;
-          
+
+            DropDown.UC.MultiColumnSlide = multicolumns;
+
             DropDown.SaveSettings = (newsetting, o) =>
             {
                 bool changed = currentsettings != newsetting;
@@ -116,6 +120,7 @@ namespace ExtendedControls
         private Action<string,bool> putsettings;
         private bool allornoneback;
         private string currentsettings;
+        private bool multicolumns;
 
     }
 }
