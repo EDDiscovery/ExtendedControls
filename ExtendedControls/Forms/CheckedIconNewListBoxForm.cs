@@ -126,8 +126,7 @@ namespace ExtendedControls
         {
             if (ApplyTheme)
             {
-                Theme.Current?.ApplyStd(this);
-                FormBorderStyle = FormBorderStyle.None;
+                Theme.Current?.ApplyStd(this,true);
             }
 
             // if we moved from last redraw, or we were altered and we have displayed, or the font has changed

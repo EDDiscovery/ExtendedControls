@@ -30,7 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.extButtonWithNewCheckedListBox1 = new ExtendedControls.ExtButtonWithNewCheckedListBox();
             this.extRichTextBox = new ExtendedControls.ExtRichTextBox();
+            this.extButton10 = new ExtendedControls.ExtButton();
             this.extButton9 = new ExtendedControls.ExtButton();
             this.extButton8 = new ExtendedControls.ExtButton();
             this.extButton7 = new ExtendedControls.ExtButton();
@@ -40,8 +42,18 @@
             this.extButton3 = new ExtendedControls.ExtButton();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
-            this.extButtonWithNewCheckedListBox1 = new ExtendedControls.ExtButtonWithNewCheckedListBox();
+            this.extButton11 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
+            // 
+            // extButtonWithNewCheckedListBox1
+            // 
+            this.extButtonWithNewCheckedListBox1.Image = global::TestExtendedControls.Properties.Resources.Addtab;
+            this.extButtonWithNewCheckedListBox1.Location = new System.Drawing.Point(30, 224);
+            this.extButtonWithNewCheckedListBox1.Name = "extButtonWithNewCheckedListBox1";
+            this.extButtonWithNewCheckedListBox1.SettingsSplittingChar = ';';
+            this.extButtonWithNewCheckedListBox1.Size = new System.Drawing.Size(42, 42);
+            this.extButtonWithNewCheckedListBox1.TabIndex = 4;
+            this.extButtonWithNewCheckedListBox1.UseVisualStyleBackColor = true;
             // 
             // extRichTextBox
             // 
@@ -71,6 +83,16 @@
             this.extRichTextBox.TabIndex = 1;
             this.extRichTextBox.TextBoxBackColor = System.Drawing.SystemColors.Control;
             this.extRichTextBox.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
+            // 
+            // extButton10
+            // 
+            this.extButton10.Location = new System.Drawing.Point(30, 147);
+            this.extButton10.Name = "extButton10";
+            this.extButton10.Size = new System.Drawing.Size(75, 23);
+            this.extButton10.TabIndex = 0;
+            this.extButton10.Text = "G10";
+            this.extButton10.UseVisualStyleBackColor = true;
+            this.extButton10.Click += new System.EventHandler(this.extButton10_Click);
             // 
             // extButton9
             // 
@@ -162,23 +184,25 @@
             this.extButton1.UseVisualStyleBackColor = true;
             this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
-            // extButtonWithNewCheckedListBox1
+            // extButton11
             // 
-            this.extButtonWithNewCheckedListBox1.Image = global::TestExtendedControls.Properties.Resources.Addtab;
-            this.extButtonWithNewCheckedListBox1.Location = new System.Drawing.Point(30, 158);
-            this.extButtonWithNewCheckedListBox1.Name = "extButtonWithNewCheckedListBox1";
-            this.extButtonWithNewCheckedListBox1.SettingsSplittingChar = ';';
-            this.extButtonWithNewCheckedListBox1.Size = new System.Drawing.Size(42, 42);
-            this.extButtonWithNewCheckedListBox1.TabIndex = 4;
-            this.extButtonWithNewCheckedListBox1.UseVisualStyleBackColor = true;
+            this.extButton11.Location = new System.Drawing.Point(111, 147);
+            this.extButton11.Name = "extButton11";
+            this.extButton11.Size = new System.Drawing.Size(75, 23);
+            this.extButton11.TabIndex = 0;
+            this.extButton11.Text = "G11";
+            this.extButton11.UseVisualStyleBackColor = true;
+            this.extButton11.Click += new System.EventHandler(this.extButton11_Click);
             // 
             // TestCheckedIconNewListBoxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 509);
+            this.ClientSize = new System.Drawing.Size(940, 509);
             this.Controls.Add(this.extButtonWithNewCheckedListBox1);
             this.Controls.Add(this.extRichTextBox);
+            this.Controls.Add(this.extButton11);
+            this.Controls.Add(this.extButton10);
             this.Controls.Add(this.extButton9);
             this.Controls.Add(this.extButton8);
             this.Controls.Add(this.extButton7);
@@ -207,5 +231,7 @@
         private ExtendedControls.ExtButton extButton8;
         private ExtendedControls.ExtButton extButton9;
         private ExtendedControls.ExtButtonWithNewCheckedListBox extButtonWithNewCheckedListBox1;
+        private ExtendedControls.ExtButton extButton10;
+        private ExtendedControls.ExtButton extButton11;
     }
 }

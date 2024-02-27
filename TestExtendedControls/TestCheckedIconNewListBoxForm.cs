@@ -91,7 +91,7 @@ namespace TestExtendedControls
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (uc, ie, o) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent3 = s; };
             frm.UC.Set(persistent3);
@@ -133,11 +133,12 @@ namespace TestExtendedControls
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (uc, ie, o) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent5 = s; };
             frm.UC.Set(persistent5);
-            frm.ApplyTheme = false;
+
+            theme.SetThemeByName("Windows Default");
             Theme.Current.FontSize = 8.25f;
             frm.Show(this);
 
@@ -157,7 +158,7 @@ namespace TestExtendedControls
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (uc, ie, o) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.AllOrNoneBack = true;
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent6 = s; };
             frm.UC.Set(persistent6);
@@ -182,7 +183,7 @@ namespace TestExtendedControls
             frm.UC.AddGroupItem("t100;t101;t102", "100-102");
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (uc, ie, o) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent7 = s; };
             frm.UC.Set(persistent7);
@@ -267,7 +268,7 @@ namespace TestExtendedControls
 
                 frm8.UC.MultipleColumns = true;
                 frm8.CloseBoundaryRegion = new Size(64, 64);
-                frm8.UC.CheckedChanged += (uc, ie, o) => { AddText($"Check {ie.Index}"); };
+                frm8.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
                 frm8.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
                 frm8.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent8 = s; };
                 frm8.UC.Set(persistent8);
@@ -300,7 +301,7 @@ namespace TestExtendedControls
             frm.UC.AddGroupItem("t100;t101;t102", "100-102");
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (uc, ie, o) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent9 = s; };
             frm.UC.Set(persistent9);
@@ -310,7 +311,44 @@ namespace TestExtendedControls
             frm.UC.SlideLeft = true;      // allow left shift
             frm.PositionBelow(extButton9);
             frm.Show(this);
+        }
 
+        // just buttons
+        private void extButton10_Click(object sender, EventArgs e)
+        {
+            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
+
+            for (int i = 0; i < 400; i++)
+            {
+                frm.UC.AddButton($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
+            }
+           // frm.UC.Add($"t100", $"CHK 100", Properties.Resources.CursorToTop);
+
+            frm.UC.MultipleColumns = true;
+            frm.CloseBoundaryRegion = new Size(64, 64);
+            frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
+            frm.UC.SlideLeft = true;      // allow left shift
+            frm.PositionBelow(extButton10);
+            frm.Show(this);
+
+        }
+
+        private void extButton11_Click(object sender, EventArgs e)
+        {
+            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
+
+            for (int i = 0; i < 400; i++)
+            {
+                frm.UC.AddButton($"t{i}", $"Text {i}",null);
+            }
+            // frm.UC.Add($"t100", $"CHK 100", Properties.Resources.CursorToTop);
+
+            frm.UC.MultipleColumns = true;
+            frm.CloseBoundaryRegion = new Size(64, 64);
+            frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
+            frm.UC.SlideLeft = true;      // allow left shift
+            frm.PositionBelow(extButton11);
+            frm.Show(this);
 
 
         }

@@ -500,6 +500,8 @@ namespace ExtendedControls
             // calculate positions in single column into an array, calculate maxwidthsignelcol, calculate vheightsinglecol
 
             picturebox.ClearImageList();
+    
+            bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
 
             for (int i = 0; i < ItemList.Count; i++)
             {
@@ -511,10 +513,12 @@ namespace ExtendedControls
                 int vspacing = Math.Max(fonth, iconsize.Height);
                 vspacing = Math.Max(vspacing, chkboxsize.Height);       // vspacing is the max of label, icon and checkbox
 
-                int labx = chkboxsize.Width + HorizontalSpacing + (cl.Image != null ? (iconsize.Width + HorizontalSpacing) : 0);
+                int chkx = HorizontalSpacing;
+                int imgx = hasacheckbox ? chkx + chkboxsize.Width + HorizontalSpacing : chkx;
+                int labx = cl.Image != null ? imgx + iconsize.Width + HorizontalSpacing : imgx;
 
                 // label is in autosize mode, setting Text and Font will size it
-                cl.label.Text = cl.Text;        
+                cl.label.Text = cl.Text;
                 cl.label.Font = this.Font;
                 cl.label.ForeColor = this.ForeColor;
                 cl.label.BackColor = BackColor;
@@ -539,9 +543,10 @@ namespace ExtendedControls
 
                 // Y is not holding Y position. Only use for Y is to record vspacing on first entry only, see below for vpositioning
                 var pos = new Tuple<Rectangle, Rectangle, Rectangle>(
-                                new Rectangle(HorizontalSpacing, vspacing, chkboxsize.Width, chkboxsize.Height),
-                                new Rectangle(chkboxsize.Width + HorizontalSpacing, 0, iconsize.Width, iconsize.Height),
+                                new Rectangle(chkx, vspacing, chkboxsize.Width, chkboxsize.Height),
+                                new Rectangle(imgx, 0, iconsize.Width, iconsize.Height),
                                 new Rectangle(labx, 0, cl.label.Size.Width, cl.label.Size.Height));
+
 
                 positions.Add(pos);
 
