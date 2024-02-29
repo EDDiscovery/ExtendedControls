@@ -55,7 +55,7 @@ namespace ExtendedControls
                                                  | BaseUtils.Win32.NativeMethods.SW_ERASE
                                                  | BaseUtils.Win32.NativeMethods.SW_SCROLLCHILDREN);
                 currentscroll = value;
-
+                Update();
                 if ( callback )
                     ScrollSet?.Invoke(currentscroll, maxscroll);
             }
@@ -84,7 +84,7 @@ namespace ExtendedControls
             if (currentscroll > maxscroll)      // if now out of range, scroll to max range
                 ScrollTo(maxscroll);
 
-            System.Diagnostics.Debug.WriteLine($"Scroll 0-{maxscroll} current {currentscroll} height {ClientRectangle.Height} miny {miny} maxy {maxy}");
+         //   System.Diagnostics.Debug.WriteLine($"Scroll 0-{maxscroll} current {currentscroll} height {ClientRectangle.Height} miny {miny} maxy {maxy}");
             ScrollSet?.Invoke(currentscroll, maxscroll);
         }
 
@@ -121,6 +121,7 @@ namespace ExtendedControls
                 panel.Dock = DockStyle.Fill;
                 panel.ScrollSet += (value, max) => { scrollbar.SetValueMaximumMinimum(value, max + scrollbar.LargeChange, 0); };
                 panel.MouseWheel += (o, mw) => { panel.Value += mw.Delta > 0 ? -scrollbar.LargeChange : scrollbar.LargeChange; };
+                Controls.SetChildIndex(panel, 0); // to make dock work etc vs scroll bar, make it so that its first
             }
         }
 
