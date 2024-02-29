@@ -50,6 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPanel.Designer.cs">
+      <DependentUpon>TestPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestCheckedIconNewListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -298,6 +304,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestPanel.resx">
+      <DependentUpon>TestPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestCheckedIconNewListBoxForm.resx">
       <DependentUpon>TestCheckedIconNewListBoxForm.cs</DependentUpon>
     </EmbeddedResource>

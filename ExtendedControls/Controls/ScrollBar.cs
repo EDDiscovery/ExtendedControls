@@ -69,9 +69,9 @@ namespace ExtendedControls
         {
             int oldv = ValueLimited;
             if (up)
-                ValueLimited = ValueLimited - smallchange;                 // control takes care of end limits..
+                ValueLimited = ValueLimited - LargeChange;                 // control takes care of end limits..
             else
-                ValueLimited = ValueLimited + smallchange;                 // control takes care of end limits..
+                ValueLimited = ValueLimited + LargeChange;                 // control takes care of end limits..
             if ( oldv != ValueLimited)
                 OnScroll(new ScrollEventArgs(up ? ScrollEventType.SmallDecrement : ScrollEventType.SmallIncrement, oldv, ValueLimited, ScrollOrientation.VerticalScroll));
         }
