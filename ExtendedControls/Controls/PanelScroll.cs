@@ -187,7 +187,7 @@ namespace ExtendedControls
         {
             if (ignorelocationchange == 0 && extsuspendcontrolmonitoring == 0)
             {
-                //System.Diagnostics.Debug.WriteLine($"Control loc changed");
+               // System.Diagnostics.Debug.WriteLine($"Control loc changed");
                 ignorelocationchange++;        // stop recursion
                 Control c = sender as Control;
                 c.Top = c.Top - scrollpos;      // account for scroll pos and move control to scroll pos offset
@@ -215,8 +215,16 @@ namespace ExtendedControls
                 else
                     ScrollBar.ValueLimited += ScrollBar.LargeChange;
 
-                //System.Diagnostics.Debug.WriteLine("CS Mouse Wheel to " + ScrollBar.ValueLimited);
+                Control s = sender as Control;
+                //System.Diagnostics.Debug.WriteLine($"From {s.Name} CS Mouse Wheel to {ScrollBar.ValueLimited}");
                 ScrollTo(ScrollBar.Value, false);
+
+                // https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.handledmouseeventargs?view=windowsdesktop-6.0
+                // and Control.cs: 13199 WmMouseWheel
+                // note #3440 says mono does not handle this in the same way, so check its actually is a HandledMouseEventArgs
+                if (e is HandledMouseEventArgs)
+                    ((HandledMouseEventArgs)e).Handled = true;      // we are actually passed this class, cast to it and set we handled it.
+
             }
         }
 
@@ -238,7 +246,7 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine("From " + Environment.StackTrace.StackTrace("ScrollTo",5));
 
             int maxy =0;
-            List<Point> cposnorm = new List<Point>();
+            Point[] cposnorm = new Point[Controls.Count];
 
             Point flowpos = new Point(0, 0);            // for flow
             int dwidth = DisplayRectangle.Width;
@@ -257,8 +265,10 @@ namespace ExtendedControls
                 }
             }
 
-            foreach (Control c in Controls)
+            for (int i = 0; i < Controls.Count; i++)
             {
+                Control c = Controls[i];
+
                 if (!(c is ExtScrollBar) && c.Visible)      
                 {
                     if (FlowControlsLeftToRight)
@@ -269,14 +279,14 @@ namespace ExtendedControls
                             rowymax = 0;
                         }
 
-                        cposnorm.Add(new Point(flowpos.X + c.Margin.Left, flowpos.Y + c.Margin.Top));
+                        cposnorm[i] = new Point(flowpos.X + c.Margin.Left, flowpos.Y + c.Margin.Top);
                         flowpos.X += c.Width + c.Margin.Horizontal;
                         rowymax = Math.Max(rowymax, c.Height + c.Margin.Vertical);
                         maxy = flowpos.Y + c.Height - 1 + c.Margin.Vertical;
                     }
                     else
                     {
-                        cposnorm.Add(new Point(c.Left, c.Top + scrollpos));
+                        cposnorm[i] = new Point(c.Left, c.Top + scrollpos);
                         maxy = Math.Max(maxy, c.Top + scrollpos + c.Height -1);     // -1 because top+height = 1 pixel beyond last displayed
                     }
 
@@ -302,16 +312,34 @@ namespace ExtendedControls
                 //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("Lx", true)} start");
                 SuspendLayout();
                 ignorelocationchange++;
-                int posi = 0;
-                foreach (Control c in Controls)
+
+                if (newscrollpos > scrollpos)       // do it in the order we are moving to try and make it smoother
                 {
-                    if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
+                    for (int i = 0; i < Controls.Count; i++)
                     {
-                        Point newloc = new Point(cposnorm[posi].X, cposnorm[posi].Y - newscrollpos);
-                        if ( c.Location != newloc)
-                            c.Location = newloc;
-                        posi++;
-                        //System.Diagnostics.Debug.WriteLine("   flow and set " + c.Name + " to " + c.Location + " Using sp " + newscrollpos);
+                        Control c = Controls[i];
+
+                        if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
+                        {
+                            Point newloc = new Point(cposnorm[i].X, cposnorm[i].Y - newscrollpos);
+                            if (c.Location != newloc)
+                                c.Location = newloc;
+                            //System.Diagnostics.Debug.WriteLine("   flow and set " + c.Name + " to " + c.Location + " Using sp " + newscrollpos);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = Controls.Count - 1; i >= 0; i--)
+                    {
+                        Control c = Controls[i];
+                        if (!(c is ExtScrollBar) && c.Visible)      // new! take into account visibility
+                        {
+                            Point newloc = new Point(cposnorm[i].X, cposnorm[i].Y - newscrollpos);
+                            if (c.Location != newloc)
+                                c.Location = newloc;
+                            //System.Diagnostics.Debug.WriteLine("   flow and set " + c.Name + " to " + c.Location + " Using sp " + newscrollpos);
+                        }
                     }
                 }
 
