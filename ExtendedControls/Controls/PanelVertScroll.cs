@@ -33,6 +33,21 @@ namespace ExtendedControls
         {
         }
 
+        // call if your going to reset the positions of all the controls and want to go back to zero
+        // returns current scroll pos 
+        public int Reset()     
+        {
+            int cur = currentscroll;
+            currentscroll = 0;
+            CalculateScrollArea();
+            return cur;
+        }
+
+        public void ToEnd()
+        {
+            ScrollTo(maxscroll);
+        }
+
         public void ScrollTo(int value, bool callback = true)
         {
             if (value < 0)
@@ -54,7 +69,9 @@ namespace ExtendedControls
                                                  BaseUtils.Win32.NativeMethods.SW_INVALIDATE
                                                  | BaseUtils.Win32.NativeMethods.SW_ERASE
                                                  | BaseUtils.Win32.NativeMethods.SW_SCROLLCHILDREN);
+
                 currentscroll = value;
+                //System.Diagnostics.Debug.WriteLine($"Scrolled showing {currentscroll}..{currentscroll + ClientRectangle.Height} max {maxscroll}");
                 Update();
                 if ( callback )
                     ScrollSet?.Invoke(currentscroll, maxscroll);
@@ -84,7 +101,7 @@ namespace ExtendedControls
             if (currentscroll > maxscroll)      // if now out of range, scroll to max range
                 ScrollTo(maxscroll);
 
-         //   System.Diagnostics.Debug.WriteLine($"Scroll 0-{maxscroll} current {currentscroll} height {ClientRectangle.Height} miny {miny} maxy {maxy}");
+            //System.Diagnostics.Debug.WriteLine($"Scroll showing {currentscroll}..{currentscroll + ClientRectangle.Height} max {maxscroll} scr height {ClientRectangle.Height} miny {miny} maxy {maxy}");
             ScrollSet?.Invoke(currentscroll, maxscroll);
         }
 
