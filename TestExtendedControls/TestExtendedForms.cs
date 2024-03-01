@@ -57,14 +57,32 @@ namespace TestExtendedControls
 
         private void extButton4_Click(object sender, EventArgs e)
         {
-            SC(12,true);
+            SpeechConfig(12,true,false,false);
         }
 
-        private void SC(float size, bool mode)
+        private void extButton5_Click(object sender, EventArgs e)
+        {
+            SpeechConfig(20, false,true,false);
+        }
+
+        private void extButton14_Click(object sender, EventArgs e)
+        {
+            SpeechConfig(12, false, true, false);
+        }
+        private void extButton15_Click(object sender, EventArgs e)
+        {
+            SpeechConfig(12, true, true, true);
+        }
+        private void extButton16_Click(object sender, EventArgs e)
+        {
+            SpeechConfig(12, false, false, true);
+        }
+
+        private void SpeechConfig(float size, bool nospeechinput, bool nodevice, bool novoicename)
         { 
             Theme.Current.FontSize = size;
-            AudioDriverCSCore ad = new AudioDriverCSCore();
-            AudioQueue q = new AudioQueue(ad);
+            AudioDriverCSCore driver = new AudioDriverCSCore();
+            AudioQueue queue = new AudioQueue(driver);
             WindowsSpeechEngine wse = new WindowsSpeechEngine();
             SpeechSynthesizer ss = new SpeechSynthesizer(wse);
 
@@ -72,18 +90,17 @@ namespace TestExtendedControls
 
             Variables ef = new Variables();
 
-            c.Init(false,q, ss, "Caption title", this.Icon, mode ? "Text to do" : null,
+            c.Init(nospeechinput,nodevice, novoicename,queue, ss, "Speech Config", this.Icon, !nospeechinput ? "Text to speak" : null,
                     true, true, AudioQueue.Priority.High,
                     "sn", "en", "Sheila", "100", "Default", ef);
 
             c.ShowDialog(this);
 
+            queue.StopAll();
+            queue.Dispose();
+            driver.Dispose();
         }
 
-        private void extButton5_Click(object sender, EventArgs e)
-        {
-            SC(20,false);
-        }
 
         private void extButton3_Click(object sender, EventArgs e)
         {
@@ -92,33 +109,43 @@ namespace TestExtendedControls
 
         private void extButton6_Click(object sender, EventArgs e)
         {
-            WC(12);
+            WC(12, true,false);
 
         }
 
-        private void WC(float size)
+        private void extButton18_Click(object sender, EventArgs e)
+        {
+            WC(12, false,true);
+
+        }
+        private void extButton7_Click(object sender, EventArgs e)
+        {
+            WC(20,false,true);
+        }
+        private void WC(float size, bool notriggers, bool nodevice)
         {
             Theme.Current.FontSize = size;
-            AudioDriverCSCore ad = new AudioDriverCSCore();
-            AudioQueue q = new AudioQueue(ad);
+            AudioDriverCSCore driver = new AudioDriverCSCore();
+            AudioQueue queue = new AudioQueue(driver);
 
             WaveConfigureDialog c = new WaveConfigureDialog();
 
             Variables ef = new Variables();
 
-            c.Init(false, q, "Caption title", this.Icon,
+            c.Init(notriggers, nodevice, queue, "Caption title", this.Icon,
                     @"c:\",
                     true, AudioQueue.Priority.High,
                     "sn", "en", "100", ef);
 
             c.ShowDialog(this);
 
+
+            queue.StopAll();
+            queue.Dispose();
+            driver.Dispose();
+
         }
 
-        private void extButton7_Click(object sender, EventArgs e)
-        {
-            WC(20);
-        }
 
         private void extButton8_Click(object sender, EventArgs e)
         {
@@ -230,5 +257,19 @@ namespace TestExtendedControls
             CForm(8, true);
 
         }
+
+        Variables soundeffects = new Variables();
+        private void extButton17_Click(object sender, EventArgs e)
+        {
+            var frm = new SoundEffectsDialog();
+            frm.Init(this.Icon, soundeffects, true);
+            if (frm.ShowDialog(this) == DialogResult.OK)
+            {
+                System.Diagnostics.Debug.WriteLine($"Result {frm.GetEffects().ToString()}");
+                soundeffects = frm.GetEffects();
+            }
+
+        }
+
     }
 }

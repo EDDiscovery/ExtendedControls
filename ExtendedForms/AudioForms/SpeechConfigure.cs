@@ -45,13 +45,14 @@ namespace ExtendedAudioForms
             InitializeComponent();
         }
 
-        public void Init(bool defaultmode , AudioQueue qu, SpeechSynthesizer syn,
+        public void Init(bool nospeechinputbox , bool nodevice, bool novoicename, 
+                            AudioQueue qu, SpeechSynthesizer syn,
                             string caption, Icon ic,
-                            String text,          // if null, no text box or wait complete
-                            bool waitcomplete, bool literal, 
-                            AudioQueue.Priority prio,
-                            string startname, string endname,
-                            string voicename,
+                            string text,                            // when speech input box
+                            bool waituntilspeechcompletes, bool literaltext,  // when speech input box
+                            AudioQueue.Priority prio,               // when speech input box
+                            string startname, string endname,       // when speech input box
+                            string voicename,                       // when voice name 
                             string volume,
                             string rate,
                             Variables ef)     // effects can also contain other vars, it will ignore
@@ -70,13 +71,13 @@ namespace ExtendedAudioForms
             this.Icon = ic;
             textBoxBorderTest.Text = "The quick brown fox jumped over the lazy dog";
 
-            if (defaultmode)
+            if (nospeechinputbox)
             {
                 textBoxBorderText.Visible = checkBoxCustomComplete.Visible = comboBoxCustomPriority.Visible = labelStartTrigger.Visible = labelEndTrigger.Visible =
                 checkBoxCustomLiteral.Visible = textBoxBorderStartTrigger.Visible = checkBoxCustomV.Visible = checkBoxCustomR.Visible = textBoxBorderEndTrigger.Visible = false;
 
                 int offset = comboBoxCustomVoice.Top - textBoxBorderText.Top;
-                foreach (Control c in panelOuter.Controls )
+                foreach (Control c in panelOuter.Controls)
                 {
                     if (!c.Name.Equals("Title"))
                         c.Location = new Point(c.Left, c.Top - offset);
@@ -87,13 +88,28 @@ namespace ExtendedAudioForms
             else
             {
                 textBoxBorderText.Text = text;
-                checkBoxCustomComplete.Checked = waitcomplete;
-                checkBoxCustomLiteral.Checked = literal;
+                checkBoxCustomComplete.Checked = waituntilspeechcompletes;
+                checkBoxCustomLiteral.Checked = literaltext;
                 comboBoxCustomPriority.SelectedItem = prio.ToString();
                 textBoxBorderStartTrigger.Text = startname;
                 textBoxBorderEndTrigger.Text = endname;
-                buttonExtDevice.Visible = false;
             }
+
+            if ( novoicename )
+            {
+                labelVoice.Visible =  comboBoxCustomVoice.Visible = false;
+
+                int offset = trackBarVolume.Top - comboBoxCustomVoice.Top;
+                foreach (Control c in panelOuter.Controls)
+                {
+                    if (c.Top >= trackBarVolume.Top)
+                        c.Location = new Point(c.Left, c.Top - offset);
+                }
+
+                this.Height -= offset;
+            }
+
+            buttonExtDevice.Visible = !nodevice;
 
             comboBoxCustomVoice.Items.Add("Default");
             comboBoxCustomVoice.Items.Add("Female");
@@ -105,7 +121,7 @@ namespace ExtendedAudioForms
                 comboBoxCustomVoice.SelectedIndex = 0;
 
             int i;
-            if (!defaultmode && volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase))  
+            if (!nospeechinputbox && volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase))  
             {
                 checkBoxCustomV.Checked = false;
                 trackBarVolume.Enabled = false;
@@ -117,7 +133,7 @@ namespace ExtendedAudioForms
                     trackBarVolume.Value = i;
             }
 
-            if (!defaultmode && rate.Equals("Default", StringComparison.InvariantCultureIgnoreCase))
+            if (!nospeechinputbox && rate.Equals("Default", StringComparison.InvariantCultureIgnoreCase))
             {
                 checkBoxCustomR.Checked = false;
                 trackBarRate.Enabled = false;

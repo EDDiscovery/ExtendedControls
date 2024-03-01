@@ -41,25 +41,30 @@
             this.extButton11 = new ExtendedControls.ExtButton();
             this.extButton12 = new ExtendedControls.ExtButton();
             this.extButton13 = new ExtendedControls.ExtButton();
+            this.extButton14 = new ExtendedControls.ExtButton();
+            this.extButton15 = new ExtendedControls.ExtButton();
+            this.extButton16 = new ExtendedControls.ExtButton();
+            this.extButton17 = new ExtendedControls.ExtButton();
+            this.extButton18 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // extButton7
             // 
-            this.extButton7.Location = new System.Drawing.Point(426, 41);
+            this.extButton7.Location = new System.Drawing.Point(426, 116);
             this.extButton7.Name = "extButton7";
             this.extButton7.Size = new System.Drawing.Size(183, 23);
             this.extButton7.TabIndex = 1;
-            this.extButton7.Text = "WaveConfig-T20";
+            this.extButton7.Text = "Wave T20";
             this.extButton7.UseVisualStyleBackColor = true;
             this.extButton7.Click += new System.EventHandler(this.extButton7_Click);
             // 
             // extButton5
             // 
-            this.extButton5.Location = new System.Drawing.Point(218, 41);
+            this.extButton5.Location = new System.Drawing.Point(218, 116);
             this.extButton5.Name = "extButton5";
             this.extButton5.Size = new System.Drawing.Size(183, 23);
             this.extButton5.TabIndex = 1;
-            this.extButton5.Text = "SpeechConfig-T20";
+            this.extButton5.Text = "Say T20";
             this.extButton5.UseVisualStyleBackColor = true;
             this.extButton5.Click += new System.EventHandler(this.extButton5_Click);
             // 
@@ -109,7 +114,7 @@
             this.extButton6.Name = "extButton6";
             this.extButton6.Size = new System.Drawing.Size(183, 23);
             this.extButton6.TabIndex = 1;
-            this.extButton6.Text = "WaveConfig-T12";
+            this.extButton6.Text = "Wave Configure-T12";
             this.extButton6.UseVisualStyleBackColor = true;
             this.extButton6.Click += new System.EventHandler(this.extButton6_Click);
             // 
@@ -119,7 +124,7 @@
             this.extButton4.Name = "extButton4";
             this.extButton4.Size = new System.Drawing.Size(183, 23);
             this.extButton4.TabIndex = 1;
-            this.extButton4.Text = "SpeechConfig-T12";
+            this.extButton4.Text = "Speech Configure T12";
             this.extButton4.UseVisualStyleBackColor = true;
             this.extButton4.Click += new System.EventHandler(this.extButton4_Click);
             // 
@@ -155,7 +160,7 @@
             // 
             // extButton12
             // 
-            this.extButton12.Location = new System.Drawing.Point(218, 87);
+            this.extButton12.Location = new System.Drawing.Point(12, 219);
             this.extButton12.Name = "extButton12";
             this.extButton12.Size = new System.Drawing.Size(183, 23);
             this.extButton12.TabIndex = 1;
@@ -165,7 +170,7 @@
             // 
             // extButton13
             // 
-            this.extButton13.Location = new System.Drawing.Point(426, 87);
+            this.extButton13.Location = new System.Drawing.Point(12, 248);
             this.extButton13.Name = "extButton13";
             this.extButton13.Size = new System.Drawing.Size(183, 23);
             this.extButton13.TabIndex = 1;
@@ -173,12 +178,63 @@
             this.extButton13.UseVisualStyleBackColor = true;
             this.extButton13.Click += new System.EventHandler(this.extButton13_Click);
             // 
+            // extButton14
+            // 
+            this.extButton14.Location = new System.Drawing.Point(218, 87);
+            this.extButton14.Name = "extButton14";
+            this.extButton14.Size = new System.Drawing.Size(183, 23);
+            this.extButton14.TabIndex = 1;
+            this.extButton14.Text = "Say T12";
+            this.extButton14.UseVisualStyleBackColor = true;
+            this.extButton14.Click += new System.EventHandler(this.extButton14_Click);
+            // 
+            // extButton15
+            // 
+            this.extButton15.Location = new System.Drawing.Point(218, 41);
+            this.extButton15.Name = "extButton15";
+            this.extButton15.Size = new System.Drawing.Size(183, 23);
+            this.extButton15.TabIndex = 1;
+            this.extButton15.Text = "Speech no voice name T12";
+            this.extButton15.UseVisualStyleBackColor = true;
+            this.extButton15.Click += new System.EventHandler(this.extButton15_Click);
+            // 
+            // extButton16
+            // 
+            this.extButton16.Location = new System.Drawing.Point(218, 145);
+            this.extButton16.Name = "extButton16";
+            this.extButton16.Size = new System.Drawing.Size(183, 23);
+            this.extButton16.TabIndex = 1;
+            this.extButton16.Text = "Say NoVoice T12";
+            this.extButton16.UseVisualStyleBackColor = true;
+            this.extButton16.Click += new System.EventHandler(this.extButton16_Click);
+            // 
+            // extButton17
+            // 
+            this.extButton17.Location = new System.Drawing.Point(626, 12);
+            this.extButton17.Name = "extButton17";
+            this.extButton17.Size = new System.Drawing.Size(183, 23);
+            this.extButton17.TabIndex = 1;
+            this.extButton17.Text = "Sound Effects";
+            this.extButton17.UseVisualStyleBackColor = true;
+            this.extButton17.Click += new System.EventHandler(this.extButton17_Click);
+            // 
+            // extButton18
+            // 
+            this.extButton18.Location = new System.Drawing.Point(426, 87);
+            this.extButton18.Name = "extButton18";
+            this.extButton18.Size = new System.Drawing.Size(183, 23);
+            this.extButton18.TabIndex = 1;
+            this.extButton18.Text = "Wave-T12";
+            this.extButton18.UseVisualStyleBackColor = true;
+            this.extButton18.Click += new System.EventHandler(this.extButton18_Click);
+            // 
             // TestExtendedForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(873, 558);
             this.Controls.Add(this.extButton7);
+            this.Controls.Add(this.extButton16);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton11);
@@ -187,7 +243,11 @@
             this.Controls.Add(this.extButton13);
             this.Controls.Add(this.extButton12);
             this.Controls.Add(this.extButton8);
+            this.Controls.Add(this.extButton18);
             this.Controls.Add(this.extButton6);
+            this.Controls.Add(this.extButton17);
+            this.Controls.Add(this.extButton14);
+            this.Controls.Add(this.extButton15);
             this.Controls.Add(this.extButton4);
             this.Controls.Add(this.extButton3);
             this.Controls.Add(this.extButton1);
@@ -211,5 +271,10 @@
         private ExtendedControls.ExtButton extButton11;
         private ExtendedControls.ExtButton extButton12;
         private ExtendedControls.ExtButton extButton13;
+        private ExtendedControls.ExtButton extButton14;
+        private ExtendedControls.ExtButton extButton15;
+        private ExtendedControls.ExtButton extButton16;
+        private ExtendedControls.ExtButton extButton17;
+        private ExtendedControls.ExtButton extButton18;
     }
 }

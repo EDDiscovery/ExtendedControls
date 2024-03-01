@@ -41,7 +41,7 @@ namespace ExtendedAudioForms
             InitializeComponent();
         }
 
-        public void Init(bool defaultmode, AudioQueue qu, 
+        public void Init(bool nostartendtriggers, bool nodevice, AudioQueue qu, 
                           string caption, Icon ic,
                           string defpath,
                           bool waitcomplete,
@@ -64,10 +64,19 @@ namespace ExtendedAudioForms
             this.Icon = ic;
             textBoxBorderText.Text = defpath;
 
-            if (defaultmode)
+            if (nostartendtriggers)
             {
                 checkBoxCustomComplete.Visible = comboBoxCustomPriority.Visible =
                 textBoxBorderStartTrigger.Visible = textBoxBorderEndTrigger.Visible = checkBoxCustomV.Visible = labelStartTrigger.Visible = labelEndTrigger.Visible = false;
+
+                int offset = trackBarVolume.Top - textBoxBorderStartTrigger.Top;
+                foreach (Control c in panelOuter.Controls)
+                {
+                    if (c.Top >= trackBarVolume.Top)
+                        c.Location = new Point(c.Left, c.Top - offset);
+                }
+                this.Height -= offset;
+
             }
             else
             {
@@ -75,11 +84,12 @@ namespace ExtendedAudioForms
                 comboBoxCustomPriority.SelectedItem = prio.ToString();
                 textBoxBorderStartTrigger.Text = startname;
                 textBoxBorderEndTrigger.Text = endname;
-                buttonExtDevice.Visible = false;
             }
 
+            buttonExtDevice.Visible = !nodevice;
+
             int i;
-            if (!defaultmode && volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase))
+            if (!nostartendtriggers && volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase))
             {
                 checkBoxCustomV.Checked = false;
                 trackBarVolume.Enabled = false;

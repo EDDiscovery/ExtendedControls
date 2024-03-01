@@ -272,7 +272,7 @@ namespace ExtendedAudioForms
             // 
             // buttonExtDevice
             // 
-            this.buttonExtDevice.Location = new System.Drawing.Point(340, 256);
+            this.buttonExtDevice.Location = new System.Drawing.Point(340, 278);
             this.buttonExtDevice.Name = "buttonExtDevice";
             this.buttonExtDevice.Size = new System.Drawing.Size(75, 23);
             this.buttonExtDevice.TabIndex = 4;
@@ -282,7 +282,7 @@ namespace ExtendedAudioForms
             // 
             // buttonExtEffects
             // 
-            this.buttonExtEffects.Location = new System.Drawing.Point(340, 211);
+            this.buttonExtEffects.Location = new System.Drawing.Point(340, 249);
             this.buttonExtEffects.Name = "buttonExtEffects";
             this.buttonExtEffects.Size = new System.Drawing.Size(75, 23);
             this.buttonExtEffects.TabIndex = 4;
@@ -338,7 +338,7 @@ namespace ExtendedAudioForms
             this.comboBoxCustomVoice.SelectedIndex = -1;
             this.comboBoxCustomVoice.SelectedItem = null;
             this.comboBoxCustomVoice.SelectedValue = null;
-            this.comboBoxCustomVoice.Size = new System.Drawing.Size(203, 21);
+            this.comboBoxCustomVoice.Size = new System.Drawing.Size(356, 21);
             this.comboBoxCustomVoice.TabIndex = 3;
             this.comboBoxCustomVoice.Text = "comboBoxCustom1";
             this.comboBoxCustomVoice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
