@@ -57,28 +57,32 @@ namespace TestExtendedControls
 
         private void extButton4_Click(object sender, EventArgs e)
         {
-            SpeechConfig(12,true,false,false);
+            SpeechConfig(12,true,false,false,false);
         }
-
-        private void extButton5_Click(object sender, EventArgs e)
+        private void extButton15_Click(object sender, EventArgs e)
         {
-            SpeechConfig(20, false,true,false);
+            SpeechConfig(12, true, true, true, false);
+        }
+        private void extButton19_Click(object sender, EventArgs e)
+        {
+            SpeechConfig(12, true, true, true, true);
         }
 
         private void extButton14_Click(object sender, EventArgs e)
         {
-            SpeechConfig(12, false, true, false);
+            SpeechConfig(12, false, true, false, false);
         }
-        private void extButton15_Click(object sender, EventArgs e)
+        private void extButton5_Click(object sender, EventArgs e)
         {
-            SpeechConfig(12, true, true, true);
-        }
-        private void extButton16_Click(object sender, EventArgs e)
-        {
-            SpeechConfig(12, false, false, true);
+            SpeechConfig(20, false,true,false,false);
         }
 
-        private void SpeechConfig(float size, bool nospeechinput, bool nodevice, bool novoicename)
+        private void extButton16_Click(object sender, EventArgs e)
+        {
+            SpeechConfig(12, false, false, true,false);
+        }
+
+        private void SpeechConfig(float size, bool nospeechinput, bool nodevice, bool novoicename, bool norate)
         { 
             Theme.Current.FontSize = size;
             AudioDriverCSCore driver = new AudioDriverCSCore();
@@ -90,7 +94,8 @@ namespace TestExtendedControls
 
             Variables ef = new Variables();
 
-            c.Init(nospeechinput,nodevice, novoicename,queue, ss, "Speech Config", this.Icon, !nospeechinput ? "Text to speak" : null,
+            c.Init(nospeechinput,nodevice, novoicename,norate,
+                    queue, ss, "Speech Config", this.Icon, !nospeechinput ? "Text to speak" : null,
                     true, true, AudioQueue.Priority.High,
                     "sn", "en", "Sheila", "100", "Default", ef);
 

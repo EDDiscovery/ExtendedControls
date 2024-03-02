@@ -45,7 +45,7 @@ namespace ExtendedAudioForms
             InitializeComponent();
         }
 
-        public void Init(bool nospeechinputbox , bool nodevice, bool novoicename, 
+        public void Init(bool nospeechinputbox , bool nodevice, bool novoicename,  bool norate,
                             AudioQueue qu, SpeechSynthesizer syn,
                             string caption, Icon ic,
                             string text,                            // when speech input box
@@ -103,6 +103,19 @@ namespace ExtendedAudioForms
                 foreach (Control c in panelOuter.Controls)
                 {
                     if (c.Top >= trackBarVolume.Top)
+                        c.Location = new Point(c.Left, c.Top - offset);
+                }
+
+                this.Height -= offset;
+            }
+
+            if ( norate )
+            {
+                labelRate.Visible = trackBarRate.Visible = false;
+                int offset = textBoxBorderTest.Top - trackBarRate.Top;
+                foreach (Control c in panelOuter.Controls)
+                {
+                    if (c.Top >= trackBarRate.Top)
                         c.Location = new Point(c.Left, c.Top - offset);
                 }
 

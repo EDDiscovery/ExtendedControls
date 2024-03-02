@@ -46,11 +46,12 @@
             this.extButton16 = new ExtendedControls.ExtButton();
             this.extButton17 = new ExtendedControls.ExtButton();
             this.extButton18 = new ExtendedControls.ExtButton();
+            this.extButton19 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // extButton7
             // 
-            this.extButton7.Location = new System.Drawing.Point(426, 116);
+            this.extButton7.Location = new System.Drawing.Point(426, 145);
             this.extButton7.Name = "extButton7";
             this.extButton7.Size = new System.Drawing.Size(183, 23);
             this.extButton7.TabIndex = 1;
@@ -60,7 +61,7 @@
             // 
             // extButton5
             // 
-            this.extButton5.Location = new System.Drawing.Point(218, 116);
+            this.extButton5.Location = new System.Drawing.Point(218, 145);
             this.extButton5.Name = "extButton5";
             this.extButton5.Size = new System.Drawing.Size(183, 23);
             this.extButton5.TabIndex = 1;
@@ -180,7 +181,7 @@
             // 
             // extButton14
             // 
-            this.extButton14.Location = new System.Drawing.Point(218, 87);
+            this.extButton14.Location = new System.Drawing.Point(218, 116);
             this.extButton14.Name = "extButton14";
             this.extButton14.Size = new System.Drawing.Size(183, 23);
             this.extButton14.TabIndex = 1;
@@ -200,7 +201,7 @@
             // 
             // extButton16
             // 
-            this.extButton16.Location = new System.Drawing.Point(218, 145);
+            this.extButton16.Location = new System.Drawing.Point(218, 174);
             this.extButton16.Name = "extButton16";
             this.extButton16.Size = new System.Drawing.Size(183, 23);
             this.extButton16.TabIndex = 1;
@@ -220,13 +221,23 @@
             // 
             // extButton18
             // 
-            this.extButton18.Location = new System.Drawing.Point(426, 87);
+            this.extButton18.Location = new System.Drawing.Point(426, 116);
             this.extButton18.Name = "extButton18";
             this.extButton18.Size = new System.Drawing.Size(183, 23);
             this.extButton18.TabIndex = 1;
             this.extButton18.Text = "Wave-T12";
             this.extButton18.UseVisualStyleBackColor = true;
             this.extButton18.Click += new System.EventHandler(this.extButton18_Click);
+            // 
+            // extButton19
+            // 
+            this.extButton19.Location = new System.Drawing.Point(218, 70);
+            this.extButton19.Name = "extButton19";
+            this.extButton19.Size = new System.Drawing.Size(183, 23);
+            this.extButton19.TabIndex = 1;
+            this.extButton19.Text = "Speech no voice rate T12";
+            this.extButton19.UseVisualStyleBackColor = true;
+            this.extButton19.Click += new System.EventHandler(this.extButton19_Click);
             // 
             // TestExtendedForms
             // 
@@ -247,6 +258,7 @@
             this.Controls.Add(this.extButton6);
             this.Controls.Add(this.extButton17);
             this.Controls.Add(this.extButton14);
+            this.Controls.Add(this.extButton19);
             this.Controls.Add(this.extButton15);
             this.Controls.Add(this.extButton4);
             this.Controls.Add(this.extButton3);
@@ -276,5 +288,6 @@
         private ExtendedControls.ExtButton extButton16;
         private ExtendedControls.ExtButton extButton17;
         private ExtendedControls.ExtButton extButton18;
+        private ExtendedControls.ExtButton extButton19;
     }
 }
