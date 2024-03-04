@@ -144,50 +144,55 @@ namespace TestExtendedControls
 
             c.ShowDialog(this);
 
-
             queue.StopAll();
             queue.Dispose();
             driver.Dispose();
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            VAR(8.5f, true);
+
+        }
 
         private void extButton8_Click(object sender, EventArgs e)
         {
-            VAR(12,true);
+            VAR(12, true);
         }
-
-        private void VAR(float s, bool pop, bool ops = false)
-        {
-            Theme.Current.FontSize = s;
-            VariablesForm f = new VariablesForm();
-
-            Variables v = new Variables();
-            if (pop)
-            {
-                v["Fred"] = "F1";
-                v["George"] = "F1";
-            }
-            f.Init("Var test", this.Icon, v, showrunatrefreshcheckbox:true, allowadd:ops, allownoexpand:ops);
-            f.ShowDialog();
-        }
-
         private void extButton9_Click(object sender, EventArgs e)
         {
             VAR(20, true);
-
         }
-
         private void extButton10_Click(object sender, EventArgs e)
         {
-            VAR(20, false);
+            VAR(12, false,true);
         }
 
         private void extButton11_Click(object sender, EventArgs e)
         {
             VAR(24, true, true);
-
         }
+
+        private void VAR(float s, bool populate, bool ops = false)
+        {
+            Theme.Current.FontSize = s;
+            VariablesForm f = new VariablesForm();
+
+            Variables v = new Variables();
+            if (populate)
+            {
+                for( int i = 0; i < 10; i++)
+                {
+                    v[$"Var{i}"] = $"Value {i}";
+                }
+                v["Var1"] = "line1 wjkwkwkw\r\nLine2\r\nLine3\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n1\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n1\r\n";
+            }
+
+            f.Init("Var test", this.Icon, v, allowadd:ops, allownoexpand:ops);
+            f.ShowDialog();
+        }
+
 
         private void CForm(float size, bool filter)
         {

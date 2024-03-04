@@ -53,14 +53,15 @@ namespace ExtendedConditionsForms
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
             this.panelOuter = new System.Windows.Forms.Panel();
-            this.panelVScroll1 = new ExtendedControls.ExtPanelScroll();
-            this.vScrollBarCustom2 = new ExtendedControls.ExtScrollBar();
             this.buttonMore = new ExtendedControls.ExtButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.extPanelVertScrollWithBar = new ExtendedControls.ExtPanelVertScrollWithBar();
+            this.extPanelVertScroll = new ExtendedControls.ExtPanelVertScroll();
             this.panelTop.SuspendLayout();
             this.panelOK.SuspendLayout();
             this.panelOuter.SuspendLayout();
-            this.panelVScroll1.SuspendLayout();
+            this.extPanelVertScrollWithBar.SuspendLayout();
+            this.extPanelVertScroll.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonCancel
@@ -175,57 +176,16 @@ namespace ExtendedConditionsForms
             // panelOuter
             // 
             this.panelOuter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelOuter.Controls.Add(this.panelVScroll1);
+            this.panelOuter.Controls.Add(this.extPanelVertScrollWithBar);
             this.panelOuter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelOuter.Location = new System.Drawing.Point(3, 27);
             this.panelOuter.Name = "panelOuter";
             this.panelOuter.Size = new System.Drawing.Size(643, 292);
             this.panelOuter.TabIndex = 32;
             // 
-            // panelVScroll1
-            // 
-            this.panelVScroll1.Controls.Add(this.vScrollBarCustom2);
-            this.panelVScroll1.Controls.Add(this.buttonMore);
-            this.panelVScroll1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelVScroll1.FlowControlsLeftToRight = false;
-            this.panelVScroll1.Location = new System.Drawing.Point(0, 0);
-            this.panelVScroll1.Name = "panelVScroll1";
-            this.panelVScroll1.Size = new System.Drawing.Size(641, 290);
-            this.panelVScroll1.TabIndex = 8;
-            this.panelVScroll1.VerticalScrollBarDockRight = true;
-            // 
-            // vScrollBarCustom2
-            // 
-            this.vScrollBarCustom2.ArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.vScrollBarCustom2.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.vScrollBarCustom2.ArrowColorScaling = 0.5F;
-            this.vScrollBarCustom2.ArrowDownDrawAngle = 270F;
-            this.vScrollBarCustom2.ArrowUpDrawAngle = 90F;
-            this.vScrollBarCustom2.BorderColor = System.Drawing.Color.White;
-            this.vScrollBarCustom2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.vScrollBarCustom2.HideScrollBar = false;
-            this.vScrollBarCustom2.LargeChange = 10;
-            this.vScrollBarCustom2.Location = new System.Drawing.Point(625, 0);
-            this.vScrollBarCustom2.Maximum = -252;
-            this.vScrollBarCustom2.Minimum = 0;
-            this.vScrollBarCustom2.MouseOverButtonColor = System.Drawing.Color.Green;
-            this.vScrollBarCustom2.MousePressedButtonColor = System.Drawing.Color.Red;
-            this.vScrollBarCustom2.Name = "vScrollBarCustom2";
-            this.vScrollBarCustom2.Size = new System.Drawing.Size(16, 290);
-            this.vScrollBarCustom2.SliderColor = System.Drawing.Color.DarkGray;
-            this.vScrollBarCustom2.SmallChange = 1;
-            this.vScrollBarCustom2.TabIndex = 0;
-            this.vScrollBarCustom2.Text = "vScrollBarCustom2";
-            this.vScrollBarCustom2.ThumbBorderColor = System.Drawing.Color.Yellow;
-            this.vScrollBarCustom2.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.vScrollBarCustom2.ThumbColorScaling = 0.5F;
-            this.vScrollBarCustom2.ThumbDrawAngle = 0F;
-            this.vScrollBarCustom2.Value = -252;
-            this.vScrollBarCustom2.ValueLimited = -252;
-            // 
             // buttonMore
             // 
-            this.buttonMore.Location = new System.Drawing.Point(3, 5);
+            this.buttonMore.Location = new System.Drawing.Point(5, 5);
             this.buttonMore.Name = "buttonMore";
             this.buttonMore.Size = new System.Drawing.Size(24, 24);
             this.buttonMore.TabIndex = 5;
@@ -237,6 +197,25 @@ namespace ExtendedConditionsForms
             // toolTip1
             // 
             this.toolTip1.ShowAlways = true;
+            // 
+            // extPanelVertScrollWithBar
+            // 
+            this.extPanelVertScrollWithBar.Controls.Add(this.extPanelVertScroll);
+            this.extPanelVertScrollWithBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extPanelVertScrollWithBar.Location = new System.Drawing.Point(0, 0);
+            this.extPanelVertScrollWithBar.Name = "extPanelVertScrollWithBar";
+            this.extPanelVertScrollWithBar.Size = new System.Drawing.Size(641, 290);
+            this.extPanelVertScrollWithBar.TabIndex = 6;
+            // 
+            // extPanelVertScroll
+            // 
+            this.extPanelVertScroll.Controls.Add(this.buttonMore);
+            this.extPanelVertScroll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extPanelVertScroll.Location = new System.Drawing.Point(0, 0);
+            this.extPanelVertScroll.Name = "extPanelVertScroll";
+            this.extPanelVertScroll.Size = new System.Drawing.Size(625, 290);
+            this.extPanelVertScroll.TabIndex = 1;
+            this.extPanelVertScroll.Value = 0;
             // 
             // VariablesForm
             // 
@@ -257,7 +236,8 @@ namespace ExtendedConditionsForms
             this.panelTop.PerformLayout();
             this.panelOK.ResumeLayout(false);
             this.panelOuter.ResumeLayout(false);
-            this.panelVScroll1.ResumeLayout(false);
+            this.extPanelVertScrollWithBar.ResumeLayout(false);
+            this.extPanelVertScroll.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -273,9 +253,9 @@ namespace ExtendedConditionsForms
         private System.Windows.Forms.Label label_index;
         private System.Windows.Forms.Panel panelOK;
         private System.Windows.Forms.Panel panelOuter;
-        private ExtendedControls.ExtPanelScroll panelVScroll1;
-        private ExtendedControls.ExtScrollBar vScrollBarCustom2;
         private ExtendedControls.ExtButton buttonMore;
         private System.Windows.Forms.ToolTip toolTip1;
+        private ExtendedControls.ExtPanelVertScrollWithBar extPanelVertScrollWithBar;
+        private ExtendedControls.ExtPanelVertScroll extPanelVertScroll;
     }
 }

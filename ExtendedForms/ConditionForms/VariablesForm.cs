@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017 EDDiscovery development team
+ * Copyright 2017-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,9 +10,8 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,25 +22,8 @@ namespace ExtendedConditionsForms
 { 
     public partial class VariablesForm : ExtendedControls.DraggableForm
     {
-        public Variables result;      // only on OK
-        public Dictionary<string, string> result_altops;
-
-        public class Group
-        {
-            public Panel panel;
-            public ExtendedControls.ExtTextBox var;
-            public ExtendedControls.ExtComboBox op;
-            public ExtendedControls.ExtRichTextBox value;
-            public ExtendedControls.ExtButton del;
-        }
-
-        List<Group> groups;
-
-        int panelmargin = 3;
-        const int vscrollmargin = 10;
-
-        bool showadd, shownoexpand;
-        bool allowmultiple;
+        public Variables Result;      // only on OK
+        public Dictionary<string, string> ResultAltOPs;
 
         public VariablesForm()
         {
@@ -51,10 +33,8 @@ namespace ExtendedConditionsForms
         }
 
         // altops, if given, describes the operator of each variable.
-
         public void Init(string title, Icon ic, Variables vbs , Dictionary<string, string> altops = null,
                                                                 bool showatleastoneentry = false ,
-                                                                bool showrunatrefreshcheckbox = false , 
                                                                 bool allowadd = false, 
                                                                 bool allownoexpand = false, 
                                                                 bool allowmultipleentries = true)
@@ -73,7 +53,7 @@ namespace ExtendedConditionsForms
             shownoexpand = allownoexpand;
             this.allowmultiple = allowmultipleentries;
 
-            int pos = panelmargin;
+            extPanelVertScrollWithBar.LargeChange = extPanelVertScrollWithBar.SmallChange = 32;
 
             if (vbs != null)
             {
@@ -92,12 +72,7 @@ namespace ExtendedConditionsForms
                 groups[0].var.Focus();
         }
 
-        private void ConditionVariablesFormResize(object sender, EventArgs e)
-        {
-            FixUpGroups(false); // don't recalc min size, it creates a loop
-        }
-
-        public Group CreateEntry(string var, string value, string op)
+        private Group CreateEntry(string var, string value, string op)
         {
             Group g = new Group();
 
@@ -116,7 +91,7 @@ namespace ExtendedConditionsForms
             if (shownoexpand || showadd)
             {
                 g.op = new ExtendedControls.ExtComboBox();
-                g.op.Size = new Size(Font.ScalePixels(50), Font.ScalePixels(32));
+                g.op.Size = new Size(Font.ScalePixels(75), Font.ScalePixels(32));
                 g.op.Location = new Point(g.var.Right + 4, panelmargin);
 
                 string ttip="";
@@ -152,6 +127,17 @@ namespace ExtendedConditionsForms
             g.value.Text = value.ReplaceEscapeControlChars();
             toolTip1.SetToolTip(g.value, "Variable value");
             g.panel.Controls.Add(g.value);
+            g.value.TextBoxChanged += (obj, e) => {
+                if (g.value.Lines.Length > g.lines )    // grow only
+                {
+                    int scrheight = Screen.FromControl(this).WorkingArea.Height;
+                    if ( g.panel.Height < scrheight * 2 / 4 )
+                    { 
+                        g.lines = g.value.Lines.Length;
+                        PositionEntries(true, g.panel.Top + extPanelVertScroll.Value);
+                    }
+                }
+            };
 
             g.del = new ExtendedControls.ExtButton();
             g.del.Size = new Size(Font.ScalePixels(24), Font.ScalePixels(24));
@@ -163,24 +149,34 @@ namespace ExtendedConditionsForms
 
             groups.Add(g);
 
-            panelVScroll1.Controls.Add(g.panel);
+            extPanelVertScroll.Controls.Add(g.panel);
             ExtendedControls.Theme.Current?.ApplyDialog(g.panel);
-
-            FixUpGroups();
 
             return g;
         }
 
-        void FixUpGroups(bool minmax = true)      // fixes and positions groups.
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            stopresizepositioning = false;
+            PositionEntries();
+        }
+
+        private void PositionEntries(bool calminsize = true, int pos = -1)     // fixes and positions groups.
         {
             int y = panelmargin;
+            int panelwidth = Math.Max(extPanelVertScroll.Width , 10);
+            int curpos = extPanelVertScroll.BeingPosition();
 
-            int panelwidth = Math.Max(panelVScroll1.Width - panelVScroll1.ScrollBarWidth, 10);
+            int scrheight = Screen.FromControl(this).WorkingArea.Height;
 
             foreach (Group g in groups)
             {
+                int texth = Math.Min(g.value.EstimateVerticalSizeFromText(),scrheight * 2 / 4);
+            //    System.Diagnostics.Debug.WriteLine($"{g.value.Font} {texth}");
+
                 g.panel.Location = new Point(panelmargin, y);
-                g.panel.Size = new Size(panelwidth-panelmargin*2, Font.ScalePixels(128));
+                g.panel.Size = new Size(panelwidth-panelmargin*2, Math.Max(texth,g.var.Height) + 12);
 
                 g.del.Location = new Point(g.panel.Width - g.del.Width - 8, panelmargin);
 
@@ -197,26 +193,43 @@ namespace ExtendedConditionsForms
 
             y += buttonMore.Height + titleHeight + ((panelTop.Enabled) ? (panelTop.Height + statusStripCustom.Height) : 8) + 16 + panelOK.Height;
 
-            if (minmax) // stop circular relationsship with resize
+            if (calminsize) // stop circular relationsship with resize
             {
+                stopresizepositioning = true;   // stop resize double firing
+                
                 this.MaximumSize = new Size(Screen.FromControl(this).WorkingArea.Width, Screen.FromControl(this).WorkingArea.Height-128);
                 this.MinimumSize = new Size(600, Math.Min(y,this.MaximumSize.Height));
+
+                if (Bottom > Screen.FromControl(this).WorkingArea.Height)
+                    Top = Screen.FromControl(this).WorkingArea.Height - Height - 50;
+
+                stopresizepositioning = false;
             }
+
+            extPanelVertScroll.FinishedPosition(pos >= 0 ? pos : curpos);
+            Update();
+        }
+
+        bool stopresizepositioning = true;
+        private void ConditionVariablesFormResize(object sender, EventArgs e)
+        {
+            if (!stopresizepositioning)
+                PositionEntries(false);
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            result = new Variables();
-            result_altops = new Dictionary<string, string>();
+            Result = new Variables();
+            ResultAltOPs = new Dictionary<string, string>();
 
             foreach ( Group g in groups)
             {
                 if (g.var.Text.Length > 0)      // only ones with names are considered
                 {
-                    result[g.var.Text] = g.value.Text.EscapeControlChars();
+                    Result[g.var.Text] = g.value.Text.EscapeControlChars();
 
                     if (g.op != null)
-                        result_altops[g.var.Text] = g.op.Text;
+                        ResultAltOPs[g.var.Text] = g.op.Text;
                 }
             }
 
@@ -230,10 +243,9 @@ namespace ExtendedConditionsForms
             Group g = (Group)b.Tag;
 
             g.panel.Controls.Clear();
-            panelVScroll1.Controls.Remove(g.panel);
+            extPanelVertScroll.Controls.Remove(g.panel);
             groups.Remove(g);
-            Invalidate(true);
-            FixUpGroups();
+            PositionEntries();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -245,6 +257,7 @@ namespace ExtendedConditionsForms
         private void buttonMore_Click(object sender, EventArgs e)
         {
             CreateEntry("", "","=");
+            PositionEntries(true,int.MaxValue);
         }
 
         private void label_index_MouseDown(object sender, MouseEventArgs e)
@@ -265,6 +278,21 @@ namespace ExtendedConditionsForms
         private void panel_close_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private List<Group> groups;
+        const int panelmargin = 3;
+        private bool showadd, shownoexpand;
+        private bool allowmultiple;
+
+        private class Group
+        {
+            public Panel panel;
+            public ExtendedControls.ExtTextBox var;
+            public ExtendedControls.ExtComboBox op;
+            public ExtendedControls.ExtRichTextBox value;
+            public ExtendedControls.ExtButton del;
+            public int lines;
         }
 
 

@@ -33,15 +33,49 @@ namespace ExtendedControls
         {
         }
 
-        // call if your going to reset the positions of all the controls and want to go back to zero
+        // call when your going to reset the positions of all the controls and want to go back to zero
         // returns current scroll pos 
-        public int Reset()     
+        public int BeingPosition()
         {
             int cur = currentscroll;
             currentscroll = 0;
-            CalculateScrollArea();
+            SuspendLayout();
             return cur;
         }
+
+        // call when your controls are in position
+        public void FinishedPosition(int scrollto)
+        {
+            System.Diagnostics.Debug.Assert(currentscroll == 0);        // must have reset
+
+            CalculateMaxScroll();
+
+            ResumeLayout();
+
+            if (scrollto >= 0)
+                ScrollTo(scrollto);
+            else
+                ToEnd();
+
+        }
+
+        // call if you moved stuff around. 
+        public void CalculateMaxScroll()
+        {
+            int maxy = int.MinValue;
+            foreach (Control c in Controls)
+            {
+                if (c.Bottom + currentscroll > maxy)        // we add on currentscroll to compensate if we have been scrolling, as the actual control y will have been changed
+                    maxy = c.Bottom+1;
+            }
+
+            maxscroll = maxy > int.MinValue ? Math.Max(maxy - ClientRectangle.Height , 0) : 0;
+
+            System.Diagnostics.Debug.WriteLine($"Scroll max {maxscroll} scr height {ClientRectangle.Height} maxy {maxy}");
+
+            ScrollSet?.Invoke(currentscroll, maxscroll);
+        }
+
 
         public void ToEnd()
         {
@@ -71,38 +105,11 @@ namespace ExtendedControls
                                                  | BaseUtils.Win32.NativeMethods.SW_SCROLLCHILDREN);
 
                 currentscroll = value;
-                //System.Diagnostics.Debug.WriteLine($"Scrolled showing {currentscroll}..{currentscroll + ClientRectangle.Height} max {maxscroll}");
+                System.Diagnostics.Debug.WriteLine($"Scrolled showing {currentscroll}..{currentscroll + ClientRectangle.Height} max {maxscroll}");
                 Update();
                 if ( callback )
                     ScrollSet?.Invoke(currentscroll, maxscroll);
             }
-        }
-
-        protected override void OnLayout(LayoutEventArgs levent)
-        {
-            base.OnLayout(levent);
-            CalculateScrollArea();
-        }
-
-        private void CalculateScrollArea()
-        {
-            int miny = int.MaxValue;
-            int maxy = int.MinValue;
-            foreach (Control c in Controls)
-            {
-                if (c.Top < miny)
-                    miny = c.Top;
-                if (c.Bottom > maxy)
-                    maxy = c.Bottom;
-            }
-
-            maxscroll= miny<int.MaxValue ? maxy-miny- ClientRectangle.Height : 0;
-
-            if (currentscroll > maxscroll)      // if now out of range, scroll to max range
-                ScrollTo(maxscroll);
-
-            //System.Diagnostics.Debug.WriteLine($"Scroll showing {currentscroll}..{currentscroll + ClientRectangle.Height} max {maxscroll} scr height {ClientRectangle.Height} miny {miny} maxy {maxy}");
-            ScrollSet?.Invoke(currentscroll, maxscroll);
         }
 
         private int currentscroll;
@@ -115,6 +122,9 @@ namespace ExtendedControls
     public partial class ExtPanelVertScrollWithBar : Panel
     {
         public int ScrollBarWidth { get { return Font.ScalePixels(24); } }
+
+        public int LargeChange { get { return scrollbar.LargeChange; } set { scrollbar.LargeChange = value; } }
+        public int SmallChange { get { return scrollbar.SmallChange; } set { scrollbar.SmallChange = value; } }
 
         public ExtPanelVertScrollWithBar()
         {
@@ -136,15 +146,20 @@ namespace ExtendedControls
             {
                 panel = e.Control as ExtPanelVertScroll;
                 panel.Dock = DockStyle.Fill;
-                panel.ScrollSet += (value, max) => { scrollbar.SetValueMaximumMinimum(value, max + scrollbar.LargeChange, 0); };
-                panel.MouseWheel += (o, mw) => { panel.Value += mw.Delta > 0 ? -scrollbar.LargeChange : scrollbar.LargeChange; };
+                panel.ScrollSet += (value, max) => {
+                    //scrollbar.SetValueMaximumMinimum(value, max + scrollbar.LargeChange, 0); 
+                    scrollbar.SetValueMaximumMinimum(value, max > 0 ? max+scrollbar.LargeChange : 0, 0); 
+                };
+                panel.MouseWheel += (o, mw) => { 
+                            panel.Value += mw.Delta > 0 ? -scrollbar.LargeChange : scrollbar.LargeChange; 
+                };
                 Controls.SetChildIndex(panel, 0); // to make dock work etc vs scroll bar, make it so that its first
             }
         }
 
         protected virtual void OnScrollBarChanged(object sender, ScrollEventArgs e)
         {
-            //  System.Diagnostics.Debug.WriteLine("On Scroll Bar Changed " + e.NewValue);
+            System.Diagnostics.Debug.WriteLine("On Scroll Bar Changed " + e.NewValue);
             panel?.ScrollTo(e.NewValue,false);
         }
 
