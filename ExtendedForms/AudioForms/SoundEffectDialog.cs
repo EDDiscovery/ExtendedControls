@@ -170,7 +170,7 @@ namespace ExtendedAudioForms
             if (checkBoxCustomNone.Checked)
                 ap.OverrideNone = true;
 
-            return ap.values;
+            return ap.Values;
         }
 
         private void buttonExtOK_Click(object sender, EventArgs e)
