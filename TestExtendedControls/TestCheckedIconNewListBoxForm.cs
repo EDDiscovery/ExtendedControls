@@ -82,6 +82,8 @@ namespace TestExtendedControls
             CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
 
             frm.UC.AddButton("button1", "Button 1");
+            frm.UC.Add($"||", $"||");
+
             for (int i = 0; i < 400; i++)
             {
                 frm.UC.Add($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
@@ -90,9 +92,10 @@ namespace TestExtendedControls
             frm.UC.AddGroupItem("t1;t2;t3", "1-3");
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
-            frm.CloseBoundaryRegion = new Size(64, 64);
+          //  frm.CloseBoundaryRegion = new Size(64, 64);
             frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
+            frm.UC.NoneAllIgnore = "||;";
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent3 = s; };
             frm.UC.Set(persistent3);
             frm.Show(this);

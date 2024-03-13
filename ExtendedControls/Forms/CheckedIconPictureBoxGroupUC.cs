@@ -12,10 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -29,6 +26,9 @@ namespace ExtendedControls
             AddGroupItemAtTop(None, "None".TxID(ECIDs.None), Properties.Resources.None);
             AddGroupItemAtTop(All, "All".TxID(ECIDs.All), Properties.Resources.All);       // displayed, translate
         }
+
+        // list of options which do not participate in the all/none selection. Include the separation character at the end
+        public string NoneAllIgnore { get; set; } = "";
 
         public const string Disabled = "Disabled";
         public void AddDisabled(string differenttext = null)
@@ -47,7 +47,7 @@ namespace ExtendedControls
         }
 
         // Get checked including any group override settings
-        public override string GetChecked(bool allornone)
+        public override string GetChecked(bool allornone, string tagsignorelist = "")
         {
             string list = null;
 
@@ -61,7 +61,7 @@ namespace ExtendedControls
             }
 
             if (list == null)                                 // no exclusive options, so
-                list = base.GetChecked(allornone);            // get the set options from the standard grouping, using All/None
+                list = base.GetChecked(allornone, tagsignorelist);  // get the set options from the standard grouping, using All/None
 
             return list;
         }
@@ -84,7 +84,7 @@ namespace ExtendedControls
                     bool shift = Control.ModifierKeys.HasFlag(Keys.Control);
 
                     if (!shift)
-                        SetFromToEnd(groupoptions.Count, false);   // if not shift, we clear all, and apply this tag
+                        SetFromToEnd(groupoptions.Count, false, NoneAllIgnore);   // if not shift, we clear all (excepting the ignore list), and apply this tag
 
                     string tag = groupoptions[e.Index].Tag;
                     bool exclusiveoption = groupoptions[e.Index].Exclusive?.Equals(All) ?? false;
@@ -95,12 +95,16 @@ namespace ExtendedControls
                             Set(eo.Tag, tag == eo.Tag);          // its on if we clicked on it, else off
                     }
 
-                    if (tag == All)                                     // set up state of standard options
-                        SetFromToEnd(groupoptions.Count, true);
-                    else if (tag == None || exclusiveoption)
-                        SetFromToEnd(groupoptions.Count, false);
+                    if (tag == All)                                     // All sets all except the ignore list
+                    {
+                        SetFromToEnd(groupoptions.Count, true, NoneAllIgnore);
+                    }
+                    else if (tag == None || exclusiveoption)            // None clears all except the ignore list
+                    {
+                        SetFromToEnd(groupoptions.Count, false, NoneAllIgnore);
+                    }
                     else
-                        Set(tag);
+                        Set(tag);                                       // else set tag
                 }
                 else
                 {
@@ -128,8 +132,8 @@ namespace ExtendedControls
 
         private void SetGroupOptions()
         {
-            // using All or None.. on items beyond reserved entries
-            string list = GetChecked(true);
+            // using All or None.. on non group items, and ignoring those which do not contribute to all/none
+            string list = GetChecked(true, NoneAllIgnore);
             //System.Diagnostics.Debug.WriteLine($"Set Group Options on {list}");
 
             int pos = 0;

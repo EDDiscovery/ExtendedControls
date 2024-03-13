@@ -386,14 +386,14 @@ namespace ExtendedControls
             Set(pos, state ? CheckState.Checked : CheckState.Unchecked);
         }
         // from here onwards set
-        public void SetFromToEnd(int startpos, bool state)
+        public void SetFromToEnd(int startpos, bool state, string tagignorelist = "")
         {
-            Set(startpos, state ? CheckState.Checked : CheckState.Unchecked, -1);
+            Set(startpos, state ? CheckState.Checked : CheckState.Unchecked, -1, tagignorelist);
         }
 
         // Set from start to end. Does not obey exclusive. You can set group.
         // end = 0 means just check start. -1 means check all to end
-        public void Set(int startpos, CheckState state, int end = 0)       
+        public void Set(int startpos, CheckState state, int end = 0, string tagignorelist = "")
         {
             if (end == 0)
                 end = startpos;
@@ -402,7 +402,7 @@ namespace ExtendedControls
 
             for (int i = startpos; i <= end; i++)  // inclusive
             {
-                if (ItemList[i].checkbox != null)
+                if (ItemList[i].checkbox != null && !tagignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))
                     ItemList[i].checkbox.CheckState = state;
             }
         }
@@ -424,9 +424,10 @@ namespace ExtendedControls
         }
 
         // List of options separated by SettingsSplittingChar with  SettingsSplittingChar at end, or
-        // All, or None if all/none are selected and allornone = true
+        // All, or None is returned if allornone = true
         // group options are ignored
-        public virtual string GetChecked(bool allornone)
+        // optional list of tags;tags; to be ignored
+        public virtual string GetChecked(bool allornone, string tagsignorelist = "")
         {
             string ret = "";
 
@@ -434,7 +435,8 @@ namespace ExtendedControls
             int totalchecks = 0;
             for (int i = 0; i < ItemList.Count; i++)
             {
-                if (ItemList[i].checkbox != null && ItemList[i].Group == false )     // if its a check box..
+                // if its an item check box and its not in the ignore list..
+                if (ItemList[i].checkbox != null && ItemList[i].Group == false && !tagsignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))     
                 {
                     //System.Diagnostics.Debug.WriteLine($"Tick on {controllist[i].label.Text}");
                     totalchecks++;
@@ -451,7 +453,7 @@ namespace ExtendedControls
             {
                 if (total == totalchecks)
                     ret = All;
-                if (ret.Length == 0)
+                else if (ret.Length == 0)
                     ret = None;
             }
 
