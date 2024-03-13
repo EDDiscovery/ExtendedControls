@@ -328,31 +328,35 @@ namespace ExtendedControls
         }
 
         // using SettingsSplittingChar as the separator, respects All or All; as a tag for all
-        public void Set(string taglist, bool state = true)        
+        // Does not obey exclusive. You can set group.
+        public void Set(string taglist, bool state = true, int startpos = 0, int end = -1)        
         {
             if (taglist != null)
             {
                 var list = taglist.SplitNoEmptyStrings(SettingsSplittingChar);
                 if (list.Length >= 1 && list[0] == All)      
-                    Set(CheckState.Checked);
+                    SetNonGroup(CheckState.Checked,startpos,end);
                 else
-                    Set(list, state);
+                    Set(list, state,startpos,end);
             }
         }
 
-        // Set taglist. Does not obey exclusive
-        public void Set(IEnumerable<string> taglist, bool state = true)   // null allowed
+        // Set taglist. Does not obey exclusive. You can set group.
+        public void Set(IEnumerable<string> taglist, bool state = true, int startpos = 0, int end = -1)
         {
             if (taglist != null)
-                Set(taglist, state ? CheckState.Checked : CheckState.Unchecked);
+                Set(taglist, state ? CheckState.Checked : CheckState.Unchecked, startpos , end);
         }
 
         // Set taglist. Does not obey exclusive. You can set group.
-        public void Set(IEnumerable<string> taglist, CheckState state = CheckState.Checked)    // empty array is okay
+        public void Set(IEnumerable<string> taglist, CheckState state = CheckState.Checked, int startpos = 0, int end = -1)
         {
             if (taglist != null)
             {
-                for (int i = 0; i < ItemList.Count; i++)
+                if (end < 0)
+                    end = ItemList.Count() - 1;
+
+                for (int i = startpos; i <= end; i++)
                 {
                     if (taglist.Contains(ItemList[i].Tag) && ItemList[i].checkbox != null)
                     {
@@ -363,10 +367,13 @@ namespace ExtendedControls
             }
         }
 
-        // Set all non group on. Does not obey exclusive
-        public void Set(CheckState state)
+        // Set non group on. Does not obey exclusive
+        public void SetNonGroup(CheckState state, int startpos = 0, int end = -1)
         {
-            for (int i = 0; i < ItemList.Count; i++)  // inclusive
+            if (end < 0)
+                end = ItemList.Count() - 1;
+
+            for (int i = startpos; i <= end; i++)  // inclusive
             {
                 if (ItemList[i].checkbox != null && ItemList[i].Group == false)
                     ItemList[i].checkbox.CheckState = state;
@@ -379,21 +386,21 @@ namespace ExtendedControls
             Set(pos, state ? CheckState.Checked : CheckState.Unchecked);
         }
         // from here onwards set
-        public void SetFromToEnd(int pos, bool state)
+        public void SetFromToEnd(int startpos, bool state)
         {
-            Set(pos, state ? CheckState.Checked : CheckState.Unchecked, -1);
+            Set(startpos, state ? CheckState.Checked : CheckState.Unchecked, -1);
         }
 
         // Set from start to end. Does not obey exclusive. You can set group.
         // end = 0 means just check start. -1 means check all to end
-        public void Set(int start, CheckState state, int end = 0)       
+        public void Set(int startpos, CheckState state, int end = 0)       
         {
             if (end == 0)
-                end = start;
+                end = startpos;
             else if (end < 0)
                 end = ItemList.Count() - 1;
 
-            for (int i = start; i <= end; i++)  // inclusive
+            for (int i = startpos; i <= end; i++)  // inclusive
             {
                 if (ItemList[i].checkbox != null)
                     ItemList[i].checkbox.CheckState = state;
