@@ -88,9 +88,8 @@ namespace ExtendedControls
             public bool Enabled { get; set; } = true;       // is control enabled?
             public enum PanelType { Top, Scroll, Bottom }
             public PanelType Panel { get; set; } = PanelType.Scroll;        // which panel to add to
-
             public AnchorStyles Anchor { get; set; } = AnchorStyles.None;       // anchor to window
-
+            public Size MinimumSize { get; set; }                              // for when Anchoring, set minimum size for use if anchoring both top/bottom or left/right. If not set, its set to loaded display min size
             public ContentAlignment? TextAlign { get; set; }                    // label,button. nominal not applied
             public ContentAlignment ContentAlign { get; set; } = ContentAlignment.MiddleLeft;  // align for checkbox
 
@@ -366,9 +365,11 @@ namespace ExtendedControls
         }
 
         public void InitCentred(Form p, Icon icon, string caption, string lname = null, Object callertag = null,
-                                AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false)
+                                AutoScaleMode asm = AutoScaleMode.Font, bool closeicon = false, Size? minsize = null, Size? maxsize = null)
         {
-            Init(icon, new Size(1,1), new Size(50000,50000), new Size(1,1), new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon,
+            Init(icon, minsize.HasValue ? minsize.Value: new Size(1,1), 
+                       maxsize.HasValue ? maxsize.Value : new Size(50000,50000), 
+                       new Size(1,1), new Point((p.Left + p.Right) / 2, (p.Top + p.Bottom) / 2), caption, lname, callertag, closeicon,
                                     HorizontalAlignment.Center, ControlHelpersStaticFunc.VerticalAlignment.Middle, asm);
         }
         public void InitCentred(Form p, Size minsize, Size maxsize, Size requestedsize, Icon icon, string caption, string lname = null, Object callertag = null,
@@ -670,7 +671,7 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void Init(Icon icon, System.Drawing.Size minsize, System.Drawing.Size maxsize, Size requestedsize, System.Drawing.Point pos, 
+        private void Init(Icon icon, Size minsize, Size maxsize, Size requestedsize, Point pos, 
                                 string caption, string lname, Object callertag, bool closeicon,
                                 HorizontalAlignment? halign , ControlHelpersStaticFunc.VerticalAlignment? valign , 
                                 AutoScaleMode asm)
@@ -885,6 +886,8 @@ namespace ExtendedControls
             {
                 entries[i].Location = entries[i].Control.Location;
                 entries[i].Size = entries[i].Control.Size;
+                if (entries[i].MinimumSize == Size.Empty)
+                    entries[i].MinimumSize = entries[i].Size;
             }
 
             initialscrollpanelsize = scrollpanel.Size;
@@ -956,12 +959,15 @@ namespace ExtendedControls
 
                 int widthdelta = scrollpanel.Width - initialscrollpanelsize.Width;
                 int heightdelta = scrollpanel.Height - initialscrollpanelsize.Height;
-                //System.Diagnostics.Debug.WriteLine(Environment.NewLine + "Resize {0} {1} so {2}", widthdelta, heightdelta, outer.ScrollOffset);
+                //System.Diagnostics.Debug.WriteLine($"CF Resize {widthdelta}x{heightdelta} scrollpanel {scrollpanel.Size}");
 
                 foreach ( var en in entries)
                 {
-                    if ( en.Control.Parent == scrollpanel)
-                        en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, widthdelta, heightdelta);
+                    if (en.Control.Parent == scrollpanel)
+                    {
+                        //System.Diagnostics.Debug.WriteLine($"..CF Apply to {en.Control.Name} {en.Control.Size}");
+                        en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, en.MinimumSize, widthdelta, heightdelta);
+                    }
                 }
 
                 Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, Resize, the caller tag
