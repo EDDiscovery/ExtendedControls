@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -30,10 +28,11 @@ namespace ExtendedControls
                             string tooltip = null, 
                             bool cursoratend = false,
                             int widthboxes = 200,           // sizes based on standard dialog size of 8, scaled up
-                            int heightboxes = -1)
+                            int heightboxes = -1,
+                            bool requireinput = false)
         {
             List<string> r = PromptMultiLine.ShowDialog(p, caption, ic, new string[] { lab1 }, 
-                    new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null , cursoratend, widthboxes, heightboxes);
+                    new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null , cursoratend, widthboxes, heightboxes, requireinput);
 
             return r?[0];
         }
@@ -47,7 +46,8 @@ namespace ExtendedControls
                             string[] tooltips = null, 
                             bool cursoratend = false,
                             int widthboxes = 200,           // sizes based on standard dialog size of 12, scaled up
-                            int heightboxes = -1)
+                            int heightboxes = -1,
+                            bool requireinput = false)     // all boxes must have something for OK to be on
         {
             DraggableForm prompt = new DraggableForm()
             {
@@ -75,7 +75,7 @@ namespace ExtendedControls
                 outer.Controls.Add(textLabel);
 
             Label[] lbs = new Label[lab.Length];
-            ExtendedControls.ExtRichTextBox[] tbs = new ExtendedControls.ExtRichTextBox[lab.Length];
+            ExtRichTextBox[] tbs = new ExtRichTextBox[lab.Length];
 
             ToolTip tt = new ToolTip();
             tt.ShowAlways = true;
@@ -89,7 +89,7 @@ namespace ExtendedControls
                 lbs[i] = new Label() { Left = lx, Top = y, AutoSize = true, Text = lab[i] };
                 outer.Controls.Add(lbs[i]);
 
-                tbs[i] = new ExtendedControls.ExtRichTextBox()
+                tbs[i] = new ExtRichTextBox()
                 {
                     Left = 0,       // will be set once we know the paras of all lines
                     Top = y,
@@ -112,11 +112,11 @@ namespace ExtendedControls
                 y += heightboxes + 20;
             }
 
-            ExtendedControls.ExtButton confirmation = new ExtendedControls.ExtButton() { Text = "OK".TxID(ECIDs.MessageBoxTheme_OK), Left = 0, Width = 100, Top = y, DialogResult = DialogResult.OK };
+            ExtButton confirmation = new ExtButton() { Text = "OK".TxID(ECIDs.MessageBoxTheme_OK), Left = 0, Width = 100, Top = y, DialogResult = DialogResult.OK };
             outer.Controls.Add(confirmation);
             confirmation.Click += (sender, e) => { prompt.Close(); };
 
-            ExtendedControls.ExtButton cancel = new ExtendedControls.ExtButton() { Text = "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel), Left = 0, Width = 100, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
+            ExtButton cancel = new ExtButton() { Text = "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel), Left = 0, Width = 100, Top = confirmation.Top, DialogResult = DialogResult.Cancel };
             outer.Controls.Add(cancel);
             cancel.Click += (sender, e) => { prompt.Close(); };
 
@@ -134,7 +134,17 @@ namespace ExtendedControls
                 controlleft = Math.Max(controlleft, lbs[i].Right + 16);     // seems have to do this after sizing, confusingly
 
             for (int i = 0; i < lab.Length; i++)                            // all go here
+            {
                 tbs[i].Left = controlleft;
+                tbs[i].TextBoxChanged += (s, e) => {
+                    if (requireinput)
+                        SetConfirmationState(tbs, confirmation);
+                };
+
+            }
+
+            if ( requireinput )
+                SetConfirmationState(tbs, confirmation);
 
             confirmation.Left = tbs[0].Right - confirmation.Width;          // cancel/confirm based on this
             cancel.Left = confirmation.Left - cancel.Width - 16;
@@ -149,6 +159,25 @@ namespace ExtendedControls
             }
             else
                 return null;
+        }
+
+        private static void PromptMultiLine_TextBoxChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        static private void SetConfirmationState(ExtRichTextBox[] tbs, ExtButton confirmation )
+        {
+            for (int jj = 0; jj < tbs.Length; jj++)
+            {
+                if (!tbs[jj].Text.HasChars())
+                {
+                    confirmation.Enabled = false;
+                    return;
+                }
+            }
+
+            confirmation.Enabled = true;
         }
     }
 
