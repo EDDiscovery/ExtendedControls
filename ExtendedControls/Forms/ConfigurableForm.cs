@@ -771,7 +771,7 @@ namespace ExtendedControls
 
             theme.Apply(this, theme.GetScaledFont(FontScale), ForceNoWindowsBorder);
 
-            contentpanel.BackColor = Color.Red;
+            //contentpanel.BackColor = Color.Red;
             //this.DumpTree(0);
             //System.Diagnostics.Debug.WriteLine($"ConfigurableForm autoscale {this.CurrentAutoScaleDimensions} {this.AutoScaleDimensions} {this.CurrentAutoScaleFactor()}");
             //System.Diagnostics.Debug.WriteLine($"Toppanel height {toppanel?.Height} bottom {bottompanel?.Height}");
