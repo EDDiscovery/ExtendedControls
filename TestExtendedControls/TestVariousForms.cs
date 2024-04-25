@@ -495,7 +495,7 @@ namespace TestExtendedControls
 
         private void extButton39_Click(object sender, EventArgs e)
         {
-            int number = 10;
+            int number = 1000;
             bool[] state = new bool[number];
             string[] names = new string[number];
             for (int i = 0; i < number; i++)
@@ -507,7 +507,7 @@ namespace TestExtendedControls
 
             f.Add(new ExtendedControls.ConfigurableForm.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { Panel = ConfigurableForm.Entry.PanelType.Top });
             f.AddOK(new Point(10, 10), paneltype: ConfigurableForm.Entry.PanelType.Bottom);
-            f.AddBools(names,names, state, 4, 24, 150, 4, 150, "B_");
+            f.AddBools(names,names, state, 4, 24, 4000, 4, 150, "B_");
             f.InstallStandardTriggers();
 
             f.Trigger += (formname, ctrlname, tag) =>

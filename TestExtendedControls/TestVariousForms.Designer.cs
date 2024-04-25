@@ -191,7 +191,7 @@
             // 
             // extButton18
             // 
-            this.extButton18.Location = new System.Drawing.Point(239, 424);
+            this.extButton18.Location = new System.Drawing.Point(239, 296);
             this.extButton18.Name = "extButton18";
             this.extButton18.Size = new System.Drawing.Size(183, 23);
             this.extButton18.TabIndex = 1;
@@ -201,7 +201,7 @@
             // 
             // extButton17
             // 
-            this.extButton17.Location = new System.Drawing.Point(239, 395);
+            this.extButton17.Location = new System.Drawing.Point(239, 267);
             this.extButton17.Name = "extButton17";
             this.extButton17.Size = new System.Drawing.Size(183, 23);
             this.extButton17.TabIndex = 1;
@@ -211,7 +211,7 @@
             // 
             // extButton19
             // 
-            this.extButton19.Location = new System.Drawing.Point(239, 337);
+            this.extButton19.Location = new System.Drawing.Point(239, 209);
             this.extButton19.Name = "extButton19";
             this.extButton19.Size = new System.Drawing.Size(183, 23);
             this.extButton19.TabIndex = 1;
@@ -221,7 +221,7 @@
             // 
             // extButton16
             // 
-            this.extButton16.Location = new System.Drawing.Point(239, 366);
+            this.extButton16.Location = new System.Drawing.Point(239, 238);
             this.extButton16.Name = "extButton16";
             this.extButton16.Size = new System.Drawing.Size(183, 23);
             this.extButton16.TabIndex = 1;
@@ -441,7 +441,7 @@
             // 
             // extButton38
             // 
-            this.extButton38.Location = new System.Drawing.Point(239, 180);
+            this.extButton38.Location = new System.Drawing.Point(12, 464);
             this.extButton38.Name = "extButton38";
             this.extButton38.Size = new System.Drawing.Size(183, 23);
             this.extButton38.TabIndex = 1;
@@ -451,7 +451,7 @@
             // 
             // extButton39
             // 
-            this.extButton39.Location = new System.Drawing.Point(239, 209);
+            this.extButton39.Location = new System.Drawing.Point(12, 493);
             this.extButton39.Name = "extButton39";
             this.extButton39.Size = new System.Drawing.Size(183, 23);
             this.extButton39.TabIndex = 1;
