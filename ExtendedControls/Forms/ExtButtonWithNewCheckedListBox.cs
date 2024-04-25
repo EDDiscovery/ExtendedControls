@@ -35,7 +35,8 @@ namespace ExtendedControls
                             string disabled = null,            // either "" default, or text to use
                             Size? imagesize = null, Size? screenmargin = null, Size? closeboundaryregion = null, 
                             bool multicolumns = false,
-                            IEnumerable<CheckedIconUserControl.Item> groupoptions = null)
+                            IEnumerable<CheckedIconUserControl.Item> groupoptions = null,
+                            bool sortitems = false)
         {
             this.list = standardoptions;
             this.glist = groupoptions;
@@ -48,13 +49,14 @@ namespace ExtendedControls
             this.putsettings = settingschanged;
             this.currentsettings = startsetting;
             this.multicolumns = multicolumns;
+            this.sortitems = sortitems;
         }
 
         // All/None with all items back, and a default closing area
         public void InitAllNoneAllBack(IEnumerable<CheckedIconUserControl.Item> standardoptions,
-                             string startsettings, Action<string,bool> settingschanged, bool disabled = true)
+                             string startsettings, Action<string,bool> settingschanged, bool disabled = true, bool sortitems = false)
         {
-            Init(standardoptions, startsettings, settingschanged, true, false, disabled ? "" : null, closeboundaryregion: new System.Drawing.Size(64, 64), multicolumns:true);
+            Init(standardoptions, startsettings, settingschanged, true, false, disabled ? "" : null, closeboundaryregion: new System.Drawing.Size(64, 64), multicolumns:true, sortitems:sortitems);
         }
 
 
@@ -89,6 +91,9 @@ namespace ExtendedControls
                 DropDown.UC.Add(glist,forcegroup:true);
             if ( list != null)
                 DropDown.UC.Add(list);
+            if ( sortitems )
+                DropDown.UC.Sort();
+
             if (imagesize.HasValue)
                 DropDown.UC.ImageSize = imagesize.Value;
             if (screenmargin.HasValue)
@@ -121,6 +126,7 @@ namespace ExtendedControls
         private bool allornoneback;
         private string currentsettings;
         private bool multicolumns;
+        private bool sortitems;
 
     }
 }
