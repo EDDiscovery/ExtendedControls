@@ -20,6 +20,8 @@ using System.Windows.Forms;
 namespace ExtendedControls
 {
     // a Panel with vertical scroll capabilites. Manually controlled via Value or ScrollTo
+    // on a control add/remove, call BeginPosition/FinishedPosition
+    // on a resize, you need to call Recalculate again manually
 
     public partial class ExtPanelVertScroll : Panel
     {
@@ -48,7 +50,7 @@ namespace ExtendedControls
         {
             System.Diagnostics.Debug.Assert(currentscroll == 0);        // must have reset
 
-            CalculateMaxScroll();
+            Recalcuate();
 
             ResumeLayout();
 
@@ -59,29 +61,45 @@ namespace ExtendedControls
 
         }
 
-        // call if you moved stuff around. 
-        public void CalculateMaxScroll()
+        // call if you have resized your window
+        public void Recalcuate()
         {
+            // find area of controls
+
             int maxy = int.MinValue;
             foreach (Control c in Controls)
             {
-                if (c.Bottom + currentscroll > maxy)        // we add on currentscroll to compensate if we have been scrolling, as the actual control y will have been changed
-                    maxy = c.Bottom+1;
+                int bot = c.Bottom + currentscroll;
+                if (bot > maxy)        // we add on currentscroll to compensate if we have been scrolling, as the actual control y will have been changed
+                    maxy = bot;
             }
 
+            // here we find the maximum scroll, which is the difference between the maximum controls and the client height
             maxscroll = maxy > int.MinValue ? Math.Max(maxy - ClientRectangle.Height , 0) : 0;
 
-            System.Diagnostics.Debug.WriteLine($"Scroll max {maxscroll} scr height {ClientRectangle.Height} maxy {maxy}");
+            // this is the bottom of our view from currentscroll down height
+            int botcurrentview = currentscroll + ClientRectangle.Height;
 
-            ScrollSet?.Invoke(currentscroll, maxscroll);
+            //System.Diagnostics.Debug.WriteLine($"Scroll cur {currentscroll} scrollarea {maxscroll} scr height {ClientRectangle.Height} maxy {maxy} view {currentscroll}..{botcurrentview}");
+
+            // if we have currentscroll non zero , but we are viewing below the max, we can scroll up
+            if (botcurrentview > maxy && currentscroll>0)     
+            {
+                int newscroll = Math.Max(0,currentscroll+ (botcurrentview - maxy));     // change scroll position
+                //System.Diagnostics.Debug.WriteLine($"  view too big, scroll to {newscroll}");
+                ScrollTo(newscroll);
+            }
+            else
+                ScrollSet?.Invoke(currentscroll, maxscroll);        // not below maxy, just inform scroll change
         }
 
-
+        // call for manual go to end
         public void ToEnd()
         {
             ScrollTo(maxscroll);
         }
 
+        // call for manual go to scroll.  Normally we call back
         public void ScrollTo(int value, bool callback = true)
         {
             if (value < 0)
@@ -105,7 +123,7 @@ namespace ExtendedControls
                                                  | BaseUtils.Win32.NativeMethods.SW_SCROLLCHILDREN);
 
                 currentscroll = value;
-                System.Diagnostics.Debug.WriteLine($"Scrolled showing {currentscroll}..{currentscroll + ClientRectangle.Height} max {maxscroll}");
+                //System.Diagnostics.Debug.WriteLine($"Scrolled showing {currentscroll}..{currentscroll + ClientRectangle.Height} max {maxscroll}");
                 Update();
                 if ( callback )
                     ScrollSet?.Invoke(currentscroll, maxscroll);
@@ -117,14 +135,14 @@ namespace ExtendedControls
     }
 
     /// Panel which accepts a ExtPanelVertScroll as child, and has a scroll bar on the right. 
-    /// implements the scroll bar controllin the vert scroll, and mouse wheel
+    /// implements the scroll bar controlling the vert scroll, and mouse wheel
 
     public partial class ExtPanelVertScrollWithBar : Panel
     {
         public int ScrollBarWidth { get { return Font.ScalePixels(24); } }
-
         public int LargeChange { get { return scrollbar.LargeChange; } set { scrollbar.LargeChange = value; } }
         public int SmallChange { get { return scrollbar.SmallChange; } set { scrollbar.SmallChange = value; } }
+        public bool HideScrollBar { get { return scrollbar.HideScrollBar; } set { scrollbar.HideScrollBar = value; } }
 
         public ExtPanelVertScrollWithBar()
         {
@@ -147,7 +165,6 @@ namespace ExtendedControls
                 panel = e.Control as ExtPanelVertScroll;
                 panel.Dock = DockStyle.Fill;
                 panel.ScrollSet += (value, max) => {
-                    //scrollbar.SetValueMaximumMinimum(value, max + scrollbar.LargeChange, 0); 
                     scrollbar.SetValueMaximumMinimum(value, max > 0 ? max+scrollbar.LargeChange : 0, 0); 
                 };
                 panel.MouseWheel += (o, mw) => { 
@@ -159,8 +176,14 @@ namespace ExtendedControls
 
         protected virtual void OnScrollBarChanged(object sender, ScrollEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("On Scroll Bar Changed " + e.NewValue);
+            //System.Diagnostics.Debug.WriteLine("On Scroll Bar Changed " + e.NewValue);
             panel?.ScrollTo(e.NewValue,false);
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            scrollbar.Width = ScrollBarWidth;
         }
 
         private ExtPanelVertScroll panel;

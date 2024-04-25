@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017-2023 EDDiscovery development team
+ * Copyright © 2017-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -317,7 +317,7 @@ namespace ExtendedControls
         public void MoveControlsAt(int atorbelow, int move)
         {
             //System.Diagnostics.Debug.WriteLine($"Move Scaled {atorbelow} by {move}");
-            foreach (Control c in scrollpanel.Controls)
+            foreach (Control c in contentpanel.Controls)
             {
                 if (c.Top >= atorbelow)
                 {
@@ -691,12 +691,17 @@ namespace ExtendedControls
 
             FormBorderStyle = FormBorderStyle.FixedDialog;
 
-            scrollpanel = new ExtPanelScroll() { Name = "ScrollPanel", BorderStyle = PanelBorderStyle, Margin = new Padding(0), Padding = new Padding(0)};
-            scrollpanel.MouseDown += FormMouseDown;
-            scrollpanel.MouseUp += FormMouseUp;
-            Controls.Add(scrollpanel);
+            contentpanel = new ExtPanelVertScroll() { Name = "ContentPanel"};
+            contentpanel.MouseDown += FormMouseDown;
+            contentpanel.MouseUp += FormMouseUp;
+            contentpanel.Dock = DockStyle.Fill;
 
-            Panel titleclosepanel = scrollpanel;
+            vertscrollpanel = new ExtPanelVertScrollWithBar() { Name = "VScrollPanel", BorderStyle = PanelBorderStyle, Margin = new Padding(0), Padding = new Padding(0) };
+            vertscrollpanel.Controls.Add(contentpanel);
+            vertscrollpanel.HideScrollBar = true;
+            Controls.Add(vertscrollpanel);
+
+            Panel titleclosepanel = contentpanel;
 
             if (TopPanelHeight > 0)
             {
@@ -714,10 +719,6 @@ namespace ExtendedControls
                 bottompanel.MouseUp += FormMouseUp;
                 Controls.Add(bottompanel);
             }
-
-            ExtScrollBar scr = new ExtScrollBar() {Name="ScrollPanelScrollBar"};
-            scr.HideScrollBar = true;
-            scrollpanel.Controls.Add(scr);
 
             this.Text = caption;
 
@@ -770,6 +771,7 @@ namespace ExtendedControls
 
             theme.Apply(this, theme.GetScaledFont(FontScale), ForceNoWindowsBorder);
 
+            contentpanel.BackColor = Color.Red;
             //this.DumpTree(0);
             //System.Diagnostics.Debug.WriteLine($"ConfigurableForm autoscale {this.CurrentAutoScaleDimensions} {this.AutoScaleDimensions} {this.CurrentAutoScaleFactor()}");
             //System.Diagnostics.Debug.WriteLine($"Toppanel height {toppanel?.Height} bottom {bottompanel?.Height}");
@@ -806,7 +808,9 @@ namespace ExtendedControls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+          //  System.Diagnostics.Debug.WriteLine($"Form Load Start {Bounds} {ClientRectangle} cp {contentpanel.Size}");
             SizeWindow();
+          //  System.Diagnostics.Debug.WriteLine($"Form Load End {Bounds} {ClientRectangle} cp {contentpanel.Size}");
         }
 
         private void SizeWindow()
@@ -824,7 +828,7 @@ namespace ExtendedControls
                 closebutton.Location = new Point(0, 0);     // set it back to 0,0 to ensure it does not influence find max
 
             // measure the items after scaling in scroll panel. Exclude the scroll bar.
-            Size measureitemsinwindow = scrollpanel.FindMaxSubControlArea(0, 0, new Type[] { typeof(ExtScrollBar) }, false);
+            Size measureitemsinwindow = contentpanel.FindMaxSubControlArea(0, 0, new Type[] { typeof(ExtScrollBar) }, false);
 
             if (toppanel != null)       // width check on this
             {
@@ -861,9 +865,9 @@ namespace ExtendedControls
 
             int scrollbarsizeifheightnotacheived = 0;
             if (AllowResize)                                                        // if resizable, must allow for scroll bar
-                widthw += scrollpanel.ScrollBarWidth;
+                widthw += vertscrollpanel.ScrollBarWidth;
             else
-                scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? scrollpanel.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
+                scrollbarsizeifheightnotacheived = AllowSpaceForScrollBar ? vertscrollpanel.ScrollBarWidth : 0;   // else only if asked, and only applied if needed
 
             widthw += ExtraMarginRightBottom.Width;
 
@@ -882,6 +886,8 @@ namespace ExtendedControls
 
             PositionPanels();
 
+            int curpos = contentpanel.BeingPosition();
+
             for (int i = 0; i < entries.Count; i++)     // record nominal pos after all positioning done
             {
                 entries[i].Location = entries[i].Control.Location;
@@ -890,7 +896,9 @@ namespace ExtendedControls
                     entries[i].MinimumSize = entries[i].Size;
             }
 
-            initialscrollpanelsize = scrollpanel.Size;
+            initialscrollpanelsize = contentpanel.Size;
+
+            contentpanel.FinishedPosition(curpos);
 
             resizerepositionon = true;
 
@@ -912,8 +920,8 @@ namespace ExtendedControls
                 hpos += toppanel.Height + BorderMargin;
             }
 
-            scrollpanel.Location = new Point(BorderMargin, hpos + BorderMargin);
-            scrollpanel.Size = new Size(width, scrollpanelh);
+            vertscrollpanel.Location = new Point(BorderMargin, hpos + BorderMargin);
+            vertscrollpanel.Size = new Size(width, scrollpanelh);
             hpos += scrollpanelh + BorderMargin;
 
             if (bottompanel != null)
@@ -924,20 +932,22 @@ namespace ExtendedControls
 
             if (closebutton != null)      // now position close at correct logical place
             {
-                if (closebutton.Parent == toppanel)
-                    closebutton.Location = new Point(toppanel.Width - closebutton.Width - Font.ScalePixels(6), Font.ScalePixels(6));
+                if ( closebutton.Parent == toppanel )
+                    closebutton.Location = new Point(toppanel.Width - closebutton.Width - Font.ScalePixels(6), Font.ScalePixels(4));
                 else
-                    closebutton.Location = new Point(scrollpanel.Width - closebutton.Width - (AllowSpaceForScrollBar ? scrollpanel.ScrollBarWidth : 0) - Font.ScalePixels(8), Font.ScalePixels(4));
+                    closebutton.Location = new Point(vertscrollpanel.Width - (AllowSpaceForScrollBar ? vertscrollpanel.ScrollBarWidth :0 )-  closebutton.Width - Font.ScalePixels(6), Font.ScalePixels(4));
+                
+                //System.Diagnostics.Debug.WriteLine($"Close button {closebutton.Location} size {closebutton.Size}");
             }
         }
 
         protected override void OnShown(EventArgs e)
         {
-            Control firsttextbox = scrollpanel.Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete), typeof(NumberBoxDouble), typeof(NumberBoxFloat), typeof(NumberBoxLong) });
+            Control firsttextbox = contentpanel.Controls.FirstY(new Type[] { typeof(ExtRichTextBox), typeof(ExtTextBox), typeof(ExtTextBoxAutoComplete), typeof(NumberBoxDouble), typeof(NumberBoxFloat), typeof(NumberBoxLong) });
             if (firsttextbox != null)
                 firsttextbox.Focus();       // focus on first text box
             base.OnShown(e);
-            //System.Diagnostics.Debug.WriteLine("Form Shown " + Bounds + " " + ClientRectangle);
+           // System.Diagnostics.Debug.WriteLine($"Form Shown {Bounds} {ClientRectangle} {contentpanel.Size}");
         }
 
         protected override void OnMove(EventArgs e)
@@ -957,18 +967,20 @@ namespace ExtendedControls
             {
                 PositionPanels();
 
-                int widthdelta = scrollpanel.Width - initialscrollpanelsize.Width;
-                int heightdelta = scrollpanel.Height - initialscrollpanelsize.Height;
+                int widthdelta = contentpanel.Width - initialscrollpanelsize.Width;
+                int heightdelta = contentpanel.Height - initialscrollpanelsize.Height;
                 //System.Diagnostics.Debug.WriteLine($"CF Resize {widthdelta}x{heightdelta} scrollpanel {scrollpanel.Size}");
 
                 foreach ( var en in entries)
                 {
-                    if (en.Control.Parent == scrollpanel)
+                    if (en.Control.Parent == contentpanel)
                     {
                         //System.Diagnostics.Debug.WriteLine($"..CF Apply to {en.Control.Name} {en.Control.Size}");
                         en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, en.MinimumSize, widthdelta, heightdelta);
                     }
                 }
+
+                contentpanel.Recalcuate();
 
                 Trigger?.Invoke(logicalname, "Resize", this.callertag);       // pass back the logical name of dialog, Resize, the caller tag
             }
@@ -980,7 +992,7 @@ namespace ExtendedControls
             {
                 Entry ent = entries[i];
 
-                if (ent.Control != null && (scrollpanel.Controls.Contains(ent.Control) ||
+                if (ent.Control != null && (contentpanel.Controls.Contains(ent.Control) ||
                                 (toppanel != null && toppanel.Controls.Contains(ent.Control)) ||
                                 (bottompanel != null && bottompanel.Controls.Contains(ent.Control))))
                 {
@@ -1006,7 +1018,7 @@ namespace ExtendedControls
                 else if (ent.Panel == Entry.PanelType.Bottom && bottompanel != null)
                     bottompanel.Controls.Add(c);
                 else 
-                    scrollpanel.Controls.Add(c);
+                    contentpanel.Controls.Add(c);
 
                 if (ent.ToolTip != null)
                     tooltipcontrol.SetToolTip(c, ent.ToolTip);
@@ -1413,7 +1425,8 @@ namespace ExtendedControls
 
         private Panel toppanel;
         private Panel bottompanel;
-        private ExtPanelScroll scrollpanel;
+        private ExtPanelVertScroll contentpanel;
+        private ExtPanelVertScrollWithBar vertscrollpanel;
         private ExtButtonDrawn closebutton;
         private Label titlelabel;
         private bool resizerepositionon;

@@ -32,10 +32,18 @@
             this.extButton23 = new ExtendedControls.ExtButton();
             this.extButton22 = new ExtendedControls.ExtButton();
             this.extButton21 = new ExtendedControls.ExtButton();
+            this.extButton37 = new ExtendedControls.ExtButton();
+            this.extButton36 = new ExtendedControls.ExtButton();
+            this.extButton35 = new ExtendedControls.ExtButton();
+            this.extButton34 = new ExtendedControls.ExtButton();
+            this.extButton33 = new ExtendedControls.ExtButton();
             this.extButton5 = new ExtendedControls.ExtButton();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton4 = new ExtendedControls.ExtButton();
             this.extButton3 = new ExtendedControls.ExtButton();
+            this.extButton40 = new ExtendedControls.ExtButton();
+            this.extButton39 = new ExtendedControls.ExtButton();
+            this.extButton38 = new ExtendedControls.ExtButton();
             this.extButton9 = new ExtendedControls.ExtButton();
             this.extButton8 = new ExtendedControls.ExtButton();
             this.extButton7 = new ExtendedControls.ExtButton();
@@ -60,13 +68,7 @@
             this.extButton10 = new ExtendedControls.ExtButton();
             this.extButton6 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
-            this.extButton33 = new ExtendedControls.ExtButton();
-            this.extButton34 = new ExtendedControls.ExtButton();
-            this.extButton35 = new ExtendedControls.ExtButton();
-            this.extButton36 = new ExtendedControls.ExtButton();
-            this.extButton37 = new ExtendedControls.ExtButton();
-            this.extButton38 = new ExtendedControls.ExtButton();
-            this.extButton39 = new ExtendedControls.ExtButton();
+            this.extButton41 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // extButton24
@@ -109,6 +111,56 @@
             this.extButton21.UseVisualStyleBackColor = true;
             this.extButton21.Click += new System.EventHandler(this.extButton21_Click);
             // 
+            // extButton37
+            // 
+            this.extButton37.Location = new System.Drawing.Point(12, 296);
+            this.extButton37.Name = "extButton37";
+            this.extButton37.Size = new System.Drawing.Size(183, 23);
+            this.extButton37.TabIndex = 1;
+            this.extButton37.Text = "ConfigurableForm-T8-rs-force";
+            this.extButton37.UseVisualStyleBackColor = true;
+            this.extButton37.Click += new System.EventHandler(this.extButton37_Click);
+            // 
+            // extButton36
+            // 
+            this.extButton36.Location = new System.Drawing.Point(12, 267);
+            this.extButton36.Name = "extButton36";
+            this.extButton36.Size = new System.Drawing.Size(183, 23);
+            this.extButton36.TabIndex = 1;
+            this.extButton36.Text = "ConfigurableForm-T8-rs-min-max-cr";
+            this.extButton36.UseVisualStyleBackColor = true;
+            this.extButton36.Click += new System.EventHandler(this.extButton36_Click);
+            // 
+            // extButton35
+            // 
+            this.extButton35.Location = new System.Drawing.Point(12, 238);
+            this.extButton35.Name = "extButton35";
+            this.extButton35.Size = new System.Drawing.Size(183, 23);
+            this.extButton35.TabIndex = 1;
+            this.extButton35.Text = "ConfigurableForm-T8-rs-minmax";
+            this.extButton35.UseVisualStyleBackColor = true;
+            this.extButton35.Click += new System.EventHandler(this.extButton35_Click);
+            // 
+            // extButton34
+            // 
+            this.extButton34.Location = new System.Drawing.Point(12, 209);
+            this.extButton34.Name = "extButton34";
+            this.extButton34.Size = new System.Drawing.Size(183, 23);
+            this.extButton34.TabIndex = 1;
+            this.extButton34.Text = "ConfigurableForm-T8-resizemin";
+            this.extButton34.UseVisualStyleBackColor = true;
+            this.extButton34.Click += new System.EventHandler(this.extButton34_Click);
+            // 
+            // extButton33
+            // 
+            this.extButton33.Location = new System.Drawing.Point(12, 180);
+            this.extButton33.Name = "extButton33";
+            this.extButton33.Size = new System.Drawing.Size(183, 23);
+            this.extButton33.TabIndex = 1;
+            this.extButton33.Text = "ConfigurableForm-T8-resize";
+            this.extButton33.UseVisualStyleBackColor = true;
+            this.extButton33.Click += new System.EventHandler(this.extButton33_Click);
+            // 
             // extButton5
             // 
             this.extButton5.Location = new System.Drawing.Point(12, 147);
@@ -148,6 +200,36 @@
             this.extButton3.Text = "ConfigurableForm-T20";
             this.extButton3.UseVisualStyleBackColor = true;
             this.extButton3.Click += new System.EventHandler(this.extButton3_Click);
+            // 
+            // extButton40
+            // 
+            this.extButton40.Location = new System.Drawing.Point(12, 522);
+            this.extButton40.Name = "extButton40";
+            this.extButton40.Size = new System.Drawing.Size(183, 23);
+            this.extButton40.TabIndex = 1;
+            this.extButton40.Text = "CF-TopBottom 1000";
+            this.extButton40.UseVisualStyleBackColor = true;
+            this.extButton40.Click += new System.EventHandler(this.extButton40_Click);
+            // 
+            // extButton39
+            // 
+            this.extButton39.Location = new System.Drawing.Point(12, 493);
+            this.extButton39.Name = "extButton39";
+            this.extButton39.Size = new System.Drawing.Size(183, 23);
+            this.extButton39.TabIndex = 1;
+            this.extButton39.Text = "CF-TopBottom100";
+            this.extButton39.UseVisualStyleBackColor = true;
+            this.extButton39.Click += new System.EventHandler(this.extButton39_Click);
+            // 
+            // extButton38
+            // 
+            this.extButton38.Location = new System.Drawing.Point(12, 464);
+            this.extButton38.Name = "extButton38";
+            this.extButton38.Size = new System.Drawing.Size(183, 23);
+            this.extButton38.TabIndex = 1;
+            this.extButton38.Text = "ConfForm-dynamic";
+            this.extButton38.UseVisualStyleBackColor = true;
+            this.extButton38.Click += new System.EventHandler(this.extButton38_Click);
             // 
             // extButton9
             // 
@@ -389,75 +471,15 @@
             this.extButton1.UseVisualStyleBackColor = true;
             this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
-            // extButton33
+            // extButton41
             // 
-            this.extButton33.Location = new System.Drawing.Point(12, 180);
-            this.extButton33.Name = "extButton33";
-            this.extButton33.Size = new System.Drawing.Size(183, 23);
-            this.extButton33.TabIndex = 1;
-            this.extButton33.Text = "ConfigurableForm-T8-resize";
-            this.extButton33.UseVisualStyleBackColor = true;
-            this.extButton33.Click += new System.EventHandler(this.extButton33_Click);
-            // 
-            // extButton34
-            // 
-            this.extButton34.Location = new System.Drawing.Point(12, 209);
-            this.extButton34.Name = "extButton34";
-            this.extButton34.Size = new System.Drawing.Size(183, 23);
-            this.extButton34.TabIndex = 1;
-            this.extButton34.Text = "ConfigurableForm-T8-resizemin";
-            this.extButton34.UseVisualStyleBackColor = true;
-            this.extButton34.Click += new System.EventHandler(this.extButton34_Click);
-            // 
-            // extButton35
-            // 
-            this.extButton35.Location = new System.Drawing.Point(12, 238);
-            this.extButton35.Name = "extButton35";
-            this.extButton35.Size = new System.Drawing.Size(183, 23);
-            this.extButton35.TabIndex = 1;
-            this.extButton35.Text = "ConfigurableForm-T8-rs-minmax";
-            this.extButton35.UseVisualStyleBackColor = true;
-            this.extButton35.Click += new System.EventHandler(this.extButton35_Click);
-            // 
-            // extButton36
-            // 
-            this.extButton36.Location = new System.Drawing.Point(12, 267);
-            this.extButton36.Name = "extButton36";
-            this.extButton36.Size = new System.Drawing.Size(183, 23);
-            this.extButton36.TabIndex = 1;
-            this.extButton36.Text = "ConfigurableForm-T8-rs-min-max-cr";
-            this.extButton36.UseVisualStyleBackColor = true;
-            this.extButton36.Click += new System.EventHandler(this.extButton36_Click);
-            // 
-            // extButton37
-            // 
-            this.extButton37.Location = new System.Drawing.Point(12, 296);
-            this.extButton37.Name = "extButton37";
-            this.extButton37.Size = new System.Drawing.Size(183, 23);
-            this.extButton37.TabIndex = 1;
-            this.extButton37.Text = "ConfigurableForm-T8-rs-force";
-            this.extButton37.UseVisualStyleBackColor = true;
-            this.extButton37.Click += new System.EventHandler(this.extButton37_Click);
-            // 
-            // extButton38
-            // 
-            this.extButton38.Location = new System.Drawing.Point(12, 464);
-            this.extButton38.Name = "extButton38";
-            this.extButton38.Size = new System.Drawing.Size(183, 23);
-            this.extButton38.TabIndex = 1;
-            this.extButton38.Text = "ConfForm-dynamic";
-            this.extButton38.UseVisualStyleBackColor = true;
-            this.extButton38.Click += new System.EventHandler(this.extButton38_Click);
-            // 
-            // extButton39
-            // 
-            this.extButton39.Location = new System.Drawing.Point(12, 493);
-            this.extButton39.Name = "extButton39";
-            this.extButton39.Size = new System.Drawing.Size(183, 23);
-            this.extButton39.TabIndex = 1;
-            this.extButton39.Text = "ConfForm-LargeAmount";
-            this.extButton39.UseVisualStyleBackColor = true;
-            this.extButton39.Click += new System.EventHandler(this.extButton39_Click);
+            this.extButton41.Location = new System.Drawing.Point(213, 493);
+            this.extButton41.Name = "extButton41";
+            this.extButton41.Size = new System.Drawing.Size(183, 23);
+            this.extButton41.TabIndex = 1;
+            this.extButton41.Text = "CF-TopBottom200";
+            this.extButton41.UseVisualStyleBackColor = true;
+            this.extButton41.Click += new System.EventHandler(this.extButton41_Click);
             // 
             // TestVariousForms
             // 
@@ -475,6 +497,8 @@
             this.Controls.Add(this.extButton2);
             this.Controls.Add(this.extButton4);
             this.Controls.Add(this.extButton3);
+            this.Controls.Add(this.extButton40);
+            this.Controls.Add(this.extButton41);
             this.Controls.Add(this.extButton39);
             this.Controls.Add(this.extButton38);
             this.Controls.Add(this.extButton9);
@@ -547,5 +571,7 @@
         private ExtendedControls.ExtButton extButton37;
         private ExtendedControls.ExtButton extButton38;
         private ExtendedControls.ExtButton extButton39;
+        private ExtendedControls.ExtButton extButton40;
+        private ExtendedControls.ExtButton extButton41;
     }
 }

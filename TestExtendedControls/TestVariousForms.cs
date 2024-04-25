@@ -67,6 +67,7 @@ namespace TestExtendedControls
 
             f.RightMargin = 20;
             f.AllowResize = true;
+            f.AllowSpaceForScrollBar = false;
 
             Theme.Current.FontSize = 12;
 
@@ -89,10 +90,10 @@ namespace TestExtendedControls
             Form parent = this;
 
             f.Add(new ExtendedControls.ConfigurableForm.Entry("L", typeof(Label), "Jump to:", new Point(10, 40), new Size(140, 24), ""));
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxDoubleMinimum = 0, NumberBoxFormat = "0" });
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxDoubleMinimum = 0, NumberBoxFormat = "0" , Anchor = AnchorStyles.Right });
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept"));
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(width - 200, 70), new Size(80, 24), "Press to Cancel"));
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept") { Anchor = AnchorStyles.Right }) ;
+            f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(width - 200, 70), new Size(80, 24), "Press to Cancel") { Anchor = AnchorStyles.Right }) ;
 
             f.Trigger += (dialogname, controlname, tag) =>
             {
@@ -495,7 +496,18 @@ namespace TestExtendedControls
 
         private void extButton39_Click(object sender, EventArgs e)
         {
-            int number = 1000;
+            FillLarge(100, 500,true);
+        }
+        private void extButton40_Click(object sender, EventArgs e)
+        {
+            FillLarge(1000, 4000, true);
+        }
+        private void extButton41_Click(object sender, EventArgs e)
+        {
+            FillLarge(200, 600, true);
+        }
+        private void FillLarge(int number, int vdepth, bool resize)
+        { 
             bool[] state = new bool[number];
             string[] names = new string[number];
             for (int i = 0; i < number; i++)
@@ -507,7 +519,7 @@ namespace TestExtendedControls
 
             f.Add(new ExtendedControls.ConfigurableForm.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { Panel = ConfigurableForm.Entry.PanelType.Top });
             f.AddOK(new Point(10, 10), paneltype: ConfigurableForm.Entry.PanelType.Bottom);
-            f.AddBools(names,names, state, 4, 24, 4000, 4, 150, "B_");
+            f.AddBools(names,names, state, 4, 24, vdepth, 4, 150, "B_");
             f.InstallStandardTriggers();
 
             f.Trigger += (formname, ctrlname, tag) =>
@@ -516,7 +528,7 @@ namespace TestExtendedControls
 
             f.TopPanelHeight = 100;
             f.BottomPanelHeight = 80;
-            f.AllowResize = true;
+            f.AllowResize = resize;
             f.BorderMargin = 5;
 
             //Theme.Current.FontSize = 8f;
@@ -532,6 +544,7 @@ namespace TestExtendedControls
 
 
         }
+
     }
 }
 
