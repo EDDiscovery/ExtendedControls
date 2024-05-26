@@ -126,7 +126,7 @@ namespace ExtendedControls
                 {
                     if ( Others.Count > 0 )
                     {
-                        int pipswanted = PipsPerClick;
+                        int pipswanted = Math.Min(MaxValue - Value, PipsPerClick);      // we only want up to max value
                         int pipsgot = 0;
                         int other = 0;
                         while( pipsgot < pipswanted)    // go around and ask for PipstakenPerClickFromothers until we have enough
