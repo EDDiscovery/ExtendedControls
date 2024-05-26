@@ -24,7 +24,9 @@ namespace ExtendedControls
         [System.ComponentModel.Browsable(true)]
         public override string Text { get { return base.Text;} set { base.Text= value; Invalidate(); } }
 
-        public int Value { get { return pips; } set { pips = value; Invalidate(); } }
+        public Action<MultiPipControl> ValueChanged { get; set; }
+
+        public int Value { get { return pips; } set { if (pips != value) { pips = value; OnValueChanged(); Invalidate(); } } }
         public int MaxValue { get { return pipmax; } set { pipmax = value; Invalidate(); } }
         public int PipsPerClick { get { return pipsperclick; } set { pipsperclick = value; Invalidate(); } }
 
@@ -141,6 +143,11 @@ namespace ExtendedControls
 
                 }
             }
+        }
+
+        protected virtual void OnValueChanged()
+        {
+            ValueChanged?.Invoke(this);
         }
 
 
