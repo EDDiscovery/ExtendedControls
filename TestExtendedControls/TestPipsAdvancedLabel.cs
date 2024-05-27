@@ -31,6 +31,8 @@ namespace TestExtendedControls
             multiPipControl2.Add(multiPipControl3);
             multiPipControl3.Add(multiPipControl1);
             multiPipControl3.Add(multiPipControl2);
+
+            Theme.Current.ApplyStd(this);
         }
 
 

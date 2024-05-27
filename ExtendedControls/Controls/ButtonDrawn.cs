@@ -60,6 +60,7 @@ namespace ExtendedControls
             Restore,
             LeftDelta,
             RightDelta,
+            TextBorder,
 
             None,
         };
@@ -98,6 +99,8 @@ namespace ExtendedControls
         public Color MouseSelectedColor { get; set; } = Color.Green;
         public bool MouseSelectedColorEnable { get; set; } = true;
         public float PanelDisabledScaling { get; set; } = 0.25F;        // scaling when disabled
+        public Color BorderColor { get; set; } = Color.Orange;
+        public int BorderWidth { get; set; } = 1;
 
         public ContentAlignment TextAlign       // Gets or sets the alignment of the <see cref="Control.Text"/> displayed on the <see cref="ExtPanelDrawn"/> when
         {
@@ -116,6 +119,7 @@ namespace ExtendedControls
         public bool AutoEllipsis { get; set; } = false; // Gets or sets a value indicating whether the ellipsis character (...) appears at the right edge of the control
 
         public bool UseMnemonic { get; set; } = true;       // Gets or sets a value indicating whether the first character that is preceded by an ampersand (&amp;) is
+
 
         public bool Selectable
         {
@@ -605,11 +609,13 @@ namespace ExtendedControls
                             break;
                         }
 
-                        case ImageType.InverseText:
-                            cFore = this.BackColor;     // INVERTED
-                            goto case ImageType.Text;   // FALL THROUGH
-                        case ImageType.Text:
+                    case ImageType.InverseText:
+                    case ImageType.TextBorder:
+                    case ImageType.Text:
                         {
+                            if (imageselected == ImageType.InverseText)
+                                cFore = this.BackColor;
+
                             if (!string.IsNullOrWhiteSpace(this.Text))      // draw text
                             {
                                 var txalign = Environment.OSVersion.Platform == PlatformID.Win32NT ? RtlTranslateAlignment(TextAlign) : TextAlign;      // MONO Bug cover over
@@ -626,6 +632,14 @@ namespace ExtendedControls
                                     }
                                 }
                             }
+                            if (imageselected == ImageType.TextBorder)
+                            {
+                                using (var pen = new Pen(BorderColor, BorderWidth))
+                                {
+                                    e.Graphics.DrawRectangle(pen, new Rectangle(BorderWidth-1, BorderWidth-1, ClientSize.Width - BorderWidth * 2, ClientSize.Height - BorderWidth * 2));
+                                }
+                            }
+
                             break;
                         }
                     case ImageType.Move:
