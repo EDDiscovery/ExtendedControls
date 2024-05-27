@@ -634,9 +634,10 @@ namespace ExtendedControls
                             }
                             if (imageselected == ImageType.TextBorder)
                             {
+                                e.Graphics.SmoothingMode = SmoothingMode.None;
                                 using (var pen = new Pen(BorderColor, BorderWidth))
                                 {
-                                    e.Graphics.DrawRectangle(pen, new Rectangle(BorderWidth-1, BorderWidth-1, ClientSize.Width - BorderWidth * 2, ClientSize.Height - BorderWidth * 2));
+                                    e.Graphics.DrawRectangle(pen, new Rectangle(BorderWidth-1, BorderWidth-1, ClientSize.Width - BorderWidth * 1, ClientSize.Height - BorderWidth * 1));
                                 }
                             }
 
