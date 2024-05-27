@@ -337,12 +337,11 @@ namespace ExtendedControls
         {
 
 #if DEBUG
-            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
+            System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + (myControl.GetType().Name + ":" + myControl.Name??"") + " : " + myControl.GetHeirarchy(false));
-            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
+           // System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
             myControl.SuspendLayout();
-
 
             const bool paneldebugmode = false;      // set for some help in those pesky panels
 
@@ -354,7 +353,7 @@ namespace ExtendedControls
             // this dodge allows no themeing on controls
             if (myControl.TabIndex == TabIndexNoThemeIndicator)
             {
-                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Tabindex indicates no theme!");
+                //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Tabindex indicates no theme!");
                 dochildren = false;
             }
             else if (myControl is Form)
@@ -457,6 +456,10 @@ namespace ExtendedControls
             {
                 ThemeButton(myControl);
             }
+            //else if (myControl is MultiPipControl)
+            //{
+            //    ThemeButton(myControl);
+            //}
             else if (myControl is ExtTabControl)
             {
                 ExtTabControl ctrl = (ExtTabControl)myControl;
@@ -557,6 +560,14 @@ namespace ExtendedControls
             else if (myControl is Chart)
             {
                 System.Diagnostics.Debug.Assert(false, "Warning - Chart not allowed");
+            }
+            else if (myControl is MultiPipControl)
+            {
+                MultiPipControl ctrl = (MultiPipControl)myControl;
+                ctrl.ForeColor = colors[CI.button_text];
+                ctrl.PipColor = colors[CI.button_text];
+                ctrl.HalfPipColor = colors[CI.button_text].MultiplyBrightness(0.6f);
+                ctrl.BorderColor = colors[CI.grid_borderlines];
             }
             else if (myControl is ExtPanelResizer)      // Resizers only show when no frame is on
             {

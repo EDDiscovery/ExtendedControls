@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class MultiPipControl : Panel
+    public class MultiPipControl : Control
     {
         [System.ComponentModel.Browsable(true)]
         public override string Text { get { return base.Text;} set { base.Text= value; Invalidate(); } }
