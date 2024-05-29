@@ -30,16 +30,36 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.labelData1 = new ExtendedControls.LabelData();
             this.extButtonDrawn1 = new ExtendedControls.ExtButtonDrawn();
             this.multiPipControl3 = new ExtendedControls.MultiPipControl();
             this.multiPipControl2 = new ExtendedControls.MultiPipControl();
             this.multiPipControl1 = new ExtendedControls.MultiPipControl();
+            this.labelData2 = new ExtendedControls.LabelData();
             this.SuspendLayout();
+            // 
+            // labelData1
+            // 
+            this.labelData1.BorderColor = System.Drawing.Color.Orange;
+            this.labelData1.BorderWidth = 2;
+            this.labelData1.BoxStyle = ExtendedControls.LabelData.DataBoxStyle.AllAround;
+            this.labelData1.Data = null;
+            this.labelData1.DataFont = null;
+            this.labelData1.ForeColor = System.Drawing.Color.DarkOrange;
+            this.labelData1.InterSpacing = 1;
+            this.labelData1.Location = new System.Drawing.Point(12, 377);
+            this.labelData1.Name = "labelData1";
+            this.labelData1.Size = new System.Drawing.Size(828, 23);
+            this.labelData1.TabIndex = 2;
+            this.labelData1.TabSpacingData = 0;
+            this.labelData1.Text = "DataLab1";
             // 
             // extButtonDrawn1
             // 
             this.extButtonDrawn1.AutoEllipsis = false;
             this.extButtonDrawn1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.extButtonDrawn1.BorderColor = System.Drawing.Color.Orange;
+            this.extButtonDrawn1.BorderWidth = 1;
             this.extButtonDrawn1.Image = null;
             this.extButtonDrawn1.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.TextBorder;
             this.extButtonDrawn1.Location = new System.Drawing.Point(74, 273);
@@ -118,11 +138,29 @@
             this.multiPipControl1.Value = 4;
             this.multiPipControl1.ValueChanged = null;
             // 
+            // labelData2
+            // 
+            this.labelData2.BorderColor = System.Drawing.Color.Orange;
+            this.labelData2.BorderWidth = 2;
+            this.labelData2.BoxStyle = ExtendedControls.LabelData.DataBoxStyle.AllAround;
+            this.labelData2.Data = null;
+            this.labelData2.DataFont = null;
+            this.labelData2.ForeColor = System.Drawing.Color.DarkOrange;
+            this.labelData2.InterSpacing = 1;
+            this.labelData2.Location = new System.Drawing.Point(12, 406);
+            this.labelData2.Name = "labelData2";
+            this.labelData2.Size = new System.Drawing.Size(828, 23);
+            this.labelData2.TabIndex = 2;
+            this.labelData2.TabSpacingData = 0;
+            this.labelData2.Text = "DataLab2";
+            // 
             // TestPipsAdvancedLabel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 509);
+            this.Controls.Add(this.labelData2);
+            this.Controls.Add(this.labelData1);
             this.Controls.Add(this.extButtonDrawn1);
             this.Controls.Add(this.multiPipControl3);
             this.Controls.Add(this.multiPipControl2);
@@ -139,5 +177,7 @@
         private ExtendedControls.MultiPipControl multiPipControl2;
         private ExtendedControls.MultiPipControl multiPipControl3;
         private ExtendedControls.ExtButtonDrawn extButtonDrawn1;
+        private ExtendedControls.LabelData labelData1;
+        private ExtendedControls.LabelData labelData2;
     }
 }
