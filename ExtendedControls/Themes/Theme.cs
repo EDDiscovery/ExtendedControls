@@ -563,7 +563,7 @@ namespace ExtendedControls
                 ctrl.ForeColor = colors[CI.button_text];
                 ctrl.PipColor = colors[CI.button_text];
                 ctrl.HalfPipColor = colors[CI.button_text].MultiplyBrightness(0.6f);
-                ctrl.BorderColor = colors[CI.textbox_border];
+                ctrl.BorderColor = colors[CI.grid_borderlines];
             }
             else if (myControl is ExtPanelResizer)      // Resizers only show when no frame is on
             {
@@ -621,7 +621,7 @@ namespace ExtendedControls
                 ctrl.MouseOverColor = colors[CI.label].Multiply(mouseoverscaling);
                 ctrl.MouseSelectedColor = colors[CI.label].Multiply(mouseselectedscaling);
                 ctrl.BorderWidth = 2;
-                ctrl.BorderColor = colors[CI.textbox_border];
+                ctrl.BorderColor = colors[CI.grid_borderlines];
 
                 System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
                 colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
