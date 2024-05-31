@@ -50,6 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestImportExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestImportExport.Designer.cs">
+      <DependentUpon>TestImportExport.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestPipsAdvancedLabel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,6 +316,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestImportExport.resx">
+      <DependentUpon>TestImportExport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestPipsAdvancedLabel.resx">
       <DependentUpon>TestPipsAdvancedLabel.cs</DependentUpon>
     </EmbeddedResource>

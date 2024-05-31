@@ -62,5 +62,21 @@ namespace ExtendedControls
 
         ExtPanelRollUp_RUPPin,
         ExtPanelRollUp_RUPMarker,
+
+        ImportExportForm, // Control 'Export'
+        ImportExportForm_buttonExport, // Control 'Export'
+        ImportExportForm_ImportTitle,
+        ImportExportForm_ImportButton,
+        ImportExportForm_labelCVSSep, // Control 'CSV Separator'
+        ImportExportForm_radioButtonComma, // Control 'Comma'
+        ImportExportForm_radioButtonSemiColon, // Control 'Semicolon'
+        ImportExportForm_checkBoxIncludeHeader, // Control 'Include Header'
+        ImportExportForm_checkBoxCustomAutoOpen, // Control 'Open'
+        ImportExportForm_labelUTCEnd, // Control 'UTC'
+        ImportExportForm_labelUTCStart, // Control 'UTC'
+        ImportExportForm_labelPaste,
+        ImportExportForm_extRadioButtonTab,
+        ImportExportForm_extCheckBoxExcludeHeader,
+        ImportExportForm_labelSaveImport
     }
 }
