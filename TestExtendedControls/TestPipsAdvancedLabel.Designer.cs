@@ -30,13 +30,48 @@
         {
             this.components = new System.ComponentModel.Container();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.labelData3 = new ExtendedControls.LabelData();
+            this.labelData2 = new ExtendedControls.LabelData();
             this.labelData1 = new ExtendedControls.LabelData();
             this.extButtonDrawn1 = new ExtendedControls.ExtButtonDrawn();
             this.multiPipControl3 = new ExtendedControls.MultiPipControl();
             this.multiPipControl2 = new ExtendedControls.MultiPipControl();
             this.multiPipControl1 = new ExtendedControls.MultiPipControl();
-            this.labelData2 = new ExtendedControls.LabelData();
             this.SuspendLayout();
+            // 
+            // labelData3
+            // 
+            this.labelData3.BorderColor = System.Drawing.Color.Orange;
+            this.labelData3.BorderWidth = 2;
+            this.labelData3.BoxStyle = ExtendedControls.LabelData.DataBoxStyle.AllAround;
+            this.labelData3.Data = null;
+            this.labelData3.DataFont = null;
+            this.labelData3.ForeColor = System.Drawing.Color.DarkOrange;
+            this.labelData3.InterSpacing = 1;
+            this.labelData3.Location = new System.Drawing.Point(12, 450);
+            this.labelData3.Name = "labelData3";
+            this.labelData3.NoDataText = null;
+            this.labelData3.Size = new System.Drawing.Size(828, 66);
+            this.labelData3.TabIndex = 2;
+            this.labelData3.TabSpacingData = 0;
+            this.labelData3.Text = "DataLab3";
+            // 
+            // labelData2
+            // 
+            this.labelData2.BorderColor = System.Drawing.Color.Orange;
+            this.labelData2.BorderWidth = 2;
+            this.labelData2.BoxStyle = ExtendedControls.LabelData.DataBoxStyle.AllAround;
+            this.labelData2.Data = null;
+            this.labelData2.DataFont = null;
+            this.labelData2.ForeColor = System.Drawing.Color.DarkOrange;
+            this.labelData2.InterSpacing = 1;
+            this.labelData2.Location = new System.Drawing.Point(12, 415);
+            this.labelData2.Name = "labelData2";
+            this.labelData2.NoDataText = null;
+            this.labelData2.Size = new System.Drawing.Size(828, 32);
+            this.labelData2.TabIndex = 2;
+            this.labelData2.TabSpacingData = 0;
+            this.labelData2.Text = "DataLab2";
             // 
             // labelData1
             // 
@@ -49,7 +84,8 @@
             this.labelData1.InterSpacing = 1;
             this.labelData1.Location = new System.Drawing.Point(12, 377);
             this.labelData1.Name = "labelData1";
-            this.labelData1.Size = new System.Drawing.Size(828, 23);
+            this.labelData1.NoDataText = null;
+            this.labelData1.Size = new System.Drawing.Size(828, 32);
             this.labelData1.TabIndex = 2;
             this.labelData1.TabSpacingData = 0;
             this.labelData1.Text = "DataLab1";
@@ -138,27 +174,12 @@
             this.multiPipControl1.Value = 4;
             this.multiPipControl1.ValueChanged = null;
             // 
-            // labelData2
-            // 
-            this.labelData2.BorderColor = System.Drawing.Color.Orange;
-            this.labelData2.BorderWidth = 2;
-            this.labelData2.BoxStyle = ExtendedControls.LabelData.DataBoxStyle.AllAround;
-            this.labelData2.Data = null;
-            this.labelData2.DataFont = null;
-            this.labelData2.ForeColor = System.Drawing.Color.DarkOrange;
-            this.labelData2.InterSpacing = 1;
-            this.labelData2.Location = new System.Drawing.Point(12, 406);
-            this.labelData2.Name = "labelData2";
-            this.labelData2.Size = new System.Drawing.Size(828, 23);
-            this.labelData2.TabIndex = 2;
-            this.labelData2.TabSpacingData = 0;
-            this.labelData2.Text = "DataLab2";
-            // 
             // TestPipsAdvancedLabel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 509);
+            this.Controls.Add(this.labelData3);
             this.Controls.Add(this.labelData2);
             this.Controls.Add(this.labelData1);
             this.Controls.Add(this.extButtonDrawn1);
@@ -179,5 +200,6 @@
         private ExtendedControls.ExtButtonDrawn extButtonDrawn1;
         private ExtendedControls.LabelData labelData1;
         private ExtendedControls.LabelData labelData2;
+        private ExtendedControls.LabelData labelData3;
     }
 }

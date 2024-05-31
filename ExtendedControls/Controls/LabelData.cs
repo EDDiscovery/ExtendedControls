@@ -66,82 +66,131 @@ namespace ExtendedControls
                 {
                     int brace = text.IndexOf('{', pos);
 
-                    string textpart = brace >= 0 ? text.Substring(pos, brace-pos).Trim() : text.Substring(pos).Trim();
+                    string textpart = brace >= 0 ? text.Substring(pos, brace-pos) : text.Substring(pos);
 
-                    pos = brace >= 0 ? brace : text.Length;
+                    pos = brace >= 0 ? brace : text.Length;     // move to brace pos or eot
 
                     string datavalue = "";
 
-                    if (brace >= 0)
+                    while (brace >= 0)        // collect all the values into a string, allow {..}+separ{} format
                     {
-                        while (true)        // collect all the values into a string, allow {..}+separ{} format
+                        int endpart = text.IndexOfAny(new char[] { '}', '|' }, brace + 1);
+
+                        if (endpart > 0)
                         {
-                            int endbrace = text.IndexOf('}', pos);
-                            pos = endbrace + 1;
-                            string ctrl = text.Substring(brace + 1, endbrace - brace - 1);
-
-                            datavalue += Data != null && Data.Length > datanum ? string.Format("{0:" + ctrl + "}", Data[datanum++]) : "???";
-
-                            if (pos < text.Length - 1 && text[pos] == '+')
+                            string ctrl = text.Substring(brace + 1, endpart - brace - 1);
+                            try
                             {
-                                brace = text.IndexOf("{", pos);
-                                if (brace > 0)
-                                {
-                                    datavalue += text.Substring(pos + 1, brace - pos - 1);
-                                    pos = brace;
-                                }
-                                else
-                                    break;
+                                datavalue += Data != null && Data.Length > datanum ? string.Format("{0:" + ctrl + "}", Data[datanum++]) : "???";
+                            }
+                            catch
+                            {
+                                datavalue += $"Formatting error {ctrl}";
+                            }
+
+                            if (text[endpart] == '}')       // end of text..
+                            {
+                                pos = endpart + 1;
+                                break;
                             }
                             else
-                                break;
-                        }
-                    }
-
-                    if (textpart.HasChars())
-                    {
-                        var tsize = TextRenderer.MeasureText(textpart, Font);
-
-                        if ( tabspacing != 0 && xpos != 0)      // try and align
-                        {
-                            int nexttab = (xpos / tabspacing + 1) * tabspacing;
-                            int textpos = nexttab - tsize.Width - InterSpacing;
-                            if (textpos > xpos)     // only if we don't butt into what we have already done
-                                xpos = textpos;
-                        }
-
-                        //System.Diagnostics.Debug.WriteLine($"Output text `{textpart}` at {xpos}");
-                        TextRenderer.DrawText(pe.Graphics, textpart, Font, new Rectangle(xpos, 1, tsize.Width, Font.Height), ForeColor);
-                        xpos += tsize.Width + InterSpacing;
-                    }
-
-                    if (datavalue.HasChars())
-                    {
-                        var dfont = DataFont ?? Font;
-
-                        var size = TextRenderer.MeasureText(datavalue, dfont);
-
-                        if (boxstyle != DataBoxStyle.None)
-                        {
-                            using (Pen pen = new Pen(bordercolor, borderwidth))
                             {
-                                if (boxstyle == DataBoxStyle.AllAround)
-                                    pe.Graphics.DrawRectangle(pen, xpos + borderwidth - 1, borderwidth, size.Width - (BorderWidth - 1) - 1, dfont.Height);
-                                else if (boxstyle == DataBoxStyle.TopBottom)
+                                if (endpart + 1 < text.Length && text[endpart + 1] != '|')  // if not ||
                                 {
-                                    pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, borderwidth, xpos + size.Width - (BorderWidth - 1) - 1, borderwidth);
-                                    pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, dfont.Height, xpos + size.Width - (BorderWidth - 1) - 1, dfont.Height);
+                                    int indext = text.IndexOfAny(new char[] { '}', '|' }, endpart + 1);
+
+                                    if (indext >= 0)
+                                    {
+                                        datavalue += text.Substring(endpart + 1, indext - endpart - 1);
+
+                                        if (text[indext] == '}')
+                                        {
+                                            pos = indext + 1;
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            brace = indext;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        pos = text.Length; // terminate
+                                        break;
+                                    }
                                 }
                                 else
-                                {
-                                    pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, dfont.Height, xpos + size.Width - (BorderWidth - 1) - 1, dfont.Height);
-                                }
+                                    brace = endpart + 1;
                             }
                         }
+                        else
+                        {
+                            pos = text.Length;      // terminate
+                            break;
+                        }
+                    }
 
-                        //System.Diagnostics.Debug.WriteLine($".. Output value `{datavalue}` at {xpos}");
-                        TextRenderer.DrawText(pe.Graphics, datavalue, dfont, new Rectangle(xpos, 1, size.Width, Font.Height), ForeColor);
-                        xpos += size.Width + InterSpacing;
+                    //     System.Diagnostics.Debug.WriteLine($"Part `{textpart}` data `{datavalue}`");
+
+                    pe.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    using (var brush = new SolidBrush(ForeColor))
+                    {
+                        if (textpart.HasChars())
+                        {
+                            //var tsize = TextRenderer.MeasureText(textpart, Font, new Size(1920, 50));
+                            var tsize = pe.Graphics.MeasureString(textpart, Font, new Size(10000, 10000), StringFormat.GenericTypographic).ToSize();
+
+                            if ( tabspacing != 0 && xpos != 0)      // try and align
+                            {
+                                int nexttab = (xpos / tabspacing + 1) * tabspacing;
+                                int textpos = nexttab - tsize.Width - InterSpacing;
+                                if (textpos > xpos)     // only if we don't butt into what we have already done
+                                    xpos = textpos;
+                            }
+
+                            //System.Diagnostics.Debug.WriteLine($"Output text `{textpart}` at {xpos} - {xpos + tsize.Width} {tsize}");
+
+                            pe.Graphics.DrawString(textpart, Font, brush, new Point(xpos, 1), StringFormat.GenericTypographic);
+                            //TextRenderer.DrawText(pe.Graphics, textpart, Font, new Rectangle(xpos, 1, tsize.Width, Font.Height), ForeColor);
+
+                            xpos += tsize.Width + InterSpacing;
+                        }
+
+                        if (datavalue.HasChars())
+                        {
+                            var dfont = DataFont ?? Font;
+
+                            //var tsize = TextRenderer.MeasureText(datavalue, dfont, new Size(1920, 50));     // this overestimates, the bottom clips!
+                            var tsize = pe.Graphics.MeasureString(datavalue, dfont, new Size(10000, 10000), StringFormat.GenericTypographic).ToSize();
+                            tsize.Width += BorderWidth * 2;
+
+                            if (boxstyle != DataBoxStyle.None)
+                            {
+                                using (Pen pen = new Pen(bordercolor, borderwidth))
+                                {
+                                    if (boxstyle == DataBoxStyle.AllAround)
+                                    {
+                                        pe.Graphics.DrawRectangle(pen, xpos + borderwidth - 1, borderwidth, tsize.Width - (BorderWidth - 1), dfont.Height);
+                                    }
+                                    else if (boxstyle == DataBoxStyle.TopBottom)
+                                    {
+                                        pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, borderwidth, xpos + tsize.Width - (BorderWidth - 1) - 1, borderwidth);
+                                        pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, dfont.Height, xpos + tsize.Width - (BorderWidth - 1) - 1, dfont.Height);
+                                    }
+                                    else
+                                    {
+                                        pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, dfont.Height, xpos + tsize.Width - (BorderWidth - 1) - 1, dfont.Height);
+                                    }
+                                }
+                            }
+
+                            //System.Diagnostics.Debug.WriteLine($"..Output data `{datavalue}` at {xpos} - {xpos + tsize.Width} {tsize}");
+
+                            pe.Graphics.DrawString(datavalue, dfont, brush, new Point(xpos + BorderWidth, 1), StringFormat.GenericTypographic);
+                            //TextRenderer.DrawText(pe.Graphics, datavalue, dfont, new Rectangle(xpos + BorderWidth, 1, tsize.Width - BorderWidth*2, Font.Height), ForeColor);
+
+                            xpos += tsize.Width + InterSpacing;
+                        }
                     }
                 }
             }
