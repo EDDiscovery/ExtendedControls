@@ -78,7 +78,7 @@
             this.panelBottom.BackColor = System.Drawing.SystemColors.Control;
             this.panelBottom.Controls.Add(this.buttonCancel);
             this.panelBottom.Controls.Add(this.buttonExport);
-            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.Location = new System.Drawing.Point(0, 418);
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Size = new System.Drawing.Size(470, 36);
@@ -442,14 +442,14 @@
             this.extTextBoxSaveImport.EndButtonSize16ths = 10;
             this.extTextBoxSaveImport.EndButtonVisible = false;
             this.extTextBoxSaveImport.InErrorCondition = false;
-            this.extTextBoxSaveImport.Location = new System.Drawing.Point(90, 7);
+            this.extTextBoxSaveImport.Location = new System.Drawing.Point(180, 7);
             this.extTextBoxSaveImport.Multiline = false;
             this.extTextBoxSaveImport.Name = "extTextBoxSaveImport";
             this.extTextBoxSaveImport.ReadOnly = false;
             this.extTextBoxSaveImport.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.extTextBoxSaveImport.SelectionLength = 0;
             this.extTextBoxSaveImport.SelectionStart = 0;
-            this.extTextBoxSaveImport.Size = new System.Drawing.Size(341, 23);
+            this.extTextBoxSaveImport.Size = new System.Drawing.Size(251, 23);
             this.extTextBoxSaveImport.TabIndex = 12;
             this.extTextBoxSaveImport.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.extTextBoxSaveImport.TextNoChange = "";

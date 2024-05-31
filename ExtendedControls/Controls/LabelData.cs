@@ -32,11 +32,13 @@ namespace ExtendedControls
 
         public Font DataFont { get { return datafont; } set { datafont = value; Invalidate(); } }
 
+        public string NoDataText { get { return nodatatext; } set { nodatatext = value; Invalidate(); } }         // if set, and Data == null, this is printed
+
         public enum DataBoxStyle { None, AllAround, TopBottom , Underline }
 
         public DataBoxStyle BoxStyle { get { return boxstyle; } set { boxstyle = value; Invalidate(); } }
 
-        public object[] Data {get;set;}
+        public object[] Data { get { return data; } set { data = value; Invalidate(); } }
 
         public LabelData()
         {
@@ -52,19 +54,21 @@ namespace ExtendedControls
 
         protected override void OnPaint(PaintEventArgs pe)
         {
-            if (Text.HasChars())        // if we are painting text
+            string text = Data != null || NoDataText == null ? Text : NoDataText != null ? NoDataText : null;  
+
+            if (text.HasChars())        // if we are painting text
             {
                 int xpos = 0;
                 int pos = 0;
                 int datanum = 0;
 
-                while( pos < Text.Length)
+                while( pos < text.Length)
                 {
-                    int brace = Text.IndexOf('{', pos);
+                    int brace = text.IndexOf('{', pos);
 
-                    string textpart = brace >= 0 ? Text.Substring(pos, brace-pos).Trim() : Text.Substring(pos).Trim();
+                    string textpart = brace >= 0 ? text.Substring(pos, brace-pos).Trim() : text.Substring(pos).Trim();
 
-                    pos = brace >= 0 ? brace : Text.Length;
+                    pos = brace >= 0 ? brace : text.Length;
 
                     string datavalue = "";
 
@@ -72,18 +76,18 @@ namespace ExtendedControls
                     {
                         while (true)        // collect all the values into a string, allow {..}+separ{} format
                         {
-                            int endbrace = Text.IndexOf('}', pos);
+                            int endbrace = text.IndexOf('}', pos);
                             pos = endbrace + 1;
-                            string ctrl = Text.Substring(brace + 1, endbrace - brace - 1);
+                            string ctrl = text.Substring(brace + 1, endbrace - brace - 1);
 
                             datavalue += Data != null && Data.Length > datanum ? string.Format("{0:" + ctrl + "}", Data[datanum++]) : "???";
 
-                            if (pos < Text.Length - 1 && Text[pos] == '+')
+                            if (pos < text.Length - 1 && text[pos] == '+')
                             {
-                                brace = Text.IndexOf("{", pos);
+                                brace = text.IndexOf("{", pos);
                                 if (brace > 0)
                                 {
-                                    datavalue += Text.Substring(pos + 1, brace - pos - 1);
+                                    datavalue += text.Substring(pos + 1, brace - pos - 1);
                                     pos = brace;
                                 }
                                 else
@@ -152,7 +156,8 @@ namespace ExtendedControls
         private int tabspacing= 0;
         private Font datafont = null;
         private DataBoxStyle boxstyle = DataBoxStyle.AllAround;
-
+        private object[] data = null;
+        private string nodatatext = null;
 
     }
 }

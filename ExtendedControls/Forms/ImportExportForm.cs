@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2019-2023 EDDiscovery development team
+ * Copyright © 2019-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -20,14 +20,15 @@ namespace ExtendedControls
     public partial class ImportExportForm : ExtendedControls.DraggableForm
     {
         public int SelectedIndex { get; private set; }      // item selected
-        public DateTime StartTimeUTC { get { return customDateTimePickerFrom.Value; } }
-        public DateTime EndTimeUTC { get { return customDateTimePickerTo.Value; } }
+        public DateTime StartTime { get { return customDateTimePickerFrom.Value; } }        // time picker here is Kind-less, its up to you do control that aspect
+        public DateTime EndTime { get { return customDateTimePickerTo.Value; } }
         public string Delimiter { get { return extRadioButtonTab.Checked ? "\t" : radioButtonComma.Checked ? "," : ";"; } }
         public bool AutoOpen { get { return checkBoxCustomAutoOpen.Checked; } }
         public bool IncludeHeader { get { return checkBoxIncludeHeader.Checked; } }
         public bool ExcludeHeader { get { return extCheckBoxExcludeHeader.Checked; } }
-        public string Path { get; private set; }        // for imports or export, path selected.   For imports, non null means it a file, else may be text..
-        public string ImportText { get; private set; }        // for imports, with an import box, text
+        public string Path { get; private set; }                // for imports or export, path selected.   For imports, non null means it a file, else may be text..
+        public string ImportText { get; private set; }        // for imports, with an import box, text if set, else Null meaning its a file
+        public string SaveImportAs { get { return extTextBoxSaveImport.Text; } }    // non empty meaning wants to save
         public ImportExportForm()
         {
             InitializeComponent();
@@ -60,16 +61,18 @@ namespace ExtendedControls
         // outputext : per selection, the dialog formatted list of extensions ie. "JSON|*.json|All|*.*", or null = csv.  Modulo in. If null, its CSV 
         // suggestedfilenames : name given per selection as the suggested name. Modulo in. If null, blank
 
-        public void Export(string[] selectionlistp, ShowFlags[] showflagsp = null, string[] outputextp = null, string[] suggestedfilenamesp = null)
+        public void Export(string[] selectionlistp, ShowFlags[] showflagsp = null, string[] outputextp = null, string[] suggestedfilenamesp = null,
+                            DateTime? pickerfromtimesel = null, DateTime? pickertotimesel = null, bool includeheader = true, bool autoopen = true, System.Drawing.Icon deficon = null)
         {
-            Init(false, selectionlistp, showflagsp, outputextp, suggestedfilenamesp);
+            Init(false, selectionlistp, showflagsp, outputextp, suggestedfilenamesp,pickerfromtimesel,pickertotimesel,includeheader,autoopen,deficon);
         }
-        public void Import(string[] selectionlistp, ShowFlags[] showflagsp = null, string[] inputextp = null)
+        public void Import(string[] selectionlistp, ShowFlags[] showflagsp = null, string[] inputextp = null, System.Drawing.Icon deficon = null)
         {
-            Init(true, selectionlistp, showflagsp, inputextp, null);
+            Init(true, selectionlistp, showflagsp, inputextp, deficon:deficon);
         }
 
-        public string ReadSource()      // get text of source..
+        // get text of source.. null if can't read.  reads from dragged file content, or from file
+        public string ReadSource()      
         {
             if (ImportText.HasChars())
             {
@@ -105,7 +108,7 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void Init(bool import, string[] selectionlistp, ShowFlags[] showflagsp = null, string[] outputextp = null, string[] suggestedfilenamesp = null,
+        protected void Init(bool import, string[] selectionlistp, ShowFlags[] showflagsp = null, string[] outputextp = null, string[] suggestedfilenamesp = null,
                                 DateTime? pickerfromtimesel = null, DateTime? pickertotimesel = null, bool includeheader = true, bool autoopen = true, 
                                 System.Drawing.Icon deficon = null)
         {
@@ -115,7 +118,7 @@ namespace ExtendedControls
             if (showflagsp == null)
                 showflagsp = new ShowFlags[] { ShowFlags.ShowDateTimeCSVOpenInclude };
 
-            if (showflagsp.Length == selectionlistp.Length)
+            if (showflagsp.Length >= selectionlistp.Length)     // if we have at least as many flags as selection list
                 showflags = showflagsp;
             else
             {
@@ -127,7 +130,7 @@ namespace ExtendedControls
             if (outputextp == null)
                 outputextp = new string[] { "CSV| *.csv" };
 
-            if (outputextp.Length == selectionlistp.Length)
+            if (outputextp.Length >= selectionlistp.Length)     // if we have at least as many..
                 outputext = outputextp;
             else
             {
@@ -139,7 +142,7 @@ namespace ExtendedControls
             if (suggestedfilenamesp == null)
                 suggestedfilenamesp = new string[] {""};
 
-            if (suggestedfilenamesp.Length == selectionlistp.Length)
+            if (suggestedfilenamesp.Length >= selectionlistp.Length)        // if we have at least as many..
                 suggestedfilenames = suggestedfilenamesp;
             else
             {
@@ -194,7 +197,7 @@ namespace ExtendedControls
                 Height -= panelPasteImport.Height;
             if ((merged & (int)ShowFlags.ShowExcludeHeader) == 0)
                 Height -= panelImportExclude.Height;
-            if ((merged & (int)ShowFlags.ShowExcludeHeader) == 0)
+            if ((merged & (int)ShowFlags.ShowImportSaveas) == 0)
                 Height -= panelSaveImportAs.Height;
 
             labelUTCEnd.Visible = labelUTCStart.Visible = (merged & (int)ShowFlags.ShowUTCIndicators) != 0;
