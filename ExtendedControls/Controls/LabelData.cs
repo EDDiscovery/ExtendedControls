@@ -70,7 +70,8 @@ namespace ExtendedControls
 
                     pos = brace >= 0 ? brace : text.Length;     // move to brace pos or eot
 
-                    string datavalue = "";
+                    string datavalue = null;
+                    bool dataisnull = false;
 
                     while (brace >= 0)        // collect all the values into a string, allow {..}+separ{} format
                     {
@@ -81,7 +82,19 @@ namespace ExtendedControls
                             string ctrl = text.Substring(brace + 1, endpart - brace - 1);
                             try
                             {
-                                datavalue += Data != null && Data.Length > datanum ? string.Format("{0:" + ctrl + "}", Data[datanum++]) : "???";
+                                if (Data != null && Data.Length > datanum)
+                                {
+                                    if (Data[datanum] != null)
+                                    {
+                                        datavalue += string.Format("{0:" + ctrl + "}", Data[datanum]);
+                                    }
+                                    else
+                                        dataisnull = true;      // one null in the datavalue sequence means abort printing the text and all values
+
+                                    datanum++;
+                                }
+                                else
+                                    datavalue = "???";
                             }
                             catch
                             {
@@ -132,64 +145,67 @@ namespace ExtendedControls
 
                     //     System.Diagnostics.Debug.WriteLine($"Part `{textpart}` data `{datavalue}`");
 
-                    pe.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                    using (var brush = new SolidBrush(ForeColor))
+                    if (!dataisnull)        // flag means dump the text before and the value
                     {
-                        if (textpart.HasChars())
+                        pe.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                        using (var brush = new SolidBrush(ForeColor))
                         {
-                            //var tsize = TextRenderer.MeasureText(textpart, Font, new Size(1920, 50));
-                            var tsize = pe.Graphics.MeasureString(textpart, Font, new Size(10000, 10000), StringFormat.GenericTypographic).ToSize();
-
-                            if ( tabspacing != 0 && xpos != 0)      // try and align
+                            if (textpart.HasChars())
                             {
-                                int nexttab = (xpos / tabspacing + 1) * tabspacing;
-                                int textpos = nexttab - tsize.Width - InterSpacing;
-                                if (textpos > xpos)     // only if we don't butt into what we have already done
-                                    xpos = textpos;
+                                //var tsize = TextRenderer.MeasureText(textpart, Font, new Size(1920, 50));
+                                var tsize = pe.Graphics.MeasureString(textpart, Font, new Size(10000, 10000), StringFormat.GenericTypographic).ToSize();
+
+                                if (tabspacing != 0 && xpos != 0)      // try and align
+                                {
+                                    int nexttab = (xpos / tabspacing + 1) * tabspacing;
+                                    int textpos = nexttab - tsize.Width - InterSpacing;
+                                    if (textpos > xpos)     // only if we don't butt into what we have already done
+                                        xpos = textpos;
+                                }
+
+                                //System.Diagnostics.Debug.WriteLine($"Output text `{textpart}` at {xpos} - {xpos + tsize.Width} {tsize}");
+
+                                pe.Graphics.DrawString(textpart, Font, brush, new Point(xpos, 1), StringFormat.GenericTypographic);
+                                //TextRenderer.DrawText(pe.Graphics, textpart, Font, new Rectangle(xpos, 1, tsize.Width, Font.Height), ForeColor);
+
+                                xpos += tsize.Width + InterSpacing;
                             }
 
-                            //System.Diagnostics.Debug.WriteLine($"Output text `{textpart}` at {xpos} - {xpos + tsize.Width} {tsize}");
-
-                            pe.Graphics.DrawString(textpart, Font, brush, new Point(xpos, 1), StringFormat.GenericTypographic);
-                            //TextRenderer.DrawText(pe.Graphics, textpart, Font, new Rectangle(xpos, 1, tsize.Width, Font.Height), ForeColor);
-
-                            xpos += tsize.Width + InterSpacing;
-                        }
-
-                        if (datavalue.HasChars())
-                        {
-                            var dfont = DataFont ?? Font;
-
-                            //var tsize = TextRenderer.MeasureText(datavalue, dfont, new Size(1920, 50));     // this overestimates, the bottom clips!
-                            var tsize = pe.Graphics.MeasureString(datavalue, dfont, new Size(10000, 10000), StringFormat.GenericTypographic).ToSize();
-                            tsize.Width += BorderWidth * 2;
-
-                            if (boxstyle != DataBoxStyle.None)
+                            if (datavalue.HasChars())
                             {
-                                using (Pen pen = new Pen(bordercolor, borderwidth))
+                                var dfont = DataFont ?? Font;
+
+                                //var tsize = TextRenderer.MeasureText(datavalue, dfont, new Size(1920, 50));     // this overestimates, the bottom clips!
+                                var tsize = pe.Graphics.MeasureString(datavalue, dfont, new Size(10000, 10000), StringFormat.GenericTypographic).ToSize();
+                                tsize.Width += BorderWidth * 2;
+
+                                if (boxstyle != DataBoxStyle.None)
                                 {
-                                    if (boxstyle == DataBoxStyle.AllAround)
+                                    using (Pen pen = new Pen(bordercolor, borderwidth))
                                     {
-                                        pe.Graphics.DrawRectangle(pen, xpos + borderwidth - 1, borderwidth, tsize.Width - (BorderWidth - 1), dfont.Height);
-                                    }
-                                    else if (boxstyle == DataBoxStyle.TopBottom)
-                                    {
-                                        pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, borderwidth, xpos + tsize.Width - (BorderWidth - 1) - 1, borderwidth);
-                                        pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, dfont.Height, xpos + tsize.Width - (BorderWidth - 1) - 1, dfont.Height);
-                                    }
-                                    else
-                                    {
-                                        pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, dfont.Height, xpos + tsize.Width - (BorderWidth - 1) - 1, dfont.Height);
+                                        if (boxstyle == DataBoxStyle.AllAround)
+                                        {
+                                            pe.Graphics.DrawRectangle(pen, xpos + borderwidth - 1, borderwidth, tsize.Width - (BorderWidth - 1), dfont.Height);
+                                        }
+                                        else if (boxstyle == DataBoxStyle.TopBottom)
+                                        {
+                                            pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, borderwidth, xpos + tsize.Width - (BorderWidth - 1) - 1, borderwidth);
+                                            pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, dfont.Height, xpos + tsize.Width - (BorderWidth - 1) - 1, dfont.Height);
+                                        }
+                                        else
+                                        {
+                                            pe.Graphics.DrawLine(pen, xpos + borderwidth - 1, dfont.Height, xpos + tsize.Width - (BorderWidth - 1) - 1, dfont.Height);
+                                        }
                                     }
                                 }
+
+                                //System.Diagnostics.Debug.WriteLine($"..Output data `{datavalue}` at {xpos} - {xpos + tsize.Width} {tsize}");
+
+                                pe.Graphics.DrawString(datavalue, dfont, brush, new Point(xpos + BorderWidth, 1), StringFormat.GenericTypographic);
+                                //TextRenderer.DrawText(pe.Graphics, datavalue, dfont, new Rectangle(xpos + BorderWidth, 1, tsize.Width - BorderWidth*2, Font.Height), ForeColor);
+
+                                xpos += tsize.Width + InterSpacing;
                             }
-
-                            //System.Diagnostics.Debug.WriteLine($"..Output data `{datavalue}` at {xpos} - {xpos + tsize.Width} {tsize}");
-
-                            pe.Graphics.DrawString(datavalue, dfont, brush, new Point(xpos + BorderWidth, 1), StringFormat.GenericTypographic);
-                            //TextRenderer.DrawText(pe.Graphics, datavalue, dfont, new Rectangle(xpos + BorderWidth, 1, tsize.Width - BorderWidth*2, Font.Height), ForeColor);
-
-                            xpos += tsize.Width + InterSpacing;
                         }
                     }
                 }

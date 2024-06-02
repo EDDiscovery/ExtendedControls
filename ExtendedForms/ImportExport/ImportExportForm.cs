@@ -12,10 +12,11 @@
  * governing permissions and limitations under the License.
  */
 
+using ExtendedForms;
 using System;
 using System.Windows.Forms;
 
-namespace ExtendedControls
+namespace ExtendedForms
 {
     public partial class ImportExportForm : ExtendedControls.DraggableForm
     {

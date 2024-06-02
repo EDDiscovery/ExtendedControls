@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2023 EDDiscovery development team
+ * Copyright © 2016-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -946,6 +946,12 @@ namespace ExtendedControls
                 compassControl.BackColor = colors[CI.form];
             }
 
+            else if (myControl is LabelData)
+            {
+                LabelData ld = myControl as LabelData;
+                ld.BorderColor = colors[CI.textbox_border];
+                ld.ForeColor = colors[CI.label];
+            }
             else if (myControl is Button wfb)
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");

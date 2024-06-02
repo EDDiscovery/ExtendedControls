@@ -13,6 +13,7 @@
  */
 
 using BaseUtils.Win32Constants;
+using ExtendedControls;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,9 +21,9 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ExtendedControls
+namespace ExtendedForms
 {
-    public partial class KeyForm : DraggableForm
+    public partial class KeyForm : ExtendedControls.DraggableForm
     {
         public string KeyList { get { return textBoxKeys.Text; } }
         public string ProcessSelected { get { return textBoxSendTo.Text.Equals(DefaultProcessID)? "" :textBoxSendTo.Text; } }    // Default means program default hence "", else target

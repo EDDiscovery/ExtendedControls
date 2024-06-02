@@ -1,4 +1,6 @@
-﻿namespace ExtendedControls
+﻿using ExtendedControls;
+
+namespace ExtendedForms
 {
     partial class KeyForm
     {

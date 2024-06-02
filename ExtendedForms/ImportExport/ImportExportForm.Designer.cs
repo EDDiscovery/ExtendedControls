@@ -1,4 +1,4 @@
-﻿namespace ExtendedControls
+﻿namespace ExtendedForms
 {
     partial class ImportExportForm
     {
@@ -468,7 +468,7 @@
             // 
             // buttonPasteData
             // 
-            this.buttonPasteData.Image = global::ExtendedControls.Properties.Resources.Paste;
+            this.buttonPasteData.Image = global::ExtendedForms.Properties.Resources.Paste;
             this.buttonPasteData.Location = new System.Drawing.Point(389, 6);
             this.buttonPasteData.Name = "buttonPasteData";
             this.buttonPasteData.Size = new System.Drawing.Size(28, 28);
