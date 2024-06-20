@@ -215,6 +215,15 @@ namespace ExtendedForms
             extRichTextBoxPaste.InstallStandardDragDrop();
 
             label_index.Text = this.Text;
+
+            extButtonOptButton.Visible = false;
+        }
+
+        public void ShowOptionalButton(string text, Action pressed)
+        {
+            extButtonOptButton.Text = text;
+            extButtonOptButton.Click += (s, e) => { pressed?.Invoke(); };
+            extButtonOptButton.Visible = true;
         }
 
         private void ComboBoxSelectedType_SelectedIndexChanged(object sender, EventArgs e)

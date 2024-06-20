@@ -47,6 +47,7 @@
             this.labelUTCStart = new System.Windows.Forms.Label();
             this.panelTop = new System.Windows.Forms.Panel();
             this.panelCombo = new System.Windows.Forms.Panel();
+            this.extButtonOptButton = new ExtendedControls.ExtButton();
             this.panelDate = new System.Windows.Forms.Panel();
             this.panelIncludeOpen = new System.Windows.Forms.Panel();
             this.panelCSV = new System.Windows.Forms.Panel();
@@ -334,11 +335,21 @@
             // panelCombo
             // 
             this.panelCombo.Controls.Add(this.comboBoxSelectedType);
+            this.panelCombo.Controls.Add(this.extButtonOptButton);
             this.panelCombo.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelCombo.Location = new System.Drawing.Point(0, 0);
             this.panelCombo.Name = "panelCombo";
             this.panelCombo.Size = new System.Drawing.Size(470, 34);
             this.panelCombo.TabIndex = 7;
+            // 
+            // extButtonOptButton
+            // 
+            this.extButtonOptButton.Location = new System.Drawing.Point(317, 5);
+            this.extButtonOptButton.Name = "extButtonOptButton";
+            this.extButtonOptButton.Size = new System.Drawing.Size(100, 23);
+            this.extButtonOptButton.TabIndex = 5;
+            this.extButtonOptButton.Text = "<code>";
+            this.extButtonOptButton.UseVisualStyleBackColor = true;
             // 
             // panelDate
             // 
@@ -613,5 +624,6 @@
         private ExtendedControls.ExtTextBox extTextBoxSaveImport;
         private System.Windows.Forms.Label labelSaveImport;
         private System.Windows.Forms.Panel panelSaveImportAs;
+        private ExtendedControls.ExtButton extButtonOptButton;
     }
 }

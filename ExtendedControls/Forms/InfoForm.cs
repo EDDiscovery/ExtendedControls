@@ -25,12 +25,6 @@ namespace ExtendedControls
         public InfoForm()
         {
             InitializeComponent();
-
-            BaseUtils.Translator.Instance.AddExcludedControls(new Type[]
-             {   typeof(ExtendedControls.ExtComboBox), typeof(ExtendedControls.NumberBoxDouble),typeof(ExtendedControls.NumberBoxFloat),typeof(ExtendedControls.NumberBoxLong),
-                typeof(ExtendedControls.ExtScrollBar),typeof(ExtendedControls.ExtStatusStrip),typeof(ExtendedControls.ExtRichTextBox),typeof(ExtendedControls.ExtTextBox),
-                typeof(ExtendedControls.ExtTextBoxAutoComplete),typeof(ExtendedControls.ExtDateTimePicker),typeof(ExtendedControls.ExtNumericUpDown) });
-
         }
 
         public void Info(string title, Icon ic, string info , int[] array = null, float pointsize= -1, 
@@ -120,12 +114,9 @@ namespace ExtendedControls
             textBoxInfo.Size = new Size(ClientRectangle.Width-6, panelBottom.Top-textBoxInfo.Top);
         }
 
-        private void toolStripMenuItemCopy_Click(object sender, EventArgs e)
+
+        private void Copy(string s)
         {
-            string s = textBoxInfo.SelectedText;
-            if (s.Length == 0)
-                s = textBoxInfo.Text;
-            //System.Diagnostics.Debug.WriteLine("Sel " + s);
             try
             {
                 if (!String.IsNullOrWhiteSpace(s))
@@ -137,7 +128,22 @@ namespace ExtendedControls
             }
         }
 
+
+        private void toolStripMenuItemCopy_Click(object sender, EventArgs e)
+        {
+            string s = textBoxInfo.SelectedText;
+            if (s.Length == 0)
+                s = textBoxInfo.Text;
+            Copy(s);
+        }
+        private void copyAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Copy(textBoxInfo.Text);
+
+        }
+
         private Action<Object> ackaction = null;
         private Object ackdata = null;
+
     }
 }
