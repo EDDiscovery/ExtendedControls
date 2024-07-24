@@ -89,16 +89,16 @@ namespace ExtendedControls
 
         public void CancelAutoComplete()                     // Sometimes, the user is quicker than the timer, and has commited to a selection before the results even come back.
         {
-            System.Diagnostics.Debug.WriteLine("{0} Cancel autocomplete", Environment.TickCount % 10000);
+            //System.Diagnostics.Debug.WriteLine("{0} Cancel autocomplete", Environment.TickCount % 10000);
             if (waitforautotimer.Enabled)
             {
-                System.Diagnostics.Debug.WriteLine($".. timer running");
+                //System.Diagnostics.Debug.WriteLine($".. timer running");
                 waitforautotimer.Stop();
             }
 
             if (cbdropdown != null)
             {
-                System.Diagnostics.Debug.WriteLine($".. drop down close");
+                //System.Diagnostics.Debug.WriteLine($".. drop down close");
                 cbdropdown.Close();
                 cbdropdown.Dispose();
                 cbdropdown = null;
@@ -107,7 +107,7 @@ namespace ExtendedControls
 
             if (executingautocomplete)
             {
-                System.Diagnostics.Debug.WriteLine($".. autocomplete happening, can't stop it, so ignore results");
+                //System.Diagnostics.Debug.WriteLine($".. autocomplete happening, can't stop it, so ignore results");
                 restartautocomplete = false;        // we may have been already in a restart..
                 ignoreautocomplete = true;
             }
@@ -145,14 +145,14 @@ namespace ExtendedControls
             {
                 if (!executingautocomplete)
                 {
-                    System.Diagnostics.Debug.WriteLine("{0} Text Change start timer", Environment.TickCount % 10000);
+                    //System.Diagnostics.Debug.WriteLine("{0} Text Change start timer", Environment.TickCount % 10000);
                     waitforautotimer.Stop();
                     waitforautotimer.Start();
                     autocompletestring = String.Copy(this.Text);    // a copy in case the text box changes it after complete starts
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("{0} Text change, AC active, change string and restart auto complete", Environment.TickCount % 10000);
+                    //System.Diagnostics.Debug.WriteLine("{0} Text change, AC active, change string and restart auto complete", Environment.TickCount % 10000);
                     autocompletestring = String.Copy(this.Text);
                     restartautocomplete = true;
                 }
@@ -165,7 +165,7 @@ namespace ExtendedControls
             executingautocomplete = true;
             EndButtonImage = Properties.Resources.Wait;
 
-            System.Diagnostics.Debug.WriteLine("{0} Time out tick Start Autocomplete thread", Environment.TickCount % 10000);
+            //System.Diagnostics.Debug.WriteLine("{0} Time out tick Start Autocomplete thread", Environment.TickCount % 10000);
             ThreadAutoComplete = new System.Threading.Thread(new System.Threading.ThreadStart(AutoComplete));
             ThreadAutoComplete.Name = "AutoComplete";
             ThreadAutoComplete.Start();
@@ -175,11 +175,11 @@ namespace ExtendedControls
         {
             do
             {
-                System.Diagnostics.Debug.WriteLine("{0} Begin AC", Environment.TickCount % 10000);
+                //System.Diagnostics.Debug.WriteLine("{0} Begin AC", Environment.TickCount % 10000);
                 restartautocomplete = false;
                 autocompletestrings = new SortedSet<string>();
                 autoCompleteFunction(string.Copy(autocompletestring), this, autocompletestrings);    // pass a copy, in case we change it out from under it
-                System.Diagnostics.Debug.WriteLine("{0} AC Finished ret {1} restart {2}", Environment.TickCount % 10000, autocompletestrings.Count, restartautocomplete);
+                //System.Diagnostics.Debug.WriteLine("{0} AC Finished ret {1} restart {2}", Environment.TickCount % 10000, autocompletestrings.Count, restartautocomplete);
             } while (restartautocomplete == true);
 
             this.BeginInvoke((MethodInvoker)delegate { AutoCompleteFinished(); });
@@ -187,7 +187,7 @@ namespace ExtendedControls
 
         private void AutoCompleteFinished()
         {
-            System.Diagnostics.Debug.WriteLine("{0} AC show dropdown results {1} ignore {2}", Environment.TickCount % 10000, autocompletestrings.Count, ignoreautocomplete);
+            //System.Diagnostics.Debug.WriteLine("{0} AC show dropdown results {1} ignore {2}", Environment.TickCount % 10000, autocompletestrings.Count, ignoreautocomplete);
 
             executingautocomplete = false;      // we have finished - do now since we call cancelautocomplete
 
@@ -295,7 +295,7 @@ namespace ExtendedControls
 
             if (cbdropdown != null)        // pass certain keys to the shown drop down
             {
-                System.Diagnostics.Debug.WriteLine("{0} {1} hit with drop down", Environment.TickCount % 10000, e.KeyCode);
+                //System.Diagnostics.Debug.WriteLine("{0} {1} hit with drop down", Environment.TickCount % 10000, e.KeyCode);
 
                 if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Up || e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
                 {
@@ -311,7 +311,7 @@ namespace ExtendedControls
             {
                 if ( e.KeyCode == Keys.Return )
                 {
-                    System.Diagnostics.Debug.WriteLine("{0} {1} hit with no drop down", Environment.TickCount % 10000, e.KeyCode);
+                    //System.Diagnostics.Debug.WriteLine("{0} {1} hit with no drop down", Environment.TickCount % 10000, e.KeyCode);
                     CancelAutoComplete();
                 }
             }
