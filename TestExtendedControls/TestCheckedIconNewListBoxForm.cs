@@ -92,7 +92,7 @@ namespace TestExtendedControls
             frm.UC.AddGroupItem("t1;t2;t3", "1-3");
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
-          //  frm.CloseBoundaryRegion = new Size(64, 64);
+            frm.CloseBoundaryRegion = new Size(64, 64);
             frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.UC.NoneAllIgnore = "||;";
@@ -273,7 +273,7 @@ namespace TestExtendedControls
                 frm8.CloseBoundaryRegion = new Size(64, 64);
                 frm8.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
                 frm8.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
-                frm8.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent8 = s; };
+                frm8.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent8 = s; System.Diagnostics.Debug.WriteLine($"Save settings {s} {p}"); };
                 frm8.UC.Set(persistent8);
                 frm8.CloseOnDeactivate = false;
                 frm8.HideOnDeactivate = true;
@@ -325,7 +325,6 @@ namespace TestExtendedControls
             {
                 frm.UC.AddButton($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
             }
-           // frm.UC.Add($"t100", $"CHK 100", Properties.Resources.CursorToTop);
 
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
@@ -354,6 +353,66 @@ namespace TestExtendedControls
             frm.Show(this);
 
 
+        }
+
+        List<CheckedIconUserControl.SubForm> sf = new List<CheckedIconUserControl.SubForm>();
+        string b12settings = "";
+
+        private void extButton12_Click(object sender, EventArgs e)
+        {
+            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
+            int sfn = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                List<CheckedIconUserControl.Item> sublist2 = new List<CheckedIconUserControl.Item>();
+                sublist2.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 1}", $"T{i * 100000 + 1}", button: true));
+                sublist2.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 2}", $"T{i * 100000 + 2}", button: true));
+                sublist2.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 3}", $"T{i * 100000 + 3}", button: true));
+                sublist2.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 4}", $"T{i * 100000 + 4}", button: true));
+                sublist2.Add(new CheckedIconUserControl.Item($"S{i * 100000 + 5}", $"S{i * 100000 + 5}"));
+                sublist2.Add(new CheckedIconUserControl.Item($"S{i * 100000 + 6}", $"S{i * 100000 + 6}"));
+
+                if (sf.Count <= sfn)
+                    sf.Add(new CheckedIconUserControl.SubForm { Items = sublist2, Setting = $"" });
+
+                List<CheckedIconUserControl.Item> sublist = new List<CheckedIconUserControl.Item>();
+                sublist.Add(new CheckedIconUserControl.Item($"TSM{i * 1000 + 1}", $"TSM{i * 1000 + 1}", button: true, usertag:sf[sfn++]));
+                sublist.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 1}", $"T{i * 1000 + 1}", button: true));
+                sublist.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 2}", $"T{i * 1000 + 2}", button: true));
+                sublist.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 3}", $"T{i * 1000 + 3}", button: true));
+                sublist.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 4}", $"T{i * 1000 + 4}", button: true));
+                sublist.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 5}", $"S{i * 1000 + 5}"));
+                sublist.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 6}", $"S{i * 1000 + 6}"));
+
+                if (sf.Count <= sfn)
+                    sf.Add(new CheckedIconUserControl.SubForm { Items = sublist, Setting = $"" });
+
+                frm.UC.AddButton($"t{i}", $"Sub {i}", Properties.Resources.CursorToTop, sf[sfn++]);
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                frm.UC.AddButton($"t{i+100}", $"But {i+100}", Properties.Resources.CursorToTop);
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                frm.UC.Add($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
+            }
+
+            frm.Name = "TopForm";
+            frm.UC.MultipleColumns = true;
+            frm.CloseBoundaryRegion = new Size(200, 200);
+            frm.UC.SlideLeft = true;      // allow left shift
+            frm.PositionBelow(extButton10);
+            frm.UC.ButtonPressed += (index, stag, text, utag, bev) => {
+                System.Diagnostics.Debug.WriteLine($"Form button pressed {index} {stag} {text}");
+                AddText($"*** Form {frm.Name} Button pressed {index} {stag} {text}"); 
+                frm.Close(); 
+            };
+            frm.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine($"*** Save Settings {frm.Name} {s} {p}"); b12settings = s; };
+            frm.Show(b12settings,extButton12,this); ;
         }
     }
 

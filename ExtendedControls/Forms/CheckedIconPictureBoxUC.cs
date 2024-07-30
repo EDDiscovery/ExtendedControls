@@ -45,7 +45,8 @@ namespace ExtendedControls
         public Color CheckBoxColor { get; set; } = Color.Gray;
         public Color CheckBoxInnerColor { get; set; } = Color.White;
         public Color CheckColor { get; set; } = Color.DarkBlue;
-        public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
+        public Color MouseOverCheckboxColor { get; set; } = Color.CornflowerBlue;
+        public Color MouseOverLabelColor { get; set; } = Color.CornflowerBlue;
         public Size CheckBoxSize { get; set; } = Size.Empty;                  // if not set, ImageSize sets the size, or first image, else 24/24
         public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
         public Size ImageSize { get; set; } = Size.Empty;                     // if not set, each image sets its size. 
@@ -68,10 +69,14 @@ namespace ExtendedControls
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
+        // call to turn on mouse tracking
+        public bool FreezeTracking { get { return picturebox.FreezeTracking; } set { picturebox.FreezeTracking = value; } }     
+
         // check box changed : index, Tag, Text, userTag, change args
         public Action<int, string, string, object, ItemCheckEventArgs> CheckedChanged { get; set; }       // check box changed
         // index, Tag, Text, UserTag, button args
         public Action<int,string,string,object,MouseEventArgs> ButtonPressed { get; set; }
+
 
         // what char is used for split settings
         public char SettingsSplittingChar { get; set; } = ';';      
@@ -126,7 +131,14 @@ namespace ExtendedControls
                         picturebox.Refresh(cl.checkbox.Location);
                     }
                     else
-                        ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                    {
+                        if (cl.UserTag != null && cl.UserTag is SubForm)
+                        {
+                            OpenSubMenu(cl);
+                        }
+                        else
+                            ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                    }
                 }
             };
             if (!cl.Button)
@@ -148,7 +160,14 @@ namespace ExtendedControls
                             picturebox.Refresh(cl.checkbox.Location);
                         }
                         else
-                            ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                        {
+                            if (cl.UserTag != null && cl.UserTag is SubForm)
+                            {
+                                OpenSubMenu(cl);
+                            }
+                            else
+                                ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                        }
                     }
                 };
             }
@@ -167,6 +186,69 @@ namespace ExtendedControls
                 else
                     ItemList.Add(cl);                      // at the end
             }
+        }
+
+        public class SubForm
+        {
+            public List<Item> Items { get; set; }
+            public string Setting { get; set; }
+        }
+
+        // open a submenu on item cl.
+        private void OpenSubMenu(Item cl)
+        {
+            var cinlbf = cl.label.Parent?.Parent?.Parent?.Parent as CheckedIconNewListBoxForm;
+            SubForm sf = cl.UserTag as SubForm;
+
+            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
+
+            foreach( var i in sf.Items)
+            {
+                frm.UC.Add(i.Tag, i.Text, i.Image, false, i.Exclusive, i.DisableUncheck, i.Button, i.UserTag, i.Group);
+            }
+
+            frm.UC.MultipleColumns = MultipleColumns;
+            frm.UC.SlideLeft = SlideLeft;
+            frm.UC.SlideUp = SlideUp;
+            frm.UC.MultiColumnSlide = MultiColumnSlide;
+            frm.UC.ScreenMargin = ScreenMargin;
+            frm.CloseBoundaryRegion = new Size(128, 128);
+            frm.AllOrNoneBack = false;
+
+            var pbsr = pictureboxscroll.PointToScreen(new Point(cl.label.PositionRight.X, cl.label.Position.Y));    // place right of label
+            frm.SetLocation = pbsr;
+
+            if (cinlbf != null) // if we have a CheckedIconNewListBoxForm at its parent, set in submenu mode
+            {
+                System.Diagnostics.Debug.WriteLine($"Set submenu on for {cinlbf.Name}");
+                cinlbf.InSubmenu = true;
+            }
+
+            FreezeTracking = true;       // stop the highlight moving around any more
+
+            frm.Name = Parent.Name + "_Subform";
+
+            frm.UC.ButtonPressed += (index, stag, text, utag, bev) => 
+            { 
+                System.Diagnostics.Debug.WriteLine($"Sub form button pressed {index} {stag} {text}");
+                ButtonPressed?.Invoke(index, stag, text, utag, bev);
+            };
+
+            frm.SaveSettings += (s, p) => 
+            {
+                System.Diagnostics.Debug.WriteLine($"*** Save Settings {frm.Name} {s} {p} was {sf.Setting}");
+                sf.Setting = s;
+
+                if ( cinlbf != null)
+                {
+                    cinlbf.InSubmenu = false;
+                    cinlbf.Close();
+                }
+            };
+
+            System.Diagnostics.Debug.WriteLine($"Open submenu for {cl.Text} {cl.Tag} set {sf.Setting}");
+
+            frm.Show(sf.Setting, pbsr, cinlbf);
         }
 
         // a Radio style button
@@ -466,6 +548,7 @@ namespace ExtendedControls
             picturebox = new ExtPictureBox();
             sb = new ExtScrollBar();
             pictureboxscroll = new ExtPictureBoxScroll();
+            pictureboxscroll.BorderStyle = BorderStyle.FixedSingle;
             pictureboxscroll.Controls.Add(picturebox);
             pictureboxscroll.Controls.Add(sb);
             pictureboxscroll.Dock = DockStyle.Fill;
@@ -531,6 +614,7 @@ namespace ExtendedControls
                 cl.label.Font = this.Font;
                 cl.label.ForeColor = this.ForeColor;
                 cl.label.BackColor = BackColor;
+                cl.label.MouseOverBackColor = this.MouseOverLabelColor;
 
                 if (!cl.Button)
                 {
@@ -538,7 +622,7 @@ namespace ExtendedControls
                     cl.checkbox.CheckBoxColor = this.CheckBoxColor;
                     cl.checkbox.CheckBoxInnerColor = this.CheckBoxInnerColor;
                     cl.checkbox.CheckColor = this.CheckColor;
-                    cl.checkbox.MouseOverColor = this.MouseOverColor;
+                    cl.checkbox.MouseOverColor = this.MouseOverCheckboxColor;
                     cl.checkbox.TickBoxReductionRatio = TickBoxReductionRatio;
                     cl.checkbox.Font = Font;
                     cl.checkbox.Tag = i;        // store index of control when displayed
@@ -689,7 +773,8 @@ namespace ExtendedControls
             if (fixedsize == null)      // if not in fixed size mode, return the screen rectangle clipping to size.
             {
                 // this will slide left if required to fit the box into the screen
-                var rect = preferredxy.CalculateRectangleWithinScreen(picturebox.Image.Width + sb.Width, picturebox.Image.Height, !slidup, ScreenMargin);
+                int bordermargin = pictureboxscroll.BorderStyle == BorderStyle.FixedSingle ? 2 : 0;
+                var rect = preferredxy.CalculateRectangleWithinScreen(picturebox.Image.Width + sb.Width + bordermargin, picturebox.Image.Height + bordermargin, !slidup, ScreenMargin);
                 return rect;
             }
             else

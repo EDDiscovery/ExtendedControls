@@ -838,7 +838,8 @@ namespace ExtendedControls
                 ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
                 ctrl.CheckBoxColor = colors[CI.checkbox];
                 ctrl.CheckBoxInnerColor = colors[CI.checkbox].Multiply(1.5F);
-                ctrl.MouseOverColor = colors[CI.checkbox].Multiply(1.4F);
+                ctrl.MouseOverCheckboxColor = colors[CI.checkbox].Multiply(0.75F);
+                ctrl.MouseOverLabelColor = colors[CI.checkbox].Multiply(0.75F);
                 ctrl.TickBoxReductionRatio = 0.75f;
                 ctrl.CheckColor = colors[CI.checkbox_tick];
             }

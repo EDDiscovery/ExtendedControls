@@ -28,6 +28,7 @@ namespace ExtendedControls
         public event OnElement ClickElement;
 
         public Color FillColor = Color.Transparent;         // fill the bitmap with this colour before pasting the bitmaps in
+        public bool FreezeTracking { get; set; } = false;        // when set, all mouse movement tracking is turned off
 
         public List<ImageElement> Elements { get; private set; } = new List<ImageElement>();
 
@@ -335,6 +336,9 @@ namespace ExtendedControls
         protected override void OnMouseMove(MouseEventArgs eventargs)
         {
             base.OnMouseMove(eventargs);
+
+            if (FreezeTracking)
+                return;
 
             if (elementin != null && !elementin.Location.Contains(eventargs.Location))       // go out..
             {

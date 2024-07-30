@@ -26,6 +26,7 @@ namespace ExtendedControls
         public bool HideOnDeactivate { get; set; } = false;         // hide instead
         public bool CloseOnChange { get; set; } = false;            // close when any is changed
         public bool HideOnChange { get; set; } = false;             // hide when any is changed
+        public bool InSubmenu { get; set; } = false;                // set to indicate in sub menu of this form - this stops deactivate
         public bool DeactivatedWithin(long ms)                      // have we deactivated in this timeperiod. use for debouncing buttons if hiding
         {
             return LastDeactivateTime.IsRunning && LastDeactivateTime.TimeRunning < ms; // if running, and we are within ms from the time it started running, we have deactivated within
@@ -166,15 +167,20 @@ namespace ExtendedControls
 
             LastDeactivateTime.Stop();          // indicate deact - this is really just to be nice with the .Running flag of the class
 
-            //System.Diagnostics.Debug.WriteLine($"{BaseUtils.AppTicks.TickCountLap("P1")} Activated");
+            System.Diagnostics.Debug.WriteLine($"OnActivated {Name} Closing flag {closingdown}");
 
-            if (!CloseBoundaryRegion.IsEmpty)
+            UC.FreezeTracking = false;          // ensure, if we have only closed it, that tracking is on
+
+            if (!closingdown)
             {
-                timer.Start();
-            }
-            else
-            {
-                //System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
+                if (!CloseBoundaryRegion.IsEmpty)
+                {
+                    timer.Start();
+                }
+                else
+                {
+                    //System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
+                }
             }
         }
 
@@ -182,66 +188,78 @@ namespace ExtendedControls
         {
             base.OnDeactivate(e);
 
-            //System.Diagnostics.Debug.WriteLine("Deactivate event start");
-
             LastDeactivateTime.Run();     // start timer..
             timer.Stop();
-            SaveSettingsEvent();
 
-            if (CloseOnDeactivate)
+            if (InSubmenu)
             {
-                //System.Diagnostics.Debug.WriteLine("Close");
-                this.Close();
+                System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} In submenu");
+            }
+            else if (CloseOnDeactivate)
+            {
+                if (!closingdown)
+                {
+                    System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} close requested");
+                    this.Close();
+                }
             }
             else if (HideOnDeactivate)
             {
                 if (Owner != null)
                 {
-                    //System.Diagnostics.Debug.WriteLine("Disassociate and hide start");
+                    System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} Disassociate owner and hide");
                     var o = Owner;          // calling Hide() when the owner is not ready to receive the focus causes windows to go and get another window to place
                     Owner = null;           // disassociating it temp from its owner seems to solve this. Probably because it can pick that window now.
                     Hide();
                     Owner = o;
-                    //System.Diagnostics.Debug.WriteLine("Disassociate and hide end");
                 }
                 else
                 {
-                    //System.Diagnostics.Debug.WriteLine("No owner, hide");
+                    System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} hide without owner");
                     Hide();
                 }
-            }
 
-            //System.Diagnostics.Debug.WriteLine("Deactivate event end");
+                OnSaveSettings();
+            }
         }
 
         private void CloseOrHide()
         {
             if (CloseOnDeactivate)
             {
-                // System.Diagnostics.Debug.WriteLine("Close or hide - close");
+                System.Diagnostics.Debug.WriteLine($"Request Close {Name}");
                 this.Close();
             }
             else if (HideOnDeactivate)
             {
-                //System.Diagnostics.Debug.WriteLine("Close or hide - hide");
+                System.Diagnostics.Debug.WriteLine($"Request Hide {Name}");
                 Hide();
             }
         }
 
-        protected virtual void SaveSettingsEvent()
-        {
-            string settings = UC.GetChecked(AllOrNoneBack);
-            SaveSettings?.Invoke(settings, Tag);     // at this level, we return all items.
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
+            closingdown = true;
             timer.Stop();       // emergency stop, should have stopped by Deactivate..
+            System.Diagnostics.Debug.WriteLine($"OnClosing {Name}");
+            OnSaveSettings();
             base.OnClosing(e);
+        }
+
+        protected virtual void OnSaveSettings()
+        {
+            string settings = UC.GetChecked(AllOrNoneBack);
+            System.Diagnostics.Debug.WriteLine($"OnSaveSettings {Name}");
+            SaveSettings?.Invoke(settings, Tag);     // at this level, we return all items.
         }
 
         private void CheckMouse(object sender, EventArgs e)     // best way of knowing your inside the client..  turned on only if CloseIfCursorOutsideBoundary
         {
+            //System.Diagnostics.Debug.WriteLine($"CINLBF timer {Name} closingdown {closingdown}");
+
+            if (closingdown)        // ignore spurious extra timers just in case
+                return;
+
             Rectangle client = ClientRectangle;
             client.Inflate(CloseBoundaryRegion);       // overlap area
 
@@ -281,6 +299,8 @@ namespace ExtendedControls
         private Rectangle lastbounds;       // last bounds the position was done on
         private Font lastfont;  // last font
         private bool forceredraw = false;       // force reposition 
+        
+        private bool closingdown = false;
 
     }
 }

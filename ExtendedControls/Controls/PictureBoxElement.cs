@@ -27,6 +27,7 @@ namespace ExtendedControls
         {
             public virtual Rectangle Location { get; set; }
             public Point Position { get { return new Point(Location.Left, Location.Top); } set { Location = new Rectangle(value.X, value.Y, Location.Width, Location.Height); } }
+            public Point PositionRight { get { return new Point(Location.Left + Location.Width, Location.Top); } }
             public Size Size { get { return new Size(Location.Width, Location.Height); } set { Location = new Rectangle(Location.Left, Location.Top, value.Width, value.Height); } }
             public Image Image { get; set; }
             public bool ImageOwned { get; set; }
@@ -349,6 +350,7 @@ namespace ExtendedControls
             public Color BackColor { get; set; } = Color.White;          // Normal only border area colour
             public bool Enabled { get { return enabled; } set { enabled = value; Parent?.Refresh(Location); } }
             public float DisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
+            public Color MouseOverBackColor { get; set; } = Color.CornflowerBlue; // both - Mouse over 
 
             public bool AutoSize { get; set; } = true;
 
@@ -359,6 +361,8 @@ namespace ExtendedControls
             public Label()
             {
                 OwnerDrawCallback += (gr, ie) => { Draw(gr, ie); };
+                Enter += (pb, ie) => { pb.Refresh(Location); };
+                Leave += (pb, ie) => { pb.Refresh(Location); };
             }
 
             public void PerformAutoSize()
@@ -374,7 +378,7 @@ namespace ExtendedControls
             {
                 var ClientRectangle = ie.Location;
 
-                using (Brush br = new SolidBrush(this.BackColor))
+                using (Brush br = new SolidBrush((Enabled && MouseOver) ? MouseOverBackColor : this.BackColor))
                     dgr.FillRectangle(br, ClientRectangle);
 
                 Rectangle textarea = ClientRectangle;
