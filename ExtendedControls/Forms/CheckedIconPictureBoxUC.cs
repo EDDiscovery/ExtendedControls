@@ -134,8 +134,7 @@ namespace ExtendedControls
                     }
                     else
                     {
-                        if (!cl.IsSubmenu)
-                            ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                        ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
                     }
                 }
             };
@@ -159,8 +158,7 @@ namespace ExtendedControls
                         }
                         else
                         {
-                            if (!cl.IsSubmenu)
-                                ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                            ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
                         }
                     }
                 };
@@ -476,8 +474,8 @@ namespace ExtendedControls
         // Class to define a subform of items and a holder for settings
         public class SubForm
         {
-            public List<Item> Items { get; set; }
-            public string Setting { get; set; }
+            public List<Item> Items { get; set; } = new List<Item>();
+            public string Setting { get; set; } = "";
             public Size? ClosedBoundaryRegion { get; set; } = null;     // set to override inheriting parent size
             public bool? AllOrNoneBack { get; set; } = null;        // set to override inheriting parent size
 

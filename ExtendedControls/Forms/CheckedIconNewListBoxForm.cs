@@ -275,7 +275,7 @@ namespace ExtendedControls
 
         private void CheckMouse(object sender, EventArgs e)     // best way of knowing your inside the client..  turned on only if CloseIfCursorOutsideBoundary
         {
-            //System.Diagnostics.Debug.WriteLine($"CINLBF timer {Name} closingdown {closingdown} count {closedowncount}");
+           // System.Diagnostics.Debug.WriteLine($"CINLBF timer {Name} closingdown {closingdown}");
 
             if (closingdown)        // ignore spurious extra timers just in case
                 return;
@@ -298,7 +298,7 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    //System.Diagnostics.Debug.WriteLine($"..outside box, {mousebuttonsdown} {Bounds} {area} {MousePosition}");
+                    //System.Diagnostics.Debug.WriteLine($"..outside box, count {closedowncount}, mb {mousebuttonsdown} b {Bounds} a {area} mp {MousePosition}");
                     if (!mousebuttonsdown)              // 
                     {
                         if (++closedowncount == CloseDownTime/timer.Interval)     // N*timertick wait
