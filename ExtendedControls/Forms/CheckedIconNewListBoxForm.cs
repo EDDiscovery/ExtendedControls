@@ -26,7 +26,6 @@ namespace ExtendedControls
         public bool HideOnDeactivate { get; set; } = false;         // hide instead
         public bool CloseOnChange { get; set; } = false;            // close when any is changed
         public bool HideOnChange { get; set; } = false;             // hide when any is changed
-        public bool InSubmenu { get; set; } = false;                // set to indicate in sub menu of this form - this stops deactivate
         public bool DeactivatedWithin(long ms)                      // have we deactivated in this timeperiod. use for debouncing buttons if hiding
         {
             return LastDeactivateTime.IsRunning && LastDeactivateTime.TimeRunning < ms; // if running, and we are within ms from the time it started running, we have deactivated within
@@ -35,7 +34,9 @@ namespace ExtendedControls
 
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
         public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location (SlideLeft/SlideUp may change this)
+
         public Size CloseBoundaryRegion { get; set; } = new Size(0, 0);     // set size >0 to enable boundary close
+        public int CloseDownTime { get; set; } = 1000;              // ms to shut down when out of boundary
 
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported by GetChecked, else its all entries or empty list
 
@@ -48,6 +49,7 @@ namespace ExtendedControls
         public CheckedIconNewListBoxForm()
         {
             InitializeComponent();
+            ShowInTaskbar = false;
             UC = new CheckedIconGroupUserControl();
             UC.Dock = DockStyle.Fill;
             Controls.Add(UC);
@@ -161,15 +163,20 @@ namespace ExtendedControls
             forceredraw = false;
         }
 
+        internal void SetSubMenuActive(bool insub)
+        {
+            submenuactive = insub;
+            if (!submenuactive && !closingdown) // if not in submenu, and not closing down
+                OnActivated(null);          // same as reactivated
+        }
+
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
 
             LastDeactivateTime.Stop();          // indicate deact - this is really just to be nice with the .Running flag of the class
 
-            System.Diagnostics.Debug.WriteLine($"OnActivated {Name} Closing flag {closingdown}");
-
-            UC.FreezeTracking = false;          // ensure, if we have only closed it, that tracking is on
+            //System.Diagnostics.Debug.WriteLine($"OnActivated {Name} Closing flag {closingdown}");
 
             if (!closingdown)
             {
@@ -188,18 +195,18 @@ namespace ExtendedControls
         {
             base.OnDeactivate(e);
 
-            LastDeactivateTime.Run();     // start timer..
+            LastDeactivateTime.Run();     // stop timer
             timer.Stop();
 
-            if (InSubmenu)
+            if (submenuactive)
             {
-                System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} In submenu");
+                //System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} submenu is active");
             }
             else if (CloseOnDeactivate)
             {
                 if (!closingdown)
                 {
-                    System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} close requested");
+                    //System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} close requested");
                     this.Close();
                 }
             }
@@ -207,7 +214,7 @@ namespace ExtendedControls
             {
                 if (Owner != null)
                 {
-                    System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} Disassociate owner and hide");
+                    //System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} Disassociate owner and hide");
                     var o = Owner;          // calling Hide() when the owner is not ready to receive the focus causes windows to go and get another window to place
                     Owner = null;           // disassociating it temp from its owner seems to solve this. Probably because it can pick that window now.
                     Hide();
@@ -215,7 +222,7 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} hide without owner");
+                    //System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} hide without owner");
                     Hide();
                 }
 
@@ -225,15 +232,20 @@ namespace ExtendedControls
 
         private void CloseOrHide()
         {
+            var ocinlf = Owner as CheckedIconNewListBoxForm;        // note if parent is this, in which case its a submenu
+
             if (CloseOnDeactivate)
             {
-                System.Diagnostics.Debug.WriteLine($"Request Close {Name}");
-                this.Close();
+                //System.Diagnostics.Debug.WriteLine($"Request Close {Name}");
+                if (ocinlf != null)
+                    ocinlf.CloseOrHide();                           // ask the top to close, closing this one too
+                else
+                    this.Close();                                   // else close this
             }
             else if (HideOnDeactivate)
             {
-                System.Diagnostics.Debug.WriteLine($"Request Hide {Name}");
-                Hide();
+                //System.Diagnostics.Debug.WriteLine($"Request Hide {Name}");
+                this.Hide();                                        // not sure hides propergate down tree.. so not implementing the above.
             }
         }
 
@@ -241,49 +253,57 @@ namespace ExtendedControls
         {
             closingdown = true;
             timer.Stop();       // emergency stop, should have stopped by Deactivate..
-            System.Diagnostics.Debug.WriteLine($"OnClosing {Name}");
+            //System.Diagnostics.Debug.WriteLine($"OnClosing {Name}");
             OnSaveSettings();
+
+            var ocinlf = Owner as CheckedIconNewListBoxForm;
+            if ( ocinlf != null )   // if this is a subform tell the above form its submenu is closing
+            {
+                //System.Diagnostics.Debug.WriteLine($"OnClosing {Name} set above submenu to false");
+                ocinlf.SetSubMenuActive(false);
+            }
+
             base.OnClosing(e);
         }
 
         protected virtual void OnSaveSettings()
         {
             string settings = UC.GetChecked(AllOrNoneBack);
-            System.Diagnostics.Debug.WriteLine($"OnSaveSettings {Name}");
+           //System.Diagnostics.Debug.WriteLine($"OnSaveSettings {Name}");
             SaveSettings?.Invoke(settings, Tag);     // at this level, we return all items.
         }
 
         private void CheckMouse(object sender, EventArgs e)     // best way of knowing your inside the client..  turned on only if CloseIfCursorOutsideBoundary
         {
-            //System.Diagnostics.Debug.WriteLine($"CINLBF timer {Name} closingdown {closingdown}");
+            //System.Diagnostics.Debug.WriteLine($"CINLBF timer {Name} closingdown {closingdown} count {closedowncount}");
 
             if (closingdown)        // ignore spurious extra timers just in case
                 return;
 
-            Rectangle client = ClientRectangle;
-            client.Inflate(CloseBoundaryRegion);       // overlap area
+            Rectangle area = Bounds;                // in screen pixels
+            area.Inflate(CloseBoundaryRegion);       // overlap area
 
             if (Control.MouseButtons != MouseButtons.None)      // if we note a buttom down, we may be scrolling, note
             {
                 mousebuttonsdown = true;
-                //System.Diagnostics.Debug.WriteLine($"Noted mouse button down");
+                //System.Diagnostics.Debug.WriteLine($"..Noted mouse button down");
             }
             else
             {
-                if (client.Contains(this.PointToClient(MousePosition)))     // if we are inside the box, cancel mouse down and set closedown to 0
+                if (area.Contains(MousePosition))     // if we are inside the box, cancel mouse down and set closedown to 0
                 {
-                    // System.Diagnostics.Debug.WriteLine($"Inside box, clear mbd");
+                    //System.Diagnostics.Debug.WriteLine($"..Inside box, clear mbd {Bounds} {area} {MousePosition}");
                     mousebuttonsdown = false;
                     closedowncount = 0;
                 }
                 else
                 {
-                    //System.Diagnostics.Debug.WriteLine($"outside box, {mousebuttonsdown}");
+                    //System.Diagnostics.Debug.WriteLine($"..outside box, {mousebuttonsdown} {Bounds} {area} {MousePosition}");
                     if (!mousebuttonsdown)              // 
                     {
-                        if (++closedowncount == 10)     // N*timertick wait
+                        if (++closedowncount == CloseDownTime/timer.Interval)     // N*timertick wait
                         {
-                            //System.Diagnostics.Debug.WriteLine("Out of bounds");
+                            //System.Diagnostics.Debug.WriteLine($"CheckMouse {Name} Out of bounds");
                             CloseOrHide();
                         }
                     }
@@ -301,6 +321,7 @@ namespace ExtendedControls
         private bool forceredraw = false;       // force reposition 
         
         private bool closingdown = false;
+        private bool submenuactive = false;
 
     }
 }

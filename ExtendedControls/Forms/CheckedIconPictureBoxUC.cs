@@ -28,6 +28,7 @@ namespace ExtendedControls
         public bool MultiColumnSlide { get { return MultipleColumns; } set { MultipleColumns = SlideUp = SlideLeft = value; } } // multicolumn with slide
         public Size ScreenMargin { get; set; } = new Size(16, 16);
 
+
         // Holds the item list, and various accessors to it
         public List<Item> ItemList { get; private set; }
         public int Count { get { return ItemList.Count; } }
@@ -69,14 +70,13 @@ namespace ExtendedControls
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
-        // call to turn on mouse tracking
-        public bool FreezeTracking { get { return picturebox.FreezeTracking; } set { picturebox.FreezeTracking = value; } }     
+        // Subform, null if not active
+        public CheckedIconNewListBoxForm Subform { get; private set; } = null;
 
         // check box changed : index, Tag, Text, userTag, change args
         public Action<int, string, string, object, ItemCheckEventArgs> CheckedChanged { get; set; }       // check box changed
         // index, Tag, Text, UserTag, button args
         public Action<int,string,string,object,MouseEventArgs> ButtonPressed { get; set; }
-
 
         // what char is used for split settings
         public char SettingsSplittingChar { get; set; } = ';';      
@@ -113,6 +113,8 @@ namespace ExtendedControls
             {
                 Tag = tag; Text = text; Image = img; Exclusive = exclusive; DisableUncheck = disableuncheck; Button = button;  UserTag = usertag;
             }
+
+            public bool IsSubmenu { get { return UserTag != null && UserTag is SubForm; } }
         }
 
         // the main add
@@ -132,11 +134,7 @@ namespace ExtendedControls
                     }
                     else
                     {
-                        if (cl.UserTag != null && cl.UserTag is SubForm)
-                        {
-                            OpenSubMenu(cl);
-                        }
-                        else
+                        if (!cl.IsSubmenu)
                             ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
                     }
                 }
@@ -161,11 +159,7 @@ namespace ExtendedControls
                         }
                         else
                         {
-                            if (cl.UserTag != null && cl.UserTag is SubForm)
-                            {
-                                OpenSubMenu(cl);
-                            }
-                            else
+                            if (!cl.IsSubmenu)
                                 ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
                         }
                     }
@@ -186,69 +180,6 @@ namespace ExtendedControls
                 else
                     ItemList.Add(cl);                      // at the end
             }
-        }
-
-        public class SubForm
-        {
-            public List<Item> Items { get; set; }
-            public string Setting { get; set; }
-        }
-
-        // open a submenu on item cl.
-        private void OpenSubMenu(Item cl)
-        {
-            var cinlbf = cl.label.Parent?.Parent?.Parent?.Parent as CheckedIconNewListBoxForm;
-            SubForm sf = cl.UserTag as SubForm;
-
-            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
-
-            foreach( var i in sf.Items)
-            {
-                frm.UC.Add(i.Tag, i.Text, i.Image, false, i.Exclusive, i.DisableUncheck, i.Button, i.UserTag, i.Group);
-            }
-
-            frm.UC.MultipleColumns = MultipleColumns;
-            frm.UC.SlideLeft = SlideLeft;
-            frm.UC.SlideUp = SlideUp;
-            frm.UC.MultiColumnSlide = MultiColumnSlide;
-            frm.UC.ScreenMargin = ScreenMargin;
-            frm.CloseBoundaryRegion = new Size(128, 128);
-            frm.AllOrNoneBack = false;
-
-            var pbsr = pictureboxscroll.PointToScreen(new Point(cl.label.PositionRight.X, cl.label.Position.Y));    // place right of label
-            frm.SetLocation = pbsr;
-
-            if (cinlbf != null) // if we have a CheckedIconNewListBoxForm at its parent, set in submenu mode
-            {
-                System.Diagnostics.Debug.WriteLine($"Set submenu on for {cinlbf.Name}");
-                cinlbf.InSubmenu = true;
-            }
-
-            FreezeTracking = true;       // stop the highlight moving around any more
-
-            frm.Name = Parent.Name + "_Subform";
-
-            frm.UC.ButtonPressed += (index, stag, text, utag, bev) => 
-            { 
-                System.Diagnostics.Debug.WriteLine($"Sub form button pressed {index} {stag} {text}");
-                ButtonPressed?.Invoke(index, stag, text, utag, bev);
-            };
-
-            frm.SaveSettings += (s, p) => 
-            {
-                System.Diagnostics.Debug.WriteLine($"*** Save Settings {frm.Name} {s} {p} was {sf.Setting}");
-                sf.Setting = s;
-
-                if ( cinlbf != null)
-                {
-                    cinlbf.InSubmenu = false;
-                    cinlbf.Close();
-                }
-            };
-
-            System.Diagnostics.Debug.WriteLine($"Open submenu for {cl.Text} {cl.Tag} set {sf.Setting}");
-
-            frm.Show(sf.Setting, pbsr, cinlbf);
         }
 
         // a Radio style button
@@ -542,6 +473,82 @@ namespace ExtendedControls
             return ret;
         }
 
+        // Class to define a subform of items and a holder for settings
+        public class SubForm
+        {
+            public List<Item> Items { get; set; }
+            public string Setting { get; set; }
+            public Size? ClosedBoundaryRegion { get; set; } = null;     // set to override inheriting parent size
+            public bool? AllOrNoneBack { get; set; } = null;        // set to override inheriting parent size
+
+            public Point OffsetPosition { get; set; } = new Point(16, 0);
+        }
+
+        // open a submenu on item cl.
+        public void OpenSubMenu(Item cl)
+        {
+            CloseSubMenu();
+
+            var cinlbf = cl.label.Parent?.Parent?.Parent?.Parent as CheckedIconNewListBoxForm;      // parent form, may be null if not embedded in this
+
+            SubForm sf = cl.UserTag as SubForm;     // this is the info class
+
+            Subform = new CheckedIconNewListBoxForm();      // make a new form
+
+            foreach (var i in sf.Items)             // transfer data from the Subform into the Form.
+            {
+                Subform.UC.Add(i.Tag, i.Text, i.Image, false, i.Exclusive, i.DisableUncheck, i.Button, i.UserTag, i.Group);
+            }
+
+            // copy and set parameters of the Subform from the parent or parent form, or for some from the SF
+            Subform.UC.MultipleColumns = MultipleColumns;
+            Subform.UC.SlideLeft = SlideLeft;
+            Subform.UC.SlideUp = SlideUp;
+            Subform.UC.MultiColumnSlide = MultiColumnSlide;
+            Subform.UC.ScreenMargin = ScreenMargin;
+            Subform.CloseBoundaryRegion = sf.ClosedBoundaryRegion.HasValue ? sf.ClosedBoundaryRegion.Value : cinlbf != null ? cinlbf.CloseBoundaryRegion : new Size(64, 64);
+            Subform.AllOrNoneBack = sf.AllOrNoneBack.HasValue ? sf.AllOrNoneBack.Value : cinlbf != null ? cinlbf.AllOrNoneBack : false;
+            // other Form parameters (CloseOnDeactivate etc) leave on default
+
+            var pbsr = pictureboxscroll.PointToScreen(new Point(cl.label.PositionRight.X + sf.OffsetPosition.X, cl.label.Position.Y + sf.OffsetPosition.Y));    // place offset to label
+            Subform.SetLocation = pbsr;
+
+            if (cinlbf != null) // if we have a CheckedIconNewListBoxForm at its parent, set in submenu mode
+            {
+                //System.Diagnostics.Debug.WriteLine($"OpenSubMenu set submenu on for {cinlbf.Name}");
+                cinlbf.SetSubMenuActive(true);              // submenu active informs form not to do anything on deactivation
+                Subform.CloseDownTime = cinlbf.CloseDownTime;
+            }
+
+            Subform.Name = Parent.Name + "_Subform";
+
+            Subform.UC.ButtonPressed += (index, stag, text, utag, bev) =>  // sub buttons reflected to our button press
+            {
+                //System.Diagnostics.Debug.WriteLine($"Sub form button pressed {index} {stag} {text}");
+                ButtonPressed?.Invoke(index, stag, text, utag, bev);
+            };
+
+            Subform.SaveSettings += (s, p) =>       // form close save settings update the subform settings value
+            {
+                //System.Diagnostics.Debug.WriteLine($"*** Save Settings {Subform.Name} {s} {p} was {sf.Setting}");       
+                sf.Setting = s;
+            };
+
+            //System.Diagnostics.Debug.WriteLine($"OpenSubMenu for {cl.Text} {cl.Tag} set {sf.Setting}");
+
+            Subform.Show(sf.Setting, pbsr, cinlbf);
+        }
+
+        // close submenu
+        public void CloseSubMenu()
+        {
+            if (Subform != null)
+            {
+                Subform?.Close();
+                Subform = null;
+            }
+        }
+
         public CheckedIconUserControl()
         {
             ItemList = new List<Item>();
@@ -552,6 +559,7 @@ namespace ExtendedControls
             pictureboxscroll.Controls.Add(picturebox);
             pictureboxscroll.Controls.Add(sb);
             pictureboxscroll.Dock = DockStyle.Fill;
+            picturebox.EnterElement += Picturebox_EnterElement;
             sb.HideScrollBar = true;
             Controls.Add(pictureboxscroll);
         }
@@ -615,6 +623,7 @@ namespace ExtendedControls
                 cl.label.ForeColor = this.ForeColor;
                 cl.label.BackColor = BackColor;
                 cl.label.MouseOverBackColor = this.MouseOverLabelColor;
+                cl.label.Tag = i;       // tags are index
 
                 if (!cl.Button)
                 {
@@ -631,7 +640,7 @@ namespace ExtendedControls
                 if (cl.Image != null)
                 {
                     cl.icon.Image = cl.Image;
-                    cl.icon.Tag = ItemList.Count;
+                    cl.icon.Tag = i;        // tags are index
                 }
 
                 // Y is not holding Y position. Only use for Y is to record vspacing on first entry only, see below for vpositioning
@@ -822,6 +831,17 @@ namespace ExtendedControls
             ItemCheckEventArgs eventargs = new ItemCheckEventArgs(index, cb.CheckState, prevstate);
             CheckChangedEvent(cb, eventargs);       // derived classes first.
             CheckedChanged?.Invoke(index,ItemList[index].Tag, ItemList[index].Text, ItemList[index].UserTag, eventargs);
+        }
+
+        // operate subform popups
+        private void Picturebox_EnterElement(object sender, MouseEventArgs eventargs, ExtPictureBox.ImageElement i, object tag)
+        {
+            Item cl = ItemList[(int)i.Tag];     // all elements have their tags set to index in ItemList
+            //System.Diagnostics.Debug.WriteLine($"Enter element {cl.Text}");
+            if (cl.IsSubmenu)
+                OpenSubMenu(cl);
+            else
+                CloseSubMenu();
         }
 
         protected virtual void CheckChangedEvent(ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) { }

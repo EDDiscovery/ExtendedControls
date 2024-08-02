@@ -407,11 +407,12 @@ namespace TestExtendedControls
             frm.UC.SlideLeft = true;      // allow left shift
             frm.PositionBelow(extButton10);
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => {
-                System.Diagnostics.Debug.WriteLine($"Form button pressed {index} {stag} {text}");
+                System.Diagnostics.Debug.WriteLine($">>> Form button pressed {index} {stag} {text}");
                 AddText($"*** Form {frm.Name} Button pressed {index} {stag} {text}"); 
                 frm.Close(); 
             };
-            frm.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine($"*** Save Settings {frm.Name} {s} {p}"); b12settings = s; };
+            frm.CloseDownTime = 300;
+            frm.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine($">>> Save Settings {frm.Name} {s} {p}"); b12settings = s; };
             frm.Show(b12settings,extButton12,this); ;
         }
     }
