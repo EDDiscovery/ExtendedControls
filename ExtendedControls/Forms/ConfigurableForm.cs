@@ -412,8 +412,8 @@ namespace ExtendedControls
                 return null;
         }
 
-        // Get by entry the value of the item as a string
-        public string Get(Entry t)      // return value of dialog control
+        // return value of dialog control as a string. Null if can't express it as a string (not a supported type)
+        public string Get(Entry t)      
         {
             Control c = t.Control;
             if (c is ExtTextBox)
@@ -453,11 +453,60 @@ namespace ExtendedControls
                 return null;
         }
 
-        // Return Get() by controlname
+        // return value of dialog control as a native value of the control (string/timedate etc). 
+        // null if invalid, null if not a supported control
+        public object GetValue(Entry t)
+        {
+            Control c = t.Control;
+            if (c is ExtTextBox)
+            {
+                string s = (c as ExtTextBox).Text;
+                if (t.TextBoxEscapeOnReport)
+                    s = s.EscapeControlChars();
+                return s;
+            }
+            else if (c is Label)
+                return (c as Label).Text;
+            else if (c is ExtCheckBox)
+                return (c as ExtCheckBox).Checked;
+            else if (c is ExtDateTimePicker)
+                return (c as ExtDateTimePicker).Value;
+            else if (c is NumberBoxDouble)
+            {
+                var cn = c as NumberBoxDouble;
+                return cn.IsValid ? cn.Value : default(double?);
+            }
+            else if (c is NumberBoxLong)
+            {
+                var cn = c as NumberBoxLong;
+                return cn.IsValid ? cn.Value : default(long?);
+            }
+            else if (c is NumberBoxInt)
+            {
+                var cn = c as NumberBoxInt;
+                return cn.IsValid ? cn.Value : default(int?);
+            }
+            else if (c is ExtComboBox)
+            {
+                ExtComboBox cb = c as ExtComboBox;
+                return cb.SelectedIndex;
+            }
+            else
+                return null;
+        }
+
+        // Return Get() by controlname, null if can't get
         public string Get(string controlname)
         {
             Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             return t != null ? Get(t) : null;
+        }
+
+        // Return GetValue() by controlname, null if can't get
+        public T GetValue<T>(string controlname)
+        {
+            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            return t != null ? (T)GetValue(t) : default(T);
         }
 
         // Return Get() from controls starting with this name
@@ -467,6 +516,16 @@ namespace ExtendedControls
             string[] res = new string[list.Length];
             for (int i = 0; i < list.Length; i++)
                 res[i] = Get(list[i]);
+            return res;
+        }
+
+        // Return GetValue() from controls starting with this name
+        public T[] GetByStartingName<T>(string startingcontrolname)
+        {
+            var list = entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            T[] res = new T[list.Length];
+            for (int i = 0; i < list.Length; i++)
+                res[i] = (T)GetValue(list[i]);
             return res;
         }
 
@@ -1175,7 +1234,7 @@ namespace ExtendedControls
                     DateTime t;
 
                     if (ent.TextValue == null)
-                        t = ent.DateTimeValue;
+                        dt.Value = ent.DateTimeValue;
                     else if (DateTime.TryParse(ent.TextValue, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out t))     // assume local, so no conversion
                         dt.Value = t;
 
