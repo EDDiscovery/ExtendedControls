@@ -30,10 +30,13 @@ namespace ExtendedControls
         public DataPoint CurrentDataPoint { get; set; }
         public Legend CurrentLegend { get; set; }
         public Title CurrentTitle { get; set; }
+        public double AutoScaleYAddedPercent { get; set; } = 5;         // added value to zoom to give spacing, in decimal percent
+        public double ZoomMouseWheelXMinimumInterval { get; set; } = 5;
+        public double ZoomMouseWheelXZoomFactor { get; set; } = 1.5;
 
         public static Color RequestTheme = Color.FromArgb(0, 255, 255, 255);        // set textcolor to this to request themeing
         public static Color Disable = Color.FromArgb(0, 255, 255, 254);             // to disable themeing on elements - see below
-
+        
         public ExtChart() : base()
         {
         }
@@ -52,9 +55,9 @@ namespace ExtendedControls
         // add a title of name with text
         // the title will be themed if textcolor is set to RequestTheme (default if textcolor=null)
         // the border/shadow can be disabled even if the theme wants it by setting border/shadow color to Disable
-        public Title AddTitle(string name, string text, 
+        public Title AddTitle(string name, string text,
                                  Color? textcolor = null, Color? backcolor = null, Font font = null,
-                                 Docking dck = Docking.Top,  ContentAlignment? alignment = null, ElementPosition position = null,
+                                 Docking dck = Docking.Top, ContentAlignment? alignment = null, ElementPosition position = null,
                                  Color? bordercolor = null, int borderwidth = 1, ChartDashStyle borderdashstyle = ChartDashStyle.Solid,
                                  Color? shadowcolor = null, int shadowoffset = 0)
         {
@@ -154,13 +157,13 @@ namespace ExtendedControls
         {
             CurrentLegend = Legends.Add(name);
             CurrentLegend.ForeColor = textcolor ?? RequestTheme;
-            if ( font!= null)
+            if (font != null)
                 CurrentLegend.Font = font;
             if (backcolor != null)
                 CurrentLegend.BackColor = backcolor.Value;
             if (position != null)
                 CurrentLegend.Position = position;
-            if ( bordercolor.HasValue)
+            if (bordercolor.HasValue)
             {
                 CurrentLegend.BorderColor = bordercolor.Value;
                 CurrentLegend.BorderDashStyle = borderdashstyle;
@@ -209,7 +212,7 @@ namespace ExtendedControls
         }
 
         // set all legends to this colour set
-        public void SetAllLegendsColorFont( Color legendtextcolor, Font font, Color backcolor, 
+        public void SetAllLegendsColorFont(Color legendtextcolor, Font font, Color backcolor,
                                            int shadowoffset, Color shadowcolor,
                                            Color tforecolor, Color tbackcolor, Font tfont, StringAlignment talignment,
                                            LegendSeparatorStyle tsep, Color tseperatorcolor,
@@ -270,7 +273,7 @@ namespace ExtendedControls
             return CurrentChartArea;
         }
 
-        public ChartArea SetChartAreaColors( Color? back = null,
+        public ChartArea SetChartAreaColors(Color? back = null,
                                     Color? bordercolor = null, int width = 2, ChartDashStyle style = ChartDashStyle.Solid)
         {
             if (back != null)
@@ -292,6 +295,7 @@ namespace ExtendedControls
             CurrentChartArea.InnerPlotPosition = pos;
         }
 
+
         //////////////////////////////////////////////////////////////////////////// X for CurrentChartArea
 
         // configure CurrentChartArea X axis type, its interval, its variable/fixed mode - affects where labels are placed on x axis
@@ -304,6 +308,8 @@ namespace ExtendedControls
             CurrentChartArea.AxisX.IntervalOffset = offset;
             CurrentChartArea.AxisX.IntervalOffsetType = offsettype;
         }
+
+        public bool IsStartedFromZeroX { get { return CurrentChartArea.AxisX.IsStartedFromZero; } set { CurrentChartArea.AxisX.IsStartedFromZero = value; } }
 
         // Color and Font on the X axis labels
         public void SetXAxisLabelColorFont(Color color, Font font = null)
@@ -348,7 +354,7 @@ namespace ExtendedControls
         // configure CurrentChartArea X axis Minor grid colors
         public void SetXAxisMinorGridWidthColor(int width, ChartDashStyle style, Color? minor)
         {
-            if ( minor.HasValue)
+            if (minor.HasValue)
                 CurrentChartArea.AxisX.MinorGrid.LineColor = minor.Value;
             CurrentChartArea.AxisX.MinorGrid.LineWidth = width;
             CurrentChartArea.AxisX.MinorGrid.LineDashStyle = style;
@@ -428,7 +434,7 @@ namespace ExtendedControls
         }
         public void ZoomX(DateTime from, DateTime to)
         {
-            CurrentChartArea.AxisX.ScaleView.Zoom(from.ToOADate(),to.ToOADate());
+            CurrentChartArea.AxisX.ScaleView.Zoom(from.ToOADate(), to.ToOADate());
             AutoZoomY(CurrentChartArea);
         }
 
@@ -445,11 +451,12 @@ namespace ExtendedControls
             CurrentChartArea.AxisY.IntervalOffset = offset;
             CurrentChartArea.AxisY.IntervalOffsetType = offsettype;
         }
+        public bool IsStartedFromZeroY { get { return CurrentChartArea.AxisY.IsStartedFromZero; } set { CurrentChartArea.AxisY.IsStartedFromZero = value; } }
 
         public void SetYAxisLabelColorFont(Color color, Font font = null)
         {
             CurrentChartArea.AxisY.LabelStyle.ForeColor = color;
-            if ( font != null)
+            if (font != null)
                 CurrentChartArea.AxisY.LabelStyle.Font = font;
         }
 
@@ -476,14 +483,14 @@ namespace ExtendedControls
 
         public void SetYAxisMajorGridWidthColor(int width, ChartDashStyle style, Color? major = null)
         {
-            if ( major.HasValue)
+            if (major.HasValue)
                 CurrentChartArea.AxisY.MajorGrid.LineColor = major.Value;
             CurrentChartArea.AxisY.MajorGrid.LineWidth = width;
             CurrentChartArea.AxisY.MajorGrid.LineDashStyle = style;
         }
         public void SetYAxisMinorGridWidthColor(int width, ChartDashStyle style, Color? minor = null)
         {
-            if ( minor != null)
+            if (minor != null)
                 CurrentChartArea.AxisY.MinorGrid.LineColor = minor.Value;
             CurrentChartArea.AxisY.MinorGrid.LineWidth = width;
             CurrentChartArea.AxisY.MinorGrid.LineDashStyle = style;
@@ -549,7 +556,7 @@ namespace ExtendedControls
         public bool IsZoomedY { get { return CurrentChartArea.AxisY.ScaleView.IsZoomed; } }
 
         // Turn on/off Y Auto scale, which adjusted Y scale when X is zoomed in
-        public void YAutoScale(bool on = true, bool enableyscrollbar = true)      
+        public void YAutoScale(bool on = true, bool enableyscrollbar = true)
         {
             if (on)
             {
@@ -564,13 +571,12 @@ namespace ExtendedControls
             else
             {
                 autozoomy.Remove(CurrentChartArea);
-                if ( autozoomy.Count == 0)
+                if (autozoomy.Count == 0)
                     AxisViewChanged -= ExtChart_AxisViewChanged;
 
                 CurrentChartArea.AxisY.ScrollBar.Enabled = enableyscrollbar;
             }
         }
-        public double AutoScaleYAddedPercent { get; set; } = 5;         // added value to zoom to give spacing, in decimal percent
 
         //////////////////////////////////////////////////////////////////////////// Series
 
@@ -580,7 +586,7 @@ namespace ExtendedControls
             CurrentSeries = new Series();
             CurrentSeries.Name = name;
             CurrentSeries.ChartArea = chartarea;
-            if ( seriescolor.HasValue)
+            if (seriescolor.HasValue)
                 CurrentSeries.Color = seriescolor.Value;
             if (legend != null)
                 CurrentSeries.Legend = legend;
@@ -753,7 +759,7 @@ namespace ExtendedControls
             if (values.Length != CurrentSeries.Points.Count)
                 return false;
 
-            for( int i = 0; i < CurrentSeries.Points.Count; i++)
+            for (int i = 0; i < CurrentSeries.Points.Count; i++)
             {
                 if (CurrentSeries.Points[i].YValues[yentry] != values[i])
                     return false;
@@ -797,7 +803,7 @@ namespace ExtendedControls
 
         // first data point or nearest at this value, or -1 if not found
         // axis is X or Y
-        public int FindIndexOfNearestPoint(double target, AxisName axis = AxisName.X)       
+        public int FindIndexOfNearestPoint(double target, AxisName axis = AxisName.X)
         {
             var ret = CurrentSeries.Points.FindByValue(target, axis.ToString());
             if (ret != null)
@@ -806,10 +812,10 @@ namespace ExtendedControls
             {
                 double mindist = double.MaxValue;
                 int indexnearest = -1;
-                for( int i = 0; i < CurrentSeries.Points.Count; i++)
+                for (int i = 0; i < CurrentSeries.Points.Count; i++)
                 {
                     var dp = CurrentSeries.Points[i];
-                    if ( axis == AxisName.X )
+                    if (axis == AxisName.X)
                     {
                         double delta = Math.Abs(dp.XValue - target);
                         if (delta < mindist)
@@ -818,9 +824,9 @@ namespace ExtendedControls
                             indexnearest = i;
                         }
                     }
-                    else if ( axis == AxisName.Y)
+                    else if (axis == AxisName.Y)
                     {
-                        foreach( var y in dp.YValues)
+                        foreach (var y in dp.YValues)
                         {
                             double delta = Math.Abs(y - target);
                             if (delta < mindist)
@@ -871,9 +877,6 @@ namespace ExtendedControls
                 mousewheelx.Remove(CurrentChartArea);
         }
 
-        public double ZoomMouseWheelXMinimumInterval { get; set; } = 5;
-        public double ZoomMouseWheelXZoomFactor { get; set; } = 1.5;
-
         //////////////////////////////////////////////////////////////////////// Context menu definition
         public void AddContextMenu(string[] text, Action<ToolStripMenuItem>[] actions, Action<ToolStripMenuItem[]> opening = null)
         {
@@ -920,7 +923,7 @@ namespace ExtendedControls
             int x = (int)Math.Round(Width * p.X / 100.0);
             int y = (int)Math.Round(Height * p.Y / 100.0);
             int width = (int)Math.Round(Width * p.Width / 100.0);
-            int height = (int)Math.Round(Height * (p.Height>0?p.Height:p.Width) / 100.0);
+            int height = (int)Math.Round(Height * (p.Height > 0 ? p.Height : p.Width) / 100.0);
             return new Rectangle(x, y, width, height);
         }
 
@@ -931,21 +934,20 @@ namespace ExtendedControls
         private void ExtChart_AxisViewChanged(object senderunused, ViewEventArgs e)       // user only interaction calls this
         {
             if (e.Axis == e.ChartArea.AxisX)             // if axis is x, we give the autozoom y a chance
-                AutoZoomY(e.ChartArea);
+                AutoZoomY(e.ChartArea);       // only scale if zoomed
         }
 
         private void AutoZoomY(ChartArea ch)
         {
-            if (autozoomy.Contains(ch))     // if enabled on this chart
+            if (autozoomy.Contains(ch))     // if autozoom Y is enabled on this chart
             {
-                if (ch.AxisX.ScaleView.IsZoomed)        // if x is zoomed, we adjust y to min/max
+                if (ch.AxisX.ScaleView.IsZoomed)        // if x is zoomed or we force it, we adjust y to min/max
                 {
-                    var minmax = ch.MinMaxYInChartArea(Series);
-                    double graphsize = ch.AxisY.Maximum - ch.AxisY.Minimum;
-                    double min = Math.Max(minmax.Item1 - graphsize * AutoScaleYAddedPercent / 100.0, ch.AxisY.Minimum);
-                    double max = Math.Min(minmax.Item2 + graphsize * AutoScaleYAddedPercent / 100.0, ch.AxisY.Maximum);
-                    //System.Diagnostics.Debug.WriteLine($"X Zoomed Min max {min} - {max}");
-                    ch.AxisY.ScaleView.Zoom(min,max);
+                    var minmax = ch.MinMaxY(Series);
+                    if (minmax.Item1 != double.MaxValue)       // we must have some data points to zoom into, this means non were
+                    {
+                        SetYLimits(ch, minmax);
+                    }
                 }
                 else
                 {
@@ -955,13 +957,25 @@ namespace ExtendedControls
             }
         }
 
+        private void SetYLimits( ChartArea ch, Tuple<double,double> minmax)
+        {
+            var delta = minmax.Item2 - minmax.Item1;
+            if (delta == 0)                         // Single point in view
+                delta = Math.Max(1, Math.Abs(minmax.Item1) * AutoScaleYAddedPercent / 100.0);       // make a litle delta up
+            var margin = delta * (AutoScaleYAddedPercent / 100.0);      // from the difference, add a little bit
+            double min = Math.Max(minmax.Item1 - margin, ch.AxisY.Minimum);
+            double max = Math.Min(minmax.Item2 + margin, ch.AxisY.Maximum);
+            //System.Diagnostics.Debug.WriteLine($"X Zoomed Min max {minmax} at % {AutoScaleYAddedPercent} delta {minmax.Item2 - minmax.Item1} margin {margin} giving {min} - {max}");
+            ch.AxisY.ScaleView.Zoom(min, max);
+        }
+
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
 
             // saw an exception in HitTest which made no sense, so lets just cover it up and see if it occurs via debug
             try
-            { 
+            {
                 var hitres = HitTest(e.X, e.Y);
                 //System.Diagnostics.Debug.WriteLine($"Hit test {hitres.ChartElementType} ca {hitres.ChartArea?.Name} ax {hitres.Axis?.Name} pi {hitres.PointIndex} se {hitres.Series?.Name} so {hitres.SubObject}");
 
@@ -1002,7 +1016,7 @@ namespace ExtendedControls
                     }
                 }
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"********Exception in chart mouse wheel {ex}");
             }
@@ -1048,50 +1062,58 @@ namespace ExtendedControls
                     {
                         Rectangle area = GetArea(t.Position);
                         //System.Diagnostics.Debug.WriteLine($"Title pos {t.Position} = {area} chart area {Bounds}");
-                        t.Font = DrawingHelpersStaticFunc.GetFontToFit(t.Text, t.Font, new Size(area.Width-12, area.Height-4));     //12 pixels for borders etc and spacing etc.
+                        t.Font = DrawingHelpersStaticFunc.GetFontToFit(t.Text, t.Font, new Size(area.Width - 12, area.Height - 4));     //12 pixels for borders etc and spacing etc.
                     }
                 }
             }
         }
 
-
+ 
         private HashSet<ChartArea> autozoomy = new HashSet<ChartArea>();
         private HashSet<ChartArea> mousewheelx = new HashSet<ChartArea>();
-
+  
         #endregion
     }
 
     static class ChartExtensions
     {
         // in the current chart area, for each series in that chartarea, and all y points, find max/min
-        static public Tuple<double, double> MinMaxYInChartArea(this ChartArea chart, SeriesCollection chartseries)
+        static public Tuple<double, double> MinMaxY(this ChartArea chart, SeriesCollection chartseries)
         {
-            double min = chart.AxisX.ScaleView.ViewMinimum;
-            double max = chart.AxisX.ScaleView.ViewMaximum;
+            return chart.MinMaxY(chartseries, chart.AxisX.ScaleView.ViewMinimum, chart.AxisX.ScaleView.ViewMaximum);
+        }
 
+        static public Tuple<double, double> MinMaxY(this ChartArea chart, SeriesCollection chartseries, double startx, double endx)
+        {
             double ymin = double.MaxValue;
             double ymax = double.MinValue;
 
-            //System.Diagnostics.Debug.WriteLine($"MinMax {min}-{max}");
+            //System.Diagnostics.Debug.WriteLine($"MinMaxYInChartArea X {min}-{max}");
 
             foreach (var series in chartseries)
             {
-                if (series.ChartArea == chart.Name)
+                if (series.ChartArea == chart.Name)     // if the series is in the chart
                 {
                     foreach (DataPoint dp in series.Points)
                     {
-                        if (dp.XValue >= min && dp.XValue <= max)
+                        if (dp.XValue >= startx && dp.XValue <= endx)       // within X range
                         {
                             foreach (var y in dp.YValues)
                             {
-                                ymin = Math.Min(dp.YValues[0], ymin);
-                                ymax = Math.Max(dp.YValues[0], ymax);
+                                //   System.Diagnostics.Debug.WriteLine($"dp {dp.XValue} .. checking Y {y}");
+                                ymin = Math.Min(y, ymin);
+                                ymax = Math.Max(y, ymax);
                             }
+                        }
+                        else
+                        {
+                            //  System.Diagnostics.Debug.WriteLine($"..dp reject {dp.XValue}");
                         }
                     }
                 }
             }
 
+            //System.Diagnostics.Debug.WriteLine($"...MinMaxYInChartArea Y {ymin}-{ymax}");
             return new Tuple<double, double>(ymin, ymax);
         }
 

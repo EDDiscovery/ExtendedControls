@@ -174,6 +174,9 @@ namespace ExtendedControls
             chart?.SetChartArea3DStyle(style);
         }
 
+        public bool IsStartedFromZeroX { get { return chart?.IsStartedFromZeroX ?? false; } set { if (chart != null) chart.IsStartedFromZeroX = value; } }
+        public bool IsStartedFromZeroY { get { return chart?.IsStartedFromZeroY ?? false; } set { if (chart != null) chart.IsStartedFromZeroY = value; } }
+
         public void SetChartAreaPlotArea(ElementPosition pos)
         {
             chart?.SetChartAreaPlotArea(pos);
