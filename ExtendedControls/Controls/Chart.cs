@@ -174,11 +174,11 @@ namespace ExtendedControls
                 CurrentLegend.Docking = dock;
 
             if (bordercolor.HasValue)
-            {
                 CurrentLegend.BorderColor = bordercolor.Value;
-                CurrentLegend.BorderDashStyle = borderdashstyle;
-                CurrentLegend.BorderWidth = borderwidth;
-            }
+
+            CurrentLegend.BorderDashStyle = borderdashstyle;
+            CurrentLegend.BorderWidth = borderwidth;
+
             if (shadowcolor.HasValue)
             {
                 CurrentLegend.ShadowColor = shadowcolor.Value;
@@ -342,6 +342,18 @@ namespace ExtendedControls
             CurrentChartArea.AxisX.LabelStyle.Format = format;
         }
 
+        // set axis title info
+        public void SetXAxisTitle(string format, Font font = null, Color? forecolor = null, StringAlignment? alignment = null)
+        {
+            CurrentChartArea.AxisX.Title = format;
+            if (font != null)
+                CurrentChartArea.AxisX.TitleFont = font;
+            if (forecolor != null)
+                CurrentChartArea.AxisX.TitleForeColor = forecolor.Value;
+            if (alignment != null)
+                CurrentChartArea.AxisX.TitleAlignment = alignment.Value;
+        }
+
         // configure CurrentChartArea Major grid intervals
         public void SetXAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
         {
@@ -489,6 +501,18 @@ namespace ExtendedControls
         public void SetYAxisFormat(string format)
         {
             CurrentChartArea.AxisY.LabelStyle.Format = format;
+        }
+
+        // set axis title info
+        public void SetYAxisTitle(string format, Font font = null, Color? forecolor = null, StringAlignment? alignment = null)
+        {
+            CurrentChartArea.AxisY.Title = format;
+            if (font != null)
+                CurrentChartArea.AxisY.TitleFont = font;
+            if (forecolor != null)
+                CurrentChartArea.AxisY.TitleForeColor = forecolor.Value;
+            if (alignment != null)
+                CurrentChartArea.AxisY.TitleAlignment = alignment.Value;
         }
 
         public void SetYAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)

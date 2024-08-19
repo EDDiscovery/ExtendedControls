@@ -1080,9 +1080,9 @@ namespace ExtendedControls
                                       Color.Empty, 1,
                                       colors[CI.group_borderlines], 1, ChartDashStyle.Solid);
 
-            ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt, colors[CI.grid_cellbackground].Multiply(1.2f), 6, Color.FromArgb(128, 0, 0, 0),
+            ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt, ctrl.BackColor, 6, Color.FromArgb(128, 0, 0, 0),
                                         colors[CI.grid_celltext], colors[CI.grid_cellbackground], fnt, StringAlignment.Center, LegendSeparatorStyle.Line, colors[CI.grid_borderlines],
-                                        colors[CI.grid_borderlines], ChartDashStyle.Solid, 1,
+                                        colors[CI.grid_borderlines], ChartDashStyle.Solid, 0,
                                         LegendSeparatorStyle.Line, colors[CI.group_borderlines], 1);
 
             // we theme all chart areas, backwards, so chartarea0 is the one left selected            
@@ -1096,6 +1096,8 @@ namespace ExtendedControls
                 ctrl.SetYAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.grid_borderlines]);
                 ctrl.SetXAxisLabelColorFont(colors[CI.grid_celltext], fnt);
                 ctrl.SetYAxisLabelColorFont(colors[CI.grid_celltext], fnt);
+                ctrl.SetXAxisTitle(ctrl.CurrentChartArea.AxisX.Title, fnt, colors[CI.grid_celltext]);
+                ctrl.SetYAxisTitle(ctrl.CurrentChartArea.AxisY.Title, fnt, colors[CI.grid_celltext]);
 
                 ctrl.SetXCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
                 ctrl.SetYCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);

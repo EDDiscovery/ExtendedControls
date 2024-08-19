@@ -230,6 +230,10 @@ namespace ExtendedControls
         {
             chart?.SetXAxisFormat(format);
         }
+        public void SetXAxisTitle(string format, Font font = null, Color? forecolor = null, StringAlignment? alignment = null)
+        {
+            chart?.SetXAxisTitle(format, font, forecolor, alignment);
+        }
         public void SetXAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
         {
             chart?.SetXAxisMajorGridInterval(interval, type, offsetinterval, offsetintervaltype);
@@ -315,6 +319,10 @@ namespace ExtendedControls
         public void SetYAxisFormat(string format)
         {
             chart?.SetYAxisFormat(format);
+        }
+        public void SetYAxisTitle(string format, Font font = null, Color? forecolor = null, StringAlignment? alignment = null)
+        {
+            chart?.SetYAxisTitle(format, font, forecolor, alignment);
         }
 
         public void SetYAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
