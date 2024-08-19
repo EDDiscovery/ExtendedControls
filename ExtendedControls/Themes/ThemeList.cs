@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2021 EDDiscovery development team
+ * Copyright © 2016-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -66,6 +64,7 @@ namespace ExtendedControls
                 Color.Black, Color.DarkOrange, Color.Orange, // toolstrip
                 Color.Orange, // spanel
                 Color.Green, // overlay
+                Theme.DefaultChartColours,
                 false, 95, "Microsoft Sans Serif", 8.25F));
 
             // ON purpose, always show them the euro caps one to give a hint!
@@ -93,6 +92,7 @@ namespace ExtendedControls
                     Color.Black, Color.DarkOrange, Color.Orange, // toolstrips
                     Color.Orange, // spanel
                     Color.Green, // overlay
+                    Theme.DefaultChartColours,
                     false, 100, "Euro Caps", 12F));
             }
 
@@ -131,6 +131,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 Color.Green, // overlay
+                Theme.DefaultChartColours,
                 false, 100, "Arial", 9.75F));
 
             themelist.Add(new Theme(themelist[themelist.Count - 1], "Easy Dark High DPI", "Arial", 20F));
@@ -152,6 +153,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56), Color.FromArgb(255, 41, 46, 51), // toolstrip, back, border
                 Color.FromArgb(255, 255, 0, 0), // spanel
                 Color.Green, // overlay
+                Theme.DefaultChartColours,
                 false, 100, "Arial", 10.25F));
 
             themelist.Add(new Theme(themelist[themelist.Count - 1], "EDSM High DPI", "Arial", 20F));
@@ -184,6 +186,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 Color.Green, // overlay
+                Theme.DefaultChartColours,
                 false, 100, "Microsoft Sans Serif", 9.75F));
 
             themelist.Add(new Theme(themelist[themelist.Count - 1], "Material Dark High DPI", "Microsoft Sans Serif", 20F));
@@ -207,6 +210,7 @@ namespace ExtendedControls
                 Color.Black, r2, r1, // toolstrip
                 r1, // spanel
                 Color.Green, // overlay
+                Theme.DefaultChartColours,
                 false, 95, "Microsoft Sans Serif", 10F));
 
             if (IsFontAvailable("Euro Caps"))
@@ -232,6 +236,7 @@ namespace ExtendedControls
                                         SystemColors.Menu, SystemColors.Menu, SystemColors.MenuText,  // toolstrip
                                         SystemColors.ControlLightLight, // spanel
                                         Color.Green, // overlay
+                                        Theme.DefaultChartColours,
                                         false, 95, "Euro Caps", 12F));
             }
 
@@ -255,6 +260,7 @@ namespace ExtendedControls
                                         SystemColors.Menu, SystemColors.Menu, SystemColors.MenuText,  // toolstrip
                                         SystemColors.ControlLightLight, // spanel
                                         Color.Green, // overlay
+                                        Theme.DefaultChartColours,
                                         false, 95, "Verdana", 8F));
             }
 
@@ -275,6 +281,7 @@ namespace ExtendedControls
                                                Color.DarkBlue, Color.White, Color.Red,  // toolstrip
                                                Color.LightBlue, // spanel
                                                Color.Green, // overlay
+                                               Theme.DefaultChartColours,
                                                false, 95, "Microsoft Sans Serif", 8.25F));
 
             Color baizegreen = Color.FromArgb(255, 13, 68, 13);
@@ -295,6 +302,7 @@ namespace ExtendedControls
                                                baizegreen, Color.White, Color.White,
                                                baizegreen,
                                                Color.Green, // overlay
+                                               Theme.DefaultChartColours,
                                                false, 95, "Microsoft Sans Serif", 8.25F));
 
 
@@ -344,6 +352,7 @@ namespace ExtendedControls
                             Color.FromArgb(255, 0, 0, 0), // unused_entry
                             Color.FromArgb(255, 0, 128, 255), // s_panel
                             Color.FromArgb(255, 0, 128, 0), // transparentcolorkey
+                            Theme.DefaultChartColours,
                             false, 100, "Verdana", 8));
                 themelist.Add(new Theme(themelist[themelist.Count - 1], "Deep Blue Sky High DPI", "Verdana", 20));
             }
