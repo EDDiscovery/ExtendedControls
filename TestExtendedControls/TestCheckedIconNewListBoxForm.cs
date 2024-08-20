@@ -365,30 +365,65 @@ namespace TestExtendedControls
 
             for (int i = 0; i < 10; i++)
             {
-                List<CheckedIconUserControl.Item> sublist2 = new List<CheckedIconUserControl.Item>();
-                sublist2.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 1}", $"T{i * 100000 + 1}", button: true));
-                sublist2.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 2}", $"T{i * 100000 + 2}", button: true));
-                sublist2.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 3}", $"T{i * 100000 + 3}", button: true));
-                sublist2.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 4}", $"T{i * 100000 + 4}", button: true));
-                sublist2.Add(new CheckedIconUserControl.Item($"S{i * 100000 + 5}", $"S{i * 100000 + 5}"));
-                sublist2.Add(new CheckedIconUserControl.Item($"S{i * 100000 + 6}", $"S{i * 100000 + 6}"));
+                List<CheckedIconUserControl.Item> subform = new List<CheckedIconUserControl.Item>();
 
-                if (sf.Count <= sfn)
-                    sf.Add(new CheckedIconUserControl.SubForm { Items = sublist2, Setting = $"" });
+                if (i < 5) // demo user controlled sub menu icon
+                {
+                    List<CheckedIconUserControl.Item> subsubform = new List<CheckedIconUserControl.Item>();
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 1}", $"T{i * 100000 + 1}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 2}", $"T{i * 100000 + 2}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 3}", $"T{i * 100000 + 3}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 4}", $"T{i * 100000 + 4}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 100000 + 5}", $"S{i * 100000 + 5}"));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 100000 + 6}", $"S{i * 100000 + 6}"));
+                    sf.Add(new CheckedIconUserControl.SubForm { Items = subsubform, Setting = $"", SubmenuIcon = Properties.Resources.RightArrow });
 
-                List<CheckedIconUserControl.Item> sublist = new List<CheckedIconUserControl.Item>();
-                sublist.Add(new CheckedIconUserControl.Item($"TSM{i * 1000 + 1}", $"TSM{i * 1000 + 1}", button: true, usertag:sf[sfn++]));
-                sublist.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 1}", $"T{i * 1000 + 1}", button: true));
-                sublist.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 2}", $"T{i * 1000 + 2}", button: true));
-                sublist.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 3}", $"T{i * 1000 + 3}", button: true));
-                sublist.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 4}", $"T{i * 1000 + 4}", button: true));
-                sublist.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 5}", $"S{i * 1000 + 5}"));
-                sublist.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 6}", $"S{i * 1000 + 6}"));
+                    subform.Add(new CheckedIconUserControl.Item($"SF1{i * 1000 + 1}", $"SF1{i * 1000 + 1}", button: true, usertag: sf[sfn++]));
+                }
 
-                if (sf.Count <= sfn)
-                    sf.Add(new CheckedIconUserControl.SubForm { Items = sublist, Setting = $"" });
+                subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 1}", $"T{i * 1000 + 1}", button: true));
+                subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 2}", $"T{i * 1000 + 2}", button: true));
+                subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 3}", $"T{i * 1000 + 3}", button: true));
 
-                frm.UC.AddButton($"t{i}", $"Sub {i}", Properties.Resources.CursorToTop, sf[sfn++]);
+                if (i < 2) // demo default submenu icon
+                {
+                    List<CheckedIconUserControl.Item> subsubform = new List<CheckedIconUserControl.Item>();
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 1}", $"T{i * 200000 + 1}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 2}", $"T{i * 200000 + 2}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 3}", $"T{i * 200000 + 3}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 4}", $"T{i * 200000 + 4}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 200000 + 5}", $"S{i * 200000 + 5}"));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 200000 + 6}", $"S{i * 200000 + 6}"));
+                    sf.Add(new CheckedIconUserControl.SubForm { Items = subsubform, Setting = $"", SubmenuIcon = null });
+
+                    subform.Add(new CheckedIconUserControl.Item($"SF2{i * 2000 + 1}", $"SF2{i * 2000 + 1}", button: true, usertag: sf[sfn++]));
+
+                }
+
+                subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 4}", $"T{i * 1000 + 4}", button: true));
+                subform.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 5}", $"S{i * 1000 + 5}"));
+
+                if (i < 8)  // demo no sub menu icon
+                {
+                    List<CheckedIconUserControl.Item> subsubform = new List<CheckedIconUserControl.Item>();
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 300000 + 1}", $"T{i * 300000 + 1}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 300000 + 2}", $"T{i * 300000 + 2}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 300000 + 3}", $"T{i * 300000 + 3}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 300000 + 4}", $"T{i * 300000 + 4}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 300000 + 5}", $"S{i * 300000 + 5}"));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 300000 + 6}", $"S{i * 300000 + 6}"));
+                    sf.Add(new CheckedIconUserControl.SubForm { Items = subsubform, Setting = $"", SubmenuIcon = CheckedIconGroupUserControl.NoSubMenuIcon });
+
+                    subform.Add(new CheckedIconUserControl.Item($"SF3{i * 3000 + 1}", $"SF3{i * 3000 + 1}", button: true, usertag: sf[sfn++]));
+
+                }
+
+
+                subform.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 6}", $"S{i * 1000 + 6}"));
+
+                sf.Add(new CheckedIconUserControl.SubForm { Items = subform, Setting = $"" });
+
+                frm.UC.AddButton($"t{i}", i % 2 == 0 ? $"Sub {i}" : $"Subsform {i}", Properties.Resources.CursorToTop, sf[sfn++]);
             }
 
             for (int i = 0; i < 5; i++)

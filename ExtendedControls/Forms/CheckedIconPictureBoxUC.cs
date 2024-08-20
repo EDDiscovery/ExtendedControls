@@ -107,6 +107,7 @@ namespace ExtendedControls
             public ExtPictureBox.Label label;
             public ExtPictureBox.CheckBox checkbox;
             public ExtPictureBox.ImageElement icon;
+            public ExtPictureBox.ImageElement submenuicon;
 
             public Item() { }
             public Item(string tag, string text, Image img = null, string exclusive = null, bool disableuncheck = false, bool button = false, object usertag = null)
@@ -115,6 +116,7 @@ namespace ExtendedControls
             }
 
             public bool IsSubmenu { get { return UserTag != null && UserTag is SubForm; } }
+            public SubForm GetSubForm { get { return UserTag as SubForm; } }
         }
 
         // the main add
@@ -162,6 +164,10 @@ namespace ExtendedControls
                         }
                     }
                 };
+            }
+            if ( cl.IsSubmenu && cl.GetSubForm.SubmenuIcon != NoSubMenuIcon)        // if submenu, and icon set is null (default) and not NoSubMenuIcon
+            {
+                cl.submenuicon = new ExtPictureBox.ImageElement();                  // add
             }
 
             if (group)
@@ -477,19 +483,28 @@ namespace ExtendedControls
             public List<Item> Items { get; set; } = new List<Item>();
             public string Setting { get; set; } = "";
             public Size? ClosedBoundaryRegion { get; set; } = null;     // set to override inheriting parent size
-            public bool? AllOrNoneBack { get; set; } = null;        // set to override inheriting parent size
-
+            public bool? AllOrNoneBack { get; set; } = null;            // set to override inheriting parent size
             public Point OffsetPosition { get; set; } = new Point(16, 0);
+            public Image SubmenuIcon { get; set; } = null;              // icon used to indicate submenu. If null, use the built in.  If NoSubMenuIcon (see below) then none is printed
         }
 
-        // open a submenu on item cl.
+        static public Image NoSubMenuIcon = new Bitmap(1, 1);
+
+        // open a submenu on item cl.  Closes any existing one. Prevents double open
+        // subform Tag holds cl
         public void OpenSubMenu(Item cl)
         {
-            CloseSubMenu();
+            if ( Subform != null && Subform.Tag == cl)      // prevent double open
+            {
+                //System.Diagnostics.Debug.WriteLine($"Subform already open {cl.Text}");
+                return;
+            }
+
+            CloseSubMenu();     // close current
 
             var cinlbf = cl.label.Parent?.Parent?.Parent?.Parent as CheckedIconNewListBoxForm;      // parent form, may be null if not embedded in this
 
-            SubForm sf = cl.UserTag as SubForm;     // this is the info class
+            SubForm sf = cl.GetSubForm;     // this is the info class
 
             Subform = new CheckedIconNewListBoxForm();      // make a new form
 
@@ -508,7 +523,9 @@ namespace ExtendedControls
             Subform.AllOrNoneBack = sf.AllOrNoneBack.HasValue ? sf.AllOrNoneBack.Value : cinlbf != null ? cinlbf.AllOrNoneBack : false;
             // other Form parameters (CloseOnDeactivate etc) leave on default
 
-            var pbsr = pictureboxscroll.PointToScreen(new Point(cl.label.PositionRight.X + sf.OffsetPosition.X, cl.label.Position.Y + sf.OffsetPosition.Y));    // place offset to label
+            //var pbsr = pictureboxscroll.PointToScreen(cl.submenuicon?.PositionRight ?? cl.label.PositionRight);    // previous, position right of submenuicon/positionright
+            var pbsr = this.PointToScreen(new Point(this.Width, cl.label.Position.Y));  // position to the right of this form
+                
             Subform.SetLocation = pbsr;
 
             if (cinlbf != null) // if we have a CheckedIconNewListBoxForm at its parent, set in submenu mode
@@ -534,7 +551,9 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine($"OpenSubMenu for {cl.Text} {cl.Tag} set {sf.Setting}");
 
-            Subform.Show(sf.Setting, pbsr, cinlbf);
+            //System.Diagnostics.Debug.WriteLine($"Subform open {cl.Text}");
+
+            Subform.Show(sf.Setting, pbsr, cinlbf,cl);
         }
 
         // close submenu
@@ -542,6 +561,7 @@ namespace ExtendedControls
         {
             if (Subform != null)
             {
+                //System.Diagnostics.Debug.WriteLine($"Subform close {(Subform.Tag as Item).Text}");
                 Subform?.Close();
                 Subform = null;
             }
@@ -601,6 +621,8 @@ namespace ExtendedControls
     
             bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
 
+            // set up each item, and work out sizes
+
             for (int i = 0; i < ItemList.Count; i++)
             {
                 var cl = ItemList[i];
@@ -641,7 +663,16 @@ namespace ExtendedControls
                     cl.icon.Tag = i;        // tags are index
                 }
 
+                if (cl.submenuicon != null)
+                {
+                    cl.submenuicon.Image = cl.GetSubForm.SubmenuIcon ?? Properties.Resources.ArrowRightSmall;
+                    cl.submenuicon.Tag = i;        // store index of control when displayed
+                }
+
                 // Y is not holding Y position. Only use for Y is to record vspacing on first entry only, see below for vpositioning
+                // Item1 holds checkbox left, vspacing, and checkbox size
+                // Item2 holds image left, icon size
+                // Item3 holds label left, label size
                 var pos = new Tuple<Rectangle, Rectangle, Rectangle>(
                                 new Rectangle(chkx, vspacing, chkboxsize.Width, chkboxsize.Height),
                                 new Rectangle(imgx, 0, iconsize.Width, iconsize.Height),
@@ -735,6 +766,8 @@ namespace ExtendedControls
 
             picturebox.ClearImageList();
 
+            int labelwidthmax = positions.Select(x => x.Item3.Width).Max();       // max width of labels
+
             for (int i = 0; i < ItemList.Count; i++)     // now turn them on, once all are in position
             {
                 var cl = ItemList[i];
@@ -770,7 +803,13 @@ namespace ExtendedControls
                 cl.label.Location = new Rectangle(post.Item3.X + colx, vcentre - post.Item3.Height / 2, post.Item3.Width, post.Item3.Height);
                 picturebox.Add(cl.label);
 
-                vpos += post.Item1.Y + VerticalSpacing;
+                if (cl.submenuicon != null)
+                {
+                    cl.submenuicon.Location = new Rectangle(post.Item3.X + labelwidthmax, cl.label.Location.Y, post.Item1.Width, post.Item1.Height);
+                    picturebox.Add(cl.submenuicon);
+                }
+
+                vpos += vspacing + VerticalSpacing; 
 
                 heightrequired = Math.Max(heightrequired, vpos);
             }
@@ -831,7 +870,7 @@ namespace ExtendedControls
             CheckedChanged?.Invoke(index,ItemList[index].Tag, ItemList[index].Text, ItemList[index].UserTag, eventargs);
         }
 
-        // operate subform popups
+        // operate subform popups on entering a element
         private void Picturebox_EnterElement(object sender, MouseEventArgs eventargs, ExtPictureBox.ImageElement i, object tag)
         {
             Item cl = ItemList[(int)i.Tag];     // all elements have their tags set to index in ItemList
