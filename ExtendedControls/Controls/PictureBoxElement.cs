@@ -44,6 +44,14 @@ namespace ExtendedControls
 
             public ExtPictureBox Parent { get; set; }
 
+            // enable affects display and clickabilty
+            public bool Enabled { get { return enabled; } set { if (enabled != value) { enabled = value; Parent?.Refresh(Location); } } }
+
+            // showdisable is display only
+            public bool ShowDisabled { get { return showdisabled; } set { if (showdisabled != value) { showdisabled = value; Parent?.Refresh(Location); } } }
+
+            public float DisabledScaling { get; set; } = 0.5F;      // scaling if not enabled or ShowDisabled
+
             public bool MouseOver { get; set; }     // set when mouse over this
 
             public Action<Graphics, ImageElement> OwnerDrawCallback { get; set; }
@@ -53,6 +61,9 @@ namespace ExtendedControls
             public Action<ExtPictureBox, ImageElement, MouseEventArgs> MouseDown { get; set; }
             public Action<ExtPictureBox, ImageElement, MouseEventArgs> MouseUp { get; set; }
             public Action<ExtPictureBox, ImageElement, MouseEventArgs> Click { get; set; }
+
+            private bool enabled = true;
+            private bool showdisabled = false;
 
             public ImageElement()
             {
@@ -205,7 +216,6 @@ namespace ExtendedControls
             public Font Font { get { return font; } set { font = value;  Parent?.Refresh(Location); } }
             public CheckState CheckState { get { return checkState; } set { checkState = value;  Parent?.Refresh(Location); } }
             public bool Checked { get { return CheckState == CheckState.Checked; } set { CheckState = value ? CheckState.Checked : CheckState.Unchecked; } }
-            public bool Enabled { get { return enabled; } set { enabled = value;  Parent?.Refresh(Location); } }
             public float TickBoxReductionRatio { get { return tickBoxReductionRatio; } set { tickBoxReductionRatio = value;  Parent?.Refresh(Location); } }
             public ContentAlignment CheckAlign { get { return checkAlign; } set { CheckAlign = value;  Parent?.Refresh(Location); } }
 
@@ -215,14 +225,12 @@ namespace ExtendedControls
             public Color CheckBoxInnerColor { get; set; } = Color.White;    // Normal only inner colour
             public Color CheckColor { get; set; } = Color.DarkBlue;         // Button - back colour when checked, Normal - check colour
             public Color MouseOverColor { get; set; } = Color.CornflowerBlue; // both - Mouse over 
-            public float CheckBoxDisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
 
             public Action<CheckBox> CheckChanged;                           // check has changed, only if Enabled
 
             private string text = "";
             private Font font;
             private CheckState checkState = CheckState.Unchecked;
-            private bool enabled = true;
             private ContentAlignment checkAlign = ContentAlignment.MiddleLeft;
             private float tickBoxReductionRatio = 0.75f;       // Normal - size reduction
 
@@ -272,7 +280,7 @@ namespace ExtendedControls
                     textarea.Width -= tickarea.Width;
                 }
 
-                float discaling = Enabled ? 1.0f : CheckBoxDisabledScaling;
+                float discaling = Enabled && !ShowDisabled ? 1.0f : DisabledScaling;
 
                 Color checkboxbasecolour = (Enabled && MouseOver) ? MouseOverColor : CheckBoxColor.Multiply(discaling);
 
@@ -305,7 +313,7 @@ namespace ExtendedControls
                     {
                         if (this.Text.HasChars())
                         {
-                            using (Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(CheckBoxDisabledScaling)))
+                            using (Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(DisabledScaling)))
                             {
                                 dgr.DrawString(this.Text, Font, textb, textarea, fmt);
                             }
@@ -348,15 +356,12 @@ namespace ExtendedControls
             public Font Font { get { return font; } set { font = value; PerformAutoSize(); Parent?.Refresh(Location); } }
             public Color ForeColor { get; set; } = Color.Blue;          // Normal only border area colour
             public Color BackColor { get; set; } = Color.White;          // Normal only border area colour
-            public bool Enabled { get { return enabled; } set { enabled = value; Parent?.Refresh(Location); } }
-            public float DisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
             public Color MouseOverBackColor { get; set; } = Color.CornflowerBlue; // both - Mouse over 
 
             public bool AutoSize { get; set; } = true;
 
             private string text = "";
             private Font font;
-            private bool enabled = true;
 
             public Label()
             {
@@ -390,7 +395,7 @@ namespace ExtendedControls
                     {
                         if (this.Text.HasChars())
                         {
-                            using (Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(DisabledScaling)))
+                            using (Brush textb = new SolidBrush(Enabled && !ShowDisabled ? this.ForeColor : this.ForeColor.Multiply(DisabledScaling)))
                             {
                                 dgr.DrawString(this.Text, Font, textb, textarea, fmt);
                             }

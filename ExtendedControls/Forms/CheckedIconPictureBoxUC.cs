@@ -70,11 +70,6 @@ namespace ExtendedControls
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
-        // Alpha control
-
-        public float Alpha { get { return pictureboxscroll.Alpha; } set { pictureboxscroll.Alpha = value; } }
-
-
         // Subform, null if not active
         public CheckedIconNewListBoxForm Subform { get; private set; } = null;
 
@@ -132,7 +127,7 @@ namespace ExtendedControls
             cl.label = new ExtPictureBox.Label();
             cl.label.Click += (sender, el, e) =>
             {
-                if (cl.label.Enabled)       // will get clicks even if disabled
+                if (cl.label.Enabled)       // only if enabled
                 {
                     if (cl.checkbox != null && e.Button == MouseButtons.Left)
                     {
@@ -149,14 +144,18 @@ namespace ExtendedControls
             {
                 cl.checkbox = new ExtPictureBox.CheckBox();
                 cl.checkbox.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
-                cl.checkbox.MouseDown += (s, el, e) => { if (e.Button == MouseButtons.Right) ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e); };
+                cl.checkbox.MouseDown += (s, el, e) => 
+                { 
+                    if (e.Button == MouseButtons.Right && cl.checkbox.Enabled) 
+                        ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e); 
+                };
             }
             if (img != null)
             {
                 cl.icon = new ExtPictureBox.ImageElement();
                 cl.icon.Click += (sender, el, e) =>
                 {
-                    if (cl.label.Enabled)       // will get clicks even if disabled, use label to tell
+                    if (cl.icon.Enabled)    
                     {
                         if (cl.checkbox != null && e.Button == MouseButtons.Left)
                         {
@@ -312,9 +311,26 @@ namespace ExtendedControls
 
         public void Enable(int index, bool enable)
         {
-            if (ItemList[index].checkbox!=null)
-                ItemList[index].checkbox.Enabled = enable;
-            ItemList[index].label.Enabled = enable;
+            Item i = ItemList[index];
+            if (i.checkbox != null)
+                i.checkbox.Enabled = enable;
+            if (i.icon != null)
+                i.icon.Enabled = enable;
+            if (i.submenuicon != null)
+                i.submenuicon.Enabled = enable;
+            i.label.Enabled = enable;
+        }
+
+        public void ShowDisabled(int index, bool showdisabled)
+        {
+            Item i = ItemList[index];
+            if (i.checkbox != null)
+                i.checkbox.ShowDisabled = showdisabled;
+            if (i.icon != null)
+                i.icon.ShowDisabled = showdisabled;
+            if (i.submenuicon != null)
+                i.submenuicon.ShowDisabled = showdisabled;
+            i.label.ShowDisabled = showdisabled;
         }
 
         public bool Enable(string tag, bool enable)
@@ -322,6 +338,13 @@ namespace ExtendedControls
             int index = ItemList.FindIndex(x => x.Tag == tag);
             if (index >= 0)
                 Enable(index, enable);
+            return index >= 0;
+        }
+        public bool ShowDisabled(string tag, bool showdisabled)
+        {
+            int index = ItemList.FindIndex(x => x.Tag == tag);
+            if (index >= 0)
+                ShowDisabled(index, showdisabled);
             return index >= 0;
         }
         public int EnableByUserTags(object usertag, bool enable)
@@ -491,7 +514,6 @@ namespace ExtendedControls
             public bool? AllOrNoneBack { get; set; } = null;            // set to override inheriting parent size
             public Point OffsetPosition { get; set; } = new Point(16, 0);
             public Image SubmenuIcon { get; set; } = null;              // icon used to indicate submenu. If null, use the built in.  If NoSubMenuIcon (see below) then none is printed
-            public float Alpha { get; set; } = 50;                      // alpha to apply to the subform for visibiliy when its subform is open.
         }
 
         static public Image NoSubMenuIcon = new Bitmap(1, 1);
@@ -526,7 +548,6 @@ namespace ExtendedControls
             Subform.UC.SlideUp = SlideUp;
             Subform.UC.MultiColumnSlide = MultiColumnSlide;
             Subform.UC.ScreenMargin = ScreenMargin;
-            Subform.OpenSubformAlpha = sf.Alpha;
 
             Subform.CloseBoundaryRegion = sf.ClosedBoundaryRegion.HasValue ? sf.ClosedBoundaryRegion.Value : cinlbf != null ? cinlbf.CloseBoundaryRegion : new Size(64, 64);
             Subform.AllOrNoneBack = sf.AllOrNoneBack.HasValue ? sf.AllOrNoneBack.Value : cinlbf != null ? cinlbf.AllOrNoneBack : false;
@@ -558,7 +579,13 @@ namespace ExtendedControls
                 sf.Setting = s;
             };
 
-           // System.Diagnostics.Debug.WriteLine($"Subform show for {cl.Text} {cl.Tag} set {sf.Setting}");
+            for (int i = 0; i < ItemList.Count; i++)        // for all entries, except this, we set it to look disabled (though its not)
+            {
+                if (ItemList[i] != cl)
+                    ShowDisabled(i, true);
+            }
+
+            // System.Diagnostics.Debug.WriteLine($"Subform show for {cl.Text} {cl.Tag} set {sf.Setting}");
 
             Subform.Show(sf.Setting, pbsr, cinlbf,cl);
         }
@@ -569,8 +596,14 @@ namespace ExtendedControls
             if (Subform != null)
             {
                 //System.Diagnostics.Debug.WriteLine($"Request subform close {(Subform.Tag as Item).Text}");
+
                 Subform?.Close();
                 Subform = null;
+
+                for (int i = 0; i < ItemList.Count; i++)        // we release the show disabled from all of them
+                {
+                    ShowDisabled(i, false);
+                }
             }
         }
 

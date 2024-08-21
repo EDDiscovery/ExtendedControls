@@ -27,8 +27,6 @@ namespace ExtendedControls
 
         public int ScrollBarWidth { get { return Font.ScalePixels(24); } }
 
-        public float Alpha { get { return pbox?.Alpha ?? 100; } set { if (pbox != null) pbox.Alpha = value; } }
-
         // disabling it makes the picturebox be the same size as the client area, enabling it means the picture box grows with the data
         public bool ScrollBarEnabled { get { return scrollbarenabled; } set { scrollbarenabled = value; PerformLayout(); } }
 

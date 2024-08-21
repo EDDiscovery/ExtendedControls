@@ -29,8 +29,6 @@ namespace ExtendedControls
 
         public Color FillColor { get; set; } = Color.Transparent;         // fill the bitmap with this colour before pasting the bitmaps in
 
-        public float Alpha { get { return alphaIntensity; } set { if (value != alphaIntensity) { alphaIntensity = value; if (Image != null ) Image = PaintBitmap(Image.Size); } } }
-
         public bool FreezeTracking { get; set; } = false;        // when set, all mouse movement tracking is turned off
 
         public List<ImageElement> Elements { get; private set; } = new List<ImageElement>();
@@ -223,47 +221,40 @@ namespace ExtendedControls
             if (Image == null)      // not rendered yet
                 return;
 
-            if (alphaIntensity < 100)       // if we have alpha, we need to repaint all unfort.  We can't just paint individuals, as we need to alpha scale it
+            SortedList<int, ImageElement> indexes = new SortedList<int, ImageElement>();
+
+            for (int ix = 0; ix < Elements.Count;)
             {
-                Image = PaintBitmap(Image.Size);        // just replace
+                ImageElement i = Elements[ix];
+
+                // if not tried before, and overlays
+                if (!indexes.ContainsKey(ix) && i.Visible && i.Location.IntersectsWith(area))
+                {
+                    // System.Diagnostics.Debug.WriteLine($"ReDraw {i.Location}");
+                    indexes.Add(ix, i);
+                    area.Intersect(i.Location);         // increase area
+                    ix = 0;
+                }
+                else
+                    ix++;
             }
-            else
+
+            if (indexes.Count > 0)  // if anything to do..
             {
-                SortedList<int, ImageElement> indexes = new SortedList<int, ImageElement>();
-
-                for (int ix = 0; ix < Elements.Count;)
+                using (Graphics gr = Graphics.FromImage(Image))
                 {
-                    ImageElement i = Elements[ix];
-
-                    // if not tried before, and overlays
-                    if (!indexes.ContainsKey(ix) && i.Visible && i.Location.IntersectsWith(area))
+                    foreach (var kvp in indexes)        // in order, since its a sorted list
                     {
-                        // System.Diagnostics.Debug.WriteLine($"ReDraw {i.Location}");
-                        indexes.Add(ix, i);
-                        area.Intersect(i.Location);         // increase area
-                        ix = 0;
-                    }
-                    else
-                        ix++;
-                }
-
-                if (indexes.Count > 0)  // if anything to do..
-                {
-                    using (Graphics gr = Graphics.FromImage(Image))
-                    {
-                        foreach (var kvp in indexes)        // in order, since its a sorted list
+                        if (kvp.Value.Image != null)    // if we have an image, repaint it
                         {
-                            if (kvp.Value.Image != null)
-                            {
-                                gr.DrawImage(kvp.Value.Image, kvp.Value.Location);
-                            }
-
-                            kvp.Value.OwnerDrawCallback?.Invoke(gr, kvp.Value);
+                            PaintElement(gr, kvp.Value);
                         }
-                    }
 
-                    Invalidate();
+                        kvp.Value.OwnerDrawCallback?.Invoke(gr, kvp.Value);
+                    }
                 }
+
+                Invalidate();
             }
         }
 
@@ -304,7 +295,41 @@ namespace ExtendedControls
 
         #region Painting
 
-        // into a new Bitmap, paint the whole scene, talking into account alpha intensity
+        // paint an element, thru its ownerdraw and if it has an Image, painting it (taking into account Enabled/ShowDisabled)
+        private void PaintElement(Graphics gr, ImageElement i)
+        {
+            if (i.Visible)
+            {
+                if (i.Image != null)
+                {
+                    if (!i.Enabled || i.ShowDisabled)       // if show with disabled scaling
+                    {
+                        ColorMatrix alphaMatrix = new ColorMatrix();
+                        alphaMatrix.Matrix00 = alphaMatrix.Matrix11 = alphaMatrix.Matrix22 = alphaMatrix.Matrix44 = 1;
+                        alphaMatrix.Matrix33 = i.DisabledScaling;
+
+                        using (ImageAttributes alphaAttributes = new ImageAttributes())
+                        {
+                            alphaAttributes.SetColorMatrix(alphaMatrix);
+                            gr.DrawImage(i.Image, new Rectangle(i.Location.X, i.Location.Y, i.Size.Width, i.Size.Height), 0, 0, i.Size.Width, i.Size.Height, GraphicsUnit.Pixel, alphaAttributes);
+                        }
+                    }
+                    else
+                    {
+                        // System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location}");
+                        gr.DrawImage(i.Image, i.Location);
+                    }
+                }
+                else
+                {
+                    //   System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location} no image");
+                }
+
+                i.OwnerDrawCallback?.Invoke(gr, i);
+            }
+        }
+
+        // into a new Bitmap, paint the whole scene
         private Bitmap PaintBitmap(Size size)
         {
             //System.Diagnostics.Debug.WriteLine($"Picture box draw {size}");
@@ -318,45 +343,7 @@ namespace ExtendedControls
             using (Graphics gr = Graphics.FromImage(newrender))
             {
                 foreach (ImageElement i in Elements)
-                {
-                    if (i.Visible)
-                    {
-                        if (i.Image != null)
-                        {
-                            // System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location}");
-                            gr.DrawImage(i.Image, i.Location);
-                        }
-                        else
-                        {
-                            //   System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location} no image");
-                        }
-
-                        i.OwnerDrawCallback?.Invoke(gr, i);
-                    }
-                }
-            }
-
-            if (alphaIntensity < 100)
-            {
-                ColorMatrix alphaMatrix = new ColorMatrix();
-                alphaMatrix.Matrix00 = alphaMatrix.Matrix11 = alphaMatrix.Matrix22 = alphaMatrix.Matrix44 = 1;
-                alphaMatrix.Matrix33 = alphaIntensity / 100F;
-
-                Bitmap reduced = new Bitmap(newrender.Width, newrender.Height);
-
-                // Create a new image attribute object and set the color matrix to the matrix above
-
-                using (ImageAttributes alphaAttributes = new ImageAttributes())
-                {
-                    using (Graphics gr = Graphics.FromImage(reduced))       // redraw the scene into the new bitmap at the alpha intensity
-                    {
-                        alphaAttributes.SetColorMatrix(alphaMatrix);
-                        gr.DrawImage(newrender, new Rectangle(0, 0, newrender.Width, newrender.Height), 0, 0, newrender.Width, newrender.Height, GraphicsUnit.Pixel, alphaAttributes);
-                    }
-                }
-
-                newrender.Dispose();
-                newrender = reduced;
+                    PaintElement(gr,i);
             }
 
             return newrender;
@@ -507,7 +494,6 @@ namespace ExtendedControls
         private Timer hovertimer = new Timer();
         private ToolTip hovertip = null;
         private Point hoverpos;
-        private float alphaIntensity = 100;                 // set the alpha intensity of the draw
 
     }
 }

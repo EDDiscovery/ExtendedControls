@@ -40,8 +40,6 @@ namespace ExtendedControls
 
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported by GetChecked, else its all entries or empty list
 
-        public float OpenSubformAlpha { get; set; } = 50;           // alpha to apply to form if subform is opening
-
         // Called on close or hide
         public Action<string, Object> SaveSettings;                
 
@@ -169,11 +167,7 @@ namespace ExtendedControls
         internal void SetSubMenuActive(bool insub)
         {
             submenuactive = insub;
-            if (submenuactive)
-            {
-                UC.Alpha = OpenSubformAlpha;      // we rely on this to set the alpha. Deactivated may not be called on a form if its already deactivated, so we can't use that to alpha down
-            }
-            else
+            if (!submenuactive)
             {   
                 if (!closingdown) // if not in submenu, and not closing down
                     OnActivated(null);          // same as reactivated
@@ -198,8 +192,6 @@ namespace ExtendedControls
                 {
                     //System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
                 }
-
-                UC.Alpha = 100;                 // we are on, make sure alpha is up
             }
         }
 

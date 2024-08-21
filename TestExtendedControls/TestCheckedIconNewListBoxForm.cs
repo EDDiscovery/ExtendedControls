@@ -281,6 +281,9 @@ namespace TestExtendedControls
                 frm8.UC.SlideUp = true;
             }
 
+            frm8.UC.Enable("t10", false);
+            frm8.UC.Enable("t12", false);
+            frm8.UC.ShowDisabled("t14", true);
             frm8.UC.Enable("t100", false);
             frm8.UC.Enable("removegroups", frm8.UC.UserTags("useritem").Count()>0);
             frm8.PositionBelow(extButton8);
@@ -421,7 +424,7 @@ namespace TestExtendedControls
 
                 subform.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 6}", $"S{i * 1000 + 6}"));
 
-                sf.Add(new CheckedIconUserControl.SubForm { Items = subform, Setting = $"", Alpha = 50 });
+                sf.Add(new CheckedIconUserControl.SubForm { Items = subform, Setting = $""});
 
                 frm.UC.AddButton($"t{i}", i % 2 == 0 ? $"Sub {i}" : $"Subsform {i}", Properties.Resources.CursorToTop, sf[sfn++]);
 
@@ -446,7 +449,6 @@ namespace TestExtendedControls
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(20, 20);
             frm.UC.SlideLeft = true;      // allow left shift
-            frm.OpenSubformAlpha = 75;
             frm.PositionBelow(extButton10);
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => {
                 System.Diagnostics.Debug.WriteLine($">>> Form button pressed {index} {stag} {text}");

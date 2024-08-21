@@ -15,8 +15,6 @@ namespace TestExtendedControls
     public partial class TestImportExport : Form
     {
 
-        ThemeList theme;
-
         public TestImportExport()
         {
             InitializeComponent();
