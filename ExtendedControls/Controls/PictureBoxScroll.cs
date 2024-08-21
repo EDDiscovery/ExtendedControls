@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2021 EDDiscovery development team
+ * Copyright 2021-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -27,7 +25,9 @@ namespace ExtendedControls
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }     
+        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }
+
+        public float Alpha { get { return pbox?.Alpha ?? 100; } set { if (pbox != null) pbox.Alpha = value; } }
 
         // disabling it makes the picturebox be the same size as the client area, enabling it means the picture box grows with the data
         public bool ScrollBarEnabled { get { return scrollbarenabled; } set { scrollbarenabled = value; PerformLayout(); } }

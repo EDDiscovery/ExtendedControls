@@ -40,6 +40,8 @@ namespace ExtendedControls
 
         public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported by GetChecked, else its all entries or empty list
 
+        public float OpenSubformAlpha { get; set; } = 50;           // alpha to apply to form if subform is opening
+
         // Called on close or hide
         public Action<string, Object> SaveSettings;                
 
@@ -163,11 +165,19 @@ namespace ExtendedControls
             forceredraw = false;
         }
 
+        // called if a UC is setting up a subform or a subform is closing, to set the alpha or to perform same op as activate
         internal void SetSubMenuActive(bool insub)
         {
             submenuactive = insub;
-            if (!submenuactive && !closingdown) // if not in submenu, and not closing down
-                OnActivated(null);          // same as reactivated
+            if (submenuactive)
+            {
+                UC.Alpha = OpenSubformAlpha;      // we rely on this to set the alpha. Deactivated may not be called on a form if its already deactivated, so we can't use that to alpha down
+            }
+            else
+            {   
+                if (!closingdown) // if not in submenu, and not closing down
+                    OnActivated(null);          // same as reactivated
+            }
         }
 
         protected override void OnActivated(EventArgs e)
@@ -176,7 +186,7 @@ namespace ExtendedControls
 
             LastDeactivateTime.Stop();          // indicate deact - this is really just to be nice with the .Running flag of the class
 
-            //System.Diagnostics.Debug.WriteLine($"OnActivated {Name} Closing flag {closingdown}");
+            //System.Diagnostics.Debug.WriteLine($"OnActivated {Name} -  cd {closingdown}");
 
             if (!closingdown)
             {
@@ -188,6 +198,8 @@ namespace ExtendedControls
                 {
                     //System.Diagnostics.Debug.WriteLine($"Warning a CheckedIconListBoxForm is not using CloseBoundary ${Environment.StackTrace}");
                 }
+
+                UC.Alpha = 100;                 // we are on, make sure alpha is up
             }
         }
 
@@ -200,7 +212,7 @@ namespace ExtendedControls
 
             if (submenuactive)
             {
-                //System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} submenu is active");
+               // System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} submenu is active");
             }
             else if (CloseOnDeactivate)
             {
@@ -214,7 +226,7 @@ namespace ExtendedControls
             {
                 if (Owner != null)
                 {
-                    //System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} Disassociate owner and hide");
+                    //System.Diagnostics.Debug.WriteLine($"OnDeactivate {Name} hide with owner");
                     var o = Owner;          // calling Hide() when the owner is not ready to receive the focus causes windows to go and get another window to place
                     Owner = null;           // disassociating it temp from its owner seems to solve this. Probably because it can pick that window now.
                     Hide();
@@ -236,7 +248,7 @@ namespace ExtendedControls
 
             if (CloseOnDeactivate)
             {
-                //System.Diagnostics.Debug.WriteLine($"Request Close {Name}");
+                //System.Diagnostics.Debug.WriteLine($"Request Close {Name} Has subform {UC.Subform!=null}");
                 if (ocinlf != null)
                     ocinlf.CloseOrHide();                           // ask the top to close, closing this one too
                 else
@@ -251,9 +263,13 @@ namespace ExtendedControls
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            //System.Diagnostics.Debug.WriteLine($"OnClosing {Name} subform {UC.Subform!=null}");
+
+            UC.Subform?.Close();        // close any subforms
+
             closingdown = true;
             timer.Stop();       // emergency stop, should have stopped by Deactivate..
-            //System.Diagnostics.Debug.WriteLine($"OnClosing {Name}");
+            
             OnSaveSettings();
 
             var ocinlf = Owner as CheckedIconNewListBoxForm;
@@ -273,13 +289,41 @@ namespace ExtendedControls
             SaveSettings?.Invoke(settings, Tag);     // at this level, we return all items.
         }
 
-        private void CheckMouse(object sender, EventArgs e)     // best way of knowing your inside the client..  turned on only if CloseIfCursorOutsideBoundary
+        // best way of knowing your inside the client..  turned on only if CloseIfCursorOutsideBoundary
+        private void CheckMouse(object sender, EventArgs e)     
         {
            // System.Diagnostics.Debug.WriteLine($"CINLBF timer {Name} closingdown {closingdown}");
 
             if (closingdown)        // ignore spurious extra timers just in case
                 return;
 
+            if (IsMouseOutsideForm())   // if we are outside us
+            {
+                //System.Diagnostics.Debug.WriteLine($"Mouse outside {Name}");
+                
+                Form f = Owner;
+                bool outside = true;
+                while( f is CheckedIconNewListBoxForm && outside == true)   // check to see if any owners who are us have it within them
+                {
+                    if (!((CheckedIconNewListBoxForm)f).IsMouseOutsideForm())       // if any owner has mouse within it, we are good with it
+                    {
+                        //System.Diagnostics.Debug.WriteLine($" but mouse inside {f.Name}");
+                        outside = false;
+                    }
+                    f = f.Owner;
+                }
+
+                if (outside)
+                {
+                    //System.Diagnostics.Debug.WriteLine($"CheckMouse {Name} Out of bounds of all");
+                    CloseOrHide();
+                }
+            }
+        }
+
+        // call to see if happy mouse is within our area..
+        public bool IsMouseOutsideForm()
+        {
             Rectangle area = Bounds;                // in screen pixels
             area.Inflate(CloseBoundaryRegion);       // overlap area
 
@@ -292,23 +336,24 @@ namespace ExtendedControls
             {
                 if (area.Contains(MousePosition))     // if we are inside the box, cancel mouse down and set closedown to 0
                 {
-                    //System.Diagnostics.Debug.WriteLine($"..Inside box, clear mbd {Bounds} {area} {MousePosition}");
+                    //System.Diagnostics.Debug.WriteLine($".. {Name} Inside box, clear mbd {Bounds} {area} {MousePosition}");
                     mousebuttonsdown = false;
                     closedowncount = 0;
                 }
                 else
                 {
-                    //System.Diagnostics.Debug.WriteLine($"..outside box, count {closedowncount}, mb {mousebuttonsdown} b {Bounds} a {area} mp {MousePosition}");
+                    //System.Diagnostics.Debug.WriteLine($".. {Name} outside box, count {closedowncount}, mb {mousebuttonsdown} b {Bounds} a {area} mp {MousePosition} {timer.Interval}");
                     if (!mousebuttonsdown)              // 
                     {
-                        if (++closedowncount == CloseDownTime/timer.Interval)     // N*timertick wait
+                        if (++closedowncount >= CloseDownTime / timer.Interval)     // N*timertick wait
                         {
-                            //System.Diagnostics.Debug.WriteLine($"CheckMouse {Name} Out of bounds");
-                            CloseOrHide();
+                            return true;
                         }
                     }
                 }
             }
+
+            return false;
         }
 
 

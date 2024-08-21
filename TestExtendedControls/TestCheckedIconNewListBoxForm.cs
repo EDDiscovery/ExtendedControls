@@ -385,7 +385,7 @@ namespace TestExtendedControls
                 subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 2}", $"T{i * 1000 + 2}", button: true));
                 subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 3}", $"T{i * 1000 + 3}", button: true));
 
-                if (i < 2) // demo default submenu icon
+                if (i < 8) // demo default submenu icon
                 {
                     List<CheckedIconUserControl.Item> subsubform = new List<CheckedIconUserControl.Item>();
                     subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 1}", $"T{i * 200000 + 1}", button: true));
@@ -421,15 +421,19 @@ namespace TestExtendedControls
 
                 subform.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 6}", $"S{i * 1000 + 6}"));
 
-                sf.Add(new CheckedIconUserControl.SubForm { Items = subform, Setting = $"" });
+                sf.Add(new CheckedIconUserControl.SubForm { Items = subform, Setting = $"", Alpha = 50 });
 
                 frm.UC.AddButton($"t{i}", i % 2 == 0 ? $"Sub {i}" : $"Subsform {i}", Properties.Resources.CursorToTop, sf[sfn++]);
+
+                if ( i == 5)
+                {
+                    for (int j = 0; j < 50; j++)
+                    {
+                        frm.UC.AddButton($"t{j + 100}", $"But {j + 100}", Properties.Resources.CursorToTop);
+                    }
+                }
             }
 
-            for (int i = 0; i < 5; i++)
-            {
-                frm.UC.AddButton($"t{i+100}", $"But {i+100}", Properties.Resources.CursorToTop);
-            }
 
             for (int i = 0; i < 5; i++)
             {
@@ -438,8 +442,9 @@ namespace TestExtendedControls
 
             frm.Name = "TopForm";
             frm.UC.MultipleColumns = true;
-            frm.CloseBoundaryRegion = new Size(200, 200);
+            frm.CloseBoundaryRegion = new Size(20, 20);
             frm.UC.SlideLeft = true;      // allow left shift
+            frm.OpenSubformAlpha = 75;
             frm.PositionBelow(extButton10);
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => {
                 System.Diagnostics.Debug.WriteLine($">>> Form button pressed {index} {stag} {text}");

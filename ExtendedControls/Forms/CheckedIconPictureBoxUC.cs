@@ -70,6 +70,11 @@ namespace ExtendedControls
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
+        // Alpha control
+
+        public float Alpha { get { return pictureboxscroll.Alpha; } set { pictureboxscroll.Alpha = value; } }
+
+
         // Subform, null if not active
         public CheckedIconNewListBoxForm Subform { get; private set; } = null;
 
@@ -486,6 +491,7 @@ namespace ExtendedControls
             public bool? AllOrNoneBack { get; set; } = null;            // set to override inheriting parent size
             public Point OffsetPosition { get; set; } = new Point(16, 0);
             public Image SubmenuIcon { get; set; } = null;              // icon used to indicate submenu. If null, use the built in.  If NoSubMenuIcon (see below) then none is printed
+            public float Alpha { get; set; } = 50;                      // alpha to apply to the subform for visibiliy when its subform is open.
         }
 
         static public Image NoSubMenuIcon = new Bitmap(1, 1);
@@ -500,11 +506,12 @@ namespace ExtendedControls
                 return;
             }
 
-            CloseSubMenu();     // close current
-
             var cinlbf = cl.label.Parent?.Parent?.Parent?.Parent as CheckedIconNewListBoxForm;      // parent form, may be null if not embedded in this
-
             SubForm sf = cl.GetSubForm;     // this is the info class
+
+            //System.Diagnostics.Debug.WriteLine($"\r\nRequest OpenSubMenu for {cl.Text} {cl.Tag} set {sf.Setting}");
+
+            CloseSubMenu();     // close current
 
             Subform = new CheckedIconNewListBoxForm();      // make a new form
 
@@ -519,12 +526,14 @@ namespace ExtendedControls
             Subform.UC.SlideUp = SlideUp;
             Subform.UC.MultiColumnSlide = MultiColumnSlide;
             Subform.UC.ScreenMargin = ScreenMargin;
+            Subform.OpenSubformAlpha = sf.Alpha;
+
             Subform.CloseBoundaryRegion = sf.ClosedBoundaryRegion.HasValue ? sf.ClosedBoundaryRegion.Value : cinlbf != null ? cinlbf.CloseBoundaryRegion : new Size(64, 64);
             Subform.AllOrNoneBack = sf.AllOrNoneBack.HasValue ? sf.AllOrNoneBack.Value : cinlbf != null ? cinlbf.AllOrNoneBack : false;
             // other Form parameters (CloseOnDeactivate etc) leave on default
 
-            //var pbsr = pictureboxscroll.PointToScreen(cl.submenuicon?.PositionRight ?? cl.label.PositionRight);    // previous, position right of submenuicon/positionright
-            var pbsr = this.PointToScreen(new Point(this.Width, cl.label.Position.Y));  // position to the right of this form
+            var pbsr = pictureboxscroll.PointToScreen(cl.submenuicon?.PositionRight ?? cl.label.PositionRight);    // previous, position right of submenuicon/positionright
+            //var pbsr = this.PointToScreen(new Point(this.Width, cl.label.Position.Y));  // position to the right of this form
                 
             Subform.SetLocation = pbsr;
 
@@ -549,9 +558,7 @@ namespace ExtendedControls
                 sf.Setting = s;
             };
 
-            //System.Diagnostics.Debug.WriteLine($"OpenSubMenu for {cl.Text} {cl.Tag} set {sf.Setting}");
-
-            //System.Diagnostics.Debug.WriteLine($"Subform open {cl.Text}");
+           // System.Diagnostics.Debug.WriteLine($"Subform show for {cl.Text} {cl.Tag} set {sf.Setting}");
 
             Subform.Show(sf.Setting, pbsr, cinlbf,cl);
         }
@@ -561,7 +568,7 @@ namespace ExtendedControls
         {
             if (Subform != null)
             {
-                //System.Diagnostics.Debug.WriteLine($"Subform close {(Subform.Tag as Item).Text}");
+                //System.Diagnostics.Debug.WriteLine($"Request subform close {(Subform.Tag as Item).Text}");
                 Subform?.Close();
                 Subform = null;
             }
@@ -620,6 +627,7 @@ namespace ExtendedControls
             picturebox.ClearImageList();
     
             bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
+            bool hassubmenuicons = false;
 
             // set up each item, and work out sizes
 
@@ -633,9 +641,9 @@ namespace ExtendedControls
                 int vspacing = Math.Max(fonth, iconsize.Height);
                 vspacing = Math.Max(vspacing, chkboxsize.Height);       // vspacing is the max of label, icon and checkbox
 
-                int chkx = HorizontalSpacing;
-                int imgx = hasacheckbox ? chkx + chkboxsize.Width + HorizontalSpacing : chkx;
-                int labx = cl.Image != null ? imgx + iconsize.Width + HorizontalSpacing : imgx;
+                int chkx = HorizontalSpacing;                                                               // position of check box
+                int imgx = hasacheckbox ? chkx + chkboxsize.Width + HorizontalSpacing : chkx;               // position of image
+                int labx = cl.Image != null ? imgx + iconsize.Width + HorizontalSpacing : imgx;             // position of label
 
                 // label is in autosize mode, setting Text and Font will size it
                 cl.label.Text = cl.Text;
@@ -667,6 +675,7 @@ namespace ExtendedControls
                 {
                     cl.submenuicon.Image = cl.GetSubForm.SubmenuIcon ?? Properties.Resources.ArrowRightSmall;
                     cl.submenuicon.Tag = i;        // store index of control when displayed
+                    hassubmenuicons = true;
                 }
 
                 // Y is not holding Y position. Only use for Y is to record vspacing on first entry only, see below for vpositioning
@@ -683,8 +692,14 @@ namespace ExtendedControls
 
                 vheightsinglecol += vspacing + VerticalSpacing;
 
-                maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Size.Width);
+                maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Size.Width);        // this is the width excluding the sub menu icon
             }
+
+            int submenuiconposx = maxwidthsinglecol;      // position after max label of submenu icon
+
+            // if we have sub menu icons, arranged at labelwidthmax, we need to add a bit more on to get the true column width to estimate with
+            if (hassubmenuicons)
+                maxwidthsinglecol += firsticonsize.Width;
 
             // we now work out an estimated columns to display
 
@@ -766,9 +781,9 @@ namespace ExtendedControls
 
             picturebox.ClearImageList();
 
-            int labelwidthmax = positions.Select(x => x.Item3.Width).Max();       // max width of labels
+            // position the controls
 
-            for (int i = 0; i < ItemList.Count; i++)     // now turn them on, once all are in position
+            for (int i = 0; i < ItemList.Count; i++)     
             {
                 var cl = ItemList[i];
                 var post = positions[i];
@@ -785,7 +800,7 @@ namespace ExtendedControls
                 }
 
                 int vcentre = vpos + vspacing / 2;
-                int colx = (colused - 1) * maxwidthsinglecol;
+                int colx = (colused - 1) * maxwidthsinglecol;           // column offset position.. given max width of single column including subform indicator
 
                 //System.Diagnostics.Debug.WriteLine($" {cl.label.Text} = {post.Item1} : {post.Item2} : {post.Item3} @ {colx} {vpos}");
 
@@ -805,7 +820,7 @@ namespace ExtendedControls
 
                 if (cl.submenuicon != null)
                 {
-                    cl.submenuicon.Location = new Rectangle(post.Item3.X + labelwidthmax, cl.label.Location.Y, post.Item1.Width, post.Item1.Height);
+                    cl.submenuicon.Location = new Rectangle(colx + submenuiconposx, cl.label.Location.Y, firsticonsize.Width, firsticonsize.Height);
                     picturebox.Add(cl.submenuicon);
                 }
 
