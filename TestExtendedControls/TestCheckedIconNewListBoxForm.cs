@@ -440,6 +440,8 @@ namespace TestExtendedControls
                 frm.UC.Add($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
             }
 
+            theme.SetThemeByName("Elite Verdana Small");
+
             frm.Name = "TopForm";
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(20, 20);
@@ -453,6 +455,7 @@ namespace TestExtendedControls
             };
             frm.CloseDownTime = 300;
             frm.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine($">>> Save Settings {frm.Name} {s} {p}"); b12settings = s; };
+
             frm.Show(b12settings,extButton12,this); ;
         }
     }

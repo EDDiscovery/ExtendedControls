@@ -820,7 +820,8 @@ namespace ExtendedControls
 
                 if (cl.submenuicon != null)
                 {
-                    cl.submenuicon.Location = new Rectangle(colx + submenuiconposx, cl.label.Location.Y, firsticonsize.Width, firsticonsize.Height);
+                    int pos = cl.label.Location.Y + cl.label.Location.Height / 2 - firsticonsize.Height / 2;
+                    cl.submenuicon.Location = new Rectangle(colx + submenuiconposx, pos, firsticonsize.Width, firsticonsize.Height);
                     picturebox.Add(cl.submenuicon);
                 }
 
