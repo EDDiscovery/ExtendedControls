@@ -38,7 +38,7 @@ namespace ExtendedControls
         public Size CloseBoundaryRegion { get; set; } = new Size(0, 0);     // set size >0 to enable boundary close
         public int CloseDownTime { get; set; } = 1000;              // ms to shut down when out of boundary
 
-        public bool AllOrNoneBack { get; set; } = true;            // use to control if ALL or None is reported by GetChecked, else its all entries or empty list
+        public bool AllOrNoneBack { get; set; } = true;             // use to control if ALL or None is reported by GetChecked, else its all entries or empty list
 
         // Called on close or hide
         public Action<string, Object> SaveSettings;                
@@ -55,6 +55,12 @@ namespace ExtendedControls
             Controls.Add(UC);
             timer.Interval = 100;
             timer.Tick += CheckMouse;
+
+
+
+
+
+           // UC.ShowClose = true;
         }
 
         // Get the checked list taking into account the grouping And the AllOrNoneBack

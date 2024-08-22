@@ -24,6 +24,7 @@ namespace ExtendedControls
     public class ExtPictureBoxScroll : Panel      
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
+        public bool ShowClose { get; set; } = false;                         // close above scroll
 
         public int ScrollBarWidth { get { return Font.ScalePixels(24); } }
 
@@ -85,17 +86,19 @@ namespace ExtendedControls
 
             if ( vsc != null )      // attach to right or left..
             {
-                vsc.Size = new Size(ScrollBarWidth, ClientSize.Height);
+                int vpos = ShowClose ? ScrollBarWidth : 0;
+
+                vsc.Size = new Size(ScrollBarWidth, ClientSize.Height - vpos);
 
                 if (!VerticalScrollBarDockRight)
                 {
-                    vsc.Location = new Point(left, 0 );
+                    vsc.Location = new Point(left, vpos );
                     left += ScrollBarWidth;
                 }
                 else
                 {
                     right -= ScrollBarWidth;
-                    vsc.Location = new Point(right, 0);
+                    vsc.Location = new Point(right, vpos);
                 }
             }
 

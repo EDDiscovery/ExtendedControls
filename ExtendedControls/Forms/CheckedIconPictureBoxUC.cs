@@ -27,7 +27,7 @@ namespace ExtendedControls
         public bool MultipleColumns { get; set; } = false;        // allow multiple columns
         public bool MultiColumnSlide { get { return MultipleColumns; } set { MultipleColumns = SlideUp = SlideLeft = value; } } // multicolumn with slide
         public Size ScreenMargin { get; set; } = new Size(16, 16);
-
+        public bool ShowClose { get; set; } = false;                 // if true, show close tick
 
         // Holds the item list, and various accessors to it
         public List<Item> ItemList { get; private set; }
@@ -54,7 +54,7 @@ namespace ExtendedControls
         public int VerticalSpacing { get; set; } = 3;           // padding..
         public int HorizontalSpacing { get; set; } = 3;
 
-        // Colours for Scroll bar
+        // Colours and controls for Scroll bar
         public Color BorderColor { get { return sb.BorderColor; } set { sb.BorderColor = value; } }
         public Color SliderColor { get { return sb.SliderColor; } set { sb.SliderColor = value; } }
         public Color ArrowButtonColor { get { return sb.ArrowButtonColor; } set { sb.ArrowButtonColor = value; } }
@@ -607,6 +607,7 @@ namespace ExtendedControls
             }
         }
 
+        // CONSTRUCTOR
         public CheckedIconUserControl()
         {
             ItemList = new List<Item>();
@@ -618,7 +619,7 @@ namespace ExtendedControls
             pictureboxscroll.Controls.Add(sb);
             pictureboxscroll.Dock = DockStyle.Fill;
             picturebox.EnterElement += Picturebox_EnterElement;
-            sb.HideScrollBar = true;
+            sb.HideScrollBar = true;    // hide scroll bar
             Controls.Add(pictureboxscroll);
         }
 
@@ -632,6 +633,8 @@ namespace ExtendedControls
         //                  returns xy to place, and client size (not window size)
         public virtual Rectangle Render(Point preferredxy, Size? fixedsize = null)
         {
+            picturebox.ClearImageList();
+
             // work out icon size default
 
             Size firsticonsize = ImageSize.IsEmpty ? new Size(24, 24) : ImageSize;            // if we have an image size, the default size
@@ -651,16 +654,18 @@ namespace ExtendedControls
             Size chkboxsize = CheckBoxSize.IsEmpty ? firsticonsize : CheckBoxSize;
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
-            int maxwidthsinglecol = 0;
-            int vheightsinglecol = VerticalSpacing;
-            List<Tuple<Rectangle, Rectangle, Rectangle>> positions = new List<Tuple<Rectangle, Rectangle, Rectangle>>();
+            bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
+            bool hassubmenuicons = false;
+
+            //int vtop = ShowClose ? 16 : VerticalSpacing;        // top of area
+            int vtop = VerticalSpacing;        // top of area
 
             // calculate positions in single column into an array, calculate maxwidthsignelcol, calculate vheightsinglecol
 
-            picturebox.ClearImageList();
-    
-            bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
-            bool hassubmenuicons = false;
+            int maxwidthsinglecol = 0;                          // single col width including submenu 
+            int vheightsinglecol = vtop;                        // spacing at top 
+
+            List<Tuple<Rectangle, Rectangle, Rectangle>> positions = new List<Tuple<Rectangle, Rectangle, Rectangle>>();        // record info on positions of items
 
             // set up each item, and work out sizes
 
@@ -723,7 +728,7 @@ namespace ExtendedControls
 
                 positions.Add(pos);
 
-                vheightsinglecol += vspacing + VerticalSpacing;
+                vheightsinglecol += vspacing + VerticalSpacing;     // item spacing and space between/extra space at bottom
 
                 maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Size.Width);        // this is the width excluding the sub menu icon
             }
@@ -809,10 +814,7 @@ namespace ExtendedControls
 
             int colindex = 0;
             int colused = 1;        // actually displayed
-            int vpos = VerticalSpacing;
-            int heightrequired = 0;     // maximum we got to..
-
-            picturebox.ClearImageList();
+            int vpos = vtop;
 
             // position the controls
 
@@ -828,7 +830,7 @@ namespace ExtendedControls
                 if ((checkvspacing && vpos + vspacing >= vavailable) || colindex++ == itemspercolumn)
                 {
                     colused++;
-                    vpos = VerticalSpacing;
+                    vpos = vtop;
                     colindex = 1;
                 }
 
@@ -859,11 +861,14 @@ namespace ExtendedControls
                 }
 
                 vpos += vspacing + VerticalSpacing; 
-
-                heightrequired = Math.Max(heightrequired, vpos);
             }
 
-            picturebox.Render();
+            // it will clip the render to the last bottom image so make sure we add on that vbottom margin to make the image bigger
+            // better this way than adding on the height below
+
+            picturebox.Render(margin:new Size(0,VerticalSpacing));
+
+           // pictureboxscroll.ShowClose = ShowClose;     // and show close if enabled
 
             if (fixedsize == null)      // if not in fixed size mode, return the screen rectangle clipping to size.
             {

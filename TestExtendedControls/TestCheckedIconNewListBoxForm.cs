@@ -352,6 +352,7 @@ namespace TestExtendedControls
             frm.CloseBoundaryRegion = new Size(64, 64);
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.UC.SlideLeft = true;      // allow left shift
+            frm.UC.SlideUp = true;
             frm.PositionBelow(extButton11);
             frm.Show(this);
 

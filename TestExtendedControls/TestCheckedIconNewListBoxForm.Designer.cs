@@ -192,7 +192,7 @@
             this.extButton11.Name = "extButton11";
             this.extButton11.Size = new System.Drawing.Size(244, 23);
             this.extButton11.TabIndex = 0;
-            this.extButton11.Text = "x400 MC Slideleft";
+            this.extButton11.Text = "x400 MC Slideleft Up\r\n";
             this.extButton11.UseVisualStyleBackColor = true;
             this.extButton11.Click += new System.EventHandler(this.extButton11_Click);
             // 
