@@ -139,7 +139,7 @@ namespace ExtendedControls
 
     public partial class ExtPanelVertScrollWithBar : Panel
     {
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }
+        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
         public int LargeChange { get { return scrollbar.LargeChange; } set { scrollbar.LargeChange = value; } }
         public int SmallChange { get { return scrollbar.SmallChange; } set { scrollbar.SmallChange = value; } }
         public bool HideScrollBar { get { return scrollbar.HideScrollBar; } set { scrollbar.HideScrollBar = value; } }

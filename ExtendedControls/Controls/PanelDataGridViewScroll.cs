@@ -26,7 +26,7 @@ namespace ExtendedControls
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }       // if internal
+        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }       // if internal
 
         public void UpdateScroll()      // call if hide/unhide cells - no call back for this
         {

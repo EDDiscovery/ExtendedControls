@@ -148,7 +148,7 @@ namespace ExtendedControls.Controls
             TreeView.Location = new Point(bordersize, bordersize);
             TreeView.Size = new Size(ClientRectangle.Width - bordersize * 2, treeviewclienth);
 
-            int scrollbarwidth = Font.ScalePixels(20);
+            int scrollbarwidth = Font.ScaleScrollbar();
 
             ScrollBar.Location = new Point(ClientRectangle.Width - scrollbarwidth - bordersize, bordersize);
             ScrollBar.Size = new Size(scrollbarwidth, treeviewclienth);

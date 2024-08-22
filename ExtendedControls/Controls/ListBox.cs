@@ -51,7 +51,7 @@ namespace ExtendedControls
         public Color MouseOverBackgroundColor { get; set; } = Color.Silver;
         public Color ItemSeperatorColor { get; set; } = Color.Red;
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(20); } }
+        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
 
         // All modes
         public int SelectedIndex { get { return selectedindex; } set { if (value != selectedindex) { selectedindex = value; Invalidate(); } } }

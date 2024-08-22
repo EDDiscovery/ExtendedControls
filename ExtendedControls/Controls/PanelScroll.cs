@@ -29,7 +29,7 @@ namespace ExtendedControls
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public bool FlowControlsLeftToRight { get; set; } = false;        // if true, position controls left to right overflow
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }
+        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
 
         public ExtScrollBar ScrollBar = null;
 
