@@ -52,15 +52,10 @@ namespace ExtendedControls
             ShowInTaskbar = false;
             UC = new CheckedIconGroupUserControl();
             UC.Dock = DockStyle.Fill;
+            UC.CloseClicked += (s) => { CloseOrHide(); };   // add call back handler..
             Controls.Add(UC);
             timer.Interval = 100;
             timer.Tick += CheckMouse;
-
-
-
-
-
-           // UC.ShowClose = true;
         }
 
         // Get the checked list taking into account the grouping And the AllOrNoneBack

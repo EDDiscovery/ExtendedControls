@@ -57,6 +57,8 @@ namespace TestExtendedControls
             frm.CloseBoundaryRegion = new Size(64, 64);
             frm.PositionBelow(extButton1);
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); };
+            frm.UC.ShowClose = true;
+
             frm.Show(this);
         }
 
@@ -192,6 +194,7 @@ namespace TestExtendedControls
             frm.UC.Set(persistent7);
             Theme.Current.FontSize = 16;
 
+            frm.UC.ShowClose = true;
             frm.PositionBelow(extButton2);
             frm.Show(this);
 
@@ -353,6 +356,7 @@ namespace TestExtendedControls
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.UC.SlideLeft = true;      // allow left shift
             frm.UC.SlideUp = true;
+            frm.UC.ShowClose = true;
             frm.PositionBelow(extButton11);
             frm.Show(this);
 
@@ -458,6 +462,7 @@ namespace TestExtendedControls
             };
             frm.CloseDownTime = 300;
             frm.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine($">>> Save Settings {frm.Name} {s} {p}"); b12settings = s; };
+            frm.UC.ShowClose = true;
 
             frm.Show(b12settings,extButton12,this); ;
         }

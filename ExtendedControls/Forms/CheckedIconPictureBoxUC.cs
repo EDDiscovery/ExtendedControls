@@ -27,7 +27,7 @@ namespace ExtendedControls
         public bool MultipleColumns { get; set; } = false;        // allow multiple columns
         public bool MultiColumnSlide { get { return MultipleColumns; } set { MultipleColumns = SlideUp = SlideLeft = value; } } // multicolumn with slide
         public Size ScreenMargin { get; set; } = new Size(16, 16);
-        public bool ShowClose { get; set; } = false;                 // if true, show close tick
+        public bool ShowClose { get { return closeicon.Visible; } set { closeicon.Visible = value; Invalidate(); } }        // show or hide (default) close icon above scroll bar
 
         // Holds the item list, and various accessors to it
         public List<Item> ItemList { get; private set; }
@@ -77,6 +77,9 @@ namespace ExtendedControls
         public Action<int, string, string, object, ItemCheckEventArgs> CheckedChanged { get; set; }       // check box changed
         // index, Tag, Text, UserTag, button args
         public Action<int,string,string,object,MouseEventArgs> ButtonPressed { get; set; }
+
+        // On close icon click, callback
+        public Action<CheckedIconUserControl> CloseClicked { get; set; }
 
         // what char is used for split settings
         public char SettingsSplittingChar { get; set; } = ';';      
@@ -611,15 +614,24 @@ namespace ExtendedControls
         public CheckedIconUserControl()
         {
             ItemList = new List<Item>();
+            
+            // make items for pictureboxscroll
             picturebox = new ExtPictureBox();
             sb = new ExtScrollBar();
+            sb.HideScrollBar = true;    // hide scroll bar
+            closeicon = new ExtButtonDrawn();
+            closeicon.Visible = false;      // default off
+            closeicon.ImageSelected = ExtButtonDrawn.ImageType.Close;
+            closeicon.Click += (s, e) => { CloseClicked?.Invoke(this); };
+
+            // make pbs
             pictureboxscroll = new ExtPictureBoxScroll();
             pictureboxscroll.BorderStyle = BorderStyle.FixedSingle;
             pictureboxscroll.Controls.Add(picturebox);
             pictureboxscroll.Controls.Add(sb);
+            pictureboxscroll.Controls.Add(closeicon);
             pictureboxscroll.Dock = DockStyle.Fill;
             picturebox.EnterElement += Picturebox_EnterElement;
-            sb.HideScrollBar = true;    // hide scroll bar
             Controls.Add(pictureboxscroll);
         }
 
@@ -629,8 +641,9 @@ namespace ExtendedControls
         //                  preferredxy is redundant then and should be set to 0,0. FitToScreen is ignored. Just returns 0,0,width,height
         // with fixed size null, it tries to use up as much screen space right of preferredxy if MultipleColumns is set
         //                  If SlideLeft is set, we can move left to make more space
+        //                  If SlideUp is set, we can move upwards to make more space
         //                  the returned rectangle is clipped to the screen space
-        //                  returns xy to place, and client size (not window size)
+        // returns rectangle used
         public virtual Rectangle Render(Point preferredxy, Size? fixedsize = null)
         {
             picturebox.ClearImageList();
@@ -657,7 +670,6 @@ namespace ExtendedControls
             bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
             bool hassubmenuicons = false;
 
-            //int vtop = ShowClose ? 16 : VerticalSpacing;        // top of area
             int vtop = VerticalSpacing;        // top of area
 
             // calculate positions in single column into an array, calculate maxwidthsignelcol, calculate vheightsinglecol
@@ -868,7 +880,7 @@ namespace ExtendedControls
 
             picturebox.Render(margin:new Size(0,VerticalSpacing));
 
-           // pictureboxscroll.ShowClose = ShowClose;     // and show close if enabled
+            // now return the rectangle size needed
 
             if (fixedsize == null)      // if not in fixed size mode, return the screen rectangle clipping to size.
             {
@@ -940,6 +952,7 @@ namespace ExtendedControls
         private ExtPictureBoxScroll pictureboxscroll;
         private ExtPictureBox picturebox;
         private ExtScrollBar sb;
+        private ExtButtonDrawn closeicon;
 
         #endregion
     }

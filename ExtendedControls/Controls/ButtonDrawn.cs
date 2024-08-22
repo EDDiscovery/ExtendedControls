@@ -367,7 +367,7 @@ namespace ExtendedControls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            //Debug.WriteLine($"{nameof(DrawnPanel)}.{nameof(OnPaint)} ({this.Name ?? "unnamed"}): Enabled {Enabled}, State {_DrawState}");
+            //Debug.WriteLine($"Draw button selected image {imageselected} Enabled {Enabled}, State {drawState}");
 
             Color cFore = this.ForeColor;
             switch (drawState)
