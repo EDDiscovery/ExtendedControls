@@ -326,7 +326,7 @@ namespace ExtendedControls
             CurrentChartArea.AxisX.Maximum = max;
         }
 
-        public bool IsStartedFromZeroX { get { return CurrentChartArea.AxisX.IsStartedFromZero; } set { CurrentChartArea.AxisX.IsStartedFromZero = value; } }
+        public bool IsStartedFromZeroX { get { return CurrentChartArea?.AxisX.IsStartedFromZero ?? false; } set { if ( CurrentChartArea != null ) CurrentChartArea.AxisX.IsStartedFromZero = value; } }
 
         // Color and Font on the X axis labels
         public void SetXAxisLabelColorFont(Color color, Font font = null)
@@ -468,7 +468,7 @@ namespace ExtendedControls
             AutoZoomY(CurrentChartArea);
         }
 
-        public bool IsZoomedX { get { return CurrentChartArea.AxisX.ScaleView.IsZoomed; } }
+        public bool IsZoomedX { get { return CurrentChartArea?.AxisX.ScaleView.IsZoomed ??false; } }
 
         //////////////////////////////////////////////////////////////////////////// Y
 
@@ -489,7 +489,7 @@ namespace ExtendedControls
             CurrentChartArea.AxisY.Maximum = max;
         }
 
-        public bool IsStartedFromZeroY { get { return CurrentChartArea.AxisY.IsStartedFromZero; } set { CurrentChartArea.AxisY.IsStartedFromZero = value; } }
+        public bool IsStartedFromZeroY { get { return CurrentChartArea?.AxisY.IsStartedFromZero ?? false; } set { if ( CurrentChartArea != null) CurrentChartArea.AxisY.IsStartedFromZero = value; } }
 
         public void SetYAxisLabelColorFont(Color color, Font font = null)
         {
@@ -603,7 +603,7 @@ namespace ExtendedControls
             CurrentChartArea.AxisY.ScaleView.Zoom(min, max);
         }
 
-        public bool IsZoomedY { get { return CurrentChartArea.AxisY.ScaleView.IsZoomed; } }
+        public bool IsZoomedY { get { return CurrentChartArea?.AxisY.ScaleView.IsZoomed ?? false; } }
 
         // Turn on/off Y Auto scale, which adjusted Y scale when X is zoomed in
         public void YAutoScale(bool on = true, bool enableyscrollbar = true)
