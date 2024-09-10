@@ -56,6 +56,12 @@
     <Compile Include="TestImportExport.Designer.cs">
       <DependentUpon>TestImportExport.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestPanelDGV2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestPanelDGV2.Designer.cs">
+      <DependentUpon>TestPanelDGV2.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestPipsAdvancedLabel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -318,6 +324,9 @@
     </Compile>
     <EmbeddedResource Include="TestImportExport.resx">
       <DependentUpon>TestImportExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestPanelDGV2.resx">
+      <DependentUpon>TestPanelDGV2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestPipsAdvancedLabel.resx">
       <DependentUpon>TestPipsAdvancedLabel.cs</DependentUpon>
