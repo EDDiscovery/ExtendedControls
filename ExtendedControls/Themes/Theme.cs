@@ -719,18 +719,23 @@ namespace ExtendedControls
 
                 ctrl.RowHeadersDefaultCellStyle.BackColor = colors[CI.grid_borderback];
                 ctrl.RowHeadersDefaultCellStyle.ForeColor = colors[CI.grid_bordertext];
+                ctrl.RowHeadersDefaultCellStyle.SelectionForeColor = colors[CI.grid_bordertext];
                 ctrl.RowHeadersDefaultCellStyle.SelectionBackColor = colors[CI.grid_borderback];
+
                 ctrl.ColumnHeadersDefaultCellStyle.BackColor = colors[CI.grid_borderback];
                 ctrl.ColumnHeadersDefaultCellStyle.ForeColor = colors[CI.grid_bordertext];
+                ctrl.ColumnHeadersDefaultCellStyle.SelectionForeColor = colors[CI.grid_bordertext];
                 ctrl.ColumnHeadersDefaultCellStyle.SelectionBackColor = colors[CI.grid_borderback];
 
-                ctrl.BackgroundColor = GroupBoxOverride(parent, colors[CI.form]);
                 ctrl.DefaultCellStyle.BackColor = colors[CI.grid_cellbackground];
-                ctrl.AlternatingRowsDefaultCellStyle.BackColor = colors[CI.grid_altcellbackground];
                 ctrl.DefaultCellStyle.ForeColor = colors[CI.grid_celltext];
-                ctrl.AlternatingRowsDefaultCellStyle.ForeColor = colors[CI.grid_altcelltext];
                 ctrl.DefaultCellStyle.SelectionBackColor = ctrl.DefaultCellStyle.ForeColor;
                 ctrl.DefaultCellStyle.SelectionForeColor = ctrl.DefaultCellStyle.BackColor;
+
+                ctrl.BackgroundColor = GroupBoxOverride(parent, colors[CI.form]);
+
+                ctrl.AlternatingRowsDefaultCellStyle.BackColor = colors[CI.grid_altcellbackground];
+                ctrl.AlternatingRowsDefaultCellStyle.ForeColor = colors[CI.grid_altcelltext];
 
                 ctrl.BorderStyle = BorderStyle.None;        // can't control the color of this, turn it off
 
