@@ -12,11 +12,11 @@ using System.Windows.Forms;
 
 namespace TestExtendedControls
 {
-    public partial class TestPanelDGV2 : Form
+    public partial class TestPanelDGVOtherCells : Form
     {
         ThemeList theme;
 
-        public TestPanelDGV2()
+        public TestPanelDGVOtherCells()
         {
             InitializeComponent();
 
@@ -29,7 +29,7 @@ namespace TestExtendedControls
             dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
 
-            dataGridView.RowHeightChanged += (a, e) => { System.Diagnostics.Debug.WriteLine("DGV Row Height"); };
+            //dataGridView.RowHeightChanged += (a, e) => { System.Diagnostics.Debug.WriteLine("DGV Row Height"); };
 
             dataGridView.Dock = DockStyle.Fill;
 
@@ -57,14 +57,16 @@ namespace TestExtendedControls
                 {
                     DataGridViewProgressCell p1 = new DataGridViewProgressCell();
                     p1.Value = i/2;
-                    p1.BarForeColor = Color.Blue;
+                    p1.BarForeColor = Color.Orange;
                     p1.Style.ForeColor = Color.Red;
                     p1.BarColorScaling = 0.8f;
                     p1.TextToRightPreferentially = true;
+                    p1.BarHeightPercentage = 25;
                     rw.Cells.Add(p1);
 
                     DataGridViewProgressCell p2 = new DataGridViewProgressCell();
-                    p2.Value = 100 - i;
+                    p2.Value = 100 - i/2;
+                    p2.BarHeightPercentage = 100-i/2;
                     rw.Cells.Add(p2);
 
                     DataGridViewTextImageCell c3 = new DataGridViewTextImageCell();
@@ -73,13 +75,24 @@ namespace TestExtendedControls
                     c3.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     rw.Cells.Add(c3);
 
-                    DataGridViewProgressCell p3 = new DataGridViewProgressCell();
-                    p3.Value = ((100 - i) * 10) % 100;
+                    DataGridViewPictureBox p3 = new DataGridViewPictureBox();
+                    p3.PictureBox.AddTextAutoSize(new Point(0, 0), new Size(1000, 1000), "Text1", Font, Color.Red, Color.Blue, 1.0f);
+                    p3.PictureBox.AddTextAutoSize(new Point(0, 70), new Size(1000, 1000), "Text2", Font, Color.Red, Color.Blue, 1.0f);
+                    p3.PictureBox.AddImage(new Rectangle(0, 20, 32, 32), Properties.Resources.Calendar);
+                    p3.PictureBox.Render();
                     rw.Cells.Add(p3);
+
+                    if (i == 0)
+                    {
+                        rw.MinimumHeight = 120;
+                        p3.Alignment = ContentAlignment.TopCenter;
+                    }
                 }
 
                 dataGridView.Rows.Add(rw);
             }
+
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -95,7 +108,6 @@ namespace TestExtendedControls
 
         private void dataGridView1_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("Col " + e.Column + " Resize" );
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)

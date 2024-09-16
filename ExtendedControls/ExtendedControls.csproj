@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DGVCellPictureBox.cs" />
     <Compile Include="Controls\LabelData.cs">
       <SubType>Component</SubType>
     </Compile>

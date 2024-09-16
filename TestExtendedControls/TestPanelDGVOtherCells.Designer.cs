@@ -1,6 +1,6 @@
 ﻿namespace TestExtendedControls
 {
-    partial class TestPanelDGV2
+    partial class TestPanelDGVOtherCells
     {
         /// <summary>
         /// Required designer variable.
