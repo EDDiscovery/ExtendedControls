@@ -46,7 +46,7 @@ namespace ExtendedControls
 
         public event Action<string, string, Object> Trigger;
 
-        public List<Entry> Entries { get { return entries; } }
+        public List<Entry> Entries { get; private set; } = new List<Entry>();
 
         public new bool AllowResize { get { return base.AllowResize; } set { base.AllowResize = value; } } // if form resizing (you need a BorderMargin)
         public int BorderMargin { get; set; } = 3;       // space between window edge and outer area
@@ -164,7 +164,6 @@ namespace ExtendedControls
         public ConfigurableForm()
         {
             this.components = new System.ComponentModel.Container();
-            entries = new List<Entry>();
             lastpos = new System.Drawing.Point(0, 0);
             AllowResize = false;
         }
@@ -174,17 +173,17 @@ namespace ExtendedControls
             Entry e;
             string errmsg = MakeEntry(instr, out e, ref lastpos);
             if (errmsg == null)
-                entries.Add(e);
+                Entries.Add(e);
             return errmsg;
         }
         public void Add(Entry e)               // add an entry..
         {
-            entries.Add(e);
+            Entries.Add(e);
         }
         public void Add(ref int vpos, int vspacing, Entry e)               // add an entry with vpos increase
         {
             e.Location = new Point(e.Location.X, e.Location.Y + vpos);
-            entries.Add(e);
+            Entries.Add(e);
             vpos += vspacing;
         }
 
@@ -276,11 +275,11 @@ namespace ExtendedControls
         // remove a control from the list, both visually and from entries
         public void RemoveEntry(string controlname)
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if ( t?.Control != null )
             {
                 t.Control.Parent.Controls.Remove(t.Control);
-                entries.Remove(t);
+                Entries.Remove(t);
             }
         }
 
@@ -308,7 +307,7 @@ namespace ExtendedControls
             move = (int)(move * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up
             offset = (int)(offset * this.CurrentAutoScaleFactor().Height + 0.5);        // must scale up
 
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
                 MoveControlsAt(t.Location.Y + offset, move);
         }
@@ -395,7 +394,7 @@ namespace ExtendedControls
         // get control of name as type
         public T GetControl<T>(string controlname) where T : Control      // return value of dialog control
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
                 return (T)t.Control;
             else
@@ -405,7 +404,7 @@ namespace ExtendedControls
         // get control by name
         public Control GetControl(string controlname )
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
                 return t.Control;
             else
@@ -498,21 +497,21 @@ namespace ExtendedControls
         // Return Get() by controlname, null if can't get
         public string Get(string controlname)
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             return t != null ? Get(t) : null;
         }
 
         // Return GetValue() by controlname, null if can't get
         public T GetValue<T>(string controlname)
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             return t != null ? (T)GetValue(t) : default(T);
         }
 
         // Return Get() from controls starting with this name
         public string[] GetByStartingName(string startingcontrolname)
         {
-            var list = entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            var list = Entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
             string[] res = new string[list.Length];
             for (int i = 0; i < list.Length; i++)
                 res[i] = Get(list[i]);
@@ -522,7 +521,7 @@ namespace ExtendedControls
         // Return GetValue() from controls starting with this name
         public T[] GetByStartingName<T>(string startingcontrolname)
         {
-            var list = entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            var list = Entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
             T[] res = new T[list.Length];
             for (int i = 0; i < list.Length; i++)
                 res[i] = (T)GetValue(list[i]);
@@ -532,7 +531,7 @@ namespace ExtendedControls
         // from checkbox
         public bool? GetBool(string controlname)
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
                 var cn = t.Control as ExtCheckBox;
@@ -543,7 +542,7 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public double? GetDouble(string controlname)
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
                 var cn = t.Control as NumberBoxDouble;
@@ -556,7 +555,7 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public long? GetLong(string controlname)     
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
                 var cn = t.Control as NumberBoxLong;
@@ -568,7 +567,7 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public int? GetInt(string controlname)     
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
                 var cn = t.Control as NumberBoxInt;
@@ -580,7 +579,7 @@ namespace ExtendedControls
         // from DateTimePicker, Null if not valid
         public DateTime? GetDateTime(string controlname)
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
                 ExtDateTimePicker c = t.Control as ExtDateTimePicker;
@@ -594,21 +593,21 @@ namespace ExtendedControls
         // from ExtCheckBox controls starting with this name, get the names of the ones checked, removing the prefix unless told not too
         public string[] GetCheckedListNames(string startingcontrolname, bool removeprefix = true)
         {
-            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked).Select(x => removeprefix ? x.Name.Substring(startingcontrolname.Length) : x.Name).ToArray();
+            var elist = Entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked).Select(x => removeprefix ? x.Name.Substring(startingcontrolname.Length) : x.Name).ToArray();
             return elist;
         }
 
         // from ExtCheckBox controls starting with this name, get the entries of ones checked
         public Entry[] GetCheckedListEntries(string startingcontrolname)
         {
-            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked);
+            var elist = Entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked);
             return elist.ToArray();
         }
 
         // from ExtCheckBox controls starting with this name, get a bool array describing the check state
         public bool[] GetCheckBoxBools(string startingcontrolname)
         {
-            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            var elist = Entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
             var result = new bool[elist.Length];
             int i = 0;
             foreach (var e in elist)
@@ -622,7 +621,7 @@ namespace ExtendedControls
         // Set value of control by string value
         public bool Set(string controlname, string value)      
         {
-            Entry t = entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
                 Control c = t.Control;
@@ -681,7 +680,7 @@ namespace ExtendedControls
         public void SetCheckedList(IEnumerable<string> controlnames,bool state)
         {
             var cnames = controlnames.ToArray();
-            var elist = entries.Where(x => x.Control is ExtCheckBox && Array.IndexOf(cnames, x.Name) >= 0).Select(x => x);
+            var elist = Entries.Where(x => x.Control is ExtCheckBox && Array.IndexOf(cnames, x.Name) >= 0).Select(x => x);
             foreach (var e in elist)
             {
                 (e.Control as ExtCheckBox).Checked = state;
@@ -691,7 +690,7 @@ namespace ExtendedControls
         // radio button this set, to 1 entry, or to N max
         public void RadioButton(string startingcontrolname, string controlhit , int max = 1)
         {
-            var elist = entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            var elist = Entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
 
             if (max == 1)
             {
@@ -714,7 +713,7 @@ namespace ExtendedControls
         // are all entries on this table which could be invalid valid?
         public bool IsAllValid()
         {
-            foreach( var t in entries)
+            foreach( var t in Entries)
             {
                 var c = t.Control;
                 var cl = c as NumberBoxLong;
@@ -786,8 +785,8 @@ namespace ExtendedControls
             if (theme.WindowsFrame && !ForceNoWindowsBorder)
             {
                 yoffset = int.MaxValue;
-                for (int i = 0; i < entries.Count; i++)             // find minimum control Y
-                    yoffset = Math.Min(yoffset, entries[i].Location.Y);
+                for (int i = 0; i < Entries.Count; i++)             // find minimum control Y
+                    yoffset = Math.Min(yoffset, Entries[i].Location.Y);
 
                 yoffset -= 8;           // place X spaces below top
             }
@@ -848,11 +847,11 @@ namespace ExtendedControls
                 timer.Start();
             }
 
-            for (int i = 0; i < entries.Count; i++)     // post scale any controls which ask for different font ratio sizes
+            foreach( var e in Entries)
             {
-                if (entries[i].PostThemeFontScale != 1.0f)
+                if (e.PostThemeFontScale != 1.0f)
                 {
-                    entries[i].Control.Font = new Font(entries[i].Control.Font.Name, entries[i].Control.Font.SizeInPoints * entries[i].PostThemeFontScale);
+                    e.Control.Font = new Font(e.Control.Font.Name, e.Control.Font.SizeInPoints * e.PostThemeFontScale);
                 }
             }
 
@@ -947,12 +946,12 @@ namespace ExtendedControls
 
             int curpos = contentpanel.BeingPosition();
 
-            for (int i = 0; i < entries.Count; i++)     // record nominal pos after all positioning done
+            foreach( var e in Entries)
             {
-                entries[i].Location = entries[i].Control.Location;
-                entries[i].Size = entries[i].Control.Size;
-                if (entries[i].MinimumSize == Size.Empty)
-                    entries[i].MinimumSize = entries[i].Size;
+                e.Location = e.Control.Location;
+                e.Size = e.Control.Size;
+                if (e.MinimumSize == Size.Empty)
+                    e.MinimumSize = e.Size;
             }
 
             initialscrollpanelsize = contentpanel.Size;
@@ -1028,9 +1027,9 @@ namespace ExtendedControls
 
                 int widthdelta = contentpanel.Width - initialscrollpanelsize.Width;
                 int heightdelta = contentpanel.Height - initialscrollpanelsize.Height;
-                //System.Diagnostics.Debug.WriteLine($"CF Resize {widthdelta}x{heightdelta} scrollpanel {scrollpanel.Size}");
+                //System.Diagnostics.Debug.WriteLine($"CF Resize {teaidthdelta}x{heightdelta} scrollpanel {scrollpanel.Size}");
 
-                foreach ( var en in entries)
+                foreach ( var en in Entries)
                 {
                     if (en.Control.Parent == contentpanel)
                     {
@@ -1047,9 +1046,9 @@ namespace ExtendedControls
 
         private void AddEntries(SizeF? factor = null)
         {
-            for (int i = 0; i < entries.Count; i++)
+            for (int i = 0; i < Entries.Count; i++)
             {
-                Entry ent = entries[i];
+                Entry ent = Entries[i];
 
                 if (ent.Control != null && (contentpanel.Controls.Contains(ent.Control) ||
                                 (toppanel != null && toppanel.Controls.Contains(ent.Control)) ||
@@ -1468,7 +1467,6 @@ namespace ExtendedControls
         private System.ComponentModel.IContainer components = null;     // replicate normal component container, so controls which look this
                                                                         // up for finding the tooltip can (TextBoxBorder)
 
-        private List<Entry> entries;
         private Object callertag;
         private string logicalname;
 

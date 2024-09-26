@@ -36,6 +36,7 @@ namespace ExtendedControls
         }
 
         // call when your going to reset the positions of all the controls and want to go back to zero
+        // or after a resize if the window has reset the control positions (see ConfigurableUC)
         // returns current scroll pos 
         public int BeingPosition()
         {
@@ -45,7 +46,7 @@ namespace ExtendedControls
             return cur;
         }
 
-        // call when your controls are in position
+        // call when your controls are in position after BeginPosition()
         public void FinishedPosition(int scrollto)
         {
             System.Diagnostics.Debug.Assert(currentscroll == 0);        // must have reset
@@ -65,6 +66,7 @@ namespace ExtendedControls
         public void Recalcuate()
         {
             // find area of controls
+            System.Diagnostics.Debug.WriteLine($"PVS Recalc cur scroll {currentscroll}");
 
             int maxy = int.MinValue;
             foreach (Control c in Controls)
@@ -72,6 +74,7 @@ namespace ExtendedControls
                 int bot = c.Bottom + currentscroll;
                 if (bot > maxy)        // we add on currentscroll to compensate if we have been scrolling, as the actual control y will have been changed
                     maxy = bot;
+                //System.Diagnostics.Debug.WriteLine($"   PVS Recalc {c.Name} {c.Bounds} {c.Bottom} {bot} {maxy}");
             }
 
             // here we find the maximum scroll, which is the difference between the maximum controls and the client height
@@ -80,7 +83,7 @@ namespace ExtendedControls
             // this is the bottom of our view from currentscroll down height
             int botcurrentview = currentscroll + ClientRectangle.Height;
 
-            //System.Diagnostics.Debug.WriteLine($"Scroll cur {currentscroll} scrollarea {maxscroll} scr height {ClientRectangle.Height} maxy {maxy} view {currentscroll}..{botcurrentview}");
+           // System.Diagnostics.Debug.WriteLine($"      Scroll cur {currentscroll} scrollarea {maxscroll} scr height {ClientRectangle.Height} maxy {maxy} view {currentscroll}..{botcurrentview}");
 
             // if we have currentscroll non zero , but we are viewing below the max, we can scroll up
             if (botcurrentview > maxy && currentscroll>0)     
@@ -127,6 +130,9 @@ namespace ExtendedControls
                 Update();
                 if ( callback )
                     ScrollSet?.Invoke(currentscroll, maxscroll);
+
+                //foreach (Control c in Controls) System.Diagnostics.Debug.WriteLine($"   ScrollTo Pos {c.Name} {c.Bounds} {c.Bottom}");
+
             }
         }
 
@@ -143,6 +149,7 @@ namespace ExtendedControls
         public int LargeChange { get { return scrollbar.LargeChange; } set { scrollbar.LargeChange = value; } }
         public int SmallChange { get { return scrollbar.SmallChange; } set { scrollbar.SmallChange = value; } }
         public bool HideScrollBar { get { return scrollbar.HideScrollBar; } set { scrollbar.HideScrollBar = value; } }
+        public int ScrollValue { get { return scrollbar.Value; } set { scrollbar.Value = value; } }
 
         public ExtPanelVertScrollWithBar()
         {

@@ -135,6 +135,12 @@
     <Compile Include="Forms\CheckedIconPictureBoxUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Forms\ConfigurableEntries.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfigurableUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Forms\ExtButtonWithNewCheckedListBox.cs">
       <SubType>Component</SubType>
     </Compile>

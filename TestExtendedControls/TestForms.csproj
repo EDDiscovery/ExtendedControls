@@ -56,6 +56,12 @@
     <Compile Include="TestImportExport.Designer.cs">
       <DependentUpon>TestImportExport.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestConfigurableUC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestConfigurableUC.Designer.cs">
+      <DependentUpon>TestConfigurableUC.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestPanelDGVOtherCells.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -324,6 +330,9 @@
     </Compile>
     <EmbeddedResource Include="TestImportExport.resx">
       <DependentUpon>TestImportExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestConfigurableUC.resx">
+      <DependentUpon>TestConfigurableUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestPanelDGVOtherCells.resx">
       <DependentUpon>TestPanelDGVOtherCells.cs</DependentUpon>
