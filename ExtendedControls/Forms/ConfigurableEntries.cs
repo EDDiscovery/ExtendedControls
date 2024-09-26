@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017-2024 EDDiscovery development team
+ * Copyright © 2024-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -24,12 +24,35 @@ namespace ExtendedControls
     {
         #region Properties
 
+        // You give an array of Entries describing the controls
+        // either added programatically by Add(entry) or via a string descriptor Add(string) (See action document for string descriptor format)
+        // Directly Supported Types (string name/base type)
+        //      "button" ExtButton, "textbox" ExtTextBox, "checkbox" ExtCheckBox 
+        //      "label" Label, "datetime" ExtDateTimePicker,
+        //      "numberboxdouble" NumberBoxDouble, "numberboxlong" NumberBoxLong, "numberboxint" NumberBoxInt, 
+        //      "combobox" ExtComboBox
+        // Or any type if you use Add(control, name..)
+
+        // Lay the thing out like its in the normal dialog editor, with 8.25f font.  Leave space for the title bar/close icon.
+
+        // Triggers
+        // returns dialog logical name, name of control (plus options), caller tag object
+        // name of control on click for button / Checkbox / ComboBox
+        // name:Return for number box, textBox.  Set Entries.SwallowReturn to true before returning to swallow the return key
+        // name:Validity:true/false for Number boxes
+
         public List<Entry> Entries { get; private set; } = new List<Entry>();       // entry list
-        public bool ProgClose { get; set; } = false;        // set to stop triggering of events
-        public bool SwallowReturn { get; set; } = false;  // set in your trigger handler to swallow the return. Otherwise, return is return
+        public bool DisableTriggers { get; set; } = false;        // set to stop triggering of events
+        public bool SwallowReturn { get; set; } = false;    // set in your trigger handler to swallow the return. Otherwise, return is return and is processed by windows that way
         public string Name { get; set; } = "Default";       // name to return in triggers
         public Object CallerTag { get; set; } = null;       // object to return in triggers
+        public Action<string, string, Object> Trigger { get; set; } = null;      // return trigger
 
+        public int YOffset { get; set; } = 0;               // y adjust for position when adding entries to account for any title area in the contentpanel (+ve down)
+
+        public Action<bool, Control, MouseEventArgs> MouseUpDownOnLabel { get; set; } = null; // click on label items handler
+
+        #endregion
 
         #region Entries 
 
@@ -75,7 +98,7 @@ namespace ExtendedControls
             public string NumberBoxFormat { get; set; } = null;      // for both number boxes
 
             public float PostThemeFontScale { get; set; } = 1.0f;   // post theme font scaler
-
+             
             // general
             public Entry(string nam, Type c, string t, Point p, Size s, string tt)
             {
@@ -124,6 +147,8 @@ namespace ExtendedControls
 
         #endregion
 
+        #region Find/Enumerate/Add
+
         public Entry Find(Predicate<Entry> pred)
         {
             return Entries.Find(pred);
@@ -135,7 +160,7 @@ namespace ExtendedControls
             return Entries.GetEnumerator();
         }
 
-        private System.Drawing.Point lastpos; // used for dynamically making the list up
+        private System.Drawing.Point lastpos = new Point(0,0); // used for dynamically making the list up
 
         public string Add(string instr)       // add a string definition dynamically add to list.  errmsg if something is wrong
         {
@@ -584,16 +609,13 @@ namespace ExtendedControls
 
         #endregion
 
-        #region Add Entries
+        #region Create any new entries in the list
 
-
-        private void AddEntries(ExtPanelVertScroll contentpanel, Panel toppanel, Panel bottompanel, int yoffset, Action<string, string, Object> Trigger, ToolTip tooltipcontrol,
-                                Action<bool, Object, MouseEventArgs> ClickOnInactive,
-                                SizeF? factor)
+        public void CreateEntries(ExtPanelVertScroll contentpanel, Panel toppanel, Panel bottompanel, ToolTip tooltipcontrol, SizeF? factor = null)
         {
             foreach (var ent in Entries)
             {
-                if (ent.Control != null && (contentpanel.Controls.Contains(ent.Control) ||
+                if (ent.Control != null && (contentpanel.Controls.Contains(ent.Control) ||              // if already installed, do nothing
                                 (toppanel != null && toppanel.Controls.Contains(ent.Control)) ||
                                 (bottompanel != null && bottompanel.Controls.Contains(ent.Control))))
                 {
@@ -606,7 +628,7 @@ namespace ExtendedControls
 
                 ent.Control = c;
                 c.Size = ent.Size;
-                c.Location = new Point(ent.Location.X, ent.Location.Y - yoffset);
+                c.Location = new Point(ent.Location.X, ent.Location.Y + YOffset);
                 c.Name = ent.Name;
                 c.Enabled = ent.Enabled;
                 if (!(ent.TextValue == null || c is ExtComboBox || c is ExtDateTimePicker
@@ -621,7 +643,7 @@ namespace ExtendedControls
                 else
                     contentpanel.Controls.Add(c);
 
-                if (ent.ToolTip != null)
+                if (ent.ToolTip != null && tooltipcontrol != null)
                     tooltipcontrol.SetToolTip(c, ent.ToolTip);
 
                 //        //System.Diagnostics.Debug.WriteLine($".. Control {ent.Name} of {c.GetType()} at {c.Location} {c.Size}");
@@ -631,8 +653,8 @@ namespace ExtendedControls
                     Label l = c as Label;
                     if (ent.TextAlign.HasValue)
                         l.TextAlign = ent.TextAlign.Value;
-                    l.MouseDown += (md1, md2) => { ClickOnInactive(false,(Control)md1, md2); };        // make em draggable
-                    l.MouseUp += (md1, md2) => { ClickOnInactive(true,(Control)md1, md2); };
+                    l.MouseDown += (md1, md2) => { MouseUpDownOnLabel?.Invoke(true, (Control)md1, md2); };        
+                    l.MouseUp += (md1, md2) => { MouseUpDownOnLabel?.Invoke(false, (Control)md1, md2); };
                 }
                 else if (c is ExtButton)
                 {
@@ -641,7 +663,7 @@ namespace ExtendedControls
                         b.TextAlign = ent.TextAlign.Value;
                     b.Click += (sender, ev) =>
                     {
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(((Control)sender).Tag);
                             Trigger?.Invoke(Name, en.Name, this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
@@ -660,21 +682,21 @@ namespace ExtendedControls
                     cb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
                             Trigger?.Invoke(Name, en.Name + ":Return", this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        }
 
                         return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
                             Trigger?.Invoke(Name, en.Name + ":Validity:" + s.ToString(), this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        }
                     };
                 }
                 else if (c is NumberBoxLong)
@@ -689,16 +711,16 @@ namespace ExtendedControls
                     cb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
                             Trigger?.Invoke(Name, en.Name + ":Return", this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        }
                         return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
                             Trigger?.Invoke(Name, en.Name + ":Validity:" + s.ToString(), this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
@@ -717,20 +739,20 @@ namespace ExtendedControls
                     cb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
                             Trigger?.Invoke(Name, en.Name + ":Return", this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        }
                         return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
                             Trigger?.Invoke(Name, en.Name + ":Validity:" + s.ToString(), this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        }
                     };
                 }
                 else if (c is ExtTextBox)
@@ -745,11 +767,11 @@ namespace ExtendedControls
                     tb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
                             Trigger?.Invoke(Name, en.Name + ":Return", this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        }
                         return SwallowReturn;
                     };
 
@@ -763,11 +785,11 @@ namespace ExtendedControls
                     cb.CheckAlign = ent.ContentAlign;
                     cb.Click += (sender, ev) =>
                     {
-                        if (!ProgClose)
+                        if (!DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(((Control)sender).Tag);
                             Trigger?.Invoke(Name, en.Name, this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        }
                     };
                 }
                 else if (c is ExtDateTimePicker)
@@ -806,7 +828,7 @@ namespace ExtendedControls
                     cb.SelectedIndexChanged += (sender, ev) =>
                     {
                         Control ctr = (Control)sender;
-                        if (ctr.Enabled && !ProgClose)
+                        if (ctr.Enabled && !DisableTriggers)
                         {
                             ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(ctr.Tag);
                             Trigger?.Invoke(Name, en.Name, this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
@@ -822,13 +844,21 @@ namespace ExtendedControls
 
         }
 
+        #endregion
+
+        #region Triggering
+
+        // send trigger, if not disabled
+        public void SendTrigger(string action)       
+        {
+            if ( !DisableTriggers)
+                Trigger?.Invoke(Name, action, CallerTag);
+        }
 
         #endregion
 
-
         #region From string
-
-        static private string MakeEntry(string instr, out Entry entry, ref System.Drawing.Point lastpos)
+        static private string MakeEntry(string instr, out Entry entry, ref Point lastpos)
         {
             entry = null;
 

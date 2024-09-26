@@ -66,7 +66,7 @@ namespace ExtendedControls
         public void Recalcuate()
         {
             // find area of controls
-            System.Diagnostics.Debug.WriteLine($"PVS Recalc cur scroll {currentscroll}");
+            //System.Diagnostics.Debug.WriteLine($"PVS Recalc cur scroll {currentscroll}");
 
             int maxy = int.MinValue;
             foreach (Control c in Controls)

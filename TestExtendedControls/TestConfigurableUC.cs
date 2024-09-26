@@ -30,13 +30,11 @@ namespace TestExtendedControls
 
             for (int i = 0; i < 1400; i += 100)
             {
-                configurableUC1.Add(new ConfigurableUC.Entry("B" + i, typeof(ExtButton), i.ToString(), new Point(100, i), new Size(50, 24), "N1"));
+                configurableUC1.Entries.Add(new ConfigurableEntryList.Entry("B" + i, typeof(ExtButton), i.ToString(), new Point(100, i), new Size(50, 24), "N1"));
             }
-            configurableUC1.Init("Has caption", "UC1", null, true);
-            configurableUC1.AddEntries();
+            configurableUC1.Init("UC1", null);
             configurableUC1.Trigger += ConfigurableUC1_Trigger;
             Theme.Current.ApplyStd(this);
-//            configurableUC1.AutoScaleMode = AutoScaleMode.
             configurableUC1.Themed();
         }
 

@@ -78,20 +78,14 @@
             // 
             // configurableUC1
             // 
-            this.configurableUC1.AllowSpaceForScrollBar = true;
             this.configurableUC1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
-            this.configurableUC1.BorderMargin = 3;
-            this.configurableUC1.BottomPanelHeight = 0;
-            this.configurableUC1.DisableTriggering = false;
             this.configurableUC1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.configurableUC1.IsResizable = false;
             this.configurableUC1.Location = new System.Drawing.Point(0, 100);
             this.configurableUC1.Name = "configurableUC1";
             this.configurableUC1.PanelBorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.configurableUC1.Size = new System.Drawing.Size(792, 409);
             this.configurableUC1.SwallowReturn = false;
             this.configurableUC1.TabIndex = 3;
-            this.configurableUC1.TopPanelHeight = 0;
             // 
             // extButtonResize
             // 
