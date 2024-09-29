@@ -23,6 +23,7 @@ namespace ExtendedControls
     {
         // Image elements holds the bitmap and the location, plus its tag and tip
 
+        [System.Diagnostics.DebuggerDisplay("{Location} {Visible} {ToolTipText}")]
         public class ImageElement : IDisposable
         {
             public virtual Rectangle Location { get; set; }
