@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.extCheckBox5 = new ExtendedControls.ExtCheckBox();
             this.extCheckBox4 = new ExtendedControls.ExtCheckBox();
@@ -56,6 +57,7 @@
             this.extCheckBoxEDSMSmall = new ExtendedControls.ExtCheckBox();
             this.buttonExt1 = new ExtendedControls.ExtButton();
             this.buttonExt2 = new ExtendedControls.ExtButton();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -230,6 +232,7 @@
             this.extButton12.Size = new System.Drawing.Size(51, 23);
             this.extButton12.TabIndex = 42;
             this.extButton12.Text = "WD12";
+            this.toolTip.SetToolTip(this.extButton12, "12 point");
             this.extButton12.UseVisualStyleBackColor = false;
             this.extButton12.Click += new System.EventHandler(this.extButton12_Click);
             // 
@@ -245,6 +248,7 @@
             this.extButton2.Size = new System.Drawing.Size(51, 23);
             this.extButton2.TabIndex = 42;
             this.extButton2.Text = "T15";
+            this.toolTip.SetToolTip(this.extButton2, "15 font");
             this.extButton2.UseVisualStyleBackColor = false;
             this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
             // 
@@ -260,6 +264,7 @@
             this.extButton1.Size = new System.Drawing.Size(51, 23);
             this.extButton1.TabIndex = 42;
             this.extButton1.Text = "T8.5";
+            this.toolTip.SetToolTip(this.extButton1, "8.5 font");
             this.extButton1.UseVisualStyleBackColor = false;
             this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
@@ -562,6 +567,10 @@
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
             // 
+            // toolTip
+            // 
+            this.toolTip.ShowAlways = true;
+            // 
             // TestButtons
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -629,5 +638,6 @@
         private ExtendedControls.ExtButton extButton12;
         private ExtendedControls.ExtCheckBox extCheckBox4;
         private ExtendedControls.ExtCheckBox extCheckBox5;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }

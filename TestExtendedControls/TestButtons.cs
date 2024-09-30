@@ -28,6 +28,29 @@ namespace TestExtendedControls
             Theme.Current.WindowsFrame = true;
 
             Theme.Current.ApplyStd(this);
+
+            toolTip.Popup += ToolTip_Popup;
+        }
+
+        // demo a dynamic tooltip
+        bool ignorepopup = false;
+        private void ToolTip_Popup(object sender, PopupEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine($"Pop up {e.AssociatedControl} Cancel {ignorepopup}");
+            if ( ignorepopup == true)
+            {
+            }
+            else if ( e.AssociatedControl == extButton1)
+            {
+                //e.ToolTipSize = new Size(200, 200);
+                //toolTip.ToolTipTitle = "hello there\r\nHow are you\r\n" + DateTime.UtcNow.ToString();
+                //                toolTip.SetToolTip(extButton1, );
+
+                ignorepopup = true;
+                toolTip.SetToolTip(extButton1, DateTime.UtcNow.ToString());     // this causes a new pop up, which we ignore setting again due to setting
+                ignorepopup = false;
+            }
+            
         }
 
         protected override void OnShown(EventArgs e)
