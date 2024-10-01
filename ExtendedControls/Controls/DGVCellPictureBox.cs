@@ -20,7 +20,7 @@ namespace ExtendedControls
 {
 
     // ExtPictureBox inside a DGV Cell
-    public class DataGridViewPictureBox : DataGridViewExtImageCellBase
+    public class DataGridViewPictureBoxCell : DataGridViewExtImageCellBase
     {
         // add content then render
         // render with resizecontrol=true so it sets the picturebox size to the contents, or with false and set PictureBox size manually
@@ -28,7 +28,7 @@ namespace ExtendedControls
 
         public ContentAlignment Alignment { get; set; } = ContentAlignment.MiddleCenter;
 
-        public DataGridViewPictureBox()
+        public DataGridViewPictureBoxCell()
         {
             this.ValueType = typeof(string);
             PictureBox = new ExtPictureBox();
@@ -37,7 +37,7 @@ namespace ExtendedControls
         // clone our values as well, as recommended by https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.datagridviewimagecell?view=windowsdesktop-8.0        
         public override object Clone()
         {
-            var n = base.Clone() as DataGridViewPictureBox;
+            var n = base.Clone() as DataGridViewPictureBoxCell;
             n.Alignment = this.Alignment;
             return n;
         }
