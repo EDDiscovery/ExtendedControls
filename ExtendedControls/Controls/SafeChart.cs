@@ -80,8 +80,15 @@ namespace ExtendedControls
                 l.AutoSize = true;
                 l.Text = "<code This OS does not support charts>";
                 l.Location = new Point(10, 10);
+                l.ForeColor = Color.Red;
                 this.Controls.Add(l);
             }
+        }
+
+        public void Theme(Theme thm)
+        {
+            if (chart != null && thm != null)
+                thm.ThemeChart(thm.GetFont,chart);
         }
 
         public void SetBorder(int width, ChartDashStyle style, Color? b = null)
@@ -125,12 +132,15 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////////// Legend
 
-        public Legend AddLegend(string name, Color? textcolor =null, Color? backcolor = null, Font font = null, ElementPosition position = null,
+        public Legend AddLegend(string name, Color? textcolor =null, Color? backcolor = null, Font font = null,
+                                LegendStyle legendstyle = LegendStyle.Column,
+                                ElementPosition position = null,
+                                Docking dock = Docking.Right,       // dock only used if position = null
                                 Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
                                 Color? shadowcolor = null, int shadowoffset = 0,
                                 int textautowrap = 30, int minfontsize = 5)
         {
-            return chart?.AddLegend(name, textcolor, backcolor, font, position, bordercolor, borderdashstyle, borderwidth, shadowcolor, shadowoffset, textautowrap, minfontsize) ?? null;
+            return chart?.AddLegend(name, textcolor, backcolor, font, legendstyle, position, dock, bordercolor, borderdashstyle, borderwidth, shadowcolor, shadowoffset, textautowrap, minfontsize) ?? null;
         }
 
         public Legend SetCurrentLegend(string name)
@@ -174,8 +184,8 @@ namespace ExtendedControls
             chart?.SetChartArea3DStyle(style);
         }
 
-        public bool IsStartedFromZeroX { get { return chart?.IsStartedFromZeroX ?? false; } set { if (chart != null) chart.IsStartedFromZeroX = value; } }
-        public bool IsStartedFromZeroY { get { return chart?.IsStartedFromZeroY ?? false; } set { if (chart != null) chart.IsStartedFromZeroY = value; } }
+        public bool IsStartedFromZeroX { get { if (chart != null) return chart.IsStartedFromZeroX; else return false; } set { if (chart != null) chart.IsStartedFromZeroX = value; } }
+        public bool IsStartedFromZeroY { get { if (chart != null) return chart.IsStartedFromZeroY; else return false; } set { if (chart != null) chart.IsStartedFromZeroY = value; } }
 
         public void SetChartAreaPlotArea(ElementPosition pos)
         {
@@ -202,6 +212,11 @@ namespace ExtendedControls
             chart?.SetXAxisInterval(type, interval, im, offset, offsettype);
         }
 
+        public void SetXAxisMaxMin(double min, double max)
+        {
+            chart?.SetXAxisMaxMin(min, max);
+        }
+
         public void SetXAxisLabelColorFont(Color r, Font f = null)
         {
             chart?.SetXAxisLabelColorFont(r, f);
@@ -214,6 +229,10 @@ namespace ExtendedControls
         public void SetXAxisFormat(string format)
         {
             chart?.SetXAxisFormat(format);
+        }
+        public void SetXAxisTitle(string format, Font font = null, Color? forecolor = null, StringAlignment? alignment = null)
+        {
+            chart?.SetXAxisTitle(format, font, forecolor, alignment);
         }
         public void SetXAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
         {
@@ -284,6 +303,11 @@ namespace ExtendedControls
         {
             chart?.SetYAxisInterval(type, interval, im, offset, offsettype);
         }
+        public void SetYAxisMaxMin(double min, double max)
+        {
+            chart?.SetYAxisMaxMin(min, max);
+        }
+
         public void SetYAxisLabelColorFont(Color r, Font f = null)
         {
             chart?.SetYAxisLabelColorFont(r, f);
@@ -295,6 +319,10 @@ namespace ExtendedControls
         public void SetYAxisFormat(string format)
         {
             chart?.SetYAxisFormat(format);
+        }
+        public void SetYAxisTitle(string format, Font font = null, Color? forecolor = null, StringAlignment? alignment = null)
+        {
+            chart?.SetYAxisTitle(format, font, forecolor, alignment);
         }
 
         public void SetYAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
@@ -435,18 +463,18 @@ namespace ExtendedControls
         {
             chart?.ClearAllSeriesPoints();
         }
-        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null)
+        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null)
         {
-            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip);
+            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel);
         }
 
-        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null)
+        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null)
         {
-            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip);
+            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel);
         }
-        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null)
+        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null)
         {
-            return chart?.AddXY(x, y, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip);
+            return chart?.AddXY(x, y, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel);
         }
 
         public bool CompareYPoints(double[] values, int yentry = 0)

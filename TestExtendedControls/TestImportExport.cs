@@ -1,4 +1,5 @@
 ﻿using ExtendedControls;
+using ExtendedForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,8 +14,6 @@ namespace TestExtendedControls
 {
     public partial class TestImportExport : Form
     {
-
-        ThemeList theme;
 
         public TestImportExport()
         {

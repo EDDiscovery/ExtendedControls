@@ -11,7 +11,7 @@
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
+ *
 */
 
 using System.Drawing;
@@ -23,7 +23,7 @@ namespace ExtendedControls.Controls
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }      
+        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }      
 
         public int ImageControlMinimumHeight { get; set; } = 0;     // if zero, image control height is kept. If non zero, this is the minimum, and stretch out to available
 

@@ -43,12 +43,14 @@
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
             this.extButton11 = new ExtendedControls.ExtButton();
+            this.extButton12 = new ExtendedControls.ExtButton();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // extButtonWithNewCheckedListBox1
             // 
             this.extButtonWithNewCheckedListBox1.Image = global::TestExtendedControls.Properties.Resources.Addtab;
-            this.extButtonWithNewCheckedListBox1.Location = new System.Drawing.Point(30, 224);
+            this.extButtonWithNewCheckedListBox1.Location = new System.Drawing.Point(579, 118);
             this.extButtonWithNewCheckedListBox1.Name = "extButtonWithNewCheckedListBox1";
             this.extButtonWithNewCheckedListBox1.SettingsSplittingChar = ';';
             this.extButtonWithNewCheckedListBox1.Size = new System.Drawing.Size(42, 42);
@@ -86,91 +88,91 @@
             // 
             // extButton10
             // 
-            this.extButton10.Location = new System.Drawing.Point(30, 147);
+            this.extButton10.Location = new System.Drawing.Point(309, 205);
             this.extButton10.Name = "extButton10";
-            this.extButton10.Size = new System.Drawing.Size(75, 23);
+            this.extButton10.Size = new System.Drawing.Size(244, 23);
             this.extButton10.TabIndex = 0;
-            this.extButton10.Text = "G10";
+            this.extButton10.Text = "x400 MC SlideLeft";
             this.extButton10.UseVisualStyleBackColor = true;
             this.extButton10.Click += new System.EventHandler(this.extButton10_Click);
             // 
             // extButton9
             // 
-            this.extButton9.Location = new System.Drawing.Point(678, 118);
+            this.extButton9.Location = new System.Drawing.Point(309, 176);
             this.extButton9.Name = "extButton9";
-            this.extButton9.Size = new System.Drawing.Size(75, 23);
+            this.extButton9.Size = new System.Drawing.Size(244, 23);
             this.extButton9.TabIndex = 0;
-            this.extButton9.Text = "G9";
+            this.extButton9.Text = "x400 but group MC Font 14 SlideLeft";
             this.extButton9.UseVisualStyleBackColor = true;
             this.extButton9.Click += new System.EventHandler(this.extButton9_Click);
             // 
             // extButton8
             // 
-            this.extButton8.Location = new System.Drawing.Point(597, 118);
+            this.extButton8.Location = new System.Drawing.Point(309, 147);
             this.extButton8.Name = "extButton8";
-            this.extButton8.Size = new System.Drawing.Size(75, 23);
+            this.extButton8.Size = new System.Drawing.Size(244, 23);
             this.extButton8.TabIndex = 0;
-            this.extButton8.Text = "G8";
+            this.extButton8.Text = "x440 but group creategroup MC Hide";
             this.extButton8.UseVisualStyleBackColor = true;
             this.extButton8.Click += new System.EventHandler(this.extButton8_Click);
             // 
             // extButton7
             // 
-            this.extButton7.Location = new System.Drawing.Point(516, 118);
+            this.extButton7.Location = new System.Drawing.Point(309, 118);
             this.extButton7.Name = "extButton7";
-            this.extButton7.Size = new System.Drawing.Size(75, 23);
+            this.extButton7.Size = new System.Drawing.Size(244, 23);
             this.extButton7.TabIndex = 0;
-            this.extButton7.Text = "G7";
+            this.extButton7.Text = "x400 but group MC Persist Font16";
             this.extButton7.UseVisualStyleBackColor = true;
             this.extButton7.Click += new System.EventHandler(this.extButton7_Click);
             // 
             // extButton6
             // 
-            this.extButton6.Location = new System.Drawing.Point(435, 118);
+            this.extButton6.Location = new System.Drawing.Point(30, 263);
             this.extButton6.Name = "extButton6";
-            this.extButton6.Size = new System.Drawing.Size(75, 23);
+            this.extButton6.Size = new System.Drawing.Size(244, 23);
             this.extButton6.TabIndex = 0;
-            this.extButton6.Text = "G6";
+            this.extButton6.Text = "x1000 group MC Persist";
             this.extButton6.UseVisualStyleBackColor = true;
             this.extButton6.Click += new System.EventHandler(this.extButton6_Click);
             // 
             // extButton5
             // 
-            this.extButton5.Location = new System.Drawing.Point(354, 118);
+            this.extButton5.Location = new System.Drawing.Point(30, 234);
             this.extButton5.Name = "extButton5";
-            this.extButton5.Size = new System.Drawing.Size(75, 23);
+            this.extButton5.Size = new System.Drawing.Size(244, 23);
             this.extButton5.TabIndex = 0;
-            this.extButton5.Text = "G5";
+            this.extButton5.Text = "x400 but group MC Persist Windows";
             this.extButton5.UseVisualStyleBackColor = true;
             this.extButton5.Click += new System.EventHandler(this.extButton5_Click);
             // 
             // extButton4
             // 
-            this.extButton4.Location = new System.Drawing.Point(273, 118);
+            this.extButton4.Location = new System.Drawing.Point(30, 205);
             this.extButton4.Name = "extButton4";
-            this.extButton4.Size = new System.Drawing.Size(75, 23);
+            this.extButton4.Size = new System.Drawing.Size(244, 23);
             this.extButton4.TabIndex = 0;
-            this.extButton4.Text = "G4";
+            this.extButton4.Text = "x600 MC group";
             this.extButton4.UseVisualStyleBackColor = true;
             this.extButton4.Click += new System.EventHandler(this.extButton4_Click);
             // 
             // extButton3
             // 
-            this.extButton3.Location = new System.Drawing.Point(192, 118);
+            this.extButton3.Location = new System.Drawing.Point(30, 176);
             this.extButton3.Name = "extButton3";
-            this.extButton3.Size = new System.Drawing.Size(75, 23);
+            this.extButton3.Size = new System.Drawing.Size(244, 23);
             this.extButton3.TabIndex = 0;
-            this.extButton3.Text = "G3";
+            this.extButton3.Text = "x400 but group MC";
             this.extButton3.UseVisualStyleBackColor = true;
             this.extButton3.Click += new System.EventHandler(this.extButton3_Click);
             // 
             // extButton2
             // 
-            this.extButton2.Location = new System.Drawing.Point(111, 118);
+            this.extButton2.Location = new System.Drawing.Point(30, 147);
             this.extButton2.Name = "extButton2";
-            this.extButton2.Size = new System.Drawing.Size(75, 23);
+            this.extButton2.Size = new System.Drawing.Size(244, 23);
             this.extButton2.TabIndex = 0;
-            this.extButton2.Text = "G2";
+            this.extButton2.Text = "x200 MC Close";
             this.extButton2.UseVisualStyleBackColor = true;
             this.extButton2.Click += new System.EventHandler(this.extButton2_Click);
             // 
@@ -178,29 +180,51 @@
             // 
             this.extButton1.Location = new System.Drawing.Point(30, 118);
             this.extButton1.Name = "extButton1";
-            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.Size = new System.Drawing.Size(244, 23);
             this.extButton1.TabIndex = 0;
-            this.extButton1.Text = "G1";
+            this.extButton1.Text = "x200 hide close";
             this.extButton1.UseVisualStyleBackColor = true;
             this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
             // extButton11
             // 
-            this.extButton11.Location = new System.Drawing.Point(111, 147);
+            this.extButton11.Location = new System.Drawing.Point(309, 234);
             this.extButton11.Name = "extButton11";
-            this.extButton11.Size = new System.Drawing.Size(75, 23);
+            this.extButton11.Size = new System.Drawing.Size(244, 23);
             this.extButton11.TabIndex = 0;
-            this.extButton11.Text = "G11";
+            this.extButton11.Text = "x400 MC Slideleft Up\r\n";
             this.extButton11.UseVisualStyleBackColor = true;
             this.extButton11.Click += new System.EventHandler(this.extButton11_Click);
+            // 
+            // extButton12
+            // 
+            this.extButton12.Location = new System.Drawing.Point(309, 263);
+            this.extButton12.Name = "extButton12";
+            this.extButton12.Size = new System.Drawing.Size(244, 23);
+            this.extButton12.TabIndex = 0;
+            this.extButton12.Text = "Subform";
+            this.extButton12.UseVisualStyleBackColor = true;
+            this.extButton12.Click += new System.EventHandler(this.extButton12_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(627, 128);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(126, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Ext Button with check list";
             // 
             // TestCheckedIconNewListBoxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(940, 509);
+            this.BackColor = System.Drawing.Color.AntiqueWhite;
+            this.ClientSize = new System.Drawing.Size(940, 335);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.extButtonWithNewCheckedListBox1);
             this.Controls.Add(this.extRichTextBox);
+            this.Controls.Add(this.extButton12);
             this.Controls.Add(this.extButton11);
             this.Controls.Add(this.extButton10);
             this.Controls.Add(this.extButton9);
@@ -215,6 +239,7 @@
             this.Name = "TestCheckedIconNewListBoxForm";
             this.Text = "TestCheckedIconPictureForm";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -233,5 +258,7 @@
         private ExtendedControls.ExtButtonWithNewCheckedListBox extButtonWithNewCheckedListBox1;
         private ExtendedControls.ExtButton extButton10;
         private ExtendedControls.ExtButton extButton11;
+        private ExtendedControls.ExtButton extButton12;
+        private System.Windows.Forms.Label label1;
     }
 }

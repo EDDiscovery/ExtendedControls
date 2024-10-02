@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright 2016-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -21,12 +19,13 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtPanelDataGridViewScroll : Panel      // Must have a DGV and a VScroll added as children by the framework
+    // Must have a DGV and a VScroll added as children by the framework
+    public class ExtPanelDataGridViewScroll : Panel      
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
 
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }       // if internal
+        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }       // if internal
 
         public void UpdateScroll()      // call if hide/unhide cells - no call back for this
         {
@@ -34,9 +33,10 @@ namespace ExtendedControls
             outlining?.UpdateOutlines();
         }
 
-        public void Suspend()                           // use these for quicker adding in of rows to table
+        // use this for quicker adding in of rows to table
+        public void Suspend()                           
         {
-            dgv.RowsAdded -= DGVRowsAdded;              // need to keep row removed in case outlining range goes out
+            dgv.RowsAdded -= DGVRowsAdded;              
             dgv.RowStateChanged -= DGVRowStateChanged;
             dgv.RowsRemoved -= DGVRowsRemoved;
             dgv.RowHeightChanged -= Dgv_RowHeightChanged;
@@ -54,7 +54,8 @@ namespace ExtendedControls
             dgv.RowHeightChanged += Dgv_RowHeightChanged;
         }
 
-        public void ChangeVisibility(int startrow, int endrow, bool state)       // this efficiently changes the visibility and stops repeated scroll updates
+        // this efficiently changes the visibility and stops repeated scroll updates
+        public void ChangeVisibility(int startrow, int endrow, bool state)       
         {
             if (dgv != null)
             {
@@ -73,7 +74,8 @@ namespace ExtendedControls
             }
         }
 
-        // on areas identify bits to be on.  its sorted. startrow-endrow identify the whole range - areas outside onareas are off.
+        // given a start/end range which can be on, and a set on areas we want to be visible within that range (which must be sorted), set visibility.
+        // startrow-endrow identify the whole range - areas outside onareas are off.
         public void ChangeVisibility(int startrow, int endrow, BaseUtils.IntRangeList onareas)
         {
             if (dgv != null)
@@ -112,7 +114,8 @@ namespace ExtendedControls
             }
         }
 
-        public void ApplyOutlining()        // outlining areas have been made, with visibility.. apply.  Presume all is visible, so only do invisible bits
+        // outlining areas have been made, with visibility.. apply.  Presume all is visible, so only do invisible bits
+        public void ApplyOutlining()        
         {
             if ( outlining != null )
             {
@@ -139,6 +142,14 @@ namespace ExtendedControls
             }
         }
 
+        // swap out a DGV and replace with a new DGV
+        public void SwapDGV(DataGridView newdgv)
+        {
+            if (dgv != null)
+                RemoveDGV();
+            AddDGV(newdgv, true);
+        }
+
         #region Implementation
         public ExtPanelDataGridViewScroll() : base()
         {
@@ -148,15 +159,7 @@ namespace ExtendedControls
         {  // as controls are added, remember them in local variables.
             if (e.Control is DataGridView)
             {
-                dgv = e.Control as DataGridView;
-                dgv.Scroll += DGVScrolled;                                                      // we hook this in case user uses keys to scroll
-                dgv.RowsAdded += DGVRowsAdded;
-                dgv.RowsRemoved += DGVRowsRemoved;
-                dgv.RowStateChanged += DGVRowStateChanged;
-                dgv.RowHeightChanged += Dgv_RowHeightChanged;
-                dgv.MouseWheel += Wheel;
-
-                outlining?.SetDGV(dgv);    // tell outlining
+                AddDGV(e.Control,false);
             }
             else if (e.Control is ExtScrollBar)
             {
@@ -172,6 +175,34 @@ namespace ExtendedControls
             }
             else
                 Debug.Assert(true, "Data view Scroller Panel requires DataGridView and VScrollBarCustom to be added, optionally outlining");
+        }
+
+
+        private void AddDGV(Control e, bool add)
+        {
+            dgv = e as DataGridView;
+            if (add)
+                Controls.Add(dgv);
+            dgv.Scroll += DGVScrolled;                                                      // we hook this in case user uses keys to scroll
+            dgv.RowsAdded += DGVRowsAdded;
+            dgv.RowsRemoved += DGVRowsRemoved;
+            dgv.RowStateChanged += DGVRowStateChanged;
+            dgv.RowHeightChanged += Dgv_RowHeightChanged;
+            dgv.MouseWheel += Wheel;
+            outlining?.SetDGV(dgv);    // tell outlining
+            outlining?.Clear();
+        }
+        private void RemoveDGV()
+        {
+            Controls.Remove(dgv);
+            dgv.Scroll -= DGVScrolled;                                                      // we hook this in case user uses keys to scroll
+            dgv.RowsAdded -= DGVRowsAdded;
+            dgv.RowsRemoved -= DGVRowsRemoved;
+            dgv.RowStateChanged -= DGVRowStateChanged;
+            dgv.RowHeightChanged -= Dgv_RowHeightChanged;
+            dgv.MouseWheel -= Wheel;
+            if (vsc != null)
+                vsc.Value = 0;
         }
 
         protected override void OnLayout(LayoutEventArgs levent)

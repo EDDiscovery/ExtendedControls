@@ -150,25 +150,35 @@ namespace ExtendedControls
         // add legend to chart. Each legend seems to represent the series in order. 
         // the legend will be themed if textcolor is set to RequestTheme (default if textcolor=null)
         // the border/shadow can be disabled even if the theme wants it by setting border/shadow color to Disable
-        public Legend AddLegend(string name, Color? textcolor = null, Color? backcolor = null, Font font = null, ElementPosition position = null,
+        // 
+        public Legend AddLegend(string name, Color? textcolor = null, Color? backcolor = null, Font font = null, 
+                                LegendStyle legendstyle = LegendStyle.Column,
+                                ElementPosition position = null,    
+                                Docking dock = Docking.Right,       // dock only used if position = null
                                 Color? bordercolor = null, ChartDashStyle borderdashstyle = ChartDashStyle.Solid, int borderwidth = 1,
                                 Color? shadowcolor = null, int shadowoffset = 0,
                                 int textautowrap = 30, int minfontsize = 5)
         {
             CurrentLegend = Legends.Add(name);
+            
+            CurrentLegend.LegendStyle = legendstyle;
             CurrentLegend.ForeColor = textcolor ?? RequestTheme;
             if (font != null)
                 CurrentLegend.Font = font;
             if (backcolor != null)
                 CurrentLegend.BackColor = backcolor.Value;
+
             if (position != null)
                 CurrentLegend.Position = position;
+            else
+                CurrentLegend.Docking = dock;
+
             if (bordercolor.HasValue)
-            {
                 CurrentLegend.BorderColor = bordercolor.Value;
-                CurrentLegend.BorderDashStyle = borderdashstyle;
-                CurrentLegend.BorderWidth = borderwidth;
-            }
+
+            CurrentLegend.BorderDashStyle = borderdashstyle;
+            CurrentLegend.BorderWidth = borderwidth;
+
             if (shadowcolor.HasValue)
             {
                 CurrentLegend.ShadowColor = shadowcolor.Value;
@@ -309,7 +319,14 @@ namespace ExtendedControls
             CurrentChartArea.AxisX.IntervalOffsetType = offsettype;
         }
 
-        public bool IsStartedFromZeroX { get { return CurrentChartArea.AxisX.IsStartedFromZero; } set { CurrentChartArea.AxisX.IsStartedFromZero = value; } }
+        // configure CurrentChartArea X axis type, its interval, its variable/fixed mode - affects where labels are placed on x axis
+        public void SetXAxisMaxMin(double min, double max)
+        {
+            CurrentChartArea.AxisX.Minimum = min;
+            CurrentChartArea.AxisX.Maximum = max;
+        }
+
+        public bool IsStartedFromZeroX { get { return CurrentChartArea?.AxisX.IsStartedFromZero ?? false; } set { if ( CurrentChartArea != null ) CurrentChartArea.AxisX.IsStartedFromZero = value; } }
 
         // Color and Font on the X axis labels
         public void SetXAxisLabelColorFont(Color color, Font font = null)
@@ -325,6 +342,18 @@ namespace ExtendedControls
             CurrentChartArea.AxisX.LabelStyle.Format = format;
         }
 
+        // set axis title info
+        public void SetXAxisTitle(string format, Font font = null, Color? forecolor = null, StringAlignment? alignment = null)
+        {
+            CurrentChartArea.AxisX.Title = format;
+            if (font != null)
+                CurrentChartArea.AxisX.TitleFont = font;
+            if (forecolor != null)
+                CurrentChartArea.AxisX.TitleForeColor = forecolor.Value;
+            if (alignment != null)
+                CurrentChartArea.AxisX.TitleAlignment = alignment.Value;
+        }
+
         // configure CurrentChartArea Major grid intervals
         public void SetXAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
         {
@@ -333,6 +362,7 @@ namespace ExtendedControls
             CurrentChartArea.AxisX.MajorGrid.IntervalOffset = offsetinterval;
             CurrentChartArea.AxisX.MajorGrid.IntervalOffsetType = offsetintervaltype;
         }
+
 
         // configure CurrentChartArea Minor grid intervals
         public void SetXAxisMinorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
@@ -438,7 +468,7 @@ namespace ExtendedControls
             AutoZoomY(CurrentChartArea);
         }
 
-        public bool IsZoomedX { get { return CurrentChartArea.AxisX.ScaleView.IsZoomed; } }
+        public bool IsZoomedX { get { return CurrentChartArea?.AxisX.ScaleView.IsZoomed ??false; } }
 
         //////////////////////////////////////////////////////////////////////////// Y
 
@@ -451,7 +481,15 @@ namespace ExtendedControls
             CurrentChartArea.AxisY.IntervalOffset = offset;
             CurrentChartArea.AxisY.IntervalOffsetType = offsettype;
         }
-        public bool IsStartedFromZeroY { get { return CurrentChartArea.AxisY.IsStartedFromZero; } set { CurrentChartArea.AxisY.IsStartedFromZero = value; } }
+
+        // configure CurrentChartArea X axis type, its interval, its variable/fixed mode - affects where labels are placed on x axis
+        public void SetYAxisMaxMin(double min, double max)
+        {
+            CurrentChartArea.AxisY.Minimum = min;
+            CurrentChartArea.AxisY.Maximum = max;
+        }
+
+        public bool IsStartedFromZeroY { get { return CurrentChartArea?.AxisY.IsStartedFromZero ?? false; } set { if ( CurrentChartArea != null) CurrentChartArea.AxisY.IsStartedFromZero = value; } }
 
         public void SetYAxisLabelColorFont(Color color, Font font = null)
         {
@@ -463,6 +501,18 @@ namespace ExtendedControls
         public void SetYAxisFormat(string format)
         {
             CurrentChartArea.AxisY.LabelStyle.Format = format;
+        }
+
+        // set axis title info
+        public void SetYAxisTitle(string format, Font font = null, Color? forecolor = null, StringAlignment? alignment = null)
+        {
+            CurrentChartArea.AxisY.Title = format;
+            if (font != null)
+                CurrentChartArea.AxisY.TitleFont = font;
+            if (forecolor != null)
+                CurrentChartArea.AxisY.TitleForeColor = forecolor.Value;
+            if (alignment != null)
+                CurrentChartArea.AxisY.TitleAlignment = alignment.Value;
         }
 
         public void SetYAxisMajorGridInterval(double interval, DateTimeIntervalType type = DateTimeIntervalType.Auto, double offsetinterval = 0, DateTimeIntervalType offsetintervaltype = DateTimeIntervalType.Auto)
@@ -553,7 +603,7 @@ namespace ExtendedControls
             CurrentChartArea.AxisY.ScaleView.Zoom(min, max);
         }
 
-        public bool IsZoomedY { get { return CurrentChartArea.AxisY.ScaleView.IsZoomed; } }
+        public bool IsZoomedY { get { return CurrentChartArea?.AxisY.ScaleView.IsZoomed ?? false; } }
 
         // Turn on/off Y Auto scale, which adjusted Y scale when X is zoomed in
         public void YAutoScale(bool on = true, bool enableyscrollbar = true)
@@ -696,7 +746,7 @@ namespace ExtendedControls
 
         // Add point to CurrentSeries
         public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
-                                    string graphtooltip = null, string legendtooltip = null)
+                                    string graphtooltip = null, string legendtooltip = null, string axislabel = null)
         {
             CurrentSeries.Points.Add(d);
             CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
@@ -710,12 +760,14 @@ namespace ExtendedControls
                 CurrentDataPoint.ToolTip = graphtooltip;
             if (legendtooltip != null)
                 CurrentDataPoint.LegendToolTip = legendtooltip;
+            if (axislabel != null)
+                CurrentDataPoint.AxisLabel = axislabel;
             CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return CurrentDataPoint;
         }
         // Add point to CurrentSeries
         public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
-                                    string graphtooltip = null, string legendtooltip = null)
+                                    string graphtooltip = null, string legendtooltip = null, string axislabel = null)
         {
             CurrentSeries.Points.Add(d);
             CurrentDataPoint = d;
@@ -729,6 +781,8 @@ namespace ExtendedControls
                 CurrentDataPoint.ToolTip = graphtooltip;
             if (legendtooltip != null)
                 CurrentDataPoint.LegendToolTip = legendtooltip;
+            if (axislabel != null)
+                CurrentDataPoint.AxisLabel = axislabel;
             CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return d;
         }
@@ -736,7 +790,7 @@ namespace ExtendedControls
         // Add xy point to CurrentSeries
         // for dates, the chart uses the day count as the X enumerator.
         public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
-                                string graphtooltip = null, string legendtooltip = null)
+                                string graphtooltip = null, string legendtooltip = null, string axislabel = null)
         {
             CurrentSeries.Points.AddXY(x, y);
             CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
@@ -750,6 +804,8 @@ namespace ExtendedControls
                 CurrentDataPoint.ToolTip = graphtooltip;
             if (legendtooltip != null)
                 CurrentDataPoint.LegendToolTip = legendtooltip;
+            if (axislabel != null)
+                CurrentDataPoint.AxisLabel = axislabel;
             CurrentDataPoint.IsValueShownAsLabel = showvalue;
             return CurrentDataPoint;
         }

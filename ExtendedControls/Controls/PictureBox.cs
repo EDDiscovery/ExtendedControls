@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2020 EDDiscovery development team
+ * Copyright © 2016-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,12 +10,12 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -27,7 +27,11 @@ namespace ExtendedControls
         public event OnElement LeaveElement;
         public event OnElement ClickElement;
 
-        public Color FillColor = Color.Transparent;         // fill the bitmap with this colour before pasting the bitmaps in
+        public Action<ExtPictureBox> ImageChanged;              // call back on Rendered and Image change - does not appear that PictureBox has a native version
+
+        public Color FillColor { get; set; } = Color.Transparent;         // fill the bitmap with this colour before pasting the bitmaps in
+
+        public bool FreezeTracking { get; set; } = false;        // when set, all mouse movement tracking is turned off
 
         public List<ImageElement> Elements { get; private set; } = new List<ImageElement>();
 
@@ -159,10 +163,12 @@ namespace ExtendedControls
             return new Size(maxw, maxh);
         }
 
-        // taking image elements, draw to main bitmap, with minimum size of image, and margin
+        // taking image elements, and minimum size/margin, create a new bitmap
+        // null if no elements
         public Bitmap RenderBitmap(Size? minsize = null, Size? margin = null)
         {
             Size size = DisplaySize();
+
             if (size.Width > 0 && size.Height > 0) // will be zero if no elements
             {
                 elementin = null;
@@ -179,36 +185,8 @@ namespace ExtendedControls
                     size.Height += margin.Value.Height;
                 }
 
-                //System.Diagnostics.Debug.WriteLine($"Picture box draw {size}");
 
-                Bitmap newrender = new Bitmap(size.Width, size.Height);   // size bitmap to contents
-
-                if (!FillColor.IsFullyTransparent())
-                {
-                    BaseUtils.BitMapHelpers.FillBitmap(newrender, FillColor);
-                }
-
-                using (Graphics gr = Graphics.FromImage(newrender))
-                {
-                    foreach (ImageElement i in Elements)
-                    {
-                        if (i.Visible)
-                        {
-                            if (i.Image != null)
-                            {
-                               // System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location}");
-                                gr.DrawImage(i.Image, i.Location);
-                            }
-                            else
-                            {
-                             //   System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location} no image");
-                            }
-
-                            i.OwnerDrawCallback?.Invoke(gr, i);
-                        }
-                    }
-                }
-
+                Bitmap newrender = PaintBitmap(size);
                 return newrender;
             }
             else
@@ -218,13 +196,16 @@ namespace ExtendedControls
         // taking image elements, draw to main bitmap. set if resize control, and if we have a min size of bitmap, or a margin
         public void Render(bool resizecontrol = true, Size? minsize = null, Size? margin = null)
         {
+            // render all elements, images or self drawn, into the bitmap
+
             Bitmap newrender = RenderBitmap(minsize, margin);
 
             if ( newrender != null )
-            { 
+            {
                 Image lastimage = Image;
 
                 Image = newrender;      // and replace the image in one go, to try and minimise distortion
+                ImageChanged?.Invoke(this);     // and indicate image has changed
 
                 if (resizecontrol)
                     this.Size = new Size(newrender.Width, newrender.Height);
@@ -235,6 +216,7 @@ namespace ExtendedControls
             {
                 Image?.Dispose();
                 Image = null;       // nothing, null image
+                ImageChanged?.Invoke(this);     // and indicate image has changed
             }
         }
 
@@ -243,7 +225,7 @@ namespace ExtendedControls
             if (Image == null)      // not rendered yet
                 return;
 
-            SortedList<int,ImageElement> indexes = new SortedList<int,ImageElement>();
+            SortedList<int, ImageElement> indexes = new SortedList<int, ImageElement>();
 
             for (int ix = 0; ix < Elements.Count;)
             {
@@ -252,7 +234,7 @@ namespace ExtendedControls
                 // if not tried before, and overlays
                 if (!indexes.ContainsKey(ix) && i.Visible && i.Location.IntersectsWith(area))
                 {
-                   // System.Diagnostics.Debug.WriteLine($"ReDraw {i.Location}");
+                    // System.Diagnostics.Debug.WriteLine($"ReDraw {i.Location}");
                     indexes.Add(ix, i);
                     area.Intersect(i.Location);         // increase area
                     ix = 0;
@@ -261,19 +243,22 @@ namespace ExtendedControls
                     ix++;
             }
 
-            using (Graphics gr = Graphics.FromImage(Image))
+            if (indexes.Count > 0)  // if anything to do..
             {
-                foreach (var kvp in indexes)        // in order, since its a sorted list
+                using (Graphics gr = Graphics.FromImage(Image))
                 {
-                    if (kvp.Value.Image != null)
+                    foreach (var kvp in indexes)        // in order, since its a sorted list
                     {
-                        gr.DrawImage(kvp.Value.Image, kvp.Value.Location);
-                    }
+                        if (kvp.Value.Image != null)    // if we have an image, repaint it
+                        {
+                            PaintElement(gr, kvp.Value);
+                        }
 
-                    kvp.Value.OwnerDrawCallback?.Invoke(gr, kvp.Value);
+                        kvp.Value.OwnerDrawCallback?.Invoke(gr, kvp.Value);
+                    }
                 }
-                if (indexes.Count > 0)
-                    Invalidate();
+
+                Invalidate();
             }
         }
 
@@ -312,6 +297,64 @@ namespace ExtendedControls
 
         #endregion
 
+        #region Painting
+
+        // paint an element, thru its ownerdraw and if it has an Image, painting it (taking into account Enabled/ShowDisabled)
+        private void PaintElement(Graphics gr, ImageElement i)
+        {
+            if (i.Visible)
+            {
+                if (i.Image != null)
+                {
+                    if (!i.Enabled || i.ShowDisabled)       // if show with disabled scaling
+                    {
+                        ColorMatrix alphaMatrix = new ColorMatrix();
+                        alphaMatrix.Matrix00 = alphaMatrix.Matrix11 = alphaMatrix.Matrix22 = alphaMatrix.Matrix44 = 1;
+                        alphaMatrix.Matrix33 = i.DisabledScaling;
+
+                        using (ImageAttributes alphaAttributes = new ImageAttributes())
+                        {
+                            alphaAttributes.SetColorMatrix(alphaMatrix);
+                            gr.DrawImage(i.Image, new Rectangle(i.Location.X, i.Location.Y, i.Size.Width, i.Size.Height), 0, 0, i.Size.Width, i.Size.Height, GraphicsUnit.Pixel, alphaAttributes);
+                        }
+                    }
+                    else
+                    {
+                        // System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location}");
+                        gr.DrawImage(i.Image, i.Location);
+                    }
+                }
+                else
+                {
+                    //   System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location} no image");
+                }
+
+                i.OwnerDrawCallback?.Invoke(gr, i);
+            }
+        }
+
+        // into a new Bitmap, paint the whole scene
+        private Bitmap PaintBitmap(Size size)
+        {
+            //System.Diagnostics.Debug.WriteLine($"Picture box draw {size}");
+            Bitmap newrender = new Bitmap(size.Width, size.Height);
+
+            if (!FillColor.IsFullyTransparent())
+            {
+                BaseUtils.BitMapHelpers.FillBitmap(newrender, FillColor);
+            }
+
+            using (Graphics gr = Graphics.FromImage(newrender))
+            {
+                foreach (ImageElement i in Elements)
+                    PaintElement(gr,i);
+            }
+
+            return newrender;
+        }
+
+        #endregion
+
         #region Dispose
         protected override void Dispose(bool disposing)
         {
@@ -335,6 +378,9 @@ namespace ExtendedControls
         protected override void OnMouseMove(MouseEventArgs eventargs)
         {
             base.OnMouseMove(eventargs);
+
+            if (FreezeTracking)
+                return;
 
             if (elementin != null && !elementin.Location.Contains(eventargs.Location))       // go out..
             {
@@ -452,6 +498,7 @@ namespace ExtendedControls
         private Timer hovertimer = new Timer();
         private ToolTip hovertip = null;
         private Point hoverpos;
+
     }
 }
 

@@ -51,7 +51,7 @@
             this.checkedIconPictureBoxUserControl1.LargeChange = 509;
             this.checkedIconPictureBoxUserControl1.Location = new System.Drawing.Point(0, 0);
             this.checkedIconPictureBoxUserControl1.MouseOverButtonColor = System.Drawing.Color.Green;
-            this.checkedIconPictureBoxUserControl1.MouseOverColor = System.Drawing.Color.CornflowerBlue;
+            this.checkedIconPictureBoxUserControl1.MouseOverCheckboxColor = System.Drawing.Color.CornflowerBlue;
             this.checkedIconPictureBoxUserControl1.MousePressedButtonColor = System.Drawing.Color.Red;
             this.checkedIconPictureBoxUserControl1.MultipleColumns = false;
             this.checkedIconPictureBoxUserControl1.Name = "checkedIconPictureBoxUserControl1";

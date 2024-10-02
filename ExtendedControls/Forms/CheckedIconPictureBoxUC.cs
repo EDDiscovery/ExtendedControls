@@ -27,6 +27,7 @@ namespace ExtendedControls
         public bool MultipleColumns { get; set; } = false;        // allow multiple columns
         public bool MultiColumnSlide { get { return MultipleColumns; } set { MultipleColumns = SlideUp = SlideLeft = value; } } // multicolumn with slide
         public Size ScreenMargin { get; set; } = new Size(16, 16);
+        public bool ShowClose { get { return closeicon.Visible; } set { closeicon.Visible = value; Invalidate(); } }        // show or hide (default) close icon above scroll bar
 
         // Holds the item list, and various accessors to it
         public List<Item> ItemList { get; private set; }
@@ -45,14 +46,15 @@ namespace ExtendedControls
         public Color CheckBoxColor { get; set; } = Color.Gray;
         public Color CheckBoxInnerColor { get; set; } = Color.White;
         public Color CheckColor { get; set; } = Color.DarkBlue;
-        public Color MouseOverColor { get; set; } = Color.CornflowerBlue;
+        public Color MouseOverCheckboxColor { get; set; } = Color.CornflowerBlue;
+        public Color MouseOverLabelColor { get; set; } = Color.CornflowerBlue;
         public Size CheckBoxSize { get; set; } = Size.Empty;                  // if not set, ImageSize sets the size, or first image, else 24/24
         public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
         public Size ImageSize { get; set; } = Size.Empty;                     // if not set, each image sets its size. 
         public int VerticalSpacing { get; set; } = 3;           // padding..
         public int HorizontalSpacing { get; set; } = 3;
 
-        // Colours for Scroll bar
+        // Colours and controls for Scroll bar
         public Color BorderColor { get { return sb.BorderColor; } set { sb.BorderColor = value; } }
         public Color SliderColor { get { return sb.SliderColor; } set { sb.SliderColor = value; } }
         public Color ArrowButtonColor { get { return sb.ArrowButtonColor; } set { sb.ArrowButtonColor = value; } }
@@ -68,10 +70,16 @@ namespace ExtendedControls
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
+        // Subform, null if not active
+        public CheckedIconNewListBoxForm Subform { get; private set; } = null;
+
         // check box changed : index, Tag, Text, userTag, change args
         public Action<int, string, string, object, ItemCheckEventArgs> CheckedChanged { get; set; }       // check box changed
         // index, Tag, Text, UserTag, button args
         public Action<int,string,string,object,MouseEventArgs> ButtonPressed { get; set; }
+
+        // On close icon click, callback
+        public Action<CheckedIconUserControl> CloseClicked { get; set; }
 
         // what char is used for split settings
         public char SettingsSplittingChar { get; set; } = ';';      
@@ -102,12 +110,16 @@ namespace ExtendedControls
             public ExtPictureBox.Label label;
             public ExtPictureBox.CheckBox checkbox;
             public ExtPictureBox.ImageElement icon;
+            public ExtPictureBox.ImageElement submenuicon;
 
             public Item() { }
             public Item(string tag, string text, Image img = null, string exclusive = null, bool disableuncheck = false, bool button = false, object usertag = null)
             {
                 Tag = tag; Text = text; Image = img; Exclusive = exclusive; DisableUncheck = disableuncheck; Button = button;  UserTag = usertag;
             }
+
+            public bool IsSubmenu { get { return UserTag != null && UserTag is SubForm; } }
+            public SubForm GetSubForm { get { return UserTag as SubForm; } }
         }
 
         // the main add
@@ -118,7 +130,7 @@ namespace ExtendedControls
             cl.label = new ExtPictureBox.Label();
             cl.label.Click += (sender, el, e) =>
             {
-                if (cl.label.Enabled)       // will get clicks even if disabled
+                if (cl.label.Enabled)       // only if enabled
                 {
                     if (cl.checkbox != null && e.Button == MouseButtons.Left)
                     {
@@ -126,21 +138,27 @@ namespace ExtendedControls
                         picturebox.Refresh(cl.checkbox.Location);
                     }
                     else
+                    {
                         ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                    }
                 }
             };
             if (!cl.Button)
             {
                 cl.checkbox = new ExtPictureBox.CheckBox();
                 cl.checkbox.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
-                cl.checkbox.MouseDown += (s, el, e) => { if (e.Button == MouseButtons.Right) ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e); };
+                cl.checkbox.MouseDown += (s, el, e) => 
+                { 
+                    if (e.Button == MouseButtons.Right && cl.checkbox.Enabled) 
+                        ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e); 
+                };
             }
             if (img != null)
             {
                 cl.icon = new ExtPictureBox.ImageElement();
                 cl.icon.Click += (sender, el, e) =>
                 {
-                    if (cl.label.Enabled)       // will get clicks even if disabled, use label to tell
+                    if (cl.icon.Enabled)    
                     {
                         if (cl.checkbox != null && e.Button == MouseButtons.Left)
                         {
@@ -148,9 +166,15 @@ namespace ExtendedControls
                             picturebox.Refresh(cl.checkbox.Location);
                         }
                         else
+                        {
                             ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                        }
                     }
                 };
+            }
+            if ( cl.IsSubmenu && cl.GetSubForm.SubmenuIcon != NoSubMenuIcon)        // if submenu, and icon set is null (default) and not NoSubMenuIcon
+            {
+                cl.submenuicon = new ExtPictureBox.ImageElement();                  // add
             }
 
             if (group)
@@ -290,9 +314,26 @@ namespace ExtendedControls
 
         public void Enable(int index, bool enable)
         {
-            if (ItemList[index].checkbox!=null)
-                ItemList[index].checkbox.Enabled = enable;
-            ItemList[index].label.Enabled = enable;
+            Item i = ItemList[index];
+            if (i.checkbox != null)
+                i.checkbox.Enabled = enable;
+            if (i.icon != null)
+                i.icon.Enabled = enable;
+            if (i.submenuicon != null)
+                i.submenuicon.Enabled = enable;
+            i.label.Enabled = enable;
+        }
+
+        public void ShowDisabled(int index, bool showdisabled)
+        {
+            Item i = ItemList[index];
+            if (i.checkbox != null)
+                i.checkbox.ShowDisabled = showdisabled;
+            if (i.icon != null)
+                i.icon.ShowDisabled = showdisabled;
+            if (i.submenuicon != null)
+                i.submenuicon.ShowDisabled = showdisabled;
+            i.label.ShowDisabled = showdisabled;
         }
 
         public bool Enable(string tag, bool enable)
@@ -300,6 +341,13 @@ namespace ExtendedControls
             int index = ItemList.FindIndex(x => x.Tag == tag);
             if (index >= 0)
                 Enable(index, enable);
+            return index >= 0;
+        }
+        public bool ShowDisabled(string tag, bool showdisabled)
+        {
+            int index = ItemList.FindIndex(x => x.Tag == tag);
+            if (index >= 0)
+                ShowDisabled(index, showdisabled);
             return index >= 0;
         }
         public int EnableByUserTags(object usertag, bool enable)
@@ -460,16 +508,130 @@ namespace ExtendedControls
             return ret;
         }
 
+        // Class to define a subform of items and a holder for settings
+        public class SubForm
+        {
+            public List<Item> Items { get; set; } = new List<Item>();
+            public string Setting { get; set; } = "";
+            public Size? ClosedBoundaryRegion { get; set; } = null;     // set to override inheriting parent size
+            public bool? AllOrNoneBack { get; set; } = null;            // set to override inheriting parent size
+            public Point OffsetPosition { get; set; } = new Point(16, 0);
+            public Image SubmenuIcon { get; set; } = null;              // icon used to indicate submenu. If null, use the built in.  If NoSubMenuIcon (see below) then none is printed
+        }
+
+        static public Image NoSubMenuIcon = new Bitmap(1, 1);
+
+        // open a submenu on item cl.  Closes any existing one. Prevents double open
+        // subform Tag holds cl
+        public void OpenSubMenu(Item cl)
+        {
+            if ( Subform != null && Subform.Tag == cl)      // prevent double open
+            {
+                //System.Diagnostics.Debug.WriteLine($"Subform already open {cl.Text}");
+                return;
+            }
+
+            var cinlbf = cl.label.Parent?.Parent?.Parent?.Parent as CheckedIconNewListBoxForm;      // parent form, may be null if not embedded in this
+            SubForm sf = cl.GetSubForm;     // this is the info class
+
+            //System.Diagnostics.Debug.WriteLine($"\r\nRequest OpenSubMenu for {cl.Text} {cl.Tag} set {sf.Setting}");
+
+            CloseSubMenu();     // close current
+
+            Subform = new CheckedIconNewListBoxForm();      // make a new form
+
+            foreach (var i in sf.Items)             // transfer data from the Subform into the Form.
+            {
+                Subform.UC.Add(i.Tag, i.Text, i.Image, false, i.Exclusive, i.DisableUncheck, i.Button, i.UserTag, i.Group);
+            }
+
+            // copy and set parameters of the Subform from the parent or parent form, or for some from the SF
+            Subform.UC.MultipleColumns = MultipleColumns;
+            Subform.UC.SlideLeft = SlideLeft;
+            Subform.UC.SlideUp = SlideUp;
+            Subform.UC.MultiColumnSlide = MultiColumnSlide;
+            Subform.UC.ScreenMargin = ScreenMargin;
+
+            Subform.CloseBoundaryRegion = sf.ClosedBoundaryRegion.HasValue ? sf.ClosedBoundaryRegion.Value : cinlbf != null ? cinlbf.CloseBoundaryRegion : new Size(64, 64);
+            Subform.AllOrNoneBack = sf.AllOrNoneBack.HasValue ? sf.AllOrNoneBack.Value : cinlbf != null ? cinlbf.AllOrNoneBack : false;
+            // other Form parameters (CloseOnDeactivate etc) leave on default
+
+            var pbsr = pictureboxscroll.PointToScreen(cl.submenuicon?.PositionRight ?? cl.label.PositionRight);    // previous, position right of submenuicon/positionright
+            //var pbsr = this.PointToScreen(new Point(this.Width, cl.label.Position.Y));  // position to the right of this form
+                
+            Subform.SetLocation = pbsr;
+
+            if (cinlbf != null) // if we have a CheckedIconNewListBoxForm at its parent, set in submenu mode
+            {
+                //System.Diagnostics.Debug.WriteLine($"OpenSubMenu set submenu on for {cinlbf.Name}");
+                cinlbf.SetSubMenuActive(true);              // submenu active informs form not to do anything on deactivation
+                Subform.CloseDownTime = cinlbf.CloseDownTime;
+            }
+
+            Subform.Name = Parent.Name + "_Subform";
+
+            Subform.UC.ButtonPressed += (index, stag, text, utag, bev) =>  // sub buttons reflected to our button press
+            {
+                //System.Diagnostics.Debug.WriteLine($"Sub form button pressed {index} {stag} {text}");
+                ButtonPressed?.Invoke(index, stag, text, utag, bev);
+            };
+
+            Subform.SaveSettings += (s, p) =>       // form close save settings update the subform settings value
+            {
+                //System.Diagnostics.Debug.WriteLine($"*** Save Settings {Subform.Name} {s} {p} was {sf.Setting}");       
+                sf.Setting = s;
+            };
+
+            for (int i = 0; i < ItemList.Count; i++)        // for all entries, except this, we set it to look disabled (though its not)
+            {
+                if (ItemList[i] != cl)
+                    ShowDisabled(i, true);
+            }
+
+            // System.Diagnostics.Debug.WriteLine($"Subform show for {cl.Text} {cl.Tag} set {sf.Setting}");
+
+            Subform.Show(sf.Setting, pbsr, cinlbf,cl);
+        }
+
+        // close submenu
+        public void CloseSubMenu()
+        {
+            if (Subform != null)
+            {
+                //System.Diagnostics.Debug.WriteLine($"Request subform close {(Subform.Tag as Item).Text}");
+
+                Subform?.Close();
+                Subform = null;
+
+                for (int i = 0; i < ItemList.Count; i++)        // we release the show disabled from all of them
+                {
+                    ShowDisabled(i, false);
+                }
+            }
+        }
+
+        // CONSTRUCTOR
         public CheckedIconUserControl()
         {
             ItemList = new List<Item>();
+            
+            // make items for pictureboxscroll
             picturebox = new ExtPictureBox();
             sb = new ExtScrollBar();
+            sb.HideScrollBar = true;    // hide scroll bar
+            closeicon = new ExtButtonDrawn();
+            closeicon.Visible = false;      // default off
+            closeicon.ImageSelected = ExtButtonDrawn.ImageType.Close;
+            closeicon.Click += (s, e) => { CloseClicked?.Invoke(this); };
+
+            // make pbs
             pictureboxscroll = new ExtPictureBoxScroll();
+            pictureboxscroll.BorderStyle = BorderStyle.FixedSingle;
             pictureboxscroll.Controls.Add(picturebox);
             pictureboxscroll.Controls.Add(sb);
+            pictureboxscroll.Controls.Add(closeicon);
             pictureboxscroll.Dock = DockStyle.Fill;
-            sb.HideScrollBar = true;
+            picturebox.EnterElement += Picturebox_EnterElement;
             Controls.Add(pictureboxscroll);
         }
 
@@ -479,10 +641,13 @@ namespace ExtendedControls
         //                  preferredxy is redundant then and should be set to 0,0. FitToScreen is ignored. Just returns 0,0,width,height
         // with fixed size null, it tries to use up as much screen space right of preferredxy if MultipleColumns is set
         //                  If SlideLeft is set, we can move left to make more space
+        //                  If SlideUp is set, we can move upwards to make more space
         //                  the returned rectangle is clipped to the screen space
-        //                  returns xy to place, and client size (not window size)
+        // returns rectangle used
         public virtual Rectangle Render(Point preferredxy, Size? fixedsize = null)
         {
+            picturebox.ClearImageList();
+
             // work out icon size default
 
             Size firsticonsize = ImageSize.IsEmpty ? new Size(24, 24) : ImageSize;            // if we have an image size, the default size
@@ -502,15 +667,19 @@ namespace ExtendedControls
             Size chkboxsize = CheckBoxSize.IsEmpty ? firsticonsize : CheckBoxSize;
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
-            int maxwidthsinglecol = 0;
-            int vheightsinglecol = VerticalSpacing;
-            List<Tuple<Rectangle, Rectangle, Rectangle>> positions = new List<Tuple<Rectangle, Rectangle, Rectangle>>();
+            bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
+            bool hassubmenuicons = false;
+
+            int vtop = VerticalSpacing;        // top of area
 
             // calculate positions in single column into an array, calculate maxwidthsignelcol, calculate vheightsinglecol
 
-            picturebox.ClearImageList();
-    
-            bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
+            int maxwidthsinglecol = 0;                          // single col width including submenu 
+            int vheightsinglecol = vtop;                        // spacing at top 
+
+            List<Tuple<Rectangle, Rectangle, Rectangle>> positions = new List<Tuple<Rectangle, Rectangle, Rectangle>>();        // record info on positions of items
+
+            // set up each item, and work out sizes
 
             for (int i = 0; i < ItemList.Count; i++)
             {
@@ -522,15 +691,17 @@ namespace ExtendedControls
                 int vspacing = Math.Max(fonth, iconsize.Height);
                 vspacing = Math.Max(vspacing, chkboxsize.Height);       // vspacing is the max of label, icon and checkbox
 
-                int chkx = HorizontalSpacing;
-                int imgx = hasacheckbox ? chkx + chkboxsize.Width + HorizontalSpacing : chkx;
-                int labx = cl.Image != null ? imgx + iconsize.Width + HorizontalSpacing : imgx;
+                int chkx = HorizontalSpacing;                                                               // position of check box
+                int imgx = hasacheckbox ? chkx + chkboxsize.Width + HorizontalSpacing : chkx;               // position of image
+                int labx = cl.Image != null ? imgx + iconsize.Width + HorizontalSpacing : imgx;             // position of label
 
                 // label is in autosize mode, setting Text and Font will size it
                 cl.label.Text = cl.Text;
                 cl.label.Font = this.Font;
                 cl.label.ForeColor = this.ForeColor;
                 cl.label.BackColor = BackColor;
+                cl.label.MouseOverBackColor = this.MouseOverLabelColor;
+                cl.label.Tag = i;       // tags are index
 
                 if (!cl.Button)
                 {
@@ -538,7 +709,7 @@ namespace ExtendedControls
                     cl.checkbox.CheckBoxColor = this.CheckBoxColor;
                     cl.checkbox.CheckBoxInnerColor = this.CheckBoxInnerColor;
                     cl.checkbox.CheckColor = this.CheckColor;
-                    cl.checkbox.MouseOverColor = this.MouseOverColor;
+                    cl.checkbox.MouseOverColor = this.MouseOverCheckboxColor;
                     cl.checkbox.TickBoxReductionRatio = TickBoxReductionRatio;
                     cl.checkbox.Font = Font;
                     cl.checkbox.Tag = i;        // store index of control when displayed
@@ -547,10 +718,20 @@ namespace ExtendedControls
                 if (cl.Image != null)
                 {
                     cl.icon.Image = cl.Image;
-                    cl.icon.Tag = ItemList.Count;
+                    cl.icon.Tag = i;        // tags are index
+                }
+
+                if (cl.submenuicon != null)
+                {
+                    cl.submenuicon.Image = cl.GetSubForm.SubmenuIcon ?? Properties.Resources.ArrowRightSmall;
+                    cl.submenuicon.Tag = i;        // store index of control when displayed
+                    hassubmenuicons = true;
                 }
 
                 // Y is not holding Y position. Only use for Y is to record vspacing on first entry only, see below for vpositioning
+                // Item1 holds checkbox left, vspacing, and checkbox size
+                // Item2 holds image left, icon size
+                // Item3 holds label left, label size
                 var pos = new Tuple<Rectangle, Rectangle, Rectangle>(
                                 new Rectangle(chkx, vspacing, chkboxsize.Width, chkboxsize.Height),
                                 new Rectangle(imgx, 0, iconsize.Width, iconsize.Height),
@@ -559,10 +740,16 @@ namespace ExtendedControls
 
                 positions.Add(pos);
 
-                vheightsinglecol += vspacing + VerticalSpacing;
+                vheightsinglecol += vspacing + VerticalSpacing;     // item spacing and space between/extra space at bottom
 
-                maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Size.Width);
+                maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Size.Width);        // this is the width excluding the sub menu icon
             }
+
+            int submenuiconposx = maxwidthsinglecol;      // position after max label of submenu icon
+
+            // if we have sub menu icons, arranged at labelwidthmax, we need to add a bit more on to get the true column width to estimate with
+            if (hassubmenuicons)
+                maxwidthsinglecol += firsticonsize.Width;
 
             // we now work out an estimated columns to display
 
@@ -639,12 +826,11 @@ namespace ExtendedControls
 
             int colindex = 0;
             int colused = 1;        // actually displayed
-            int vpos = VerticalSpacing;
-            int heightrequired = 0;     // maximum we got to..
+            int vpos = vtop;
 
-            picturebox.ClearImageList();
+            // position the controls
 
-            for (int i = 0; i < ItemList.Count; i++)     // now turn them on, once all are in position
+            for (int i = 0; i < ItemList.Count; i++)     
             {
                 var cl = ItemList[i];
                 var post = positions[i];
@@ -656,12 +842,12 @@ namespace ExtendedControls
                 if ((checkvspacing && vpos + vspacing >= vavailable) || colindex++ == itemspercolumn)
                 {
                     colused++;
-                    vpos = VerticalSpacing;
+                    vpos = vtop;
                     colindex = 1;
                 }
 
                 int vcentre = vpos + vspacing / 2;
-                int colx = (colused - 1) * maxwidthsinglecol;
+                int colx = (colused - 1) * maxwidthsinglecol;           // column offset position.. given max width of single column including subform indicator
 
                 //System.Diagnostics.Debug.WriteLine($" {cl.label.Text} = {post.Item1} : {post.Item2} : {post.Item3} @ {colx} {vpos}");
 
@@ -679,17 +865,28 @@ namespace ExtendedControls
                 cl.label.Location = new Rectangle(post.Item3.X + colx, vcentre - post.Item3.Height / 2, post.Item3.Width, post.Item3.Height);
                 picturebox.Add(cl.label);
 
-                vpos += post.Item1.Y + VerticalSpacing;
+                if (cl.submenuicon != null)
+                {
+                    int pos = cl.label.Location.Y + cl.label.Location.Height / 2 - firsticonsize.Height / 2;
+                    cl.submenuicon.Location = new Rectangle(colx + submenuiconposx, pos, firsticonsize.Width, firsticonsize.Height);
+                    picturebox.Add(cl.submenuicon);
+                }
 
-                heightrequired = Math.Max(heightrequired, vpos);
+                vpos += vspacing + VerticalSpacing; 
             }
 
-            picturebox.Render();
+            // it will clip the render to the last bottom image so make sure we add on that vbottom margin to make the image bigger
+            // better this way than adding on the height below
+
+            picturebox.Render(margin:new Size(0,VerticalSpacing));
+
+            // now return the rectangle size needed
 
             if (fixedsize == null)      // if not in fixed size mode, return the screen rectangle clipping to size.
             {
                 // this will slide left if required to fit the box into the screen
-                var rect = preferredxy.CalculateRectangleWithinScreen(picturebox.Image.Width + sb.Width, picturebox.Image.Height, !slidup, ScreenMargin);
+                int bordermargin = pictureboxscroll.BorderStyle == BorderStyle.FixedSingle ? 2 : 0;
+                var rect = preferredxy.CalculateRectangleWithinScreen(picturebox.Image.Width + sb.Width + bordermargin, picturebox.Image.Height + bordermargin, !slidup, ScreenMargin);
                 return rect;
             }
             else
@@ -739,11 +936,23 @@ namespace ExtendedControls
             CheckedChanged?.Invoke(index,ItemList[index].Tag, ItemList[index].Text, ItemList[index].UserTag, eventargs);
         }
 
+        // operate subform popups on entering a element
+        private void Picturebox_EnterElement(object sender, MouseEventArgs eventargs, ExtPictureBox.ImageElement i, object tag)
+        {
+            Item cl = ItemList[(int)i.Tag];     // all elements have their tags set to index in ItemList
+            //System.Diagnostics.Debug.WriteLine($"Enter element {cl.Text}");
+            if (cl.IsSubmenu)
+                OpenSubMenu(cl);
+            else
+                CloseSubMenu();
+        }
+
         protected virtual void CheckChangedEvent(ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) { }
 
         private ExtPictureBoxScroll pictureboxscroll;
         private ExtPictureBox picturebox;
         private ExtScrollBar sb;
+        private ExtButtonDrawn closeicon;
 
         #endregion
     }

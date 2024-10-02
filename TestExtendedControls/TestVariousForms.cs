@@ -1,4 +1,5 @@
 ﻿using ExtendedControls;
+using ExtendedForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,26 +40,26 @@ namespace TestExtendedControls
 
             var butl = new ExtendedControls.ExtButton();
             butl.Image = Properties.Resources.LeftArrow;
-            f.Add(new ExtendedControls.ConfigurableForm.Entry(butl, "left", "", new Point(20, 64), new Size(32, 32), null));
+            f.Add(new ConfigurableEntryList.Entry(butl, "left", "", new Point(20, 64), new Size(32, 32), null));
             var butr = new ExtendedControls.ExtButton();
             butr.Image = Properties.Resources.RightArrow;
-            f.Add(new ExtendedControls.ConfigurableForm.Entry(butr, "right", "", new Point(width - 20 - 32, 64), new Size(32, 32), null));
+            f.Add(new ConfigurableEntryList.Entry(butr, "right", "", new Point(width - 20 - 32, 64), new Size(32, 32), null));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("olabel", typeof(Label), "Offer", new Point(20, 30), new Size(width - 40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
+            f.Add(new ConfigurableEntryList.Entry("olabel", typeof(Label), "Offer", new Point(20, 30), new Size(width - 40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("offer", typeof(Label), "0/0", new Point(width / 2 - 12, 50), new Size(width / 2 - 20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
+            f.Add(new ConfigurableEntryList.Entry("offer", typeof(Label), "0/0", new Point(width / 2 - 12, 50), new Size(width / 2 - 20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
 
             var bar = new PictureBox();
             bar.SizeMode = PictureBoxSizeMode.StretchImage;
             bar.Image = Properties.Resources.TraderBar;
-            f.Add(new ExtendedControls.ConfigurableForm.Entry(bar, "bar", "", new Point(width / 2 - 32, 70), new Size(64, 16), null));
+            f.Add(new ConfigurableEntryList.Entry(bar, "bar", "", new Point(width / 2 - 32, 70), new Size(64, 16), null));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("receive", typeof(Label), "0", new Point(width / 2 - 12, 90), new Size(width / 2 - 20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
+            f.Add(new ConfigurableEntryList.Entry("receive", typeof(Label), "0", new Point(width / 2 - 12, 90), new Size(width / 2 - 20, 20), null, 1.2f, ContentAlignment.MiddleLeft));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("rlabel", typeof(Label), "Receive", new Point(20, 110), new Size(width - 40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
+            f.Add(new ConfigurableEntryList.Entry("rlabel", typeof(Label), "Receive", new Point(20, 110), new Size(width - 40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
 
             var panelbox = new GroupBox() { ForeColor = Color.Red };
-            f.Add(new ExtendedControls.ConfigurableForm.Entry(panelbox, "panel", "g1", new Point(10, 150), new Size(width - 10, 100), "") { Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left });
+            f.Add(new ConfigurableEntryList.Entry(panelbox, "panel", "g1", new Point(10, 150), new Size(width - 10, 100), "") { Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left });
 
             f.AddOK(new Point(width - 100, 270), anchor: AnchorStyles.Right | AnchorStyles.Left | AnchorStyles.Bottom);
             f.AddCancel(new Point(20, 270), anchor: AnchorStyles.Right | AnchorStyles.Bottom);
@@ -89,11 +90,11 @@ namespace TestExtendedControls
             int initialvalue = 200;
             Form parent = this;
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("L", typeof(Label), "Jump to:", new Point(10, 40), new Size(140, 24), ""));
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxDoubleMinimum = 0, NumberBoxFormat = "0" , Anchor = AnchorStyles.Right });
+            f.Add(new ConfigurableEntryList.Entry("L", typeof(Label), "Jump to:", new Point(10, 40), new Size(140, 24), ""));
+            f.Add(new ConfigurableEntryList.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxDoubleMinimum = 0, NumberBoxFormat = "0" , Anchor = AnchorStyles.Right });
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept") { Anchor = AnchorStyles.Right }) ;
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(width - 200, 70), new Size(80, 24), "Press to Cancel") { Anchor = AnchorStyles.Right }) ;
+            f.Add(new ConfigurableEntryList.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept") { Anchor = AnchorStyles.Right }) ;
+            f.Add(new ConfigurableEntryList.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(width - 200, 70), new Size(80, 24), "Press to Cancel") { Anchor = AnchorStyles.Right }) ;
 
             f.Trigger += (dialogname, controlname, tag) =>
             {
@@ -365,11 +366,11 @@ namespace TestExtendedControls
 
             ExtButton wikibutton = new ExtButton();
             wikibutton.Image = Properties.Resources.CursorToTop;
-            cfg.Add(new ConfigurableForm.Entry(wikibutton, "Wiki", null, new Point(0, 0), new Size(24, 24), null));
+            cfg.Add(new ConfigurableEntryList.Entry(wikibutton, "Wiki", null, new Point(0, 0), new Size(24, 24), null));
 
             ExtButton videobutton = new ExtButton();
             videobutton.Image = Properties.Resources.CursorToTop;
-            cfg.Add(new ConfigurableForm.Entry(videobutton, "Video", null, new Point(24, 0), new Size(24, 24), null));
+            cfg.Add(new ConfigurableEntryList.Entry(videobutton, "Video", null, new Point(24, 0), new Size(24, 24), null));
 
             cfg.Trigger += (string logicalname, string ctrlname, object callertag) =>
             {
@@ -467,9 +468,9 @@ namespace TestExtendedControls
             int width = 430;
             Form parent = this;
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("add", typeof(ExtButton), "Add+", new Point(10, 40), new Size(140, 24), ""));
+            f.Add(new ConfigurableEntryList.Entry("add", typeof(ExtButton), "Add+", new Point(10, 40), new Size(140, 24), ""));
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept"));
+            f.Add(new ConfigurableEntryList.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept"));
 
             f.InstallStandardTriggers();
 
@@ -479,7 +480,7 @@ namespace TestExtendedControls
                 if (ctrlname == "add")
                 {
                     f.MoveControls(newpos-15, 30);      // the -15 just ensures any rounding won't affect picking ok
-                    f.Add(new ExtendedControls.ConfigurableForm.Entry("newc", typeof(ExtButton), "NB", new Point(10, newpos), new Size(140, 24), ""));
+                    f.Add(new ConfigurableEntryList.Entry("newc", typeof(ExtButton), "NB", new Point(10, newpos), new Size(140, 24), ""));
                     f.UpdateDisplayAfterAddNewControls();
                     newpos += 30;
                 }
@@ -517,8 +518,8 @@ namespace TestExtendedControls
 
             Form parent = this;
 
-            f.Add(new ExtendedControls.ConfigurableForm.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { Panel = ConfigurableForm.Entry.PanelType.Top });
-            f.AddOK(new Point(10, 10), paneltype: ConfigurableForm.Entry.PanelType.Bottom);
+            f.Add(new ConfigurableEntryList.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { Panel = ConfigurableEntryList.Entry.PanelType.Top });
+            f.AddOK(new Point(10, 10), paneltype: ConfigurableEntryList.Entry.PanelType.Bottom);
             f.AddBools(names,names, state, 4, 24, vdepth, 4, 150, "B_");
             f.InstallStandardTriggers();
 

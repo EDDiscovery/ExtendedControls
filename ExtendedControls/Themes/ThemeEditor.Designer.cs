@@ -11,7 +11,7 @@
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
+ *
  */
 namespace ExtendedControls
 {
@@ -127,6 +127,16 @@ namespace ExtendedControls
             this.label3 = new System.Windows.Forms.Label();
             this.checkBoxDarkMode = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.label32 = new System.Windows.Forms.Label();
+            this.panel_chart1 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel_chart2 = new System.Windows.Forms.Panel();
+            this.panel_chart3 = new System.Windows.Forms.Panel();
+            this.panel_chart4 = new System.Windows.Forms.Panel();
+            this.panel_chart5 = new System.Windows.Forms.Panel();
+            this.panel_chart6 = new System.Windows.Forms.Panel();
+            this.panel_chart7 = new System.Windows.Forms.Panel();
+            this.panel_chart8 = new System.Windows.Forms.Panel();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -135,7 +145,7 @@ namespace ExtendedControls
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(841, 562);
+            this.buttonOK.Location = new System.Drawing.Point(792, 560);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 24);
             this.buttonOK.TabIndex = 0;
@@ -160,6 +170,7 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.label2);
             this.groupBoxColors.Controls.Add(this.label20);
             this.groupBoxColors.Controls.Add(this.label22);
+            this.groupBoxColors.Controls.Add(this.label32);
             this.groupBoxColors.Controls.Add(this.label26);
             this.groupBoxColors.Controls.Add(this.label28);
             this.groupBoxColors.Controls.Add(this.label21);
@@ -198,6 +209,15 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel_theme81);
             this.groupBoxColors.Controls.Add(this.panel_theme10);
             this.groupBoxColors.Controls.Add(this.panel_theme17);
+            this.groupBoxColors.Controls.Add(this.panel_chart8);
+            this.groupBoxColors.Controls.Add(this.panel_chart7);
+            this.groupBoxColors.Controls.Add(this.panel_chart6);
+            this.groupBoxColors.Controls.Add(this.panel_chart5);
+            this.groupBoxColors.Controls.Add(this.panel_chart4);
+            this.groupBoxColors.Controls.Add(this.panel_chart3);
+            this.groupBoxColors.Controls.Add(this.panel_chart2);
+            this.groupBoxColors.Controls.Add(this.panel1);
+            this.groupBoxColors.Controls.Add(this.panel_chart1);
             this.groupBoxColors.Controls.Add(this.panel_theme61);
             this.groupBoxColors.Controls.Add(this.panel_theme60);
             this.groupBoxColors.Controls.Add(this.panel_theme70);
@@ -990,7 +1010,7 @@ namespace ExtendedControls
             // 
             this.checkBoxDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxDarkMode.AutoSize = true;
-            this.checkBoxDarkMode.Location = new System.Drawing.Point(27, 567);
+            this.checkBoxDarkMode.Location = new System.Drawing.Point(27, 561);
             this.checkBoxDarkMode.Name = "checkBoxDarkMode";
             this.checkBoxDarkMode.Size = new System.Drawing.Size(110, 17);
             this.checkBoxDarkMode.TabIndex = 21;
@@ -1001,7 +1021,7 @@ namespace ExtendedControls
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(738, 563);
+            this.buttonCancel.Location = new System.Drawing.Point(703, 560);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(80, 24);
             this.buttonCancel.TabIndex = 0;
@@ -1009,11 +1029,110 @@ namespace ExtendedControls
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(808, 20);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(32, 13);
+            this.label32.TabIndex = 6;
+            this.label32.Text = "Chart";
+            // 
+            // panel_chart1
+            // 
+            this.panel_chart1.AccessibleDescription = "";
+            this.panel_chart1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart1.Location = new System.Drawing.Point(812, 50);
+            this.panel_chart1.Name = "panel_chart1";
+            this.panel_chart1.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart1.TabIndex = 5;
+            this.panel_chart1.Tag = "";
+            // 
+            // panel1
+            // 
+            this.panel1.AccessibleDescription = "";
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Location = new System.Drawing.Point(812, 85);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(28, 28);
+            this.panel1.TabIndex = 5;
+            this.panel1.Tag = "";
+            // 
+            // panel_chart2
+            // 
+            this.panel_chart2.AccessibleDescription = "";
+            this.panel_chart2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart2.Location = new System.Drawing.Point(812, 85);
+            this.panel_chart2.Name = "panel_chart2";
+            this.panel_chart2.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart2.TabIndex = 5;
+            this.panel_chart2.Tag = "";
+            // 
+            // panel_chart3
+            // 
+            this.panel_chart3.AccessibleDescription = "";
+            this.panel_chart3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart3.Location = new System.Drawing.Point(812, 120);
+            this.panel_chart3.Name = "panel_chart3";
+            this.panel_chart3.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart3.TabIndex = 5;
+            this.panel_chart3.Tag = "";
+            // 
+            // panel_chart4
+            // 
+            this.panel_chart4.AccessibleDescription = "";
+            this.panel_chart4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart4.Location = new System.Drawing.Point(812, 155);
+            this.panel_chart4.Name = "panel_chart4";
+            this.panel_chart4.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart4.TabIndex = 5;
+            this.panel_chart4.Tag = "";
+            // 
+            // panel_chart5
+            // 
+            this.panel_chart5.AccessibleDescription = "";
+            this.panel_chart5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart5.Location = new System.Drawing.Point(812, 190);
+            this.panel_chart5.Name = "panel_chart5";
+            this.panel_chart5.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart5.TabIndex = 5;
+            this.panel_chart5.Tag = "";
+            // 
+            // panel_chart6
+            // 
+            this.panel_chart6.AccessibleDescription = "";
+            this.panel_chart6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart6.Location = new System.Drawing.Point(812, 225);
+            this.panel_chart6.Name = "panel_chart6";
+            this.panel_chart6.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart6.TabIndex = 5;
+            this.panel_chart6.Tag = "";
+            // 
+            // panel_chart7
+            // 
+            this.panel_chart7.AccessibleDescription = "";
+            this.panel_chart7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart7.Location = new System.Drawing.Point(812, 260);
+            this.panel_chart7.Name = "panel_chart7";
+            this.panel_chart7.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart7.TabIndex = 5;
+            this.panel_chart7.Tag = "";
+            // 
+            // panel_chart8
+            // 
+            this.panel_chart8.AccessibleDescription = "";
+            this.panel_chart8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart8.Location = new System.Drawing.Point(812, 295);
+            this.panel_chart8.Name = "panel_chart8";
+            this.panel_chart8.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart8.TabIndex = 5;
+            this.panel_chart8.Tag = "";
+            // 
             // ThemeEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(930, 597);
+            this.ClientSize = new System.Drawing.Size(889, 597);
             this.Controls.Add(this.checkBoxDarkMode);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxColors);
@@ -1119,5 +1238,15 @@ namespace ExtendedControls
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.CheckBox checkBoxDarkMode;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Panel panel_chart8;
+        private System.Windows.Forms.Panel panel_chart7;
+        private System.Windows.Forms.Panel panel_chart6;
+        private System.Windows.Forms.Panel panel_chart5;
+        private System.Windows.Forms.Panel panel_chart4;
+        private System.Windows.Forms.Panel panel_chart3;
+        private System.Windows.Forms.Panel panel_chart2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel_chart1;
     }
 }

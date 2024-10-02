@@ -11,7 +11,7 @@
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
+ *
  */
 
 using System;
@@ -77,10 +77,18 @@ namespace ExtendedControls
             SetPanel(panel_theme70, "Check Box Tick Color", Theme.CI.checkbox_tick );
             SetPanel(panel_theme71, "S-Panel Text Colour", Theme.CI.s_panel);
             SetPanel(panel_theme72, "Transparent Colour Key", Theme.CI.transparentcolorkey);
-
             SetPanel(panel_theme80, "Grid Cell Alt Back Colour", Theme.CI.grid_altcellbackground);
             SetPanel(panel_theme81, "Grid Cell Alt Text Colour", Theme.CI.grid_altcelltext);
             SetPanel(panel_theme82, "Grid Highlight Back Colour", Theme.CI.grid_highlightback);
+
+            SetPanel(panel_chart1, "Chart Series 1", Theme.CI.chart1);
+            SetPanel(panel_chart2, "Chart Series 2", Theme.CI.chart2);
+            SetPanel(panel_chart3, "Chart Series 3", Theme.CI.chart3);
+            SetPanel(panel_chart4, "Chart Series 4", Theme.CI.chart4);
+            SetPanel(panel_chart5, "Chart Series 5", Theme.CI.chart5);
+            SetPanel(panel_chart6, "Chart Series 6", Theme.CI.chart6);
+            SetPanel(panel_chart7, "Chart Series 7", Theme.CI.chart7);
+            SetPanel(panel_chart8, "Chart Series 8", Theme.CI.chart8);
 
             UpdatePatchesEtc();
 
@@ -134,6 +142,14 @@ namespace ExtendedControls
             UpdatePatch(panel_theme80);
             UpdatePatch(panel_theme81);
             UpdatePatch(panel_theme82);
+            UpdatePatch(panel_chart1);
+            UpdatePatch(panel_chart2);
+            UpdatePatch(panel_chart3);
+            UpdatePatch(panel_chart4);
+            UpdatePatch(panel_chart5);
+            UpdatePatch(panel_chart6);
+            UpdatePatch(panel_chart7);
+            UpdatePatch(panel_chart8);
             textBox_Font.Text = Theme.FontName + " " + Theme.FontSize + " points";
             checkBox_theme_windowframe.Checked = Theme.WindowsFrame;
         }

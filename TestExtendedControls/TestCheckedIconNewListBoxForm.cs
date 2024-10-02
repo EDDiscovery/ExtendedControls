@@ -57,6 +57,8 @@ namespace TestExtendedControls
             frm.CloseBoundaryRegion = new Size(64, 64);
             frm.PositionBelow(extButton1);
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); };
+            frm.UC.ShowClose = true;
+
             frm.Show(this);
         }
 
@@ -92,7 +94,7 @@ namespace TestExtendedControls
             frm.UC.AddGroupItem("t1;t2;t3", "1-3");
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
-          //  frm.CloseBoundaryRegion = new Size(64, 64);
+            frm.CloseBoundaryRegion = new Size(64, 64);
             frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.UC.NoneAllIgnore = "||;";
@@ -192,6 +194,7 @@ namespace TestExtendedControls
             frm.UC.Set(persistent7);
             Theme.Current.FontSize = 16;
 
+            frm.UC.ShowClose = true;
             frm.PositionBelow(extButton2);
             frm.Show(this);
 
@@ -273,7 +276,7 @@ namespace TestExtendedControls
                 frm8.CloseBoundaryRegion = new Size(64, 64);
                 frm8.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
                 frm8.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
-                frm8.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent8 = s; };
+                frm8.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent8 = s; System.Diagnostics.Debug.WriteLine($"Save settings {s} {p}"); };
                 frm8.UC.Set(persistent8);
                 frm8.CloseOnDeactivate = false;
                 frm8.HideOnDeactivate = true;
@@ -281,6 +284,9 @@ namespace TestExtendedControls
                 frm8.UC.SlideUp = true;
             }
 
+            frm8.UC.Enable("t10", false);
+            frm8.UC.Enable("t12", false);
+            frm8.UC.ShowDisabled("t14", true);
             frm8.UC.Enable("t100", false);
             frm8.UC.Enable("removegroups", frm8.UC.UserTags("useritem").Count()>0);
             frm8.PositionBelow(extButton8);
@@ -325,7 +331,6 @@ namespace TestExtendedControls
             {
                 frm.UC.AddButton($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
             }
-           // frm.UC.Add($"t100", $"CHK 100", Properties.Resources.CursorToTop);
 
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
@@ -350,10 +355,116 @@ namespace TestExtendedControls
             frm.CloseBoundaryRegion = new Size(64, 64);
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.UC.SlideLeft = true;      // allow left shift
+            frm.UC.SlideUp = true;
+            frm.UC.ShowClose = true;
             frm.PositionBelow(extButton11);
             frm.Show(this);
 
 
+        }
+
+        List<CheckedIconUserControl.SubForm> sf = new List<CheckedIconUserControl.SubForm>();
+        string b12settings = "";
+
+        private void extButton12_Click(object sender, EventArgs e)
+        {
+            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
+            int sfn = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                List<CheckedIconUserControl.Item> subform = new List<CheckedIconUserControl.Item>();
+
+                if (i < 5) // demo user controlled sub menu icon
+                {
+                    List<CheckedIconUserControl.Item> subsubform = new List<CheckedIconUserControl.Item>();
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 1}", $"T{i * 100000 + 1}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 2}", $"T{i * 100000 + 2}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 3}", $"T{i * 100000 + 3}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 100000 + 4}", $"T{i * 100000 + 4}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 100000 + 5}", $"S{i * 100000 + 5}"));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 100000 + 6}", $"S{i * 100000 + 6}"));
+                    sf.Add(new CheckedIconUserControl.SubForm { Items = subsubform, Setting = $"", SubmenuIcon = Properties.Resources.RightArrow });
+
+                    subform.Add(new CheckedIconUserControl.Item($"SF1{i * 1000 + 1}", $"SF1{i * 1000 + 1}", button: true, usertag: sf[sfn++]));
+                }
+
+                subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 1}", $"T{i * 1000 + 1}", button: true));
+                subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 2}", $"T{i * 1000 + 2}", button: true));
+                subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 3}", $"T{i * 1000 + 3}", button: true));
+
+                if (i < 8) // demo default submenu icon
+                {
+                    List<CheckedIconUserControl.Item> subsubform = new List<CheckedIconUserControl.Item>();
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 1}", $"T{i * 200000 + 1}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 2}", $"T{i * 200000 + 2}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 3}", $"T{i * 200000 + 3}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 200000 + 4}", $"T{i * 200000 + 4}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 200000 + 5}", $"S{i * 200000 + 5}"));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 200000 + 6}", $"S{i * 200000 + 6}"));
+                    sf.Add(new CheckedIconUserControl.SubForm { Items = subsubform, Setting = $"", SubmenuIcon = null });
+
+                    subform.Add(new CheckedIconUserControl.Item($"SF2{i * 2000 + 1}", $"SF2{i * 2000 + 1}", button: true, usertag: sf[sfn++]));
+
+                }
+
+                subform.Add(new CheckedIconUserControl.Item($"T{i * 1000 + 4}", $"T{i * 1000 + 4}", button: true));
+                subform.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 5}", $"S{i * 1000 + 5}"));
+
+                if (i < 8)  // demo no sub menu icon
+                {
+                    List<CheckedIconUserControl.Item> subsubform = new List<CheckedIconUserControl.Item>();
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 300000 + 1}", $"T{i * 300000 + 1}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 300000 + 2}", $"T{i * 300000 + 2}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 300000 + 3}", $"T{i * 300000 + 3}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"T{i * 300000 + 4}", $"T{i * 300000 + 4}", button: true));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 300000 + 5}", $"S{i * 300000 + 5}"));
+                    subsubform.Add(new CheckedIconUserControl.Item($"S{i * 300000 + 6}", $"S{i * 300000 + 6}"));
+                    sf.Add(new CheckedIconUserControl.SubForm { Items = subsubform, Setting = $"", SubmenuIcon = CheckedIconGroupUserControl.NoSubMenuIcon });
+
+                    subform.Add(new CheckedIconUserControl.Item($"SF3{i * 3000 + 1}", $"SF3{i * 3000 + 1}", button: true, usertag: sf[sfn++]));
+
+                }
+
+
+                subform.Add(new CheckedIconUserControl.Item($"S{i * 1000 + 6}", $"S{i * 1000 + 6}"));
+
+                sf.Add(new CheckedIconUserControl.SubForm { Items = subform, Setting = $""});
+
+                frm.UC.AddButton($"t{i}", i % 2 == 0 ? $"Sub {i}" : $"Subsform {i}", Properties.Resources.CursorToTop, sf[sfn++]);
+
+                if ( i == 5)
+                {
+                    for (int j = 0; j < 50; j++)
+                    {
+                        frm.UC.AddButton($"t{j + 100}", $"But {j + 100}", Properties.Resources.CursorToTop);
+                    }
+                }
+            }
+
+
+            for (int i = 0; i < 5; i++)
+            {
+                frm.UC.Add($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
+            }
+
+            theme.SetThemeByName("Elite Verdana Small");
+
+            frm.Name = "TopForm";
+            frm.UC.MultipleColumns = true;
+            frm.CloseBoundaryRegion = new Size(20, 20);
+            frm.UC.SlideLeft = true;      // allow left shift
+            frm.PositionBelow(extButton10);
+            frm.UC.ButtonPressed += (index, stag, text, utag, bev) => {
+                System.Diagnostics.Debug.WriteLine($">>> Form button pressed {index} {stag} {text}");
+                AddText($"*** Form {frm.Name} Button pressed {index} {stag} {text}"); 
+                frm.Close(); 
+            };
+            frm.CloseDownTime = 300;
+            frm.SaveSettings += (s, p) => { System.Diagnostics.Debug.WriteLine($">>> Save Settings {frm.Name} {s} {p}"); b12settings = s; };
+            frm.UC.ShowClose = true;
+
+            frm.Show(b12settings,extButton12,this); ;
         }
     }
 

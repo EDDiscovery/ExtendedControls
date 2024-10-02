@@ -35,8 +35,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuickJSON, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\RJKJSoft.QuickJSON.2.0.0\lib\net48\QuickJSON.dll</HintPath>
+    <Reference Include="QuickJSON, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RJKJSoft.QuickJSON.2.2.0\lib\net48\QuickJSON.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DGVCellPictureBox.cs" />
     <Compile Include="Controls\LabelData.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -132,6 +133,12 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\CheckedIconPictureBoxUC.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfigurableEntries.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Forms\ConfigurableUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\ExtButtonWithNewCheckedListBox.cs">
@@ -408,6 +415,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowUp1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowRightSmall.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

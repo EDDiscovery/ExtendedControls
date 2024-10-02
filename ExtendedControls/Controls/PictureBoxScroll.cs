@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2021 EDDiscovery development team
+ * Copyright 2021-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 
 using System;
@@ -21,14 +19,12 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    // apply a ExtPictureBox and a ExtScrollBar to this panel
-
+    // apply a ExtPictureBox and a ExtScrollBar to this panel.
+    // Support a close icon above the scroll bar if a ButtonDrawn is added to it.  Visibility of this controls if shown
     public class ExtPictureBoxScroll : Panel      
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
-
-        public int ScrollBarWidth { get { return Font.ScalePixels(24); } }     
-
+        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
         // disabling it makes the picturebox be the same size as the client area, enabling it means the picture box grows with the data
         public bool ScrollBarEnabled { get { return scrollbarenabled; } set { scrollbarenabled = value; PerformLayout(); } }
 
@@ -62,6 +58,9 @@ namespace ExtendedControls
             UpdateScrollBar();
         }
 
+        // MUST add a picture box, and Scroll bar
+        // CAN add a ExtButtonDrawn as a close icon
+
         protected override void OnControlAdded(ControlEventArgs e)
         {  // as controls are added, remember them in local variables.
             if (e.Control is PictureBox)
@@ -74,6 +73,10 @@ namespace ExtendedControls
                 vsc = e.Control as ExtScrollBar;
                 vsc.Scroll += new System.Windows.Forms.ScrollEventHandler(ScrollBarMoved);
             }
+            else if (e.Control is ExtButtonDrawn)
+            {
+                closeicon = e.Control as ExtButtonDrawn;
+            }
             else
                 Debug.Assert(true, "Picture Box Scroller Panel requires ExtPictureBox and ExtScrollBar to be added");
         }
@@ -85,23 +88,32 @@ namespace ExtendedControls
             int left = 0;
             int right = ClientRectangle.Width;
 
+            bool closeiconon = closeicon != null && closeicon.Visible;
+
+            if (closeiconon)     // position close icon if present and visible
+            {
+                closeicon.Bounds = new Rectangle(VerticalScrollBarDockRight ? right - ScrollBarWidth : 0, 0, ScrollBarWidth, ScrollBarWidth);
+            }
+
             if ( vsc != null )      // attach to right or left..
             {
-                vsc.Size = new Size(ScrollBarWidth, ClientSize.Height);
+                int vpos = closeiconon ? ScrollBarWidth : 0;     // position scroll top, dependent on close icon
+
+                vsc.Size = new Size(ScrollBarWidth, ClientSize.Height - vpos);
 
                 if (!VerticalScrollBarDockRight)
                 {
-                    vsc.Location = new Point(left, 0 );
+                    vsc.Location = new Point(left, vpos );
                     left += ScrollBarWidth;
                 }
                 else
                 {
                     right -= ScrollBarWidth;
-                    vsc.Location = new Point(right, 0);
+                    vsc.Location = new Point(right, vpos);
                 }
             }
 
-            if (pbox != null)                       // finally, put the box between left and right
+            if (pbox != null)                                   // finally, put the box between left and right
             {
                 pbox.Location = new Point(left, pbox.Top);      // position left only, leave positioning for update scroll bar
                 pbox.Size = new Size(right-left, pbox.Height);  // don't change the height
@@ -156,6 +168,7 @@ namespace ExtendedControls
 
         private ExtPictureBox pbox;
         private ExtScrollBar vsc;
+        private ExtButtonDrawn closeicon;
         private bool scrollbarenabled = true;
 
         #endregion

@@ -11,7 +11,7 @@
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  * 
- * EDDiscovery is not affiliated with Frontier Developments plc.
+ *
  */
 
 using System;
@@ -148,7 +148,7 @@ namespace ExtendedControls.Controls
             TreeView.Location = new Point(bordersize, bordersize);
             TreeView.Size = new Size(ClientRectangle.Width - bordersize * 2, treeviewclienth);
 
-            int scrollbarwidth = Font.ScalePixels(20);
+            int scrollbarwidth = Font.ScaleScrollbar();
 
             ScrollBar.Location = new Point(ClientRectangle.Width - scrollbarwidth - bordersize, bordersize);
             ScrollBar.Size = new Size(scrollbarwidth, treeviewclienth);

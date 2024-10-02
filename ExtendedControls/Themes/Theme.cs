@@ -40,6 +40,8 @@ namespace ExtendedControls
         public static string DefaultFont = "Microsoft Sans Serif";
         public static float DefaultFontSize = 8.25F;
 
+        public static Color[] DefaultChartColours = new Color[] { Color.Green, Color.Red, Color.Blue, Color.Orange, Color.Purple, Color.Aqua, Color.Violet, Color.Brown };
+
         private static float minfontsize = 4;
 
         // use TabIndex to also indicate no theme by setting tab index to this. Added so base winform controls can disable themeing
@@ -71,9 +73,13 @@ namespace ExtendedControls
             
             tabcontrol_borderlines,
             
-            toolstrip_back, toolstrip_border, unused_entry,     // previously assigned to toolstrip_checkbox thing
+            toolstrip_back, toolstrip_border, 
+            
+            unused_entry,     // previously assigned to toolstrip_checkbox thing
             
             s_panel, transparentcolorkey, grid_highlightback,
+
+            chart1, chart2, chart3, chart4, chart5, chart6, chart7, chart8,
         };
 
         private string name { get; set; }         // name of scheme
@@ -108,6 +114,7 @@ namespace ExtendedControls
                                     Color tabborderlines,
                                     Color toolstripback, Color toolstripborder, Color toolstripbuttonunused,
                                     Color sPanel, Color keycolor,
+                                    Color[] chartcolours,
                                     bool wf, double op, string ft, float fs)             // ft = empty means don't set it
         {
             Name = n;
@@ -140,6 +147,11 @@ namespace ExtendedControls
             colors.Add(CI.s_panel, sPanel);
             colors.Add(CI.transparentcolorkey, keycolor);
 
+            for (int i = 0; i < DefaultChartColours.Length; i++)        // first ensure all is filled
+                colors.Add(CI.chart1 + i, DefaultChartColours[i]);
+            for (int i = 0; i < chartcolours.Length; i++)               // then fill what is defined
+                colors[CI.chart1 + i] = chartcolours[i];
+
             buttonstyle = bstyle; textboxborderstyle = tbbstyle;
             windowsframe = Environment.OSVersion.Platform == PlatformID.Win32NT ? wf : true;
             formopacity = op; fontname = ft; fontsize = fs;
@@ -167,6 +179,8 @@ namespace ExtendedControls
             colors.Add(CI.toolstrip_back, SystemColors.Control); colors.Add(CI.toolstrip_border, SystemColors.Menu); colors.Add(CI.unused_entry, SystemColors.MenuText);
             colors.Add(CI.s_panel, Color.Orange);
             colors.Add(CI.transparentcolorkey, Color.Green);
+            for (int i = 0; i < DefaultChartColours.Length; i++)
+                colors.Add(CI.chart1 + i, DefaultChartColours[i]);
             buttonstyle = ButtonstyleSystem;
             textboxborderstyle = TextboxborderstyleFixed3D;
             windowsframe = true;
@@ -174,6 +188,7 @@ namespace ExtendedControls
             fontname = DefaultFont;
             fontsize = DefaultFontSize;
         }
+        
         // copy constructor, takes a real copy, with overrides
         public Theme(Theme other, string newname = null, string newfont = null, float newfontsize = 0, double opaque = 0)
         {
@@ -509,49 +524,7 @@ namespace ExtendedControls
             }
             else if (myControl is ExtChart)     // Note you should be using ExtSafeChart
             {
-                var ctrl = (ExtChart)myControl;
-
-                ctrl.Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
-                ctrl.BackColor = colors[CI.form];
-
-                // so the themer only overrides border/back colours if the user has set them to a value already. It does not override empty entries 
-                // the user can chose if titles/legends border and back is themed
-
-                ctrl.SetAllTitlesColorFont(colors[CI.grid_celltext], GetScaledFont(1.5f), colors[CI.grid_cellbackground],
-                                          Color.Empty, 1,
-                                          colors[CI.group_borderlines], 1, ChartDashStyle.Solid);
-
-                ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt, colors[CI.grid_cellbackground].Multiply(1.2f), 6, Color.FromArgb(128, 0, 0, 0),
-                                            colors[CI.grid_celltext], colors[CI.grid_cellbackground], fnt, StringAlignment.Center, LegendSeparatorStyle.Line, colors[CI.group_borderlines],
-                                            colors[CI.group_borderlines], ChartDashStyle.Solid, 1,
-                                            LegendSeparatorStyle.Line, colors[CI.group_borderlines], 1);
-
-                // we theme all chart areas, backwards, so chartarea0 is the one left selected            
-                for (int i = ctrl.ChartAreas.Count - 1; i >= 0; i--)
-                {
-                    ctrl.SetCurrentChartArea(i);
-                    ctrl.SetChartAreaColors(colors[CI.grid_cellbackground], colors[CI.group_borderlines]);
-
-                    ctrl.SetXAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
-                    ctrl.SetYAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.group_borderlines]);
-                    ctrl.SetXAxisLabelColorFont(colors[CI.grid_celltext], fnt);
-                    ctrl.SetYAxisLabelColorFont(colors[CI.grid_celltext], fnt);
-
-                    ctrl.SetXCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
-                    ctrl.SetYCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
-
-                    ctrl.SetXCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
-                    ctrl.SetYCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
-                }
-
-                for (int i = ctrl.Series.Count - 1; i >= 0; i--)
-                {
-                    ctrl.SetCurrentSeries(i);
-                    if (i == 0)
-                        ctrl.SetSeriesColor(colors[CI.grid_celltext]);
-                    ctrl.SetSeriesDataLabelsColorFont(colors[CI.grid_celltext], fnt, Color.Transparent);
-                    ctrl.SetSeriesMarkersColorSize(colors[CI.grid_scrollarrow], 4, colors[CI.grid_scrollbutton], 2);
-                }
+                ThemeChart(fnt, (ExtChart)myControl);
             }
             else if (myControl is Chart)
             {
@@ -746,18 +719,23 @@ namespace ExtendedControls
 
                 ctrl.RowHeadersDefaultCellStyle.BackColor = colors[CI.grid_borderback];
                 ctrl.RowHeadersDefaultCellStyle.ForeColor = colors[CI.grid_bordertext];
+                ctrl.RowHeadersDefaultCellStyle.SelectionForeColor = colors[CI.grid_bordertext];
                 ctrl.RowHeadersDefaultCellStyle.SelectionBackColor = colors[CI.grid_borderback];
+
                 ctrl.ColumnHeadersDefaultCellStyle.BackColor = colors[CI.grid_borderback];
                 ctrl.ColumnHeadersDefaultCellStyle.ForeColor = colors[CI.grid_bordertext];
+                ctrl.ColumnHeadersDefaultCellStyle.SelectionForeColor = colors[CI.grid_bordertext];
                 ctrl.ColumnHeadersDefaultCellStyle.SelectionBackColor = colors[CI.grid_borderback];
 
-                ctrl.BackgroundColor = GroupBoxOverride(parent, colors[CI.form]);
                 ctrl.DefaultCellStyle.BackColor = colors[CI.grid_cellbackground];
-                ctrl.AlternatingRowsDefaultCellStyle.BackColor = colors[CI.grid_altcellbackground];
                 ctrl.DefaultCellStyle.ForeColor = colors[CI.grid_celltext];
-                ctrl.AlternatingRowsDefaultCellStyle.ForeColor = colors[CI.grid_altcelltext];
                 ctrl.DefaultCellStyle.SelectionBackColor = ctrl.DefaultCellStyle.ForeColor;
                 ctrl.DefaultCellStyle.SelectionForeColor = ctrl.DefaultCellStyle.BackColor;
+
+                ctrl.BackgroundColor = GroupBoxOverride(parent, colors[CI.form]);
+
+                ctrl.AlternatingRowsDefaultCellStyle.BackColor = colors[CI.grid_altcellbackground];
+                ctrl.AlternatingRowsDefaultCellStyle.ForeColor = colors[CI.grid_altcelltext];
 
                 ctrl.BorderStyle = BorderStyle.None;        // can't control the color of this, turn it off
 
@@ -838,7 +816,8 @@ namespace ExtendedControls
                 ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
                 ctrl.CheckBoxColor = colors[CI.checkbox];
                 ctrl.CheckBoxInnerColor = colors[CI.checkbox].Multiply(1.5F);
-                ctrl.MouseOverColor = colors[CI.checkbox].Multiply(1.4F);
+                ctrl.MouseOverCheckboxColor = colors[CI.checkbox].Multiply(0.75F);
+                ctrl.MouseOverLabelColor = colors[CI.checkbox].Multiply(0.75F);
                 ctrl.TickBoxReductionRatio = 0.75f;
                 ctrl.CheckColor = colors[CI.checkbox_tick];
             }
@@ -1093,6 +1072,55 @@ namespace ExtendedControls
 
         }
 
+        // You can reapply themeing individually to a chart if you change the series/chart areas.
+        public void ThemeChart(Font fnt, ExtChart ctrl)
+        {
+            ctrl.Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
+            ctrl.BackColor = colors[CI.form];
+
+            // so the themer only overrides border/back colours if the user has set them to a value already. It does not override empty entries 
+            // the user can chose if titles/legends border and back is themed
+
+            ctrl.SetAllTitlesColorFont(colors[CI.grid_celltext], GetScaledFont(1.5f), colors[CI.grid_cellbackground],
+                                      Color.Empty, 1,
+                                      colors[CI.group_borderlines], 1, ChartDashStyle.Solid);
+
+            ctrl.SetAllLegendsColorFont(colors[CI.grid_celltext], fnt, ctrl.BackColor, 6, Color.FromArgb(128, 0, 0, 0),
+                                        colors[CI.grid_celltext], colors[CI.grid_cellbackground], fnt, StringAlignment.Center, LegendSeparatorStyle.Line, colors[CI.grid_borderlines],
+                                        colors[CI.grid_borderlines], ChartDashStyle.Solid, 0,
+                                        LegendSeparatorStyle.Line, colors[CI.group_borderlines], 1);
+
+            // we theme all chart areas, backwards, so chartarea0 is the one left selected            
+            for (int i = ctrl.ChartAreas.Count - 1; i >= 0; i--)
+            {
+               // System.Diagnostics.Debug.WriteLine($"Themer {ctrl.Parent.Name} Theme Chart Area {i}");
+                ctrl.SetCurrentChartArea(i);
+                ctrl.SetChartAreaColors(colors[CI.grid_cellbackground], colors[CI.grid_borderlines]);
+
+                ctrl.SetXAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.grid_borderlines]);
+                ctrl.SetYAxisMajorGridWidthColor(1, ChartDashStyle.Solid, colors[CI.grid_borderlines]);
+                ctrl.SetXAxisLabelColorFont(colors[CI.grid_celltext], fnt);
+                ctrl.SetYAxisLabelColorFont(colors[CI.grid_celltext], fnt);
+                ctrl.SetXAxisTitle(ctrl.CurrentChartArea.AxisX.Title, fnt, colors[CI.grid_celltext]);
+                ctrl.SetYAxisTitle(ctrl.CurrentChartArea.AxisY.Title, fnt, colors[CI.grid_celltext]);
+
+                ctrl.SetXCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
+                ctrl.SetYCursorColors(colors[CI.grid_scrollarrow], colors[CI.grid_celltext], 2);
+
+                ctrl.SetXCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
+                ctrl.SetYCursorScrollBarColors(colors[CI.grid_sliderback], colors[CI.grid_scrollbutton]);
+            }
+
+            for (int i = ctrl.Series.Count - 1; i >= 0; i--)        // backwards so chart 0 is left the pick
+            {
+               // System.Diagnostics.Debug.WriteLine($"Themer {ctrl.Parent.Name} Theme series {i}");
+                ctrl.SetCurrentSeries(i);
+                ctrl.SetSeriesColor(colors[CI.chart1 + i]);
+                ctrl.SetSeriesDataLabelsColorFont(colors[CI.grid_celltext], fnt, Color.Transparent);
+                ctrl.SetSeriesMarkersColorSize(colors[CI.grid_scrollarrow], 4, colors[CI.grid_scrollbutton], 2);
+            }
+        }
+
         private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)
         {
             Color menuback = colors[CI.menu_back];
@@ -1140,10 +1168,13 @@ namespace ExtendedControls
             return d;
         }
 
+
+        // From JSON, read theme.
+        // default set is the values to use if the theme Json does not have an entry
         public bool FromJSON( JObject jo, string name, Theme defaultset = null)
         {
             if (defaultset == null)
-                defaultset = new Theme("Windows");          // if none given, use the basic windows set to get a default set
+                defaultset = new Theme("Windows");                  // if none given, use the basic windows set to get a default set
 
             this.Name = name;
 
@@ -1153,7 +1184,7 @@ namespace ExtendedControls
 
                 try
                 {
-                    string s = jo[ck.ToString()].StrNull();
+                    string s = jo[ck.ToString()].StrNull();     // look up key name
                     if (s != null)
                     {
                         Color c = System.Drawing.ColorTranslator.FromHtml(s);   // may except if not valid HTML colour
@@ -1178,7 +1209,7 @@ namespace ExtendedControls
 
                 try
                 {
-                    if (!foundcolour)
+                    if (!foundcolour)       // does not have a colour
                     {
                         string gridtext = jo[CI.grid_celltext.ToString()].StrNull();
                         string gridback = jo[CI.grid_cellbackground.ToString()].StrNull();
@@ -1195,7 +1226,7 @@ namespace ExtendedControls
                         }
                         else
                         {
-                            Color def = defaultset.colors[ck];        // 
+                            Color def = defaultset.colors[ck];        // use default set's value
                             colors[ck] = def;
                         }
                     }
