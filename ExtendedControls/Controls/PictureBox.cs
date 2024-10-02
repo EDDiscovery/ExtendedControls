@@ -27,6 +27,8 @@ namespace ExtendedControls
         public event OnElement LeaveElement;
         public event OnElement ClickElement;
 
+        public Action<ExtPictureBox> ImageChanged;              // call back on Rendered and Image change - does not appear that PictureBox has a native version
+
         public Color FillColor { get; set; } = Color.Transparent;         // fill the bitmap with this colour before pasting the bitmaps in
 
         public bool FreezeTracking { get; set; } = false;        // when set, all mouse movement tracking is turned off
@@ -203,6 +205,7 @@ namespace ExtendedControls
                 Image lastimage = Image;
 
                 Image = newrender;      // and replace the image in one go, to try and minimise distortion
+                ImageChanged?.Invoke(this);     // and indicate image has changed
 
                 if (resizecontrol)
                     this.Size = new Size(newrender.Width, newrender.Height);
@@ -213,6 +216,7 @@ namespace ExtendedControls
             {
                 Image?.Dispose();
                 Image = null;       // nothing, null image
+                ImageChanged?.Invoke(this);     // and indicate image has changed
             }
         }
 

@@ -16,6 +16,8 @@ namespace TestExtendedControls
     {
         ThemeList theme;
 
+        Timer tme = new Timer();
+
         public TestPanelDGVOtherCells()
         {
             InitializeComponent();
@@ -75,7 +77,7 @@ namespace TestExtendedControls
                     c3.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     rw.Cells.Add(c3);
 
-                    DataGridViewPictureBox p3 = new DataGridViewPictureBox();
+                    DataGridViewPictureBoxCell p3 = new DataGridViewPictureBoxCell();
                     p3.PictureBox.AddTextAutoSize(new Point(0, 0), new Size(1000, 1000), "Text1", Font, Color.Red, Color.Blue, 1.0f);
                     p3.PictureBox.AddTextAutoSize(new Point(0, 70), new Size(1000, 1000), "Text2", Font, Color.Red, Color.Blue, 1.0f);
                     p3.PictureBox.AddImage(new Rectangle(0, 20, 32, 32), Properties.Resources.Calendar);
@@ -93,6 +95,26 @@ namespace TestExtendedControls
             }
 
             dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+
+            tme.Interval = 1000;
+            tme.Tick += Tme_Tick;
+            tme.Start();
+        }
+
+
+        int tickc = 0;
+        private void Tme_Tick(object sender, EventArgs e)
+        {
+            DataGridViewPictureBoxCell p3 = dataGridView.Rows[0].Cells[3] as DataGridViewPictureBoxCell ;
+            p3.PictureBox.ClearImageList();
+            p3.PictureBox.AddTextAutoSize(new Point(0, 0), new Size(1000, 1000), "Count" + tickc, Font, Color.Red, Color.Blue, 1.0f);
+            p3.PictureBox.AddTextAutoSize(new Point(0, 70), new Size(1000, 1000), "Text2", Font, Color.Red, Color.Blue, 1.0f);
+            p3.PictureBox.AddImage(new Rectangle(0, 20, 32, 32), Properties.Resources.Calendar);
+            p3.PictureBox.Render();
+            dataGridView.InvalidateCell(p3);
+
+            tickc++;
+
         }
 
         protected override void OnLoad(EventArgs e)
