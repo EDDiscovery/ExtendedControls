@@ -20,7 +20,18 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ConfigurableForm : DraggableForm
+    public interface IConfigurableDialog
+    {
+        void ReturnResult(DialogResult result);
+        DialogResult DialogResult { get; set; }
+        Point Location { get; set; }
+        Size Size { get; set; }
+        bool Set(string controlname, string value);
+        Control GetControl(string controlname);
+        string Get(string controlname);
+    }
+
+    public class ConfigurableForm : DraggableForm, IConfigurableDialog
     {
         #region Properties
 
@@ -245,7 +256,7 @@ namespace ExtendedControls
         }
 
         // get control by name
-        public Control GetControl(string controlname )
+        public Control GetControl(string controlname)
         {
             return Entries.GetControl(controlname);
         }
@@ -333,7 +344,7 @@ namespace ExtendedControls
         }
 
         // Set value of control by string value
-        public bool Set(string controlname, string value)      
+        public bool Set(string controlname, string value)
         {
             return Entries.Set(controlname, value);
         }
