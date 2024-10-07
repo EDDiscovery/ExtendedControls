@@ -13,14 +13,12 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ConfigurableUC : UserControl
+    public class ConfigurableUC : UserControl, IConfigurableDialog
     {
         #region Properties
 
@@ -32,6 +30,7 @@ namespace ExtendedControls
         public ConfigurableEntryList Entries { get; private set; } = new ConfigurableEntryList();
 
         public BorderStyle PanelBorderStyle { get; set; } = BorderStyle.FixedSingle;
+        public DialogResult DialogResult { get; set; }      // Just for the Interface - not used in this non modal UC
 
         #endregion
 
@@ -76,6 +75,35 @@ namespace ExtendedControls
                 contentpanel.FinishedPosition(pos);
                 Entries.SendTrigger("Resize");
             }
+        }
+
+        // no action, not modal
+        public void ReturnResult(DialogResult result)
+        {
+        }
+
+        // Set value of control by string value
+        public bool Set(string controlname, string value)
+        {
+            return Entries.Set(controlname, value);
+        }
+
+        // get control by name
+        public Control GetControl(string controlname)
+        {
+            return Entries.GetControl(controlname);
+        }
+
+        // get control by name
+        public string Get(string controlname)
+        {
+            return Entries.Get(controlname);
+        }
+
+        // Return GetValue() by controlname, null if can't get
+        public T GetValue<T>(string controlname)
+        {
+            return Entries.GetValue<T>(controlname);
         }
 
         #endregion
