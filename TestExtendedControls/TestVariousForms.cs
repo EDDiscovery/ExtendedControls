@@ -518,7 +518,7 @@ namespace TestExtendedControls
 
             Form parent = this;
 
-            f.Add(new ConfigurableEntryList.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { Panel = ConfigurableEntryList.Entry.PanelType.Top });
+            f.Add(new ConfigurableEntryList.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { PlacedInPanel = ConfigurableEntryList.Entry.PanelType.Top });
             f.AddOK(new Point(10, 10), paneltype: ConfigurableEntryList.Entry.PanelType.Bottom);
             f.AddBools(names,names, state, 4, 24, vdepth, 4, 150, "B_");
             f.InstallStandardTriggers();

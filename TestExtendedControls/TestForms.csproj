@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="QuickJSON, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RJKJSoft.QuickJSON.2.2.0\lib\net48\QuickJSON.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
@@ -50,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestConfigurableUC2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestConfigurableUC2.Designer.cs">
+      <DependentUpon>TestConfigurableUC2.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestImportExport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -328,6 +337,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestConfigurableUC2.resx">
+      <DependentUpon>TestConfigurableUC2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestImportExport.resx">
       <DependentUpon>TestImportExport.cs</DependentUpon>
     </EmbeddedResource>
@@ -446,7 +458,7 @@
       <DependentUpon>TestAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -476,6 +488,7 @@
     <EmbeddedResource Include="UserControl2.resx">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -570,13 +583,13 @@
     <None Include="Resources\Popout.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Addtab.png" />
+    <EmbeddedResource Include="Resources\Addtab.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Compass.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BookmarkManager.png" />
+    <EmbeddedResource Include="Resources\BookmarkManager.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\CaptainsLog.png" />
@@ -588,7 +601,7 @@
     <None Include="Resources\Commodities.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Discoveries.png" />
+    <EmbeddedResource Include="Resources\Discoveries.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\FleetCarrier.png" />

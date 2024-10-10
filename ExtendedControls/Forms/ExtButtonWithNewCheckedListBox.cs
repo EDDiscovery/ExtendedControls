@@ -36,7 +36,8 @@ namespace ExtendedControls
                             Size? imagesize = null, Size? screenmargin = null, Size? closeboundaryregion = null, 
                             bool multicolumns = false,
                             IEnumerable<CheckedIconUserControl.Item> groupoptions = null,
-                            bool sortitems = false)
+                            bool sortitems = false,
+                            Action<string, System.Windows.Forms.MouseEventArgs> buttonpressed = null)
         {
             this.list = standardoptions;
             this.glist = groupoptions;
@@ -50,6 +51,7 @@ namespace ExtendedControls
             this.currentsettings = startsetting;
             this.multicolumns = multicolumns;
             this.sortitems = sortitems;
+            this.buttonpressed = buttonpressed;
         }
 
         // All/None with all items back, and a default closing area
@@ -111,6 +113,11 @@ namespace ExtendedControls
                 ValueChanged?.Invoke(newsetting,changed);
             };
 
+            DropDown.UC.ButtonPressed += (i,s1,s2,o1,e1) =>
+            {
+                buttonpressed?.Invoke(s1, e1);
+            };
+
             DropDown.Show(currentsettings, this, this.FindForm());
         }
 
@@ -127,6 +134,7 @@ namespace ExtendedControls
         private string currentsettings;
         private bool multicolumns;
         private bool sortitems;
+        private Action<string, System.Windows.Forms.MouseEventArgs> buttonpressed;
 
     }
 }

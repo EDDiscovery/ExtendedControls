@@ -14,6 +14,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -51,14 +52,23 @@ namespace ExtendedControls
             Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl());
         }
 
+        public void UpdateEntries()
+        {
+            Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl(), this.FindForm().CurrentAutoScaleFactor(), -vertscrollpanel.ScrollValue);
+            contentpanel.Recalcuate();  // don't move scroll, but recalc area to scroll
+        }
+
+        // call after themeing to apply some overrides
         public void Themed()
         {
-            foreach (var e in Entries)
+            foreach (var ent in Entries)
             {
-                e.Location = e.Control.Location;
-                e.Size = e.Control.Size;
-                if (e.MinimumSize == Size.Empty)
-                    e.MinimumSize = e.Size;
+                ent.Location = ent.Control.Location;
+                ent.Size = ent.Control.Size;
+                if (ent.MinimumSize == Size.Empty)
+                    ent.MinimumSize = ent.Size;
+                if (ent.BackColor.HasValue)
+                    ent.Control.BackColor = ent.BackColor.Value;
             }
 
             contentpanel.Recalcuate();
@@ -70,6 +80,8 @@ namespace ExtendedControls
 
             if ( contentpanel != null )
             {
+// TBD ANCHORING? as per CF Resize
+
                 //System.Diagnostics.Debug.WriteLine($"ConfigurableUC On Resize scroll panel pos {vertscrollpanel.ScrollValue}");
                 int pos = contentpanel.BeingPosition();
                 contentpanel.FinishedPosition(pos);
@@ -104,6 +116,11 @@ namespace ExtendedControls
         public T GetValue<T>(string controlname)
         {
             return Entries.GetValue<T>(controlname);
+        }
+
+        public void Show(IWin32Window window)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

@@ -22,6 +22,7 @@ namespace ExtendedControls
 {
     public interface IConfigurableDialog
     {
+        void Show(IWin32Window window);
         void ReturnResult(DialogResult result);
         DialogResult DialogResult { get; set; }
         Point Location { get; set; }
@@ -590,12 +591,14 @@ namespace ExtendedControls
 
             int curpos = contentpanel.BeingPosition();
 
-            foreach( var e in Entries)
+            foreach( var ent in Entries)
             {
-                e.Location = e.Control.Location;
-                e.Size = e.Control.Size;
-                if (e.MinimumSize == Size.Empty)
-                    e.MinimumSize = e.Size;
+                ent.Location = ent.Control.Location;
+                ent.Size = ent.Control.Size;
+                if (ent.MinimumSize == Size.Empty)
+                    ent.MinimumSize = ent.Size;
+                if (ent.BackColor.HasValue)
+                    ent.Control.BackColor = ent.BackColor.Value;
             }
 
             initialscrollpanelsize = contentpanel.Size;

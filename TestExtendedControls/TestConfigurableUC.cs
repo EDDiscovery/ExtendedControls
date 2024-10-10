@@ -49,6 +49,15 @@ namespace TestExtendedControls
         {
             this.Bounds = new Rectangle(100, 100, 1000, 1000);
         }
+
+        int addpos = 0;
+        private void extButtonAdd_Click(object sender, EventArgs e)
+        {
+            configurableUC1.Entries.Add(new ConfigurableEntryList.Entry("BA" + addpos, typeof(ExtButton), "+" + addpos.ToString(), new Point(200, addpos), new Size(99, 24), "N1"));
+            addpos += 50;
+            configurableUC1.UpdateEntries();
+
+        }
     }
 
 }
