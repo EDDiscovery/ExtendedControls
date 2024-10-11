@@ -138,6 +138,7 @@
     <Compile Include="Forms\ConfigurableEntries.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Forms\ConfigurableDialogInterface.cs" />
     <Compile Include="Forms\ConfigurableUC.cs">
       <SubType>UserControl</SubType>
     </Compile>

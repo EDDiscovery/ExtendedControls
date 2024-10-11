@@ -53,7 +53,7 @@ namespace ExtendedControls
 
         public int YOffset { get; set; } = 0;               // Fixed y adjust for position when adding entries to account for any title area in the contentpanel (+ve down)
 
-        public Action<bool, Control, MouseEventArgs> MouseUpDownOnLabel { get; set; } = null; // click on label items handler
+        public Action<bool, Control, MouseEventArgs> MouseUpDownOnLabelOrPanel { get; set; } = null; // click on label items handler
 
         #endregion
 
@@ -279,14 +279,17 @@ namespace ExtendedControls
         }
 
         // remove a control from the list, both visually and from entries
-        public void RemoveEntry(string controlname)
+        public bool Remove(string controlname)
         {
             Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t?.Control != null)
             {
                 t.Control.Parent.Controls.Remove(t.Control);
                 Entries.Remove(t);
+                return true;
             }
+            else
+                return false;
         }
 
 
@@ -711,7 +714,7 @@ namespace ExtendedControls
                 return "Not a DGV";
         }
 
-        public void Clear(string controlname)
+        public bool Clear(string controlname)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
             if (t != null)
@@ -719,11 +722,14 @@ namespace ExtendedControls
                 var cn = t.Control as ExtPanelDataGridViewScroll;
                 var dgv = cn.DGV;
                 dgv.Rows.Clear();
+                return true;
             }
+
+            return false;
         }
 
         // remove DGV,start row, count
-        public void Remove(string controlname, string rowstring)
+        public bool RemoveRows(string controlname, int rowstart, int count)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
             if (t != null)
@@ -731,18 +737,32 @@ namespace ExtendedControls
                 var cn = t.Control as ExtPanelDataGridViewScroll;
                 var dgv = cn.DGV;
 
-                BaseUtils.StringParser sp = new BaseUtils.StringParser(rowstring);
-                int? rowstart = sp.NextIntComma(" ,");
-                int? count = sp.NextIntComma(" ,");
-                if (rowstart != null && count != null && rowstart >= 0 && rowstart < dgv.Rows.Count)
+                if (rowstart >= 0 && rowstart < dgv.Rows.Count)
                 {
                     while (count > 0 && dgv.Rows.Count>rowstart)
                     {
-                        dgv.Rows.RemoveAt(rowstart.Value);
+                        dgv.Rows.RemoveAt(rowstart);
                         count--;
                     }
                 }
+
+                return true;
             }
+
+            return false;
+        }
+
+        public void CloseDropDown()
+        {
+            foreach( var x in Entries.Where(x=>x.Control is ExtButtonWithNewCheckedListBox))
+            {
+                var c = x.Control as ExtButtonWithNewCheckedListBox;
+                if ( c.IsDropDownActive)
+                {
+                    c.CloseDropDown();
+                }
+            }
+
         }
 
         #endregion
@@ -898,7 +918,7 @@ namespace ExtendedControls
                 else
                 {
                     Panel toaddto = (ent.PlacedInPanel == ConfigurableEntryList.Entry.PanelType.Top && toppanel != null) ? toppanel :
-                                    (ent.PlacedInPanel == ConfigurableEntryList.Entry.PanelType.Top && toppanel != null) ? bottompanel :
+                                    (ent.PlacedInPanel == ConfigurableEntryList.Entry.PanelType.Bottom && bottompanel != null) ? bottompanel :
                                     contentpanel;
 
                     toaddto.Controls.Add(c);
@@ -915,8 +935,8 @@ namespace ExtendedControls
                     l.Text = ent.TextValue;
                     if (ent.TextAlign.HasValue)
                         l.TextAlign = ent.TextAlign.Value;
-                    l.MouseDown += (md1, md2) => { MouseUpDownOnLabel?.Invoke(true, (Control)md1, md2); };        
-                    l.MouseUp += (md1, md2) => { MouseUpDownOnLabel?.Invoke(false, (Control)md1, md2); };
+                    l.MouseDown += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(true, (Control)md1, md2); };
+                    l.MouseUp += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(false, (Control)md1, md2); };
                 }
                 else if (c is ExtButton)
                 {
@@ -1165,9 +1185,15 @@ namespace ExtendedControls
                     dgv.SelectionChanged += Dgv_SelectionChanged;
                     dgv.Sorted += (s1,e1) => { SendTrigger("SortColumn:" + dgv.SortedColumn.Index ); };
                 }
+                else if (c is Panel)
+                {
+                    c.MouseDown += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(true, (Control)md1, md2); };
+                    c.MouseUp += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(false, (Control)md1, md2); };
+                }
                 else
                 {
-                    c.Text = ent.TextValue;     // rest get text value
+                    if ( ent.TextValue!=null)
+                        c.Text = ent.TextValue;     // rest get text value
                 }
 
                 if (autosizefactor != null)     // when adding, form scaling has already been done, so we need to scale manually
@@ -1295,7 +1321,14 @@ namespace ExtendedControls
                 entry.Dock = ds;
 
             if (inpanelname != null)
-                entry.InPanel = inpanelname;
+            {
+                if (inpanelname.EqualsIIC("Bottom"))
+                    entry.PlacedInPanel = Entry.PanelType.Bottom;
+                else if (inpanelname.EqualsIIC("Top"))
+                    entry.PlacedInPanel = Entry.PanelType.Top;
+                else
+                    entry.InPanel = inpanelname;
+            }
 
             if (tip != null)        // must have a tip for these extra values
             {

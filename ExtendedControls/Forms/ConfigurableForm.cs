@@ -15,23 +15,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public interface IConfigurableDialog
-    {
-        void Show(IWin32Window window);
-        void ReturnResult(DialogResult result);
-        DialogResult DialogResult { get; set; }
-        Point Location { get; set; }
-        Size Size { get; set; }
-        bool Set(string controlname, string value);
-        Control GetControl(string controlname);
-        string Get(string controlname);
-    }
-
     public class ConfigurableForm : DraggableForm, IConfigurableDialog
     {
         #region Properties
@@ -74,7 +61,8 @@ namespace ExtendedControls
             AllowResize = false;
         }
 
-        public string Add(string instr)       // add a string definition dynamically add to list.  errmsg if something is wrong
+        // add a string definition dynamically add to list.  errmsg if something is wrong
+        public string Add(string instr)       
         {
             return Entries.Add(instr);
         }
@@ -122,24 +110,10 @@ namespace ExtendedControls
             return Entries.AddBools(tags, names, ischecked, vposstart, vspacing, depth, xstart, xspacing, tagprefix);
         }
 
-        // handle OK and Close/Escape/Cancel
-        public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
-        {
-            Trigger += (dialogname, controlname, xtag) =>
-            {
-                if (controlname == "OK")
-                    ReturnResult(DialogResult.OK);
-                else if (controlname == "Close" || controlname == "Escape" || controlname == "Cancel")
-                    ReturnResult(DialogResult.Cancel);
-                else
-                    othertrigger?.Invoke(dialogname, controlname, xtag);
-            };
-        }
-
         // remove a control from the list, both visually and from entries
-        public void RemoveEntry(string controlname)
+        public bool Remove(string controlname)
         {
-            Entries.RemoveEntry(controlname);
+            return Entries.Remove(controlname);
         }
 
         // must call if you add new controls after shown in a trigger
@@ -184,6 +158,22 @@ namespace ExtendedControls
                }
             }
         }
+
+        // handle OK and Close/Escape/Cancel
+        public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
+        {
+            Trigger += (dialogname, controlname, xtag) =>
+            {
+                if (controlname == "OK")
+                    ReturnResult(DialogResult.OK);
+                else if (controlname == "Close" || controlname == "Escape" || controlname == "Cancel")
+                    ReturnResult(DialogResult.Cancel);
+                else
+                    othertrigger?.Invoke(dialogname, controlname, xtag);
+            };
+        }
+
+
 
         // Helper to create a standard dialog, centred, with a top panel area, with standard triggers, and OK is enabled when all is valid
         // you need to add OK yourself.
@@ -362,6 +352,30 @@ namespace ExtendedControls
             Entries.RadioButton(startingcontrolname, controlhit, max);
         }
 
+        // add/set rows in DGV
+        public string AddSetRows(string controlname, string rowstring)
+        {
+            return Entries.AddSetRows(controlname, rowstring);
+        }
+
+        // clear control
+        public bool Clear(string controlname)
+        {
+            return Entries.Clear(controlname);
+        }
+
+        // remove rows
+        public bool RemoveRows(string controlname, int start, int count)
+        {
+            return Entries.RemoveRows(controlname, start, count);
+        }
+
+        // close any drop down open
+        public void CloseDropDown()
+        {
+            Entries.CloseDropDown();
+        }
+
         // are all entries on this table which could be invalid valid?
         public bool IsAllValid()
         {
@@ -379,7 +393,7 @@ namespace ExtendedControls
         {
             Entries.Name = lname;
             Entries.CallerTag = callertag;
-            Entries.MouseUpDownOnLabel += (dir, control, me) => { if (dir) OnCaptionMouseDown(control, me); else OnCaptionMouseUp(control, me); };
+            Entries.MouseUpDownOnLabelOrPanel += (dir, control, me) => { if (dir) OnCaptionMouseDown(control, me); else OnCaptionMouseUp(control, me); };
 
             this.halign = halign;
             this.valign = valign;

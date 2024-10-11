@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -89,38 +90,75 @@ namespace ExtendedControls
             }
         }
 
+        public void Show(IWin32Window window)
+        {
+            throw new NotImplementedException();
+        }
+
         // no action, not modal
         public void ReturnResult(DialogResult result)
         {
         }
 
-        // Set value of control by string value
-        public bool Set(string controlname, string value)
+        // add a string definition dynamically add to list.  errmsg if something is wrong
+        public string Add(string instr)       // add a string definition dynamically add to list.  errmsg if something is wrong
         {
-            return Entries.Set(controlname, value);
+            return Entries.Add(instr);
         }
-
+        // remove a control from the list, both visually and from entries
+        public bool Remove(string controlname)
+        {
+            return Entries.Remove(controlname);
+        }
         // get control by name
         public Control GetControl(string controlname)
         {
             return Entries.GetControl(controlname);
         }
-
         // get control by name
         public string Get(string controlname)
         {
             return Entries.Get(controlname);
         }
-
         // Return GetValue() by controlname, null if can't get
         public T GetValue<T>(string controlname)
         {
             return Entries.GetValue<T>(controlname);
         }
-
-        public void Show(IWin32Window window)
+        // Set value of control by string value
+        public bool Set(string controlname, string value)
         {
-            throw new NotImplementedException();
+            return Entries.Set(controlname, value);
+        }
+        public void SetCheckedList(IEnumerable<string> controlnames, bool state)
+        {
+            Entries.SetCheckedList(controlnames, state);
+        }
+        // radio button this set, to 1 entry, or to N max
+        public void RadioButton(string startingcontrolname, string controlhit, int max = 1)
+        {
+            Entries.RadioButton(startingcontrolname, controlhit, max);
+        }
+        // null is good
+        public string AddSetRows(string controlname, string rowstring)
+        {
+            return Entries.AddSetRows(controlname, rowstring);
+        }
+        public bool Clear(string controlname)
+        {
+            return Entries.Clear(controlname);
+        }
+        public bool RemoveRows(string controlname, int start, int count)
+        {
+            return Entries.RemoveRows(controlname, start, count);
+        }
+        public void CloseDropDown()
+        {
+            Entries.CloseDropDown();
+        }
+        public bool IsAllValid()
+        {
+            return Entries.IsAllValid();
         }
 
         #endregion
