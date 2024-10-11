@@ -36,9 +36,16 @@ namespace ExtendedControls
         void RadioButton(string startingcontrolname, string controlhit, int max = 1);
         string AddSetRows(string controlname, string rowstring);
         bool Clear(string controlname);
-        bool RemoveRows(string controlname, int start, int count);
-        void CloseDropDown();
+        int RemoveRows(string controlname, int start, int count);
         bool IsAllValid();
+        void CloseDropDown();
+
+        bool SetEnable(string controlname, bool enabled);
+        bool SetVisible(string controlname, bool enabled);
+        bool IsEnabled(string controlname);
+        bool IsVisible(string controlname);
+        bool GetPosition(string controlname, out Rectangle r);  // in dialog units
+        bool SetPosition(string controlname, Rectangle r); // in dialog units
     }
 
 }

@@ -149,7 +149,7 @@ namespace ExtendedControls
         {
             return Entries.Clear(controlname);
         }
-        public bool RemoveRows(string controlname, int start, int count)
+        public int RemoveRows(string controlname, int start, int count)
         {
             return Entries.RemoveRows(controlname, start, count);
         }
@@ -160,6 +160,35 @@ namespace ExtendedControls
         public bool IsAllValid()
         {
             return Entries.IsAllValid();
+        }
+
+        public bool SetEnable(string controlname, bool enabled)
+        {
+            return Entries.Enable(controlname, enabled);
+        }
+
+        public bool SetVisible(string controlname, bool visible)
+        {
+            return Entries.Visible(controlname, visible);
+        }
+
+        public bool IsEnabled(string controlname)
+        {
+            return Entries.Find(controlname)?.Control?.Enabled ?? false;
+        }
+
+        public bool IsVisible(string controlname)
+        {
+            return Entries.Find(controlname)?.Control?.Visible ?? false;
+        }
+
+        public bool GetPosition(string controlname, out Rectangle r)    // in design units
+        {
+            return Entries.GetPosition(controlname, out r, this.FindForm().CurrentAutoScaleFactor());
+        }
+        public bool SetPosition(string controlname, Rectangle r)    // in design units
+        {
+            return Entries.SetPosition(controlname, r, this.FindForm().CurrentAutoScaleFactor());
         }
 
         #endregion
