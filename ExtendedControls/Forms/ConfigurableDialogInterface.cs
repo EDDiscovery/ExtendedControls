@@ -26,6 +26,7 @@ namespace ExtendedControls
         Point Location { get; set; }
         Size Size { get; set; }
         string Add(string instr);
+        void UpdateEntries();   // call after add when shown
         bool Remove(string controlname);
         Control GetControl(string controlname);
         string Get(string controlname);

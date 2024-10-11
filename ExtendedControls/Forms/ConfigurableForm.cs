@@ -47,7 +47,7 @@ namespace ExtendedControls
         public Color BorderRectColour { get; set; } = Color.Empty;  // force border colour
         public BorderStyle PanelBorderStyle { get; set; } = BorderStyle.FixedSingle;
         public Size ExtraMarginRightBottom { get; set; } = new Size(16, 16);
-        public float FontScale { get; set; } = 1.0f;
+        public float FontScale { get; set; } = 1.0f;        // scale the standard theme font by this
         public int TopPanelHeight { get; set; } = 0;        // in design units, 0 = off
         public int BottomPanelHeight { get; set; } = 0;     // in design units, 0 = off
 
@@ -117,11 +117,10 @@ namespace ExtendedControls
         }
 
         // must call if you add new controls after shown in a trigger
-        public void UpdateDisplayAfterAddNewControls()
+        public void UpdateEntries()
         {
-            Entries.CreateEntries(contentpanel,toppanel,bottompanel,tooltipcontrol, this.CurrentAutoScaleFactor());          // make new controls, and scale up by autoscalefactor
-            Theme.Current.Apply(this, Theme.Current.GetScaledFont(FontScale), ForceNoWindowsBorder);    // retheme
-            //this.DumpTree(0);
+            // make new controls, and scale up by autoscalefactor, and theme it
+            Entries.CreateEntries(contentpanel,toppanel,bottompanel,tooltipcontrol, this.CurrentAutoScaleFactor(), Theme.Current?.GetScaledFont(FontScale));    
             SizeWindow(); // and size window again
         }
 
@@ -172,8 +171,6 @@ namespace ExtendedControls
                     othertrigger?.Invoke(dialogname, controlname, xtag);
             };
         }
-
-
 
         // Helper to create a standard dialog, centred, with a top panel area, with standard triggers, and OK is enabled when all is valid
         // you need to add OK yourself.

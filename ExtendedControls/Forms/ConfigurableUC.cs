@@ -55,7 +55,8 @@ namespace ExtendedControls
 
         public void UpdateEntries()
         {
-            Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl(), this.FindForm().CurrentAutoScaleFactor(), -vertscrollpanel.ScrollValue);
+            Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl(), this.FindForm().CurrentAutoScaleFactor(), 
+                                                Theme.Current?.GetScaledFont(1.0f), - vertscrollpanel.ScrollValue);
             contentpanel.Recalcuate();  // don't move scroll, but recalc area to scroll
         }
 

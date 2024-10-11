@@ -115,7 +115,6 @@ namespace TestExtendedControls
             configurableUC1.Entries.Add(new ConfigurableEntryList.Entry("BA" + addpos, typeof(ExtButton), "+" + addpos.ToString(), new Point(200, addpos), new Size(99, 24), "N1"));
             addpos += 50;
             configurableUC1.UpdateEntries();
-
         }
 
         int rwno = 10;
@@ -166,7 +165,7 @@ namespace TestExtendedControls
 
         private void extButtonRemove12_Click(object sender, EventArgs e)
         {
-            configurableUC1.Entries.Remove("DGV", "1,2");
+            configurableUC1.Entries.RemoveRows("DGV", 1,2);
         }
     }
 

@@ -65,6 +65,8 @@ namespace ExtendedControls
             public string Name { get; set; }                            // logical name of control
             public Type ControlType { get; set; }                       // if non null, activate this type.  Else if null, Control should be filled up with your specific type
             public Control Control { get; set; }                        // if controltype is set, don't set.  If controltype=null, pass your control type.
+
+            public bool Created { get; set; }                           // has the control been created by CreateEntries
             public Point Location { get; set; }
             public Size Size { get; set; }
             public AnchorStyles Anchor { get; set; } = AnchorStyles.None;       // anchor to window
@@ -862,6 +864,7 @@ namespace ExtendedControls
 
         #endregion
 
+
         #region Create any new entries in the list
 
         // create entry in contentpanel/toppanel (may be null)/bottompanel (may be null)
@@ -869,16 +872,13 @@ namespace ExtendedControls
         // autosize factor if set causes a scaling of the location/size
         // YScollPos = scroll vertical setting, which is autosized
 
-        public void CreateEntries(ExtPanelVertScroll contentpanel, Panel toppanel, Panel bottompanel, ToolTip tooltipcontrol, SizeF? autosizefactor = null, int Yscrollpos = 0)
+        public void CreateEntries(ExtPanelVertScroll contentpanel, Panel toppanel, Panel bottompanel, ToolTip tooltipcontrol, 
+                                SizeF? autosizefactor = null, Font themefont = null, int Yscrollpos = 0)
         {
             foreach (var ent in Entries)
             {
-                if (ent.Control != null && (contentpanel.Controls.Contains(ent.Control) ||              // if already installed, do nothing
-                                (toppanel != null && toppanel.Controls.Contains(ent.Control)) ||
-                                (bottompanel != null && bottompanel.Controls.Contains(ent.Control))))
-                {
+                if (ent.Created)        // don't double create
                     continue;
-                }
 
                 Control c = ent.ControlType != null ? (Control)Activator.CreateInstance(ent.ControlType) : ent.Control;
 
@@ -1202,8 +1202,12 @@ namespace ExtendedControls
                     c.Scale(autosizefactor.Value);
                     //System.Diagnostics.Debug.WriteLine($"......... Now {c.Bounds}");
                 }
-            }
 
+                if (themefont != null)          // if themeing, apply it
+                    Theme.Current.Apply(c, themefont);
+
+                ent.Created = true;
+            }
         }
 
         private void Dgv_Sorted(object sender, EventArgs e)

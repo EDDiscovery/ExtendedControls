@@ -481,7 +481,7 @@ namespace TestExtendedControls
                 {
                     f.MoveControls(newpos-15, 30);      // the -15 just ensures any rounding won't affect picking ok
                     f.Add(new ConfigurableEntryList.Entry("newc", typeof(ExtButton), "NB", new Point(10, newpos), new Size(140, 24), ""));
-                    f.UpdateDisplayAfterAddNewControls();
+                    f.UpdateEntries();
                     newpos += 30;
                 }
             };
