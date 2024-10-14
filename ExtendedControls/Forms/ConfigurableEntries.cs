@@ -21,28 +21,15 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ConfigurableEntryList
+    public partial class ConfigurableEntryList
     {
         #region Properties
 
         // You give an array of Entries describing the controls
-        // either added programatically by Add(entry) or via a string descriptor Add(string) (See action document for string descriptor format)
-        // Directly Supported Types (string name/base type)
-        //      "button" ExtButton, "textbox" ExtTextBox, "checkbox" ExtCheckBox 
-        //      "label" Label, "datetime" ExtDateTimePicker,
-        //      "numberboxdouble" NumberBoxDouble, "numberboxlong" NumberBoxLong, "numberboxint" NumberBoxInt, 
-        //      "combobox" ExtComboBox
-        // Or any type if you use Add(control, name..)
-
+        // either added programatically by Add(entry) or via a string descriptor Add(string) - See action document for string descriptor format
         // Lay the thing out like its in the normal dialog editor, with 8.25f font.  Leave space for the title bar/close icon.
-
-        // Triggers
-        // returns dialog logical name, name of control (plus options), caller tag object
-        // name of control on click for button / Checkbox / ComboBox
-        // name:Return for number box, textBox.  Set Entries.SwallowReturn to true before returning to swallow the return key
-        // name:Validity:true/false for Number boxes
-        // name:RowSelection:<list> for DGV, gives a list of semi colon separated row values, in selection order (last one first)
-        // name:CellSelection:<list> for DGV, gives a list of semi colon separated cell locations, each in Row,Col format, in selection order (last one first)
+        // Triggers are sent back when actions happen. Two versions - Trigger (backwards compatible) and TriggerAdv with an additional data field.
+        // See action document for trigger descriptions
 
         public List<Entry> Entries { get; private set; } = new List<Entry>();       // entry list
         public bool DisableTriggers { get; set; } = false;        // set to stop triggering of events
@@ -50,6 +37,7 @@ namespace ExtendedControls
         public string Name { get; set; } = "Default";       // name to return in triggers
         public Object CallerTag { get; set; } = null;       // object to return in triggers
         public Action<string, string, Object> Trigger { get; set; } = null;      // return trigger
+        public Action<string, string, Object, Object> TriggerAdv { get; set; } = null;      // return trigger (Dialog, control, value, tag)
 
         public int YOffset { get; set; } = 0;               // Fixed y adjust for position when adding entries to account for any title area in the contentpanel (+ve down)
 
@@ -84,17 +72,18 @@ namespace ExtendedControls
             public string TextValue { get; set; }                       // textboxes : text
                                                                         // comboxbox def value
                                                                         // label text
-                                                                        // checkbox text
-                                                                        // button: if Resource:<fullpath> load embedded resource as image. If Image:<file> load image as file. Else text
+                                                                        // button/ExtButtonWithNewCheckedListBox/CheckBox: if Resource:<fullpath> load embedded resource as image. If File:<file> load image as file. Else text
                                                                         // For number boxes, the invariant value, or Null and it will use the DoubleValue or LongValue
                                                                         // for Dates, the invariant culture assumed local
-                                                                        // for ExtButtonWithNewCheckedListBox, initial setting, semi colon list
-            public double DoubleValue { get; set; }                     // if its a number box double, set this, Text=null
+            public double DoubleValue { get; set; }                     // if its a number box double, set this, Text=null. Also used for splitter container as % (0-100) for top
             public long LongValue { get; set; }                         // if its a number box long or int, set this, Text=null
             public DateTime DateTimeValue { get; set; }                 // if its a date time, set this, Text=null
 
             public ContentAlignment? TextAlign { get; set; }            // label,button. Null its not applied
             public ContentAlignment ContentAlign { get; set; } = ContentAlignment.MiddleLeft;  // align for checkbox
+
+            public bool Horizontal { get; set; }                        // Split container, is horizontal split
+            public bool Pinned { get; set; }                            // panelrollup
 
             public bool CheckBoxChecked { get; set; }                   // checkbox
 
@@ -123,8 +112,10 @@ namespace ExtendedControls
             public bool AllOrNoneShown { get; set; } = false;           // for DropDownButton
             public bool AllOrNoneBack { get; set; } = false;           // for DropDownButton
             public bool SortItems { get; set; } = false;                // for DropDownButton
-
             public Size? ImageSize { get; set; } = null;                // forced image size for dropdownbutton
+
+            public int Panel1MinPixelSize { get; set; } = 0;            // non zero, set
+            public int Panel2MinPixelSize { get; set; } = 0;            // non zero, set
 
 
             // general
@@ -175,26 +166,9 @@ namespace ExtendedControls
 
         #endregion
 
-        #region Find/Enumerate/Add
-
-        public Entry Find(Predicate<Entry> pred)
-        {
-            return Entries.Find(pred);
-        }
-
-        public Entry Find(string controlname)
-        {
-            return Entries.Find(x=>x.Name.Equals(controlname));
-        }
-
-        public List<Entry>.Enumerator GetEnumerator()
-        {
-            var x = Entries.GetEnumerator();
-            return Entries.GetEnumerator();
-        }
+        #region Add
 
         private System.Drawing.Point lastpos = new Point(0,0); // used for dynamically making the list up
-
         public string Add(string instr)       // add a string definition dynamically add to list.  errmsg if something is wrong
         {
             Entry e;
@@ -302,643 +276,6 @@ namespace ExtendedControls
 
         #endregion
 
-        #region Gets
-
-        // get control of name as type
-        public T GetControl<T>(string controlname) where T : Control      // return value of dialog control
-        {
-            Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
-                return (T)t.Control;
-            else
-                return null;
-        }
-
-        // get control by name
-        public Control GetControl(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
-                return t.Control;
-            else
-                return null;
-        }
-
-        // return value of dialog control as a string. Null if can't express it as a string (not a supported type)
-        public string Get(ConfigurableEntryList.Entry t)
-        {
-            Control c = t.Control;
-            if (c is ExtTextBox)
-            {
-                string s = (c as ExtTextBox).Text;
-                if (t.TextBoxEscapeOnReport)
-                    s = s.EscapeControlChars();
-                return s;
-            }
-            else if (c is Label)
-                return (c as Label).Text;
-            else if (c is ExtCheckBox)
-                return (c as ExtCheckBox).Checked ? "1" : "0";
-            else if (c is ExtDateTimePicker)
-                return (c as ExtDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            else if (c is NumberBoxDouble)
-            {
-                var cn = c as NumberBoxDouble;
-                return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
-            }
-            else if (c is NumberBoxLong)
-            {
-                var cn = c as NumberBoxLong;
-                return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
-            }
-            else if (c is NumberBoxInt)
-            {
-                var cn = c as NumberBoxInt;
-                return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
-            }
-            else if (c is ExtComboBox)
-            {
-                ExtComboBox cb = c as ExtComboBox;
-                return (cb.SelectedIndex != -1) ? cb.Text : "";
-            }
-            else
-                return null;
-        }
-
-        // return value of dialog control as a native value of the control (string/timedate etc). 
-        // null if invalid, null if not a supported control
-        public object GetValue(ConfigurableEntryList.Entry t)
-        {
-            Control c = t.Control;
-            if (c is ExtTextBox)
-            {
-                string s = (c as ExtTextBox).Text;
-                if (t.TextBoxEscapeOnReport)
-                    s = s.EscapeControlChars();
-                return s;
-            }
-            else if (c is Label)
-                return (c as Label).Text;
-            else if (c is ExtCheckBox)
-                return (c as ExtCheckBox).Checked;
-            else if (c is ExtDateTimePicker)
-                return (c as ExtDateTimePicker).Value;
-            else if (c is NumberBoxDouble)
-            {
-                var cn = c as NumberBoxDouble;
-                return cn.IsValid ? cn.Value : default(double?);
-            }
-            else if (c is NumberBoxLong)
-            {
-                var cn = c as NumberBoxLong;
-                return cn.IsValid ? cn.Value : default(long?);
-            }
-            else if (c is NumberBoxInt)
-            {
-                var cn = c as NumberBoxInt;
-                return cn.IsValid ? cn.Value : default(int?);
-            }
-            else if (c is ExtComboBox)
-            {
-                ExtComboBox cb = c as ExtComboBox;
-                return cb.SelectedIndex;
-            }
-            else
-                return null;
-        }
-
-        // Return Get() by controlname, null if can't get
-        public string Get(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            return t != null ? Get(t) : null;
-        }
-
-        // Return GetValue() by controlname, null if can't get
-        public T GetValue<T>(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            return t != null ? (T)GetValue(t) : default(T);
-        }
-
-        // Return Get() from controls starting with this name
-        public string[] GetByStartingName(string startingcontrolname)
-        {
-            var list = Entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
-            string[] res = new string[list.Length];
-            for (int i = 0; i < list.Length; i++)
-                res[i] = Get(list[i]);
-            return res;
-        }
-
-        // Return GetValue() from controls starting with this name
-        public T[] GetByStartingName<T>(string startingcontrolname)
-        {
-            var list = Entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
-            T[] res = new T[list.Length];
-            for (int i = 0; i < list.Length; i++)
-                res[i] = (T)GetValue(list[i]);
-            return res;
-        }
-
-        // from checkbox
-        public bool? GetBool(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtCheckBox);
-            if (t != null)
-            {
-                var cn = t.Control as ExtCheckBox;
-                return cn.Checked;
-            }
-            return null;
-        }
-        // from numberbox, Null if not valid
-        public double? GetDouble(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxDouble);
-            if (t != null)
-            {
-                var cn = t.Control as NumberBoxDouble;
-                if (cn.IsValid)
-                    return cn.Value;
-            }
-            return null;
-        }
-
-        // from numberbox, Null if not valid
-        public long? GetLong(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxLong);
-            if (t != null)
-            {
-                var cn = t.Control as NumberBoxLong;
-                if (cn.IsValid)
-                    return cn.Value;
-            }
-            return null;
-        }
-        // from numberbox, Null if not valid
-        public int? GetInt(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxInt);
-            if (t != null)
-            {
-                var cn = t.Control as NumberBoxInt;
-                if (cn.IsValid)
-                    return cn.Value;
-            }
-            return null;
-        }
-        // from DateTimePicker, Null if not valid
-        public DateTime? GetDateTime(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtDateTimePicker);
-            if (t != null)
-            {
-                ExtDateTimePicker c = t.Control as ExtDateTimePicker;
-                if (c != null)
-                    return c.Value;
-            }
-
-            return null;
-        }
-
-        // from ExtCheckBox controls starting with this name, get the names of the ones checked, removing the prefix unless told not too
-        public string[] GetCheckedListNames(string startingcontrolname, bool removeprefix = true)
-        {
-            var elist = Entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked).Select(x => removeprefix ? x.Name.Substring(startingcontrolname.Length) : x.Name).ToArray();
-            return elist;
-        }
-
-        // from ExtCheckBox controls starting with this name, get the entries of ones checked
-        public ConfigurableEntryList.Entry[] GetCheckedListEntries(string startingcontrolname)
-        {
-            var elist = Entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Where(x => ((ExtCheckBox)x.Control).Checked);
-            return elist.ToArray();
-        }
-
-        // from ExtCheckBox controls starting with this name, get a bool array describing the check state
-        public bool[] GetCheckBoxBools(string startingcontrolname)
-        {
-            var elist = Entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
-            var result = new bool[elist.Length];
-            int i = 0;
-            foreach (var e in elist)
-            {
-                var ctr = e.Control as ExtCheckBox;
-                result[i++] = ctr.Checked;
-            }
-            return result;
-        }
-
-        // are all entries on this table which could be invalid valid?
-        public bool IsAllValid()
-        {
-            foreach (var t in Entries)
-            {
-                var c = t.Control;
-                var cl = c as NumberBoxLong;
-                var cd = c as NumberBoxDouble;
-                var ci = c as NumberBoxInt;
-                if ((cl != null && cl.IsValid == false) || (cd != null && cd.IsValid == false) || (ci != null && ci.IsValid == false))
-                    return false;
-            }
-            return true;
-        }
-
-        public bool GetPosition(string controlname, out Rectangle r, SizeF autoscalefactor)
-        {
-            var entry = Find(controlname);
-            if (entry != null)
-            {
-                r = new Rectangle((int)(entry.Control.Left / autoscalefactor.Width), (int)(entry.Control.Top / autoscalefactor.Height),
-                                  (int)(entry.Control.Width / autoscalefactor.Width), (int)(entry.Control.Height / autoscalefactor.Height)
-                    );
-                return true;
-            }
-            else
-            {
-                r = Rectangle.Empty;
-                return false;
-            }
-        }
-
-
-
-        #endregion
-
-        #region Sets
-        // Set value of control by string value
-        public bool Set(string controlname, string value)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
-            {
-                Control c = t.Control;
-                if (c is ExtTextBox)
-                {
-                    (c as ExtTextBox).Text = value;
-                    return true;
-                }
-                else if (c is Label)
-                {
-                    (c as Label).Text = value;
-                    return true;
-                }
-                else if (c is ExtCheckBox)
-                {
-                    (c as ExtCheckBox).Checked = !value.Equals("0");
-                    return true;
-                }
-                else if (c is ExtComboBox)
-                {
-                    ExtComboBox cb = c as ExtComboBox;
-                    if (cb.Items.Contains(value))
-                    {
-                        cb.Enabled = false;
-                        cb.SelectedItem = value;
-                        cb.Enabled = true;
-                        return true;
-                    }
-                }
-                else if (c is NumberBoxDouble)
-                {
-                    var cn = c as NumberBoxDouble;
-                    double? v = value.InvariantParseDoubleNull();
-                    if (v.HasValue)
-                    {
-                        cn.Value = v.Value;
-                        return true;
-                    }
-                }
-                else if (c is NumberBoxLong)
-                {
-                    var cn = c as NumberBoxLong;
-                    long? v = value.InvariantParseLongNull();
-                    if (v.HasValue)
-                    {
-                        cn.Value = v.Value;
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        // from controls starting with this name, set the names of the ones checked
-        public void SetCheckedList(IEnumerable<string> controlnames, bool state)
-        {
-            var cnames = controlnames.ToArray();
-            var elist = Entries.Where(x => x.Control is ExtCheckBox && Array.IndexOf(cnames, x.Name) >= 0).Select(x => x);
-            foreach (var e in elist)
-            {
-                (e.Control as ExtCheckBox).Checked = state;
-            }
-        }
-
-        // radio button this set, to 1 entry, or to N max
-        public void RadioButton(string startingcontrolname, string controlhit, int max = 1)
-        {
-            var elist = Entries.Where(x => x.Control is ExtCheckBox && x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
-
-            if (max == 1)
-            {
-                foreach (var x in elist)
-                {
-                    ((ExtCheckBox)x.Control).Checked = x.Name == controlhit;
-                }
-            }
-            else
-            {
-                var numchecked = elist.Where(x => ((ExtCheckBox)x.Control).Checked).Count();
-                if (numchecked > max)
-                {
-                    var chkbox = GetControl<ExtCheckBox>(controlhit);
-                    chkbox.Checked = false;
-                }
-            }
-        }
-
-
-        // For DGV, add or reset the row cell values. 
-        // in JSON or in text 
-        // see action doc for format
-
-        public string AddSetRows(string controlname, string rowstring)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
-            if (t != null)
-            {
-                var cn = t.Control as ExtPanelDataGridViewScroll;
-                var dgv = cn.DGV;
-
-                if (rowstring.StartsWith("["))     // JSON
-                {
-                    JArray ja = JArray.Parse(rowstring, JToken.ParseOptions.CheckEOL);
-                    if (ja != null)
-                    {
-                        foreach (JObject jo in ja)
-                        {
-                            int? rownumber = jo["Row"].IntNull();
-
-                            DataGridViewRow rw = null;
-
-                            bool insert = rownumber < 0;            // -1 insert at start, -2 add at end, else rownumber
-                            if (insert)
-                                rw = dgv.RowTemplate.Clone() as DataGridViewRow;
-                            else if (rownumber < dgv.Rows.Count)    // else check in range
-                                rw = dgv.Rows[rownumber.Value];
-                            else
-                            {
-                                return "Incorrect row number in JSON";
-                            }
-
-                            JArray jcells = jo["Cells"].Array();
-
-                            int cellno = 0;
-                            foreach (JObject cell in jcells.DefaultIfEmpty())
-                            {
-                                string type = cell["Type"].Str().ToLowerInvariant();
-                                string tooltip = cell["ToolTip"].Str();
-
-                                int? cellsetnogiven = cell["Cell"].IntNull();      // we can override the cell number (only when replacing)
-                                if (cellsetnogiven != null)                        // set the cell set number to the count if not set
-                                    cellno = cellsetnogiven.Value;
-
-                                if (type == "text")
-                                {
-                                    string value = cell["Value"].Str();
-
-                                    if (insert)
-                                        rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
-                                    else
-                                        rw.Cells[cellno].Value = value;
-                                }
-
-                                if (tooltip != null)
-                                    rw.Cells[cellno].ToolTipText = tooltip;
-
-                                cellno++;
-                            }
-
-                            if (insert)
-                            {
-                                if (rownumber == -1 && dgv.Rows.Count > 0)
-                                    dgv.Rows.Insert(0, rw);
-                                else
-                                    dgv.Rows.Add(rw);
-                            }
-                            cellno++;
-                        }
-
-                        return null;
-                    }
-                    else
-                        return "Bad JSON";
-
-                }
-                else
-                {
-                    BaseUtils.StringParser sp = new BaseUtils.StringParser(rowstring);
-
-                    while (!sp.IsEOL)
-                    {
-                        int? rownumber = sp.NextIntComma(" ,");
-                        if (rownumber.HasValue)
-                        {
-                            int cellno = 0;
-
-                            if (sp.PeekChar() != '(')
-                            {
-                                int? cno = sp.NextIntComma(" ,");
-                                if (cno != null)
-                                    cellno = cno.Value;
-                                else
-                                    return "Missing cell number after row";
-                            }
-
-                            DataGridViewRow rw = null;
-
-                            bool insert = rownumber < 0;            // -1 insert at start, -2 add at end, else rownumber
-                            if (insert)
-                                rw = dgv.RowTemplate.Clone() as DataGridViewRow;
-                            else if (rownumber < dgv.Rows.Count)    // else check in range
-                                rw = dgv.Rows[rownumber.Value];
-                            else
-                            {
-                                return "Incorrect row format in addsetrows";
-                            }
-
-                            while (sp.IsCharMoveOn('('))
-                            {
-                                string coltype = sp.NextQuotedWordComma(System.Globalization.CultureInfo.InvariantCulture);      // text, etc, see below
-
-                                if (coltype == "text")
-                                {
-                                    string value = sp.NextQuotedWord(" ),");
-
-                                    if (insert)
-                                        rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
-                                    else
-                                    {
-                                        if (cellno < dgv.Columns.Count)
-                                            rw.Cells[cellno].Value = value;
-                                        else
-                                            return "Cell number beyond column count";
-                                    }
-                                }
-                                else
-                                {
-                                    return "Unsuported Column Type " + coltype;
-                                }
-
-                                if (sp.IsCharMoveOn(','))       // more stuff, tooltip
-                                {
-                                    string tooltip = sp.NextQuotedWord(" ),");
-
-                                    if (tooltip != null)
-                                        rw.Cells[cellno].ToolTipText = tooltip;
-                                }
-
-                                if (!sp.IsCharMoveOn(')'))
-                                    return "Missing ) at end of cell definition";
-
-                                if (sp.IsEOL || sp.IsCharMoveOn(';'))      // EOL or semicolon ends definition of this rows cells
-                                    break;
-
-                                if (!sp.IsCharMoveOn(','))     // then must be comma
-                                {
-                                    return "Incorrect cell format missing comma";
-                                }
-
-                                cellno++;
-                            }
-
-                            if (insert)
-                            {
-                                if (rownumber == -1 && dgv.Rows.Count > 0)
-                                    dgv.Rows.Insert(0, rw);
-                                else
-                                    dgv.Rows.Add(rw);
-                            }
-                        }
-                        else
-                        {
-                            return "Incorrect row format in addsetrows";
-                        }
-                    }
-
-                    return null;
-                }
-            }
-            else
-                return "Not a DGV";
-        }
-
-        public bool Clear(string controlname)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
-            if (t != null)
-            {
-                var cn = t.Control as ExtPanelDataGridViewScroll;
-                var dgv = cn.DGV;
-                dgv.Rows.Clear();
-                return true;
-            }
-
-            return false;
-        }
-
-        // remove DGV,start row, count
-        public int RemoveRows(string controlname, int rowstart, int count)
-        {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
-            if (t != null)
-            {
-                var cn = t.Control as ExtPanelDataGridViewScroll;
-                var dgv = cn.DGV;
-
-                if (rowstart < 0)
-                    rowstart = dgv.Rows.Count + rowstart;       // so -1 will be last row
-
-                int removed = 0;
-
-                if (rowstart >= 0 && rowstart < dgv.Rows.Count) // if in range
-                {
-                    while (count > 0 && dgv.Rows.Count > rowstart)
-                    {
-                        dgv.Rows.RemoveAt(rowstart);
-                        count--;
-                        removed++;
-                    }
-                }
-
-                return removed;
-
-            }
-
-            return -1;
-        }
-
-        public void CloseDropDown()
-        {
-            foreach (var x in Entries.Where(x => x.Control is ExtButtonWithNewCheckedListBox))
-            {
-                var c = x.Control as ExtButtonWithNewCheckedListBox;
-                if (c.IsDropDownActive)
-                {
-                    c.CloseDropDown();
-                }
-            }
-
-        }
-
-        public bool Enable(string controlname, bool enabled)
-        {
-            var entry = Find(controlname);
-            if (entry != null)
-            {
-                entry.Control.Enabled = enabled;
-                return true;
-            }
-            else
-                return false;
-        }
-
-        public bool Visible(string controlname, bool visible)
-        {
-            var entry = Find(controlname);
-            if (entry != null)
-            {
-                entry.Control.Visible = visible;
-                return true;
-            }
-            else
-                return false;
-        }
-
-        public bool SetPosition(string controlname, Rectangle r, SizeF autoscalefactor)
-        {
-            var entry = Find(controlname);
-            if (entry != null)
-            {
-                r = new Rectangle((int)(r.Left * autoscalefactor.Width), (int)(r.Top * autoscalefactor.Height),
-                                  (int)(r.Width * autoscalefactor.Width), (int)(r.Height * autoscalefactor.Height)
-                    );
-                entry.Control.Bounds = r;
-                return true;
-            }
-            else
-            {
-                r = Rectangle.Empty;
-                return false;
-            }
-        }
-
-        #endregion
-
-
         #region Create any new entries in the list
 
         // create entry in contentpanel/toppanel (may be null)/bottompanel (may be null)
@@ -977,16 +314,20 @@ namespace ExtendedControls
 
                 if ( ent.InPanel!=null)     // if place in panel
                 {
-                    foreach( var pent in Entries)
+                    var find = Entries.Where(x => x.Name == ent.InPanel && x.Control != null).Select(y => y.Control).FirstOrDefault();
+                    if (find == null)
+                        find = Entries.Where(x => x.Name + ".1" == ent.InPanel && x.Control is SplitContainer).Select(y => ((SplitContainer)y.Control).Panel1).FirstOrDefault(); 
+                    if (find == null)
+                        find = Entries.Where(x => x.Name + ".2" == ent.InPanel && x.Control is SplitContainer).Select(y => ((SplitContainer)y.Control).Panel2).FirstOrDefault();
+
+                    if (find != null)
                     {
-                        if ( pent.Name == ent.InPanel)      // find
-                        {
-                            if (ent.Control != null)        // must have been made so must be made first
-                                pent.Control.Controls.Add(c);
-                            else
-                                System.Diagnostics.Trace.WriteLine($"ConfigurableEntries cannot place {ent.Name} in non constructed panel {pent.Name}");
-                            break;
-                        }
+                        find.Controls.Add(c);
+                    }
+                    else
+                    {
+                        System.Diagnostics.Trace.WriteLine($"ConfigurableEntries cannot find {ent.Name} in {ent.InPanel}, ensure panel is named correctly and already made before this entry");
+                        continue;
                     }
                 }
                 else
@@ -1016,30 +357,7 @@ namespace ExtendedControls
                 {
                     ExtButton b = c as ExtButton;
 
-                    if (ent.TextValue.StartsWith("Resource:"))
-                    {
-                        Image img = BaseUtils.ResourceHelpers.GetResourceAsImage(ent.TextValue.Substring(9));
-                        if (img != null)
-                            b.Image = img;
-                        else
-                            b.Text = "Failed load";
-                    }
-                    else if (ent.TextValue.StartsWith("File:"))
-                    {
-                        try
-                        {
-                            b.Image = Image.FromFile(ent.TextValue.Substring(5));
-                        }
-                        catch
-                        {
-                            b.Text = "Failed load";
-                        }
-                    }
-                    else
-                        b.Text = ent.TextValue;
-
-                    //b.ImageAlign = ContentAlignment.MiddleCenter;     // don't think applicable
-                    //b.BackgroundImageLayout = ImageLayout.Stretch;
+                    SetTextOrImage(ent, b);
 
                     if (ent.TextAlign.HasValue)
                         b.TextAlign = ent.TextAlign.Value;
@@ -1047,7 +365,8 @@ namespace ExtendedControls
                     if (c is ExtButtonWithNewCheckedListBox)    // this is an extended button
                     {
                         ExtButtonWithNewCheckedListBox cb = c as ExtButtonWithNewCheckedListBox;
-                        cb.Init(ent.DropDownButtonList, ent.ButtonSettings, (s, b1) => { SendTrigger("DropDownButtonClosed:" + s); },
+                        cb.Init(ent.DropDownButtonList, ent.ButtonSettings, 
+                                (s, b1) => { SendTrigger(ent.Name, "DropDownButtonClosed:" + s, s); },
                                 ent.AllOrNoneShown, ent.AllOrNoneBack,
                                 null, //disabled
                                 ent.ImageSize,
@@ -1056,17 +375,13 @@ namespace ExtendedControls
                                 ent.MultiColumns,
                                 null, // group, not needed
                                 ent.SortItems,
-                                (s, eb1) => { SendTrigger("DropDownButtonPressed:" + s); });
+                                (s, eb1) => { SendTrigger(ent.Name, "DropDownButtonPressed:" + s,s); });
                     }
                     else
                     {
                         b.Click += (sender, ev) =>
                         {
-                            if (!DisableTriggers)
-                            {
-                                ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(((Control)sender).Tag);
-                                Trigger?.Invoke(Name, en.Name, this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                            }
+                            SendTrigger(ent.Name);
                         };
                     }
                 }
@@ -1082,21 +397,16 @@ namespace ExtendedControls
                     cb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
-                        if (!DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
-                            Trigger?.Invoke(Name, en.Name + ":Return", this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
-
+                        SendTrigger(ent.Name , "Return",cb.Value);
                         return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
-                        if (!DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
-                            Trigger?.Invoke(Name, en.Name + ":Validity:" + s.ToString(), this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
+                        SendTrigger(ent.Name , "Validity:" + s.ToString(),cb.Value);
+                    };
+                    cb.ValueChanged += (box, s) =>
+                    {
+                        SendTrigger(ent.Name, "ValueChanged:" + cb.Value.ToString(), cb.Value);
                     };
                 }
                 else if (c is NumberBoxLong)
@@ -1111,20 +421,16 @@ namespace ExtendedControls
                     cb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
-                        if (!DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
-                            Trigger?.Invoke(Name, en.Name + ":Return", this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
+                        SendTrigger(ent.Name, "Return",cb.Value);
                         return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
-                        if (!DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
-                            Trigger?.Invoke(Name, en.Name + ":Validity:" + s.ToString(), this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        SendTrigger(ent.Name, "Validity:" + s.ToString(), cb.Value);
+                    };
+                    cb.ValueChanged += (box, s) =>
+                    {
+                        SendTrigger(ent.Name, "ValueChanged:" + cb.Value.ToString(), cb.Value);
                     };
                 }
                 else if (c is NumberBoxInt)
@@ -1139,20 +445,16 @@ namespace ExtendedControls
                     cb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
-                        if (!DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
-                            Trigger?.Invoke(Name, en.Name + ":Return", this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
+                        SendTrigger(ent.Name , "Return",cb.Value);
                         return SwallowReturn;
                     };
                     cb.ValidityChanged += (box, s) =>
                     {
-                        if (!DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
-                            Trigger?.Invoke(Name, en.Name + ":Validity:" + s.ToString(), this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
+                        SendTrigger(ent.Name , "Validity:" + s.ToString(),cb.Value);
+                    };
+                    cb.ValueChanged += (box, s) =>
+                    {
+                        SendTrigger(ent.Name, "ValueChanged:" + cb.Value.ToString(), cb.Value);
                     };
                 }
                 else if (c is ExtTextBox)
@@ -1168,40 +470,39 @@ namespace ExtendedControls
                     tb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
-                        if (!DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(box.Tag);
-                            Trigger?.Invoke(Name, en.Name + ":Return", this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
+                        SendTrigger(ent.Name, "Return", tb.Text);
                         return SwallowReturn;
                     };
 
                     if (tb.ClearOnFirstChar)
                         tb.SelectEnd();
                 }
+                else if (c is ExtRichTextBox)
+                {
+                    ExtRichTextBox tb = c as ExtRichTextBox;
+                    tb.Text = ent.TextValue;
+                }
                 else if (c is ExtCheckBox)
                 {
                     ExtCheckBox cb = c as ExtCheckBox;
-                    cb.Text = ent.TextValue;
+
+                    if (SetTextOrImage(ent, cb))
+                        cb.Appearance = Appearance.Button;
+
                     cb.Checked = ent.CheckBoxChecked;
                     cb.CheckAlign = ent.ContentAlign;
                     cb.Click += (sender, ev) =>
                     {
-                        if (!DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(((Control)sender).Tag);
-                            Trigger?.Invoke(Name, en.Name, this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                        }
+                        SendTrigger(ent.Name,null,cb.CheckState);       // backwards compatible, trigger does not send value
                     };
                 }
                 else if (c is ExtDateTimePicker)
                 {
                     ExtDateTimePicker dt = c as ExtDateTimePicker;
-                    DateTime t;
 
                     if (ent.TextValue == null)
                         dt.Value = ent.DateTimeValue;
-                    else if (DateTime.TryParse(ent.TextValue, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out t))     // assume local, so no conversion
+                    else if (DateTime.TryParse(ent.TextValue, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out DateTime t))     // assume local, so no conversion
                         dt.Value = t;
 
                     switch (ent.CustomDateFormat.ToLowerInvariant())
@@ -1219,6 +520,8 @@ namespace ExtendedControls
                             dt.CustomFormat = ent.CustomDateFormat;
                             break;
                     }
+
+                    dt.ValueChanged += (s, e) => { SendTrigger(ent.Name, "ValueChanged:" + dt.Value.ToStringZuluInvariant(), dt.Value); };
                 }
                 else if (c is ExtComboBox)
                 {
@@ -1229,12 +532,7 @@ namespace ExtendedControls
                         cb.SelectedItem = ent.TextValue;
                     cb.SelectedIndexChanged += (sender, ev) =>
                     {
-                        Control ctr = (Control)sender;
-                        if (ctr.Enabled && !DisableTriggers)
-                        {
-                            ConfigurableEntryList.Entry en = (ConfigurableEntryList.Entry)(ctr.Tag);
-                            Trigger?.Invoke(Name, en.Name, this.CallerTag);       // pass back the logical name of dialog, the name of the control, the caller tag
-                                }
+                        SendTrigger(ent.Name,null,cb.SelectedItem);     // again backwards compatible
                     };
                 }
                 else if ( c is ExtPanelDataGridViewScroll)
@@ -1257,14 +555,36 @@ namespace ExtendedControls
 
                     dgv.Tag = ent;
                     dgv.SelectionChanged += Dgv_SelectionChanged;
-                    dgv.Sorted += (s1,e1) => { SendTrigger("SortColumn:" + dgv.SortedColumn.Index ); };
+                    dgv.Sorted += (s1,e1) => { SendTrigger("SortColumn" , dgv.SortedColumn.Index, dgv.SortedColumn.Index ); };
                 }
                 else if (c is Panel)
                 {
+                    if (c is ExtPanelRollUp)
+                    {
+                        (c as ExtPanelRollUp).PinState = ent.Pinned;
+                    }
+                    
                     c.MouseDown += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(true, (Control)md1, md2); };
                     c.MouseUp += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(false, (Control)md1, md2); };
                 }
-                else
+                else if (c is SplitContainer)
+                {
+                    var splitter = c as SplitContainer;
+                    splitter.Orientation = ent.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
+
+                    try
+                    {
+                        if (ent.Panel1MinPixelSize > 0)
+                            splitter.Panel1MinSize = ent.Panel1MinPixelSize;
+                        if (ent.Panel2MinPixelSize > 0)
+                            splitter.Panel2MinSize = ent.Panel2MinPixelSize;
+                        splitter.SplitterDistance(ent.DoubleValue / 100.0);
+                    }
+                    catch { }
+
+                    splitter.SplitterMoved += (s2, e2) => { SendTrigger($"SplitterMoved" , splitter.GetSplitterDistance() * 100.0, splitter.GetSplitterDistance() * 100.0); };
+                }
+                else 
                 {
                     if ( ent.TextValue!=null)
                         c.Text = ent.TextValue;     // rest get text value
@@ -1284,9 +604,35 @@ namespace ExtendedControls
             }
         }
 
-        private void Dgv_Sorted(object sender, EventArgs e)
+        public bool SetTextOrImage(Entry ent, ButtonBase b) 
         {
-            throw new NotImplementedException();
+            if (ent.TextValue.StartsWith("Resource:"))
+            {
+                Image img = BaseUtils.ResourceHelpers.GetResourceAsImage(ent.TextValue.Substring(9));
+                if (img != null)
+                {
+                    b.Image = img;
+                    return true;
+                }
+                else
+                    b.Text = "Failed load";
+            }
+            else if (ent.TextValue.StartsWith("File:"))
+            {
+                try
+                {
+                    b.Image = Image.FromFile(ent.TextValue.Substring(5));
+                    return true;
+                }
+                catch
+                {
+                    b.Text = "Failed load";
+                }
+            }
+            else
+                b.Text = ent.TextValue;
+
+            return false;
         }
 
         private void Dgv_SelectionChanged(object sender, EventArgs e)
@@ -1300,7 +646,7 @@ namespace ExtendedControls
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 foreach (DataGridViewRow r in rows)
                     sb.AppendPrePad(r.Index.ToStringInvariant(), ";");
-                SendTrigger("RowSelection:" + sb.ToString());
+                SendTrigger("RowSelection" , sb.ToString(),sb.ToString());
             }
             else
             {
@@ -1309,7 +655,7 @@ namespace ExtendedControls
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 foreach (DataGridViewCell c in cells)
                     sb.AppendPrePad(c.RowIndex.ToStringInvariant() + "," + c.ColumnIndex.ToStringInvariant(), ";");
-                SendTrigger("CellSelection:" + sb.ToString());
+                SendTrigger("CellSelection" ,sb.ToString(),sb.ToString());
             }
         }
 
@@ -1318,10 +664,13 @@ namespace ExtendedControls
         #region Triggering
 
         // send trigger, if not disabled
-        public void SendTrigger(string action)       
+        public void SendTrigger(string action, Object value = null, Object advvalue = null)
         {
-            if ( !DisableTriggers)
-                Trigger?.Invoke(Name, action, CallerTag);
+            if (!DisableTriggers)
+            {
+                Trigger?.Invoke(Name, action + (value != null ? ":" + value.ToString() : ""), CallerTag);
+                TriggerAdv?.Invoke(Name, action + (value != null ? ":" + value.ToString() : ""), advvalue, CallerTag);
+            }
         }
 
         #endregion
@@ -1350,6 +699,8 @@ namespace ExtendedControls
                 ctype = typeof(ExtButton);
             else if (type.Equals("textbox"))
                 ctype = typeof(ExtTextBox);
+            else if (type.Equals("richtextbox"))
+                ctype = typeof(ExtRichTextBox);
             else if (type.Equals("checkbox"))
                 ctype = typeof(ExtCheckBox);
             else if (type.Equals("datetime"))
@@ -1364,10 +715,14 @@ namespace ExtendedControls
                 ctype = typeof(ExtComboBox);
             else if (type.Equals("panel"))
                 ctype = typeof(Panel);
+            else if (type.Equals("panelrollup"))
+                ctype = typeof(ExtPanelRollUp);
             else if (type.Equals("dgv"))
                 ctype = typeof(ExtPanelDataGridViewScroll);
             else if (type.Equals("dropdownbutton"))
                 ctype = typeof(ExtButtonWithNewCheckedListBox);
+            else if (type.Equals("splitter"))
+                ctype = typeof(SplitContainer);
             else
                 return "Unknown control type " + type;
 
@@ -1381,7 +736,10 @@ namespace ExtendedControls
             {
                 inpanelname = sp.NextQuotedWordComma();
             }
+
             string dockstyle = sp.IsStringMoveOn("Dock:", StringComparison.InvariantCultureIgnoreCase) ? sp.NextWordComma(System.Globalization.CultureInfo.InvariantCulture) : null;
+
+            string anchorstyle = sp.IsStringMoveOn("Anchor:", StringComparison.InvariantCultureIgnoreCase) ? sp.NextWordComma(System.Globalization.CultureInfo.InvariantCulture) : null;
 
             int? x = sp.NextWordComma().InvariantParseIntNullOffset(lastpos.X);
             int? y = sp.NextWordComma().InvariantParseIntNullOffset(lastpos.Y);
@@ -1398,6 +756,15 @@ namespace ExtendedControls
             if (dockstyle != null && Enum.TryParse<DockStyle>(dockstyle, true, out DockStyle ds))
                 entry.Dock = ds;
 
+            if (anchorstyle.EqualsIIC("Bottom"))
+                entry.Anchor = AnchorStyles.Bottom;
+            else if (anchorstyle.EqualsIIC("Right"))
+                entry.Anchor = AnchorStyles.Right;
+            else if (anchorstyle.EqualsIIC("BottomRight"))
+                entry.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+            else if (anchorstyle != null)
+                return "Unknown Anchor Style";
+
             if (inpanelname != null)
             {
                 if (inpanelname.EqualsIIC("Bottom"))
@@ -1408,9 +775,13 @@ namespace ExtendedControls
                     entry.InPanel = inpanelname;
             }
 
-            if (tip != null)        // must have a tip for these extra values
+            bool moreparaspos = tip != null;
+
+            // these all can have optional parameters, but don't need them
+
+            if (ctype == typeof(ExtTextBox))
             {
-                if (ctype == typeof(ExtTextBox))
+                if (moreparaspos)
                 {
                     int? v = sp.NextWordComma().InvariantParseIntNull();
                     entry.TextBoxMultiline = v.HasValue && v.Value != 0;
@@ -1423,22 +794,26 @@ namespace ExtendedControls
                     v = sp.NextWordComma().InvariantParseIntNull();
                     entry.TextBoxClearOnFirstChar = v.HasValue && v.Value != 0;
                 }
-                else if (ctype == typeof(ExtCheckBox))
+            }
+            else if (ctype == typeof(ExtRichTextBox))
+            {
+            }
+            else if (ctype == typeof(ExtCheckBox))
+            {
+                if (moreparaspos)
                 {
                     int? v = sp.NextWordComma().InvariantParseIntNull();
                     entry.CheckBoxChecked = v.HasValue && v.Value != 0;
                 }
-                else if (ctype == typeof(ExtComboBox))
-                {
-                    entry.ComboBoxItems = sp.LineLeft.Trim().Split(",");
-                    if (tip == null || entry.ComboBoxItems.Length == 0)
-                        return "Missing parameters for combobox";
-                }
-                else if (ctype == typeof(ExtDateTimePicker))
-                {
+            }
+            else if (ctype == typeof(ExtDateTimePicker))
+            {
+                if (moreparaspos)
                     entry.CustomDateFormat = sp.NextWord();
-                }
-                else if (ctype == typeof(NumberBoxDouble))
+            }
+            else if (ctype == typeof(NumberBoxDouble))
+            {
+                if (moreparaspos)
                 {
                     double? min = sp.NextWordComma().InvariantParseDoubleNull();
                     double? max = sp.NextWordComma().InvariantParseDoubleNull();
@@ -1446,7 +821,10 @@ namespace ExtendedControls
                     entry.NumberBoxDoubleMaximum = max.HasValue ? max.Value : double.MaxValue;
                     entry.NumberBoxFormat = sp.NextWordComma();
                 }
-                else if (ctype == typeof(NumberBoxLong) || ctype == typeof(NumberBoxInt))
+            }
+            else if (ctype == typeof(NumberBoxLong) || ctype == typeof(NumberBoxInt))
+            {
+                if (moreparaspos)
                 {
                     long? min = sp.NextWordComma().InvariantParseLongNull();
                     long? max = sp.NextWordComma().InvariantParseLongNull();
@@ -1454,113 +832,176 @@ namespace ExtendedControls
                     entry.NumberBoxLongMaximum = max.HasValue ? max.Value : long.MaxValue;
                     entry.NumberBoxFormat = sp.NextWordComma();
                 }
-                else if (ctype == typeof(Panel))
+            }
+            else if (ctype == typeof(Panel))
+            {
+                if (moreparaspos)
                 {
                     string colourname = sp.NextQuotedWordComma();
                     if (colourname != null)
                     {
                         entry.BackColor = colourname.ColorFromNameOrValues();
                     }
-
                 }
-                else if (ctype == typeof(ExtPanelDataGridViewScroll))
+            }
+            else if (ctype == typeof(ExtPanelRollUp))
+            {
+                if (moreparaspos)
                 {
-                    entry.DGVColoumns = new List<DataGridViewColumn>();
-
-                    // see action doc for format
-
-                    int? rowpixelwidth = sp.NextWordComma(separ: ';').InvariantParseIntNull();
-
-                    if (rowpixelwidth != null)
+                    bool? pinned = sp.NextBool(" ,");
+                    if (pinned.HasValue)
                     {
-                        entry.DGVRowHeaderWidth = rowpixelwidth.Value;
-
-
-                        while (sp.IsCharMoveOn('('))
+                        entry.Pinned = pinned.Value;
+                        
+                        string colourname = sp.IsCharMoveOn(',') ? sp.NextQuotedWordComma() : null;
+                        if (colourname != null)
                         {
-                            string coltype = sp.NextQuotedWordComma();
-                            string coldescr = sp.NextQuotedWordComma();
-                            int? colfillsize = sp.NextInt(" ),");
-
-                            if (!coltype.HasChars() || !coldescr.HasChars() || colfillsize == null)
-                            {
-                                return "Missing DGV column description items";
-                            }
-
-                            if (coltype.EqualsIIC("text"))
-                            {
-                                entry.DGVColoumns.Add(new DataGridViewTextBoxColumn() { HeaderText = coldescr, FillWeight = colfillsize.Value, ReadOnly = true });
-                            }
-                            else
-                                return "Unknown column type";
-
-                            if (!sp.IsCharMoveOn(')'))
-                                return "Missing ) at end of DGV cell definition";
-
-                            if (sp.IsEOL)      // EOL ends definition
-                                break;
-
-                            if (!sp.IsCharMoveOn(','))     // then must be comma
-                            {
-                                return "Incorrect DGV cell format missing comma";
-                            }
+                            entry.BackColor = colourname.ColorFromNameOrValues();
                         }
-                    }
-                    else
-                        return "Missing DGV row header width";
-                }
-                else if (ctype == typeof(ExtButtonWithNewCheckedListBox))
-                {
-                    // see action doc for format
-
-                    string defsetting = sp.NextQuotedWordComma();
-                    bool? allofnoneshown = sp.NextBoolComma(" ,");
-                    bool? allofnoneback = sp.NextBoolComma(" ,");
-                    bool? multicolumns = sp.NextBool(" ,;");
-
-                    bool? sortitems = false;
-                    if (sp.IsCharMoveOn(','))       // optional sortitems
-                    {
-                        sortitems = sp.NextBool(" ,;");
-                        if (sp.IsCharMoveOn(','))   // optional sizex,sizey
-                        {
-                            int? imagexsize = sp.NextIntComma(" ,");
-                            int? imageysize = sp.NextInt(" ,;");
-                            if (imagexsize.HasValue && imageysize.HasValue)
-                            {
-                                entry.ImageSize = new Size(imagexsize.Value, imageysize.Value);
-                            }
-                            else
-                                return "Missing DropDownButton X/Y image sizes";
-                        }
-                    }
-
-                    if (defsetting!= null && allofnoneshown.HasValue && allofnoneback.HasValue && multicolumns.HasValue && sortitems.HasValue && sp.IsCharMoveOn(';'))
-                    {
-                        entry.ButtonSettings = defsetting;
-                        entry.MultiColumns = multicolumns.Value;
-                        entry.AllOrNoneShown = allofnoneshown.Value;
-                        entry.AllOrNoneBack = allofnoneback.Value;
-                        entry.SortItems = sortitems.Value;
-
-                        entry.DropDownButtonList = new List<CheckedIconUserControl.Item>();
-
-                        while (sp.IsCharMoveOn('('))
-                        {
-                            var cr = CheckedIconUserControl.Item.Create(sp);
-                            if (cr == null || !sp.IsCharMoveOn(')'))
-                                return "Missing/too many parameters in creating button drop down list";
-                            entry.DropDownButtonList.Add(cr);
-
-                            if (!sp.IsCharMoveOn(','))
-                                break;
-                        }
-
-                        if (!sp.IsEOL)
-                            return "Incorrect format in creating button drop down list";
                     }
                 }
             }
+            else if ( ctype == typeof(ExtButton))
+            {
+            }
+
+            // if missing the tip (therefore no more paras) or have tip but no more text, we have an error, as the below all need paras
+
+            else if (!moreparaspos || sp.IsEOL)     
+            {
+                return $"Missing Parameters for {type}";
+            }
+
+            else if (ctype == typeof(ExtComboBox))
+            {
+                var list = sp.NextQuotedWordList(replaceescape: true);
+                if (list != null && list.Count>0)
+                {
+                    entry.ComboBoxItems = list.ToArray();
+                }
+                else
+                    return "Missing parameters for combobox";
+            }
+            else if (ctype == typeof(ExtPanelDataGridViewScroll))
+            {
+                entry.DGVColoumns = new List<DataGridViewColumn>();
+
+                // see action doc for format
+
+                int? rowpixelwidth = sp.NextWordComma(separ: ';').InvariantParseIntNull();
+
+                if (rowpixelwidth != null)
+                {
+                    entry.DGVRowHeaderWidth = rowpixelwidth.Value;
+
+                    while (sp.IsCharMoveOn('('))
+                    {
+                        string coltype = sp.NextQuotedWordComma();
+                        string coldescr = sp.NextQuotedWordComma();
+                        int? colfillsize = sp.NextInt(" ),");
+
+                        if (!coltype.HasChars() || !coldescr.HasChars() || colfillsize == null)
+                        {
+                            return "Missing DGV column description items";
+                        }
+
+                        if (coltype.EqualsIIC("text"))
+                        {
+                            entry.DGVColoumns.Add(new DataGridViewTextBoxColumn() { HeaderText = coldescr, FillWeight = colfillsize.Value, ReadOnly = true });
+                        }
+                        else
+                            return "Unknown column type";
+
+                        if (!sp.IsCharMoveOn(')'))
+                            return "Missing ) at end of DGV cell definition";
+
+                        if (sp.IsEOL)      // EOL ends definition
+                            break;
+
+                        if (!sp.IsCharMoveOn(','))     // then must be comma
+                        {
+                            return "Incorrect DGV cell format missing comma";
+                        }
+                    }
+                }
+                else
+                    return "Missing DGV row header width";
+            }
+            else if (ctype == typeof(ExtButtonWithNewCheckedListBox))
+            {
+                // see action doc for format
+
+                string defsetting = sp.NextQuotedWordComma();
+                bool? allofnoneshown = sp.NextBoolComma(" ,");
+                bool? allofnoneback = sp.NextBoolComma(" ,");
+                bool? multicolumns = sp.NextBool(" ,;");
+
+                bool? sortitems = false;
+                if (sp.IsCharMoveOn(','))       // optional sortitems
+                {
+                    sortitems = sp.NextBool(" ,;");
+                    if (sp.IsCharMoveOn(','))   // optional sizex,sizey
+                    {
+                        int? imagexsize = sp.NextIntComma(" ,");
+                        int? imageysize = sp.NextInt(" ,;");
+                        if (imagexsize.HasValue && imageysize.HasValue)
+                        {
+                            entry.ImageSize = new Size(imagexsize.Value, imageysize.Value);
+                        }
+                        else
+                            return "Missing DropDownButton X/Y image sizes";
+                    }
+                }
+
+                if (defsetting != null && allofnoneshown.HasValue && allofnoneback.HasValue && multicolumns.HasValue && sortitems.HasValue && sp.IsCharMoveOn(';'))
+                {
+                    entry.ButtonSettings = defsetting;
+                    entry.MultiColumns = multicolumns.Value;
+                    entry.AllOrNoneShown = allofnoneshown.Value;
+                    entry.AllOrNoneBack = allofnoneback.Value;
+                    entry.SortItems = sortitems.Value;
+
+                    entry.DropDownButtonList = new List<CheckedIconUserControl.Item>();
+
+                    while (sp.IsCharMoveOn('('))
+                    {
+                        var cr = CheckedIconUserControl.Item.Create(sp);
+                        if (cr == null || !sp.IsCharMoveOn(')'))
+                            return "Missing/too many parameters in creating button drop down list";
+                        entry.DropDownButtonList.Add(cr);
+
+                        if (!sp.IsCharMoveOn(','))
+                            break;
+                    }
+
+                    if (!sp.IsEOL)
+                        return "Incorrect format in creating button drop down list";
+                }
+            }
+            else if (ctype == typeof(SplitContainer))
+            {
+                string horzsetting = sp.NextQuotedWordComma();
+                entry.Horizontal = horzsetting.EqualsIIC("Horizontal");
+                if (entry.Horizontal || horzsetting.EqualsIIC("Vertical"))
+                {
+                    double? percentage = sp.NextDouble(" ,");
+                    if (percentage.HasValue)
+                    {
+                        entry.DoubleValue = percentage.Value;
+                        entry.Panel1MinPixelSize = sp.IsCharMoveOn(',') ? sp.NextInt(" ,") ?? 0 : 0;
+                        entry.Panel2MinPixelSize = sp.IsCharMoveOn(',') ? sp.NextInt(" ") ?? 0 : 0;
+                    }
+                    else
+                        return "Splitter percentage missing or in error";
+                }
+                else
+                    return "Incorrect splitter type given";
+            }
+            else
+                System.Diagnostics.Debug.Assert(false, "Missing handling type");
+
+            if (!sp.IsEOL)
+                return "Extra parameters at end of line";
 
             lastpos = new System.Drawing.Point(x.Value, y.Value);
             return null;

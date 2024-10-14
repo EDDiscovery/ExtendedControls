@@ -12,9 +12,9 @@ using QuickJSON;
 
 namespace TestExtendedControls
 {
-    public partial class TestConfigurableUC2 : Form
+    public partial class TestConfigurableUC3 : Form
     {
-        public TestConfigurableUC2()
+        public TestConfigurableUC3()
         {
             InitializeComponent();
             var theme = new ThemeList();
@@ -35,65 +35,83 @@ namespace TestExtendedControls
             base.OnLoad(e);
 
             string err = "";
+            err += configurableUC1.Entries.Add("\"SP\",splitter,\"\",Dock:Fill,0,0,1,100,\"\",Horizontal,20,48");
+            err += configurableUC1.Entries.Add("\"B1\",button,\"B1\",In:SP.1,10,10,60,24,\"TipB1\"");
+            err += configurableUC1.Entries.Add("\"B3\",button,\"File:c:/code/images/general/mountain.png\",In:SP.1,80,10,32,32,\"TipB1\"");
+            err += configurableUC1.Entries.Add("\"C1\",checkbox,\"CB1\",In:SP.1,200,10,60,24,\"TipC1\",1");
+            err += configurableUC1.Entries.Add("\"C2\",checkbox,\"File:c:/code/images/general/mountain.png\",In:SP.1,300,10,32,32,\"TipC2\",1");
+
+            err += configurableUC1.Entries.Add("\"B2\",button,\"B2\",In:SP.2,10,10,60,24,\"TipB2\"");
+            err += configurableUC1.Entries.Add("\"NB1\",numberboxdouble,\"1.2\",In:SP.2,10,40,100,24,\"NBD1\"");
+            err += configurableUC1.Entries.Add("\"BR\",button,\"BR\",In:SP.2,Anchor:Right,600,10,60,24,\"TipB2\"");
+            err += configurableUC1.Entries.Add("\"CB\",combobox,\"one\",In:SP.2,300,10,60,24,\"TipCB\",one, \"two, it\",three");
+
+            err += configurableUC1.Entries.Add("\"PRU\",panelrollup,\"\",In:SP.2,5,100,200,50,\"\",0,\"255,0,128,0\"");
+            err += configurableUC1.Entries.Add("\"B10\",button,\"B10\",In:PRU,5,5,60,24,\"TipB10\"");
+
+            err += configurableUC1.Entries.Add("\"RTB\",richtextbox,\"Initial text\r\nHere\",In:SP.2,250,100,200,50,\"Rich text box\"");
+
             //err += configurableUC1.Entries.Add("\"P2\",panel,\"\",Dock:Fill,0,0,1,1,\"\",\"100,64,64,128\"");
             //err += configurableUC1.Entries.Add("\"P1\",panel,\"\",5,5,500,200,\"\",\"blue\"");
             //err += configurableUC1.Entries.Add("\"P1\",panel,\"\",5,5,500,200,\"\"");
             //err += configurableUC1.Entries.Add("\"B1\",button,\"B1\",In:P1,10,10,100,24,\"TipB1\"");
 
-            err += configurableUC1.Entries.Add("\"DGV\",dgv,\"\",Dock:Fill,10,10,10,10,\"TipDGV\",100;(text,\"Column 1\",100),(text,\"Column 2\",200),(text,\"Column 3\",300)");
-            err += configurableUC1.Entries.Add("\"P1\",panel,\"\",Dock:Top,0,0,1,100,\"\",\"100,64,128,64\"");
+            //err += configurableUC1.Entries.Add("\"DGV\",dgv,\"\",Dock:Fill,10,10,10,10,\"TipDGV\",100;(text,\"Column 1\",100),(text,\"Column 2\",200),(text,\"Column 3\",300)");
+            //err += configurableUC1.Entries.Add("\"P1\",panel,\"\",Dock:Top,0,0,1,100,\"\",\"100,64,128,64\"");
 
 
-            err += configurableUC1.Entries.Add("\"B1\",button,\"B1\",In:P1,10,10,60,24,\"TipB1\"");
-            err += configurableUC1.Entries.Add("\"B3\",button,\"File:c:/code/images/general/mountain.png\",In:P1,80,10,32,32,\"TipB1\"");
-            err += configurableUC1.Entries.Add("\"B4\",button,\"File:c:/code/images/general/mountain.png\",In:P1,500,10,48,48,\"TipB1\"");
-            err += configurableUC1.Entries.Add("\"B2\",dropdownbutton,\"Resource:TestExtendedControls.Resources.Discoveries.png\",In:P1,200,10,32,32,\"TipDDB1\"," +
+            //err += configurableUC1.Entries.Add("\"B4\",button,\"File:c:/code/images/general/mountain.png\",In:P1,500,10,48,48,\"TipB1\"");
+            err += configurableUC1.Entries.Add("\"B2\",dropdownbutton,\"Resource:TestExtendedControls.Resources.Discoveries.png\",In:SP.2,200,10,32,32,\"TipDDB1\"," +
                                                                     //  \"T3;T4\",1,1,0,1,28,28;" +
                                                                     "\"T3;T4\",1,1,0,0,32,32;" +
                                                                     "(\"T1\",\"Entry 1\",\"TestExtendedControls.Resources.Addtab.png\",\"exc1\",CheckBox)" +
-                                                                    ",(\"T2\",\"Entry 2\",\"TestExtendedControls.Resources.BookmarkManager.png\")" + 
+                                                                    ",(\"T2\",\"Entry 2\",\"TestExtendedControls.Resources.BookmarkManager.png\")" +
                                                                     ",(\"T3\",\"Entry 3\",\"-\",\"exc2\",CheckBox)" +
                                                                     ",(\"T4\",\"Entry 4\",\"-\",\"exc2\")" +
                                                                     ",(\"B1\",\"Button 1\",,,Button)" +
-                                                                    ",(\"T1;T2\",\"Group 1\",\"-\",\"exc2\",Group)" + 
+                                                                    ",(\"T1;T2\",\"Group 1\",\"-\",\"exc2\",Group)" +
                                                                     ",(\"T3;T4\",\"Group 2\",\"-\",,Group)"
                                                                     );
             //err += configurableUC1.Entries.Add("\"B2\",button,\"B2\",10,105,100,24,\"TipB2\"");
-            //err += configurableUC1.Entries.Add("\"B3\",button,\"B3\",10,600,100,24,\"TipB2\"");
+            ////err += configurableUC1.Entries.Add("\"B3\",button,\"B3\",10,600,100,24,\"TipB2\"");
             System.Diagnostics.Debug.Assert(err.Length == 0,err);
+
             configurableUC1.Init("UC1", null);
             configurableUC1.TriggerAdv += ConfigurableUC1_TriggerAdv;
             Theme.Current.ApplyStd(this);
             configurableUC1.Themed();
 
-            err = configurableUC1.Entries.AddSetRows("DGV", "-2,(text,\"R1 col 1 value\",\"text Tooltip\"),(text,\"R1 col 2 value\"),(text,\"R1 col 3 value\");" +
-                                                      "-2,(text,\"R2 col 1 value\"),(text,\"R2 col 2 value\")"
-                                                        );
-            System.Diagnostics.Debug.Assert(err == null);
+            //err = configurableUC1.Entries.AddSetRows("DGV", "-2,(text,\"R1 col 1 value\",\"text Tooltip\"),(text,\"R1 col 2 value\"),(text,\"R1 col 3 value\");" +
+            //                                          "-2,(text,\"R2 col 1 value\"),(text,\"R2 col 2 value\")"
+            //                                            );
+            //System.Diagnostics.Debug.Assert(err == null);
 
-            JSONFormatter jf = new JSONFormatter();
-            jf.Array()
-                .Object().V("Row", -1)
-                         .Array("Cells")
-                                .Object().V("Type", "Text").V("Value", "RJ1 C1").V("ToolTip","Tooltip JSON insert").Close()
-                                .Object().V("Type", "Text").V("Value", "RJ1 C2").Close()
-                                .Object().V("Type", "Text").V("Value", "RJ1 C3").Close()
-                         .Close()
-                .Close()
-                .Object().V("Row", -2)
-                         .Array("Cells")
-                                .Object().V("Type", "Text").V("Value", "RI1 C1").Close()
-                                .Object().V("Type", "Text").V("Value", "RI1 C2").Close()
-                                .Object().V("Type", "Text").V("Value", "RI1 C3").Close()
-                         .Close()
-            .Close();
+            //JSONFormatter jf = new JSONFormatter();
+            //jf.Array()
+            //    .Object().V("Row", -1)
+            //             .Array("Cells")
+            //                    .Object().V("Type", "Text").V("Value", "RJ1 C1").V("ToolTip","Tooltip JSON insert").Close()
+            //                    .Object().V("Type", "Text").V("Value", "RJ1 C2").Close()
+            //                    .Object().V("Type", "Text").V("Value", "RJ1 C3").Close()
+            //             .Close()
+            //    .Close()
+            //    .Object().V("Row", -2)
+            //             .Array("Cells")
+            //                    .Object().V("Type", "Text").V("Value", "RI1 C1").Close()
+            //                    .Object().V("Type", "Text").V("Value", "RI1 C2").Close()
+            //                    .Object().V("Type", "Text").V("Value", "RI1 C3").Close()
+            //             .Close()
+            //.Close();
 
-            string json = jf.Get();
-            var tk = JArray.Parse(json);
-            System.Diagnostics.Debug.WriteLine($"Json {tk.ToString(true)}");
+            //string json = jf.Get();
+            //var tk = JArray.Parse(json);
+            //System.Diagnostics.Debug.WriteLine($"Json {tk.ToString(true)}");
 
 
-            configurableUC1.Entries.AddSetRows("DGV", json);
+            //           configurableUC1.Entries.AddSetRows("DGV", json);
+
+            configurableUC1.Entries.Set("SP", "50.1");
+            System.Diagnostics.Debug.WriteLine($"split dist {configurableUC1.Get("SP")}");
 
         }
 

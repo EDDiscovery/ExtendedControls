@@ -25,6 +25,7 @@ namespace ExtendedControls
         #region Properties
 
         public event Action<string, string, Object> Trigger { add { Entries.Trigger += value; } remove { Entries.Trigger -= value; } }
+        public event Action<string, string, Object, Object> TriggerAdv { add { Entries.TriggerAdv += value; } remove { Entries.TriggerAdv -= value; } }
 
         // use in the trigger handler to swallow the return. Normally its not swallowed.
         public bool SwallowReturn { get { return Entries.SwallowReturn; } set { Entries.SwallowReturn = true; } }
@@ -74,20 +75,30 @@ namespace ExtendedControls
             }
 
             contentpanel.Recalcuate();
+            initialscrollpanelsize = contentpanel.Size;
+            resizepositionon = true;
         }
+
+        private bool resizepositionon = false;
 
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
 
-            if ( contentpanel != null )
+            if ( contentpanel != null && !Entries.DisableTriggers && resizepositionon)
             {
-// TBD ANCHORING? as per CF Resize
+                int widthdelta = contentpanel.Width - initialscrollpanelsize.Width;
+                int heightdelta = contentpanel.Height - initialscrollpanelsize.Height;
+
+                foreach (var en in Entries)
+                {
+                    en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, en.MinimumSize, widthdelta, heightdelta);
+                }
 
                 //System.Diagnostics.Debug.WriteLine($"ConfigurableUC On Resize scroll panel pos {vertscrollpanel.ScrollValue}");
                 int pos = contentpanel.BeingPosition();
                 contentpanel.FinishedPosition(pos);
-                Entries.SendTrigger("Resize");
+                Entries.SendTrigger("Resize", null, Size);
             }
         }
 
@@ -197,6 +208,7 @@ namespace ExtendedControls
 
         private ExtPanelVertScroll contentpanel;
         private ExtPanelVertScrollWithBar vertscrollpanel;
+        private Size initialscrollpanelsize;
 
         #endregion
     }

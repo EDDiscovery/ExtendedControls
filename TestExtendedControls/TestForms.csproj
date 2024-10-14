@@ -53,6 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestConfigurableUC3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestConfigurableUC3.Designer.cs">
+      <DependentUpon>TestConfigurableUC3.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestConfigurableUC2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -337,6 +343,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestConfigurableUC3.resx">
+      <DependentUpon>TestConfigurableUC3.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestConfigurableUC2.resx">
       <DependentUpon>TestConfigurableUC2.cs</DependentUpon>
     </EmbeddedResource>

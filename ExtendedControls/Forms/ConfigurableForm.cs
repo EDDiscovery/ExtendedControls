@@ -30,6 +30,7 @@ namespace ExtendedControls
         // Reposition if position changed
 
         public event Action<string, string, Object> Trigger { add { Entries.Trigger += value; } remove { Entries.Trigger -= value; } }
+        public event Action<string, string, Object, Object> TriggerAdv { add { Entries.TriggerAdv += value; } remove { Entries.TriggerAdv -= value; } }
 
         // use in the trigger handler to swallow the return. Normally its not swallowed.
         public bool SwallowReturn { get { return Entries.SwallowReturn; } set { Entries.SwallowReturn = true; } }
@@ -493,7 +494,7 @@ namespace ExtendedControls
                     closebutton.ImageSelected = ExtButtonDrawn.ImageType.Close;
                     closebutton.Click += (sender, f) =>
                     {
-                        Entries.SendTrigger("Close");
+                        Entries.SendTrigger("Close", null);
                     };
 
                     titleclosepanel.Controls.Add(closebutton);            // add now so it gets themed
@@ -702,7 +703,7 @@ namespace ExtendedControls
 
             if (!Entries.DisableTriggers && resizerepositionon)     // to mirror on resize we will test disable triggers, even thou not stricly required
             {
-                Entries.SendTrigger("Reposition");
+                Entries.SendTrigger("Reposition", null,Bounds);
             }
         }
 
@@ -721,16 +722,23 @@ namespace ExtendedControls
 
                 foreach ( var en in Entries)
                 {
-                    if (en.Control.Parent == contentpanel)
+                    var p = en.Control.Parent;
+                    while (p != null)       // go up and see if in contentpanel
                     {
-                        //System.Diagnostics.Debug.WriteLine($"..CF Apply to {en.Control.Name} {en.Control.Size}");
-                        en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, en.MinimumSize, widthdelta, heightdelta);
+                        if (en.Control.Parent == contentpanel)
+                        {
+                            //System.Diagnostics.Debug.WriteLine($"..CF Apply to {en.Control.Name} {en.Control.Size}");
+                            en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, en.MinimumSize, widthdelta, heightdelta);
+                            break;
+                        }
+
+                        p = p.Parent;
                     }
                 }
 
                 contentpanel.Recalcuate();
 
-                Entries.SendTrigger("Resize");        // won't send if disabled
+                Entries.SendTrigger("Resize", null, Size);        // won't send if disabled
             }
         }
 
@@ -771,7 +779,7 @@ namespace ExtendedControls
         {
             if (Entries.DisableTriggers == false)                // if not in disable, send trigger
             {
-                Entries.SendTrigger("Close");                   
+                Entries.SendTrigger("Close", null);                   
                 e.Cancel = Entries.DisableTriggers == false;     // if ProgClose is false, we don't want to close. Callback did not call ReturnResponse
             }
 
@@ -782,7 +790,7 @@ namespace ExtendedControls
         {
             if (keyData == Keys.Escape)
             {
-                Entries.SendTrigger("Escape");
+                Entries.SendTrigger("Escape", null);
                 return true;
             }
 

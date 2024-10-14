@@ -135,6 +135,8 @@
     <Compile Include="Forms\CheckedIconPictureBoxUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Forms\ConfigurableEntriesSet.cs" />
+    <Compile Include="Forms\ConfigurableEntriesGet.cs" />
     <Compile Include="Forms\ConfigurableEntries.cs">
       <SubType>Code</SubType>
     </Compile>
