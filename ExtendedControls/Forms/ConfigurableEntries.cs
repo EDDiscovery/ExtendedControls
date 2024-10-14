@@ -327,6 +327,7 @@ namespace ExtendedControls
                     else
                     {
                         System.Diagnostics.Trace.WriteLine($"ConfigurableEntries cannot find {ent.Name} in {ent.InPanel}, ensure panel is named correctly and already made before this entry");
+                        System.Diagnostics.Debug.Assert(false, $"ConfigurableEntries cannot find {ent.Name} in {ent.InPanel}, ensure panel is named correctly and already made before this entry");
                         continue;
                     }
                 }
@@ -642,7 +643,7 @@ namespace ExtendedControls
             var rows = dgv.SelectedRows;
             if ( rows.Count>0)
             {
-                System.Diagnostics.Debug.WriteLine($"Entry {ent.Name} changed selection Rows {rows.Count}");
+               // System.Diagnostics.Debug.WriteLine($"Entry {ent.Name} changed selection Rows {rows.Count}");
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 foreach (DataGridViewRow r in rows)
                     sb.AppendPrePad(r.Index.ToStringInvariant(), ";");
@@ -651,7 +652,7 @@ namespace ExtendedControls
             else
             {
                 var cells = dgv.SelectedCells;
-                System.Diagnostics.Debug.WriteLine($"Entry {ent.Name} changed selection Cells {cells.Count}");
+              //  System.Diagnostics.Debug.WriteLine($"Entry {ent.Name} changed selection Cells {cells.Count}");
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 foreach (DataGridViewCell c in cells)
                     sb.AppendPrePad(c.RowIndex.ToStringInvariant() + "," + c.ColumnIndex.ToStringInvariant(), ";");
@@ -724,12 +725,12 @@ namespace ExtendedControls
             else if (type.Equals("splitter"))
                 ctype = typeof(SplitContainer);
             else
-                return "Unknown control type " + type;
+                return $"Unknown control type for {name}";
 
             string text = sp.NextQuotedWordComma();     // normally text..
 
             if (text == null)
-                return "Missing text";
+                return $"Missing text for {name}";
 
             string inpanelname = null;
             if (sp.IsStringMoveOn("In:",StringComparison.InvariantCultureIgnoreCase))
@@ -747,7 +748,7 @@ namespace ExtendedControls
             int? h = sp.NextWordComma().InvariantParseIntNull();
 
             if (x == null || y == null || w == null || h == null)
-                return "Missing position/size";
+                return $"Missing position/size for {name}";
 
             string tip = sp.NextQuotedWordComma();      // tip can be null
 
@@ -763,7 +764,7 @@ namespace ExtendedControls
             else if (anchorstyle.EqualsIIC("BottomRight"))
                 entry.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
             else if (anchorstyle != null)
-                return "Unknown Anchor Style";
+                return $"Unknown Anchor Style for {name}";
 
             if (inpanelname != null)
             {
@@ -794,9 +795,6 @@ namespace ExtendedControls
                     v = sp.NextWordComma().InvariantParseIntNull();
                     entry.TextBoxClearOnFirstChar = v.HasValue && v.Value != 0;
                 }
-            }
-            else if (ctype == typeof(ExtRichTextBox))
-            {
             }
             else if (ctype == typeof(ExtCheckBox))
             {
@@ -861,7 +859,7 @@ namespace ExtendedControls
                     }
                 }
             }
-            else if ( ctype == typeof(ExtButton))
+            else if (ctype == typeof(ExtRichTextBox) || ctype == typeof(ExtButton) || ctype == typeof(Label) )  // all of these don't have additional paras
             {
             }
 
@@ -869,18 +867,18 @@ namespace ExtendedControls
 
             else if (!moreparaspos || sp.IsEOL)     
             {
-                return $"Missing Parameters for {type}";
+                return $"Missing Parameters for {name}";
             }
 
             else if (ctype == typeof(ExtComboBox))
             {
-                var list = sp.NextQuotedWordList(replaceescape: true);
+                var list = sp.NextQuotedWordList(otherterminators:"", replaceescape: true);     // quotes allowed, spaces between commas allowed
                 if (list != null && list.Count>0)
                 {
                     entry.ComboBoxItems = list.ToArray();
                 }
                 else
-                    return "Missing parameters for combobox";
+                    return $"Missing parameters in combobox for {name}";
             }
             else if (ctype == typeof(ExtPanelDataGridViewScroll))
             {
@@ -902,7 +900,7 @@ namespace ExtendedControls
 
                         if (!coltype.HasChars() || !coldescr.HasChars() || colfillsize == null)
                         {
-                            return "Missing DGV column description items";
+                            return $"Missing DGV column description items for {name}";
                         }
 
                         if (coltype.EqualsIIC("text"))
@@ -910,22 +908,22 @@ namespace ExtendedControls
                             entry.DGVColoumns.Add(new DataGridViewTextBoxColumn() { HeaderText = coldescr, FillWeight = colfillsize.Value, ReadOnly = true });
                         }
                         else
-                            return "Unknown column type";
+                            return $"Unknown column type for {name}";
 
                         if (!sp.IsCharMoveOn(')'))
-                            return "Missing ) at end of DGV cell definition";
+                            return $"Missing ) at end of DGV cell definition for {name}";
 
                         if (sp.IsEOL)      // EOL ends definition
                             break;
 
                         if (!sp.IsCharMoveOn(','))     // then must be comma
                         {
-                            return "Incorrect DGV cell format missing comma";
+                            return $"Incorrect DGV cell format missing comma for {name}";
                         }
                     }
                 }
                 else
-                    return "Missing DGV row header width";
+                    return $"Missing DGV row header width for {name}";
             }
             else if (ctype == typeof(ExtButtonWithNewCheckedListBox))
             {
@@ -949,7 +947,7 @@ namespace ExtendedControls
                             entry.ImageSize = new Size(imagexsize.Value, imageysize.Value);
                         }
                         else
-                            return "Missing DropDownButton X/Y image sizes";
+                            return $"Missing DropDownButton X/Y image sizes for {name}";
                     }
                 }
 
@@ -967,7 +965,7 @@ namespace ExtendedControls
                     {
                         var cr = CheckedIconUserControl.Item.Create(sp);
                         if (cr == null || !sp.IsCharMoveOn(')'))
-                            return "Missing/too many parameters in creating button drop down list";
+                            return $"Missing/too many parameters in creating button drop down list for {name}";
                         entry.DropDownButtonList.Add(cr);
 
                         if (!sp.IsCharMoveOn(','))
@@ -975,7 +973,7 @@ namespace ExtendedControls
                     }
 
                     if (!sp.IsEOL)
-                        return "Incorrect format in creating button drop down list";
+                        return $"Incorrect format in creating button drop down list for {name}";
                 }
             }
             else if (ctype == typeof(SplitContainer))
@@ -992,16 +990,16 @@ namespace ExtendedControls
                         entry.Panel2MinPixelSize = sp.IsCharMoveOn(',') ? sp.NextInt(" ") ?? 0 : 0;
                     }
                     else
-                        return "Splitter percentage missing or in error";
+                        return $"Splitter percentage missing or in error for {name}";
                 }
                 else
-                    return "Incorrect splitter type given";
+                    return $"Incorrect splitter type given for {name}";
             }
             else
                 System.Diagnostics.Debug.Assert(false, "Missing handling type");
 
             if (!sp.IsEOL)
-                return "Extra parameters at end of line";
+                return $"Extra parameters at end of line for {name}";
 
             lastpos = new System.Drawing.Point(x.Value, y.Value);
             return null;
