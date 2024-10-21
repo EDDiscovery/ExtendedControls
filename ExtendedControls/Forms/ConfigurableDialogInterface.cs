@@ -32,6 +32,7 @@ namespace ExtendedControls
         string Get(string controlname);
         T GetValue<T>(string controlname);
         bool Set(string controlname, string value);
+        bool AddText(string controlname, string text);
         void SetCheckedList(IEnumerable<string> controlnames, bool state);
         void RadioButton(string startingcontrolname, string controlhit, int max = 1);
         string AddSetRows(string controlname, string rowstring);

@@ -112,6 +112,20 @@ namespace ExtendedControls
             return false;
         }
 
+        // add text to rich text box at bottom and scroll
+        public bool AddText(string controlname, string text)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtRichTextBox);
+            if (t != null)
+            {
+                var tb = t.Control as ExtRichTextBox;
+                tb.AppendText(text);
+                return true;
+            }
+            else
+                return false;
+        }
+
         // from controls starting with this name, set the names of the ones checked
         public void SetCheckedList(IEnumerable<string> controlnames, bool state)
         {

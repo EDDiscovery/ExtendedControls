@@ -350,6 +350,12 @@ namespace ExtendedControls
             Entries.RadioButton(startingcontrolname, controlhit, max);
         }
 
+        // add text to rich text box at bottom and scroll
+        public bool AddText(string controlname, string text)
+        {
+            return Entries.AddText(controlname, text);
+        }
+
         // add/set rows in DGV
         public string AddSetRows(string controlname, string rowstring)
         {

@@ -36,6 +36,13 @@ namespace TestExtendedControls
 
             string err = "";
             err += configurableUC1.Entries.Add("\"SP\",splitter,\"\",Dock:Fill,0,0,1,100,\"\",Horizontal,20,48");
+
+
+            err += configurableUC1.Entries.Add("\"FP\",flowpanel,\"\",Dock:Top,0,0,1,100,\"\",Horizontal,\"255,128,0,0\"");
+            err += configurableUC1.Entries.Add("\"BF1\",button,\"BF1\",In:FP,0,5,60,24,\"TipB1\"");
+            err += configurableUC1.Entries.Add("\"BF2\",button,\"BF2\",In:FP,Margin:10,10,10,1,0,0,60,24,\"TipB1\"");
+            err += configurableUC1.Entries.Add("\"BF3\",button,\"BF3\",In:FP,0,5,60,24,\"TipB1\"");
+
             err += configurableUC1.Entries.Add("\"B1\",button,\"B1\",In:SP.1,10,10,60,24,\"TipB1\"");
             err += configurableUC1.Entries.Add("\"B3\",button,\"File:c:/code/images/general/mountain.png\",In:SP.1,80,10,32,32,\"TipB1\"");
             err += configurableUC1.Entries.Add("\"C1\",checkbox,\"CB1\",In:SP.1,200,10,60,24,\"TipC1\",1");
@@ -45,22 +52,13 @@ namespace TestExtendedControls
             err += configurableUC1.Entries.Add("\"NB1\",numberboxdouble,\"1.2\",In:SP.2,10,40,100,24,\"NBD1\"");
             err += configurableUC1.Entries.Add("\"BR\",button,\"BR\",In:SP.2,Anchor:Right,600,10,60,24,\"TipB2\"");
             err += configurableUC1.Entries.Add("\"CB\",combobox,\"one\",In:SP.2,300,10,60,24,\"TipCB\",one, \"two, it\",three");
-
             err += configurableUC1.Entries.Add("\"PRU\",panelrollup,\"\",In:SP.2,5,100,200,50,\"\",0,\"255,0,128,0\"");
             err += configurableUC1.Entries.Add("\"B10\",button,\"B10\",In:PRU,5,5,60,24,\"TipB10\"");
 
             err += configurableUC1.Entries.Add("\"RTB\",richtextbox,\"Initial text\r\nHere\",In:SP.2,250,100,200,50,\"Rich text box\"");
 
-            //err += configurableUC1.Entries.Add("\"P2\",panel,\"\",Dock:Fill,0,0,1,1,\"\",\"100,64,64,128\"");
-            //err += configurableUC1.Entries.Add("\"P1\",panel,\"\",5,5,500,200,\"\",\"blue\"");
-            //err += configurableUC1.Entries.Add("\"P1\",panel,\"\",5,5,500,200,\"\"");
-            //err += configurableUC1.Entries.Add("\"B1\",button,\"B1\",In:P1,10,10,100,24,\"TipB1\"");
-
-            //err += configurableUC1.Entries.Add("\"DGV\",dgv,\"\",Dock:Fill,10,10,10,10,\"TipDGV\",100;(text,\"Column 1\",100),(text,\"Column 2\",200),(text,\"Column 3\",300)");
-            //err += configurableUC1.Entries.Add("\"P1\",panel,\"\",Dock:Top,0,0,1,100,\"\",\"100,64,128,64\"");
 
 
-            //err += configurableUC1.Entries.Add("\"B4\",button,\"File:c:/code/images/general/mountain.png\",In:P1,500,10,48,48,\"TipB1\"");
             err += configurableUC1.Entries.Add("\"B2\",dropdownbutton,\"Resource:TestExtendedControls.Resources.Discoveries.png\",In:SP.2,200,10,32,32,\"TipDDB1\"," +
                                                                     //  \"T3;T4\",1,1,0,1,28,28;" +
                                                                     "\"T3;T4\",1,1,0,0,32,32;" +
@@ -70,45 +68,13 @@ namespace TestExtendedControls
                                                                     ",(\"T4\",\"Entry 4\",\"-\",\"exc2\")" +
                                                                     ",(\"B1\",\"Button 1\",,,Button)" +
                                                                     ",(\"T1;T2\",\"Group 1\",\"-\",\"exc2\",Group)" +
-                                                                    ",(\"T3;T4\",\"Group 2\",\"-\",,Group)"
-                                                                    );
-            //err += configurableUC1.Entries.Add("\"B2\",button,\"B2\",10,105,100,24,\"TipB2\"");
-            ////err += configurableUC1.Entries.Add("\"B3\",button,\"B3\",10,600,100,24,\"TipB2\"");
+                                                                    ",(\"T3;T4\",\"Group 2\",\"-\",,Group)");
             System.Diagnostics.Debug.Assert(err.Length == 0,err);
 
             configurableUC1.Init("UC1", null);
             configurableUC1.TriggerAdv += ConfigurableUC1_TriggerAdv;
             Theme.Current.ApplyStd(this);
             configurableUC1.Themed();
-
-            //err = configurableUC1.Entries.AddSetRows("DGV", "-2,(text,\"R1 col 1 value\",\"text Tooltip\"),(text,\"R1 col 2 value\"),(text,\"R1 col 3 value\");" +
-            //                                          "-2,(text,\"R2 col 1 value\"),(text,\"R2 col 2 value\")"
-            //                                            );
-            //System.Diagnostics.Debug.Assert(err == null);
-
-            //JSONFormatter jf = new JSONFormatter();
-            //jf.Array()
-            //    .Object().V("Row", -1)
-            //             .Array("Cells")
-            //                    .Object().V("Type", "Text").V("Value", "RJ1 C1").V("ToolTip","Tooltip JSON insert").Close()
-            //                    .Object().V("Type", "Text").V("Value", "RJ1 C2").Close()
-            //                    .Object().V("Type", "Text").V("Value", "RJ1 C3").Close()
-            //             .Close()
-            //    .Close()
-            //    .Object().V("Row", -2)
-            //             .Array("Cells")
-            //                    .Object().V("Type", "Text").V("Value", "RI1 C1").Close()
-            //                    .Object().V("Type", "Text").V("Value", "RI1 C2").Close()
-            //                    .Object().V("Type", "Text").V("Value", "RI1 C3").Close()
-            //             .Close()
-            //.Close();
-
-            //string json = jf.Get();
-            //var tk = JArray.Parse(json);
-            //System.Diagnostics.Debug.WriteLine($"Json {tk.ToString(true)}");
-
-
-            //           configurableUC1.Entries.AddSetRows("DGV", json);
 
             configurableUC1.Entries.Set("SP", "50.1");
             System.Diagnostics.Debug.WriteLine($"split dist {configurableUC1.Get("SP")}");
@@ -118,6 +84,12 @@ namespace TestExtendedControls
         private void ConfigurableUC1_TriggerAdv(string arg1, string arg2, object arg3, object arg4)
         {
             extRichTextBox1.Text += $"Trig `{arg1}` `{arg2}` `{arg3}`" + Environment.NewLine;
+            if ( arg2 == "B2")
+            {
+                configurableUC1.AddText("RTB", "More text\r\n");
+
+            }
+
             extRichTextBox1.Select(extRichTextBox1.Text.Length, extRichTextBox1.Text.Length);
             extRichTextBox1.ScrollToCaret();
         }

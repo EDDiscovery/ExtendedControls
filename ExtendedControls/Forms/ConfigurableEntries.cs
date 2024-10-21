@@ -82,8 +82,9 @@ namespace ExtendedControls
             public ContentAlignment? TextAlign { get; set; }            // label,button. Null its not applied
             public ContentAlignment ContentAlign { get; set; } = ContentAlignment.MiddleLeft;  // align for checkbox
 
-            public bool Horizontal { get; set; }                        // Split container, is horizontal split
+            public bool Horizontal { get; set; }                        // Split container, is horizontal split. Flow panel, is right to left (Horizontal) or top to bottom
             public bool Pinned { get; set; }                            // panelrollup
+            public Padding Margin { get; set; }                         // flow panel, margin around item
 
             public bool CheckBoxChecked { get; set; }                   // checkbox
 
@@ -297,6 +298,7 @@ namespace ExtendedControls
 
                 ent.Control = c;
                 c.Size = ent.Size;
+                c.Margin = ent.Margin;
 
                 // if we have autosizeing on, the scroll position which is added to take account of current scrolling needs to be scaled
                 // the scroll position is in terms of the expanded autosize factor (ie. increased) so we need to move it back to non expanded
@@ -560,11 +562,17 @@ namespace ExtendedControls
                 }
                 else if (c is Panel)
                 {
-                    if (c is ExtPanelRollUp)
+                    if (c is FlowLayoutPanel)
                     {
-                        (c as ExtPanelRollUp).PinState = ent.Pinned;
+                        FlowLayoutPanel fp = c as FlowLayoutPanel;
+                        fp.FlowDirection = ent.Horizontal ? FlowDirection.LeftToRight : FlowDirection.TopDown;
                     }
-                    
+                    else if (c is ExtPanelRollUp)
+                    {
+                        ExtPanelRollUp pr = c as ExtPanelRollUp;
+                        pr.PinState = ent.Pinned;
+                    }
+
                     c.MouseDown += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(true, (Control)md1, md2); };
                     c.MouseUp += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(false, (Control)md1, md2); };
                 }
@@ -716,6 +724,8 @@ namespace ExtendedControls
                 ctype = typeof(ExtComboBox);
             else if (type.Equals("panel"))
                 ctype = typeof(Panel);
+            else if (type.Equals("flowpanel"))
+                ctype = typeof(FlowLayoutPanel);
             else if (type.Equals("panelrollup"))
                 ctype = typeof(ExtPanelRollUp);
             else if (type.Equals("dgv"))
@@ -741,6 +751,21 @@ namespace ExtendedControls
             string dockstyle = sp.IsStringMoveOn("Dock:", StringComparison.InvariantCultureIgnoreCase) ? sp.NextWordComma(System.Globalization.CultureInfo.InvariantCulture) : null;
 
             string anchorstyle = sp.IsStringMoveOn("Anchor:", StringComparison.InvariantCultureIgnoreCase) ? sp.NextWordComma(System.Globalization.CultureInfo.InvariantCulture) : null;
+
+            Padding? margin = new Padding(3,3,3,3);     // default for controls
+
+            if (sp.IsStringMoveOn("Margin:", StringComparison.InvariantCultureIgnoreCase))
+            {
+                int? left = sp.NextIntComma(", ");
+                int? top = sp.NextIntComma(", ");
+                int? right = sp.NextIntComma(", ");
+                int? bottom = sp.NextIntComma(", ");
+
+                if (left.HasValue && top.HasValue && right.HasValue && bottom.HasValue)
+                    margin = new Padding(left.Value, top.Value, right.Value, bottom.Value);
+                else
+                    return $"Margin is missing values for {name}";
+            }
 
             int? x = sp.NextWordComma().InvariantParseIntNullOffset(lastpos.X);
             int? y = sp.NextWordComma().InvariantParseIntNullOffset(lastpos.Y);
@@ -775,6 +800,8 @@ namespace ExtendedControls
                 else
                     entry.InPanel = inpanelname;
             }
+
+            entry.Margin = margin.Value;
 
             bool moreparaspos = tip != null;
 
@@ -842,6 +869,26 @@ namespace ExtendedControls
                     }
                 }
             }
+            else if (ctype == typeof(FlowLayoutPanel))
+            {
+                if (moreparaspos)
+                {
+                    string horzsetting = sp.NextQuotedWord(" ,");
+                    entry.Horizontal = horzsetting.EqualsIIC("Horizontal");
+                    if (entry.Horizontal || horzsetting.EqualsIIC("Vertical"))
+                    {
+                        string colourname = sp.IsCharMoveOn(',') ? sp.NextQuotedWord() : null;
+                        if (colourname != null)
+                        {
+                            entry.BackColor = colourname.ColorFromNameOrValues();
+                        }
+                    }
+                    else
+                        return $"Missing direction in flowlayoutpanel for {name}";
+                }
+                else
+                    entry.Horizontal = true; // we are going across with no paras
+            }
             else if (ctype == typeof(ExtPanelRollUp))
             {
                 if (moreparaspos)
@@ -850,8 +897,8 @@ namespace ExtendedControls
                     if (pinned.HasValue)
                     {
                         entry.Pinned = pinned.Value;
-                        
-                        string colourname = sp.IsCharMoveOn(',') ? sp.NextQuotedWordComma() : null;
+
+                        string colourname = sp.IsCharMoveOn(',') ? sp.NextQuotedWord() : null;
                         if (colourname != null)
                         {
                             entry.BackColor = colourname.ColorFromNameOrValues();

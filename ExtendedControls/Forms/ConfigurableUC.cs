@@ -142,6 +142,11 @@ namespace ExtendedControls
         {
             return Entries.Set(controlname, value);
         }
+        // add text to rich text box at bottom and scroll
+        public bool AddText(string controlname, string text)
+        {
+            return Entries.AddText(controlname, text);
+        }
         public void SetCheckedList(IEnumerable<string> controlnames, bool state)
         {
             Entries.SetCheckedList(controlnames, state);
