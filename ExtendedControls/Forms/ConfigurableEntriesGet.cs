@@ -177,11 +177,12 @@ namespace ExtendedControls
                 return null;
         }
 
-        // Return Get() by controlname, null if can't get
-        public string Get(string controlname)
+        // Return Get() by controlname, 
+        public bool Get(string controlname, out string value)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            return t != null ? Get(t) : null;
+            value = t != null ? Get(t) : null;
+            return t != null;
         }
 
         // Return GetValue() by controlname, null if can't get

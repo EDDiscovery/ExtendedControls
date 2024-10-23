@@ -558,7 +558,7 @@ namespace ExtendedControls
 
                     dgv.Tag = ent;
                     dgv.SelectionChanged += Dgv_SelectionChanged;
-                    dgv.Sorted += (s1,e1) => { SendTrigger("SortColumn" , dgv.SortedColumn.Index, dgv.SortedColumn.Index ); };
+                    dgv.Sorted += (s1,e1) => { SendTrigger(ent.Name, "SortColumn:" + dgv.SortedColumn.Index.ToStringInvariant(), dgv.SortedColumn.Index); };
                 }
                 else if (c is Panel)
                 {
@@ -591,7 +591,7 @@ namespace ExtendedControls
                     }
                     catch { }
 
-                    splitter.SplitterMoved += (s2, e2) => { SendTrigger($"SplitterMoved" , splitter.GetSplitterDistance() * 100.0, splitter.GetSplitterDistance() * 100.0); };
+                    splitter.SplitterMoved += (s2, e2) => { SendTrigger(ent.Name , "SplitterMoved:" + (splitter.GetSplitterDistance() * 100.0).ToStringInvariant(), splitter.GetSplitterDistance() * 100.0); };
                 }
                 else 
                 {
@@ -655,7 +655,7 @@ namespace ExtendedControls
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 foreach (DataGridViewRow r in rows)
                     sb.AppendPrePad(r.Index.ToStringInvariant(), ";");
-                SendTrigger("RowSelection" , sb.ToString(),sb.ToString());
+                SendTrigger(ent.Name, "RowSelection:"+ sb.ToString(),sb.ToString());
             }
             else
             {
@@ -664,7 +664,7 @@ namespace ExtendedControls
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 foreach (DataGridViewCell c in cells)
                     sb.AppendPrePad(c.RowIndex.ToStringInvariant() + "," + c.ColumnIndex.ToStringInvariant(), ";");
-                SendTrigger("CellSelection" ,sb.ToString(),sb.ToString());
+                SendTrigger(ent.Name, "CellSelection:"+sb.ToString(),sb.ToString());
             }
         }
 
@@ -673,12 +673,12 @@ namespace ExtendedControls
         #region Triggering
 
         // send trigger, if not disabled
-        public void SendTrigger(string action, Object value = null, Object advvalue = null)
+        public void SendTrigger(string actionorcontrolname, string value = null, Object advvalue = null)
         {
             if (!DisableTriggers)
             {
-                Trigger?.Invoke(Name, action + (value != null ? ":" + value.ToString() : ""), CallerTag);
-                TriggerAdv?.Invoke(Name, action + (value != null ? ":" + value.ToString() : ""), advvalue, CallerTag);
+                Trigger?.Invoke(Name, actionorcontrolname + (value != null ? ":" + value : ""), CallerTag);
+                TriggerAdv?.Invoke(Name, actionorcontrolname + (value != null ? ":" + value : ""), advvalue, CallerTag);
             }
         }
 

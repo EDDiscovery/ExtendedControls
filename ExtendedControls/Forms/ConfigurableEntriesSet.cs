@@ -24,7 +24,7 @@ namespace ExtendedControls
     public partial class ConfigurableEntryList
     {
         // Set value of control by string value
-        public bool Set(string controlname, string value)
+        public bool Set(string controlname, string value, bool replaceescapes)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
@@ -32,11 +32,15 @@ namespace ExtendedControls
                 Control c = t.Control;
                 if (c is ExtTextBox)
                 {
+                    if (replaceescapes)
+                        value = value.ReplaceEscapeControlCharsFull();
                     (c as ExtTextBox).Text = value;     // keep caste in case overridden
                     return true;
                 }
                 else if (c is ExtRichTextBox)
                 {
+                    if (replaceescapes)
+                        value = value.ReplaceEscapeControlCharsFull();
                     (c as ExtRichTextBox).Text = value;
                     return true;
                 }
@@ -119,6 +123,7 @@ namespace ExtendedControls
             if (t != null)
             {
                 var tb = t.Control as ExtRichTextBox;
+                text = text.ReplaceEscapeControlCharsFull();
                 tb.AppendText(text);
                 return true;
             }
@@ -344,6 +349,13 @@ namespace ExtendedControls
                 var cn = t.Control as ExtPanelDataGridViewScroll;
                 var dgv = cn.DGV;
                 dgv.Rows.Clear();
+                return true;
+            }
+            t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtRichTextBox);
+            if ( t != null )
+            {
+                var cn = t.Control as ExtRichTextBox;
+                cn.Clear();
                 return true;
             }
 

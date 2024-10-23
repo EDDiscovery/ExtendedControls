@@ -1017,7 +1017,9 @@ namespace ExtendedControls
         {
             ExtButton ctrl = (ExtButton)myControl;
             ctrl.ForeColor = colors[CI.button_text];
-            ctrl.AutoSize = true;
+            
+            if ( ctrl.Text.HasChars())      // we autosize text to make it fit.. we do not autosize image buttons
+                ctrl.AutoSize = true;
 
             if (buttonstyle.Equals(ButtonStyles[0])) // system
             {

@@ -29,9 +29,10 @@ namespace ExtendedControls
         void UpdateEntries();   // call after add when shown
         bool Remove(string controlname);
         Control GetControl(string controlname);
-        string Get(string controlname);
+        bool Get(string controlname, out string value);
+        string Get(string controlname); // null if control is missing or not supported
         T GetValue<T>(string controlname);
-        bool Set(string controlname, string value);
+        bool Set(string controlname, string value, bool replaceescapes);
         bool AddText(string controlname, string text);
         void SetCheckedList(IEnumerable<string> controlnames, bool state);
         void RadioButton(string startingcontrolname, string controlhit, int max = 1);

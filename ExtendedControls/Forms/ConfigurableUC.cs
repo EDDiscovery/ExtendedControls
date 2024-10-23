@@ -72,6 +72,8 @@ namespace ExtendedControls
                     ent.MinimumSize = ent.Size;
                 if (ent.BackColor.HasValue)
                     ent.Control.BackColor = ent.BackColor.Value;
+
+                //System.Diagnostics.Debug.WriteLine($"ConfigUC theme {ent.Name} {ent.Control.Bounds}");
             }
 
             contentpanel.Recalcuate();
@@ -98,7 +100,7 @@ namespace ExtendedControls
                 //System.Diagnostics.Debug.WriteLine($"ConfigurableUC On Resize scroll panel pos {vertscrollpanel.ScrollValue}");
                 int pos = contentpanel.BeingPosition();
                 contentpanel.FinishedPosition(pos);
-                Entries.SendTrigger("Resize", null, Size);
+                Entries.SendTrigger(Entries.Name, "Resize:" + Size.Width.ToStringInvariant() + "," + Size.Height.ToStringInvariant(), Size);
             }
         }
 
@@ -128,9 +130,13 @@ namespace ExtendedControls
             return Entries.GetControl(controlname);
         }
         // get control by name
+        public bool Get(string controlname, out string value)
+        {
+            return Entries.Get(controlname, out value);
+        }
         public string Get(string controlname)
         {
-            return Entries.Get(controlname);
+            return Entries.Get(controlname, out string value) ? value : null;
         }
         // Return GetValue() by controlname, null if can't get
         public T GetValue<T>(string controlname)
@@ -138,9 +144,9 @@ namespace ExtendedControls
             return Entries.GetValue<T>(controlname);
         }
         // Set value of control by string value
-        public bool Set(string controlname, string value)
+        public bool Set(string controlname, string value, bool replaceescapes)
         {
-            return Entries.Set(controlname, value);
+            return Entries.Set(controlname, value, replaceescapes);
         }
         // add text to rich text box at bottom and scroll
         public bool AddText(string controlname, string text)

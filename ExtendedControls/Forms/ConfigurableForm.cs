@@ -263,10 +263,14 @@ namespace ExtendedControls
             return Entries.GetValue(t);
         }
 
-        // Return Get() by controlname, null if can't get
+        // Return Get() by controlname, null/false if can't get
+        public bool Get(string controlname, out string value)
+        {
+            return Entries.Get(controlname,out value);
+        }
         public string Get(string controlname)
         {
-            return Entries.Get(controlname);
+            return Entries.Get(controlname, out string value) ? value : null;
         }
 
         // Return GetValue() by controlname, null if can't get
@@ -333,9 +337,9 @@ namespace ExtendedControls
         }
 
         // Set value of control by string value
-        public bool Set(string controlname, string value)
+        public bool Set(string controlname, string value, bool replaceescapes)
         {
-            return Entries.Set(controlname, value);
+            return Entries.Set(controlname, value, replaceescapes);
         }
 
         // from controls starting with this name, set the names of the ones checked
