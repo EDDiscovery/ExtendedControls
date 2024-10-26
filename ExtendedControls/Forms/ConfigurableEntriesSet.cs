@@ -29,8 +29,16 @@ namespace ExtendedControls
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             if (t != null)
             {
+                // in same order as Control Definition in Action doc and in same order as MakeEntry
+
                 Control c = t.Control;
-                if (c is ExtTextBox)
+
+                if (c is Label || c.GetType() == typeof(ExtButton))         // need the second due to button being a base class
+                {
+                    c.Text = value;
+                    return true;
+                }
+                else if (c is ExtTextBox)
                 {
                     if (replaceescapes)
                         value = value.ReplaceEscapeControlCharsFull();
@@ -44,34 +52,16 @@ namespace ExtendedControls
                     (c as ExtRichTextBox).Text = value;
                     return true;
                 }
-                else if (c is Label)
-                {
-                    (c as Label).Text = value;
-                    return true;
-                }
                 else if (c is ExtCheckBox)
                 {
-                    (c as ExtCheckBox).Checked = !value.Equals("0");
+                    (c as ExtCheckBox).Checked = value.InvariantParseInt(0) != 0;
                     return true;
                 }
-                else if (c is ExtComboBox)
+                else if (c is ExtDateTimePicker)
                 {
-                    ExtComboBox cb = c as ExtComboBox;
-                    if (cb.Items.Contains(value))
+                    if (DateTime.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out DateTime tme))
                     {
-                        cb.Enabled = false;
-                        cb.SelectedItem = value;
-                        cb.Enabled = true;
-                        return true;
-                    }
-                }
-                else if (c is NumberBoxDouble)
-                {
-                    var cn = c as NumberBoxDouble;
-                    double? v = value.InvariantParseDoubleNull();
-                    if (v.HasValue)
-                    {
-                        cn.Value = v.Value;
+                        (c as ExtDateTimePicker).Value = tme;
                         return true;
                     }
                 }
@@ -85,6 +75,49 @@ namespace ExtendedControls
                         return true;
                     }
                 }
+                else if (c is NumberBoxDouble)
+                {
+                    var cn = c as NumberBoxDouble;
+                    double? v = value.InvariantParseDoubleNull();
+                    if (v.HasValue)
+                    {
+                        cn.Value = v.Value;
+                        return true;
+                    }
+                }
+                else if (c is NumberBoxInt)
+                {
+                    var cn = c as NumberBoxInt;
+                    int? v = value.InvariantParseIntNull();
+                    if (v.HasValue)
+                    {
+                        cn.Value = v.Value;
+                        return true;
+                    }
+                }
+                else if (c is ExtComboBox)
+                {
+                    ExtComboBox cb = c as ExtComboBox;
+                    if (cb.Items.Contains(value))
+                    {
+                        cb.Enabled = false;
+                        cb.SelectedItem = value;
+                        cb.Enabled = true;
+                        return true;
+                    }
+                }
+                // panel, flowpanel, can't set
+                else if (c is ExtPanelRollUp)
+                {
+                    var cn = c as ExtPanelRollUp;
+                    bool? b = value.InvariantParseBoolNull();
+                    if (b != null)
+                    {
+                        cn.PinState = b.Value;
+                        return true;
+                    }
+                }
+                // dgv can't set
                 else if (c is ExtButtonWithNewCheckedListBox)
                 {
                     var cn = c as ExtButtonWithNewCheckedListBox;
@@ -98,16 +131,6 @@ namespace ExtendedControls
                     {
                         var cn = c as SplitContainer;
                         cn.SplitterDistance(v.Value / 100.0);
-                        return true;
-                    }
-                }
-                else if (c is ExtPanelRollUp)
-                {
-                    var cn = c as ExtPanelRollUp;
-                    bool? b = value.InvariantParseBoolNull();
-                    if (b != null)
-                    { 
-                        cn.PinState = b.Value;
                         return true;
                     }
                 }
@@ -167,8 +190,7 @@ namespace ExtendedControls
 
 
         // For DGV, add or reset the row cell values. 
-        // in JSON or in text 
-        // see action doc for format
+        // see action doc for format of this text method
 
         public string AddSetRows(string controlname, string rowstring)
         {
@@ -178,167 +200,194 @@ namespace ExtendedControls
                 var cn = t.Control as ExtPanelDataGridViewScroll;
                 var dgv = cn.DGV;
 
-                if (rowstring.StartsWith("["))     // JSON
+                cn.Suspend();
+                string v = ProcessAddSetRows(dgv, rowstring);
+                cn.Resume();
+                return v;
+            }
+            else
+                return "Not a DGV";
+        }
+
+        private string ProcessAddSetRows(DataGridView dgv, string rowstring)
+        { 
+            BaseUtils.StringParser sp = new BaseUtils.StringParser(rowstring);
+
+            while (!sp.IsEOL)
+            {
+                int? rownumber = sp.NextIntComma(" ,");
+                if (rownumber.HasValue)
                 {
-                    JArray ja = JArray.Parse(rowstring, JToken.ParseOptions.CheckEOL);
-                    if (ja != null)
+                    int cellno = 0;
+
+                    if (sp.PeekChar() != '(')
                     {
-                        foreach (JObject jo in ja)
-                        {
-                            int? rownumber = jo["Row"].IntNull();
-
-                            DataGridViewRow rw = null;
-
-                            bool insert = rownumber < 0;            // -1 insert at start, -2 add at end, else rownumber
-                            if (insert)
-                                rw = dgv.RowTemplate.Clone() as DataGridViewRow;
-                            else if (rownumber < dgv.Rows.Count)    // else check in range
-                                rw = dgv.Rows[rownumber.Value];
-                            else
-                            {
-                                return "Incorrect row number in JSON";
-                            }
-
-                            JArray jcells = jo["Cells"].Array();
-
-                            int cellno = 0;
-                            foreach (JObject cell in jcells.DefaultIfEmpty())
-                            {
-                                string type = cell["Type"].Str().ToLowerInvariant();
-                                string tooltip = cell["ToolTip"].Str();
-
-                                int? cellsetnogiven = cell["Cell"].IntNull();      // we can override the cell number (only when replacing)
-                                if (cellsetnogiven != null)                        // set the cell set number to the count if not set
-                                    cellno = cellsetnogiven.Value;
-
-                                if (type == "text")
-                                {
-                                    string value = cell["Value"].Str();
-
-                                    if (insert)
-                                        rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
-                                    else
-                                        rw.Cells[cellno].Value = value;
-                                }
-
-                                if (tooltip != null)
-                                    rw.Cells[cellno].ToolTipText = tooltip;
-
-                                cellno++;
-                            }
-
-                            if (insert)
-                            {
-                                if (rownumber == -1 && dgv.Rows.Count > 0)
-                                    dgv.Rows.Insert(0, rw);
-                                else
-                                    dgv.Rows.Add(rw);
-                            }
-                            cellno++;
-                        }
-
-                        return null;
+                        int? cno = sp.NextIntComma(" ,");
+                        if (cno != null)
+                            cellno = cno.Value;
+                        else
+                            return "Missing cell number after row";
                     }
+
+                    DataGridViewRow rw;
+
+                    bool insert = rownumber < 0;            // -1 insert at start, -2 add at end, else rownumber
+                    if (insert)
+                        rw = dgv.RowTemplate.Clone() as DataGridViewRow;
+                    else if (rownumber < dgv.Rows.Count)    // else check in range
+                        rw = dgv.Rows[rownumber.Value];
                     else
-                        return "Bad JSON";
+                        return "Incorrect row format in addsetrows";
 
-                }
-                else
-                {
-                    BaseUtils.StringParser sp = new BaseUtils.StringParser(rowstring);
-
-                    while (!sp.IsEOL)
+                    while (sp.IsCharMoveOn('('))
                     {
-                        int? rownumber = sp.NextIntComma(" ,");
-                        if (rownumber.HasValue)
+                        string coltype = sp.NextQuotedWordComma(System.Globalization.CultureInfo.InvariantCulture);      // text, etc, see below
+
+                        if (coltype == "text")
                         {
-                            int cellno = 0;
+                            string value = sp.NextQuotedWord(" ),");
 
-                            if (sp.PeekChar() != '(')
-                            {
-                                int? cno = sp.NextIntComma(" ,");
-                                if (cno != null)
-                                    cellno = cno.Value;
-                                else
-                                    return "Missing cell number after row";
-                            }
-
-                            DataGridViewRow rw = null;
-
-                            bool insert = rownumber < 0;            // -1 insert at start, -2 add at end, else rownumber
                             if (insert)
-                                rw = dgv.RowTemplate.Clone() as DataGridViewRow;
-                            else if (rownumber < dgv.Rows.Count)    // else check in range
-                                rw = dgv.Rows[rownumber.Value];
+                                rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
                             else
                             {
-                                return "Incorrect row format in addsetrows";
-                            }
-
-                            while (sp.IsCharMoveOn('('))
-                            {
-                                string coltype = sp.NextQuotedWordComma(System.Globalization.CultureInfo.InvariantCulture);      // text, etc, see below
-
-                                if (coltype == "text")
-                                {
-                                    string value = sp.NextQuotedWord(" ),");
-
-                                    if (insert)
-                                        rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
-                                    else
-                                    {
-                                        if (cellno < dgv.Columns.Count)
-                                            rw.Cells[cellno].Value = value;
-                                        else
-                                            return "Cell number beyond column count";
-                                    }
-                                }
+                                if (cellno < dgv.Columns.Count)
+                                    rw.Cells[cellno].Value = value;
                                 else
-                                {
-                                    return "Unsuported Column Type " + coltype;
-                                }
-
-                                if (sp.IsCharMoveOn(','))       // more stuff, tooltip
-                                {
-                                    string tooltip = sp.NextQuotedWord(" ),");
-
-                                    if (tooltip != null)
-                                        rw.Cells[cellno].ToolTipText = tooltip;
-                                }
-
-                                if (!sp.IsCharMoveOn(')'))
-                                    return "Missing ) at end of cell definition";
-
-                                if (sp.IsEOL || sp.IsCharMoveOn(';'))      // EOL or semicolon ends definition of this rows cells
-                                    break;
-
-                                if (!sp.IsCharMoveOn(','))     // then must be comma
-                                {
-                                    return "Incorrect cell format missing comma";
-                                }
-
-                                cellno++;
-                            }
-
-                            if (insert)
-                            {
-                                if (rownumber == -1 && dgv.Rows.Count > 0)
-                                    dgv.Rows.Insert(0, rw);
-                                else
-                                    dgv.Rows.Add(rw);
+                                    return "Cell number beyond column count";
                             }
                         }
                         else
                         {
-                            return "Incorrect row format in addsetrows";
+                            return "Unsuported Column Type " + coltype;
                         }
+
+                        if (sp.IsCharMoveOn(','))       // more stuff, tooltip
+                        {
+                            string tooltip = sp.NextQuotedWord(" ),");
+
+                            if (tooltip != null)
+                                rw.Cells[cellno].ToolTipText = tooltip;
+                        }
+
+                        if (!sp.IsCharMoveOn(')'))
+                            return "Missing ) at end of cell definition";
+
+                        if (sp.IsEOL || sp.IsCharMoveOn(';'))      // EOL or semicolon ends definition of this rows cells
+                            break;
+
+                        if (!sp.IsCharMoveOn(','))     // then must be comma
+                        {
+                            return "Incorrect cell format missing comma";
+                        }
+
+                        cellno++;
                     }
 
-                    return null;
+                    if (insert)
+                    {
+                        if (rownumber == -1 && dgv.Rows.Count > 0)
+                            dgv.Rows.Insert(0, rw);
+                        else
+                            dgv.Rows.Add(rw);
+                    }
+                }
+                else
+                {
+                    return "Incorrect row format in addsetrows";
                 }
             }
+
+            return null;
+        }
+
+        // Jarray of row commands in JObject {"Row",["CellStart"],Cells[ JObject { "Type",["ToolTip"], ["Cell"], "Value"] ]}
+        public string AddSetRows(string controlname, object rowcommands)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            if (t != null && rowcommands is JArray)
+            {
+                var cn = t.Control as ExtPanelDataGridViewScroll;
+                var dgv = cn.DGV;
+
+                cn.Suspend();
+
+                string v = ProcessAddSetRows(dgv, (JArray)rowcommands);
+
+                cn.Resume();
+
+                return v;
+            }
             else
-                return "Not a DGV";
+                return "Not a DGV or not a JArray";
+        }
+
+        private string ProcessAddSetRows(DataGridView dgv, JArray rowcommands)
+        {
+            foreach (JObject jo in rowcommands)
+            {
+                int? rownumber = jo["Row"].IntNull();
+
+                DataGridViewRow rw = null;
+
+                bool insert = rownumber < 0;            // -1 insert at start, -2 add at end, else rownumber
+                if (insert)
+                    rw = dgv.RowTemplate.Clone() as DataGridViewRow;
+                else if (rownumber < dgv.Rows.Count)    // else check in range
+                    rw = dgv.Rows[rownumber.Value];
+                else
+                    return "Incorrect row number in JSON";
+
+                int cellno = jo["CellStart"].Int(0);
+
+                JArray jcells = jo["cells"].Array();
+                if (jcells == null)
+                    return "Missing Cells definition";
+                try
+                {
+                    foreach (JObject cell in jcells)
+                    {
+                        string coltype = cell["Type"].Str().ToLowerInvariant();
+                        string tooltip = cell["ToolTip"].Str();
+
+                        int? cellsetnogiven = cell["Cell"].IntNull();      // we can override the cell number (only when replacing)
+                        if (cellsetnogiven != null)                        // set the cell set number to the count if not set
+                            cellno = cellsetnogiven.Value;
+
+                        if (coltype == "text")
+                        {
+                            // convert this way to allow for integers and strings to be passed
+                            string value = Convert.ToString(cell["Value"].Value, System.Globalization.CultureInfo.InvariantCulture);
+
+                            if (insert)
+                                rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
+                            else
+                                rw.Cells[cellno].Value = value;
+                        }
+                        else
+                            return "Unsuported Column Type " + coltype;
+
+                        if (tooltip != null)
+                            rw.Cells[cellno].ToolTipText = tooltip;
+
+                        cellno++;
+                    }
+                }
+                catch
+                {
+                    return "JSON missing object in cells definitions";
+                }
+
+                if (insert)
+                {
+                    if (rownumber == -1 && dgv.Rows.Count > 0)
+                        dgv.Rows.Insert(0, rw);
+                    else
+                        dgv.Rows.Add(rw);
+                }
+            }
+
+            return null;
         }
 
         public bool Clear(string controlname)
@@ -371,6 +420,8 @@ namespace ExtendedControls
                 var cn = t.Control as ExtPanelDataGridViewScroll;
                 var dgv = cn.DGV;
 
+                cn.Suspend();
+
                 if (rowstart < 0)
                     rowstart = dgv.Rows.Count + rowstart;       // so -1 will be last row
 
@@ -386,8 +437,9 @@ namespace ExtendedControls
                     }
                 }
 
-                return removed;
+                cn.Resume();
 
+                return removed;
             }
 
             return -1;
@@ -430,20 +482,32 @@ namespace ExtendedControls
                 return false;
         }
 
-        public bool SetPosition(string controlname, Rectangle r, SizeF autoscalefactor)
+        public bool SetPosition(string controlname, Point p, SizeF autoscalefactor)
         {
             var entry = Find(controlname);
             if (entry != null)
             {
-                r = new Rectangle((int)(r.Left * autoscalefactor.Width), (int)(r.Top * autoscalefactor.Height),
-                                  (int)(r.Width * autoscalefactor.Width), (int)(r.Height * autoscalefactor.Height)
-                    );
-                entry.Control.Bounds = r;
+                Point newp = new Point((int)(p.X * autoscalefactor.Width), (int)(p.Y * autoscalefactor.Height));
+                entry.Control.Location = newp;
                 return true;
             }
             else
             {
-                r = Rectangle.Empty;
+                return false;
+            }
+        }
+
+        public bool SetSize(string controlname, Size s, SizeF autoscalefactor)
+        {
+            var entry = Find(controlname);
+            if (entry != null)
+            {
+                Size news = new Size((int)(s.Width * autoscalefactor.Width), (int)(s.Height * autoscalefactor.Height));
+                entry.Control.Size = news;
+                return true;
+            }
+            else
+            {
                 return false;
             }
         }

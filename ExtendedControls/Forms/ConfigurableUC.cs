@@ -167,6 +167,11 @@ namespace ExtendedControls
         {
             return Entries.AddSetRows(controlname, rowstring);
         }
+        public string AddSetRows(string controlname, object rowcommands)        // rowcommands is a JArray
+        {
+            return Entries.AddSetRows(controlname, rowcommands);
+        }
+
         public bool Clear(string controlname)
         {
             return Entries.Clear(controlname);
@@ -208,9 +213,13 @@ namespace ExtendedControls
         {
             return Entries.GetPosition(controlname, out r, this.FindForm().CurrentAutoScaleFactor());
         }
-        public bool SetPosition(string controlname, Rectangle r)    // in design units
+        public bool SetPosition(string controlname, Point p)    // in design units
         {
-            return Entries.SetPosition(controlname, r, this.FindForm().CurrentAutoScaleFactor());
+            return Entries.SetPosition(controlname, p, this.FindForm().CurrentAutoScaleFactor());
+        }
+        public bool SetSize(string controlname, Size s)    // in design units
+        {
+            return Entries.SetSize(controlname, s, this.FindForm().CurrentAutoScaleFactor());
         }
 
         #endregion

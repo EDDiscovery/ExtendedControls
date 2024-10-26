@@ -63,8 +63,12 @@ namespace ExtendedControls
         // return value of dialog control as a string. Null if can't express it as a string (not a supported type)
         public string Get(ConfigurableEntryList.Entry t)
         {
+            // same order as set
+
             Control c = t.Control;
-            if (c is ExtTextBox)
+            if (c is Label || c.GetType() == typeof(ExtButton))
+                return c.Text;
+            else if (c is ExtTextBox)
             {
                 string s = (c as ExtTextBox).Text;
                 if (t.TextBoxEscapeOnReport)
@@ -73,20 +77,18 @@ namespace ExtendedControls
             }
             else if (c is ExtRichTextBox)
                 return c.Text;
-            else if (c is Label)
-                return c.Text;
             else if (c is ExtCheckBox)
                 return (c as ExtCheckBox).Checked ? "1" : "0";
             else if (c is ExtDateTimePicker)
                 return (c as ExtDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            else if (c is NumberBoxDouble)
-            {
-                var cn = c as NumberBoxDouble;
-                return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
-            }
             else if (c is NumberBoxLong)
             {
                 var cn = c as NumberBoxLong;
+                return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
+            }
+            else if (c is NumberBoxDouble)
+            {
+                var cn = c as NumberBoxDouble;
                 return cn.IsValid ? cn.Value.ToStringInvariant() : "INVALID";
             }
             else if (c is NumberBoxInt)
@@ -99,6 +101,11 @@ namespace ExtendedControls
                 ExtComboBox cb = c as ExtComboBox;
                 return (cb.SelectedIndex != -1) ? cb.Text : "";
             }
+            else if (c is ExtPanelRollUp)
+            {
+                var cn = c as ExtPanelRollUp;
+                return cn.PinState.ToStringIntValue();
+            }
             else if (c is ExtButtonWithNewCheckedListBox)
             {
                 var cn = c as ExtButtonWithNewCheckedListBox;
@@ -109,11 +116,6 @@ namespace ExtendedControls
                 var cn = c as SplitContainer;
                 return (cn.GetSplitterDistance() * 100).ToStringInvariant("N6");
             }
-            else if (c is ExtPanelRollUp)
-            {
-                var cn = c as ExtPanelRollUp;
-                return cn.PinState.ToStringIntValue();
-            }
             else
                 return null;
         }
@@ -122,8 +124,12 @@ namespace ExtendedControls
         // null if invalid, null if not a supported control
         public object GetValue(ConfigurableEntryList.Entry t)
         {
+            // order the same as set
+
             Control c = t.Control;
-            if (c is ExtTextBox)
+            if (c is Label || c.GetType() == typeof(ExtButton))
+                return c.Text;
+            else if (c is ExtTextBox)
             {
                 string s = (c as ExtTextBox).Text;
                 if (t.TextBoxEscapeOnReport)
@@ -132,21 +138,19 @@ namespace ExtendedControls
             }
             else if (c is ExtRichTextBox)
                 return c.Text;
-            else if (c is Label)
-                return c.Text;
             else if (c is ExtCheckBox)
                 return (c as ExtCheckBox).Checked;
             else if (c is ExtDateTimePicker)
                 return (c as ExtDateTimePicker).Value;
-            else if (c is NumberBoxDouble)
-            {
-                var cn = c as NumberBoxDouble;
-                return cn.IsValid ? cn.Value : default(double?);
-            }
             else if (c is NumberBoxLong)
             {
                 var cn = c as NumberBoxLong;
                 return cn.IsValid ? cn.Value : default(long?);
+            }
+            else if (c is NumberBoxDouble)
+            {
+                var cn = c as NumberBoxDouble;
+                return cn.IsValid ? cn.Value : default(double?);
             }
             else if (c is NumberBoxInt)
             {
@@ -158,6 +162,11 @@ namespace ExtendedControls
                 ExtComboBox cb = c as ExtComboBox;
                 return cb.SelectedIndex;
             }
+            else if (c is ExtPanelRollUp)
+            {
+                var cn = c as ExtPanelRollUp;
+                return cn.PinState;
+            }
             else if (c is ExtButtonWithNewCheckedListBox)
             {
                 var cn = c as ExtButtonWithNewCheckedListBox;
@@ -167,11 +176,6 @@ namespace ExtendedControls
             {
                 var cn = c as SplitContainer;
                 return cn.GetSplitterDistance() * 100.0;
-            }
-            else if (c is ExtPanelRollUp)
-            {
-                var cn = c as ExtPanelRollUp;
-                return cn.PinState;
             }
             else
                 return null;

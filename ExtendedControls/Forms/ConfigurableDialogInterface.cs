@@ -37,6 +37,7 @@ namespace ExtendedControls
         void SetCheckedList(IEnumerable<string> controlnames, bool state);
         void RadioButton(string startingcontrolname, string controlhit, int max = 1);
         string AddSetRows(string controlname, string rowstring);
+        string AddSetRows(string controlname, object rowcommands);      // rowcommands is a JArray, not used directly due to modules not always having QuickJSON
         bool Clear(string controlname);
         int RemoveRows(string controlname, int start, int count);
         bool IsAllValid();
@@ -47,7 +48,8 @@ namespace ExtendedControls
         bool IsEnabled(string controlname);
         bool IsVisible(string controlname);
         bool GetPosition(string controlname, out Rectangle r);  // in dialog units
-        bool SetPosition(string controlname, Rectangle r); // in dialog units
+        bool SetPosition(string controlname, Point p); // in dialog units
+        bool SetSize(string controlname, Size s); // in dialog units
     }
 
 }

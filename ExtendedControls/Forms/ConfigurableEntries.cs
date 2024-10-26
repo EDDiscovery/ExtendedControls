@@ -104,7 +104,8 @@ namespace ExtendedControls
 
             public Color? BackColor { get; set; } = null;               // panel, back colour to reapply after themeing
 
-            public List<DataGridViewColumn> DGVColoumns { get; set; } = null;       // for DGV
+            public List<DataGridViewColumn> DGVColumns { get; set; } = null;       // for DGV
+            public List<string> DGVSortMode { get; set; } = null;       // for DGV, sort mode control
             public int DGVRowHeaderWidth { get; set; } = 0;             // for DGV
 
             public List<CheckedIconUserControl.Item> DropDownButtonList { get; set; } = null;  // for DropDownButton
@@ -548,9 +549,30 @@ namespace ExtendedControls
 
                     dgv.AllowUserToAddRows = false;
                     dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                    dgv.ScrollBars = ScrollBars.None;
 
-                    foreach (var col in ent.DGVColoumns)
-                        dgv.Columns.Add(col);
+                    for(int i = 0 ; i < ent.DGVColumns.Count; i++)
+                    {
+                        dgv.Columns.Add(ent.DGVColumns[i]);
+                        dgv.Columns[i].SortMode = ent.DGVSortMode[i].EqualsIIC("Off") ? DataGridViewColumnSortMode.NotSortable : DataGridViewColumnSortMode.Automatic;
+                    }
+
+                    dgv.SortCompare += (s, e) =>
+                    {
+                        string sortmode = ent.DGVSortMode[e.Column.Index];
+                        if (sortmode.EqualsIIC("Alpha"))
+                            e.SortDataGridViewColumnAlpha();
+                        else if (sortmode.EqualsIIC("Date"))
+                            e.SortDataGridViewColumnDate();
+                        else if (sortmode.EqualsIIC("Numeric"))
+                            e.SortDataGridViewColumnNumeric() ;
+                        else if (sortmode.EqualsIIC("NumericAlpha"))
+                            e.SortDataGridViewColumnNumericThenAlpha();
+                        else if (sortmode.EqualsIIC("AlphaInt"))
+                            e.SortDataGridViewColumnAlphaInt();
+                        else
+                            e.SortDataGridViewColumnAlpha();
+                    };
 
                     dgvs.Controls.Add(dgv);
                     ExtScrollBar sb = new ExtScrollBar();
@@ -700,6 +722,8 @@ namespace ExtendedControls
 
             Type ctype = null;
 
+            // in same order as Control Definition in Action doc and in same order as Set String
+           
             if (type == null)
                 return "Missing type";
             else if (type.Equals("label"))
@@ -929,7 +953,8 @@ namespace ExtendedControls
             }
             else if (ctype == typeof(ExtPanelDataGridViewScroll))
             {
-                entry.DGVColoumns = new List<DataGridViewColumn>();
+                entry.DGVColumns = new List<DataGridViewColumn>();
+                entry.DGVSortMode = new List<string>();
 
                 // see action doc for format
 
@@ -950,9 +975,14 @@ namespace ExtendedControls
                             return $"Missing DGV column description items for {name}";
                         }
 
+                        string sortmode = "Alpha";
+                        if (sp.IsCharMoveOn(','))           // if comma after the col fill size, there is an optional sort mode
+                            sortmode = sp.NextQuotedWord(" ,)");
+
                         if (coltype.EqualsIIC("text"))
                         {
-                            entry.DGVColoumns.Add(new DataGridViewTextBoxColumn() { HeaderText = coldescr, FillWeight = colfillsize.Value, ReadOnly = true });
+                            entry.DGVColumns.Add(new DataGridViewTextBoxColumn() { HeaderText = coldescr, FillWeight = colfillsize.Value, ReadOnly = true });
+                            entry.DGVSortMode.Add(sortmode);
                         }
                         else
                             return $"Unknown column type for {name}";
