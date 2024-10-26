@@ -222,11 +222,19 @@ namespace ExtendedControls
 
                     if (sp.PeekChar() != '(')
                     {
-                        int? cno = sp.NextIntComma(" ,");
-                        if (cno != null)
-                            cellno = cno.Value;
-                        else
+                        int? cno = sp.NextIntComma(" ,(");      // will remove comma if there
+                        if (cno == null)
                             return "Missing cell number after row";
+
+                        cellno = cno.Value;
+                    }
+
+                    string headertext = null;
+                    if (sp.PeekChar() != '(')       // if not on (, another para
+                    {
+                        headertext = sp.NextQuotedWordComma(terminators:" ,(");
+                        if (headertext == null)
+                            return "Missing header text";
                     }
 
                     DataGridViewRow rw;
@@ -239,7 +247,13 @@ namespace ExtendedControls
                     else
                         return "Incorrect row format in addsetrows";
 
-                    while (sp.IsCharMoveOn('('))
+                    if (insert && cellno != 0)
+                        return "Inserting new row must start with cell number 0";
+
+                    if (headertext != null)
+                        rw.HeaderCell.Value = headertext;
+
+                    while (sp.IsCharMoveOn('('))        // cell definitions are optional
                     {
                         string coltype = sp.NextQuotedWordComma(System.Globalization.CultureInfo.InvariantCulture);      // text, etc, see below
 
@@ -247,15 +261,13 @@ namespace ExtendedControls
                         {
                             string value = sp.NextQuotedWord(" ),");
 
+                            if (cellno < 0 || cellno > dgv.Columns.Count)
+                                return "Cell number out of range";
+
                             if (insert)
                                 rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
                             else
-                            {
-                                if (cellno < dgv.Columns.Count)
-                                    rw.Cells[cellno].Value = value;
-                                else
-                                    return "Cell number beyond column count";
-                            }
+                                rw.Cells[cellno].Value = value;
                         }
                         else
                         {
@@ -326,7 +338,7 @@ namespace ExtendedControls
         {
             foreach (JObject jo in rowcommands)
             {
-                int? rownumber = jo["Row"].IntNull();
+                int? rownumber = jo["row"].IntNull();
 
                 DataGridViewRow rw = null;
 
@@ -338,44 +350,55 @@ namespace ExtendedControls
                 else
                     return "Incorrect row number in JSON";
 
-                int cellno = jo["CellStart"].Int(0);
+                string headertext = jo["headertext"].Str();
+                if (headertext != null)
+                    rw.HeaderCell.Value = headertext;
+
+                int cellno = jo["cellstart"].Int(0);
+
+                if (insert && cellno != 0)
+                    return "Inserting new row must start with cell number 0";
 
                 JArray jcells = jo["cells"].Array();
-                if (jcells == null)
-                    return "Missing Cells definition";
-                try
+                if (jcells != null)     //  cells are optional
                 {
-                    foreach (JObject cell in jcells)
+                    try // protect against any shenanigams with exceptions due to cells.add and convert.tostring
                     {
-                        string coltype = cell["Type"].Str().ToLowerInvariant();
-                        string tooltip = cell["ToolTip"].Str();
-
-                        int? cellsetnogiven = cell["Cell"].IntNull();      // we can override the cell number (only when replacing)
-                        if (cellsetnogiven != null)                        // set the cell set number to the count if not set
-                            cellno = cellsetnogiven.Value;
-
-                        if (coltype == "text")
+                        foreach (JObject cell in jcells)
                         {
-                            // convert this way to allow for integers and strings to be passed
-                            string value = Convert.ToString(cell["Value"].Value, System.Globalization.CultureInfo.InvariantCulture);
+                            string coltype = cell["type"].Str().ToLowerInvariant();
+                            string tooltip = cell["toolTip"].Str();
 
-                            if (insert)
-                                rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
+                            int? cellsetnogiven = insert ? null : cell["cell"].IntNull();      // we can override the cell number (only when replacing)
+                            if (cellsetnogiven != null)                        // set the cell set number to the count if not set
+                                cellno = cellsetnogiven.Value;
+
+                            if (cellno < 0 || cellno >= dgv.Columns.Count)
+                                return "Cell number out of range";
+
+                            if (coltype == "text")
+                            {
+                                // convert this way to allow for integers and strings to be passed
+                                string value = Convert.ToString(cell["value"].Value, System.Globalization.CultureInfo.InvariantCulture);
+
+                                if (insert)
+                                    rw.Cells.Add(new DataGridViewTextBoxCell() { Value = value });
+                                else
+                                    rw.Cells[cellno].Value = value;
+                            }
                             else
-                                rw.Cells[cellno].Value = value;
+                                return "Unsuported Column Type " + coltype;
+
+                            if (tooltip != null)
+                                rw.Cells[cellno].ToolTipText = tooltip;
+
+                            cellno++;
                         }
-                        else
-                            return "Unsuported Column Type " + coltype;
-
-                        if (tooltip != null)
-                            rw.Cells[cellno].ToolTipText = tooltip;
-
-                        cellno++;
                     }
-                }
-                catch
-                {
-                    return "JSON missing object in cells definitions";
+                    catch
+                    {
+                        return "JSON missing object in cells definitions";
+                    }
                 }
 
                 if (insert)
@@ -388,6 +411,100 @@ namespace ExtendedControls
             }
 
             return null;
+        }
+
+        public bool InsertColumn(string controlname, int position, string type, string headertext, int fillsize, string sortmode)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            if (t != null)
+            {
+                var cn = t.Control as ExtPanelDataGridViewScroll;
+                var dgv = cn.DGV;
+                DataGridViewColumn col = null;
+
+                if ( type.EqualsIIC("text"))
+                {
+                    col = new DataGridViewTextBoxColumn() { HeaderText = headertext, FillWeight = fillsize, ReadOnly = true };
+                }
+
+                if ( col != null)
+                {
+                    position = position.Range(0, dgv.Columns.Count);
+                    t.DGVSortMode.Insert(position, sortmode);           // do not need to update DGVColumns as that only used during init
+                    dgv.Columns.Insert(position, col);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool RemoveColumns(string controlname, int position, int count)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            if (t != null)
+            {
+                var cn = t.Control as ExtPanelDataGridViewScroll;
+                var dgv = cn.DGV;
+
+                if ( position > 0 && position < dgv.Columns.Count)
+                {
+                    count = Math.Min(count, dgv.Columns.Count - position);
+                    while (count-- > 0)
+                    {
+                        dgv.Columns.RemoveAt(position);
+                        t.DGVSortMode.RemoveAt(position);
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool SetRightClickMenu(string controlname, string[] tags, string[] items)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            if (t != null)
+            {
+                var cn = t.Control as ExtPanelDataGridViewScroll;
+                var dgv = cn.DGV;
+
+                var columnContextMenu = new ContextMenuStrip();
+
+                columnContextMenu.Items.Clear();
+
+                for ( int i = 0; i < items.Length; i++)
+                {
+                    var tsitem = new System.Windows.Forms.ToolStripMenuItem();
+                    tsitem.Text = items[i];
+                    tsitem.Tag = new Tuple<Entry,string>(t,tags[i]);
+                    tsitem.AutoSize = true;
+                    tsitem.Size = new System.Drawing.Size(178, 22);
+                    tsitem.Click += Tsitem_Click;
+                    columnContextMenu.Items.Add(tsitem);
+                }
+
+                dgv.ContextMenuStrip?.Dispose();
+                dgv.ContextMenuStrip = columnContextMenu;
+
+                return true;
+            }
+            else
+                return false;
+        }
+
+
+
+        private void Tsitem_Click(object sender, System.EventArgs e)
+        {
+            System.Windows.Forms.ToolStripMenuItem tsi = sender as System.Windows.Forms.ToolStripMenuItem;
+            Tuple<Entry, string> data = tsi.Tag as Tuple<Entry, string>;
+            var cn = data.Item1.Control as ExtPanelDataGridViewScroll;
+            BaseUtils.DataGridViewColumnControl dgv = cn.DGV as BaseUtils.DataGridViewColumnControl;
+            //System.Diagnostics.Debug.WriteLine($"Clicked on {data.Item1.Name} {data.Item2}");
+            SendTrigger(data.Item1.Name, "RightClickMenu:" + data.Item2 + ":" + dgv.RightClickRow, dgv.RightClickRow );
         }
 
         public bool Clear(string controlname)
@@ -444,6 +561,50 @@ namespace ExtendedControls
 
             return -1;
         }
+
+        public bool SetDGVColumnSettings(string controlname, object settings)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            if (t != null)
+            {
+                var cn = t.Control as ExtPanelDataGridViewScroll;
+                BaseUtils.DataGridViewColumnControl dgv = cn.DGV as BaseUtils.DataGridViewColumnControl;
+                return dgv.LoadColumnSettings((JToken)settings, dgv.AllowRowHeaderVisibleSelection);
+            }
+            return false;
+        }
+
+        public bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            if (t != null)
+            {
+                var cn = t.Control as ExtPanelDataGridViewScroll;
+                BaseUtils.DataGridViewColumnControl dgv = cn.DGV as BaseUtils.DataGridViewColumnControl;
+                dgv.SetWordWrap(wordwrap);
+                dgv.ColumnReorder = columnreorder;
+                dgv.PerColumnWordWrapControl = percolumnwordwrap;
+                dgv.AllowRowHeaderVisibleSelection = allowrowheadervisibilityselection;
+                dgv.SingleRowSelect = singlerowselect;
+                return true;
+            }
+            return false;
+        }
+
+        public bool SetDGVWordWrap(string controlname, bool wordwrap)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            if (t != null)
+            {
+                var cn = t.Control as ExtPanelDataGridViewScroll;
+                BaseUtils.DataGridViewColumnControl dgv = cn.DGV as BaseUtils.DataGridViewColumnControl;
+                dgv.SetWordWrap(wordwrap);
+                return true;
+            }
+            return false;
+        }
+
+
 
         public void CloseDropDown()
         {

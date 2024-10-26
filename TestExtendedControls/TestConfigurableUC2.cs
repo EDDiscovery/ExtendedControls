@@ -66,10 +66,17 @@ namespace TestExtendedControls
             Theme.Current.ApplyStd(this);
             configurableUC1.Themed();
 
-            err = configurableUC1.Entries.AddSetRows("DGV", "-2,(text,\"R1 col 1 value\",\"text Tooltip\"),(text,\"R1 col 2 value\"),(text,\"R1 col 3 value\");" +
+            err = configurableUC1.Entries.AddSetRows("DGV", "-2,0,\"HeaderT\",(text,\"R1 col 1 value\",\"text Tooltip\"),(text,\"R1 col 2 value\"),(text,\"R1 col 3 value\");" +
                                                       "-2,(text,\"R2 col 1 value\"),(text,\"R2 col 2 value\")"
                                                         );
+            err = configurableUC1.Entries.AddSetRows("DGV", "1,0,\"Header2\"");     // overwrite row 1 header
+            err = configurableUC1.Entries.AddSetRows("DGV", "-2,0,\"Header3\"");    // header only on next line
+
+            configurableUC1.SetDGVSettings("DGV", true, true, true, true, true);
+
             System.Diagnostics.Debug.Assert(err == null);
+
+            configurableUC1.SetRightClickMenu("DGV", new string[] { "RCT1", "RCT2" }, new string[] { "Right click 1", "Right click 2" });
 
             JSONFormatter jf = new JSONFormatter();
             jf.Array()
@@ -166,6 +173,41 @@ namespace TestExtendedControls
         private void extButtonRemove12_Click(object sender, EventArgs e)
         {
             configurableUC1.Entries.RemoveRows("DGV", 1,2);
+        }
+
+        private void extButtonRemoveCol_Click(object sender, EventArgs e)
+        {
+            configurableUC1.RemoveColumns("DGV", 1, 2);
+        }
+
+        private void extButtonAddColumn_Click(object sender, EventArgs e)
+        {
+            configurableUC1.InsertColumn("DGV", 1, "text", "InsertCol", 100, "Alpha");
+        }
+
+        private void extButtonSave_Click(object sender, EventArgs e)
+        {
+            object settings = configurableUC1.GetDGVColumnSettings("DGV");
+            JToken tk = settings as JToken;
+            BaseUtils.FileHelpers.TryWriteToFile(@"c:\code\colset.json", tk.ToString(true));
+        }
+
+        private void extButtonLoad_Click(object sender, EventArgs e)
+        {
+            string s = BaseUtils.FileHelpers.TryReadAllTextFromFile(@"c:\code\colset.json");
+            if ( s != null )
+            {
+                JToken tk = JToken.Parse(s);
+                configurableUC1.SetDGVColumnSettings("DGV", tk);
+            }
+        }
+
+        bool wordwrap = true;
+        private void extButtonToggleWordWrap_Click(object sender, EventArgs e)
+        {
+            wordwrap = !wordwrap;
+            configurableUC1.SetDGVWordWrap("DGV", wordwrap);
+
         }
     }
 

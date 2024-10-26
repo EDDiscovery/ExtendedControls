@@ -108,6 +108,8 @@ namespace ExtendedControls
             public List<string> DGVSortMode { get; set; } = null;       // for DGV, sort mode control
             public int DGVRowHeaderWidth { get; set; } = 0;             // for DGV
 
+            //public System.Windows.Forms.ContextMenuStrip columnContextMenu { get; set; }
+
             public List<CheckedIconUserControl.Item> DropDownButtonList { get; set; } = null;  // for DropDownButton
             public string ButtonSettings { get; set; } = "";             // for DropDownButton
             public bool MultiColumns { get; set; } = false;             // for DropDownButton
@@ -542,7 +544,7 @@ namespace ExtendedControls
                 else if ( c is ExtPanelDataGridViewScroll)
                 {
                     ExtPanelDataGridViewScroll dgvs = c as ExtPanelDataGridViewScroll;
-                    DataGridView dgv = new DataGridView();
+                    BaseUtils.DataGridViewColumnControl dgv = new BaseUtils.DataGridViewColumnControl();
                     dgv.RowHeadersVisible = ent.DGVRowHeaderWidth > 4;
                     if ( dgv.RowHeadersVisible)
                         dgv.RowHeadersWidth = ent.DGVRowHeaderWidth;

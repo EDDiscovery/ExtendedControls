@@ -36,10 +36,19 @@ namespace ExtendedControls
         bool AddText(string controlname, string text);
         void SetCheckedList(IEnumerable<string> controlnames, bool state);
         void RadioButton(string startingcontrolname, string controlhit, int max = 1);
+
         string AddSetRows(string controlname, string rowstring);
         string AddSetRows(string controlname, object rowcommands);      // rowcommands is a JArray, not used directly due to modules not always having QuickJSON
-        bool Clear(string controlname);
+        bool InsertColumn(string controlname, int position, string type, string headertext, int fillsize, string sortmode);
+        bool RemoveColumns(string controlname, int position, int count);
+        bool SetRightClickMenu(string controlname, string[] tags, string[] items);
+        object GetDGVColumnSettings(string controlname);      // null error, in JToken
+        bool SetDGVColumnSettings(string controlname, object settings);     //true if set, settings in JToken
+        bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect);     //true if set
+        bool SetDGVWordWrap(string controlname, bool wordwrap);     //true if set
         int RemoveRows(string controlname, int start, int count);
+
+        bool Clear(string controlname);
         bool IsAllValid();
         void CloseDropDown();
 

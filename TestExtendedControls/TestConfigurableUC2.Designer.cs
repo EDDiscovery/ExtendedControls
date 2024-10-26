@@ -30,6 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelTop = new System.Windows.Forms.Panel();
+            this.extButtonRemoveCol = new ExtendedControls.ExtButton();
+            this.extButtonLoad = new ExtendedControls.ExtButton();
+            this.extButtonSave = new ExtendedControls.ExtButton();
+            this.extButtonAddColumn = new ExtendedControls.ExtButton();
+            this.extButtonRemove12 = new ExtendedControls.ExtButton();
             this.extButtonClear = new ExtendedControls.ExtButton();
             this.extButtonChgCell = new ExtendedControls.ExtButton();
             this.extButtonChgRowJ = new ExtendedControls.ExtButton();
@@ -41,13 +46,18 @@
             this.extRichTextBox1 = new ExtendedControls.ExtRichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.configurableUC1 = new ExtendedControls.ConfigurableUC();
-            this.extButtonRemove12 = new ExtendedControls.ExtButton();
+            this.extButtonToggleWordWrap = new ExtendedControls.ExtButton();
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.SystemColors.Info;
+            this.panelTop.Controls.Add(this.extButtonRemoveCol);
+            this.panelTop.Controls.Add(this.extButtonToggleWordWrap);
+            this.panelTop.Controls.Add(this.extButtonLoad);
+            this.panelTop.Controls.Add(this.extButtonSave);
+            this.panelTop.Controls.Add(this.extButtonAddColumn);
             this.panelTop.Controls.Add(this.extButtonRemove12);
             this.panelTop.Controls.Add(this.extButtonClear);
             this.panelTop.Controls.Add(this.extButtonChgCell);
@@ -61,8 +71,58 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(792, 100);
+            this.panelTop.Size = new System.Drawing.Size(792, 141);
             this.panelTop.TabIndex = 2;
+            // 
+            // extButtonRemoveCol
+            // 
+            this.extButtonRemoveCol.Location = new System.Drawing.Point(84, 29);
+            this.extButtonRemoveCol.Name = "extButtonRemoveCol";
+            this.extButtonRemoveCol.Size = new System.Drawing.Size(75, 23);
+            this.extButtonRemoveCol.TabIndex = 1;
+            this.extButtonRemoveCol.Text = "Remove Col";
+            this.extButtonRemoveCol.UseVisualStyleBackColor = true;
+            this.extButtonRemoveCol.Click += new System.EventHandler(this.extButtonRemoveCol_Click);
+            // 
+            // extButtonLoad
+            // 
+            this.extButtonLoad.Location = new System.Drawing.Point(246, 29);
+            this.extButtonLoad.Name = "extButtonLoad";
+            this.extButtonLoad.Size = new System.Drawing.Size(75, 23);
+            this.extButtonLoad.TabIndex = 1;
+            this.extButtonLoad.Text = "Load ColSet";
+            this.extButtonLoad.UseVisualStyleBackColor = true;
+            this.extButtonLoad.Click += new System.EventHandler(this.extButtonLoad_Click);
+            // 
+            // extButtonSave
+            // 
+            this.extButtonSave.Location = new System.Drawing.Point(165, 29);
+            this.extButtonSave.Name = "extButtonSave";
+            this.extButtonSave.Size = new System.Drawing.Size(75, 23);
+            this.extButtonSave.TabIndex = 1;
+            this.extButtonSave.Text = "Save ColSet";
+            this.extButtonSave.UseVisualStyleBackColor = true;
+            this.extButtonSave.Click += new System.EventHandler(this.extButtonSave_Click);
+            // 
+            // extButtonAddColumn
+            // 
+            this.extButtonAddColumn.Location = new System.Drawing.Point(3, 29);
+            this.extButtonAddColumn.Name = "extButtonAddColumn";
+            this.extButtonAddColumn.Size = new System.Drawing.Size(75, 23);
+            this.extButtonAddColumn.TabIndex = 1;
+            this.extButtonAddColumn.Text = "AddColumn";
+            this.extButtonAddColumn.UseVisualStyleBackColor = true;
+            this.extButtonAddColumn.Click += new System.EventHandler(this.extButtonAddColumn_Click);
+            // 
+            // extButtonRemove12
+            // 
+            this.extButtonRemove12.Location = new System.Drawing.Point(641, 0);
+            this.extButtonRemove12.Name = "extButtonRemove12";
+            this.extButtonRemove12.Size = new System.Drawing.Size(75, 23);
+            this.extButtonRemove12.TabIndex = 1;
+            this.extButtonRemove12.Text = "Remove1+2";
+            this.extButtonRemove12.UseVisualStyleBackColor = true;
+            this.extButtonRemove12.Click += new System.EventHandler(this.extButtonRemove12_Click);
             // 
             // extButtonClear
             // 
@@ -152,7 +212,7 @@
             this.extRichTextBox1.DetectUrls = true;
             this.extRichTextBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.extRichTextBox1.HideScrollBar = true;
-            this.extRichTextBox1.Location = new System.Drawing.Point(0, 27);
+            this.extRichTextBox1.Location = new System.Drawing.Point(0, 68);
             this.extRichTextBox1.Name = "extRichTextBox1";
             this.extRichTextBox1.ReadOnly = false;
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
@@ -184,22 +244,22 @@
             this.configurableUC1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.configurableUC1.DialogResult = System.Windows.Forms.DialogResult.None;
             this.configurableUC1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.configurableUC1.Location = new System.Drawing.Point(0, 100);
+            this.configurableUC1.Location = new System.Drawing.Point(0, 141);
             this.configurableUC1.Name = "configurableUC1";
             this.configurableUC1.PanelBorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.configurableUC1.Size = new System.Drawing.Size(792, 409);
+            this.configurableUC1.Size = new System.Drawing.Size(792, 368);
             this.configurableUC1.SwallowReturn = true;
             this.configurableUC1.TabIndex = 3;
             // 
-            // extButtonRemove12
+            // extButtonToggleWordWrap
             // 
-            this.extButtonRemove12.Location = new System.Drawing.Point(641, 0);
-            this.extButtonRemove12.Name = "extButtonRemove12";
-            this.extButtonRemove12.Size = new System.Drawing.Size(75, 23);
-            this.extButtonRemove12.TabIndex = 1;
-            this.extButtonRemove12.Text = "Remove1+2";
-            this.extButtonRemove12.UseVisualStyleBackColor = true;
-            this.extButtonRemove12.Click += new System.EventHandler(this.extButtonRemove12_Click);
+            this.extButtonToggleWordWrap.Location = new System.Drawing.Point(327, 29);
+            this.extButtonToggleWordWrap.Name = "extButtonToggleWordWrap";
+            this.extButtonToggleWordWrap.Size = new System.Drawing.Size(75, 23);
+            this.extButtonToggleWordWrap.TabIndex = 1;
+            this.extButtonToggleWordWrap.Text = "WordWrap";
+            this.extButtonToggleWordWrap.UseVisualStyleBackColor = true;
+            this.extButtonToggleWordWrap.Click += new System.EventHandler(this.extButtonToggleWordWrap_Click);
             // 
             // TestConfigurableUC2
             // 
@@ -229,5 +289,10 @@
         private ExtendedControls.ExtButton extButtonClear;
         private ExtendedControls.ExtButton extButtonChgCell;
         private ExtendedControls.ExtButton extButtonRemove12;
+        private ExtendedControls.ExtButton extButtonRemoveCol;
+        private ExtendedControls.ExtButton extButtonAddColumn;
+        private ExtendedControls.ExtButton extButtonLoad;
+        private ExtendedControls.ExtButton extButtonSave;
+        private ExtendedControls.ExtButton extButtonToggleWordWrap;
     }
 }

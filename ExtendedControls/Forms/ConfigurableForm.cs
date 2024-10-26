@@ -370,6 +370,40 @@ namespace ExtendedControls
             return Entries.AddSetRows(controlname, rowcommands);
         }
 
+        public bool InsertColumn(string controlname, int position, string type, string headertext, int fillsize, string sortmode)
+        {
+            return Entries.InsertColumn(controlname, position, type, headertext, fillsize, sortmode);
+        }
+
+        public bool RemoveColumns(string controlname, int position, int count)
+        {
+            return Entries.RemoveColumns(controlname, position, count);
+        }
+
+        public bool SetRightClickMenu(string controlname, string[] tags, string[] items)
+        {
+            return Entries.SetRightClickMenu(controlname, tags, items);
+        }
+
+        public object GetDGVColumnSettings(string controlname)
+        {
+            return Entries.GetDGVColumnSettings(controlname);
+        }
+
+        public bool SetDGVColumnSettings(string controlname, object settings)
+        {
+            return Entries.SetDGVColumnSettings(controlname, settings);
+        }
+
+        public bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
+        {
+            return Entries.SetDGVSettings(controlname, wordwrap, columnreorder, percolumnwordwrap, allowrowheadervisibilityselection, singlerowselect);
+        }
+        public bool SetDGVWordWrap(string controlname, bool wordwrap)
+        {
+            return Entries.SetDGVWordWrap(controlname, wordwrap);
+        }
+
         // clear control
         public bool Clear(string controlname)
         {

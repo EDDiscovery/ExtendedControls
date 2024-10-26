@@ -76,7 +76,7 @@ namespace TestExtendedControls
             Theme.Current.ApplyStd(this);
             configurableUC1.Themed();
 
-            configurableUC1.Entries.Set("SP", "50.1");
+            configurableUC1.Entries.Set("SP", "50.1",false);
             System.Diagnostics.Debug.WriteLine($"split dist {configurableUC1.Get("SP")}");
 
         }

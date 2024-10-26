@@ -56,8 +56,8 @@ namespace ExtendedControls
 
         public void UpdateEntries()
         {
-            Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl(), this.FindForm().CurrentAutoScaleFactor(), 
-                                                Theme.Current?.GetScaledFont(1.0f), - vertscrollpanel.ScrollValue);
+            Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl(), this.FindForm().CurrentAutoScaleFactor(),
+                                                Theme.Current?.GetScaledFont(1.0f), -vertscrollpanel.ScrollValue);
             contentpanel.Recalcuate();  // don't move scroll, but recalc area to scroll
         }
 
@@ -87,7 +87,7 @@ namespace ExtendedControls
         {
             base.OnResize(e);
 
-            if ( contentpanel != null && !Entries.DisableTriggers && resizepositionon)
+            if (contentpanel != null && !Entries.DisableTriggers && resizepositionon)
             {
                 int widthdelta = contentpanel.Width - initialscrollpanelsize.Width;
                 int heightdelta = contentpanel.Height - initialscrollpanelsize.Height;
@@ -171,6 +171,36 @@ namespace ExtendedControls
         {
             return Entries.AddSetRows(controlname, rowcommands);
         }
+        public bool InsertColumn(string controlname, int position, string type, string headertext, int fillsize, string sortmode)
+        {
+            return Entries.InsertColumn(controlname, position, type, headertext, fillsize, sortmode);
+        }
+
+        public bool RemoveColumns(string controlname, int position, int count)
+        {
+            return Entries.RemoveColumns(controlname, position, count);
+        }
+
+        public bool SetRightClickMenu(string controlname, string[] tags, string[] items)
+        {
+            return Entries.SetRightClickMenu(controlname, tags, items);
+        }
+        public object GetDGVColumnSettings(string controlname)
+        {
+            return Entries.GetDGVColumnSettings(controlname);
+        }
+        public bool SetDGVColumnSettings(string controlname, object settings)
+        {
+            return Entries.SetDGVColumnSettings(controlname, settings);
+        }
+        public bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
+        {
+            return Entries.SetDGVSettings(controlname, wordwrap, columnreorder, percolumnwordwrap, allowrowheadervisibilityselection, singlerowselect);
+        }
+        public bool SetDGVWordWrap(string controlname, bool wordwrap)
+        {
+            return Entries.SetDGVWordWrap(controlname, wordwrap);
+        }
 
         public bool Clear(string controlname)
         {
@@ -221,6 +251,7 @@ namespace ExtendedControls
         {
             return Entries.SetSize(controlname, s, this.FindForm().CurrentAutoScaleFactor());
         }
+
 
         #endregion
 

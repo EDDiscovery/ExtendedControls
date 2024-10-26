@@ -338,5 +338,18 @@ namespace ExtendedControls
             }
         }
 
+        public object GetDGVColumnSettings(string controlname)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            if (t != null)
+            {
+                var cn = t.Control as ExtPanelDataGridViewScroll;
+                var dgv = cn.DGV;
+                return dgv.GetColumnSettings();
+            }
+            return null;
+        }
+
+
     }
 }
