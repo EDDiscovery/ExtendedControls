@@ -44,6 +44,7 @@ namespace ExtendedControls
         bool SetRightClickMenu(string controlname, string[] tags, string[] items);
         object GetDGVColumnSettings(string controlname);      // null error, in JToken
         bool SetDGVColumnSettings(string controlname, object settings);     //true if set, settings in JToken
+        bool SetDGVColumnSettings(string controlname, string settings);     //true if set, settings is JSON text
         bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect);     //true if set
         bool SetDGVWordWrap(string controlname, bool wordwrap);     //true if set
         int RemoveRows(string controlname, int start, int count);

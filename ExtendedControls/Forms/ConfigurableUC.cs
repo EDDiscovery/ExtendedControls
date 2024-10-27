@@ -193,6 +193,10 @@ namespace ExtendedControls
         {
             return Entries.SetDGVColumnSettings(controlname, settings);
         }
+        public bool SetDGVColumnSettings(string controlname, string settings)
+        {
+            return Entries.SetDGVColumnSettings(controlname, settings);
+        }
         public bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
         {
             return Entries.SetDGVSettings(controlname, wordwrap, columnreorder, percolumnwordwrap, allowrowheadervisibilityselection, singlerowselect);

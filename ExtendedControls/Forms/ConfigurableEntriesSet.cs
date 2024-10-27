@@ -562,6 +562,13 @@ namespace ExtendedControls
             return -1;
         }
 
+        public bool SetDGVColumnSettings(string controlname, string settings)
+        {
+            JToken tk = JToken.Parse(settings);
+            if (tk != null)
+                return SetDGVColumnSettings(controlname, tk);
+            return false;
+        }
         public bool SetDGVColumnSettings(string controlname, object settings)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
