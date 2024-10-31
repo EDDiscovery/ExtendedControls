@@ -504,7 +504,7 @@ namespace ExtendedControls
             var cn = data.Item1.Control as ExtPanelDataGridViewScroll;
             BaseUtils.DataGridViewColumnControl dgv = cn.DGV as BaseUtils.DataGridViewColumnControl;
             //System.Diagnostics.Debug.WriteLine($"Clicked on {data.Item1.Name} {data.Item2}");
-            SendTrigger(data.Item1.Name, "RightClickMenu:" + data.Item2 + ":" + dgv.RightClickRow, dgv.RightClickRow );
+            SendTrigger(data.Item1.Name, "RightClickMenu:" + data.Item2 + ":" + dgv.RightClickRow, data.Item2, dgv.RightClickRow );
         }
 
         public bool Clear(string controlname)
@@ -581,14 +581,13 @@ namespace ExtendedControls
             return false;
         }
 
-        public bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
+        public bool SetDGVSettings(string controlname, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
             if (t != null)
             {
                 var cn = t.Control as ExtPanelDataGridViewScroll;
                 BaseUtils.DataGridViewColumnControl dgv = cn.DGV as BaseUtils.DataGridViewColumnControl;
-                dgv.SetWordWrap(wordwrap);
                 dgv.ColumnReorder = columnreorder;
                 dgv.PerColumnWordWrapControl = percolumnwordwrap;
                 dgv.AllowRowHeaderVisibleSelection = allowrowheadervisibilityselection;
@@ -598,7 +597,7 @@ namespace ExtendedControls
             return false;
         }
 
-        public bool SetDGVWordWrap(string controlname, bool wordwrap)
+        public bool SetWordWrap(string controlname, bool wordwrap)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
             if (t != null)
@@ -679,6 +678,34 @@ namespace ExtendedControls
                 return false;
             }
         }
+
+        public bool Suspend(string controlname)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t != null)
+            {
+                if (t.Control is ExtPanelDataGridViewScroll)
+                    (t.Control as ExtPanelDataGridViewScroll).Suspend();
+                else
+                    t.Control.SuspendLayout();
+                return true;
+            }
+            return false;
+        }
+        public bool Resume(string controlname)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t != null)
+            {
+                if (t.Control is ExtPanelDataGridViewScroll)
+                    (t.Control as ExtPanelDataGridViewScroll).Resume();
+                else
+                    t.Control.ResumeLayout();
+                return true;
+            }
+            return false;
+        }
+
 
     }
 }

@@ -32,6 +32,8 @@ namespace ExtendedControls
         bool Get(string controlname, out string value);
         string Get(string controlname); // null if control is missing or not supported
         T GetValue<T>(string controlname);
+        bool Suspend(string controlname);
+        bool Resume(string controlname);
         bool Set(string controlname, string value, bool replaceescapes);
         bool AddText(string controlname, string text);
         void SetCheckedList(IEnumerable<string> controlnames, bool state);
@@ -45,8 +47,8 @@ namespace ExtendedControls
         object GetDGVColumnSettings(string controlname);      // null error, in JToken
         bool SetDGVColumnSettings(string controlname, object settings);     //true if set, settings in JToken
         bool SetDGVColumnSettings(string controlname, string settings);     //true if set, settings is JSON text
-        bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect);     //true if set
-        bool SetDGVWordWrap(string controlname, bool wordwrap);     //true if set
+        bool SetDGVSettings(string controlname, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect);     //true if set
+        bool SetWordWrap(string controlname, bool wordwrap);     //true if set
         int RemoveRows(string controlname, int start, int count);
 
         bool Clear(string controlname);

@@ -24,8 +24,7 @@ namespace ExtendedControls
     {
         #region Properties
 
-        public event Action<string, string, Object> Trigger { add { Entries.Trigger += value; } remove { Entries.Trigger -= value; } }
-        public event Action<string, string, Object, Object> TriggerAdv { add { Entries.TriggerAdv += value; } remove { Entries.TriggerAdv -= value; } }
+        public event Action<string, string, Object, Object, Object> TriggerAdv;
 
         // use in the trigger handler to swallow the return. Normally its not swallowed.
         public bool SwallowReturn { get { return Entries.SwallowReturn; } set { Entries.SwallowReturn = true; } }
@@ -52,8 +51,9 @@ namespace ExtendedControls
             Controls.Add(vertscrollpanel);
 
             Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl());
-        }
 
+            Entries.UITrigger += (d, c, v1, v2, ct) => TriggerAdv?.Invoke(d, c, v1, v2, ct);
+        }
         public void UpdateEntries()
         {
             Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl(), this.FindForm().CurrentAutoScaleFactor(),
@@ -143,6 +143,17 @@ namespace ExtendedControls
         {
             return Entries.GetValue<T>(controlname);
         }
+
+        // suspend resume
+        public bool Suspend(string controlname)
+        {
+            return Entries.Suspend(controlname);
+        }
+        public bool Resume(string controlname)
+        {
+            return Entries.Resume(controlname);
+        }
+
         // Set value of control by string value
         public bool Set(string controlname, string value, bool replaceescapes)
         {
@@ -197,13 +208,13 @@ namespace ExtendedControls
         {
             return Entries.SetDGVColumnSettings(controlname, settings);
         }
-        public bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
+        public bool SetDGVSettings(string controlname,  bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
         {
-            return Entries.SetDGVSettings(controlname, wordwrap, columnreorder, percolumnwordwrap, allowrowheadervisibilityselection, singlerowselect);
+            return Entries.SetDGVSettings(controlname, columnreorder, percolumnwordwrap, allowrowheadervisibilityselection, singlerowselect);
         }
-        public bool SetDGVWordWrap(string controlname, bool wordwrap)
+        public bool SetWordWrap(string controlname, bool wordwrap)
         {
-            return Entries.SetDGVWordWrap(controlname, wordwrap);
+            return Entries.SetWordWrap(controlname, wordwrap);
         }
 
         public bool Clear(string controlname)

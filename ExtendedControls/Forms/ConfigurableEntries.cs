@@ -36,8 +36,9 @@ namespace ExtendedControls
         public bool SwallowReturn { get; set; } = false;    // set in your trigger handler to swallow the return. Otherwise, return is return and is processed by windows that way
         public string Name { get; set; } = "Default";       // name to return in triggers
         public Object CallerTag { get; set; } = null;       // object to return in triggers
-        public Action<string, string, Object> Trigger { get; set; } = null;      // return trigger
-        public Action<string, string, Object, Object> TriggerAdv { get; set; } = null;      // return trigger (Dialog, control, value, tag)
+
+        // See action doc for triggers returned
+        public Action<string, string, Object, Object,Object> UITrigger { get; set; } = null;      // return trigger (Dialog, control, value1, value2, tag)
 
         public int YOffset { get; set; } = 0;               // Fixed y adjust for position when adding entries to account for any title area in the contentpanel (+ve down)
 
@@ -499,7 +500,7 @@ namespace ExtendedControls
                     cb.CheckAlign = ent.ContentAlign;
                     cb.Click += (sender, ev) =>
                     {
-                        SendTrigger(ent.Name,null,cb.CheckState);       // backwards compatible, trigger does not send value
+                        SendTrigger(ent.Name,null,cb.CheckState,cb.Checked.ToStringIntValue());       // backwards compatible, trigger does not send value
                     };
                 }
                 else if (c is ExtDateTimePicker)
@@ -697,12 +698,11 @@ namespace ExtendedControls
         #region Triggering
 
         // send trigger, if not disabled
-        public void SendTrigger(string actionorcontrolname, string value = null, Object advvalue = null)
+        public void SendTrigger(string actionorcontrolname, string value = null, Object advvalue = null, Object advvalue2 = null)
         {
             if (!DisableTriggers)
             {
-                Trigger?.Invoke(Name, actionorcontrolname + (value != null ? ":" + value : ""), CallerTag);
-                TriggerAdv?.Invoke(Name, actionorcontrolname + (value != null ? ":" + value : ""), advvalue, CallerTag);
+                UITrigger?.Invoke(Name, actionorcontrolname + (value != null ? ":" + value : ""), advvalue, advvalue2, CallerTag);
             }
         }
 

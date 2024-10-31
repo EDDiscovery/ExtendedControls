@@ -23,14 +23,8 @@ namespace ExtendedControls
     {
         #region Properties
 
-        // For triggers, in addition to control triggers detailed in ConfigurableEntries, you can get:
-        // Close if the close button is pressed
-        // Escape if escape pressed
-        // Resize if changed size
-        // Reposition if position changed
-
-        public event Action<string, string, Object> Trigger { add { Entries.Trigger += value; } remove { Entries.Trigger -= value; } }
-        public event Action<string, string, Object, Object> TriggerAdv { add { Entries.TriggerAdv += value; } remove { Entries.TriggerAdv -= value; } }
+        public event Action<string, string, Object> Trigger;
+        public event Action<string, string, Object, Object, Object> TriggerAdv;
 
         // use in the trigger handler to swallow the return. Normally its not swallowed.
         public bool SwallowReturn { get { return Entries.SwallowReturn; } set { Entries.SwallowReturn = true; } }
@@ -60,6 +54,7 @@ namespace ExtendedControls
         {
             this.components = new System.ComponentModel.Container();
             AllowResize = false;
+            Entries.UITrigger += (d, c, v1, v2, ct) => { Trigger?.Invoke(d, c, ct); TriggerAdv?.Invoke(d, c, v1, v2, ct); };
         }
 
         // add a string definition dynamically add to list.  errmsg if something is wrong
@@ -336,6 +331,16 @@ namespace ExtendedControls
             return Entries.GetCheckBoxBools(startingcontrolname);
         }
 
+        // suspend resume
+        public bool Suspend(string controlname)
+        {
+            return Entries.Suspend(controlname);
+        }
+        public bool Resume(string controlname)
+        {
+            return Entries.Resume(controlname);
+        }
+
         // Set value of control by string value
         public bool Set(string controlname, string value, bool replaceescapes)
         {
@@ -399,13 +404,13 @@ namespace ExtendedControls
             return Entries.SetDGVColumnSettings(controlname, settings);
         }
 
-        public bool SetDGVSettings(string controlname, bool wordwrap, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
+        public bool SetDGVSettings(string controlname, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
         {
-            return Entries.SetDGVSettings(controlname, wordwrap, columnreorder, percolumnwordwrap, allowrowheadervisibilityselection, singlerowselect);
+            return Entries.SetDGVSettings(controlname, columnreorder, percolumnwordwrap, allowrowheadervisibilityselection, singlerowselect);
         }
-        public bool SetDGVWordWrap(string controlname, bool wordwrap)
+        public bool SetWordWrap(string controlname, bool wordwrap)
         {
-            return Entries.SetDGVWordWrap(controlname, wordwrap);
+            return Entries.SetWordWrap(controlname, wordwrap);
         }
 
         // clear control
