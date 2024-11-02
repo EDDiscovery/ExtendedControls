@@ -305,7 +305,7 @@ namespace ExtendedControls
         public string GetUserTagDefinitions(object usertag, char itemssepar = '\u24C2', char partsepar = '\u2713')
         {
             string ret = "";
-            foreach (var x in ItemList.Where(x=>x.UserTag == usertag))      // for all user tag items
+            foreach (var x in ItemList.Where(x=>x.UserTag != null && x.UserTag.Equals(usertag)))      // for all user tag items
             {
                 ret = ret.AppendPrePad($"{x.Text}{partsepar}{x.Tag}", new string(itemssepar, 1));
             }
