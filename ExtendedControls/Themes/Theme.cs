@@ -906,15 +906,7 @@ namespace ExtendedControls
                 ctrl.ForeColor = colors[CI.textbox_fore];
                 ctrl.BackColor = colors[CI.textbox_back];
             }
-            else if (myControl is CheckedIconListBoxForm)
-            {
-                CheckedIconListBoxForm ctrl = myControl as CheckedIconListBoxForm;
 
-                if (buttonstyle.Equals(ButtonStyles[0])) // system
-                    ctrl.FlatStyle = FlatStyle.System;
-                else
-                    ctrl.FlatStyle = FlatStyle.Popup;
-            }
             else if (myControl is CompassControl)
             {
                 CompassControl compassControl = myControl as CompassControl;

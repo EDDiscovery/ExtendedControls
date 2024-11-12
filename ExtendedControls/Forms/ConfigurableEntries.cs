@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils;
 using QuickJSON;
 using System;
 using System.Collections.Generic;
@@ -645,6 +646,7 @@ namespace ExtendedControls
                 Image img = BaseUtils.ResourceHelpers.GetResourceAsImage(ent.TextValue.Substring(9));
                 if (img != null)
                 {
+                    b.Text = "";
                     b.Image = img;
                     return true;
                 }
@@ -655,7 +657,8 @@ namespace ExtendedControls
             {
                 try
                 {
-                    b.Image = Image.FromFile(ent.TextValue.Substring(5));
+                    b.Text = "";
+                    b.Image = ent.TextValue.Substring(5).LoadBitmapNoLock();    // So the file can be released
                     return true;
                 }
                 catch
@@ -664,7 +667,10 @@ namespace ExtendedControls
                 }
             }
             else
+            {
+                b.Image = null;
                 b.Text = ent.TextValue;
+            }
 
             return false;
         }
