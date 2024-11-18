@@ -77,42 +77,44 @@ namespace ExtendedControls
                                                                         // button/ExtButtonWithNewCheckedListBox/CheckBox: if Resource:<fullpath> load embedded resource as image. If File:<file> load image as file. Else text
                                                                         // For number boxes, the invariant value, or Null and it will use the DoubleValue or LongValue
                                                                         // for Dates, the invariant culture assumed local
-            public double DoubleValue { get; set; }                     // if its a number box double, set this, Text=null. Also used for splitter container as % (0-100) for top
-            public long LongValue { get; set; }                         // if its a number box long or int, set this, Text=null
-            public DateTime DateTimeValue { get; set; }                 // if its a date time, set this, Text=null
+                                                                        // Can be NULL if you've passed your control in manually
+            public double? DoubleValue { get; set; }                    // if its a number box double and you want it set (overrides Text)
+                                                                        // Also used for splitter container as % (0-100) for top. Null will mean splitter is left as default
+            public long? LongValue { get; set; }                        // if its a number box long or int and you want it set, set this with Text=null
+            public DateTime? DateTimeValue { get; set; } = DateTime.MinValue;   // backup value of datetime, set to null to set in an external control
 
             public ContentAlignment? TextAlign { get; set; }            // label,button. Null its not applied
             public ContentAlignment ContentAlign { get; set; } = ContentAlignment.MiddleLeft;  // align for checkbox
 
-            public bool Horizontal { get; set; }                        // Split container, is horizontal split. Flow panel, is right to left (Horizontal) or top to bottom
-            public bool Pinned { get; set; }                            // panelrollup
+            public bool? Horizontal { get; set; } = false;              // Split container, is horizontal split. Flow panel, is right to left (Horizontal) or top to bottom. Leave as Null for control sets up
+            public bool? Pinned { get; set; } = false;                  // panelrollup. Set to null for control sets up
             public Padding Margin { get; set; }                         // flow panel, margin around item
 
             public bool CheckBoxChecked { get; set; }                   // checkbox
 
-            public bool TextBoxMultiline { get; set; }                  // textbox
-            public bool TextBoxEscapeOnReport { get; set; }             // escape characters back on reporting a text box Get()
-            public bool TextBoxClearOnFirstChar { get; set; }           // fill in for textbox
+            public bool? TextBoxMultiline { get; set; } = false;        // textbox
+            public bool TextBoxEscapeOnReport { get; set; } = false;   // escape characters back on reporting a text box Get()
+            public bool? TextBoxClearOnFirstChar { get; set; } = false;    // fill in for textbox
 
-            public string[] ComboBoxItems { get; set; }                 // combo box
+            public string[] ComboBoxItems { get; set; }                 // for combo box, null if external control sets it up
 
-            public string CustomDateFormat { get; set; }                // fill in for datetimepicker
+            public string CustomDateFormat { get; set; }                // fill in for datetimepicker, or set null if want to control it externally
 
             public string NumberBoxFormat { get; set; } = null;         // format for number boxes
-            public double NumberBoxDoubleMinimum { get; set; } = double.MinValue;   // for double box
-            public double NumberBoxDoubleMaximum { get; set; } = double.MaxValue;
-            public long NumberBoxLongMinimum { get; set; } = long.MinValue;   // for long and int box
-            public long NumberBoxLongMaximum { get; set; } = long.MaxValue; 
+            public double? NumberBoxDoubleMinimum { get; set; } = double.MinValue;   // for double box. Can set to null for don't change if created externally
+            public double? NumberBoxDoubleMaximum { get; set; } = double.MaxValue;
+            public long? NumberBoxLongMinimum { get; set; } = long.MinValue;   // for long and int box. Can set to null for don't change if created externally
+            public long? NumberBoxLongMaximum { get; set; } = long.MaxValue; 
 
             public Color? BackColor { get; set; } = null;               // panel, back colour to reapply after themeing
 
-            public List<DataGridViewColumn> DGVColumns { get; set; } = null;       // for DGV
-            public List<string> DGVSortMode { get; set; } = null;       // for DGV, sort mode control
-            public int DGVRowHeaderWidth { get; set; } = 0;             // for DGV
+            public List<DataGridViewColumn> DGVColumns { get; set; } = null;       // for DGV. Set to null for external control, else set up
+            public List<string> DGVSortMode { get; set; } = null;       // for DGV, sort mode control. May be left null for default sorting
+            public int? DGVRowHeaderWidth { get; set; } = 0;             // for DGV. Set to null for don't change if created externally.
 
             //public System.Windows.Forms.ContextMenuStrip columnContextMenu { get; set; }
 
-            public List<CheckedIconUserControl.Item> DropDownButtonList { get; set; } = null;  // for DropDownButton
+            public List<CheckedIconUserControl.Item> DropDownButtonList { get; set; } = null;  // for DropDownButton when created by ControlType. Else leave null for external created types 
             public string ButtonSettings { get; set; } = "";             // for DropDownButton
             public bool MultiColumns { get; set; } = false;             // for DropDownButton
             public bool AllOrNoneShown { get; set; } = false;           // for DropDownButton
@@ -120,8 +122,8 @@ namespace ExtendedControls
             public bool SortItems { get; set; } = false;                // for DropDownButton
             public Size? ImageSize { get; set; } = null;                // forced image size for dropdownbutton
 
-            public int Panel1MinPixelSize { get; set; } = 0;            // non zero, set
-            public int Panel2MinPixelSize { get; set; } = 0;            // non zero, set
+            public int Panel1MinPixelSize { get; set; } = 0;           // non zero, set. 0 for control sets up
+            public int Panel2MinPixelSize { get; set; } = 0;           // non zero, set. 0 for control sets up
 
 
             // general
@@ -355,7 +357,8 @@ namespace ExtendedControls
                 if (c is Label)
                 {
                     Label l = c as Label;
-                    l.Text = ent.TextValue;
+                    if (ent.TextValue != null)      // may be externally set up
+                        l.Text = ent.TextValue;
                     if (ent.TextAlign.HasValue)
                         l.TextAlign = ent.TextAlign.Value;
                     l.MouseDown += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(true, (Control)md1, md2); };
@@ -365,25 +368,29 @@ namespace ExtendedControls
                 {
                     ExtButton b = c as ExtButton;
 
-                    SetTextOrImage(ent, b);
+                    if ( ent.TextValue != null)     // it may be an external button which has set up text/image, if so, ent.TextValue = null
+                        SetTextOrImage(ent, b);
 
                     if (ent.TextAlign.HasValue)
                         b.TextAlign = ent.TextAlign.Value;
 
                     if (c is ExtButtonWithNewCheckedListBox)    // this is an extended button
                     {
-                        ExtButtonWithNewCheckedListBox cb = c as ExtButtonWithNewCheckedListBox;
-                        cb.Init(ent.DropDownButtonList, ent.ButtonSettings, 
-                                (s, b1) => { SendTrigger(ent.Name, "DropDownButtonClosed:" + s, s); },
-                                ent.AllOrNoneShown, ent.AllOrNoneBack,
-                                null, //disabled
-                                ent.ImageSize,
-                                new Size(16, 16), // screenmargin
-                                new Size(64, 64), // close boundary
-                                ent.MultiColumns,
-                                null, // group, not needed
-                                ent.SortItems,
-                                (s, eb1) => { SendTrigger(ent.Name, "DropDownButtonPressed:" + s,s); });
+                        if (ent.DropDownButtonList != null)     // if we are creating using ent, do it.  Else we may be creating externally so don't re-init
+                        {
+                            ExtButtonWithNewCheckedListBox cb = c as ExtButtonWithNewCheckedListBox;
+                            cb.Init(ent.DropDownButtonList, ent.ButtonSettings,
+                                    (s, b1) => { SendTrigger(ent.Name, "DropDownButtonClosed:" + s, s); },
+                                    ent.AllOrNoneShown, ent.AllOrNoneBack,
+                                    null, //disabled
+                                    ent.ImageSize,
+                                    new Size(16, 16), // screenmargin
+                                    new Size(64, 64), // close boundary
+                                    ent.MultiColumns,
+                                    null, // group, not needed
+                                    ent.SortItems,
+                                    (s, eb1) => { SendTrigger(ent.Name, "DropDownButtonPressed:" + s, s); });
+                        }
                     }
                     else
                     {
@@ -396,10 +403,15 @@ namespace ExtendedControls
                 else if (c is NumberBoxDouble)
                 {
                     NumberBoxDouble cb = c as NumberBoxDouble;
-                    cb.Minimum = ent.NumberBoxDoubleMinimum;
-                    cb.Maximum = ent.NumberBoxDoubleMaximum;
-                    double? v = ent.TextValue == null ? ent.DoubleValue : ent.TextValue.InvariantParseDoubleNull();
-                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
+                    if ( ent.NumberBoxDoubleMinimum.HasValue)
+                        cb.Minimum = ent.NumberBoxDoubleMinimum.Value;
+                    if (ent.NumberBoxDoubleMaximum.HasValue)
+                        cb.Maximum = ent.NumberBoxDoubleMaximum.Value;
+                    if (ent.DoubleValue.HasValue)
+                        cb.Value = ent.DoubleValue.Value;
+                    else if (ent.TextValue != null)
+                        cb.Value = ent.TextValue.InvariantParseDoubleNull() ?? cb.Minimum;
+
                     if (ent.NumberBoxFormat != null)
                         cb.Format = ent.NumberBoxFormat;
                     cb.ReturnPressed += (box) =>
@@ -420,10 +432,14 @@ namespace ExtendedControls
                 else if (c is NumberBoxLong)
                 {
                     NumberBoxLong cb = c as NumberBoxLong;
-                    cb.Minimum = ent.NumberBoxLongMinimum;
-                    cb.Maximum = ent.NumberBoxLongMaximum;
-                    long? v = ent.TextValue == null ? ent.LongValue : ent.TextValue.InvariantParseLongNull();
-                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
+                    if (ent.NumberBoxLongMinimum.HasValue)
+                        cb.Maximum = ent.NumberBoxLongMinimum.Value;
+                    if (ent.NumberBoxLongMaximum.HasValue)
+                        cb.Minimum = ent.NumberBoxLongMaximum.Value;
+                    if (ent.LongValue.HasValue)
+                        cb.Value = ent.LongValue.Value;
+                    else if (ent.TextValue != null)
+                        cb.Value = ent.TextValue.InvariantParseLongNull() ?? cb.Minimum;
                     if (ent.NumberBoxFormat != null)
                         cb.Format = ent.NumberBoxFormat;
                     cb.ReturnPressed += (box) =>
@@ -444,10 +460,14 @@ namespace ExtendedControls
                 else if (c is NumberBoxInt)
                 {
                     NumberBoxInt cb = c as NumberBoxInt;
-                    cb.Minimum = ent.NumberBoxLongMinimum == long.MinValue ? int.MinValue : (int)ent.NumberBoxLongMinimum;
-                    cb.Maximum = ent.NumberBoxLongMaximum == long.MaxValue ? int.MaxValue : (int)ent.NumberBoxLongMaximum;
-                    int? v = ent.TextValue == null ? (int)ent.LongValue : ent.TextValue.InvariantParseIntNull();
-                    cb.Value = v.HasValue ? v.Value : cb.Minimum;
+                    if (ent.NumberBoxLongMinimum.HasValue)
+                        cb.Minimum = ent.NumberBoxLongMinimum == long.MinValue ? int.MinValue : (int)ent.NumberBoxLongMinimum;
+                    if (ent.NumberBoxLongMaximum.HasValue)
+                        cb.Maximum = ent.NumberBoxLongMaximum == long.MaxValue ? int.MaxValue : (int)ent.NumberBoxLongMaximum;
+                    if (ent.LongValue.HasValue)
+                        cb.Value = (int)ent.LongValue.Value;
+                    else if (ent.TextValue != null)
+                        cb.Value = ent.TextValue.InvariantParseIntNull() ?? cb.Minimum;
                     if (ent.NumberBoxFormat != null)
                         cb.Format = ent.NumberBoxFormat;
                     cb.ReturnPressed += (box) =>
@@ -468,13 +488,18 @@ namespace ExtendedControls
                 else if (c is ExtTextBox)
                 {
                     ExtTextBox tb = c as ExtTextBox;
-                    tb.Text = ent.TextValue;
-                    tb.Multiline = tb.WordWrap = ent.TextBoxMultiline;
+                    if (ent.TextValue != null) // may be externally set up
+                        tb.Text = ent.TextValue;
+
+                    if ( ent.TextBoxMultiline.HasValue)
+                        tb.Multiline = tb.WordWrap = ent.TextBoxMultiline.Value;
 
                     // this was here, but no idea why. removing as the multiline instances seem good
                     //tb.Size = ent.Size;     
 
-                    tb.ClearOnFirstChar = ent.TextBoxClearOnFirstChar;
+                    if ( ent.TextBoxClearOnFirstChar.HasValue)
+                        tb.ClearOnFirstChar = ent.TextBoxClearOnFirstChar.Value;
+
                     tb.ReturnPressed += (box) =>
                     {
                         SwallowReturn = false;
@@ -488,14 +513,18 @@ namespace ExtendedControls
                 else if (c is ExtRichTextBox)
                 {
                     ExtRichTextBox tb = c as ExtRichTextBox;
-                    tb.Text = ent.TextValue;
+                    if (ent.TextValue != null) // may be externally set up
+                        tb.Text = ent.TextValue;
                 }
                 else if (c is ExtCheckBox)
                 {
                     ExtCheckBox cb = c as ExtCheckBox;
-
-                    if (SetTextOrImage(ent, cb))
-                        cb.Appearance = Appearance.Button;
+                     
+                    if (ent.TextValue != null) // may be externally set up
+                    {
+                        if (SetTextOrImage(ent, cb))
+                            cb.Appearance = Appearance.Button;
+                    }
 
                     cb.Checked = ent.CheckBoxChecked;
                     cb.CheckAlign = ent.ContentAlign;
@@ -508,25 +537,33 @@ namespace ExtendedControls
                 {
                     ExtDateTimePicker dt = c as ExtDateTimePicker;
 
-                    if (ent.TextValue == null)
-                        dt.Value = ent.DateTimeValue;
-                    else if (DateTime.TryParse(ent.TextValue, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out DateTime t))     // assume local, so no conversion
-                        dt.Value = t;
-
-                    switch (ent.CustomDateFormat.ToLowerInvariant())
+                    if (ent.TextValue != null)      // if text set, use it to set value
                     {
-                        case "short":
-                            dt.Format = DateTimePickerFormat.Short;
-                            break;
-                        case "long":
-                            dt.Format = DateTimePickerFormat.Long;
-                            break;
-                        case "time":
-                            dt.Format = DateTimePickerFormat.Time;
-                            break;
-                        default:
-                            dt.CustomFormat = ent.CustomDateFormat;
-                            break;
+                        if (DateTime.TryParse(ent.TextValue, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out DateTime t))     // assume local, so no conversion
+                            dt.Value = t;
+                        else
+                            dt.Value = DateTime.MinValue;
+                    }
+                    else if (ent.DateTimeValue.HasValue)    // else if this is set, use this
+                        dt.Value = ent.DateTimeValue.Value;
+
+                    if (ent.CustomDateFormat != null)   
+                    {
+                        switch (ent.CustomDateFormat.ToLowerInvariant())
+                        {
+                            case "short":
+                                dt.Format = DateTimePickerFormat.Short;
+                                break;
+                            case "long":
+                                dt.Format = DateTimePickerFormat.Long;
+                                break;
+                            case "time":
+                                dt.Format = DateTimePickerFormat.Time;
+                                break;
+                            default:
+                                dt.CustomFormat = ent.CustomDateFormat;
+                                break;
+                        }
                     }
 
                     dt.ValueChanged += (s, e) => { SendTrigger(ent.Name, "ValueChanged:" + dt.Value.ToStringZuluInvariant(), dt.Value); };
@@ -535,9 +572,14 @@ namespace ExtendedControls
                 {
                     ExtComboBox cb = c as ExtComboBox;
 
-                    cb.Items.AddRange(ent.ComboBoxItems);
-                    if (cb.Items.Contains(ent.TextValue))
-                        cb.SelectedItem = ent.TextValue;
+                    if ( ent.ComboBoxItems != null )
+                        cb.Items.AddRange(ent.ComboBoxItems);
+
+                    if (ent.TextValue != null)
+                    {
+                        if (cb.Items.Contains(ent.TextValue))
+                            cb.SelectedItem = ent.TextValue;
+                    }
                     cb.SelectedIndexChanged += (sender, ev) =>
                     {
                         SendTrigger(ent.Name,null,cb.SelectedItem);     // again backwards compatible
@@ -547,36 +589,46 @@ namespace ExtendedControls
                 {
                     ExtPanelDataGridViewScroll dgvs = c as ExtPanelDataGridViewScroll;
                     BaseUtils.DataGridViewColumnControl dgv = new BaseUtils.DataGridViewColumnControl();
-                    dgv.RowHeadersVisible = ent.DGVRowHeaderWidth > 4;
-                    if ( dgv.RowHeadersVisible)
-                        dgv.RowHeadersWidth = ent.DGVRowHeaderWidth;
+
+                    if (ent.DGVRowHeaderWidth.HasValue )
+                    {
+                        dgv.RowHeadersVisible = ent.DGVRowHeaderWidth > 4;
+                        if ( dgv.RowHeadersVisible )
+                            dgv.RowHeadersWidth = ent.DGVRowHeaderWidth.Value;
+                    }
 
                     dgv.AllowUserToAddRows = false;
                     dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                     dgv.ScrollBars = ScrollBars.None;
 
-                    for(int i = 0 ; i < ent.DGVColumns.Count; i++)
+                    if (ent.DGVColumns != null)
                     {
-                        dgv.Columns.Add(ent.DGVColumns[i]);
-                        dgv.Columns[i].SortMode = ent.DGVSortMode[i].EqualsIIC("Off") ? DataGridViewColumnSortMode.NotSortable : DataGridViewColumnSortMode.Automatic;
+                        for (int i = 0; i < ent.DGVColumns.Count; i++)
+                        {
+                            dgv.Columns.Add(ent.DGVColumns[i]);
+                            dgv.Columns[i].SortMode = ent.DGVSortMode[i].EqualsIIC("Off") ? DataGridViewColumnSortMode.NotSortable : DataGridViewColumnSortMode.Automatic;
+                        }
                     }
 
-                    dgv.SortCompare += (s, e) =>
+                    if (ent.DGVSortMode != null)
                     {
-                        string sortmode = ent.DGVSortMode[e.Column.Index];
-                        if (sortmode.EqualsIIC("Alpha"))
-                            e.SortDataGridViewColumnAlpha();
-                        else if (sortmode.EqualsIIC("Date"))
-                            e.SortDataGridViewColumnDate();
-                        else if (sortmode.EqualsIIC("Numeric"))
-                            e.SortDataGridViewColumnNumeric() ;
-                        else if (sortmode.EqualsIIC("NumericAlpha"))
-                            e.SortDataGridViewColumnNumericThenAlpha();
-                        else if (sortmode.EqualsIIC("AlphaInt"))
-                            e.SortDataGridViewColumnAlphaInt();
-                        else
-                            e.SortDataGridViewColumnAlpha();
-                    };
+                        dgv.SortCompare += (s, e) =>
+                        {
+                            string sortmode = ent.DGVSortMode[e.Column.Index];
+                            if (sortmode.EqualsIIC("Alpha"))
+                                e.SortDataGridViewColumnAlpha();
+                            else if (sortmode.EqualsIIC("Date"))
+                                e.SortDataGridViewColumnDate();
+                            else if (sortmode.EqualsIIC("Numeric"))
+                                e.SortDataGridViewColumnNumeric();
+                            else if (sortmode.EqualsIIC("NumericAlpha"))
+                                e.SortDataGridViewColumnNumericThenAlpha();
+                            else if (sortmode.EqualsIIC("AlphaInt"))
+                                e.SortDataGridViewColumnAlphaInt();
+                            else
+                                e.SortDataGridViewColumnAlpha();
+                        };
+                    }
 
                     dgvs.Controls.Add(dgv);
                     ExtScrollBar sb = new ExtScrollBar();
@@ -591,12 +643,14 @@ namespace ExtendedControls
                     if (c is FlowLayoutPanel)
                     {
                         FlowLayoutPanel fp = c as FlowLayoutPanel;
-                        fp.FlowDirection = ent.Horizontal ? FlowDirection.LeftToRight : FlowDirection.TopDown;
+                        if ( ent.Horizontal.HasValue)
+                            fp.FlowDirection = ent.Horizontal.Value ? FlowDirection.LeftToRight : FlowDirection.TopDown;
                     }
                     else if (c is ExtPanelRollUp)
                     {
                         ExtPanelRollUp pr = c as ExtPanelRollUp;
-                        pr.PinState = ent.Pinned;
+                        if ( ent.Pinned.HasValue)
+                            pr.PinState = ent.Pinned.Value;
                     }
 
                     c.MouseDown += (md1, md2) => { MouseUpDownOnLabelOrPanel?.Invoke(true, (Control)md1, md2); };
@@ -605,7 +659,8 @@ namespace ExtendedControls
                 else if (c is SplitContainer)
                 {
                     var splitter = c as SplitContainer;
-                    splitter.Orientation = ent.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
+                    if ( ent.Horizontal.HasValue)
+                        splitter.Orientation = ent.Horizontal.Value ? Orientation.Horizontal : Orientation.Vertical;
 
                     try
                     {
@@ -613,7 +668,8 @@ namespace ExtendedControls
                             splitter.Panel1MinSize = ent.Panel1MinPixelSize;
                         if (ent.Panel2MinPixelSize > 0)
                             splitter.Panel2MinSize = ent.Panel2MinPixelSize;
-                        splitter.SplitterDistance(ent.DoubleValue / 100.0);
+                        if ( ent.DoubleValue.HasValue)
+                            splitter.SplitterDistance(ent.DoubleValue.Value / 100.0);
                     }
                     catch { }
 
@@ -845,7 +901,7 @@ namespace ExtendedControls
                 {
                     int? v = sp.NextWordComma().InvariantParseIntNull();
                     entry.TextBoxMultiline = v.HasValue && v.Value != 0;
-                    if (entry.TextBoxMultiline)
+                    if (entry.TextBoxMultiline == true)
                     {
                         entry.TextBoxEscapeOnReport = true;
                         entry.TextValue = entry.TextValue.ReplaceEscapeControlChars();        // New! if multiline, replace escape control chars
@@ -907,7 +963,7 @@ namespace ExtendedControls
                 {
                     string horzsetting = sp.NextQuotedWord(" ,");
                     entry.Horizontal = horzsetting.EqualsIIC("Horizontal");
-                    if (entry.Horizontal || horzsetting.EqualsIIC("Vertical"))
+                    if (entry.Horizontal == true || horzsetting.EqualsIIC("Vertical"))
                     {
                         string colourname = sp.IsCharMoveOn(',') ? sp.NextQuotedWord() : null;
                         if (colourname != null)
@@ -1065,7 +1121,7 @@ namespace ExtendedControls
             {
                 string horzsetting = sp.NextQuotedWordComma();
                 entry.Horizontal = horzsetting.EqualsIIC("Horizontal");
-                if (entry.Horizontal || horzsetting.EqualsIIC("Vertical"))
+                if (entry.Horizontal == true || horzsetting.EqualsIIC("Vertical"))
                 {
                     double? percentage = sp.NextDouble(" ,");
                     if (percentage.HasValue)
