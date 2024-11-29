@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTextBoxes));
             this.panel1 = new System.Windows.Forms.Panel();
             this.extComboBoxFont = new ExtendedControls.ExtComboBox();
@@ -42,6 +43,7 @@
             this.extTextBox1 = new ExtendedControls.ExtTextBox();
             this.buttonExt1 = new ExtendedControls.ExtButton();
             this.buttonExt2 = new ExtendedControls.ExtButton();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // panel1
@@ -133,6 +135,7 @@
             this.textBoxDouble1.DelayBeforeNotification = 1000;
             this.textBoxDouble1.EndButtonEnable = true;
             this.textBoxDouble1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxDouble1.EndButtonImage")));
+            this.textBoxDouble1.EndButtonSize16ths = 10;
             this.textBoxDouble1.EndButtonVisible = false;
             this.textBoxDouble1.Format = "0.###";
             this.textBoxDouble1.InErrorCondition = false;
@@ -150,6 +153,8 @@
             this.textBoxDouble1.Size = new System.Drawing.Size(140, 20);
             this.textBoxDouble1.TabIndex = 67;
             this.textBoxDouble1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxDouble1.TextNoChange = "0";
+            this.toolTip1.SetToolTip(this.textBoxDouble1, "Number Box Double");
             this.textBoxDouble1.Value = 0D;
             this.textBoxDouble1.WordWrap = true;
             this.textBoxDouble1.ValueChanged += new System.EventHandler(this.textBoxDouble1_ValueChanged);
@@ -167,6 +172,7 @@
             this.textBoxDouble2.DelayBeforeNotification = 1000;
             this.textBoxDouble2.EndButtonEnable = true;
             this.textBoxDouble2.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxDouble2.EndButtonImage")));
+            this.textBoxDouble2.EndButtonSize16ths = 10;
             this.textBoxDouble2.EndButtonVisible = false;
             this.textBoxDouble2.Format = "0.###";
             this.textBoxDouble2.InErrorCondition = false;
@@ -184,6 +190,8 @@
             this.textBoxDouble2.Size = new System.Drawing.Size(140, 20);
             this.textBoxDouble2.TabIndex = 65;
             this.textBoxDouble2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.textBoxDouble2.TextNoChange = "0";
+            this.toolTip1.SetToolTip(this.textBoxDouble2, "Number Box Double");
             this.textBoxDouble2.Value = 0D;
             this.textBoxDouble2.WordWrap = true;
             this.textBoxDouble2.ValueChanged += new System.EventHandler(this.textBoxDouble2_ValueChanged);
@@ -201,6 +209,7 @@
             this.numberBoxLong2.DelayBeforeNotification = 0;
             this.numberBoxLong2.EndButtonEnable = true;
             this.numberBoxLong2.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("numberBoxLong2.EndButtonImage")));
+            this.numberBoxLong2.EndButtonSize16ths = 10;
             this.numberBoxLong2.EndButtonVisible = false;
             this.numberBoxLong2.Format = "D";
             this.numberBoxLong2.InErrorCondition = false;
@@ -217,6 +226,8 @@
             this.numberBoxLong2.Size = new System.Drawing.Size(75, 20);
             this.numberBoxLong2.TabIndex = 66;
             this.numberBoxLong2.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.numberBoxLong2.TextNoChange = "2000";
+            this.toolTip1.SetToolTip(this.numberBoxLong2, "Number Box Long");
             this.numberBoxLong2.Value = ((long)(2000));
             this.numberBoxLong2.WordWrap = true;
             this.numberBoxLong2.ValueChanged += new System.EventHandler(this.numberBoxLong2_ValueChanged);
@@ -234,6 +245,7 @@
             this.numberBoxLong1.DelayBeforeNotification = 0;
             this.numberBoxLong1.EndButtonEnable = true;
             this.numberBoxLong1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("numberBoxLong1.EndButtonImage")));
+            this.numberBoxLong1.EndButtonSize16ths = 10;
             this.numberBoxLong1.EndButtonVisible = false;
             this.numberBoxLong1.Format = "D";
             this.numberBoxLong1.InErrorCondition = false;
@@ -250,6 +262,8 @@
             this.numberBoxLong1.Size = new System.Drawing.Size(75, 20);
             this.numberBoxLong1.TabIndex = 66;
             this.numberBoxLong1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.numberBoxLong1.TextNoChange = "2000";
+            this.toolTip1.SetToolTip(this.numberBoxLong1, "Number Box Long");
             this.numberBoxLong1.Value = ((long)(2000));
             this.numberBoxLong1.WordWrap = true;
             this.numberBoxLong1.ValueChanged += new System.EventHandler(this.numberBoxLong1_ValueChanged);
@@ -296,6 +310,7 @@
             this.extTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.extTextBox1.EndButtonEnable = true;
             this.extTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("extTextBox1.EndButtonImage")));
+            this.extTextBox1.EndButtonSize16ths = 10;
             this.extTextBox1.EndButtonVisible = false;
             this.extTextBox1.InErrorCondition = false;
             this.extTextBox1.Location = new System.Drawing.Point(219, 12);
@@ -309,6 +324,7 @@
             this.extTextBox1.TabIndex = 13;
             this.extTextBox1.Text = "exttextbox";
             this.extTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.extTextBox1.TextNoChange = "exttextbox";
             this.extTextBox1.WordWrap = true;
             // 
             // buttonExt1
@@ -340,6 +356,10 @@
             this.buttonExt2.TabIndex = 0;
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.ShowAlways = true;
             // 
             // TestTextBoxes
             // 
@@ -378,5 +398,6 @@
         private ExtendedControls.ExtTextBox extTextBox1;
         private ExtendedControls.ExtComboBox extComboBoxFontSize;
         private ExtendedControls.ExtComboBox extComboBoxFont;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
