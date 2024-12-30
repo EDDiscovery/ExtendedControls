@@ -15,22 +15,16 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ConfigurableForm : DraggableForm
+    public class ConfigurableForm : DraggableForm, IConfigurableDialog
     {
         #region Properties
 
-        // For triggers, in addition to control triggers detailed in ConfigurableEntries, you can get:
-        // Close if the close button is pressed
-        // Escape if escape pressed
-        // Resize if changed size
-        // Reposition if position changed
-
-        public event Action<string, string, Object> Trigger { add { Entries.Trigger += value; } remove { Entries.Trigger -= value; } }
+        public event Action<string, string, Object> Trigger;
+        public event Action<string, string, Object, Object, Object> TriggerAdv;
 
         // use in the trigger handler to swallow the return. Normally its not swallowed.
         public bool SwallowReturn { get { return Entries.SwallowReturn; } set { Entries.SwallowReturn = true; } }
@@ -48,7 +42,7 @@ namespace ExtendedControls
         public Color BorderRectColour { get; set; } = Color.Empty;  // force border colour
         public BorderStyle PanelBorderStyle { get; set; } = BorderStyle.FixedSingle;
         public Size ExtraMarginRightBottom { get; set; } = new Size(16, 16);
-        public float FontScale { get; set; } = 1.0f;
+        public float FontScale { get; set; } = 1.0f;        // scale the standard theme font by this
         public int TopPanelHeight { get; set; } = 0;        // in design units, 0 = off
         public int BottomPanelHeight { get; set; } = 0;     // in design units, 0 = off
 
@@ -60,9 +54,11 @@ namespace ExtendedControls
         {
             this.components = new System.ComponentModel.Container();
             AllowResize = false;
+            Entries.UITrigger += (d, c, v1, v2, ct) => { Trigger?.Invoke(d, c, ct); TriggerAdv?.Invoke(d, c, v1, v2, ct); };
         }
 
-        public string Add(string instr)       // add a string definition dynamically add to list.  errmsg if something is wrong
+        // add a string definition dynamically add to list.  errmsg if something is wrong
+        public string Add(string instr)       
         {
             return Entries.Add(instr);
         }
@@ -110,32 +106,17 @@ namespace ExtendedControls
             return Entries.AddBools(tags, names, ischecked, vposstart, vspacing, depth, xstart, xspacing, tagprefix);
         }
 
-        // handle OK and Close/Escape/Cancel
-        public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
-        {
-            Trigger += (dialogname, controlname, xtag) =>
-            {
-                if (controlname == "OK")
-                    ReturnResult(DialogResult.OK);
-                else if (controlname == "Close" || controlname == "Escape" || controlname == "Cancel")
-                    ReturnResult(DialogResult.Cancel);
-                else
-                    othertrigger?.Invoke(dialogname, controlname, xtag);
-            };
-        }
-
         // remove a control from the list, both visually and from entries
-        public void RemoveEntry(string controlname)
+        public bool Remove(string controlname)
         {
-            Entries.RemoveEntry(controlname);
+            return Entries.Remove(controlname);
         }
 
         // must call if you add new controls after shown in a trigger
-        public void UpdateDisplayAfterAddNewControls()
+        public void UpdateEntries()
         {
-            Entries.CreateEntries(contentpanel,toppanel,bottompanel,tooltipcontrol, this.CurrentAutoScaleFactor());          // make new controls, and scale up by autoscalefactor
-            Theme.Current.Apply(this, Theme.Current.GetScaledFont(FontScale), ForceNoWindowsBorder);    // retheme
-            //this.DumpTree(0);
+            // make new controls, and scale up by autoscalefactor, and theme it
+            Entries.CreateEntries(contentpanel,toppanel,bottompanel,tooltipcontrol, this.CurrentAutoScaleFactor(), Theme.Current?.GetScaledFont(FontScale));    
             SizeWindow(); // and size window again
         }
 
@@ -171,6 +152,20 @@ namespace ExtendedControls
                     c.Top += move;
                }
             }
+        }
+
+        // handle OK and Close/Escape/Cancel
+        public void InstallStandardTriggers(Action<string, string, Object> othertrigger = null)
+        {
+            Trigger += (dialogname, controlname, xtag) =>
+            {
+                if (controlname == "OK")
+                    ReturnResult(DialogResult.OK);
+                else if (controlname == "Close" || controlname == "Escape" || controlname == "Cancel")
+                    ReturnResult(DialogResult.Cancel);
+                else
+                    othertrigger?.Invoke(dialogname, controlname, xtag);
+            };
         }
 
         // Helper to create a standard dialog, centred, with a top panel area, with standard triggers, and OK is enabled when all is valid
@@ -245,7 +240,7 @@ namespace ExtendedControls
         }
 
         // get control by name
-        public Control GetControl(string controlname )
+        public Control GetControl(string controlname)
         {
             return Entries.GetControl(controlname);
         }
@@ -263,10 +258,14 @@ namespace ExtendedControls
             return Entries.GetValue(t);
         }
 
-        // Return Get() by controlname, null if can't get
+        // Return Get() by controlname, null/false if can't get
+        public bool Get(string controlname, out string value)
+        {
+            return Entries.Get(controlname,out value);
+        }
         public string Get(string controlname)
         {
-            return Entries.Get(controlname);
+            return Entries.Get(controlname, out string value) ? value : null;
         }
 
         // Return GetValue() by controlname, null if can't get
@@ -332,10 +331,20 @@ namespace ExtendedControls
             return Entries.GetCheckBoxBools(startingcontrolname);
         }
 
-        // Set value of control by string value
-        public bool Set(string controlname, string value)      
+        // suspend resume
+        public bool Suspend(string controlname)
         {
-            return Entries.Set(controlname, value);
+            return Entries.Suspend(controlname);
+        }
+        public bool Resume(string controlname)
+        {
+            return Entries.Resume(controlname);
+        }
+
+        // Set value of control by string value
+        public bool Set(string controlname, string value, bool replaceescapes)
+        {
+            return Entries.Set(controlname, value, replaceescapes);
         }
 
         // from controls starting with this name, set the names of the ones checked
@@ -350,13 +359,120 @@ namespace ExtendedControls
             Entries.RadioButton(startingcontrolname, controlhit, max);
         }
 
+        // add text to rich text box at bottom and scroll
+        public bool AddText(string controlname, string text)
+        {
+            return Entries.AddText(controlname, text);
+        }
+
+        // add/set rows in DGV
+        public string AddSetRows(string controlname, string rowstring)
+        {
+            return Entries.AddSetRows(controlname, rowstring);
+        }
+        public string AddSetRows(string controlname, object rowcommands)        // rowcommands is a JArray
+        {
+            return Entries.AddSetRows(controlname, rowcommands);
+        }
+
+        public bool InsertColumn(string controlname, int position, string type, string headertext, int fillsize, string sortmode)
+        {
+            return Entries.InsertColumn(controlname, position, type, headertext, fillsize, sortmode);
+        }
+
+        public bool RemoveColumns(string controlname, int position, int count)
+        {
+            return Entries.RemoveColumns(controlname, position, count);
+        }
+
+        public bool SetRightClickMenu(string controlname, string[] tags, string[] items)
+        {
+            return Entries.SetRightClickMenu(controlname, tags, items);
+        }
+
+        public object GetDGVColumnSettings(string controlname)
+        {
+            return Entries.GetDGVColumnSettings(controlname);
+        }
+
+        public bool SetDGVColumnSettings(string controlname, object settings)
+        {
+            return Entries.SetDGVColumnSettings(controlname, settings);
+        }
+        public bool SetDGVColumnSettings(string controlname, string settings)
+        {
+            return Entries.SetDGVColumnSettings(controlname, settings);
+        }
+
+        public bool SetDGVSettings(string controlname, bool columnreorder, bool percolumnwordwrap, bool allowrowheadervisibilityselection, bool singlerowselect)
+        {
+            return Entries.SetDGVSettings(controlname, columnreorder, percolumnwordwrap, allowrowheadervisibilityselection, singlerowselect);
+        }
+        public bool SetWordWrap(string controlname, bool wordwrap)
+        {
+            return Entries.SetWordWrap(controlname, wordwrap);
+        }
+
+        // clear control
+        public bool Clear(string controlname)
+        {
+            return Entries.Clear(controlname);
+        }
+
+        // remove rows
+        public int RemoveRows(string controlname, int start, int count)
+        {
+            return Entries.RemoveRows(controlname, start, count);
+        }
+
+        // close any drop down open
+        public void CloseDropDown()
+        {
+            Entries.CloseDropDown();
+        }
+
         // are all entries on this table which could be invalid valid?
         public bool IsAllValid()
         {
             return Entries.IsAllValid();
         }
 
-         #endregion
+        public bool SetEnable(string controlname, bool enabled)
+        {
+            return Entries.Enable(controlname, enabled);
+        }
+
+        public bool SetVisible(string controlname, bool visible)
+        {
+            return Entries.Visible(controlname, visible);
+        }
+
+        public bool IsEnabled(string controlname)
+        {
+            return Entries.Find(controlname)?.Control?.Enabled ?? false;
+        }
+
+        public bool IsVisible(string controlname)
+        {
+            return Entries.Find(controlname)?.Control?.Visible ?? false;
+        }
+
+        public bool GetPosition(string controlname, out Rectangle r)
+        {
+            return Entries.GetPosition(controlname, out r, this.FindForm().CurrentAutoScaleFactor());
+        }
+        public bool SetPosition(string controlname, Point p)    // in design units
+        {
+            return Entries.SetPosition(controlname, p, this.FindForm().CurrentAutoScaleFactor());
+        }
+
+        public bool SetSize(string controlname, Size s)    // in design units
+        {
+            return Entries.SetSize(controlname, s, this.FindForm().CurrentAutoScaleFactor());
+        }
+
+
+        #endregion
 
         #region Implementation
 
@@ -367,7 +483,7 @@ namespace ExtendedControls
         {
             Entries.Name = lname;
             Entries.CallerTag = callertag;
-            Entries.MouseUpDownOnLabel += (dir, control, me) => { if (dir) OnCaptionMouseDown(control, me); else OnCaptionMouseUp(control, me); };
+            Entries.MouseUpDownOnLabelOrPanel += (dir, control, me) => { if (dir) OnCaptionMouseDown(control, me); else OnCaptionMouseUp(control, me); };
 
             this.halign = halign;
             this.valign = valign;
@@ -440,7 +556,7 @@ namespace ExtendedControls
                     closebutton.ImageSelected = ExtButtonDrawn.ImageType.Close;
                     closebutton.Click += (sender, f) =>
                     {
-                        Entries.SendTrigger("Close");
+                        Entries.SendTrigger("Close", null);
                     };
 
                     titleclosepanel.Controls.Add(closebutton);            // add now so it gets themed
@@ -579,12 +695,14 @@ namespace ExtendedControls
 
             int curpos = contentpanel.BeingPosition();
 
-            foreach( var e in Entries)
+            foreach( var ent in Entries)
             {
-                e.Location = e.Control.Location;
-                e.Size = e.Control.Size;
-                if (e.MinimumSize == Size.Empty)
-                    e.MinimumSize = e.Size;
+                ent.Location = ent.Control.Location;
+                ent.Size = ent.Control.Size;
+                if (ent.MinimumSize == Size.Empty)
+                    ent.MinimumSize = ent.Size;
+                if (ent.BackColor.HasValue)
+                    ent.Control.BackColor = ent.BackColor.Value;
             }
 
             initialscrollpanelsize = contentpanel.Size;
@@ -647,7 +765,7 @@ namespace ExtendedControls
 
             if (!Entries.DisableTriggers && resizerepositionon)     // to mirror on resize we will test disable triggers, even thou not stricly required
             {
-                Entries.SendTrigger("Reposition");
+                Entries.SendTrigger("Reposition", null,Bounds);
             }
         }
 
@@ -666,16 +784,23 @@ namespace ExtendedControls
 
                 foreach ( var en in Entries)
                 {
-                    if (en.Control.Parent == contentpanel)
+                    var p = en.Control.Parent;
+                    while (p != null)       // go up and see if in contentpanel
                     {
-                        //System.Diagnostics.Debug.WriteLine($"..CF Apply to {en.Control.Name} {en.Control.Size}");
-                        en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, en.MinimumSize, widthdelta, heightdelta);
+                        if (en.Control.Parent == contentpanel)
+                        {
+                            //System.Diagnostics.Debug.WriteLine($"..CF Apply to {en.Control.Name} {en.Control.Size}");
+                            en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, en.MinimumSize, widthdelta, heightdelta);
+                            break;
+                        }
+
+                        p = p.Parent;
                     }
                 }
 
                 contentpanel.Recalcuate();
 
-                Entries.SendTrigger("Resize");        // won't send if disabled
+                Entries.SendTrigger("Resize", null, Size);        // won't send if disabled
             }
         }
 
@@ -716,7 +841,7 @@ namespace ExtendedControls
         {
             if (Entries.DisableTriggers == false)                // if not in disable, send trigger
             {
-                Entries.SendTrigger("Close");                   
+                Entries.SendTrigger("Close", null);                   
                 e.Cancel = Entries.DisableTriggers == false;     // if ProgClose is false, we don't want to close. Callback did not call ReturnResponse
             }
 
@@ -727,7 +852,7 @@ namespace ExtendedControls
         {
             if (keyData == Keys.Escape)
             {
-                Entries.SendTrigger("Escape");
+                Entries.SendTrigger("Escape", null);
                 return true;
             }
 

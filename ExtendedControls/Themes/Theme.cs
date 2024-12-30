@@ -906,15 +906,7 @@ namespace ExtendedControls
                 ctrl.ForeColor = colors[CI.textbox_fore];
                 ctrl.BackColor = colors[CI.textbox_back];
             }
-            else if (myControl is CheckedIconListBoxForm)
-            {
-                CheckedIconListBoxForm ctrl = myControl as CheckedIconListBoxForm;
 
-                if (buttonstyle.Equals(ButtonStyles[0])) // system
-                    ctrl.FlatStyle = FlatStyle.System;
-                else
-                    ctrl.FlatStyle = FlatStyle.Popup;
-            }
             else if (myControl is CompassControl)
             {
                 CompassControl compassControl = myControl as CompassControl;
@@ -1017,7 +1009,9 @@ namespace ExtendedControls
         {
             ExtButton ctrl = (ExtButton)myControl;
             ctrl.ForeColor = colors[CI.button_text];
-            ctrl.AutoSize = true;
+            
+            if ( ctrl.Text.HasChars())      // we autosize text to make it fit.. we do not autosize image buttons
+                ctrl.AutoSize = true;
 
             if (buttonstyle.Equals(ButtonStyles[0])) // system
             {

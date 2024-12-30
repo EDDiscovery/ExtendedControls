@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -120,6 +121,67 @@ namespace ExtendedControls
 
             public bool IsSubmenu { get { return UserTag != null && UserTag is SubForm; } }
             public SubForm GetSubForm { get { return UserTag as SubForm; } }
+
+            // Create a UC item from a string
+            // Description is Tag,Text [,ImagePath (empty string, File, Resource) [,Exclusive list [,type]]]
+            // type = Group,Button,CheckBox (case insensitive)
+            public Item(string description)
+            {
+                var sp = new StringParser(description);
+                Create(sp);
+            }
+
+            public static Item Create(StringParser sp)
+            {
+                Item t = new Item();
+                t.Tag = sp.NextQuotedWordComma();
+                t.Text = sp.NextQuotedWord(" ,)");
+
+                if (sp.IsCharMoveOn(','))
+                {
+                    string imgpath = sp.NextQuotedWord(" ,)");
+                    if (imgpath.HasChars())
+                    {
+                        if (System.IO.File.Exists(imgpath))
+                        {
+                            try
+                            {
+                                t.Image = imgpath.LoadBitmapNoLock();       // So the file can be released
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Trace.WriteLine($"CheckedIconPictureBoxUC Image {imgpath} failed to load {ex}");
+                            }
+                        }
+                        else
+                        {
+                            t.Image = BaseUtils.ResourceHelpers.GetResourceAsImage(imgpath);
+                            if (t.Image == null)
+                                System.Diagnostics.Trace.WriteLine($"CheckedIconPictureBoxUC Image {imgpath} failed to load");
+                        }
+                    }
+
+                    if (sp.IsCharMoveOn(','))
+                    {
+                        string exc = sp.NextQuotedWord(" ,)");
+                        if (exc.HasChars())
+                            t.Exclusive = exc;
+
+                        if (sp.IsCharMoveOn(','))
+                        {
+                            string type = sp.NextQuotedWord(" )");
+                            if (type.EqualsIIC("Group"))
+                                t.Group = true;
+                            else if (type.EqualsIIC("Button"))
+                                t.Button = true;
+                            else if (type.EqualsIIC("CheckBox"))        // default, there for completeness.
+                                t.Button = false;
+                        }
+                    }
+                }
+
+                return t.Tag!=null && t.Text!=null ? t: null;
+            }
         }
 
         // the main add

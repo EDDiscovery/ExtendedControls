@@ -24,6 +24,7 @@ namespace ExtendedControls
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
+        public DataGridView DGV { get { return dgv; } }         // return its dgv, after added
 
         public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }       // if internal
 

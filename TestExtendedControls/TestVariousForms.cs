@@ -481,7 +481,7 @@ namespace TestExtendedControls
                 {
                     f.MoveControls(newpos-15, 30);      // the -15 just ensures any rounding won't affect picking ok
                     f.Add(new ConfigurableEntryList.Entry("newc", typeof(ExtButton), "NB", new Point(10, newpos), new Size(140, 24), ""));
-                    f.UpdateDisplayAfterAddNewControls();
+                    f.UpdateEntries();
                     newpos += 30;
                 }
             };
@@ -518,7 +518,7 @@ namespace TestExtendedControls
 
             Form parent = this;
 
-            f.Add(new ConfigurableEntryList.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { Panel = ConfigurableEntryList.Entry.PanelType.Top });
+            f.Add(new ConfigurableEntryList.Entry("add", typeof(ExtButton), "But", new Point(10, 40), new Size(140, 24), "") { PlacedInPanel = ConfigurableEntryList.Entry.PanelType.Top });
             f.AddOK(new Point(10, 10), paneltype: ConfigurableEntryList.Entry.PanelType.Bottom);
             f.AddBools(names,names, state, 4, 24, vdepth, 4, 150, "B_");
             f.InstallStandardTriggers();

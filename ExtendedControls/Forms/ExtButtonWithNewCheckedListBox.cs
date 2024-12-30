@@ -36,7 +36,8 @@ namespace ExtendedControls
                             Size? imagesize = null, Size? screenmargin = null, Size? closeboundaryregion = null, 
                             bool multicolumns = false,
                             IEnumerable<CheckedIconUserControl.Item> groupoptions = null,
-                            bool sortitems = false)
+                            bool sortitems = false,
+                            Action<string, System.Windows.Forms.MouseEventArgs> buttonpressed = null)
         {
             this.list = standardoptions;
             this.glist = groupoptions;
@@ -50,6 +51,7 @@ namespace ExtendedControls
             this.currentsettings = startsetting;
             this.multicolumns = multicolumns;
             this.sortitems = sortitems;
+            this.buttonpressed = buttonpressed;
         }
 
         // All/None with all items back, and a default closing area
@@ -75,43 +77,57 @@ namespace ExtendedControls
         public bool IsAnySet { get { return !IsNoneSet; } }
         public bool IsDisabled { get { return currentsettings == CheckedIconGroupUserControl.Disabled; } }
 
+        public bool IsDropDownActive => dropdown != null; 
+
+        public void CloseDropDown()
+        {
+            if (IsDropDownActive)
+                dropdown.Close();
+        }
+
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
 
-            DropDown = new CheckedIconNewListBoxForm();
+            dropdown = new CheckedIconNewListBoxForm();
 
             if (allornone)
-                DropDown.UC.AddAllNone();
+                dropdown.UC.AddAllNone();
             if (disabled!=null)
-                DropDown.UC.AddDisabled(disabled.HasChars() ? disabled :null);
-            DropDown.AllOrNoneBack = allornoneback;
-            DropDown.UC.SettingsSplittingChar = SettingsSplittingChar;
+                dropdown.UC.AddDisabled(disabled.HasChars() ? disabled :null);
+            dropdown.AllOrNoneBack = allornoneback;
+            dropdown.UC.SettingsSplittingChar = SettingsSplittingChar;
             if (glist != null)
-                DropDown.UC.Add(glist,forcegroup:true);
+                dropdown.UC.Add(glist,forcegroup:true);
             if ( list != null)
-                DropDown.UC.Add(list);
+                dropdown.UC.Add(list);
             if ( sortitems )
-                DropDown.UC.Sort();
+                dropdown.UC.Sort();
 
             if (imagesize.HasValue)
-                DropDown.UC.ImageSize = imagesize.Value;
+                dropdown.UC.ImageSize = imagesize.Value;
             if (screenmargin.HasValue)
-                DropDown.UC.ScreenMargin = screenmargin.Value;
+                dropdown.UC.ScreenMargin = screenmargin.Value;
             if (closeboundaryregion.HasValue)
-                DropDown.CloseBoundaryRegion = closeboundaryregion.Value;
+                dropdown.CloseBoundaryRegion = closeboundaryregion.Value;
 
-            DropDown.UC.MultiColumnSlide = multicolumns;
+            dropdown.UC.MultiColumnSlide = multicolumns;
 
-            DropDown.SaveSettings = (newsetting, o) =>
+            dropdown.SaveSettings = (newsetting, o) =>
             {
                 bool changed = currentsettings != newsetting;
                 currentsettings = newsetting;
                 putsettings(newsetting,changed);
                 ValueChanged?.Invoke(newsetting,changed);
+                dropdown = null;
             };
 
-            DropDown.Show(currentsettings, this, this.FindForm());
+            dropdown.UC.ButtonPressed += (i,s1,s2,o1,e1) =>
+            {
+                buttonpressed?.Invoke(s1, e1);
+            };
+
+            dropdown.Show(currentsettings, this, this.FindForm());
         }
 
         private IEnumerable<CheckedIconUserControl.Item> list;
@@ -121,12 +137,13 @@ namespace ExtendedControls
         private Size? imagesize;
         private Size? screenmargin;
         private Size? closeboundaryregion;
-        private CheckedIconNewListBoxForm DropDown = null;
+        private CheckedIconNewListBoxForm dropdown = null;
         private Action<string,bool> putsettings;
         private bool allornoneback;
         private string currentsettings;
         private bool multicolumns;
         private bool sortitems;
+        private Action<string, System.Windows.Forms.MouseEventArgs> buttonpressed;
 
     }
 }

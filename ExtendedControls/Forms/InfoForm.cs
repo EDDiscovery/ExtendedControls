@@ -20,7 +20,7 @@ namespace ExtendedControls
     public partial class InfoForm : DraggableForm
     {
         public bool EnableClose { get { return buttonOK.Enabled; } set { buttonOK.Enabled = panel_close.Enabled = value; } }
-        public Action<LinkClickedEventArgs> LinkClicked;
+        public Action<LinkClickedEventArgs> LinkClicked { get; set; }
 
         public InfoForm()
         {

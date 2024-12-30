@@ -29,15 +29,17 @@
         private void InitializeComponent()
         {
             this.panelTop = new System.Windows.Forms.Panel();
+            this.extButtonResize = new ExtendedControls.ExtButton();
             this.extRichTextBox1 = new ExtendedControls.ExtRichTextBox();
             this.configurableUC1 = new ExtendedControls.ConfigurableUC();
-            this.extButtonResize = new ExtendedControls.ExtButton();
+            this.extButtonAdd = new ExtendedControls.ExtButton();
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
             // 
             this.panelTop.BackColor = System.Drawing.SystemColors.Info;
+            this.panelTop.Controls.Add(this.extButtonAdd);
             this.panelTop.Controls.Add(this.extButtonResize);
             this.panelTop.Controls.Add(this.extRichTextBox1);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -45,6 +47,16 @@
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(792, 100);
             this.panelTop.TabIndex = 2;
+            // 
+            // extButtonResize
+            // 
+            this.extButtonResize.Location = new System.Drawing.Point(3, 0);
+            this.extButtonResize.Name = "extButtonResize";
+            this.extButtonResize.Size = new System.Drawing.Size(75, 23);
+            this.extButtonResize.TabIndex = 1;
+            this.extButtonResize.Text = "Resize";
+            this.extButtonResize.UseVisualStyleBackColor = true;
+            this.extButtonResize.Click += new System.EventHandler(this.extButtonResize_Click);
             // 
             // extRichTextBox1
             // 
@@ -79,23 +91,24 @@
             // configurableUC1
             // 
             this.configurableUC1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.configurableUC1.DialogResult = System.Windows.Forms.DialogResult.None;
             this.configurableUC1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.configurableUC1.Location = new System.Drawing.Point(0, 100);
             this.configurableUC1.Name = "configurableUC1";
             this.configurableUC1.PanelBorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.configurableUC1.Size = new System.Drawing.Size(792, 409);
-            this.configurableUC1.SwallowReturn = false;
+            this.configurableUC1.SwallowReturn = true;
             this.configurableUC1.TabIndex = 3;
             // 
-            // extButtonResize
+            // extButtonAdd
             // 
-            this.extButtonResize.Location = new System.Drawing.Point(3, 0);
-            this.extButtonResize.Name = "extButtonResize";
-            this.extButtonResize.Size = new System.Drawing.Size(75, 23);
-            this.extButtonResize.TabIndex = 1;
-            this.extButtonResize.Text = "Resize";
-            this.extButtonResize.UseVisualStyleBackColor = true;
-            this.extButtonResize.Click += new System.EventHandler(this.extButtonResize_Click);
+            this.extButtonAdd.Location = new System.Drawing.Point(84, 0);
+            this.extButtonAdd.Name = "extButtonAdd";
+            this.extButtonAdd.Size = new System.Drawing.Size(75, 23);
+            this.extButtonAdd.TabIndex = 1;
+            this.extButtonAdd.Text = "Add";
+            this.extButtonAdd.UseVisualStyleBackColor = true;
+            this.extButtonAdd.Click += new System.EventHandler(this.extButtonAdd_Click);
             // 
             // TestConfigurableUC
             // 
@@ -116,5 +129,6 @@
         private ExtendedControls.ConfigurableUC configurableUC1;
         private ExtendedControls.ExtRichTextBox extRichTextBox1;
         private ExtendedControls.ExtButton extButtonResize;
+        private ExtendedControls.ExtButton extButtonAdd;
     }
 }
