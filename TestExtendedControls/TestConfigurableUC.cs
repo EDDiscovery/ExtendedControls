@@ -33,12 +33,12 @@ namespace TestExtendedControls
                 configurableUC1.Entries.Add(new ConfigurableEntryList.Entry("B" + i, typeof(ExtButton), i.ToString(), new Point(100, i), new Size(50, 24), "N1"));
             }
             configurableUC1.Init("UC1", null);
-            configurableUC1.Trigger += ConfigurableUC1_Trigger;
+            configurableUC1.TriggerAdv += ConfigurableUC1_TriggerAdv;
             Theme.Current.ApplyStd(this);
             configurableUC1.Themed();
         }
 
-        private void ConfigurableUC1_Trigger(string arg1, string arg2, object arg3)
+        private void ConfigurableUC1_TriggerAdv(string arg1, string arg2, object arg3, object arg4, object arg5)
         {
             extRichTextBox1.Text += $"Trig {arg1} {arg2}" + Environment.NewLine;
             extRichTextBox1.Select(extRichTextBox1.Text.Length, extRichTextBox1.Text.Length);

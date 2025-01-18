@@ -72,7 +72,7 @@ namespace TestExtendedControls
             err = configurableUC1.Entries.AddSetRows("DGV", "1,0,\"Header2\"");     // overwrite row 1 header
             err = configurableUC1.Entries.AddSetRows("DGV", "-2,0,\"Header3\"");    // header only on next line
 
-            configurableUC1.SetDGVSettings("DGV", true, true, true, true, true);
+            configurableUC1.SetDGVSettings("DGV", true, true, true, true);
 
             System.Diagnostics.Debug.Assert(err == null);
 
@@ -104,7 +104,7 @@ namespace TestExtendedControls
 
         }
 
-        private void ConfigurableUC1_TriggerAdv(string arg1, string arg2, object arg3, object arg4)
+        private void ConfigurableUC1_TriggerAdv(string arg1, string arg2, object arg3, object arg4, object arg5)
         {
             extRichTextBox1.Text += $"Trig `{arg1}` `{arg2}` `{arg3}`" + Environment.NewLine;
             extRichTextBox1.Select(extRichTextBox1.Text.Length, extRichTextBox1.Text.Length);
@@ -206,7 +206,7 @@ namespace TestExtendedControls
         private void extButtonToggleWordWrap_Click(object sender, EventArgs e)
         {
             wordwrap = !wordwrap;
-            configurableUC1.SetDGVWordWrap("DGV", wordwrap);
+            configurableUC1.SetWordWrap("DGV", wordwrap);
 
         }
     }

@@ -72,7 +72,7 @@ namespace TestExtendedControls
             System.Diagnostics.Debug.Assert(err.Length == 0,err);
 
             configurableUC1.Init("UC1", null);
-            configurableUC1.TriggerAdv += ConfigurableUC1_TriggerAdv;
+            configurableUC1.TriggerAdv += ConfigurableUC1_TriggerAdv1;
             Theme.Current.ApplyStd(this);
             configurableUC1.Themed();
 
@@ -81,10 +81,10 @@ namespace TestExtendedControls
 
         }
 
-        private void ConfigurableUC1_TriggerAdv(string arg1, string arg2, object arg3, object arg4)
+        private void ConfigurableUC1_TriggerAdv1(string arg1, string arg2, object arg3, object arg4, object arg5)
         {
             extRichTextBox1.Text += $"Trig `{arg1}` `{arg2}` `{arg3}`" + Environment.NewLine;
-            if ( arg2 == "B2")
+            if (arg2 == "B2")
             {
                 configurableUC1.AddText("RTB", "More text\r\n");
 
