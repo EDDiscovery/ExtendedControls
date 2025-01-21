@@ -455,9 +455,16 @@ namespace ExtendedControls
 
             ClearHoverTip();
 
-            elementin?.Click?.Invoke(this, elementin,e);
-
-            ClickElement?.Invoke(this, e, elementin, elementin?.Tag);          // null if no element clicked
+            if (e.Button == MouseButtons.Right && elementin?.ContextMenuStrip != null)      // right click and context menu strip
+            {
+                elementin.ContextMenuStrip.Tag = elementin;
+                elementin.ContextMenuStrip.Show(this.PointToScreen(elementin.PositionBottomRight));    // show right click
+            }
+            else
+            {
+                elementin?.Click?.Invoke(this, elementin, e);            // tell element
+                ClickElement?.Invoke(this, e, elementin, elementin?.Tag);          // tell overall class
+            }
         }
 
         #endregion

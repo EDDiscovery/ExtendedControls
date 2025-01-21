@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.extPictureBox1 = new ExtendedControls.ExtPictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -41,6 +42,10 @@
             this.extPictureBox3 = new ExtendedControls.ExtPictureBox();
             this.extButton2 = new ExtendedControls.ExtButton();
             this.extPictureBox4 = new ExtendedControls.ExtPictureBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.oneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.twoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.threeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.extPictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -50,6 +55,7 @@
             this.extPictureBoxScroll3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.extPictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.extPictureBox4)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // extPictureBox1
@@ -57,6 +63,8 @@
             this.extPictureBox1.BackgroundImage = global::TestExtendedControls.Properties.Resources.FleetCarrier;
             this.extPictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.extPictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extPictureBox1.FillColor = System.Drawing.Color.Transparent;
+            this.extPictureBox1.FreezeTracking = false;
             this.extPictureBox1.Location = new System.Drawing.Point(0, 0);
             this.extPictureBox1.Name = "extPictureBox1";
             this.extPictureBox1.Size = new System.Drawing.Size(166, 331);
@@ -104,13 +112,13 @@
             this.extScrollBarForPanel2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extScrollBarForPanel2.HideScrollBar = false;
             this.extScrollBarForPanel2.LargeChange = 330;
-            this.extScrollBarForPanel2.Location = new System.Drawing.Point(235, 0);
+            this.extScrollBarForPanel2.Location = new System.Drawing.Point(232, 0);
             this.extScrollBarForPanel2.Maximum = 160;
             this.extScrollBarForPanel2.Minimum = 0;
             this.extScrollBarForPanel2.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBarForPanel2.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBarForPanel2.Name = "extScrollBarForPanel2";
-            this.extScrollBarForPanel2.Size = new System.Drawing.Size(16, 330);
+            this.extScrollBarForPanel2.Size = new System.Drawing.Size(19, 330);
             this.extScrollBarForPanel2.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBarForPanel2.SmallChange = 1;
             this.extScrollBarForPanel2.TabIndex = 1;
@@ -125,9 +133,11 @@
             // extPictureBox2
             // 
             this.extPictureBox2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extPictureBox2.FillColor = System.Drawing.Color.Transparent;
+            this.extPictureBox2.FreezeTracking = false;
             this.extPictureBox2.Location = new System.Drawing.Point(0, 0);
             this.extPictureBox2.Name = "extPictureBox2";
-            this.extPictureBox2.Size = new System.Drawing.Size(235, 161);
+            this.extPictureBox2.Size = new System.Drawing.Size(232, 161);
             this.extPictureBox2.TabIndex = 0;
             // 
             // extButton1
@@ -173,13 +183,13 @@
             this.extScrollBarForPanel3.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extScrollBarForPanel3.HideScrollBar = false;
             this.extScrollBarForPanel3.LargeChange = 330;
-            this.extScrollBarForPanel3.Location = new System.Drawing.Point(235, 0);
+            this.extScrollBarForPanel3.Location = new System.Drawing.Point(232, 0);
             this.extScrollBarForPanel3.Maximum = 160;
             this.extScrollBarForPanel3.Minimum = 0;
             this.extScrollBarForPanel3.MouseOverButtonColor = System.Drawing.Color.Green;
             this.extScrollBarForPanel3.MousePressedButtonColor = System.Drawing.Color.Red;
             this.extScrollBarForPanel3.Name = "extScrollBarForPanel3";
-            this.extScrollBarForPanel3.Size = new System.Drawing.Size(16, 330);
+            this.extScrollBarForPanel3.Size = new System.Drawing.Size(19, 330);
             this.extScrollBarForPanel3.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBarForPanel3.SmallChange = 1;
             this.extScrollBarForPanel3.TabIndex = 1;
@@ -194,9 +204,11 @@
             // extPictureBox3
             // 
             this.extPictureBox3.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extPictureBox3.FillColor = System.Drawing.Color.Transparent;
+            this.extPictureBox3.FreezeTracking = false;
             this.extPictureBox3.Location = new System.Drawing.Point(0, 0);
             this.extPictureBox3.Name = "extPictureBox3";
-            this.extPictureBox3.Size = new System.Drawing.Size(235, 161);
+            this.extPictureBox3.Size = new System.Drawing.Size(232, 161);
             this.extPictureBox3.TabIndex = 0;
             // 
             // extButton2
@@ -211,10 +223,39 @@
             // 
             // extPictureBox4
             // 
+            this.extPictureBox4.FillColor = System.Drawing.Color.Transparent;
+            this.extPictureBox4.FreezeTracking = false;
             this.extPictureBox4.Location = new System.Drawing.Point(13, 362);
             this.extPictureBox4.Name = "extPictureBox4";
             this.extPictureBox4.Size = new System.Drawing.Size(451, 220);
             this.extPictureBox4.TabIndex = 4;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.oneToolStripMenuItem,
+            this.twoToolStripMenuItem,
+            this.threeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 70);
+            // 
+            // oneToolStripMenuItem
+            // 
+            this.oneToolStripMenuItem.Name = "oneToolStripMenuItem";
+            this.oneToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.oneToolStripMenuItem.Text = "One";
+            // 
+            // twoToolStripMenuItem
+            // 
+            this.twoToolStripMenuItem.Name = "twoToolStripMenuItem";
+            this.twoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.twoToolStripMenuItem.Text = "Two";
+            // 
+            // threeToolStripMenuItem
+            // 
+            this.threeToolStripMenuItem.Name = "threeToolStripMenuItem";
+            this.threeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.threeToolStripMenuItem.Text = "Three";
             // 
             // TestPictureBox
             // 
@@ -238,6 +279,7 @@
             this.extPictureBoxScroll3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.extPictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.extPictureBox4)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -257,5 +299,9 @@
         private ExtendedControls.ExtPictureBox extPictureBox3;
         private ExtendedControls.ExtButton extButton2;
         private ExtendedControls.ExtPictureBox extPictureBox4;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem oneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem twoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem threeToolStripMenuItem;
     }
 }

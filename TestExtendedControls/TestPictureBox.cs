@@ -39,6 +39,21 @@ namespace TestExtendedControls
             extPictureBox4.FillColor = Color.AliceBlue;
             extPictureBox4.Render(minsize: extPictureBox4.Size);
 
+            extPictureBox1.ClickElement += ClickElement;
+            contextMenuStrip1.Opening += ContextMenuStrip1_Opening;
+        }
+
+        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            ContextMenuStrip t = sender as ContextMenuStrip;
+            ExtPictureBox.ImageElement i = t.Tag as ExtPictureBox.ImageElement;
+            System.Diagnostics.Debug.Write($"CMS Opening {i.Tag}");
+            oneToolStripMenuItem.Enabled = ((int)i.Tag != 0);
+        }
+
+        private void ClickElement(object sender, MouseEventArgs eventargs, ExtPictureBox.ImageElement i, object tag)
+        {
+            System.Diagnostics.Debug.WriteLine($"Element click {eventargs.Button} {i?.Tag}");
         }
 
         int vpos = 5;
@@ -48,7 +63,9 @@ namespace TestExtendedControls
             base.OnShown(e);
             for (int i = 0; i < 10; i++)
             {
-                extPictureBox1.AddTextAutoSize(new Point(5, vpos), new Size(1000, 1000), "Text to render " + vpos, Font, Color.Red, Color.White, 0.8f);
+                var i1 = extPictureBox1.AddTextAutoSize(new Point(5, vpos), new Size(1000, 1000), "Text to render " + vpos, Font, Color.Red, Color.White, 0.8f);
+                i1.ContextMenuStrip = contextMenuStrip1;
+                i1.Tag = i;
                 extPictureBox2.AddTextAutoSize(new Point(5, vpos), new Size(1000, 1000), "Text to render " + vpos, Font, Color.Red, Color.White, 0.8f);
                 extPictureBox3.AddTextAutoSize(new Point(5, vpos), new Size(1000, 1000), "Text to render " + vpos, Font, Color.Red, Color.White, 0.8f);
                 vpos += 30;

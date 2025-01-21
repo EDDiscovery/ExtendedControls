@@ -29,6 +29,7 @@ namespace ExtendedControls
             public virtual Rectangle Location { get; set; }
             public Point Position { get { return new Point(Location.Left, Location.Top); } set { Location = new Rectangle(value.X, value.Y, Location.Width, Location.Height); } }
             public Point PositionRight { get { return new Point(Location.Left + Location.Width, Location.Top); } }
+            public Point PositionBottomRight { get { return new Point(Location.Right, Location.Bottom); } }
             public Size Size { get { return new Size(Location.Width, Location.Height); } set { Location = new Rectangle(Location.Left, Location.Top, value.Width, value.Height); } }
             public Image Image { get; set; }
             public bool ImageOwned { get; set; }
@@ -62,6 +63,8 @@ namespace ExtendedControls
             public Action<ExtPictureBox, ImageElement, MouseEventArgs> MouseDown { get; set; }
             public Action<ExtPictureBox, ImageElement, MouseEventArgs> MouseUp { get; set; }
             public Action<ExtPictureBox, ImageElement, MouseEventArgs> Click { get; set; }
+
+            public ContextMenuStrip ContextMenuStrip { get; set; }  // if set, right click invokes this, with its tag set to the element clicked. Click is not called.
 
             private bool enabled = true;
             private bool showdisabled = false;
