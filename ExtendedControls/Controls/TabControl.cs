@@ -128,10 +128,11 @@ namespace ExtendedControls
             return -1;
         }
 
-        public void ResetBitmap()
+        public void ResetInvalidate()
         {
             backImageControlBitmap?.Dispose();
             backImageControlBitmap = null;
+            Invalidate();
         }
 
         #endregion
@@ -366,6 +367,11 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update Finish: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
 
+        }
+        private void ResetBitmap()
+        {
+            backImageControlBitmap?.Dispose();
+            backImageControlBitmap = null;
         }
 
         private IntPtr SendMessage(int msg, IntPtr wparam, IntPtr lparam)

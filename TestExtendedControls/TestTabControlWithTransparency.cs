@@ -100,6 +100,7 @@ namespace TestExtendedControls
         private void extButtontransparent_Click(object sender, EventArgs e)
         {
             this.BackColor = this.BackColor == TransparencyKey ? Color.Coral : TransparencyKey;
+            extTabControl1.Controls[0].BackColor = this.BackColor;
             extTabControl1.ResetInvalidate();
         }
 
