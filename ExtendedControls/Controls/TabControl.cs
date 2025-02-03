@@ -60,9 +60,12 @@ namespace ExtendedControls
 
         public void SetStyle(FlatStyle fsstyle, TabStyleCustom tabstylep)
         {
-            flatstyle = fsstyle;
-            tabstyle = tabstylep;
-            ForceUpdate();
+            if (fsstyle != flatstyle || tabstylep != tabstyle)
+            {
+                flatstyle = fsstyle;
+                tabstyle = tabstylep;
+                ForceUpdate();
+            }
         }
         
         //public new bool Multiline { get { return base.Multiline; } set { base.Multiline = value; System.Diagnostics.Debug.WriteLine($"Tabcontrol set multiline {value}"); } }
@@ -125,11 +128,10 @@ namespace ExtendedControls
             return -1;
         }
 
-        public void ResetInvalidate()
+        public void ResetBitmap()
         {
             backImageControlBitmap?.Dispose();
             backImageControlBitmap = null;
-            Invalidate();
         }
 
         #endregion
@@ -322,7 +324,7 @@ namespace ExtendedControls
         protected override void OnFontChanged(EventArgs e)
         {
             base.OnFontChanged(e);
-            System.Diagnostics.Debug.WriteLine($"Tabcontrol Font Change: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
+            //System.Diagnostics.Debug.WriteLine($"Tabcontrol Font Change: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
             ForceUpdate();
         }
 
@@ -332,7 +334,7 @@ namespace ExtendedControls
             if (Parent == null)         // no parent, not attached yet
                 return;
 
-            System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update In: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
+            //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update In: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
 
             bool systemmode = flatstyle == FlatStyle.System;
 
@@ -359,10 +361,10 @@ namespace ExtendedControls
             if (!systemmode)
                 SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
 
-            System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update Out: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
-            ResetInvalidate();
+            //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update Out: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
+            ResetBitmap();
 
-            System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update Finish: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
+            //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update Finish: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
 
         }
 

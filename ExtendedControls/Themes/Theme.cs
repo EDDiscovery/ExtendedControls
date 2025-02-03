@@ -347,6 +347,7 @@ namespace ExtendedControls
 
         const float mouseoverscaling = 1.3F;
         const float mouseselectedscaling = 1.5F;
+        static TabStyleCustom tsc = new TabStyleAngled();
 
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level, bool noborderoverride = false)    // parent can be null
         {
@@ -485,7 +486,7 @@ namespace ExtendedControls
                     ctrl.TabMouseOverColor = colors[CI.button_back].Multiply(mouseoverscaling);
                     ctrl.TextSelectedColor = colors[CI.button_text];
                     ctrl.TextNotSelectedColor = colors[CI.button_text].Multiply(0.8F);
-                    ctrl.SetStyle((buttonstyle.Equals(ButtonStyles[1])) ? FlatStyle.Flat : FlatStyle.Popup, new ExtendedControls.TabStyleAngled());
+                    ctrl.SetStyle((buttonstyle.Equals(ButtonStyles[1])) ? FlatStyle.Flat : FlatStyle.Popup,tsc);
                 }
                 else
                     ctrl.FlatStyle = FlatStyle.System;
