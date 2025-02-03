@@ -53,11 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
-    <Compile Include="TestTransparency.cs">
+    <Compile Include="TestTabControlWithTransparency.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestTransparency.Designer.cs">
-      <DependentUpon>TestTransparency.cs</DependentUpon>
+    <Compile Include="TestTabControlWithTransparency.Designer.cs">
+      <DependentUpon>TestTabControlWithTransparency.cs</DependentUpon>
     </Compile>
     <Compile Include="TestConfigurableUC3.cs">
       <SubType>Form</SubType>
@@ -343,8 +343,8 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TestTransparency.resx">
-      <DependentUpon>TestTransparency.cs</DependentUpon>
+    <EmbeddedResource Include="TestTabControlWithTransparency.resx">
+      <DependentUpon>TestTabControlWithTransparency.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestConfigurableUC3.resx">
       <DependentUpon>TestConfigurableUC3.cs</DependentUpon>

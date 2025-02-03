@@ -477,7 +477,6 @@ namespace ExtendedControls
 
                 if (!buttonstyle.Equals(ButtonStyles[0])) // not system
                 {
-                    ctrl.FlatStyle = (buttonstyle.Equals(ButtonStyles[1])) ? FlatStyle.Flat : FlatStyle.Popup;
                     ctrl.TabControlBorderColor = colors[CI.tabcontrol_borderlines].Multiply(0.6F);
                     ctrl.TabControlBorderBrightColor = colors[CI.tabcontrol_borderlines];
                     ctrl.TabNotSelectedBorderColor = colors[CI.tabcontrol_borderlines].Multiply(0.4F);
@@ -486,7 +485,7 @@ namespace ExtendedControls
                     ctrl.TabMouseOverColor = colors[CI.button_back].Multiply(mouseoverscaling);
                     ctrl.TextSelectedColor = colors[CI.button_text];
                     ctrl.TextNotSelectedColor = colors[CI.button_text].Multiply(0.8F);
-                    ctrl.TabStyle = new ExtendedControls.TabStyleAngled();
+                    ctrl.SetStyle((buttonstyle.Equals(ButtonStyles[1])) ? FlatStyle.Flat : FlatStyle.Popup, new ExtendedControls.TabStyleAngled());
                 }
                 else
                     ctrl.FlatStyle = FlatStyle.System;
