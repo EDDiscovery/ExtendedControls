@@ -27,7 +27,7 @@ namespace ExtendedControls
     {
         public static Theme Current { get; set; } = null;             // current theme
 
-        public string Name { get { return name; } set { name = value; } }
+        public string Name { get; set; }
 
         public Color Form { get { return colors[CI.form]; } }       // in enum order..
         public Color ButtonBackColor { get { return colors[CI.button_back]; } }
@@ -80,23 +80,44 @@ namespace ExtendedControls
         public Color TransparentColorKey { get { return colors[CI.transparentcolorkey]; } }
         public Color GridHighlightBack { get { return colors[CI.grid_highlightback]; } }
 
-        public bool WindowsFrame { get { return windowsframe; } set { windowsframe = value; } }
-        public double Opacity { get { return formopacity; } set { formopacity = value; } }
-        public string FontName { get { return fontname; } set { fontname = value; } }
-        public float FontSize { get { return fontsize; } set { fontsize = value; } }
-        public string ButtonStyle { get { return buttonstyle; } set { buttonstyle = value; } }
-        public string TextBoxBorderStyle { get { return textboxborderstyle; } set { textboxborderstyle = value; } }
-        public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
+        public bool WindowsFrame { get; set; }
+        public double Opacity { get; set; }
+        public string FontName { get; set; }
+        public float FontSize { get; set; }
+
+        public string ButtonStyle { get; set; }
 
         public static readonly string[] ButtonStyles = "System Flat Gradient".Split();
-        public static readonly string[] TextboxBorderStyles = "None FixedSingle Fixed3D Colour".Split();
+        public FlatStyle ButtonFlatStyle { get {  return ButtonStyle.Equals(ButtonStyles[0]) ? 
+                            FlatStyle.System : ButtonStyle.Equals(ButtonStyles[1]) ? FlatStyle.Flat : FlatStyle.Popup; }}
+        public bool IsButtonSystemStyle => ButtonStyle.Equals(ButtonStyles[0]);
+        public bool IsButtonFlatStyle => ButtonStyle.Equals(ButtonStyles[1]);
 
         public static string ButtonstyleSystem = ButtonStyles[0];
         public static string ButtonstyleFlat = ButtonStyles[1];
         public static string ButtonstyleGradient = ButtonStyles[2];
+
+        public string TextBoxBorderStyle { get; set; }
+
+        public static readonly string[] TextboxBorderStyles = "None FixedSingle Fixed3D Colour".Split();
+        public BorderStyle TextBoxStyle
+        {
+            get
+            {
+                return TextBoxBorderStyle.Equals(TextboxBorderStyles[1]) ? BorderStyle.FixedSingle :
+                    TextBoxBorderStyle.Equals(TextboxBorderStyles[2]) ? BorderStyle.Fixed3D : BorderStyle.None;
+            }
+        }
+
+        public bool IsTextBoxColourStyle => TextBoxBorderStyle.Equals(TextboxBorderStyles[3]);
+        public bool IsTextBoxNoneStyle => TextBoxBorderStyle.Equals(TextboxBorderStyles[0]);
+
         public static string TextboxborderstyleFixedSingle = TextboxBorderStyles[1];
         public static string TextboxborderstyleFixed3D = TextboxBorderStyles[2];
         public static string TextboxborderstyleColor = TextboxBorderStyles[3];
+
+        public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
+
 
         public static string DefaultFont = "Microsoft Sans Serif";
         public static float DefaultFontSize = 8.25F;
@@ -141,16 +162,9 @@ namespace ExtendedControls
 
             chart1, chart2, chart3, chart4, chart5, chart6, chart7, chart8,
         };
-        private string name { get; set; }         // name of scheme
         private Dictionary<CI, Color> colors { get; set; }       // dictionary of colors, indexed by CI.
-        private bool windowsframe { get; set; }
-        private double formopacity { get; set; }
-        private string fontname { get; set; }         // Font.. (empty means don't override)
-        private float fontsize { get; set; }
-        private string buttonstyle { get; set; }
-        private string textboxborderstyle { get; set; }
 
-        private static float minfontsize = 4;
+        private static float minFontSize = 4;
 
         public Theme()
         {
@@ -213,9 +227,9 @@ namespace ExtendedControls
             for (int i = 0; i < chartcolours.Length; i++)               // then fill what is defined
                 colors[CI.chart1 + i] = chartcolours[i];
 
-            buttonstyle = bstyle; textboxborderstyle = tbbstyle;
-            windowsframe = Environment.OSVersion.Platform == PlatformID.Win32NT ? wf : true;
-            formopacity = op; fontname = ft; fontsize = fs;
+            ButtonStyle = bstyle; TextBoxBorderStyle = tbbstyle;
+            WindowsFrame = Environment.OSVersion.Platform == PlatformID.Win32NT ? wf : true;
+            Opacity = op; FontName = ft; FontSize = fs;
         }
 
         public Theme(string n)                                               // gets you windows default colours
@@ -242,23 +256,23 @@ namespace ExtendedControls
             colors.Add(CI.transparentcolorkey, Color.Green);
             for (int i = 0; i < DefaultChartColours.Length; i++)
                 colors.Add(CI.chart1 + i, DefaultChartColours[i]);
-            buttonstyle = ButtonstyleSystem;
-            textboxborderstyle = TextboxborderstyleFixed3D;
-            windowsframe = true;
-            formopacity = 100;
-            fontname = DefaultFont;
-            fontsize = DefaultFontSize;
+            ButtonStyle = ButtonstyleSystem;
+            TextBoxBorderStyle = TextboxborderstyleFixed3D;
+            WindowsFrame = true;
+            Opacity = 100;
+            FontName = DefaultFont;
+            FontSize = DefaultFontSize;
         }
 
         // copy constructor, takes a real copy, with overrides
-        public Theme(Theme other, string newname = null, string newfont = null, float newfontsize = 0, double opaque = 0)
+        public Theme(Theme other, string newname = null, string newfont = null, float newFontSize = 0, double opaque = 0)
         {
             Name = (newname != null) ? newname : other.Name;
-            fontname = (newfont != null) ? newfont : other.fontname;
-            fontsize = (newfontsize != 0) ? newfontsize : other.fontsize;
-            windowsframe = other.windowsframe; formopacity = other.formopacity;
-            buttonstyle = other.buttonstyle; textboxborderstyle = other.textboxborderstyle;
-            formopacity = (opaque > 0) ? opaque : other.formopacity;
+            FontName = (newfont != null) ? newfont : other.FontName;
+            FontSize = (newFontSize != 0) ? newFontSize : other.FontSize;
+            WindowsFrame = other.WindowsFrame; Opacity = other.Opacity;
+            ButtonStyle = other.ButtonStyle; TextBoxBorderStyle = other.TextBoxBorderStyle;
+            Opacity = (opaque > 0) ? opaque : other.Opacity;
             colors = new Dictionary<CI, Color>();
             foreach (CI ck in other.colors.Keys)
             {
@@ -277,7 +291,7 @@ namespace ExtendedControls
         {
             get
             {
-                return GetFontSizeStyle(fontsize, FontStyle.Regular);
+                return GetFontSizeStyle(FontSize, FontStyle.Regular);
             }
         }
 
@@ -287,32 +301,32 @@ namespace ExtendedControls
         {
             get
             {       // we don't scale down fonts < 12 since they are v.small already
-                float fsize = fontsize >= 12 ? (fontsize * dialogscaling) : fontsize;
+                float fsize = FontSize >= 12 ? (FontSize * dialogscaling) : FontSize;
                 return GetFontSizeStyle(fsize, FontStyle.Regular);
             }
         }
 
         public Font GetScaledFont(float scaling, FontStyle fs = FontStyle.Regular, float max = 999)
         {
-            return GetFontSizeStyle(Math.Min(fontsize * scaling, max), fs);
+            return GetFontSizeStyle(Math.Min(FontSize * scaling, max), fs);
         }
 
         public Font GetDialogScaledFont(float scaling, FontStyle fs = FontStyle.Regular, float max = 999)
         {
-            float fsize = fontsize >= 12 ? (fontsize * dialogscaling) : fontsize;
+            float fsize = FontSize >= 12 ? (FontSize * dialogscaling) : FontSize;
             fsize = Math.Min(fsize, max);
             return GetFontSizeStyle(fsize * scaling, fs);
         }
 
         private Font GetFontSizeStyle(float size, FontStyle fs)
         {
-            if (fontname.Equals("") || fontsize < minfontsize)
+            if (FontName.Equals("") || FontSize < minFontSize)
             {
-                fontname = "Microsoft Sans Serif";          // in case schemes were loaded badly
-                fontsize = 8.25F;
+                FontName = "Microsoft Sans Serif";          // in case schemes were loaded badly
+                FontSize = 8.25F;
             }
 
-            Font fnt = BaseUtils.FontLoader.GetFont(fontname, Math.Max(size, 4f), fs);        // if it does not know the font, it will substitute Sans serif
+            Font fnt = BaseUtils.FontLoader.GetFont(FontName, Math.Max(size, 4f), fs);        // if it does not know the font, it will substitute Sans serif
             return fnt;
         }
 
@@ -376,7 +390,7 @@ namespace ExtendedControls
             {
                 Form f = myControl as Form;
                 f.FormBorderStyle = (WindowsFrame && !noborderoverride) ? FormBorderStyle.Sizable : FormBorderStyle.None;
-                f.Opacity = formopacity / 100;
+                f.Opacity = Opacity / 100;
                 f.BackColor = Form;
                 f.Font = fnt;
                 //System.Diagnostics.Debug.WriteLine($"Form scaling now {f.CurrentAutoScaleDimensions} {f.AutoScaleDimensions} {f.CurrentAutoScaleFactor()}");
@@ -384,63 +398,56 @@ namespace ExtendedControls
             else if (myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
             {
             }
-            else if (myControl is ExtRichTextBox)
+            else if (myControl is ExtRichTextBox rtb)
             {
-                ExtRichTextBox ctrl = (ExtRichTextBox)myControl;
-                ctrl.BorderColor = Color.Transparent;
-                ctrl.BorderStyle = BorderStyle.None;
+                rtb.TextBoxForeColor = TextBlockColor;
+                rtb.TextBoxBackColor = TextBackColor;
 
-                ctrl.TextBoxForeColor = TextBlockColor;
-                ctrl.TextBoxBackColor = TextBackColor;
+                rtb.BorderColor = Color.Transparent;       // default for text box border styles
+                rtb.BorderStyle = TextBoxStyle;
 
-                ctrl.ScrollBarFlatStyle = FlatStyle.System;
+                if (IsTextBoxColourStyle)
+                    rtb.BorderColor = TextBlockBorderColor;
 
-                if (textboxborderstyle.Equals(TextboxBorderStyles[1]))
-                    ctrl.BorderStyle = BorderStyle.FixedSingle;
-                else if (textboxborderstyle.Equals(TextboxBorderStyles[2]))
-                    ctrl.BorderStyle = BorderStyle.Fixed3D;
-                else if (textboxborderstyle.Equals(TextboxBorderStyles[3]))
+                if (IsButtonSystemStyle)
+                    rtb.ScrollBarFlatStyle = FlatStyle.System;
+                else
                 {
-                    Color c1 = TextBlockScrollButton;
-                    ctrl.BorderColor = TextBlockBorderColor;
-                    ctrl.ScrollBarBackColor = TextBackColor;
-                    ctrl.ScrollBarSliderColor = TextBlockSliderBack;
-                    ctrl.ScrollBarBorderColor = ctrl.ScrollBarThumbBorderColor =
-                                ctrl.ScrollBarArrowBorderColor = TextBlockBorderColor;
-                    ctrl.ScrollBarArrowButtonColor = ctrl.ScrollBarThumbButtonColor = c1;
-                    ctrl.ScrollBarMouseOverButtonColor = c1.Multiply(mouseoverscaling);
-                    ctrl.ScrollBarMousePressedButtonColor = c1.Multiply(mouseselectedscaling);
-                    ctrl.ScrollBarForeColor = TextBlockScrollArrow;
-                    ctrl.ScrollBarFlatStyle = FlatStyle.Popup;
+                    rtb.ScrollBarBackColor = TextBackColor;
+                    rtb.ScrollBarSliderColor = TextBlockSliderBack;
+                    rtb.ScrollBarBorderColor = rtb.ScrollBarThumbBorderColor =
+                                rtb.ScrollBarArrowBorderColor = TextBlockBorderColor;
+                    rtb.ScrollBarArrowButtonColor = rtb.ScrollBarThumbButtonColor = TextBlockScrollButton;
+                    rtb.ScrollBarMouseOverButtonColor = TextBlockScrollButton.Multiply(mouseoverscaling);
+                    rtb.ScrollBarMousePressedButtonColor = TextBlockScrollButton.Multiply(mouseselectedscaling);
+                    rtb.ScrollBarForeColor = TextBlockScrollArrow;
+                    rtb.ScrollBarFlatStyle = FlatStyle.Popup;
                 }
 
-                if (ctrl.ContextMenuStrip != null)      // propegate font
-                    ctrl.ContextMenuStrip.Font = fnt;
+                if (rtb.ContextMenuStrip != null)      // propegate font
+                    rtb.ContextMenuStrip.Font = fnt;
 
-                ctrl.Invalidate();
-                ctrl.PerformLayout();
+                rtb.Invalidate();
+                rtb.PerformLayout();
 
                 dochildren = false;
             }
-            else if (myControl is ExtTextBox)
+            else if (myControl is ExtTextBox tb)
             {
-                ExtTextBox ctrl = (ExtTextBox)myControl;
-                ctrl.ForeColor = TextBlockColor;
-                ctrl.BackColor = TextBackColor;
-                ctrl.BackErrorColor = TextBlockHighlightColor;
-                ctrl.ControlBackground = TextBackColor; // previously, but not sure why, GroupBoxOverride(parent, Form);
-                ctrl.BorderColor = Color.Transparent;
-                ctrl.BorderStyle = BorderStyle.None;
-                ctrl.AutoSize = true;
+                tb.ForeColor = TextBlockColor;
+                tb.BackColor = TextBackColor;
+                tb.BackErrorColor = TextBlockHighlightColor;
+                tb.ControlBackground = TextBackColor; // previously, but not sure why, GroupBoxOverride(parent, Form);
+                tb.AutoSize = true;
 
-                if (textboxborderstyle.Equals(TextboxBorderStyles[0]))
-                    ctrl.AutoSize = false;                                                 // with no border, the autosize clips the bottom of chars..
-                else if (textboxborderstyle.Equals(TextboxBorderStyles[1]))
-                    ctrl.BorderStyle = BorderStyle.FixedSingle;
-                else if (textboxborderstyle.Equals(TextboxBorderStyles[2]))
-                    ctrl.BorderStyle = BorderStyle.Fixed3D;
-                else if (textboxborderstyle.Equals(TextboxBorderStyles[3]))
-                    ctrl.BorderColor = TextBlockBorderColor;
+                tb.BorderColor = Color.Transparent;
+                tb.BorderStyle = TextBoxStyle;
+
+                if (IsTextBoxColourStyle)
+                    tb.BorderColor = TextBlockBorderColor;
+
+                if (IsTextBoxNoneStyle)
+                    tb.AutoSize = false;                                                 // with no border, the autosize clips the bottom of chars..
 
                 if (myControl is ExtTextBoxAutoComplete || myControl is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
                 {
@@ -450,21 +457,15 @@ namespace ExtendedControls
                     actb.DropDownScrollBarButtonColor = TextBlockScrollButton;
                     actb.DropDownScrollBarColor = TextBlockSliderBack;
                     actb.DropDownMouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
-
-                    if (buttonstyle.Equals(ButtonStyles[0]))
-                        actb.FlatStyle = FlatStyle.System;
-                    else if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                        actb.FlatStyle = FlatStyle.Flat;
-                    else
-                        actb.FlatStyle = FlatStyle.Popup;
+                    actb.FlatStyle = ButtonFlatStyle;
                 }
 
-                ThemeButton(ctrl.EndButton);
-                ctrl.EndButton.FlatAppearance.BorderColor =             // override some of them to make back of button disappear
-                ctrl.EndButton.BackColor = TextBackColor;
-                ctrl.EndButton.ButtonColorScaling = ctrl.EndButton.ButtonDisabledScaling = 1.0F;
+                ThemeButton(tb.EndButton);
+                tb.EndButton.FlatAppearance.BorderColor =             // override some of them to make back of button disappear
+                tb.EndButton.BackColor = TextBackColor;
+                tb.EndButton.ButtonColorScaling = tb.EndButton.ButtonDisabledScaling = 1.0F;
 
-                ctrl.Invalidate();
+                tb.Invalidate();
 
                 dochildren = false;
             }
@@ -472,50 +473,40 @@ namespace ExtendedControls
             {
                 ThemeButton(myControl);
             }
-            else if (myControl is ExtTabControl)
+            else if (myControl is ExtTabControl etc)
             {
-                ExtTabControl ctrl = (ExtTabControl)myControl;
-
-                if (!buttonstyle.Equals(ButtonStyles[0])) // not system
-                {
-                    ctrl.TabControlBorderColor = TabcontrolBorder.Multiply(0.6F);
-                    ctrl.TabControlBorderBrightColor = TabcontrolBorder;
-                    ctrl.TabNotSelectedBorderColor = TabcontrolBorder.Multiply(0.4F);
-                    ctrl.TabNotSelectedColor = ButtonBackColor;
-                    ctrl.TabSelectedColor = ButtonBackColor.Multiply(mouseselectedscaling);
-                    ctrl.TabMouseOverColor = ButtonBackColor.Multiply(mouseoverscaling);
-                    ctrl.TextSelectedColor = ButtonTextColor;
-                    ctrl.TextNotSelectedColor = ButtonTextColor.Multiply(0.8F);
-                    ctrl.SetStyle((buttonstyle.Equals(ButtonStyles[1])) ? FlatStyle.Flat : FlatStyle.Popup, tsc);
-                }
+                if (IsButtonSystemStyle) // not system
+                    etc.FlatStyle = FlatStyle.System;
                 else
-                    ctrl.FlatStyle = FlatStyle.System;
-
+                {
+                    etc.TabControlBorderColor = TabcontrolBorder.Multiply(0.6F);
+                    etc.TabControlBorderBrightColor = TabcontrolBorder;
+                    etc.TabNotSelectedBorderColor = TabcontrolBorder.Multiply(0.4F);
+                    etc.TabNotSelectedColor = ButtonBackColor;
+                    etc.TabSelectedColor = ButtonBackColor.Multiply(mouseselectedscaling);
+                    etc.TabMouseOverColor = ButtonBackColor.Multiply(mouseoverscaling);
+                    etc.TextSelectedColor = ButtonTextColor;
+                    etc.TextNotSelectedColor = ButtonTextColor.Multiply(0.8F);
+                    etc.SetStyle(ButtonFlatStyle, tsc);
+                }
             }
-            else if (myControl is ExtListBox)
+            else if (myControl is ExtListBox elb)
             {
-                ExtListBox ctrl = (ExtListBox)myControl;
-                ctrl.ForeColor = ButtonTextColor;
-                ctrl.ItemSeperatorColor = ButtonBorderColor;
+                elb.ForeColor = ButtonTextColor;
+                elb.ItemSeperatorColor = ButtonBorderColor;
 
-                if (buttonstyle.Equals(ButtonStyles[0]))
-                {
-                    ctrl.FlatStyle = FlatStyle.System;
-                }
+                if (IsButtonSystemStyle)
+                    elb.FlatStyle = FlatStyle.System;
                 else
                 {
-                    ctrl.BackColor = ButtonBackColor;
-                    ctrl.BorderColor = ButtonBorderColor;
-                    ctrl.ScrollBarButtonColor = TextBlockScrollButton;
-                    ctrl.ScrollBarColor = TextBlockSliderBack;
-
-                    if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                        ctrl.FlatStyle = FlatStyle.Flat;
-                    else
-                        ctrl.FlatStyle = FlatStyle.Popup;
+                    elb.BackColor = ButtonBackColor;
+                    elb.BorderColor = ButtonBorderColor;
+                    elb.ScrollBarButtonColor = TextBlockScrollButton;
+                    elb.ScrollBarColor = TextBlockSliderBack;
+                    elb.FlatStyle = ButtonFlatStyle;
                 }
 
-                ctrl.Repaint();            // force a repaint as the individual settings do not by design.
+                elb.Repaint();            // force a repaint as the individual settings do not by design.
 
                 dochildren = false;
             }
@@ -530,55 +521,45 @@ namespace ExtendedControls
             {
                 System.Diagnostics.Debug.Assert(false, "Warning - Chart not allowed");
             }
-            else if (myControl is MultiPipControl)
+            else if (myControl is MultiPipControl mpc)
             {
-                MultiPipControl ctrl = (MultiPipControl)myControl;
-                ctrl.ForeColor = ButtonTextColor;
-                ctrl.PipColor = ButtonTextColor;
-                ctrl.HalfPipColor = ButtonTextColor.MultiplyBrightness(0.6f);
-                ctrl.BorderColor = GridBorderLines;
+                mpc.ForeColor = ButtonTextColor;
+                mpc.PipColor = ButtonTextColor;
+                mpc.HalfPipColor = ButtonTextColor.MultiplyBrightness(0.6f);
+                mpc.BorderColor = GridBorderLines;
             }
             else if (myControl is ExtPanelResizer)      // Resizers only show when no frame is on
             {
                 myControl.Visible = !WindowsFrame;
             }
-            else if (myControl is ExtPanelDropDown)
+            else if (myControl is ExtPanelDropDown pdd)
             {
-                ExtPanelDropDown ctrl = (ExtPanelDropDown)myControl;
-                ctrl.ForeColor = ButtonTextColor;
-                ctrl.SelectionMarkColor = ctrl.ForeColor;
-                ctrl.BackColor = ctrl.SelectionBackColor = ButtonBackColor;
-                ctrl.BorderColor = ButtonBorderColor;
-                ctrl.MouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
-                ctrl.ScrollBarButtonColor = TextBlockScrollButton;
-                ctrl.ScrollBarColor = TextBlockSliderBack;
-                ctrl.FlatStyle = FlatStyle.Popup;
+                pdd.ForeColor = ButtonTextColor;
+                pdd.SelectionMarkColor = pdd.ForeColor;
+                pdd.BackColor = pdd.SelectionBackColor = ButtonBackColor;
+                pdd.BorderColor = ButtonBorderColor;
+                pdd.MouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
+                pdd.ScrollBarButtonColor = TextBlockScrollButton;
+                pdd.ScrollBarColor = TextBlockSliderBack;
+                pdd.FlatStyle = FlatStyle.Popup;
             }
-            else if (myControl is ExtComboBox)
+            else if (myControl is ExtComboBox ecb)
             {
-                ExtComboBox ctrl = (ExtComboBox)myControl;
-                ctrl.ForeColor = ButtonTextColor;
+                ecb.ForeColor = ButtonTextColor;
 
-                if (buttonstyle.Equals(ButtonStyles[0])) // system
-                {
-                    ctrl.FlatStyle = FlatStyle.System;
-                }
+                if (IsButtonSystemStyle)
+                    ecb.FlatStyle = FlatStyle.System;
                 else
                 {
-                    ctrl.BackColor = ctrl.DropDownBackgroundColor = ButtonBackColor;
-                    ctrl.BorderColor = ButtonBorderColor;
-                    ctrl.MouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
-                    ctrl.ScrollBarButtonColor = TextBlockScrollButton;
-                    ctrl.ScrollBarColor = TextBlockSliderBack;
-
-                    if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                        ctrl.FlatStyle = FlatStyle.Flat;
-                    else
-                        ctrl.FlatStyle = FlatStyle.Popup;
-
+                    ecb.BackColor = ecb.DropDownBackgroundColor = ButtonBackColor;
+                    ecb.BorderColor = ButtonBorderColor;
+                    ecb.MouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
+                    ecb.ScrollBarButtonColor = TextBlockScrollButton;
+                    ecb.ScrollBarColor = TextBlockSliderBack;
+                    ecb.FlatStyle = ButtonFlatStyle;
                 }
 
-                ctrl.Repaint();            // force a repaint as the individual settings do not by design.
+                ecb.Repaint();            // force a repaint as the individual settings do not by design.
 
                 dochildren = false;
             }
@@ -586,20 +567,19 @@ namespace ExtendedControls
             {                                                                   // BACK colour does not work..
                 myControl.ForeColor = TextBlockColor;
             }
-            else if (myControl is ExtButtonDrawn)
+            else if (myControl is ExtButtonDrawn bd)
             {
-                ExtButtonDrawn ctrl = (ExtButtonDrawn)myControl;
-                ctrl.BackColor = Form;
-                ctrl.ForeColor = LabelColor;
-                ctrl.MouseOverColor = LabelColor.Multiply(mouseoverscaling);
-                ctrl.MouseSelectedColor = LabelColor.Multiply(mouseselectedscaling);
-                ctrl.BorderWidth = 2;
-                ctrl.BorderColor = GridBorderLines;
+                bd.BackColor = Form;
+                bd.ForeColor = LabelColor;
+                bd.MouseOverColor = LabelColor.Multiply(mouseoverscaling);
+                bd.MouseSelectedColor = LabelColor.Multiply(mouseselectedscaling);
+                bd.BorderWidth = 2;
+                bd.BorderColor = GridBorderLines;
 
                 System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
                 colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
-                colormap.NewColor = ctrl.ForeColor;
-                ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
+                colormap.NewColor = bd.ForeColor;
+                bd.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
                 //System.Diagnostics.Debug.WriteLine("Drawn Panel Image button " + ctrl.Name);
             }
             else if (myControl is TableLayoutPanel)
@@ -610,10 +590,9 @@ namespace ExtendedControls
             {
                 myControl.BackColor = paneldebugmode ? Color.Green : GroupBoxOverride(parent, Form);
             }
-            else if (myControl is FlowLayoutPanel)
+            else if (myControl is FlowLayoutPanel flp)
             {
-                FlowLayoutPanel ctrl = myControl as FlowLayoutPanel;
-                ctrl.BackColor = paneldebugmode ? Color.Red : GroupBoxOverride(parent, Form);
+                flp.BackColor = paneldebugmode ? Color.Red : GroupBoxOverride(parent, Form);
             }
             else if (myControl is Panel)
             {
@@ -636,227 +615,179 @@ namespace ExtendedControls
                 if (myControl is ExtLabel)
                     (myControl as ExtLabel).TextBackColor = Form;
             }
-            else if (myControl is ExtGroupBox)
+            else if (myControl is ExtGroupBox gb)
             {
-                ExtGroupBox ctrl = (ExtGroupBox)myControl;
-                ctrl.ForeColor = GroupFore;
-                ctrl.BackColor = GroupBack;
-                ctrl.BorderColor = GroupBorder;
-                ctrl.FlatStyle = FlatStyle.Flat;           // always in Flat, always apply our border.
+                gb.ForeColor = GroupFore;
+                gb.BackColor = GroupBack;
+                gb.BorderColor = GroupBorder;
+                gb.FlatStyle = FlatStyle.Flat;           // always in Flat, always apply our border.
             }
-            else if (myControl is ExtCheckBox)
+            else if (myControl is ExtCheckBox cb)
             {
-                ExtCheckBox ctrl = (ExtCheckBox)myControl;
+                cb.BackColor = GroupBoxOverride(parent, Form);
 
-                ctrl.BackColor = GroupBoxOverride(parent, Form);
-
-                if (ctrl.Appearance == Appearance.Button)
+                if (cb.Appearance == Appearance.Button)
                 {
-                    ctrl.ForeColor = ButtonTextColor;
-                    ctrl.MouseOverColor = ButtonBackColor.Multiply(mouseoverscaling);
-                    ctrl.CheckColor = ButtonBackColor.Multiply(0.9f);
-
-                    if (buttonstyle.Equals(ButtonStyles[0])) // system
-                        ctrl.FlatStyle = FlatStyle.Standard;
-                    else if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                        ctrl.FlatStyle = FlatStyle.Flat;
-                    else
-                        ctrl.FlatStyle = FlatStyle.Popup;
+                    cb.ForeColor = ButtonTextColor;
+                    cb.MouseOverColor = ButtonBackColor.Multiply(mouseoverscaling);
+                    cb.CheckColor = ButtonBackColor.Multiply(0.9f);
                 }
                 else
                 {
-                    ctrl.ForeColor = CheckBox;
-                    ctrl.CheckBoxColor = CheckBox;
-                    ctrl.CheckBoxInnerColor = CheckBox.Multiply(1.5F);
-                    ctrl.MouseOverColor = CheckBox.Multiply(1.4F);
-                    ctrl.TickBoxReductionRatio = 0.75f;
-                    ctrl.CheckColor = CheckBoxTick;
-
-                    if (buttonstyle.Equals(ButtonStyles[0])) // system
-                        ctrl.FlatStyle = FlatStyle.System;
-                    else if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                        ctrl.FlatStyle = FlatStyle.Flat;
-                    else
-                        ctrl.FlatStyle = FlatStyle.Popup;
+                    cb.ForeColor = CheckBox;
+                    cb.CheckBoxColor = CheckBox;
+                    cb.CheckBoxInnerColor = CheckBox.Multiply(1.5F);
+                    cb.MouseOverColor = CheckBox.Multiply(1.4F);
+                    cb.TickBoxReductionRatio = 0.75f;
+                    cb.CheckColor = CheckBoxTick;
                 }
 
-                if (ctrl.Image != null)
+                cb.FlatStyle = ButtonFlatStyle;
+
+                if (cb.Image != null)
                 {
                     System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();
                     colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
-                    colormap.NewColor = ctrl.ForeColor;
-                    ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
+                    colormap.NewColor = cb.ForeColor;
+                    cb.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
 
-                    ctrl.ImageLayout = ImageLayout.Stretch;
+                    cb.ImageLayout = ImageLayout.Stretch;
                 }
             }
-            else if (myControl is ExtRadioButton)
+            else if (myControl is ExtRadioButton rb)
             {
-                ExtRadioButton ctrl = (ExtRadioButton)myControl;
-
-                ctrl.FlatStyle = FlatStyle.System;
-
-                if (buttonstyle.Equals(ButtonStyles[0])) // system
-                    ctrl.FlatStyle = FlatStyle.System;
-                else if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                    ctrl.FlatStyle = FlatStyle.Flat;
-                else
-                    ctrl.FlatStyle = FlatStyle.Popup;
-
-                //Console.WriteLine("RB:" + myControl.Name + " Apply style " + buttonstyle);
-
-                ctrl.BackColor = GroupBoxOverride(parent, Form);
-                ctrl.ForeColor = CheckBox;
-                ctrl.RadioButtonColor = CheckBox;
-                ctrl.RadioButtonInnerColor = CheckBox.Multiply(1.5F);
-                ctrl.SelectedColor = ctrl.BackColor.Multiply(0.75F);
-                ctrl.MouseOverColor = CheckBox.Multiply(1.4F);
+                rb.FlatStyle = ButtonFlatStyle;
+                rb.BackColor = GroupBoxOverride(parent, Form);
+                rb.ForeColor = CheckBox;
+                rb.RadioButtonColor = CheckBox;
+                rb.RadioButtonInnerColor = CheckBox.Multiply(1.5F);
+                rb.SelectedColor = rb.BackColor.Multiply(0.75F);
+                rb.MouseOverColor = CheckBox.Multiply(1.4F);
             }
-            else if (myControl is DataGridView)                     // we theme this directly
+            else if (myControl is DataGridView dgv)                     // we theme this directly
             {
-                DataGridView ctrl = (DataGridView)myControl;
-                ctrl.EnableHeadersVisualStyles = false;            // without this, the colours for the grid are not applied.
+                dgv.EnableHeadersVisualStyles = false;            // without this, the colours for the grid are not applied.
 
-                ctrl.RowHeadersDefaultCellStyle.BackColor = GridBorderBack;
-                ctrl.RowHeadersDefaultCellStyle.ForeColor = GridBorderText;
-                ctrl.RowHeadersDefaultCellStyle.SelectionForeColor = GridBorderText;
-                ctrl.RowHeadersDefaultCellStyle.SelectionBackColor = GridBorderBack;
+                dgv.RowHeadersDefaultCellStyle.BackColor = GridBorderBack;
+                dgv.RowHeadersDefaultCellStyle.ForeColor = GridBorderText;
+                dgv.RowHeadersDefaultCellStyle.SelectionForeColor = GridBorderText;
+                dgv.RowHeadersDefaultCellStyle.SelectionBackColor = GridBorderBack;
 
-                ctrl.ColumnHeadersDefaultCellStyle.BackColor = GridBorderBack;
-                ctrl.ColumnHeadersDefaultCellStyle.ForeColor = GridBorderText;
-                ctrl.ColumnHeadersDefaultCellStyle.SelectionForeColor = GridBorderText;
-                ctrl.ColumnHeadersDefaultCellStyle.SelectionBackColor = GridBorderBack;
+                dgv.ColumnHeadersDefaultCellStyle.BackColor = GridBorderBack;
+                dgv.ColumnHeadersDefaultCellStyle.ForeColor = GridBorderText;
+                dgv.ColumnHeadersDefaultCellStyle.SelectionForeColor = GridBorderText;
+                dgv.ColumnHeadersDefaultCellStyle.SelectionBackColor = GridBorderBack;
 
-                ctrl.DefaultCellStyle.BackColor = GridCellBack;
-                ctrl.DefaultCellStyle.ForeColor = GridCellText;
-                ctrl.DefaultCellStyle.SelectionBackColor = ctrl.DefaultCellStyle.ForeColor;
-                ctrl.DefaultCellStyle.SelectionForeColor = ctrl.DefaultCellStyle.BackColor;
+                dgv.DefaultCellStyle.BackColor = GridCellBack;
+                dgv.DefaultCellStyle.ForeColor = GridCellText;
+                dgv.DefaultCellStyle.SelectionBackColor = dgv.DefaultCellStyle.ForeColor;
+                dgv.DefaultCellStyle.SelectionForeColor = dgv.DefaultCellStyle.BackColor;
 
-                ctrl.BackgroundColor = GroupBoxOverride(parent, Form);
+                dgv.BackgroundColor = GroupBoxOverride(parent, Form);
 
-                ctrl.AlternatingRowsDefaultCellStyle.BackColor = GridCellAltBack;
-                ctrl.AlternatingRowsDefaultCellStyle.ForeColor = GridCellAltText;
+                dgv.AlternatingRowsDefaultCellStyle.BackColor = GridCellAltBack;
+                dgv.AlternatingRowsDefaultCellStyle.ForeColor = GridCellAltText;
 
-                ctrl.BorderStyle = BorderStyle.None;        // can't control the color of this, turn it off
+                dgv.BorderStyle = BorderStyle.None;        // can't control the color of this, turn it off
 
-                ctrl.GridColor = GridBorderLines;
-                ctrl.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-                ctrl.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+                dgv.GridColor = GridBorderLines;
+                dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+                dgv.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 
-                foreach (DataGridViewColumn col in ctrl.Columns)
+                foreach (DataGridViewColumn col in dgv.Columns)
                 {
                     if (col.CellType == typeof(DataGridViewComboBoxCell))
                     {   // Need to set flat style for colours to take on combobox cells.
                         DataGridViewComboBoxColumn cbocol = (DataGridViewComboBoxColumn)col;
-                        if (buttonstyle.Equals(ButtonStyles[0])) // system
-                            cbocol.FlatStyle = FlatStyle.System;
-                        else if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                            cbocol.FlatStyle = FlatStyle.Flat;
-                        else
-                            cbocol.FlatStyle = FlatStyle.Popup;
+                        cbocol.FlatStyle = ButtonFlatStyle;
                     }
                 }
 
-                if (ctrl.ContextMenuStrip != null)       // propergate font onto any attached context menus
-                    ctrl.ContextMenuStrip.Font = fnt;
+                if (dgv.ContextMenuStrip != null)       // propergate font onto any attached context menus
+                    dgv.ContextMenuStrip.Font = fnt;
             }
-            else if (myControl is ExtScrollBar)
+            else if (myControl is ExtScrollBar esb)
             {
-                ExtScrollBar ctrl = (ExtScrollBar)myControl;
-
                 //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
-                if (textboxborderstyle.Equals(TextboxBorderStyles[3]))
-                {
-                    Color c1 = GridScrollButton;
-                    ctrl.BorderColor = GridBorderLines;
-                    ctrl.BackColor = Form;
-                    ctrl.SliderColor = GridSliderBack;
-                    ctrl.BorderColor = ctrl.ThumbBorderColor =
-                            ctrl.ArrowBorderColor = GridBorderLines;
-                    ctrl.ArrowButtonColor = ctrl.ThumbButtonColor = c1;
-                    ctrl.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
-                    ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
-                    ctrl.ForeColor = GridScrollArrow;
-                    ctrl.FlatStyle = FlatStyle.Popup;
-                }
+                if (IsButtonSystemStyle)
+                    esb.FlatStyle = FlatStyle.System;
                 else
-                    ctrl.FlatStyle = FlatStyle.System;
+                {
+                    esb.BorderColor = GridBorderLines;
+                    esb.BackColor = Form;
+                    esb.SliderColor = GridSliderBack;
+                    esb.BorderColor = esb.ThumbBorderColor = esb.ArrowBorderColor = GridBorderLines;
+                    esb.ArrowButtonColor = esb.ThumbButtonColor = GridScrollButton;
+                    esb.MouseOverButtonColor = GridScrollButton.Multiply(mouseoverscaling);
+                    esb.MousePressedButtonColor = GridScrollButton.Multiply(mouseselectedscaling);
+                    esb.ForeColor = GridScrollArrow;
+                    esb.FlatStyle = ButtonFlatStyle;
+                }
             }
-            else if (myControl is ExtNumericUpDown)
+            else if (myControl is ExtNumericUpDown nud)
             {
-                ExtNumericUpDown ctrl = (ExtNumericUpDown)myControl;
-
-                ctrl.TextBoxForeColor = TextBlockColor;
-                ctrl.TextBoxBackColor = TextBackColor;
-                ctrl.BorderColor = TextBlockBorderColor;
+                nud.TextBoxForeColor = TextBlockColor;
+                nud.TextBoxBackColor = TextBackColor;
+                nud.BorderColor = TextBlockBorderColor;
 
                 Color c1 = TextBlockScrollButton;
-                ctrl.updown.BackColor = c1;
-                ctrl.updown.ForeColor = TextBlockScrollArrow;
-                ctrl.updown.BorderColor = ButtonBorderColor;
-                ctrl.updown.MouseOverColor = c1.Multiply(mouseoverscaling);
-                ctrl.updown.MouseSelectedColor = c1.Multiply(mouseselectedscaling);
-                ctrl.Invalidate();
+                nud.updown.BackColor = c1;
+                nud.updown.ForeColor = TextBlockScrollArrow;
+                nud.updown.BorderColor = ButtonBorderColor;
+                nud.updown.MouseOverColor = c1.Multiply(mouseoverscaling);
+                nud.updown.MouseSelectedColor = c1.Multiply(mouseselectedscaling);
+                nud.Invalidate();
 
                 dochildren = false;
             }
-            else if (myControl is CheckedIconUserControl)
+            else if (myControl is CheckedIconUserControl iuc)
             {
-                CheckedIconUserControl ctrl = (CheckedIconUserControl)myControl;
-                ctrl.BackColor = Form;
-                ctrl.ForeColor = TextBlockColor;
-                ctrl.BorderColor = GridBorderLines;
-                ctrl.BackColor = Form;
-                ctrl.SliderColor = GridSliderBack;
-                ctrl.BorderColor = ctrl.ThumbBorderColor =
-                        ctrl.ArrowBorderColor = GridBorderLines;
+                iuc.BackColor = Form;
+                iuc.ForeColor = TextBlockColor;
+                iuc.BorderColor = GridBorderLines;
+                iuc.BackColor = Form;
+                iuc.SliderColor = GridSliderBack;
+                iuc.BorderColor = iuc.ThumbBorderColor =
+                        iuc.ArrowBorderColor = GridBorderLines;
                 Color c1 = GridScrollButton;
-                ctrl.ArrowButtonColor = ctrl.ThumbButtonColor = c1;
-                ctrl.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
-                ctrl.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
-                ctrl.CheckBoxColor = CheckBox;
-                ctrl.CheckBoxInnerColor = CheckBox.Multiply(1.5F);
-                ctrl.MouseOverCheckboxColor = CheckBox.Multiply(0.75F);
-                ctrl.MouseOverLabelColor = CheckBox.Multiply(0.75F);
-                ctrl.TickBoxReductionRatio = 0.75f;
-                ctrl.CheckColor = CheckBoxTick;
+                iuc.ArrowButtonColor = iuc.ThumbButtonColor = c1;
+                iuc.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
+                iuc.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
+                iuc.CheckBoxColor = CheckBox;
+                iuc.CheckBoxInnerColor = CheckBox.Multiply(1.5F);
+                iuc.MouseOverCheckboxColor = CheckBox.Multiply(0.75F);
+                iuc.MouseOverLabelColor = CheckBox.Multiply(0.75F);
+                iuc.TickBoxReductionRatio = 0.75f;
+                iuc.CheckColor = CheckBoxTick;
             }
-            else if (myControl is PictureBox)
+            else if (myControl is PictureBox pb)
             {
-                PictureBox ctrl = (PictureBox)myControl;
-
-                if (ctrl.ContextMenuStrip != null)       // propergate font onto any attached context menus
-                    ctrl.ContextMenuStrip.Font = fnt;
+                if (pb.ContextMenuStrip != null)       // propergate font onto any attached context menus
+                    pb.ContextMenuStrip.Font = fnt;
             }
-            else if (myControl is ExtDateTimePicker)
+            else if (myControl is ExtDateTimePicker dtp)
             {
-                ExtDateTimePicker ctrl = (ExtDateTimePicker)myControl;
-                ctrl.BorderColor = GridBorderLines;
-                ctrl.ForeColor = TextBlockColor;
-                ctrl.TextBackColor = TextBackColor;
-                ctrl.BackColor = Form;
-                ctrl.SelectedColor = TextBlockColor.MultiplyBrightness(0.6F);
-
-                if (buttonstyle.Equals(ButtonStyles[0])) // system
-                    ctrl.checkbox.FlatStyle = FlatStyle.System;
-                else
-                    ctrl.checkbox.FlatStyle = FlatStyle.Popup;
-
-                ctrl.checkbox.TickBoxReductionRatio = 0.75f;
-                ctrl.checkbox.ForeColor = CheckBox;
-                ctrl.checkbox.CheckBoxColor = CheckBox;
+                dtp.BorderColor = GridBorderLines;
+                dtp.ForeColor = TextBlockColor;
+                dtp.TextBackColor = TextBackColor;
+                dtp.BackColor = Form;
+                dtp.SelectedColor = TextBlockColor.MultiplyBrightness(0.6F);
+                dtp.checkbox.FlatStyle = ButtonFlatStyle;
+                dtp.checkbox.TickBoxReductionRatio = 0.75f;
+                dtp.checkbox.ForeColor = CheckBox;
+                dtp.checkbox.CheckBoxColor = CheckBox;
                 Color inner = CheckBox.Multiply(1.5F);
                 if (inner.GetBrightness() < 0.1)        // double checking
                     inner = Color.Gray;
-                ctrl.checkbox.CheckBoxInnerColor = inner;
-                ctrl.checkbox.CheckColor = CheckBoxTick;
-                ctrl.checkbox.MouseOverColor = CheckBox.Multiply(1.4F);
+                dtp.checkbox.CheckBoxInnerColor = inner;
+                dtp.checkbox.CheckColor = CheckBoxTick;
+                dtp.checkbox.MouseOverColor = CheckBox.Multiply(1.4F);
 
-                ctrl.updown.BackColor = ButtonBackColor;
-                ctrl.updown.BorderColor = GridBorderLines;
-                ctrl.updown.ForeColor = TextBlockColor;
-                ctrl.updown.MouseOverColor = CheckBox.Multiply(1.4F);
-                ctrl.updown.MouseSelectedColor = CheckBox.Multiply(1.5F);
+                dtp.updown.BackColor = ButtonBackColor;
+                dtp.updown.BorderColor = GridBorderLines;
+                dtp.updown.ForeColor = TextBlockColor;
+                dtp.updown.MouseOverColor = CheckBox.Multiply(1.4F);
+                dtp.updown.MouseSelectedColor = CheckBox.Multiply(1.5F);
 
                 dochildren = false;
             }
@@ -883,9 +814,8 @@ namespace ExtendedControls
                     }
                 }
             }
-            else if (myControl is TabStrip)
+            else if (myControl is TabStrip ts)
             {
-                TabStrip ts = myControl as TabStrip;
                 //System.Diagnostics.Debug.WriteLine("*************** TAB Strip themeing" + myControl.Name + " " + myControl.Tag);
                 ts.ForeColor = ButtonTextColor;
                 ts.DropDownBackgroundColor = ButtonBackColor;
@@ -907,9 +837,8 @@ namespace ExtendedControls
                 ctrl.BackColor = TextBackColor;
             }
 
-            else if (myControl is CompassControl)
+            else if (myControl is CompassControl compassControl)
             {
-                CompassControl compassControl = myControl as CompassControl;
                 compassControl.ForeColor = TextBlockColor;
                 compassControl.StencilColor = TextBlockColor;
                 compassControl.CentreTickColor = TextBlockColor.Multiply(1.2F);
@@ -917,9 +846,8 @@ namespace ExtendedControls
                 compassControl.BackColor = Form;
             }
 
-            else if (myControl is LabelData)
+            else if (myControl is LabelData ld)
             {
-                LabelData ld = myControl as LabelData;
                 ld.BorderColor = TextBlockBorderColor;
                 ld.ForeColor = LabelColor;
             }
@@ -1013,7 +941,7 @@ namespace ExtendedControls
             if (ctrl.Text.HasChars())      // we autosize text to make it fit.. we do not autosize image buttons
                 ctrl.AutoSize = true;
 
-            if (buttonstyle.Equals(ButtonStyles[0])) // system
+            if (IsButtonSystemStyle) // system
             {
                 ctrl.FlatStyle = (ctrl.Image != null) ? FlatStyle.Standard : FlatStyle.System;
                 ctrl.UseVisualStyleBackColor = true;           // this makes it system..
@@ -1057,11 +985,7 @@ namespace ExtendedControls
                 ctrl.FlatAppearance.BorderSize = 1;
                 ctrl.FlatAppearance.MouseOverBackColor = ButtonBackColor.Multiply(mouseoverscaling);
                 ctrl.FlatAppearance.MouseDownBackColor = ButtonBackColor.Multiply(mouseselectedscaling);
-
-                if (buttonstyle.Equals(ButtonStyles[1])) // flat
-                    ctrl.FlatStyle = FlatStyle.Flat;
-                else
-                    ctrl.FlatStyle = FlatStyle.Popup;
+                ctrl.FlatStyle = ButtonFlatStyle;
             }
 
         }
@@ -1231,12 +1155,12 @@ namespace ExtendedControls
                 }
             }
 
-            windowsframe = jo["windowsframe"].Bool(defaultset.windowsframe);
-            formopacity = jo["formopacity"].Double(defaultset.formopacity);
-            fontname = jo["fontname"].Str(defaultset.fontname);
-            fontsize = jo["fontsize"].Float(defaultset.fontsize);
-            buttonstyle = jo["buttonstyle"].Str(defaultset.buttonstyle);
-            textboxborderstyle = jo["textboxborderstyle"].Str(defaultset.textboxborderstyle);
+            WindowsFrame = jo["WindowsFrame"].Bool(defaultset.WindowsFrame);
+            Opacity = jo["formOpacity"].Double(defaultset.Opacity);
+            FontName = jo["FontName"].Str(defaultset.FontName);
+            FontSize = jo["FontSize"].Float(defaultset.FontSize);
+            ButtonStyle = jo["buttonstyle"].Str(defaultset.ButtonStyle);
+            TextBoxBorderStyle = jo["textboxborderstyle"].Str(defaultset.TextBoxBorderStyle);
 
             return true;
         }
@@ -1250,12 +1174,12 @@ namespace ExtendedControls
                 jo.Add(ck.ToString(), System.Drawing.ColorTranslator.ToHtml(colors[ck]));
             }
 
-            jo.Add("windowsframe", windowsframe);
-            jo.Add("formopacity", formopacity);
-            jo.Add("fontname", fontname);
-            jo.Add("fontsize", fontsize);
-            jo.Add("buttonstyle", buttonstyle);
-            jo.Add("textboxborderstyle", textboxborderstyle);
+            jo.Add("WindowsFrame", WindowsFrame);
+            jo.Add("formOpacity", Opacity);
+            jo.Add("FontName", FontName);
+            jo.Add("FontSize", FontSize);
+            jo.Add("buttonstyle", ButtonStyle);
+            jo.Add("textboxborderstyle", TextBoxBorderStyle);
             return jo;
         }
 

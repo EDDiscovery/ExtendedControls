@@ -29,6 +29,10 @@ namespace TestExtendedControls
             {
                 dataGridView.Rows.Add(new object[] { $"{i}", "two", "three"});
             }
+
+            extComboBox1.Items.AddRange(new string[] { "one", "two", "three" });
+            extListBox1.Items.AddRange(new string[] { "one", "two", "three", "four","five" });
+            extRichTextBox1.Text = "Hello\r\nThere!\r\n1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7";
         }
 
         private void extButtonEdit_Click(object sender, EventArgs e)
@@ -98,6 +102,14 @@ namespace TestExtendedControls
         private void extButtonClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void extButtonSystem_Click(object sender, EventArgs e)
+        {
+            Theme.Current = stdthemes.FindTheme("Windows Default");
+            Theme.Current.ApplyStd(this);
+            labelName.Text = Theme.Current.Name;
+
         }
     }
 }
