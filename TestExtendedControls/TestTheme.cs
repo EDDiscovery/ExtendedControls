@@ -59,6 +59,7 @@ namespace TestExtendedControls
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
                 Theme.Current.SaveFile(dlg.FileName);
+                Theme.Current.SaveFile2(dlg.FileName + ".2");
             }
 
         }

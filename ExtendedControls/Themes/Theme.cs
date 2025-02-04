@@ -29,77 +29,125 @@ namespace ExtendedControls
 
         public string Name { get; set; }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"form"} )]
         public Color Form { get { return colors[CI.form]; } }       // in enum order..
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"button_back"} )]
         public Color ButtonBackColor { get { return colors[CI.button_back]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"button_border"} )]
         public Color ButtonBorderColor { get { return colors[CI.button_border]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"button_text"} )]
         public Color ButtonTextColor { get { return colors[CI.button_text]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_borderback"} )]
         public Color GridBorderBack { get { return colors[CI.grid_borderback]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_bordertext"} )]
         public Color GridBorderText { get { return colors[CI.grid_bordertext]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_cellbackground"} )]
         public Color GridCellBack { get { return colors[CI.grid_cellbackground]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_altcellbackground"} )]
         public Color GridCellAltBack { get { return colors[CI.grid_altcellbackground]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_celltext"} )]
         public Color GridCellText { get { return colors[CI.grid_celltext]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_altcelltext"} )]
         public Color GridCellAltText { get { return colors[CI.grid_altcelltext]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_borderlines"} )]
         public Color GridBorderLines { get { return colors[CI.grid_borderlines]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_sliderback"} )]
         public Color GridSliderBack { get { return colors[CI.grid_sliderback]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_scrollarrow"} )]
         public Color GridScrollArrow { get { return colors[CI.grid_scrollarrow]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_scrollbutton"} )]
         public Color GridScrollButton { get { return colors[CI.grid_scrollbutton]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"travelgrid_visited"} )]
         public Color KnownSystemColor { get { return colors[CI.travelgrid_visited]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"travelgrid_nonvisited"} )]
         public Color UnknownSystemColor { get { return colors[CI.travelgrid_nonvisted]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textbox_back"} )]
         public Color TextBackColor { get { return colors[CI.textbox_back]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textbox_fore"} )]
         public Color TextBlockColor { get { return colors[CI.textbox_fore]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textbox_highlight"} )]
         public Color TextBlockHighlightColor { get { return colors[CI.textbox_highlight]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textbox_success"} )]
         public Color TextBlockSuccessColor { get { return colors[CI.textbox_success]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textbox_border"} )]
         public Color TextBlockBorderColor { get { return colors[CI.textbox_border]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textbox_sliderback"} )]
         public Color TextBlockSliderBack { get { return colors[CI.textbox_sliderback]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textbox_scrollarrow"} )]
         public Color TextBlockScrollArrow { get { return colors[CI.textbox_scrollarrow]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textbox_scrollbutton"} )]
         public Color TextBlockScrollButton { get { return colors[CI.textbox_scrollbutton]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"checkbox"} )]
         public Color CheckBox { get { return colors[CI.checkbox]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"checkbox_tick"} )]
         public Color CheckBoxTick { get { return colors[CI.checkbox_tick]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"menu_back"} )]
         public Color MenuBack { get { return colors[CI.menu_back]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"menu_fore"} )]
         public Color MenuFore { get { return colors[CI.menu_fore]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"menu_dropdownback"} )]
         public Color MenuDropdownBack { get { return colors[CI.menu_dropdownback]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"menu_dropdownfore"} )]
         public Color MenuDropdownFore { get { return colors[CI.menu_dropdownfore]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"label"} )]
         public Color LabelColor { get { return colors[CI.label]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"group_back"} )]
         public Color GroupBack { get { return colors[CI.group_back]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"group_text"} )]
         public Color GroupFore { get { return colors[CI.group_text]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"group_borderlines"} )]
         public Color GroupBorder { get { return colors[CI.group_borderlines]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"tabcontrol_borderlines"} )]
         public Color TabcontrolBorder { get { return colors[CI.tabcontrol_borderlines]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"toolstrip_back"} )]
         public Color ToolstripBack { get { return colors[CI.toolstrip_back]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"toolstrip_border"} )]
         public Color ToolstripBorder { get { return colors[CI.toolstrip_border]; } }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"s_panel"} )]
         public Color SPanelColor { get { return colors[CI.s_panel]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"transparentcolorkey"} )]
         public Color TransparentColorKey { get { return colors[CI.transparentcolorkey]; } }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"grid_highlightback"} )]
         public Color GridHighlightBack { get { return colors[CI.grid_highlightback]; } }
 
         public bool WindowsFrame { get; set; }
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"formOpacity"} )]
         public double Opacity { get; set; }
         public string FontName { get; set; }
         public float FontSize { get; set; }
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"buttonstyle"} )]
         public string ButtonStyle { get; set; }
 
         public static readonly string[] ButtonStyles = "System Flat Gradient".Split();
+
+        [JsonIgnore]
         public FlatStyle ButtonFlatStyle { get {  return ButtonStyle.Equals(ButtonStyles[0]) ? 
                             FlatStyle.System : ButtonStyle.Equals(ButtonStyles[1]) ? FlatStyle.Flat : FlatStyle.Popup; }}
+        [JsonIgnore]
         public bool IsButtonSystemStyle => ButtonStyle.Equals(ButtonStyles[0]);
+        [JsonIgnore]
         public bool IsButtonFlatStyle => ButtonStyle.Equals(ButtonStyles[1]);
 
         public static string ButtonstyleSystem = ButtonStyles[0];
         public static string ButtonstyleFlat = ButtonStyles[1];
         public static string ButtonstyleGradient = ButtonStyles[2];
 
+        [JsonNameAttribute(new string[] {"OldName"}, new string[] {"textboxborderstyle"} )]
         public string TextBoxBorderStyle { get; set; }
 
         public static readonly string[] TextboxBorderStyles = "None FixedSingle Fixed3D Colour".Split();
+        [JsonIgnore]
         public BorderStyle TextBoxStyle
         {
             get
@@ -109,13 +157,16 @@ namespace ExtendedControls
             }
         }
 
+        [JsonIgnore]
         public bool IsTextBoxColourStyle => TextBoxBorderStyle.Equals(TextboxBorderStyles[3]);
+        [JsonIgnore]
         public bool IsTextBoxNoneStyle => TextBoxBorderStyle.Equals(TextboxBorderStyles[0]);
 
         public static string TextboxborderstyleFixedSingle = TextboxBorderStyles[1];
         public static string TextboxborderstyleFixed3D = TextboxBorderStyles[2];
         public static string TextboxborderstyleColor = TextboxBorderStyles[3];
 
+        [JsonIgnore]
         public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
 
 
@@ -287,6 +338,7 @@ namespace ExtendedControls
         public void SetColor(CI name, Color c) { colors[name] = c; }
         public Color GetColor(CI name) { return colors[name]; }
 
+        [JsonIgnore]
         public Font GetFont
         {
             get
@@ -297,6 +349,7 @@ namespace ExtendedControls
 
         private const float dialogscaling = 0.8f;
 
+        [JsonIgnore]
         public Font GetDialogFont       // dialogs get a slighly smaller font
         {
             get
@@ -1183,6 +1236,13 @@ namespace ExtendedControls
             return jo;
         }
 
+
+        public JObject ToJSON222()
+        {
+            var jo = JToken.FromObject(this, false, membersearchflags:System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.Public,setname:"OldName" ).Object();
+            return jo;
+        }
+
         public bool LoadFile(string pathname, string name, Theme defaultset = null)
         {
             try
@@ -1217,6 +1277,11 @@ namespace ExtendedControls
                 System.Diagnostics.Debug.WriteLine($"Theme save file error {ex}");
                 return false;
             }
+        }
+        public bool SaveFile2(string pathname)
+        {
+            JObject jo = ToJSON222();
+            return BaseUtils.FileHelpers.TryWriteToFile(pathname, jo.ToString(true));
         }
     }
 }
