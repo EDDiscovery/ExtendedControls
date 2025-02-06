@@ -1155,10 +1155,10 @@ namespace ExtendedControls
                 }
             }
 
-            WindowsFrame = jo["WindowsFrame"].Bool(defaultset.WindowsFrame);
-            Opacity = jo["formOpacity"].Double(defaultset.Opacity);
-            FontName = jo["FontName"].Str(defaultset.FontName);
-            FontSize = jo["FontSize"].Float(defaultset.FontSize);
+            WindowsFrame = jo["windowsframe"].Bool(defaultset.WindowsFrame);
+            Opacity = jo["formopacity"].Double(defaultset.Opacity);
+            FontName = jo["fontname"].Str(defaultset.FontName);
+            FontSize = jo["fontsize"].Float(defaultset.FontSize);
             ButtonStyle = jo["buttonstyle"].Str(defaultset.ButtonStyle);
             TextBoxBorderStyle = jo["textboxborderstyle"].Str(defaultset.TextBoxBorderStyle);
 
@@ -1174,12 +1174,13 @@ namespace ExtendedControls
                 jo.Add(ck.ToString(), System.Drawing.ColorTranslator.ToHtml(colors[ck]));
             }
 
-            jo.Add("WindowsFrame", WindowsFrame);
-            jo.Add("formOpacity", Opacity);
-            jo.Add("FontName", FontName);
-            jo.Add("FontSize", FontSize);
+            jo.Add("windowsframe", WindowsFrame);
+            jo.Add("formopacity", Opacity);
+            jo.Add("fontname", FontName);
+            jo.Add("fontsize", FontSize);
             jo.Add("buttonstyle", ButtonStyle);
             jo.Add("textboxborderstyle", TextBoxBorderStyle);
+
             return jo;
         }
 
