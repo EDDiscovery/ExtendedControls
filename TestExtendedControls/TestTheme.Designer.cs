@@ -28,15 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ExtendedControls.TabStyleSquare tabStyleSquare1 = new ExtendedControls.TabStyleSquare();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTheme));
+            ExtendedControls.TabStyleSquare tabStyleSquare1 = new ExtendedControls.TabStyleSquare();
             this.labelName = new System.Windows.Forms.Label();
-            this.extRichTextBox1 = new ExtendedControls.ExtRichTextBox();
-            this.extCheckBox2 = new ExtendedControls.ExtCheckBox();
-            this.extCheckBox1 = new ExtendedControls.ExtCheckBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.busyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.twoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.printToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.cutToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.labelUnderline = new System.Windows.Forms.Label();
+            this.extGroupBox1 = new ExtendedControls.ExtGroupBox();
             this.extTabControl1 = new ExtendedControls.ExtTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.extComboBoxTheme = new ExtendedControls.ExtComboBox();
+            this.extDateTimePicker1 = new ExtendedControls.ExtDateTimePicker();
+            this.extRichTextBox1 = new ExtendedControls.ExtRichTextBox();
+            this.extCheckBox2 = new ExtendedControls.ExtCheckBox();
+            this.extCheckBox1 = new ExtendedControls.ExtCheckBox();
             this.extTextBox1 = new ExtendedControls.ExtTextBox();
             this.extScrollBar2 = new ExtendedControls.ExtScrollBar();
             this.extListBox1 = new ExtendedControls.ExtListBox();
@@ -44,9 +62,6 @@
             this.extButtonDrawn1 = new ExtendedControls.ExtButtonDrawn();
             this.extRadioButton1 = new ExtendedControls.ExtRadioButton();
             this.extButtonClose = new ExtendedControls.ExtButton();
-            this.extButtonSystem = new ExtendedControls.ExtButton();
-            this.extButtonEuroCaps = new ExtendedControls.ExtButton();
-            this.extButtonVerdana = new ExtendedControls.ExtButton();
             this.extButtonLoad = new ExtendedControls.ExtButton();
             this.extButtonSave = new ExtendedControls.ExtButton();
             this.extButtonEdit = new ExtendedControls.ExtButton();
@@ -56,7 +71,10 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
-            this.extDateTimePicker1 = new ExtendedControls.ExtDateTimePicker();
+            this.labelStrikeout = new System.Windows.Forms.Label();
+            this.menuStrip1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
+            this.extGroupBox1.SuspendLayout();
             this.extTabControl1.SuspendLayout();
             this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -71,13 +89,248 @@
             this.labelName.TabIndex = 4;
             this.labelName.Text = "Name";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.busyToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(593, 170);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(52, 24);
+            this.menuStrip1.TabIndex = 18;
+            this.menuStrip1.Text = "menu";
+            // 
+            // busyToolStripMenuItem
+            // 
+            this.busyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.oneToolStripMenuItem,
+            this.twoToolStripMenuItem});
+            this.busyToolStripMenuItem.Name = "busyToolStripMenuItem";
+            this.busyToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.busyToolStripMenuItem.Text = "Busy";
+            // 
+            // oneToolStripMenuItem
+            // 
+            this.oneToolStripMenuItem.Name = "oneToolStripMenuItem";
+            this.oneToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.oneToolStripMenuItem.Text = "one";
+            // 
+            // twoToolStripMenuItem
+            // 
+            this.twoToolStripMenuItem.Name = "twoToolStripMenuItem";
+            this.twoToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
+            this.twoToolStripMenuItem.Text = "two";
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.AutoSize = false;
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.newToolStripButton,
+            this.openToolStripButton,
+            this.saveToolStripButton,
+            this.printToolStripButton,
+            this.toolStripSeparator,
+            this.cutToolStripButton,
+            this.copyToolStripButton,
+            this.toolStripSeparator1});
+            this.toolStrip1.Location = new System.Drawing.Point(593, 225);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(237, 25);
+            this.toolStrip1.TabIndex = 19;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // newToolStripButton
+            // 
+            this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
+            this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.newToolStripButton.Name = "newToolStripButton";
+            this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.newToolStripButton.Text = "&New";
+            // 
+            // openToolStripButton
+            // 
+            this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
+            this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.openToolStripButton.Name = "openToolStripButton";
+            this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.openToolStripButton.Text = "&Open";
+            // 
+            // saveToolStripButton
+            // 
+            this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
+            this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveToolStripButton.Name = "saveToolStripButton";
+            this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.saveToolStripButton.Text = "&Save";
+            // 
+            // printToolStripButton
+            // 
+            this.printToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.printToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripButton.Image")));
+            this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.printToolStripButton.Name = "printToolStripButton";
+            this.printToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.printToolStripButton.Text = "&Print";
+            // 
+            // toolStripSeparator
+            // 
+            this.toolStripSeparator.Name = "toolStripSeparator";
+            this.toolStripSeparator.Size = new System.Drawing.Size(6, 25);
+            // 
+            // cutToolStripButton
+            // 
+            this.cutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripButton.Image")));
+            this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cutToolStripButton.Name = "cutToolStripButton";
+            this.cutToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.cutToolStripButton.Text = "C&ut";
+            // 
+            // copyToolStripButton
+            // 
+            this.copyToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.copyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripButton.Image")));
+            this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.copyToolStripButton.Name = "copyToolStripButton";
+            this.copyToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.copyToolStripButton.Text = "&Copy";
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // labelUnderline
+            // 
+            this.labelUnderline.AutoSize = true;
+            this.labelUnderline.Location = new System.Drawing.Point(221, 59);
+            this.labelUnderline.Name = "labelUnderline";
+            this.labelUnderline.Size = new System.Drawing.Size(52, 13);
+            this.labelUnderline.TabIndex = 4;
+            this.labelUnderline.Text = "Underline";
+            // 
+            // extGroupBox1
+            // 
+            this.extGroupBox1.BackColorScaling = 0.5F;
+            this.extGroupBox1.BorderColor = System.Drawing.Color.LightGray;
+            this.extGroupBox1.BorderColorScaling = 0.5F;
+            this.extGroupBox1.Controls.Add(this.extTabControl1);
+            this.extGroupBox1.Location = new System.Drawing.Point(17, 330);
+            this.extGroupBox1.Name = "extGroupBox1";
+            this.extGroupBox1.Size = new System.Drawing.Size(665, 131);
+            this.extGroupBox1.TabIndex = 17;
+            this.extGroupBox1.TabStop = false;
+            this.extGroupBox1.Text = "extGroupBox1";
+            this.extGroupBox1.TextPadding = 0;
+            this.extGroupBox1.TextStartPosition = -1;
+            // 
+            // extTabControl1
+            // 
+            this.extTabControl1.AllowDragReorder = false;
+            this.extTabControl1.Controls.Add(this.tabPage1);
+            this.extTabControl1.Controls.Add(this.tabPage2);
+            this.extTabControl1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extTabControl1.Location = new System.Drawing.Point(25, 19);
+            this.extTabControl1.Name = "extTabControl1";
+            this.extTabControl1.SelectedIndex = 0;
+            this.extTabControl1.Size = new System.Drawing.Size(612, 100);
+            this.extTabControl1.TabBackgroundColor = System.Drawing.Color.Transparent;
+            this.extTabControl1.TabColorScaling = 0.5F;
+            this.extTabControl1.TabControlBorderBrightColor = System.Drawing.Color.LightGray;
+            this.extTabControl1.TabControlBorderColor = System.Drawing.Color.DarkGray;
+            this.extTabControl1.TabDisabledScaling = 0.5F;
+            this.extTabControl1.TabIndex = 11;
+            this.extTabControl1.TabMouseOverColor = System.Drawing.Color.White;
+            this.extTabControl1.TabNotSelectedBorderColor = System.Drawing.Color.Gray;
+            this.extTabControl1.TabNotSelectedColor = System.Drawing.Color.Gray;
+            this.extTabControl1.TabSelectedColor = System.Drawing.Color.LightGray;
+            this.extTabControl1.TabStyle = tabStyleSquare1;
+            this.extTabControl1.TextNotSelectedColor = System.Drawing.SystemColors.ControlText;
+            this.extTabControl1.TextSelectedColor = System.Drawing.SystemColors.ControlText;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(604, 74);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(604, 74);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // extComboBoxTheme
+            // 
+            this.extComboBoxTheme.BorderColor = System.Drawing.Color.White;
+            this.extComboBoxTheme.ButtonColorScaling = 0.5F;
+            this.extComboBoxTheme.DataSource = null;
+            this.extComboBoxTheme.DisableBackgroundDisabledShadingGradient = false;
+            this.extComboBoxTheme.DisplayMember = "";
+            this.extComboBoxTheme.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.extComboBoxTheme.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extComboBoxTheme.Location = new System.Drawing.Point(306, 12);
+            this.extComboBoxTheme.MouseOverBackgroundColor = System.Drawing.Color.Silver;
+            this.extComboBoxTheme.Name = "extComboBoxTheme";
+            this.extComboBoxTheme.ScrollBarButtonColor = System.Drawing.Color.LightGray;
+            this.extComboBoxTheme.ScrollBarColor = System.Drawing.Color.LightGray;
+            this.extComboBoxTheme.SelectedIndex = -1;
+            this.extComboBoxTheme.SelectedItem = null;
+            this.extComboBoxTheme.SelectedValue = null;
+            this.extComboBoxTheme.Size = new System.Drawing.Size(266, 21);
+            this.extComboBoxTheme.TabIndex = 16;
+            this.extComboBoxTheme.Text = "extComboBox2";
+            this.extComboBoxTheme.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.extComboBoxTheme.ValueMember = "";
+            this.extComboBoxTheme.SelectedIndexChanged += new System.EventHandler(this.extComboBoxTheme_SelectedIndexChanged);
+            // 
+            // extDateTimePicker1
+            // 
+            this.extDateTimePicker1.BorderColor = System.Drawing.Color.Transparent;
+            this.extDateTimePicker1.BorderColorScaling = 0.5F;
+            this.extDateTimePicker1.Checked = false;
+            this.extDateTimePicker1.CustomFormat = "dd MMMM yyyy";
+            this.extDateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Long;
+            this.extDateTimePicker1.Location = new System.Drawing.Point(455, 59);
+            this.extDateTimePicker1.Name = "extDateTimePicker1";
+            this.extDateTimePicker1.SelectedColor = System.Drawing.Color.Yellow;
+            this.extDateTimePicker1.ShowCheckBox = true;
+            this.extDateTimePicker1.ShowUpDown = true;
+            this.extDateTimePicker1.Size = new System.Drawing.Size(307, 23);
+            this.extDateTimePicker1.TabIndex = 15;
+            this.extDateTimePicker1.Text = "extDateTimePicker1";
+            this.extDateTimePicker1.TextBackColor = System.Drawing.Color.DarkBlue;
+            this.extDateTimePicker1.Value = new System.DateTime(2025, 2, 4, 11, 48, 48, 166);
+            // 
             // extRichTextBox1
             // 
             this.extRichTextBox1.BorderColor = System.Drawing.Color.Transparent;
             this.extRichTextBox1.BorderColorScaling = 0.5F;
             this.extRichTextBox1.DetectUrls = true;
             this.extRichTextBox1.HideScrollBar = true;
-            this.extRichTextBox1.Location = new System.Drawing.Point(17, 467);
+            this.extRichTextBox1.Location = new System.Drawing.Point(17, 482);
             this.extRichTextBox1.Name = "extRichTextBox1";
             this.extRichTextBox1.ReadOnly = false;
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
@@ -141,50 +394,6 @@
             this.extCheckBox1.TickBoxReductionRatio = 0.75F;
             this.extCheckBox1.UseVisualStyleBackColor = true;
             // 
-            // extTabControl1
-            // 
-            this.extTabControl1.AllowDragReorder = false;
-            this.extTabControl1.Controls.Add(this.tabPage1);
-            this.extTabControl1.Controls.Add(this.tabPage2);
-            this.extTabControl1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extTabControl1.Location = new System.Drawing.Point(13, 345);
-            this.extTabControl1.Name = "extTabControl1";
-            this.extTabControl1.SelectedIndex = 0;
-            this.extTabControl1.Size = new System.Drawing.Size(612, 100);
-            this.extTabControl1.TabBackgroundColor = System.Drawing.Color.Transparent;
-            this.extTabControl1.TabColorScaling = 0.5F;
-            this.extTabControl1.TabControlBorderBrightColor = System.Drawing.Color.LightGray;
-            this.extTabControl1.TabControlBorderColor = System.Drawing.Color.DarkGray;
-            this.extTabControl1.TabDisabledScaling = 0.5F;
-            this.extTabControl1.TabIndex = 11;
-            this.extTabControl1.TabMouseOverColor = System.Drawing.Color.White;
-            this.extTabControl1.TabNotSelectedBorderColor = System.Drawing.Color.Gray;
-            this.extTabControl1.TabNotSelectedColor = System.Drawing.Color.Gray;
-            this.extTabControl1.TabSelectedColor = System.Drawing.Color.LightGray;
-            this.extTabControl1.TabStyle = tabStyleSquare1;
-            this.extTabControl1.TextNotSelectedColor = System.Drawing.SystemColors.ControlText;
-            this.extTabControl1.TextSelectedColor = System.Drawing.SystemColors.ControlText;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(604, 74);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(604, 74);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // extTextBox1
             // 
             this.extTextBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
@@ -226,7 +435,7 @@
             this.extScrollBar2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extScrollBar2.HideScrollBar = false;
             this.extScrollBar2.LargeChange = 10;
-            this.extScrollBar2.Location = new System.Drawing.Point(768, 134);
+            this.extScrollBar2.Location = new System.Drawing.Point(855, 134);
             this.extScrollBar2.Maximum = 100;
             this.extScrollBar2.Minimum = 0;
             this.extScrollBar2.MouseOverButtonColor = System.Drawing.Color.Green;
@@ -335,36 +544,6 @@
             this.extButtonClose.UseVisualStyleBackColor = true;
             this.extButtonClose.Click += new System.EventHandler(this.extButtonClose_Click);
             // 
-            // extButtonSystem
-            // 
-            this.extButtonSystem.Location = new System.Drawing.Point(455, 12);
-            this.extButtonSystem.Name = "extButtonSystem";
-            this.extButtonSystem.Size = new System.Drawing.Size(75, 23);
-            this.extButtonSystem.TabIndex = 3;
-            this.extButtonSystem.Text = "System";
-            this.extButtonSystem.UseVisualStyleBackColor = true;
-            this.extButtonSystem.Click += new System.EventHandler(this.extButtonSystem_Click);
-            // 
-            // extButtonEuroCaps
-            // 
-            this.extButtonEuroCaps.Location = new System.Drawing.Point(374, 13);
-            this.extButtonEuroCaps.Name = "extButtonEuroCaps";
-            this.extButtonEuroCaps.Size = new System.Drawing.Size(75, 23);
-            this.extButtonEuroCaps.TabIndex = 3;
-            this.extButtonEuroCaps.Text = "EuroCaps";
-            this.extButtonEuroCaps.UseVisualStyleBackColor = true;
-            this.extButtonEuroCaps.Click += new System.EventHandler(this.extButtonEuroCaps_Click);
-            // 
-            // extButtonVerdana
-            // 
-            this.extButtonVerdana.Location = new System.Drawing.Point(293, 13);
-            this.extButtonVerdana.Name = "extButtonVerdana";
-            this.extButtonVerdana.Size = new System.Drawing.Size(75, 23);
-            this.extButtonVerdana.TabIndex = 3;
-            this.extButtonVerdana.Text = "Verdana";
-            this.extButtonVerdana.UseVisualStyleBackColor = true;
-            this.extButtonVerdana.Click += new System.EventHandler(this.extButtonVerdana_Click);
-            // 
             // extButtonLoad
             // 
             this.extButtonLoad.Location = new System.Drawing.Point(202, 13);
@@ -472,51 +651,50 @@
             this.extScrollBar1.Value = 0;
             this.extScrollBar1.ValueLimited = 0;
             // 
-            // extDateTimePicker1
+            // labelStrikeout
             // 
-            this.extDateTimePicker1.BorderColor = System.Drawing.Color.Transparent;
-            this.extDateTimePicker1.BorderColorScaling = 0.5F;
-            this.extDateTimePicker1.Checked = false;
-            this.extDateTimePicker1.CustomFormat = "dd MMMM yyyy";
-            this.extDateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Long;
-            this.extDateTimePicker1.Location = new System.Drawing.Point(455, 59);
-            this.extDateTimePicker1.Name = "extDateTimePicker1";
-            this.extDateTimePicker1.SelectedColor = System.Drawing.Color.Yellow;
-            this.extDateTimePicker1.ShowCheckBox = true;
-            this.extDateTimePicker1.ShowUpDown = true;
-            this.extDateTimePicker1.Size = new System.Drawing.Size(307, 23);
-            this.extDateTimePicker1.TabIndex = 15;
-            this.extDateTimePicker1.Text = "extDateTimePicker1";
-            this.extDateTimePicker1.TextBackColor = System.Drawing.Color.DarkBlue;
-            this.extDateTimePicker1.Value = new System.DateTime(2025, 2, 4, 11, 48, 48, 166);
+            this.labelStrikeout.AutoSize = true;
+            this.labelStrikeout.Location = new System.Drawing.Point(352, 59);
+            this.labelStrikeout.Name = "labelStrikeout";
+            this.labelStrikeout.Size = new System.Drawing.Size(49, 13);
+            this.labelStrikeout.TabIndex = 4;
+            this.labelStrikeout.Text = "Strikeout";
             // 
             // TestTheme
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(879, 666);
+            this.Controls.Add(this.extGroupBox1);
+            this.Controls.Add(this.extComboBoxTheme);
             this.Controls.Add(this.extDateTimePicker1);
             this.Controls.Add(this.extRichTextBox1);
             this.Controls.Add(this.extCheckBox2);
             this.Controls.Add(this.extCheckBox1);
-            this.Controls.Add(this.extTabControl1);
             this.Controls.Add(this.extTextBox1);
             this.Controls.Add(this.extScrollBar2);
             this.Controls.Add(this.extListBox1);
             this.Controls.Add(this.extComboBox1);
             this.Controls.Add(this.extButtonDrawn1);
             this.Controls.Add(this.extRadioButton1);
+            this.Controls.Add(this.labelStrikeout);
+            this.Controls.Add(this.labelUnderline);
             this.Controls.Add(this.labelName);
             this.Controls.Add(this.extButtonClose);
-            this.Controls.Add(this.extButtonSystem);
-            this.Controls.Add(this.extButtonEuroCaps);
-            this.Controls.Add(this.extButtonVerdana);
             this.Controls.Add(this.extButtonLoad);
             this.Controls.Add(this.extButtonSave);
             this.Controls.Add(this.extButtonEdit);
             this.Controls.Add(this.panel);
+            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.toolStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "TestTheme";
             this.Text = "Form1";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.extGroupBox1.ResumeLayout(false);
             this.extTabControl1.ResumeLayout(false);
             this.panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
@@ -536,8 +714,6 @@
         private ExtendedControls.ExtButton extButtonEdit;
         private ExtendedControls.ExtButton extButtonSave;
         private ExtendedControls.ExtButton extButtonLoad;
-        private ExtendedControls.ExtButton extButtonVerdana;
-        private ExtendedControls.ExtButton extButtonEuroCaps;
         private ExtendedControls.ExtButton extButtonClose;
         private System.Windows.Forms.Label labelName;
         private ExtendedControls.ExtRadioButton extRadioButton1;
@@ -552,7 +728,24 @@
         private ExtendedControls.ExtCheckBox extCheckBox1;
         private ExtendedControls.ExtCheckBox extCheckBox2;
         private ExtendedControls.ExtRichTextBox extRichTextBox1;
-        private ExtendedControls.ExtButton extButtonSystem;
         private ExtendedControls.ExtDateTimePicker extDateTimePicker1;
+        private ExtendedControls.ExtComboBox extComboBoxTheme;
+        private ExtendedControls.ExtGroupBox extGroupBox1;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem busyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem oneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem twoToolStripMenuItem;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton newToolStripButton;
+        private System.Windows.Forms.ToolStripButton openToolStripButton;
+        private System.Windows.Forms.ToolStripButton saveToolStripButton;
+        private System.Windows.Forms.ToolStripButton printToolStripButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
+        private System.Windows.Forms.ToolStripButton cutToolStripButton;
+        private System.Windows.Forms.ToolStripButton copyToolStripButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.Label labelUnderline;
+        private System.Windows.Forms.Label labelStrikeout;
     }
 }

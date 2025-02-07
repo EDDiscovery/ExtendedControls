@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2024 EDDiscovery development team
+ * Copyright © 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -64,8 +64,7 @@ namespace ExtendedControls
                 Color.Black, Color.DarkOrange, Color.Orange, // toolstrip
                 Color.Orange, // spanel
                 Color.Green, // overlay
-                Theme.DefaultChartColours,
-                false, 95, "Microsoft Sans Serif", 8.25F));
+                false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular));
 
             // ON purpose, always show them the euro caps one to give a hint!
             themelist.Add(new Theme(themelist[themelist.Count - 1], "Elite EuroCaps", "Euro Caps", 12F, 95));
@@ -92,8 +91,7 @@ namespace ExtendedControls
                     Color.Black, Color.DarkOrange, Color.Orange, // toolstrips
                     Color.Orange, // spanel
                     Color.Green, // overlay
-                    Theme.DefaultChartColours,
-                    false, 100, "Euro Caps", 12F));
+                    false, 100, "Euro Caps", 12F, FontStyle.Regular));
             }
 
             if (IsFontAvailable("Verdana"))
@@ -102,7 +100,7 @@ namespace ExtendedControls
                 themelist.Add(new Theme(themelist[themelist.Count - 1], "Elite Verdana Small", "Verdana", 8F));
                 themelist.Add(new Theme(themelist[themelist.Count - 1], "Elite Verdana High DPI", "Verdana", 20F));
                 var set = new Theme(themelist[themelist.Count - 1], "Elite Verdana Alt Grid", "Verdana", 10F);
-                set.SetColor(Theme.CI.grid_altcellbackground, Color.FromArgb(255, 55, 55, 55));
+                set.GridCellAltBack = Color.FromArgb(255, 55, 55, 55);
                 themelist.Add(new Theme(set, "Elite Verdana Alt Grid", "Verdana", 10F));
                 themelist.Add(new Theme(set, "Elite Verdana Alt Grid High DPI", "Verdana", 20F));
             }
@@ -131,8 +129,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 Color.Green, // overlay
-                Theme.DefaultChartColours,
-                false, 100, "Arial", 9.75F));
+                false, 100, "Arial", 9.75F, FontStyle.Regular));
 
             themelist.Add(new Theme(themelist[themelist.Count - 1], "Easy Dark High DPI", "Arial", 20F));
 
@@ -153,8 +150,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56), Color.FromArgb(255, 41, 46, 51), // toolstrip, back, border
                 Color.FromArgb(255, 255, 0, 0), // spanel
                 Color.Green, // overlay
-                Theme.DefaultChartColours,
-                false, 100, "Arial", 10.25F));
+                false, 100, "Arial", 10.25F, FontStyle.Regular));
 
             themelist.Add(new Theme(themelist[themelist.Count - 1], "EDSM High DPI", "Arial", 20F));
 
@@ -186,8 +182,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 Color.Green, // overlay
-                Theme.DefaultChartColours,
-                false, 100, "Microsoft Sans Serif", 9.75F));
+                false, 100, "Microsoft Sans Serif", 9.75F, FontStyle.Regular));
 
             themelist.Add(new Theme(themelist[themelist.Count - 1], "Material Dark High DPI", "Microsoft Sans Serif", 20F));
 
@@ -210,8 +205,7 @@ namespace ExtendedControls
                 Color.Black, r2, r1, // toolstrip
                 r1, // spanel
                 Color.Green, // overlay
-                Theme.DefaultChartColours,
-                false, 95, "Microsoft Sans Serif", 10F));
+                false, 95, "Microsoft Sans Serif", 10F, FontStyle.Regular));
 
             if (IsFontAvailable("Euro Caps"))
                 themelist.Add(new Theme(themelist[themelist.Count - 1], "Night Vision EuroCaps", "Euro Caps", 12F, 95));
@@ -236,8 +230,7 @@ namespace ExtendedControls
                                         SystemColors.Menu, SystemColors.Menu, SystemColors.MenuText,  // toolstrip
                                         SystemColors.ControlLightLight, // spanel
                                         Color.Green, // overlay
-                                        Theme.DefaultChartColours,
-                                        false, 95, "Euro Caps", 12F));
+                                        false, 95, "Euro Caps", 12F, FontStyle.Regular));
             }
 
             if (IsFontAvailable("Verdana"))
@@ -260,8 +253,7 @@ namespace ExtendedControls
                                         SystemColors.Menu, SystemColors.Menu, SystemColors.MenuText,  // toolstrip
                                         SystemColors.ControlLightLight, // spanel
                                         Color.Green, // overlay
-                                        Theme.DefaultChartColours,
-                                        false, 95, "Verdana", 8F));
+                                        false, 95, "Verdana", 8F, FontStyle.Regular));
             }
 
             themelist.Add(new Theme("Blue Wonder", Color.DarkBlue,
@@ -281,8 +273,7 @@ namespace ExtendedControls
                                                Color.DarkBlue, Color.White, Color.Red,  // toolstrip
                                                Color.LightBlue, // spanel
                                                Color.Green, // overlay
-                                               Theme.DefaultChartColours,
-                                               false, 95, "Microsoft Sans Serif", 8.25F));
+                                               false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular));
 
             Color baizegreen = Color.FromArgb(255, 13, 68, 13);
             themelist.Add(new Theme("Green Baize", baizegreen,
@@ -302,8 +293,7 @@ namespace ExtendedControls
                                                baizegreen, Color.White, Color.White,
                                                baizegreen,
                                                Color.Green, // overlay
-                                               Theme.DefaultChartColours,
-                                               false, 95, "Microsoft Sans Serif", 8.25F));
+                                               false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular));
 
 
             if (IsFontAvailable("Verdana"))     
@@ -352,8 +342,7 @@ namespace ExtendedControls
                             Color.FromArgb(255, 0, 0, 0), // unused_entry
                             Color.FromArgb(255, 0, 128, 255), // s_panel
                             Color.FromArgb(255, 0, 128, 0), // transparentcolorkey
-                            Theme.DefaultChartColours,
-                            false, 100, "Verdana", 8));
+                            false, 100, "Verdana", 8, FontStyle.Regular));
                 themelist.Add(new Theme(themelist[themelist.Count - 1], "Deep Blue Sky High DPI", "Verdana", 20));
             }
         }

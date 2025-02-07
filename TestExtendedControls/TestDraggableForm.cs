@@ -20,7 +20,6 @@ namespace TestExtendedControls
             theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
-            Theme.Current.SetColor(Theme.CI.form, Color.FromArgb(50, 50, 0));
             Theme.Current.FontName = "Microsoft Sans Serif";
             Theme.Current.FontSize = 8.25f;
             Theme.Current.WindowsFrame = false;

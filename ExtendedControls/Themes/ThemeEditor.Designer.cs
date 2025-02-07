@@ -61,6 +61,7 @@ namespace ExtendedControls
             this.label2 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -99,6 +100,15 @@ namespace ExtendedControls
             this.panel_theme81 = new System.Windows.Forms.Panel();
             this.panel_theme10 = new System.Windows.Forms.Panel();
             this.panel_theme17 = new System.Windows.Forms.Panel();
+            this.panel_chart8 = new System.Windows.Forms.Panel();
+            this.panel_chart7 = new System.Windows.Forms.Panel();
+            this.panel_chart6 = new System.Windows.Forms.Panel();
+            this.panel_chart5 = new System.Windows.Forms.Panel();
+            this.panel_chart4 = new System.Windows.Forms.Panel();
+            this.panel_chart3 = new System.Windows.Forms.Panel();
+            this.panel_chart2 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel_chart1 = new System.Windows.Forms.Panel();
             this.panel_theme61 = new System.Windows.Forms.Panel();
             this.panel_theme60 = new System.Windows.Forms.Panel();
             this.panel_theme70 = new System.Windows.Forms.Panel();
@@ -127,16 +137,7 @@ namespace ExtendedControls
             this.label3 = new System.Windows.Forms.Label();
             this.checkBoxDarkMode = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.label32 = new System.Windows.Forms.Label();
-            this.panel_chart1 = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel_chart2 = new System.Windows.Forms.Panel();
-            this.panel_chart3 = new System.Windows.Forms.Panel();
-            this.panel_chart4 = new System.Windows.Forms.Panel();
-            this.panel_chart5 = new System.Windows.Forms.Panel();
-            this.panel_chart6 = new System.Windows.Forms.Panel();
-            this.panel_chart7 = new System.Windows.Forms.Panel();
-            this.panel_chart8 = new System.Windows.Forms.Panel();
+            this.buttonFontChange = new System.Windows.Forms.Button();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -245,7 +246,7 @@ namespace ExtendedControls
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(563, 196);
+            this.label29.Location = new System.Drawing.Point(563, 231);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(44, 13);
             this.label29.TabIndex = 11;
@@ -255,7 +256,7 @@ namespace ExtendedControls
             // 
             this.panel_theme71.AccessibleDescription = "";
             this.panel_theme71.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme71.Location = new System.Drawing.Point(640, 190);
+            this.panel_theme71.Location = new System.Drawing.Point(640, 225);
             this.panel_theme71.Name = "panel_theme71";
             this.panel_theme71.Size = new System.Drawing.Size(28, 28);
             this.panel_theme71.TabIndex = 6;
@@ -339,7 +340,7 @@ namespace ExtendedControls
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(349, 196);
+            this.label25.Location = new System.Drawing.Point(659, 196);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(76, 13);
             this.label25.TabIndex = 6;
@@ -348,7 +349,7 @@ namespace ExtendedControls
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(349, 161);
+            this.label24.Location = new System.Drawing.Point(659, 161);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(83, 13);
             this.label24.TabIndex = 6;
@@ -390,6 +391,15 @@ namespace ExtendedControls
             this.label22.TabIndex = 6;
             this.label22.Text = "Label";
             // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(816, 20);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(32, 13);
+            this.label32.TabIndex = 6;
+            this.label32.Text = "Chart";
+            // 
             // label26
             // 
             this.label26.AutoSize = true;
@@ -411,7 +421,7 @@ namespace ExtendedControls
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(563, 231);
+            this.label21.Location = new System.Drawing.Point(563, 266);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(55, 13);
             this.label21.TabIndex = 6;
@@ -751,6 +761,96 @@ namespace ExtendedControls
             this.panel_theme17.TabIndex = 5;
             this.panel_theme17.Tag = "";
             // 
+            // panel_chart8
+            // 
+            this.panel_chart8.AccessibleDescription = "";
+            this.panel_chart8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart8.Location = new System.Drawing.Point(820, 295);
+            this.panel_chart8.Name = "panel_chart8";
+            this.panel_chart8.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart8.TabIndex = 5;
+            this.panel_chart8.Tag = "";
+            // 
+            // panel_chart7
+            // 
+            this.panel_chart7.AccessibleDescription = "";
+            this.panel_chart7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart7.Location = new System.Drawing.Point(820, 260);
+            this.panel_chart7.Name = "panel_chart7";
+            this.panel_chart7.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart7.TabIndex = 5;
+            this.panel_chart7.Tag = "";
+            // 
+            // panel_chart6
+            // 
+            this.panel_chart6.AccessibleDescription = "";
+            this.panel_chart6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart6.Location = new System.Drawing.Point(820, 225);
+            this.panel_chart6.Name = "panel_chart6";
+            this.panel_chart6.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart6.TabIndex = 5;
+            this.panel_chart6.Tag = "";
+            // 
+            // panel_chart5
+            // 
+            this.panel_chart5.AccessibleDescription = "";
+            this.panel_chart5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart5.Location = new System.Drawing.Point(820, 190);
+            this.panel_chart5.Name = "panel_chart5";
+            this.panel_chart5.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart5.TabIndex = 5;
+            this.panel_chart5.Tag = "";
+            // 
+            // panel_chart4
+            // 
+            this.panel_chart4.AccessibleDescription = "";
+            this.panel_chart4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart4.Location = new System.Drawing.Point(820, 155);
+            this.panel_chart4.Name = "panel_chart4";
+            this.panel_chart4.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart4.TabIndex = 5;
+            this.panel_chart4.Tag = "";
+            // 
+            // panel_chart3
+            // 
+            this.panel_chart3.AccessibleDescription = "";
+            this.panel_chart3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart3.Location = new System.Drawing.Point(820, 120);
+            this.panel_chart3.Name = "panel_chart3";
+            this.panel_chart3.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart3.TabIndex = 5;
+            this.panel_chart3.Tag = "";
+            // 
+            // panel_chart2
+            // 
+            this.panel_chart2.AccessibleDescription = "";
+            this.panel_chart2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart2.Location = new System.Drawing.Point(820, 85);
+            this.panel_chart2.Name = "panel_chart2";
+            this.panel_chart2.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart2.TabIndex = 5;
+            this.panel_chart2.Tag = "";
+            // 
+            // panel1
+            // 
+            this.panel1.AccessibleDescription = "";
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Location = new System.Drawing.Point(820, 85);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(28, 28);
+            this.panel1.TabIndex = 5;
+            this.panel1.Tag = "";
+            // 
+            // panel_chart1
+            // 
+            this.panel_chart1.AccessibleDescription = "";
+            this.panel_chart1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_chart1.Location = new System.Drawing.Point(820, 50);
+            this.panel_chart1.Name = "panel_chart1";
+            this.panel_chart1.Size = new System.Drawing.Size(28, 28);
+            this.panel_chart1.TabIndex = 5;
+            this.panel_chart1.Tag = "";
+            // 
             // panel_theme61
             // 
             this.panel_theme61.AccessibleDescription = "";
@@ -785,7 +885,7 @@ namespace ExtendedControls
             // 
             this.panel_theme16.AccessibleDescription = "";
             this.panel_theme16.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme16.Location = new System.Drawing.Point(640, 225);
+            this.panel_theme16.Location = new System.Drawing.Point(640, 260);
             this.panel_theme16.Name = "panel_theme16";
             this.panel_theme16.Size = new System.Drawing.Size(28, 28);
             this.panel_theme16.TabIndex = 5;
@@ -815,7 +915,7 @@ namespace ExtendedControls
             // 
             this.panel_theme51.AccessibleDescription = "";
             this.panel_theme51.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme51.Location = new System.Drawing.Point(450, 190);
+            this.panel_theme51.Location = new System.Drawing.Point(760, 190);
             this.panel_theme51.Name = "panel_theme51";
             this.panel_theme51.Size = new System.Drawing.Size(28, 28);
             this.panel_theme51.TabIndex = 5;
@@ -825,7 +925,7 @@ namespace ExtendedControls
             // 
             this.panel_theme50.AccessibleDescription = "";
             this.panel_theme50.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme50.Location = new System.Drawing.Point(450, 155);
+            this.panel_theme50.Location = new System.Drawing.Point(760, 155);
             this.panel_theme50.Name = "panel_theme50";
             this.panel_theme50.Size = new System.Drawing.Size(28, 28);
             this.panel_theme50.TabIndex = 5;
@@ -949,7 +1049,6 @@ namespace ExtendedControls
             this.trackBar_theme_opacity.Size = new System.Drawing.Size(104, 45);
             this.trackBar_theme_opacity.TabIndex = 3;
             this.trackBar_theme_opacity.Value = 30;
-            this.trackBar_theme_opacity.MouseCaptureChanged += new System.EventHandler(this.trackBar_theme_opacity_MouseCaptureChanged);
             // 
             // checkBox_theme_windowframe
             // 
@@ -960,13 +1059,13 @@ namespace ExtendedControls
             this.checkBox_theme_windowframe.TabIndex = 2;
             this.checkBox_theme_windowframe.Text = "Window Frame";
             this.checkBox_theme_windowframe.UseVisualStyleBackColor = true;
-            this.checkBox_theme_windowframe.MouseClick += new System.Windows.Forms.MouseEventHandler(this.checkBox_theme_windowframe_MouseClick);
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label27);
             this.groupBox1.Controls.Add(this.checkBox_theme_windowframe);
             this.groupBox1.Controls.Add(this.panel_theme72);
+            this.groupBox1.Controls.Add(this.buttonFontChange);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label_opacity);
             this.groupBox1.Controls.Add(this.trackBar_theme_opacity);
@@ -1029,104 +1128,16 @@ namespace ExtendedControls
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // label32
+            // buttonFontChange
             // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(808, 20);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(32, 13);
-            this.label32.TabIndex = 6;
-            this.label32.Text = "Chart";
-            // 
-            // panel_chart1
-            // 
-            this.panel_chart1.AccessibleDescription = "";
-            this.panel_chart1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart1.Location = new System.Drawing.Point(812, 50);
-            this.panel_chart1.Name = "panel_chart1";
-            this.panel_chart1.Size = new System.Drawing.Size(28, 28);
-            this.panel_chart1.TabIndex = 5;
-            this.panel_chart1.Tag = "";
-            // 
-            // panel1
-            // 
-            this.panel1.AccessibleDescription = "";
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(812, 85);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(28, 28);
-            this.panel1.TabIndex = 5;
-            this.panel1.Tag = "";
-            // 
-            // panel_chart2
-            // 
-            this.panel_chart2.AccessibleDescription = "";
-            this.panel_chart2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart2.Location = new System.Drawing.Point(812, 85);
-            this.panel_chart2.Name = "panel_chart2";
-            this.panel_chart2.Size = new System.Drawing.Size(28, 28);
-            this.panel_chart2.TabIndex = 5;
-            this.panel_chart2.Tag = "";
-            // 
-            // panel_chart3
-            // 
-            this.panel_chart3.AccessibleDescription = "";
-            this.panel_chart3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart3.Location = new System.Drawing.Point(812, 120);
-            this.panel_chart3.Name = "panel_chart3";
-            this.panel_chart3.Size = new System.Drawing.Size(28, 28);
-            this.panel_chart3.TabIndex = 5;
-            this.panel_chart3.Tag = "";
-            // 
-            // panel_chart4
-            // 
-            this.panel_chart4.AccessibleDescription = "";
-            this.panel_chart4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart4.Location = new System.Drawing.Point(812, 155);
-            this.panel_chart4.Name = "panel_chart4";
-            this.panel_chart4.Size = new System.Drawing.Size(28, 28);
-            this.panel_chart4.TabIndex = 5;
-            this.panel_chart4.Tag = "";
-            // 
-            // panel_chart5
-            // 
-            this.panel_chart5.AccessibleDescription = "";
-            this.panel_chart5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart5.Location = new System.Drawing.Point(812, 190);
-            this.panel_chart5.Name = "panel_chart5";
-            this.panel_chart5.Size = new System.Drawing.Size(28, 28);
-            this.panel_chart5.TabIndex = 5;
-            this.panel_chart5.Tag = "";
-            // 
-            // panel_chart6
-            // 
-            this.panel_chart6.AccessibleDescription = "";
-            this.panel_chart6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart6.Location = new System.Drawing.Point(812, 225);
-            this.panel_chart6.Name = "panel_chart6";
-            this.panel_chart6.Size = new System.Drawing.Size(28, 28);
-            this.panel_chart6.TabIndex = 5;
-            this.panel_chart6.Tag = "";
-            // 
-            // panel_chart7
-            // 
-            this.panel_chart7.AccessibleDescription = "";
-            this.panel_chart7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart7.Location = new System.Drawing.Point(812, 260);
-            this.panel_chart7.Name = "panel_chart7";
-            this.panel_chart7.Size = new System.Drawing.Size(28, 28);
-            this.panel_chart7.TabIndex = 5;
-            this.panel_chart7.Tag = "";
-            // 
-            // panel_chart8
-            // 
-            this.panel_chart8.AccessibleDescription = "";
-            this.panel_chart8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart8.Location = new System.Drawing.Point(812, 295);
-            this.panel_chart8.Name = "panel_chart8";
-            this.panel_chart8.Size = new System.Drawing.Size(28, 28);
-            this.panel_chart8.TabIndex = 5;
-            this.panel_chart8.Tag = "";
+            this.buttonFontChange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFontChange.Location = new System.Drawing.Point(478, 28);
+            this.buttonFontChange.Name = "buttonFontChange";
+            this.buttonFontChange.Size = new System.Drawing.Size(80, 24);
+            this.buttonFontChange.TabIndex = 0;
+            this.buttonFontChange.Text = "Change";
+            this.buttonFontChange.UseVisualStyleBackColor = true;
+            this.buttonFontChange.Click += new System.EventHandler(this.buttonFontChange_Click);
             // 
             // ThemeEditor
             // 
@@ -1248,5 +1259,6 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_chart2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_chart1;
+        private System.Windows.Forms.Button buttonFontChange;
     }
 }
