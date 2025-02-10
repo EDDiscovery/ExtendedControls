@@ -347,6 +347,7 @@ namespace ExtendedControls
             }
         }
 
+        // load from a path all themes, using their file names as the theme names
         public bool Load(string path, string filewildcard)
         {
             try

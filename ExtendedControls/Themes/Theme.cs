@@ -1146,10 +1146,16 @@ namespace ExtendedControls
             return ret is Theme;
         }
 
-        public bool LoadFile(string pathname, string name)
+        public bool LoadFile(string pathname, string usethisname = null)
         {
             JToken jo = pathname.ReadJSONFile();
-            return jo != null ? FromJSON(jo) : false;
+            if ( jo != null && FromJSON(jo))
+            {
+                if (usethisname!=null)
+                    Name = usethisname;
+                return true;
+            }
+            return false;
         }
 
         public bool SaveFile(string pathname)
