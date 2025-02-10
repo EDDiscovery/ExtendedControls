@@ -32,6 +32,9 @@ namespace ExtendedControls
         { Name = "Custom"; }                                // set so custom..
         public bool IsCustom() { return Name.Equals("Custom"); }
 
+        // AltFmt names are the names used previously in the CI. structure, and are the ones saved to the theme file, and passed to DLLs
+        // using these disassociates the c# name from the JSON name for the future.
+
         [JsonCustomFormat("AltFmt","Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "form" })]
         public Color Form { get; set; } = SystemColors.Menu;
@@ -420,13 +423,12 @@ namespace ExtendedControls
                 //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Tabindex indicates no theme!");
                 dochildren = false;
             }
-            else if (myControl is Form)
+            else if (myControl is Form form)
             {
-                Form f = myControl as Form;
-                f.FormBorderStyle = (WindowsFrame && !noborderoverride) ? FormBorderStyle.Sizable : FormBorderStyle.None;
-                f.Opacity = Opacity / 100;
-                f.BackColor = Form;
-                f.Font = fnt;
+                form.FormBorderStyle = (WindowsFrame && !noborderoverride) ? FormBorderStyle.Sizable : FormBorderStyle.None;
+                form.Opacity = Opacity / 100;
+                form.BackColor = Form;
+                form.Font = fnt;
                 //System.Diagnostics.Debug.WriteLine($"Form scaling now {f.CurrentAutoScaleDimensions} {f.AutoScaleDimensions} {f.CurrentAutoScaleFactor()}");
             }
             else if (myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
@@ -509,8 +511,12 @@ namespace ExtendedControls
             }
             else if (myControl is ExtTabControl etc)
             {
+                etc.AutoForceUpdate = false;        // make it slightly better
+
                 if (IsButtonSystemStyle) // not system
+                {
                     etc.FlatStyle = FlatStyle.System;
+                }
                 else
                 {
                     etc.TabControlBorderColor = TabcontrolBorder.Multiply(0.6F);
@@ -523,6 +529,7 @@ namespace ExtendedControls
                     etc.TextNotSelectedColor = ButtonTextColor.Multiply(0.8F);
                     etc.SetStyle(ButtonFlatStyle, tsc);
                 }
+                etc.ForceUpdate();
             }
             else if (myControl is ExtListBox elb)
             {
@@ -1106,9 +1113,10 @@ namespace ExtendedControls
 
             toolstripRenderer.colortable.colToolStripDropDownMenuImageMargin = ButtonBackColor;
             toolstripRenderer.colortable.colToolStripDropDownMenuImageRevealed = Color.Purple;      // NO evidence, set to show up
-
         }
-        public Color GroupBoxOverride(Control parent, Color d)      // if its a group box behind the control, use the group box back color..
+
+        // if a parent above is a group box behind the control, use the group box back color, else use the form colour
+        public Color GroupBoxOverride(Control parent, Color d)      
         {
             Control x = parent;
             while (x != null)

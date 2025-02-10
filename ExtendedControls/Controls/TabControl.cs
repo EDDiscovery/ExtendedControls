@@ -64,11 +64,13 @@ namespace ExtendedControls
             {
                 flatstyle = fsstyle;
                 tabstyle = tabstylep;
-                ForceUpdate();
+                if (AutoForceUpdate)
+                    ForceUpdate();
             }
         }
-        
-        //public new bool Multiline { get { return base.Multiline; } set { base.Multiline = value; System.Diagnostics.Debug.WriteLine($"Tabcontrol set multiline {value}"); } }
+
+        // this does the ForceUpdate() call when things change.  But its slow, may be better to do manually
+        public bool AutoForceUpdate { get; set; } = true;           
 
         // reordering 
         public bool AllowDragReorder { get; set; } = false;
@@ -128,6 +130,7 @@ namespace ExtendedControls
             return -1;
         }
 
+        // Force the back bitmap to be repainted
         public void ResetInvalidate()
         {
             backImageControlBitmap?.Dispose();
@@ -145,7 +148,6 @@ namespace ExtendedControls
             base.OnMouseDown(e);
             //System.Diagnostics.Debug.WriteLine($"Tab Clicked on {LastTabClicked}");
         }
-
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -301,7 +303,8 @@ namespace ExtendedControls
         private void ChangeTabStyle(TabStyleCustom fs)
         {
             tabstyle = fs;
-            ForceUpdate();
+            if (AutoForceUpdate)
+                ForceUpdate();
         }
 
         private void ChangeFlatStyle(FlatStyle fs)
@@ -309,7 +312,8 @@ namespace ExtendedControls
             // set style back to system mode so that if we are going from flat->system we will force it there.
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);
             flatstyle = fs;
-            ForceUpdate();
+            if (AutoForceUpdate)
+                ForceUpdate();
         }
 
         // turns out not needed, keep for reference
@@ -326,9 +330,9 @@ namespace ExtendedControls
         {
             base.OnFontChanged(e);
             //System.Diagnostics.Debug.WriteLine($"Tabcontrol Font Change: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
-            ForceUpdate();
+            if (AutoForceUpdate)
+                ForceUpdate();
         }
-
 
         public void ForceUpdate()
         {
