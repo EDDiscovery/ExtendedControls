@@ -54,6 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="TestSmartSystemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestSmartSystemForm.Designer.cs">
+      <DependentUpon>TestSmartSystemForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestTabControlWithTransparency.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -344,6 +350,9 @@
     <Compile Include="UserControl2.Designer.cs">
       <DependentUpon>UserControl2.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestSmartSystemForm.resx">
+      <DependentUpon>TestSmartSystemForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestTabControlWithTransparency.resx">
       <DependentUpon>TestTabControlWithTransparency.cs</DependentUpon>
     </EmbeddedResource>
