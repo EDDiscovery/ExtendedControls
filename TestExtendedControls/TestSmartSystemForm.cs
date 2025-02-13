@@ -42,12 +42,17 @@ namespace TestExtendedControls
             var sysMenus = new List<SystemMenuItem>()
             {
                     new SystemMenuItem(),
-                    new SystemMenuItem("One", x=>{ x.ToggleCheck(); }),
-                    new SystemMenuItem("Two", (x)=>{x.ToggleCheck(); }),
+                    new SystemMenuItem("One", x=>{ },x=>{ x.ToggleCheck(); }),
+                    new SystemMenuItem("Two", x=>{ },(x)=>{x.ToggleCheck(); }),
                     new SystemMenuItem("Submenu",
                                 new List<SystemMenuItem>() {
-                                        new SystemMenuItem("s-one", x => { x.ToggleCheck(); }),
-                                        new SystemMenuItem("s-two", x => { x.ToggleCheck(); })
+                                        new SystemMenuItem("s-one", x=>{ },x => { x.ToggleCheck(); }),
+                                        new SystemMenuItem("s-two", x=>{ },x => { x.ToggleCheck(); }),
+                                        new SystemMenuItem("Submenu-2",
+                                                    new List<SystemMenuItem>() {
+                                                            new SystemMenuItem("s2-one", x=>{ x.SetCheck(true); },x => { x.ToggleCheck(); }),
+                                                            new SystemMenuItem("s2-two", x=>{ },x => { x.ToggleCheck(); })
+                                                            }),
                                 }),
             };
 

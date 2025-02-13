@@ -30,27 +30,37 @@ namespace ExtendedControls
     public class SmartSysMenuForm : Form
     {
         /// <summary>
-        /// Smart menu item - separator, checked item or not, submenu (1 level)
+        /// Smart menu item - separator, checked item, unchecked item, submenu 
         /// </summary>
         public class SystemMenuItem
         {
             public string Text { get; set; }            // null for separator
-            public bool Checked { get; set; }           // if checked at start
+            public bool Checked { get; set; }           // Check state
 
+            // called on menu open
+            public Action<SystemMenuItem> OnShown { get; set; }
+
+            // called on menu clicked
             public Action<SystemMenuItem> OnClick { get; set; }
 
+            // submenu
             public List<SystemMenuItem> Children { get; set; } = null;
 
-            public SmartSysMenuForm Form { get; set; }          // set on install
-            public IntPtr MenuHandle { get; set; } // set on install
-            public int ID { get; set; } = -1;        // set on install
+            // Tag
+            public Object Tag { get; set; }
+            public SmartSysMenuForm Form { get; set; }  // set on install, associated form
+            internal IntPtr MenuHandle { get; set; }    // set on install (only for this set of code to set)
+            internal int ID { get; set; } = -1;        // set on install
             public SystemMenuItem()     // separator
             {
                 Text = null;
             }
-            public SystemMenuItem(string text, Action<SystemMenuItem> onClick, bool checkedp = false) // menu item, optionally clicked
+
+            // menu item, optionally checked
+            public SystemMenuItem(string text, Action<SystemMenuItem> onShown, Action<SystemMenuItem> onClick, bool checkedp = false) 
             {
                 Text = text;
+                OnShown = onShown;
                 OnClick = onClick;
                 Checked = checkedp;
             }
@@ -96,51 +106,19 @@ namespace ExtendedControls
         /// </summary>
         protected virtual bool AllowResize { get; set; } = true;
 
+
+        /// <summary>
+        /// Install more menu items to system menu
+        /// </summary>
+        /// <param name="list"></param>
         /// <summary>
         /// Install more menu items to system menu
         /// </summary>
         /// <param name="list"></param>
         public void InstallSystemMenuItems(List<SystemMenuItem> list)
         {
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT && IsHandleCreated)
-            {
-                IntPtr hSysMenu = UnsafeNativeMethods.GetSystemMenu(Handle, false); // get handle to system menu
-
-                foreach (var entry in list)
-                {
-                    entry.MenuHandle = hSysMenu;
-
-                    if (entry.Children != null)
-                    {
-                        systemmenuitems[additionalentryno + 10000] = entry;     // we put a marker down so its in the array, but at a non clickable number
-
-                        IntPtr hSubmenu = UnsafeNativeMethods.CreateMenu();
-                        foreach (var childentry in entry.Children)
-                        {
-                            childentry.MenuHandle = hSubmenu;
-                            childentry.ID = additionalentryno;
-                            childentry.Form = this;
-                            systemmenuitems[childentry.ID] = childentry;
-                            UnsafeNativeMethods.AppendMenu(hSubmenu, childentry.Checked == true ? MF.CHECKED : MF.UNCHECKED, additionalentryno++, childentry.Text);
-                        }
-
-                        UnsafeNativeMethods.AppendMenu(hSysMenu, MF.STRING | MF.POPUP, (int)hSubmenu, entry.Text);
-                    }
-                    else if (entry.Text != null)
-                    {
-                        entry.ID = additionalentryno;
-                        entry.Form = this;
-                        systemmenuitems[entry.ID] = entry;
-                        UnsafeNativeMethods.AppendMenu(hSysMenu, entry.Checked == true ? MF.CHECKED : MF.UNCHECKED, additionalentryno++, entry.Text);
-                    }
-                    else
-                        UnsafeNativeMethods.AppendMenu(hSysMenu, MF.SEPARATOR, 1, "");
-                }
-            }
-            else
-            {
-                System.Diagnostics.Trace.WriteLine("SmarkSysMenuForm install items before handle created or not on WIN32");
-            }
+            IntPtr hSysMenu = UnsafeNativeMethods.GetSystemMenu(Handle, false); // get handle to system menu
+            InstallItems(list, hSysMenu);
         }
 
         #region Implementation
@@ -238,11 +216,9 @@ namespace ExtendedControls
                                 UnsafeNativeMethods.EnableMenuItem(m.WParam, SC.CLOSE, MF.ENABLED);
                             }
 
-                            // if we have opacity set selection
-                            SetOpacityItems();
-                            // if we have a on top system menu item, set its state
-                            var topmenu = systemmenuitems.Values.ToList().Find(x => x.Text.Contains("On &Top"));
-                            topmenu?.SetCheck(TopMost);
+                            // initialise any items needed
+                            foreach (var entry in systemmenuitems)
+                                entry.Value.OnShown?.Invoke(entry.Value);
 
                             // This only works reliably on the application's MainForm.
                             UnsafeNativeMethods.SetMenuDefaultItem(m.WParam, maximized && AllowResize ? SC.RESTORE : (!maximized && AllowResize ? SC.MAXIMIZE : SC.CLOSE), 0);
@@ -290,40 +266,60 @@ namespace ExtendedControls
             var sysMenus = new List<SystemMenuItem>()
             {
                 new SystemMenuItem(),
-                new SystemMenuItem("On &Top", x=>{ x.Form.TopMost = !x.Form.TopMost; }),
-                    new SystemMenuItem("&Opacity",
+                new SystemMenuItem("On &Top", x=> { x.SetCheck(x.Form.TopMost); }, x=>{ x.Form.TopMost = !x.Form.TopMost; }),
+                new SystemMenuItem("&Opacity",
                                 new List<SystemMenuItem>() {
-                                        new SystemMenuItem("100%", x => { x.Form.Opacity = 1; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("90%", x => { x.Form.Opacity = .9; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("80%", x => { x.Form.Opacity = .8; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("70%", x => { x.Form.Opacity = .7; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("60%", x => { x.Form.Opacity = .6; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("50%", x => { x.Form.Opacity = .5; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("40%", x => { x.Form.Opacity = .4; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("30%", x => { x.Form.Opacity = .3; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("20%", x => { x.Form.Opacity = .2; x.Form.SetOpacityItems(); }),
-                                        new SystemMenuItem("10%", x => { x.Form.Opacity = .1; x.Form.SetOpacityItems(); }),
+                                        new SystemMenuItem("100%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==10);}, x => { x.Form.Opacity = 1;  }),
+                                        new SystemMenuItem("90%",  x=>{ int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==9);}, x => { x.Form.Opacity = 0.9;  }),
+                                        new SystemMenuItem("80%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==8);}, x => { x.Form.Opacity = 0.8;  }),
+                                        new SystemMenuItem("70%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==7);}, x => { x.Form.Opacity = 0.7;  }),
+                                        new SystemMenuItem("60%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==6);}, x => { x.Form.Opacity = 0.6;  }),
+                                        new SystemMenuItem("50%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==5);}, x => { x.Form.Opacity = 0.5;  }),
+                                        new SystemMenuItem("40%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==4);}, x => { x.Form.Opacity = 0.4;  }),
+                                        new SystemMenuItem("30%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==3);}, x => { x.Form.Opacity = 0.3;  }),
+                                        new SystemMenuItem("20%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==2);}, x => { x.Form.Opacity = 0.2;  }),
+                                        new SystemMenuItem("10%", x=> { int opac = (int)Math.Round(Opacity * 10); x.SetCheck(opac==1);}, x => { x.Form.Opacity = 0.1;  }),
                                 }),
             };
 
             InstallSystemMenuItems(sysMenus);
         }
 
-        /// <summary>
-        /// set up the opacity ticks
-        /// </summary>
-
-        private void SetOpacityItems()
+        private void InstallItems(List<SystemMenuItem> list, IntPtr hSysMenu)
         {
-            var opacity = systemmenuitems.Values.ToList().Find(x => x.Text == "&Opacity");
-            if (opacity != null)
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT && IsHandleCreated)
             {
-                int opac = (int)Math.Min(10, Math.Round(Opacity * 10));  // 0.000-1.00 => 1-10
-                for (int i = 0; i < opacity.Children.Count; i++)
-                    opacity.Children[i].SetCheck(10 - i == opac);
+                foreach (var entry in list)
+                {
+                    entry.MenuHandle = hSysMenu;
+
+                    if (entry.Children != null)
+                    {
+                        // we add this non clickable (therefore won't ever be reported) item to the array solely so that it can be found if required later
+                        systemmenuitems[additionalentryno++] = entry;
+
+                        IntPtr hSubmenu = UnsafeNativeMethods.CreateMenu();
+
+                        UnsafeNativeMethods.AppendMenu(hSysMenu, MF.STRING | MF.POPUP, (int)hSubmenu, entry.Text);
+
+                        InstallItems(entry.Children, hSubmenu);
+                    }
+                    else if (entry.Text != null)
+                    {
+                        entry.ID = additionalentryno;
+                        entry.Form = this;
+                        systemmenuitems[entry.ID] = entry;
+                        UnsafeNativeMethods.AppendMenu(hSysMenu, entry.Checked == true ? MF.CHECKED : MF.UNCHECKED, additionalentryno++, entry.Text);
+                    }
+                    else
+                        UnsafeNativeMethods.AppendMenu(hSysMenu, MF.SEPARATOR, 1, "");
+                }
+            }
+            else
+            {
+                System.Diagnostics.Trace.WriteLine("SmarkSysMenuForm install items before handle created or not on WIN32");
             }
         }
-
 
         // If WS.SYSMENU is not active at first WM.CREATE, the menu will not be created. Since FormBorderStyle may clear WS.SYSMENU, we have
         // to fake it during startup. WS.SYSMENU is meaningless to us outside of WM.CREATE. Seealso https://stackoverflow.com/a/16695606
