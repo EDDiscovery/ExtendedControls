@@ -383,6 +383,13 @@ namespace ExtendedControls
             //System.Diagnostics.Debug.WriteLine($"Finished dialog themeing to {ctrl.Name}");
             return ret;
         }
+        public bool Apply(Control ctrl, bool nowindowsborderoverride = false, float fontscale = 1.0f)
+        {
+            //System.Diagnostics.Debug.WriteLine($"Themer apply dialog {ctrl.Name} Font {GetDialogFont}");
+            var ret = Apply(ctrl, GetScaledFont(fontscale), nowindowsborderoverride);
+            //System.Diagnostics.Debug.WriteLine($"Finished dialog themeing to {ctrl.Name}");
+            return ret;
+        }
 
         internal bool Apply(Control form, Font fnt, bool nowindowsborderoverride = false)
         {
