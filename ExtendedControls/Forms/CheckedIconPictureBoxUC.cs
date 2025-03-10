@@ -109,7 +109,7 @@ namespace ExtendedControls
             // these are for internal use only
 
             public ExtPictureBox.Label label;
-            public ExtPictureBox.CheckBox checkbox;
+            public ExtPictureBox.CheckBox[] checkbox;
             public ExtPictureBox.ImageElement icon;
             public ExtPictureBox.ImageElement submenuicon;
 
@@ -186,7 +186,7 @@ namespace ExtendedControls
 
         // the main add
         public void Add(string tag, string text, Image img = null, bool attop = false, string exclusivetags = null,
-                                bool disableuncheck = false, bool button = false, object usertag = null, bool group = false)
+                                bool disableuncheck = false, bool button = false, object usertag = null, bool group = false, int checkbuttons = 1)
         {
             var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag};
             cl.label = new ExtPictureBox.Label();
@@ -196,8 +196,8 @@ namespace ExtendedControls
                 {
                     if (cl.checkbox != null && e.Button == MouseButtons.Left)
                     {
-                        cl.checkbox.CheckState = cl.checkbox.CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                        picturebox.Refresh(cl.checkbox.Location);
+                        cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
+                        picturebox.Refresh(cl.checkbox[0].Location);
                     }
                     else
                     {
@@ -207,13 +207,18 @@ namespace ExtendedControls
             };
             if (!cl.Button)
             {
-                cl.checkbox = new ExtPictureBox.CheckBox();
-                cl.checkbox.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
-                cl.checkbox.MouseDown += (s, el, e) => 
-                { 
-                    if (e.Button == MouseButtons.Right && cl.checkbox.Enabled) 
-                        ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e); 
-                };
+                cl.checkbox = new ExtPictureBox.CheckBox[checkbuttons];
+                for(int i = 0; i < checkbuttons; i++)
+                {
+                    var x = new ExtPictureBox.CheckBox();
+                    cl.checkbox[i] = x;
+                    x.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
+                    x.MouseDown += (s, el, e) =>
+                    {
+                        if (e.Button == MouseButtons.Right && x.Enabled)
+                            ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                    };
+                }
             }
             if (img != null)
             {
@@ -224,8 +229,8 @@ namespace ExtendedControls
                     {
                         if (cl.checkbox != null && e.Button == MouseButtons.Left)
                         {
-                            cl.checkbox.CheckState = cl.checkbox.CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                            picturebox.Refresh(cl.checkbox.Location);
+                            cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
+                            picturebox.Refresh(cl.checkbox[0].Location);
                         }
                         else
                         {
@@ -378,7 +383,10 @@ namespace ExtendedControls
         {
             Item i = ItemList[index];
             if (i.checkbox != null)
-                i.checkbox.Enabled = enable;
+            {
+                foreach (var x in i.checkbox)
+                    x.Enabled = enable;
+            }
             if (i.icon != null)
                 i.icon.Enabled = enable;
             if (i.submenuicon != null)
@@ -390,7 +398,10 @@ namespace ExtendedControls
         {
             Item i = ItemList[index];
             if (i.checkbox != null)
-                i.checkbox.ShowDisabled = showdisabled;
+            {
+                foreach (var x in i.checkbox)
+                    x.ShowDisabled = showdisabled;
+            }
             if (i.icon != null)
                 i.icon.ShowDisabled = showdisabled;
             if (i.submenuicon != null)
@@ -417,8 +428,11 @@ namespace ExtendedControls
             var items = ItemList.Where(x => x.UserTag == usertag).ToList();
             foreach (var i in items)
             {
-                if ( i.checkbox != null)
-                    i.checkbox.Enabled = enable;
+                if (i.checkbox != null)
+                {
+                    foreach (var x in i.checkbox)
+                        x.Enabled = enable;
+                }
                 i.label.Enabled = enable;
             }
             return items.Count();
@@ -439,27 +453,27 @@ namespace ExtendedControls
 
         // using SettingsSplittingChar as the separator, respects All or All; as a tag for all
         // Does not obey exclusive. You can set group.
-        public void Set(string taglist, bool state = true, int startpos = 0, int end = -1)        
+        public void Set(string taglist, bool state = true, int startpos = 0, int end = -1, int checkbox = 0)        
         {
             if (taglist != null)
             {
                 var list = taglist.SplitNoEmptyStrings(SettingsSplittingChar);
                 if (list.Length >= 1 && list[0] == All)      
-                    SetNonGroup(CheckState.Checked,startpos,end);
+                    SetNonGroup(CheckState.Checked,startpos,end,checkbox);
                 else
-                    Set(list, state,startpos,end);
+                    Set(list, state,startpos,end,checkbox);
             }
         }
 
         // Set taglist. Does not obey exclusive. You can set group.
-        public void Set(IEnumerable<string> taglist, bool state = true, int startpos = 0, int end = -1)
+        public void Set(IEnumerable<string> taglist, bool state = true, int startpos = 0, int end = -1, int checkbox = 0)
         {
             if (taglist != null)
-                Set(taglist, state ? CheckState.Checked : CheckState.Unchecked, startpos , end);
+                Set(taglist, state ? CheckState.Checked : CheckState.Unchecked, startpos , end, checkbox);
         }
 
         // Set taglist. Does not obey exclusive. You can set group.
-        public void Set(IEnumerable<string> taglist, CheckState state = CheckState.Checked, int startpos = 0, int end = -1)
+        public void Set(IEnumerable<string> taglist, CheckState state = CheckState.Checked, int startpos = 0, int end = -1, int checkbox=0)
         {
             if (taglist != null)
             {
@@ -468,25 +482,25 @@ namespace ExtendedControls
 
                 for (int i = startpos; i <= end; i++)
                 {
-                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].checkbox != null)
+                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].checkbox != null && ItemList[i].checkbox.Length > checkbox)
                     {
                         //System.Diagnostics.Debug.WriteLine($"Set check {controllist[i].tag} to {state}");
-                        ItemList[i].checkbox.CheckState = state;
+                        ItemList[i].checkbox[checkbox].CheckState = state;
                     }
                 }
             }
         }
 
         // Set non group on. Does not obey exclusive
-        public void SetNonGroup(CheckState state, int startpos = 0, int end = -1)
+        public void SetNonGroup(CheckState state, int startpos = 0, int end = -1, int checkbox = 0)
         {
             if (end < 0)
                 end = ItemList.Count() - 1;
 
             for (int i = startpos; i <= end; i++)  // inclusive
             {
-                if (ItemList[i].checkbox != null && ItemList[i].Group == false)
-                    ItemList[i].checkbox.CheckState = state;
+                if (ItemList[i].checkbox != null && ItemList[i].Group == false && ItemList[i].checkbox.Length > checkbox)
+                    ItemList[i].checkbox[checkbox].CheckState = state;
             }
         }
 
@@ -503,7 +517,7 @@ namespace ExtendedControls
 
         // Set from start to end. Does not obey exclusive. You can set group.
         // end = 0 means just check start. -1 means check all to end
-        public void Set(int startpos, CheckState state, int end = 0, string tagignorelist = "")
+        public void Set(int startpos, CheckState state, int end = 0, string tagignorelist = "", int checkbox = 0)
         {
             if (end == 0)
                 end = startpos;
@@ -512,18 +526,18 @@ namespace ExtendedControls
 
             for (int i = startpos; i <= end; i++)  // inclusive
             {
-                if (ItemList[i].checkbox != null && !tagignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))
-                    ItemList[i].checkbox.CheckState = state;
+                if (ItemList[i].checkbox != null && ItemList[i].checkbox.Length>checkbox && !tagignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))
+                    ItemList[i].checkbox[checkbox].CheckState = state;
             }
         }
 
-        public bool IsChecked(string[] taglist)    // empty array is okay
+        public bool IsChecked(string[] taglist, int checkbox = 0)    // empty array is okay
         {
             if (taglist != null)
             {
                 for (int i = 0; i < ItemList.Count; i++)
                 {
-                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].checkbox?.Checked == true )
+                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].checkbox.Length > checkbox && ItemList[i].checkbox?[checkbox].Checked == true )
                     {
                         return true;
                     }
@@ -537,7 +551,7 @@ namespace ExtendedControls
         // All, or None is returned if allornone = true
         // group options are ignored
         // optional list of tags;tags; to be ignored
-        public virtual string GetChecked(bool allornone, string tagsignorelist = "")
+        public virtual string GetChecked(bool allornone, string tagsignorelist = "", int checkbox = 0)
         {
             string ret = "";
 
@@ -546,12 +560,12 @@ namespace ExtendedControls
             for (int i = 0; i < ItemList.Count; i++)
             {
                 // if its an item check box and its not in the ignore list..
-                if (ItemList[i].checkbox != null && ItemList[i].Group == false && !tagsignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))     
+                if (ItemList[i].checkbox != null && ItemList[i].checkbox.Length > checkbox && ItemList[i].Group == false && !tagsignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))     
                 {
                     //System.Diagnostics.Debug.WriteLine($"Tick on {controllist[i].label.Text}");
                     totalchecks++;
 
-                    if (ItemList[i].checkbox.CheckState == CheckState.Checked)    // if its checked
+                    if (ItemList[i].checkbox[checkbox].CheckState == CheckState.Checked)    // if its checked
                     {
                         ret += ItemList[i].Tag + SettingsSplittingChar;
                         total++;
@@ -729,7 +743,8 @@ namespace ExtendedControls
             Size chkboxsize = CheckBoxSize.IsEmpty ? firsticonsize : CheckBoxSize;
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
-            bool hasacheckbox = ItemList.Where(x => x.Button == false).Count() > 0;     // do we have any checkboxes, if so, we will have to reserve space
+            var checkboxes = ItemList.Where(x => x.Button == false);
+            int maxcheckboxes = checkboxes.Count() > 0 ? checkboxes.Select(x => x.checkbox.Length).Max() : 0;
             bool hassubmenuicons = false;
 
             int vtop = VerticalSpacing;        // top of area
@@ -754,7 +769,7 @@ namespace ExtendedControls
                 vspacing = Math.Max(vspacing, chkboxsize.Height);       // vspacing is the max of label, icon and checkbox
 
                 int chkx = HorizontalSpacing;                                                               // position of check box
-                int imgx = hasacheckbox ? chkx + chkboxsize.Width + HorizontalSpacing : chkx;               // position of image
+                int imgx = maxcheckboxes>0 ? chkx + (chkboxsize.Width + HorizontalSpacing)*maxcheckboxes : chkx;               // position of image
                 int labx = cl.Image != null ? imgx + iconsize.Width + HorizontalSpacing : imgx;             // position of label
 
                 // label is in autosize mode, setting Text and Font will size it
@@ -767,14 +782,17 @@ namespace ExtendedControls
 
                 if (!cl.Button)
                 {
-                    cl.checkbox.BackColor = this.BackColor;
-                    cl.checkbox.CheckBoxColor = this.CheckBoxColor;
-                    cl.checkbox.CheckBoxInnerColor = this.CheckBoxInnerColor;
-                    cl.checkbox.CheckColor = this.CheckColor;
-                    cl.checkbox.MouseOverColor = this.MouseOverCheckboxColor;
-                    cl.checkbox.TickBoxReductionRatio = TickBoxReductionRatio;
-                    cl.checkbox.Font = Font;
-                    cl.checkbox.Tag = i;        // store index of control when displayed
+                    foreach (var x in cl.checkbox)
+                    {
+                        x.BackColor = this.BackColor;
+                        x.CheckBoxColor = this.CheckBoxColor;
+                        x.CheckBoxInnerColor = this.CheckBoxInnerColor;
+                        x.CheckColor = this.CheckColor;
+                        x.MouseOverColor = this.MouseOverCheckboxColor;
+                        x.TickBoxReductionRatio = TickBoxReductionRatio;
+                        x.Font = Font;
+                        x.Tag = i;        // store index of control when displayed
+                    }
                 }
 
                 if (cl.Image != null)
@@ -915,8 +933,11 @@ namespace ExtendedControls
 
                 if (cl.checkbox != null)
                 {
-                    cl.checkbox.Location = new Rectangle(post.Item1.X + colx, vcentre - post.Item1.Height / 2, post.Item1.Width, post.Item1.Height);
-                    picturebox.Add(cl.checkbox);
+                    for( int j = 0; j < cl.checkbox.Length; j++)
+                    {
+                        cl.checkbox[j].Location = new Rectangle(post.Item1.X + colx + j*(post.Item1.Width+ HorizontalSpacing) , vcentre - post.Item1.Height / 2, post.Item1.Width, post.Item1.Height);
+                        picturebox.Add(cl.checkbox[j]);
+                    }
                 }
                 if (cl.icon != null)
                 {
@@ -975,7 +996,7 @@ namespace ExtendedControls
                     for (int ix = 0; ix < ItemList.Count; ix++)
                     {
                         if (ItemList[ix].checkbox != null && ix != index && ItemList[ix].Tag != All && ItemList[ix].Tag != None)
-                            ItemList[ix].checkbox.Checked = false;
+                            ItemList[ix].checkbox[0].Checked = false;
                     }
                 }
                 else
@@ -986,7 +1007,7 @@ namespace ExtendedControls
                         //System.Diagnostics.Debug.WriteLine($"Tag {controllist[index].tag} turn off {s}");
                         int offindex = ItemList.FindIndex(x => x.Tag == s);
                         if (offindex >= 0)
-                            ItemList[offindex].checkbox.Checked = false;
+                            ItemList[offindex].checkbox[0].Checked = false;
                     }
                 }
             }

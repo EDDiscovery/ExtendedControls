@@ -52,11 +52,11 @@ namespace TestExtendedControls
 
             for (int i = 0; i < 200; i++)
             {
-                frm.UC.Add($"t{i}", $"Text {i}", Properties.Resources.Addtab);
+                frm.UC.Add($"t{i}", $"Text {i}", Properties.Resources.Addtab, checkbuttons:2);
             }
             frm.CloseBoundaryRegion = new Size(64, 64);
             frm.PositionBelow(extButton1);
-            frm.SaveSettings += (s, p) => { AddText($"Save {s}"); };
+            frm.SaveSettings += (s, p) => { AddText($"Save {s} : {frm.UC.GetChecked(false, "", 0)} : {frm.UC.GetChecked(false, "", 1)}"); };
             frm.UC.ShowClose = true;
 
             frm.Show(this);

@@ -47,7 +47,7 @@ namespace ExtendedControls
         }
 
         // Get checked including any group override settings
-        public override string GetChecked(bool allornone, string tagsignorelist = "")
+        public override string GetChecked(bool allornone, string tagsignorelist = "", int checkbox = 0)
         {
             string list = null;
 
@@ -55,13 +55,13 @@ namespace ExtendedControls
             {
                 if (eo.Exclusive?.Equals(All) ?? false)        // exclusive option
                 {
-                    if (IsChecked(new string[] { eo.Tag }))    // if this tagand checked, list is this
+                    if (IsChecked(new string[] { eo.Tag },checkbox))    // if this tagand checked, list is this
                         list = eo.Tag;
                 }
             }
 
             if (list == null)                                 // no exclusive options, so
-                list = base.GetChecked(allornone, tagsignorelist);  // get the set options from the standard grouping, using All/None
+                list = base.GetChecked(allornone, tagsignorelist, checkbox);  // get the set options from the standard grouping, using All/None
 
             return list;
         }
