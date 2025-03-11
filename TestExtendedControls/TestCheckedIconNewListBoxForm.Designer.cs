@@ -45,6 +45,7 @@
             this.extButton11 = new ExtendedControls.ExtButton();
             this.extButton12 = new ExtendedControls.ExtButton();
             this.label1 = new System.Windows.Forms.Label();
+            this.extButtonRadio = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // extButtonWithNewCheckedListBox1
@@ -215,6 +216,16 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Ext Button with check list";
             // 
+            // extButtonRadio
+            // 
+            this.extButtonRadio.Location = new System.Drawing.Point(579, 176);
+            this.extButtonRadio.Name = "extButtonRadio";
+            this.extButtonRadio.Size = new System.Drawing.Size(244, 23);
+            this.extButtonRadio.TabIndex = 0;
+            this.extButtonRadio.Text = "Radio";
+            this.extButtonRadio.UseVisualStyleBackColor = true;
+            this.extButtonRadio.Click += new System.EventHandler(this.extButtonRadio_Click);
+            // 
             // TestCheckedIconNewListBoxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -230,6 +241,7 @@
             this.Controls.Add(this.extButton9);
             this.Controls.Add(this.extButton8);
             this.Controls.Add(this.extButton7);
+            this.Controls.Add(this.extButtonRadio);
             this.Controls.Add(this.extButton6);
             this.Controls.Add(this.extButton5);
             this.Controls.Add(this.extButton4);
@@ -260,5 +272,6 @@
         private ExtendedControls.ExtButton extButton11;
         private ExtendedControls.ExtButton extButton12;
         private System.Windows.Forms.Label label1;
+        private ExtendedControls.ExtButton extButtonRadio;
     }
 }

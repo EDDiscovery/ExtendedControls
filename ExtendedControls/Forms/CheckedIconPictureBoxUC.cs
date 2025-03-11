@@ -34,11 +34,11 @@ namespace ExtendedControls
         public List<Item> ItemList { get; private set; }
         public int Count { get { return ItemList.Count; } }
         public int CountGroup { get { return ItemList.Where(x => x.Group).Count(); } }
-        public List<Item> GroupOptions() { return ItemList.Where(x => x.Group).ToList(); }
-        public List<Item> GroupOptionsWithUserTag() { return ItemList.Where(x => x.Group && x.UserTag != null).ToList(); }
-        public List<Item> StandardOptions() { return ItemList.Where(x => !x.Group).ToList(); }
+        public List<Item> GroupOptions(int checkbox) { return ItemList.Where(x => x.Group && x.CheckBoxExists(checkbox)).ToList(); }
+       // public List<Item> GroupOptionsWithUserTag(int checkbox) { return ItemList.Where(x => x.Group && x.CheckBoxExists(checkbox) && x.UserTag != null).ToList(); }
+      //  public List<Item> StandardOptions(int checkbox) { return ItemList.Where(x => !x.Group && x.CheckBoxExists(checkbox)).ToList(); }
         public List<Item> UserTags(object usertag) { return ItemList.Where(x => x.UserTag == usertag).ToList(); }
-        public string[] TagList() { return ItemList.Where(x => !x.Group).Select(x => x.Tag).ToArray(); }        // tags of non group items
+      //  public string[] TagList() { return ItemList.Where(x => !x.Group).Select(x => x.Tag).ToArray(); }        // tags of non group items
 
         // back colour of picture box
         public override Color BackColor { get => base.BackColor; set { picturebox.FillColor = base.BackColor = value; } }
@@ -74,8 +74,8 @@ namespace ExtendedControls
         // Subform, null if not active
         public CheckedIconNewListBoxForm Subform { get; private set; } = null;
 
-        // check box changed : index, Tag, Text, userTag, change args
-        public Action<int, string, string, object, ItemCheckEventArgs> CheckedChanged { get; set; }       // check box changed
+        // check box changed : index, checkbox, Tag, Text, userTag, change args
+        public Action<int, int, string, string, object, ItemCheckEventArgs> CheckedChanged { get; set; }       // check box changed
         // index, Tag, Text, UserTag, button args
         public Action<int,string,string,object,MouseEventArgs> ButtonPressed { get; set; }
 
@@ -98,7 +98,7 @@ namespace ExtendedControls
             public Image Image { get; set; }
             public object UserTag { get; set; }
 
-            // for Group=false, turn off these tags when checked
+            // for Group=false, turn off these tags when checked. You can include yourself and it will ignore it.
             // For Group=true, and this is set All, then when returing GetCheckedGroup, and this is checked, return this tag as the setting.
             public string Exclusive { get; set; }       
             // Radio button use, don't allow this item to become unchecked. Group = false.   For radio buttons, set exclusive to All to turn off the other radio buttons
@@ -121,6 +121,8 @@ namespace ExtendedControls
 
             public bool IsSubmenu { get { return UserTag != null && UserTag is SubForm; } }
             public SubForm GetSubForm { get { return UserTag as SubForm; } }
+
+            public bool CheckBoxExists(int i) { return checkbox != null && i < checkbox.Length && checkbox[i] != null; }
 
             // Create a UC item from a string
             // Description is Tag,Text [,ImagePath (empty string, File, Resource) [,Exclusive list [,type]]]
@@ -184,12 +186,14 @@ namespace ExtendedControls
             }
         }
 
-        // the main add
+        // the main add with many options
         public void Add(string tag, string text, Image img = null, bool attop = false, string exclusivetags = null,
-                                bool disableuncheck = false, bool button = false, object usertag = null, bool group = false, int checkbuttons = 1)
+                                bool disableuncheck = false, bool button = false, object usertag = null, bool group = false, int checkmap = 1,
+                                string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)
         {
             var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag};
             cl.label = new ExtPictureBox.Label();
+            cl.label.ToolTipText = labeltooltiptext;
             cl.label.Click += (sender, el, e) =>
             {
                 if (cl.label.Enabled)       // only if enabled
@@ -207,22 +211,29 @@ namespace ExtendedControls
             };
             if (!cl.Button)
             {
-                cl.checkbox = new ExtPictureBox.CheckBox[checkbuttons];
-                for(int i = 0; i < checkbuttons; i++)
+                int lastbit = checkmap.RightMostBit();
+                cl.checkbox = new ExtPictureBox.CheckBox[lastbit+1];
+                for(int i = 0; i < cl.checkbox.Length; i++)
                 {
-                    var x = new ExtPictureBox.CheckBox();
-                    cl.checkbox[i] = x;
-                    x.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
-                    x.MouseDown += (s, el, e) =>
+                    if ((checkmap & (1 << i)) != 0)
                     {
-                        if (e.Button == MouseButtons.Right && x.Enabled)
-                            ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
-                    };
+                        var x = new ExtPictureBox.CheckBox();
+                        if (checkbuttontooltiptext != null)
+                            x.ToolTipText = checkbuttontooltiptext[i];
+                        cl.checkbox[i] = x;
+                        x.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
+                        x.MouseDown += (s, el, e) =>
+                        {
+                            if (e.Button == MouseButtons.Right && x.Enabled)
+                                ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                        };
+                    }
                 }
             }
             if (img != null)
             {
                 cl.icon = new ExtPictureBox.ImageElement();
+                cl.icon.ToolTipText = icontooltiptext;
                 cl.icon.Click += (sender, el, e) =>
                 {
                     if (cl.icon.Enabled)    
@@ -261,9 +272,10 @@ namespace ExtendedControls
         }
 
         // a Radio style button
-        public void AddRadio(string tag, string text, Image img = null, bool attop = false, object usertag = null)
+        public void AddRadio(string tag, string text, Image img = null, bool attop = false, object usertag = null, 
+                                int checkmap = 1, string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)
         {
-            Add(tag, text, img, attop, All, true, false, usertag);
+            Add(tag, text, img, attop, All, true, false, usertag, false, checkmap, checkbuttontooltiptext,icontooltiptext,labeltooltiptext );
         }
 
         // add as a tuple
@@ -385,7 +397,10 @@ namespace ExtendedControls
             if (i.checkbox != null)
             {
                 foreach (var x in i.checkbox)
-                    x.Enabled = enable;
+                {
+                    if (x != null)
+                        x.Enabled = enable;
+                }
             }
             if (i.icon != null)
                 i.icon.Enabled = enable;
@@ -400,7 +415,10 @@ namespace ExtendedControls
             if (i.checkbox != null)
             {
                 foreach (var x in i.checkbox)
-                    x.ShowDisabled = showdisabled;
+                {
+                    if (x != null)
+                        x.ShowDisabled = showdisabled;
+                }
             }
             if (i.icon != null)
                 i.icon.ShowDisabled = showdisabled;
@@ -431,7 +449,10 @@ namespace ExtendedControls
                 if (i.checkbox != null)
                 {
                     foreach (var x in i.checkbox)
-                        x.Enabled = enable;
+                    {
+                        if ( x != null)
+                            x.Enabled = enable;
+                    }
                 }
                 i.label.Enabled = enable;
             }
@@ -453,71 +474,40 @@ namespace ExtendedControls
 
         // using SettingsSplittingChar as the separator, respects All or All; as a tag for all
         // Does not obey exclusive. You can set group.
-        public void Set(string taglist, bool state = true, int startpos = 0, int end = -1, int checkbox = 0)        
+        public void Set(string taglist, bool state = true, int checkbox = 0)        
         {
             if (taglist != null)
             {
                 var list = taglist.SplitNoEmptyStrings(SettingsSplittingChar);
-                if (list.Length >= 1 && list[0] == All)      
-                    SetNonGroup(CheckState.Checked,startpos,end,checkbox);
-                else
-                    Set(list, state,startpos,end,checkbox);
+                Set(list, state ? CheckState.Checked : CheckState.Unchecked, checkbox);
             }
         }
 
         // Set taglist. Does not obey exclusive. You can set group.
-        public void Set(IEnumerable<string> taglist, bool state = true, int startpos = 0, int end = -1, int checkbox = 0)
-        {
-            if (taglist != null)
-                Set(taglist, state ? CheckState.Checked : CheckState.Unchecked, startpos , end, checkbox);
-        }
-
-        // Set taglist. Does not obey exclusive. You can set group.
-        public void Set(IEnumerable<string> taglist, CheckState state = CheckState.Checked, int startpos = 0, int end = -1, int checkbox=0)
+        public void Set(IEnumerable<string> taglist, CheckState state = CheckState.Checked, int checkbox = 0)
         {
             if (taglist != null)
             {
-                if (end < 0)
-                    end = ItemList.Count() - 1;
-
-                for (int i = startpos; i <= end; i++)
+                foreach(var x in ItemList)
                 {
-                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].checkbox != null && ItemList[i].checkbox.Length > checkbox)
+                    if (taglist.Contains(x.Tag) && x.CheckBoxExists(checkbox))
                     {
                         //System.Diagnostics.Debug.WriteLine($"Set check {controllist[i].tag} to {state}");
-                        ItemList[i].checkbox[checkbox].CheckState = state;
+                        x.checkbox[checkbox].CheckState = state;
                     }
                 }
             }
         }
 
-        // Set non group on. Does not obey exclusive
-        public void SetNonGroup(CheckState state, int startpos = 0, int end = -1, int checkbox = 0)
-        {
-            if (end < 0)
-                end = ItemList.Count() - 1;
-
-            for (int i = startpos; i <= end; i++)  // inclusive
-            {
-                if (ItemList[i].checkbox != null && ItemList[i].Group == false && ItemList[i].checkbox.Length > checkbox)
-                    ItemList[i].checkbox[checkbox].CheckState = state;
-            }
-        }
-
         // can set any item incl group
-        public void Set(int pos, bool state)
+        public void Set(int pos, bool state, int checkbox = 0)
         {
-            Set(pos, state ? CheckState.Checked : CheckState.Unchecked);
-        }
-        // from here onwards set
-        public void SetFromToEnd(int startpos, bool state, string tagignorelist = "")
-        {
-            Set(startpos, state ? CheckState.Checked : CheckState.Unchecked, -1, tagignorelist);
+            Set(pos, state ? CheckState.Checked : CheckState.Unchecked,checkbox:checkbox);
         }
 
         // Set from start to end. Does not obey exclusive. You can set group.
         // end = 0 means just check start. -1 means check all to end
-        public void Set(int startpos, CheckState state, int end = 0, string tagignorelist = "", int checkbox = 0)
+        public void Set(int startpos, CheckState state, int end = 0, string tagignorelist = "", int checkbox = 0, bool ignoregroup = false)
         {
             if (end == 0)
                 end = startpos;
@@ -526,7 +516,7 @@ namespace ExtendedControls
 
             for (int i = startpos; i <= end; i++)  // inclusive
             {
-                if (ItemList[i].checkbox != null && ItemList[i].checkbox.Length>checkbox && !tagignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))
+                if (ItemList[i].CheckBoxExists(checkbox) && !tagignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar) && (ignoregroup==false || !ItemList[i].Group))
                     ItemList[i].checkbox[checkbox].CheckState = state;
             }
         }
@@ -537,7 +527,7 @@ namespace ExtendedControls
             {
                 for (int i = 0; i < ItemList.Count; i++)
                 {
-                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].checkbox.Length > checkbox && ItemList[i].checkbox?[checkbox].Checked == true )
+                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].CheckBoxExists(checkbox) && ItemList[i].checkbox?[checkbox].Checked == true )
                     {
                         return true;
                     }
@@ -560,7 +550,7 @@ namespace ExtendedControls
             for (int i = 0; i < ItemList.Count; i++)
             {
                 // if its an item check box and its not in the ignore list..
-                if (ItemList[i].checkbox != null && ItemList[i].checkbox.Length > checkbox && ItemList[i].Group == false && !tagsignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))     
+                if (ItemList[i].CheckBoxExists(checkbox) && ItemList[i].Group == false && !tagsignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar))     
                 {
                     //System.Diagnostics.Debug.WriteLine($"Tick on {controllist[i].label.Text}");
                     totalchecks++;
@@ -782,16 +772,21 @@ namespace ExtendedControls
 
                 if (!cl.Button)
                 {
-                    foreach (var x in cl.checkbox)
+                    for( int j = 0; j < cl.checkbox.Length; j++)
                     {
-                        x.BackColor = this.BackColor;
-                        x.CheckBoxColor = this.CheckBoxColor;
-                        x.CheckBoxInnerColor = this.CheckBoxInnerColor;
-                        x.CheckColor = this.CheckColor;
-                        x.MouseOverColor = this.MouseOverCheckboxColor;
-                        x.TickBoxReductionRatio = TickBoxReductionRatio;
-                        x.Font = Font;
-                        x.Tag = i;        // store index of control when displayed
+                        var x = cl.checkbox[j];
+                        if (x != null)
+                        {
+                            x.BackColor = this.BackColor;
+                            x.CheckBoxColor = this.CheckBoxColor;
+                            x.CheckBoxInnerColor = this.CheckBoxInnerColor;
+                            x.CheckColor = this.CheckColor;
+                            x.MouseOverColor = this.MouseOverCheckboxColor;
+                            x.TickBoxReductionRatio = TickBoxReductionRatio;
+                            x.Font = Font;
+                            x.Tag = i;        // store index of item in tag
+                            x.Tag2 = j;     // and the button index
+                        }
                     }
                 }
 
@@ -935,8 +930,11 @@ namespace ExtendedControls
                 {
                     for( int j = 0; j < cl.checkbox.Length; j++)
                     {
-                        cl.checkbox[j].Location = new Rectangle(post.Item1.X + colx + j*(post.Item1.Width+ HorizontalSpacing) , vcentre - post.Item1.Height / 2, post.Item1.Width, post.Item1.Height);
-                        picturebox.Add(cl.checkbox[j]);
+                        if (cl.checkbox[j] != null)
+                        {
+                            cl.checkbox[j].Location = new Rectangle(post.Item1.X + colx + j * (post.Item1.Width + HorizontalSpacing), vcentre - post.Item1.Height / 2, post.Item1.Width, post.Item1.Height);
+                            picturebox.Add(cl.checkbox[j]);
+                        }
                     }
                 }
                 if (cl.icon != null)
@@ -983,31 +981,36 @@ namespace ExtendedControls
         private void CheckedIconListBoxForm_CheckedChanged(ExtPictureBox.CheckBox cb)
         {
             int index = (int)cb.Tag;
+            int checkbox = (int)cb.Tag2;
+            var it = ItemList[index];
 
-            if (ItemList[index].DisableUncheck && cb.Checked == false) // if uncheckable, then set it back. Used in radio button situations
+            if (it.DisableUncheck && cb.Checked == false) // if uncheckable, then set it back. Used in radio button situations
             {
                 cb.Checked = true;
             }
 
-            if (cb.Checked && ItemList[index].Exclusive!= null)      // if checking, and we have tags which must be turned off
+            if (cb.Checked && it.Exclusive!= null)      // if checking, and we have tags which must be turned off
             {
-                if (ItemList[index].Exclusive.Equals(All))     // turn off all but us
+                if(it.Exclusive.Equals(All))            // turn off all but us
                 {
                     for (int ix = 0; ix < ItemList.Count; ix++)
                     {
-                        if (ItemList[ix].checkbox != null && ix != index && ItemList[ix].Tag != All && ItemList[ix].Tag != None)
-                            ItemList[ix].checkbox[0].Checked = false;
+                        if (ItemList[ix].checkbox != null && ix != index && ItemList[ix].Tag != All && ItemList[ix].Tag != None && ItemList[ix].CheckBoxExists(checkbox))
+                        {
+                            ItemList[ix].checkbox[checkbox].Checked = false;
+                        }
                     }
                 }
                 else
                 {
-                    string[] tags = ItemList[index].Exclusive.Split(SettingsSplittingChar);
+                    string[] tags = it.Exclusive.Split(SettingsSplittingChar);      // turn off this list excepting us
                     foreach (string s in tags)
-                    {
-                        //System.Diagnostics.Debug.WriteLine($"Tag {controllist[index].tag} turn off {s}");
+                    { 
                         int offindex = ItemList.FindIndex(x => x.Tag == s);
-                        if (offindex >= 0)
-                            ItemList[offindex].checkbox[0].Checked = false;
+                        if (offindex >= 0 && offindex != index && ItemList[offindex].CheckBoxExists(checkbox))     // don't uncheck us, make sure it exists
+                        {
+                            ItemList[offindex].checkbox[checkbox].Checked = false;
+                        }
                     }
                 }
             }
@@ -1015,8 +1018,8 @@ namespace ExtendedControls
             var prevstate = cb.Checked ? CheckState.Unchecked : CheckState.Checked;
 
             ItemCheckEventArgs eventargs = new ItemCheckEventArgs(index, cb.CheckState, prevstate);
-            CheckChangedEvent(cb, eventargs);       // derived classes first.
-            CheckedChanged?.Invoke(index,ItemList[index].Tag, ItemList[index].Text, ItemList[index].UserTag, eventargs);
+            CheckChangedEvent(checkbox, cb, eventargs);       // derived classes first.
+            CheckedChanged?.Invoke(index,checkbox, it.Tag, it.Text, it.UserTag, eventargs);
         }
 
         // operate subform popups on entering a element
@@ -1030,7 +1033,7 @@ namespace ExtendedControls
                 CloseSubMenu();
         }
 
-        protected virtual void CheckChangedEvent(ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) { }
+        protected virtual void CheckChangedEvent(int checkbox, ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) { }
 
         private ExtPictureBoxScroll pictureboxscroll;
         private ExtPictureBox picturebox;

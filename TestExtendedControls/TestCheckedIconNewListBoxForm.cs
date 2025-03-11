@@ -50,11 +50,16 @@ namespace TestExtendedControls
         {
             CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
 
+            frm.UC.AddAllNone(7);
+            frm.UC.AddGroupItem("t1;t2;t3", "1-3");
+            frm.UC.AddGroupItem("t2;t3;t4", "2-4", checkmap: 3);
             for (int i = 0; i < 200; i++)
             {
-                frm.UC.Add($"t{i}", $"Text {i}", Properties.Resources.Addtab, checkbuttons:2);
+                frm.UC.Add($"t{i}", $"Text {i}", Properties.Resources.Addtab, checkmap:i<10 ? 3 : i%4+1, 
+                        checkbuttontooltiptext:new string[] {"B1","B2","B3","B4"}, icontooltiptext:"Icon", labeltooltiptext:"Label");
             }
-            frm.CloseBoundaryRegion = new Size(64, 64);
+            frm.CloseOnDeactivate = false;
+           // frm.CloseBoundaryRegion = new Size(64, 64);
             frm.PositionBelow(extButton1);
             frm.SaveSettings += (s, p) => { AddText($"Save {s} : {frm.UC.GetChecked(false, "", 0)} : {frm.UC.GetChecked(false, "", 1)}"); };
             frm.UC.ShowClose = true;
@@ -95,7 +100,7 @@ namespace TestExtendedControls
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, chkbox, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.UC.NoneAllIgnore = "||;";
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent3 = s; };
@@ -138,7 +143,7 @@ namespace TestExtendedControls
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, chkbox, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent5 = s; };
             frm.UC.Set(persistent5);
@@ -163,7 +168,7 @@ namespace TestExtendedControls
             frm.PositionBelow(extButton2);
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, chkbox, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.AllOrNoneBack = true;
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent6 = s; };
             frm.UC.Set(persistent6);
@@ -188,7 +193,7 @@ namespace TestExtendedControls
             frm.UC.AddGroupItem("t100;t101;t102", "100-102");
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, chkbox, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent7 = s; };
             frm.UC.Set(persistent7);
@@ -274,7 +279,7 @@ namespace TestExtendedControls
 
                 frm8.UC.MultipleColumns = true;
                 frm8.CloseBoundaryRegion = new Size(64, 64);
-                frm8.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
+                frm8.UC.CheckedChanged += (index, chkbox, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
                 frm8.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
                 frm8.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent8 = s; System.Diagnostics.Debug.WriteLine($"Save settings {s} {p}"); };
                 frm8.UC.Set(persistent8);
@@ -310,7 +315,7 @@ namespace TestExtendedControls
             frm.UC.AddGroupItem("t100;t101;t102", "100-102");
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
-            frm.UC.CheckedChanged += (index, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
+            frm.UC.CheckedChanged += (index, chkbox, tag, text, ud, ie) => { AddText($"Check {ie.Index}"); };
             frm.UC.ButtonPressed += (index, stag, text, utag, bev) => { AddText($"Button pressed {index} {stag} {text}"); };
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); persistent9 = s; };
             frm.UC.Set(persistent9);
@@ -465,6 +470,31 @@ namespace TestExtendedControls
             frm.UC.ShowClose = true;
 
             frm.Show(b12settings,extButton12,this); ;
+        }
+
+        private void extButtonRadio_Click(object sender, EventArgs e)
+        {
+            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
+            string rlist1 = "R1;R2;R3";
+            frm.UC.Add($"R1", $"Radio1", Properties.Resources.Addtab, exclusivetags: rlist1, disableuncheck: true);
+            frm.UC.Add($"R2", $"Radio2", Properties.Resources.Addtab, exclusivetags: rlist1, disableuncheck: true);
+            frm.UC.Add($"R3", $"Radio3", Properties.Resources.Addtab, exclusivetags: rlist1, disableuncheck: true);
+
+            string rlist2 = "R21;R22;R23";
+            frm.UC.Add($"R21", $"Radio21", Properties.Resources.Addtab, exclusivetags: rlist2, disableuncheck: true, checkmap: 2);
+            frm.UC.Add($"R22", $"Radio22", Properties.Resources.Addtab, exclusivetags: rlist2, disableuncheck: true, checkmap: 2);
+            frm.UC.Add($"R23", $"Radio23", Properties.Resources.Addtab, exclusivetags: rlist2, disableuncheck: true, checkmap: 2);
+            
+            frm.UC.Add($"R23", $"All", Properties.Resources.Addtab, exclusivetags: "All", disableuncheck: true, checkmap: 2);
+
+
+            frm.CloseOnDeactivate = true;
+            frm.PositionBelow(extButton1);
+            frm.SaveSettings += (s, p) => { AddText($"Save {s} : {frm.UC.GetChecked(false, "", 0)} : {frm.UC.GetChecked(false, "", 1)}"); };
+            frm.UC.ShowClose = true;
+
+            frm.Show(this);
+
         }
     }
 

@@ -42,6 +42,7 @@ namespace ExtendedControls
             public bool AlternateImageWhenMouseOver { get; set; }
 
             public Object Tag { get; set; }
+            public Object Tag2 { get; set; }
             public string ToolTipText { get; set; }
 
             public ExtPictureBox Parent { get; set; }

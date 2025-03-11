@@ -13,6 +13,7 @@
  */
 
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -21,29 +22,31 @@ namespace ExtendedControls
 
     public class CheckedIconGroupUserControl : CheckedIconUserControl
     {
-        public void AddAllNone()
+        public void AddAllNone(int checkmap = 1)
         {
-            AddGroupItemAtTop(None, "None".TxID(ECIDs.None), Properties.Resources.None);
-            AddGroupItemAtTop(All, "All".TxID(ECIDs.All), Properties.Resources.All);       // displayed, translate
+            AddGroupItemAtTop(None, "None".TxID(ECIDs.None), Properties.Resources.None, checkmap: checkmap);
+            AddGroupItemAtTop(All, "All".TxID(ECIDs.All), Properties.Resources.All, checkmap: checkmap);       // displayed, translate
         }
 
         // list of options which do not participate in the all/none selection. Include the separation character at the end
         public string NoneAllIgnore { get; set; } = "";
 
         public const string Disabled = "Disabled";
-        public void AddDisabled(string differenttext = null)
+        public void AddDisabled(string differenttext = null, int checkmap = 1)
         {
-            AddGroupItemAtTop(Disabled, differenttext.HasChars() ? differenttext : "Disabled".TxID(ECIDs.Disabled), Properties.Resources.Disabled, exclusive: All);
+            AddGroupItemAtTop(Disabled, differenttext.HasChars() ? differenttext : "Disabled".TxID(ECIDs.Disabled), Properties.Resources.Disabled, exclusive: All, checkmap:checkmap);
         }
 
-        public void AddGroupItem(string tags, string text, Image img = null, object usertag = null, string exclusive = null)
+        public void AddGroupItem(string tags, string text, Image img = null, object usertag = null, string exclusive = null,
+                        int checkmap = 1, string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)
         {
-            Add(tags, text, img, usertag: usertag, exclusivetags: exclusive, group: true);
+            Add(tags, text, img, false, exclusive, false, false, usertag, true, checkmap, checkbuttontooltiptext, icontooltiptext, labeltooltiptext);
         }
 
-        public void AddGroupItemAtTop(string tags, string text, Image img = null, object usertag = null, string exclusive = null)
+        public void AddGroupItemAtTop(string tags, string text, Image img = null, object usertag = null, string exclusive = null,
+                        int checkmap = 1, string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)
         {
-            Add(tags, text, img, usertag: usertag, exclusivetags: exclusive, group: true, attop: true);
+            Add(tags, text, img, true, exclusive, false, false, usertag, true, checkmap, checkbuttontooltiptext, icontooltiptext, labeltooltiptext);
         }
 
         // Get checked including any group override settings
@@ -51,11 +54,11 @@ namespace ExtendedControls
         {
             string list = null;
 
-            foreach (var eo in GroupOptions())
+            foreach (var eo in GroupOptions(checkbox))
             {
-                if (eo.Exclusive?.Equals(All) ?? false)        // exclusive option
+                if (eo.Exclusive?.Equals(All) ?? false)        // exclusive option All for group
                 {
-                    if (IsChecked(new string[] { eo.Tag },checkbox))    // if this tagand checked, list is this
+                    if (IsChecked(new string[] { eo.Tag },checkbox))    // if this tag and checked, list is this
                         list = eo.Tag;
                 }
             }
@@ -65,109 +68,133 @@ namespace ExtendedControls
 
             return list;
         }
+
         public override Rectangle Render(Point preferedxy, Size? fixedsize = null)
         {
-            SetGroupOptions();
-            return base.Render(preferedxy, fixedsize);
+            var checkboxes = ItemList.Where(x => x.Button == false);
+            int maxcheckboxes = checkboxes.Count() > 0 ? checkboxes.Select(x => x.checkbox.Length).Max() : 0;
+
+            var rect = base.Render(preferedxy, fixedsize);
+
+            for (int i = 0; i < maxcheckboxes; i++)
+                SetGroupOptions(i);
+
+            return rect;
         }
 
         #region Implementation
 
-        protected override void CheckChangedEvent(ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) // we get a chance to operate group options
+        protected override void CheckChangedEvent(int checkbox, ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) // we get a chance to operate group options
         {
-            var groupoptions = GroupOptions();
+            var groupoptions = GroupOptions(checkbox);
+            
+            var x = ItemList[e.Index];
 
-            if (e.NewValue == CheckState.Checked)       // all or none set all of them
+            if (x.Group)
             {
-                if (e.Index < groupoptions.Count)
+                string taglist = x.Tag;
+                bool exclusiveoption = x.Exclusive?.Equals(All) ?? false;
+
+                if (e.NewValue == CheckState.Checked)
                 {
                     bool shift = Control.ModifierKeys.HasFlag(Keys.Control);
 
                     if (!shift)
-                        SetFromToEnd(groupoptions.Count, false, NoneAllIgnore);   // if not shift, we clear all (excepting the ignore list), and apply this tag
-
-                    string tag = groupoptions[e.Index].Tag;
-                    bool exclusiveoption = groupoptions[e.Index].Exclusive?.Equals(All) ?? false;
-
-                    foreach (var eo in groupoptions)
                     {
-                        if (eo.Exclusive?.Equals(All) ?? false)         // if exclusive option
-                            Set(eo.Tag, tag == eo.Tag);          // its on if we clicked on it, else off
+                        //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} clear all");
+                        Set(0, CheckState.Unchecked, -1, NoneAllIgnore, checkbox, true);        // set all non group items unchecked except NoneAllIgnore ones
                     }
 
-                    if (tag == All)                                     // All sets all except the ignore list
+                    foreach (var eo in groupoptions)                    // for all other group options
                     {
-                        SetFromToEnd(groupoptions.Count, true, NoneAllIgnore);
+                        if (eo.Exclusive?.Equals(All) ?? false)         // if exclusive option ALL
+                            Set(eo.Tag, taglist == eo.Tag, checkbox);   // set the tag list given by the group, to either ON if taglist matches the eo taglist, for this checkbox
                     }
-                    else if (tag == None || exclusiveoption)            // None clears all except the ignore list
+
+                    if (taglist == All)                                     // All sets all except the ignore list
                     {
-                        SetFromToEnd(groupoptions.Count, false, NoneAllIgnore);
+                        //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} set all");
+                        Set(0, CheckState.Checked, -1, NoneAllIgnore, checkbox, true);        // set all non group items checked except NoneAllIgnore
+                    }
+                    else if (taglist == None || exclusiveoption)            // None clears all except the ignore list
+                    {
+                        //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} unset all");
+                        Set(0, CheckState.Unchecked, -1, NoneAllIgnore, checkbox, true);        // set all non group items unchecked except NoneAllIgnore
                     }
                     else
-                        Set(tag);                                       // else set tag
+                    {
+                        //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} set ");
+                        Set(taglist, true, checkbox);                                       // else set items in the tag list
+                    }
                 }
                 else
                 {
-                    foreach (var eo in groupoptions)
+                    if (exclusiveoption)                       // clicking on exclusive option does not turn it off
                     {
-                        if (eo.Exclusive?.Equals(All) ?? false)         // we have set something else, so clear all exclusive options
-                            Set(eo.Tag, false);
+                        //System.Diagnostics.Debug.WriteLine($"Group unchecked {checkbox} exclusive list");
+                        Set(taglist, true, checkbox);
                     }
                 }
             }
             else
             {
-                if (e.Index < groupoptions.Count)               // off on this clears the entries of it only
+                if (e.NewValue == CheckState.Checked)       // Normal item, not group, if checked on
                 {
-                    string tag = groupoptions[e.Index].Tag;
-                    bool exclusiveoption = groupoptions[e.Index].Exclusive?.Equals(All) ?? false;
-
-                    if (exclusiveoption)                       // clicking on exclusive option does not turn it off
-                        Set(tag, true);
+                    foreach (var eo in groupoptions)    // check all group options of this checkbox
+                    {
+                        if (eo.Exclusive?.Equals(All) ?? false) // we have an exclusion which is All
+                            Set(eo.Tag, false, checkbox);
+                    }
                 }
             }
 
-            SetGroupOptions();
+            SetGroupOptions(checkbox);
         }
 
-        private void SetGroupOptions()
+        // This sets the group options ticks of a checkbox set
+        private void SetGroupOptions(int checkbox)
         {
-            // using All or None.. on non group items, and ignoring those which do not contribute to all/none
-            string list = GetChecked(true, NoneAllIgnore);
-            //System.Diagnostics.Debug.WriteLine($"Set Group Options on {list}");
+            // returning All or None or list of selected, on non.. on non group items, and ignoring those which do not contribute to all/none
+            string list = GetChecked(true, NoneAllIgnore, checkbox);
 
-            int pos = 0;
-            foreach (var eo in GroupOptions())
+           // System.Diagnostics.Debug.WriteLine($"Set Group Options on {checkbox} current set is {list}");
+
+            foreach (var eo in GroupOptions(checkbox))
             {
-                if (eo.Tag == All)
+                int pos = (int)eo.label.Tag;
+
+                //System.Diagnostics.Debug.WriteLine($"  Check Group tag {eo.Tag} at {pos} vs {list}");
+
+                if (eo.Tag == All)              
                 {
-                    Set(pos, list.Equals(All));
+                    //System.Diagnostics.Debug.WriteLine($"   - Group option All");
+                    Set(pos, list.Equals(All), checkbox);
                 }
                 else if (eo.Tag == None)
                 {
-                    Set(pos, list.Equals(None));
+                    //System.Diagnostics.Debug.WriteLine($"   - Group option None");
+                    Set(pos, list.Equals(None), checkbox);
                 }
-                else if (eo.Tag == list)       // if an exclusive group option set list equal to this
+                else if (eo.Tag == list)       // if the tag list of this group matches what is set
                 {
-                    Set(pos, true);
+                    //System.Diagnostics.Debug.WriteLine($"   - Group option tag list matches list");
+                    Set(pos, true, checkbox);  
                 }
                 else if (list.MatchesAllItemsInList(eo.Tag, SettingsSplittingChar))        // exactly, tick
                 {
-                    //System.Diagnostics.Debug.WriteLine("Checking T " + eo.Tag + " vs " + list);
-                    Set(pos, true);
+                    //System.Diagnostics.Debug.WriteLine($"   - Group option list matches all items in list");
+                    Set(pos, true, checkbox);
                 }
                 else if (list.ContainsAllItemsInList(eo.Tag, SettingsSplittingChar)) // contains, intermediate
                 {
-                    //System.Diagnostics.Debug.WriteLine("Checking I " + eo.Tag + " vs " + list + list.Equals(eo.Tag));
-                    Set(pos, CheckState.Indeterminate);
+                    //System.Diagnostics.Debug.WriteLine($"   - Group option list matches some items in list");
+                    Set(pos, CheckState.Indeterminate, checkbox:checkbox);
                 }
                 else
                 {
-                    //System.Diagnostics.Debug.WriteLine("Checking F " + eo.Tag + " vs " + list);
-                    Set(pos, false);
+                    //System.Diagnostics.Debug.WriteLine($"   - Group option nothing matches turning off");
+                    Set(pos, false,checkbox);
                 }
-
-                pos++;
             }
         }
 
