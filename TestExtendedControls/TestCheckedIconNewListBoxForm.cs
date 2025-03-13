@@ -480,12 +480,13 @@ namespace TestExtendedControls
             frm.UC.Add($"R2", $"Radio2", Properties.Resources.Addtab, exclusivetags: rlist1, disableuncheck: true);
             frm.UC.Add($"R3", $"Radio3", Properties.Resources.Addtab, exclusivetags: rlist1, disableuncheck: true);
 
-            string rlist2 = "R21;R22;R23";
+            string rlist2 = "All";
             frm.UC.Add($"R21", $"Radio21", Properties.Resources.Addtab, exclusivetags: rlist2, disableuncheck: true, checkmap: 2);
             frm.UC.Add($"R22", $"Radio22", Properties.Resources.Addtab, exclusivetags: rlist2, disableuncheck: true, checkmap: 2);
             frm.UC.Add($"R23", $"Radio23", Properties.Resources.Addtab, exclusivetags: rlist2, disableuncheck: true, checkmap: 2);
-            
-            frm.UC.Add($"R23", $"All", Properties.Resources.Addtab, exclusivetags: "All", disableuncheck: true, checkmap: 2);
+
+            frm.UC.Add($"R25", $"Non radio 1", Properties.Resources.Addtab, checkmap: 2);
+            frm.UC.Add($"R26", $"Non radio 2", Properties.Resources.Addtab, checkmap: 2);
 
 
             frm.CloseOnDeactivate = true;

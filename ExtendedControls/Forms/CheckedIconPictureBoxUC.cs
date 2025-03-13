@@ -34,6 +34,13 @@ namespace ExtendedControls
         public List<Item> ItemList { get; private set; }
         public int Count { get { return ItemList.Count; } }
         public int CountGroup { get { return ItemList.Where(x => x.Group).Count(); } }
+        // maximum number of check boxes across
+        public int MaxRadioButtons()
+        {
+            var checkboxes = ItemList.Where(x => x.Button == false);
+            int maxcheckboxes = checkboxes.Count() > 0 ? checkboxes.Select(x => x.checkbox.Length).Max() : 0;
+            return maxcheckboxes;
+        }
         public List<Item> GroupOptions(int checkbox) { return ItemList.Where(x => x.Group && x.CheckBoxExists(checkbox)).ToList(); }
        // public List<Item> GroupOptionsWithUserTag(int checkbox) { return ItemList.Where(x => x.Group && x.CheckBoxExists(checkbox) && x.UserTag != null).ToList(); }
       //  public List<Item> StandardOptions(int checkbox) { return ItemList.Where(x => !x.Group && x.CheckBoxExists(checkbox)).ToList(); }
@@ -98,11 +105,21 @@ namespace ExtendedControls
             public Image Image { get; set; }
             public object UserTag { get; set; }
 
-            // for Group=false, turn off these tags when checked. You can include yourself and it will ignore it.
-            // For Group=true, and this is set All, then when returing GetCheckedGroup, and this is checked, return this tag as the setting.
-            public string Exclusive { get; set; }       
-            // Radio button use, don't allow this item to become unchecked. Group = false.   For radio buttons, set exclusive to All to turn off the other radio buttons
+            // For non group buttons:
+            //      For radio buttons: set DisableUncheck=true and set exclusive to All
+            //          Turns off the other non group checkboxes which have Exclusive not null and disabledunchecked true
+            //      For radio buttons: set DisableUncheck=true and set exclusive to all tag names like "R1;R2;R3"
+            //          Turns off the other non group checkboxes with these tags
+            //      For general buttons which don't want others set: Set exclusive to list of tags to turn off
+            //
+            // For group buttons:
+            //      If Exclusive=All, and if its checked, the current check state is the Tag of the group button selected on.
+
+            // Don't allow this item to become unchecked. Radio Button use mostly
             public bool DisableUncheck { get; set; }
+            // Exclusive list
+            public string Exclusive { get; set; }       
+            
             // Its a button not a check box but a button type label
             public bool Button { get; set; }
 
@@ -133,6 +150,7 @@ namespace ExtendedControls
                 Create(sp);
             }
 
+            // Create a Item based on the text format (see action doc for DropDownButton)
             public static Item Create(StringParser sp)
             {
                 Item t = new Item();
@@ -733,8 +751,7 @@ namespace ExtendedControls
             Size chkboxsize = CheckBoxSize.IsEmpty ? firsticonsize : CheckBoxSize;
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
-            var checkboxes = ItemList.Where(x => x.Button == false);
-            int maxcheckboxes = checkboxes.Count() > 0 ? checkboxes.Select(x => x.checkbox.Length).Max() : 0;
+            int maxcheckboxes = MaxRadioButtons();
             bool hassubmenuicons = false;
 
             int vtop = VerticalSpacing;        // top of area
@@ -989,15 +1006,15 @@ namespace ExtendedControls
                 cb.Checked = true;
             }
 
-            if (cb.Checked && it.Exclusive!= null)      // if checking, and we have tags which must be turned off
+            if (cb.Checked && it.Exclusive!= null && it.Group == false)      // if checking, and we have tags which must be turned off for normal buttons
             {
                 if(it.Exclusive.Equals(All))            // turn off all but us
                 {
-                    for (int ix = 0; ix < ItemList.Count; ix++)
+                    foreach( var x in ItemList)
                     {
-                        if (ItemList[ix].checkbox != null && ix != index && ItemList[ix].Tag != All && ItemList[ix].Tag != None && ItemList[ix].CheckBoxExists(checkbox))
+                        if ( x!=it && x.Group == false && x.CheckBoxExists(checkbox) && x.Exclusive != null && x.DisableUncheck ) // TBD why ? && x.Tag != All && x.Tag != None )
                         {
-                            ItemList[ix].checkbox[checkbox].Checked = false;
+                            x.checkbox[checkbox].Checked = false;
                         }
                     }
                 }

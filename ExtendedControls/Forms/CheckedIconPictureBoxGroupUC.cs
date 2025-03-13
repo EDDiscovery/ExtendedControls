@@ -56,14 +56,14 @@ namespace ExtendedControls
 
             foreach (var eo in GroupOptions(checkbox))
             {
-                if (eo.Exclusive?.Equals(All) ?? false)        // exclusive option All for group
+                if (eo.Exclusive?.Equals(All) ?? false)                 // exclusive option All for group
                 {
                     if (IsChecked(new string[] { eo.Tag },checkbox))    // if this tag and checked, list is this
                         list = eo.Tag;
                 }
             }
 
-            if (list == null)                                 // no exclusive options, so
+            if (list == null)                                           // no exclusive options, so
                 list = base.GetChecked(allornone, tagsignorelist, checkbox);  // get the set options from the standard grouping, using All/None
 
             return list;
@@ -71,11 +71,9 @@ namespace ExtendedControls
 
         public override Rectangle Render(Point preferedxy, Size? fixedsize = null)
         {
-            var checkboxes = ItemList.Where(x => x.Button == false);
-            int maxcheckboxes = checkboxes.Count() > 0 ? checkboxes.Select(x => x.checkbox.Length).Max() : 0;
-
             var rect = base.Render(preferedxy, fixedsize);
 
+            int maxcheckboxes = MaxRadioButtons();
             for (int i = 0; i < maxcheckboxes; i++)
                 SetGroupOptions(i);
 
