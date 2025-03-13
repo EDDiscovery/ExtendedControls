@@ -54,13 +54,11 @@ namespace ExtendedControls
         {
             string list = null;
 
-            foreach (var eo in GroupOptions(checkbox))
+            // an exclusive group option overrides all other settings and returns its own tag, if checked
+            foreach (var eo in GroupOptions(checkbox).Where(x=>x.ExclusiveGroupOption))
             {
-                if (eo.Exclusive?.Equals(All) ?? false)                 // exclusive option All for group
-                {
-                    if (IsChecked(new string[] { eo.Tag },checkbox))    // if this tag and checked, list is this
-                        list = eo.Tag;
-                }
+                if (IsChecked(new string[] { eo.Tag },checkbox))    // if this tag and checked, list is this
+                    list = eo.Tag;
             }
 
             if (list == null)                                           // no exclusive options, so
@@ -73,7 +71,7 @@ namespace ExtendedControls
         {
             var rect = base.Render(preferedxy, fixedsize);
 
-            int maxcheckboxes = MaxRadioButtons();
+            int maxcheckboxes = MaxRadioColumns();
             for (int i = 0; i < maxcheckboxes; i++)
                 SetGroupOptions(i);
 
@@ -84,14 +82,15 @@ namespace ExtendedControls
 
         protected override void CheckChangedEvent(int checkbox, ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) // we get a chance to operate group options
         {
-            var groupoptions = GroupOptions(checkbox);
+            var exclusivegroupoptions = GroupOptions(checkbox).Where(y => y.ExclusiveGroupOption);      // list of exclusive group options (ie. disabled button)
             
-            var x = ItemList[e.Index];
+            var it = ItemList[e.Index];
 
-            if (x.Group)
+            if (it.Group)
             {
-                string taglist = x.Tag;
-                bool exclusiveoption = x.Exclusive?.Equals(All) ?? false;
+                string taglist = it.Tag;
+
+                // Group button, set to All
 
                 if (e.NewValue == CheckState.Checked)
                 {
@@ -103,10 +102,12 @@ namespace ExtendedControls
                         Set(0, CheckState.Unchecked, -1, NoneAllIgnore, checkbox, true);        // set all non group items unchecked except NoneAllIgnore ones
                     }
 
-                    foreach (var eo in groupoptions)                    // for all other group options
+                    // all exclusive group options, look thru and see if its got the same tag list, if so, set it, else clear the tick
+                    // so for example, if the tag = disabled, then all groups with tag=disabled would be set on, all other options not
+                    // any other groups will be turned off by SetGroupOptions
+                    foreach (var eo in exclusivegroupoptions)                    
                     {
-                        if (eo.Exclusive?.Equals(All) ?? false)         // if exclusive option ALL
-                            Set(eo.Tag, taglist == eo.Tag, checkbox);   // set the tag list given by the group, to either ON if taglist matches the eo taglist, for this checkbox
+                        Set(eo.Tag, taglist == eo.Tag, checkbox);   
                     }
 
                     if (taglist == All)                                     // All sets all except the ignore list
@@ -114,7 +115,7 @@ namespace ExtendedControls
                         //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} set all");
                         Set(0, CheckState.Checked, -1, NoneAllIgnore, checkbox, true);        // set all non group items checked except NoneAllIgnore
                     }
-                    else if (taglist == None || exclusiveoption)            // None clears all except the ignore list
+                    else if (taglist == None || it.ExclusiveGroupOption)            // None clears all except the ignore list, or if the group is an exclusive option, clear all
                     {
                         //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} unset all");
                         Set(0, CheckState.Unchecked, -1, NoneAllIgnore, checkbox, true);        // set all non group items unchecked except NoneAllIgnore
@@ -127,7 +128,7 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    if (exclusiveoption)                       // clicking on exclusive option does not turn it off
+                    if (it.ExclusiveGroupOption)                       // clicking on exclusive option does not turn it off
                     {
                         //System.Diagnostics.Debug.WriteLine($"Group unchecked {checkbox} exclusive list");
                         Set(taglist, true, checkbox);
@@ -138,11 +139,10 @@ namespace ExtendedControls
             {
                 if (e.NewValue == CheckState.Checked)       // Normal item, not group, if checked on
                 {
-                    foreach (var eo in groupoptions)    // check all group options of this checkbox
-                    {
-                        if (eo.Exclusive?.Equals(All) ?? false) // we have an exclusion which is All
-                            Set(eo.Tag, false, checkbox);
-                    }
+                    // uncheck all exclusive group items - this is the only way to turn them off
+
+                    foreach (var eo in exclusivegroupoptions)        
+                        Set(eo.Tag, false, checkbox);
                 }
             }
 
@@ -155,7 +155,7 @@ namespace ExtendedControls
             // returning All or None or list of selected, on non.. on non group items, and ignoring those which do not contribute to all/none
             string list = GetChecked(true, NoneAllIgnore, checkbox);
 
-           // System.Diagnostics.Debug.WriteLine($"Set Group Options on {checkbox} current set is {list}");
+            System.Diagnostics.Debug.WriteLine($"Set Group Options on {checkbox} current set is {list}");
 
             foreach (var eo in GroupOptions(checkbox))
             {

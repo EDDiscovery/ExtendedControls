@@ -490,7 +490,28 @@ namespace TestExtendedControls
 
 
             frm.CloseOnDeactivate = true;
-            frm.PositionBelow(extButton1);
+            frm.PositionBelow(extButtonRadio);
+            frm.SaveSettings += (s, p) => { AddText($"Save {s} : {frm.UC.GetChecked(false, "", 0)} : {frm.UC.GetChecked(false, "", 1)}"); };
+            frm.UC.ShowClose = true;
+
+            frm.Show(this);
+
+        }
+
+        private void extButtonGroupDisable_Click(object sender, EventArgs e)
+        {
+            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
+            frm.UC.AddAllNone();
+            frm.UC.AddDisabled();
+            frm.UC.AddGroupItem("I2;I3", "2-3");
+            frm.UC.Add($"I1", $"Item 1", Properties.Resources.Addtab);
+            frm.UC.Add($"I2", $"Item 2", Properties.Resources.Addtab);
+            frm.UC.Add($"I3", $"Item 3", Properties.Resources.Addtab);
+            frm.UC.Add($"I4", $"Item 4", Properties.Resources.Addtab);
+            frm.UC.Add($"I5", $"Item 5", Properties.Resources.Addtab);
+
+            frm.CloseOnDeactivate = true;
+            frm.PositionBelow(extButtonGroupDisable);
             frm.SaveSettings += (s, p) => { AddText($"Save {s} : {frm.UC.GetChecked(false, "", 0)} : {frm.UC.GetChecked(false, "", 1)}"); };
             frm.UC.ShowClose = true;
 

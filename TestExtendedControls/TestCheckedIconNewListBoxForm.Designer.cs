@@ -46,6 +46,7 @@
             this.extButton12 = new ExtendedControls.ExtButton();
             this.label1 = new System.Windows.Forms.Label();
             this.extButtonRadio = new ExtendedControls.ExtButton();
+            this.extButtonGroupDisable = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // extButtonWithNewCheckedListBox1
@@ -226,6 +227,16 @@
             this.extButtonRadio.UseVisualStyleBackColor = true;
             this.extButtonRadio.Click += new System.EventHandler(this.extButtonRadio_Click);
             // 
+            // extButtonGroupDisable
+            // 
+            this.extButtonGroupDisable.Location = new System.Drawing.Point(579, 205);
+            this.extButtonGroupDisable.Name = "extButtonGroupDisable";
+            this.extButtonGroupDisable.Size = new System.Drawing.Size(244, 23);
+            this.extButtonGroupDisable.TabIndex = 0;
+            this.extButtonGroupDisable.Text = "Group Disable";
+            this.extButtonGroupDisable.UseVisualStyleBackColor = true;
+            this.extButtonGroupDisable.Click += new System.EventHandler(this.extButtonGroupDisable_Click);
+            // 
             // TestCheckedIconNewListBoxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,6 +252,7 @@
             this.Controls.Add(this.extButton9);
             this.Controls.Add(this.extButton8);
             this.Controls.Add(this.extButton7);
+            this.Controls.Add(this.extButtonGroupDisable);
             this.Controls.Add(this.extButtonRadio);
             this.Controls.Add(this.extButton6);
             this.Controls.Add(this.extButton5);
@@ -273,5 +285,6 @@
         private ExtendedControls.ExtButton extButton12;
         private System.Windows.Forms.Label label1;
         private ExtendedControls.ExtButton extButtonRadio;
+        private ExtendedControls.ExtButton extButtonGroupDisable;
     }
 }

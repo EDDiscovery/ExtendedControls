@@ -34,18 +34,22 @@ namespace ExtendedControls
         public List<Item> ItemList { get; private set; }
         public int Count { get { return ItemList.Count; } }
         public int CountGroup { get { return ItemList.Where(x => x.Group).Count(); } }
+        
         // maximum number of check boxes across
-        public int MaxRadioButtons()
+        public int MaxRadioColumns()
         {
             var checkboxes = ItemList.Where(x => x.Button == false);
             int maxcheckboxes = checkboxes.Count() > 0 ? checkboxes.Select(x => x.checkbox.Length).Max() : 0;
             return maxcheckboxes;
         }
+
+        // all group options of a checkbox column
         public List<Item> GroupOptions(int checkbox) { return ItemList.Where(x => x.Group && x.CheckBoxExists(checkbox)).ToList(); }
-       // public List<Item> GroupOptionsWithUserTag(int checkbox) { return ItemList.Where(x => x.Group && x.CheckBoxExists(checkbox) && x.UserTag != null).ToList(); }
-      //  public List<Item> StandardOptions(int checkbox) { return ItemList.Where(x => !x.Group && x.CheckBoxExists(checkbox)).ToList(); }
+
+        // User tag list, all entries, where usertag matches
         public List<Item> UserTags(object usertag) { return ItemList.Where(x => x.UserTag == usertag).ToList(); }
-      //  public string[] TagList() { return ItemList.Where(x => !x.Group).Select(x => x.Tag).ToArray(); }        // tags of non group items
+        // Tag list of all non group items
+        public string[] TagList() { return ItemList.Where(x => !x.Group).Select(x => x.Tag).ToArray(); }       
 
         // back colour of picture box
         public override Color BackColor { get => base.BackColor; set { picturebox.FillColor = base.BackColor = value; } }
@@ -96,7 +100,7 @@ namespace ExtendedControls
         public const string All = "All";
         public const string None = "None";
 
-        [System.Diagnostics.DebuggerDisplay("{Tag}:{Text} Grp:{Group} Btn:{Button}")]
+        [System.Diagnostics.DebuggerDisplay("{Tag}:{Text} Grp:{Group} Btn:{Button} Exc:{Exclusive}")]
         public class Item
         {
             public bool Group { get; set; }
@@ -109,11 +113,12 @@ namespace ExtendedControls
             //      For radio buttons: set DisableUncheck=true and set exclusive to All
             //          Turns off the other non group checkboxes which have Exclusive not null and disabledunchecked true
             //      For radio buttons: set DisableUncheck=true and set exclusive to all tag names like "R1;R2;R3"
-            //          Turns off the other non group checkboxes with these tags
+            //          Turns off the other non group checkboxes with these tags. Allows multiple radio sets
             //      For general buttons which don't want others set: Set exclusive to list of tags to turn off
             //
             // For group buttons:
-            //      If Exclusive=All, and if its checked, the current check state is the Tag of the group button selected on.
+            //      If Exclusive=All, then all other groups/items will be turned off. Any other groups with the same tag list will be turned on
+            //      other values of exclusive not supported
 
             // Don't allow this item to become unchecked. Radio Button use mostly
             public bool DisableUncheck { get; set; }
@@ -140,6 +145,9 @@ namespace ExtendedControls
             public SubForm GetSubForm { get { return UserTag as SubForm; } }
 
             public bool CheckBoxExists(int i) { return checkbox != null && i < checkbox.Length && checkbox[i] != null; }
+
+            // an exclusive group option turns off all other groups and all items (disabled is an example)
+            public bool ExclusiveGroupOption { get { return Group && (Exclusive?.Equals(All)??false); } }
 
             // Create a UC item from a string
             // Description is Tag,Text [,ImagePath (empty string, File, Resource) [,Exclusive list [,type]]]
@@ -205,9 +213,17 @@ namespace ExtendedControls
         }
 
         // the main add with many options
-        public void Add(string tag, string text, Image img = null, bool attop = false, string exclusivetags = null,
-                                bool disableuncheck = false, bool button = false, object usertag = null, bool group = false, int checkmap = 1,
-                                string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)
+        public void Add(    string tag,                         // logical tag of item
+                            string text,                        // text for label
+                            Image img = null,                   // image to display, optional
+                            bool attop = false,                 // enter at top of ItemList
+                            string exclusivetags = null,        // set exclusive tags on group or normal entries
+                            bool disableuncheck = false,        // for use by radio buttons
+                            bool button = false,                // display as button not checkbox
+                            object usertag = null,              // user tag assigned
+                            bool group = false,                 // group or normal item
+                            int checkmap = 1,                   // bitmap of check columns to use (1,3,5 etc)
+                            string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)      // tooltips
         {
             var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag};
             cl.label = new ExtPictureBox.Label();
@@ -289,7 +305,7 @@ namespace ExtendedControls
             }
         }
 
-        // a Radio style button
+        // a Radio style button (Exclusive=All, disableuncheck=true)
         public void AddRadio(string tag, string text, Image img = null, bool attop = false, object usertag = null, 
                                 int checkmap = 1, string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)
         {
@@ -751,7 +767,7 @@ namespace ExtendedControls
             Size chkboxsize = CheckBoxSize.IsEmpty ? firsticonsize : CheckBoxSize;
             chkboxsize = new Size(Math.Max(4, chkboxsize.Width), Math.Max(4, chkboxsize.Height));
 
-            int maxcheckboxes = MaxRadioButtons();
+            int maxcheckboxes = MaxRadioColumns();
             bool hassubmenuicons = false;
 
             int vtop = VerticalSpacing;        // top of area
