@@ -59,9 +59,9 @@ namespace ExtendedControls
         }
 
         // Get the checked list taking into account the grouping And the AllOrNoneBack
-        public string GetChecked()
+        public string GetChecked(int checkbox=0)
         {
-            return UC.GetChecked(AllOrNoneBack);
+            return UC.GetChecked(AllOrNoneBack,checkbox:checkbox);
         }
 
         // Call if you altered the Item List and force a redraw on next Show.
@@ -74,6 +74,15 @@ namespace ExtendedControls
         public void Show(string settings, Control positionunder, IWin32Window parent, Object tag = null)
         {
             UC.Set(settings);
+            Tag = tag;
+            PositionBelow(positionunder);
+            Show(parent);
+        }
+        // show with settings as a list;list of tags under this control
+        public void Show(string[] settings, Control positionunder, IWin32Window parent, Object tag = null)
+        {
+            for(int i = 0; i < settings.Length; i++)
+                UC.Set(settings[i],checkbox:i);
             Tag = tag;
             PositionBelow(positionunder);
             Show(parent);
