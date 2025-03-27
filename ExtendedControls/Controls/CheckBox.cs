@@ -266,7 +266,7 @@ namespace ExtendedControls
             if (Appearance == Appearance.Button)
             {
                 ForeColor = t.ButtonTextColor;
-                MouseOverColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+                MouseOverColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
                 CheckColor = t.ButtonBackColor.Multiply(0.9f);
             }
             else

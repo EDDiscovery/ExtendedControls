@@ -1078,8 +1078,8 @@ namespace ExtendedControls
             BorderColor = ThumbBorderColor = ArrowBorderColor = t.GridBorderLines;
             Color c1 = t.GridScrollButton;
             ArrowButtonColor = ThumbButtonColor = c1;
-            MouseOverButtonColor = c1.Multiply(ExtendedControls.Theme.MouseOverScaling);
-            MousePressedButtonColor = c1.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+            MouseOverButtonColor = c1.Multiply(t.MouseOverScaling);
+            MousePressedButtonColor = c1.Multiply(t.MouseSelectedScaling);
             CheckBoxColor = t.CheckBox;
             CheckBoxInnerColor = t.CheckBox.Multiply(1.5F);
             MouseOverCheckboxColor = t.CheckBox.Multiply(0.75F);

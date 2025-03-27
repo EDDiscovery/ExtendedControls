@@ -180,8 +180,8 @@ namespace ExtendedControls
             updown.BackColor = t.TextBlockScrollButton;
             updown.ForeColor = t.TextBlockScrollArrow;
             updown.BorderColor = t.ButtonBorderColor;
-            updown.MouseOverColor = t.TextBlockScrollButton.Multiply(ExtendedControls.Theme.MouseOverScaling);
-            updown.MouseSelectedColor = t.TextBlockScrollButton.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+            updown.MouseOverColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
+            updown.MouseSelectedColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
             Invalidate();
 
             return false;

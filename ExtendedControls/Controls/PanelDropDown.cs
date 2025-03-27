@@ -124,7 +124,7 @@ namespace ExtendedControls
             SelectionMarkColor = ForeColor = t.ButtonTextColor;
             BackColor = SelectionBackColor = t.ButtonBackColor;
             BorderColor = t.ButtonBorderColor;
-            MouseOverBackgroundColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+            MouseOverBackgroundColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
             ScrollBarButtonColor = t.TextBlockScrollButton;
             ScrollBarColor = t.TextBlockSliderBack;
             FlatStyle = FlatStyle.Popup;

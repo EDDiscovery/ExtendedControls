@@ -454,8 +454,8 @@ namespace ExtendedControls
                 ScrollBarBorderColor = ScrollBarThumbBorderColor =
                             ScrollBarArrowBorderColor = t.TextBlockBorderColor;
                 ScrollBarArrowButtonColor = ScrollBarThumbButtonColor = t.TextBlockScrollButton;
-                ScrollBarMouseOverButtonColor = t.TextBlockScrollButton.Multiply(ExtendedControls.Theme.MouseOverScaling);
-                ScrollBarMousePressedButtonColor = t.TextBlockScrollButton.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+                ScrollBarMouseOverButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
+                ScrollBarMousePressedButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
                 ScrollBarForeColor = t.TextBlockScrollArrow;
                 ScrollBarFlatStyle = FlatStyle.Popup;
             }

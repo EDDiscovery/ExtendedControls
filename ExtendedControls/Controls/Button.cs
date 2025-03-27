@@ -438,8 +438,8 @@ namespace ExtendedControls
 
                 ctrl.FlatAppearance.BorderColor = (ctrl.Image != null) ? t.Form : t.ButtonBorderColor;
                 ctrl.FlatAppearance.BorderSize = 1;
-                ctrl.FlatAppearance.MouseOverBackColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
-                ctrl.FlatAppearance.MouseDownBackColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+                ctrl.FlatAppearance.MouseOverBackColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
+                ctrl.FlatAppearance.MouseDownBackColor = t.ButtonBackColor.Multiply(t.MouseSelectedScaling);
                 ctrl.FlatStyle = t.ButtonFlatStyle;
             }
 

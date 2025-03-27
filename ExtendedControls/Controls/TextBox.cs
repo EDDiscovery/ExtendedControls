@@ -425,7 +425,7 @@ namespace ExtendedControls
                 actb.DropDownBorderColor = t.TextBlockBorderColor;
                 actb.DropDownScrollBarButtonColor = t.TextBlockScrollButton;
                 actb.DropDownScrollBarColor = t.TextBlockSliderBack;
-                actb.DropDownMouseOverBackgroundColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+                actb.DropDownMouseOverBackgroundColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
                 actb.FlatStyle = t.ButtonFlatStyle;
             }
 

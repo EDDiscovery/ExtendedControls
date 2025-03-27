@@ -550,8 +550,8 @@ namespace ExtendedControls
                 SliderColor = t.GridSliderBack;
                 BorderColor = ThumbBorderColor = ArrowBorderColor = t.GridBorderLines;
                 ArrowButtonColor = ThumbButtonColor = t.GridScrollButton;
-                MouseOverButtonColor = t.GridScrollButton.Multiply(ExtendedControls.Theme.MouseOverScaling);
-                MousePressedButtonColor = t.GridScrollButton.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+                MouseOverButtonColor = t.GridScrollButton.Multiply(t.MouseOverScaling);
+                MousePressedButtonColor = t.GridScrollButton.Multiply(t.MouseSelectedScaling);
                 ForeColor = t.GridScrollArrow;
                 FlatStyle = t.ButtonFlatStyle;
             }

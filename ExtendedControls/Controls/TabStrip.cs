@@ -608,7 +608,7 @@ namespace ExtendedControls
             DropDownBorderColor = t.TextBlockBorderColor;
             DropDownScrollBarButtonColor = t.TextBlockScrollButton;
             DropDownScrollBarColor = t.TextBlockSliderBack;
-            DropDownMouseOverBackgroundColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+            DropDownMouseOverBackgroundColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
             DropDownItemSeperatorColor = t.ButtonBorderColor;
             EmptyColor = t.ButtonBackColor;
             SelectedBackColor = t.ButtonBackColor;

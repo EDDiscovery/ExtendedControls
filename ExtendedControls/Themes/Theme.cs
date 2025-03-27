@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2025 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -246,6 +246,19 @@ namespace ExtendedControls
         public static string TextboxborderstyleFixed3D = TextboxBorderStyles[2];
         public static string TextboxborderstyleColor = TextboxBorderStyles[3];
 
+        // Scaling values
+        public float DialogScaling { get; set; } = 0.8f;
+        public float MouseOverScaling { get; set; } = 1.3F;
+        public float MouseSelectedScaling { get; set; } = 1.5F;
+
+
+
+
+
+
+
+
+
         [JsonIgnore]
         public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
 
@@ -333,7 +346,6 @@ namespace ExtendedControls
             }
         }
 
-        private const float dialogscaling = 0.8f;
 
         [JsonIgnore]
         // dialogs get a slighly smaller font
@@ -341,7 +353,7 @@ namespace ExtendedControls
         {
             get
             {
-                return GetScaledFont(dialogscaling);
+                return GetScaledFont(DialogScaling);
             }
         }
 
@@ -349,7 +361,7 @@ namespace ExtendedControls
         public Font GetDialogScaledFont(float scaling, float max = 999) 
         {
             if (FontSize >= 12)             // only if >=12 do we add on dialog scaling
-                scaling *= dialogscaling;       
+                scaling *= DialogScaling;       
 
             return GetScaledFont(scaling, max);
         }
@@ -402,9 +414,6 @@ namespace ExtendedControls
 
             return WindowsFrame;
         }
-
-        public const float MouseOverScaling = 1.3F;
-        public const float MouseSelectedScaling = 1.5F;
 
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level, bool noborderoverride = false)    // parent can be null
         {

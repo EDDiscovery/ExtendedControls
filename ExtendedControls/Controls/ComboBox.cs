@@ -393,7 +393,7 @@ namespace ExtendedControls
                 BackColor = t.ButtonBackColor;
                 DropDownBackgroundColor = t.ButtonBackColor;
                 BorderColor = t.ButtonBorderColor;
-                MouseOverBackgroundColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+                MouseOverBackgroundColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
                 ScrollBarButtonColor = t.TextBlockScrollButton;
                 ScrollBarColor = t.TextBlockSliderBack;
                 FlatStyle = t.ButtonFlatStyle;

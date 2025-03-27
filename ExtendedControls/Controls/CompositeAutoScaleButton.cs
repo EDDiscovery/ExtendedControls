@@ -147,7 +147,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            return false;        // no themeing, no child theming
+            return true;        // no themeing, theme children
         }
     }
 }

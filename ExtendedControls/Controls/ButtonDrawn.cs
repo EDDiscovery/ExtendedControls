@@ -965,8 +965,8 @@ namespace ExtendedControls
         {
             BackColor = t.Form;
             ForeColor = t.LabelColor;
-            MouseOverColor = t.LabelColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
-            MouseSelectedColor = t.LabelColor.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+            MouseOverColor = t.LabelColor.Multiply(t.MouseOverScaling);
+            MouseSelectedColor = t.LabelColor.Multiply(t.MouseSelectedScaling);
             BorderWidth = 2;
             BorderColor = t.GridBorderLines;
 
