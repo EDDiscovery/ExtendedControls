@@ -14,6 +14,7 @@ namespace TestExtendedControls
             theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite EuroCaps");
+            theme.SetThemeByName("Elite Verdana Small");
 
             InitializeComponent();
 

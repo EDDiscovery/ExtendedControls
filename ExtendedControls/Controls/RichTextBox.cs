@@ -1,5 +1,5 @@
 /*
- * Copyright © 2016-2023 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtRichTextBox : Panel
+    public class ExtRichTextBox : Panel, IThemeable
     {
         #region Public Functions
         public class RichTextBoxBack : RichTextBox
@@ -434,6 +434,39 @@ namespace ExtendedControls
             LinkClicked?.Invoke(e);
         }
 
+        public bool Theme(Theme t,Font fnt)
+        {
+            TextBoxForeColor = t.TextBlockColor;
+            TextBoxBackColor = t.TextBackColor;
 
+            BorderColor = Color.Transparent;       // default for text box border styles
+            BorderStyle = t.TextBoxStyle;
+
+            if (t.IsTextBoxColourStyle)
+                BorderColor = t.TextBlockBorderColor;
+
+            if (t.IsButtonSystemStyle)
+                ScrollBarFlatStyle = FlatStyle.System;
+            else
+            {
+                ScrollBarBackColor = t.TextBackColor;
+                ScrollBarSliderColor = t.TextBlockSliderBack;
+                ScrollBarBorderColor = ScrollBarThumbBorderColor =
+                            ScrollBarArrowBorderColor = t.TextBlockBorderColor;
+                ScrollBarArrowButtonColor = ScrollBarThumbButtonColor = t.TextBlockScrollButton;
+                ScrollBarMouseOverButtonColor = t.TextBlockScrollButton.Multiply(ExtendedControls.Theme.MouseOverScaling);
+                ScrollBarMousePressedButtonColor = t.TextBlockScrollButton.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+                ScrollBarForeColor = t.TextBlockScrollArrow;
+                ScrollBarFlatStyle = FlatStyle.Popup;
+            }
+
+            if (ContextMenuStrip != null)      // propegate font
+                ContextMenuStrip.Font = fnt;
+
+            Invalidate();
+            PerformLayout();
+
+            return false;
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2023 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtTextBox : Control
+    public class ExtTextBox : Control, IThemeable
     {
         #region Public interface
 
@@ -399,6 +399,43 @@ namespace ExtendedControls
         private void Dropdownbutton_Click(object sender, EventArgs e)
         {
             EndButtonClick?.Invoke(this);
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.TextBlockColor;
+            BackColor = t.TextBackColor;
+            BackErrorColor = t.TextBlockHighlightColor;
+            ControlBackground = t.TextBackColor; // previously, but not sure why, GroupBoxOverride(parent, Form);
+            AutoSize = true;
+
+            BorderColor = Color.Transparent;
+            BorderStyle = t.TextBoxStyle;
+
+            if (t.IsTextBoxColourStyle)
+                BorderColor = t.TextBlockBorderColor;
+
+            if (t.IsTextBoxNoneStyle)
+                AutoSize = false;                                                 // with no border, the autosize clips the bottom of chars..
+
+            if (this is ExtTextBoxAutoComplete || this is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
+            {
+                ExtTextBoxAutoComplete actb = this as ExtTextBoxAutoComplete;
+                actb.DropDownBackgroundColor = t.ButtonBackColor;
+                actb.DropDownBorderColor = t.TextBlockBorderColor;
+                actb.DropDownScrollBarButtonColor = t.TextBlockScrollButton;
+                actb.DropDownScrollBarColor = t.TextBlockSliderBack;
+                actb.DropDownMouseOverBackgroundColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+                actb.FlatStyle = t.ButtonFlatStyle;
+            }
+
+            EndButton.Theme(t, fnt);
+            EndButton.FlatAppearance.BorderColor = EndButton.BackColor = t.TextBackColor;
+            EndButton.ButtonColorScaling = EndButton.ButtonDisabledScaling = 1.0F;
+
+            Invalidate();
+
+            return false;
         }
 
         #endregion

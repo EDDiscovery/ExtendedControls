@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017-2019 EDDiscovery development team
+ * Copyright 2017-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -196,7 +196,7 @@ namespace ExtendedControls
             /// <param name="dgvStyle">The <see cref="DataGridViewCellStyle"/> to use as the model for the UI.</param>
             public void ApplyCellStyleToEditingControl(DataGridViewCellStyle dgvStyle)
             {
-                Theme.Current?.ApplyStd(Parent);
+                ExtendedControls.Theme.Current?.ApplyStd(Parent);
             }
 
             /// <summary>

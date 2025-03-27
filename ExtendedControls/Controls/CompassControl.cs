@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2023 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -18,7 +18,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class CompassControl : Control, IDisposable
+    public partial class CompassControl : Control, IDisposable, IThemeable
     {
         public int WidthDegrees { get { return widthdegrees; } set { widthdegrees = value; Restart(); } }   // no of degrees to show
         public bool ShowNegativeDegrees { get { return degreeoffset != 0; } set { degreeoffset = value ? -180 : 0; Restart(); } }      // -180 to +180
@@ -512,6 +512,16 @@ namespace ExtendedControls
             return (int)((degree - pixelstart) * pixelsperdegree);
         }
 
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.TextBlockColor;
+            StencilColor = t.TextBlockColor;
+            CentreTickColor = t.TextBlockColor.Multiply(1.2F);
+            BugColor = t.TextBlockColor.Multiply(0.8F);
+            BackColor = t.Form;
+            return false;
+        }
+            
         #endregion
     }
 }

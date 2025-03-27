@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 - 2019 EDDiscovery development team
+ * Copyright 2016 - 2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
 
 using ExtendedControls.Controls.Design;
@@ -31,7 +29,7 @@ namespace ExtendedControls
     /// (see <see cref="ImageSelected"/>) or <see cref="Control.Text"/>.
     /// </summary>
     [DefaultEvent(nameof(Click)), DefaultProperty(nameof(ImageSelected)), Designer(typeof(DrawnPanelDesigner))]
-    public class ExtButtonDrawn : Control, IButtonControl
+    public class ExtButtonDrawn : Control, IButtonControl, IThemeable
     {
         public enum ImageType       // Specifies the available image types to be displayed on a <see cref="ExtPanelDrawn"/>.
         {
@@ -961,6 +959,23 @@ namespace ExtendedControls
                 if (MouseSelectedColorEnable || old == DrawState.Disabled || value == DrawState.Disabled)
                     Invalidate();   // only invalidate if required
             }
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            BackColor = t.Form;
+            ForeColor = t.LabelColor;
+            MouseOverColor = t.LabelColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+            MouseSelectedColor = t.LabelColor.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+            BorderWidth = 2;
+            BorderColor = t.GridBorderLines;
+
+            ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
+            colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
+            colormap.NewColor = ForeColor;
+            SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
+
+            return false;
         }
 
         #endregion

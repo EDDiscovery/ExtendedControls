@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016 - 2023 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class ExtPanelDropDown : Panel
+    public partial class ExtPanelDropDown : Panel, IThemeable
     {
         public event EventHandler SelectedIndexChanged;
 
@@ -117,6 +117,18 @@ namespace ExtendedControls
             dropdown = false;
             ddc.Hide();
             SelectedIndexChanged?.Invoke(this, e);
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            SelectionMarkColor = ForeColor = t.ButtonTextColor;
+            BackColor = SelectionBackColor = t.ButtonBackColor;
+            BorderColor = t.ButtonBorderColor;
+            MouseOverBackgroundColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+            ScrollBarButtonColor = t.TextBlockScrollButton;
+            ScrollBarColor = t.TextBlockSliderBack;
+            FlatStyle = FlatStyle.Popup;
+            return true;
         }
     }
 }

@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class CheckedIconUserControl : UserControl
+    public class CheckedIconUserControl : UserControl, IThemeable
     {
         public bool SlideLeft { get; set; } = false;              // if bigger than allowed space, allow slide left
         public bool SlideUp { get; set; } = false;                // if bigger than allowed space, allow slide up
@@ -1067,6 +1067,28 @@ namespace ExtendedControls
         }
 
         protected virtual void CheckChangedEvent(int checkbox, ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) { }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            BackColor = t.Form;
+            ForeColor = t.TextBlockColor;
+            BorderColor = t.GridBorderLines;
+            BackColor = t.Form;
+            SliderColor = t.GridSliderBack;
+            BorderColor = ThumbBorderColor = ArrowBorderColor = t.GridBorderLines;
+            Color c1 = t.GridScrollButton;
+            ArrowButtonColor = ThumbButtonColor = c1;
+            MouseOverButtonColor = c1.Multiply(ExtendedControls.Theme.MouseOverScaling);
+            MousePressedButtonColor = c1.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+            CheckBoxColor = t.CheckBox;
+            CheckBoxInnerColor = t.CheckBox.Multiply(1.5F);
+            MouseOverCheckboxColor = t.CheckBox.Multiply(0.75F);
+            MouseOverLabelColor = t.CheckBox.Multiply(0.75F);
+            TickBoxReductionRatio = 0.75f;
+            CheckColor = t.CheckBoxTick;
+
+            return false;
+        }
 
         private ExtPictureBoxScroll pictureboxscroll;
         private ExtPictureBox picturebox;

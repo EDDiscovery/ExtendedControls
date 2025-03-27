@@ -46,6 +46,9 @@
             this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.labelUnderline = new System.Windows.Forms.Label();
+            this.labelStrikeout = new System.Windows.Forms.Label();
+            this.extNumericUpDown2 = new ExtendedControls.ExtNumericUpDown();
+            this.extNumericUpDown1 = new ExtendedControls.ExtNumericUpDown();
             this.extGroupBox1 = new ExtendedControls.ExtGroupBox();
             this.extTabControl1 = new ExtendedControls.ExtTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -71,7 +74,9 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
-            this.labelStrikeout = new System.Windows.Forms.Label();
+            this.labelData1 = new ExtendedControls.LabelData();
+            this.upDown1 = new ExtendedControls.UpDown();
+            this.tabStrip1 = new ExtendedControls.TabStrip();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.extGroupBox1.SuspendLayout();
@@ -223,6 +228,47 @@
             this.labelUnderline.TabIndex = 4;
             this.labelUnderline.Text = "Underline";
             // 
+            // labelStrikeout
+            // 
+            this.labelStrikeout.AutoSize = true;
+            this.labelStrikeout.Location = new System.Drawing.Point(352, 59);
+            this.labelStrikeout.Name = "labelStrikeout";
+            this.labelStrikeout.Size = new System.Drawing.Size(49, 13);
+            this.labelStrikeout.TabIndex = 4;
+            this.labelStrikeout.Text = "Strikeout";
+            // 
+            // extNumericUpDown2
+            // 
+            this.extNumericUpDown2.AutoSizeTextBox = true;
+            this.extNumericUpDown2.BorderColor = System.Drawing.Color.Transparent;
+            this.extNumericUpDown2.BorderColorScaling = 0.5F;
+            this.extNumericUpDown2.Location = new System.Drawing.Point(632, 144);
+            this.extNumericUpDown2.Maximum = 100;
+            this.extNumericUpDown2.Minimum = 0;
+            this.extNumericUpDown2.Name = "extNumericUpDown2";
+            this.extNumericUpDown2.Size = new System.Drawing.Size(75, 23);
+            this.extNumericUpDown2.TabIndex = 21;
+            this.extNumericUpDown2.Text = "0";
+            this.extNumericUpDown2.TextBoxBackColor = System.Drawing.SystemColors.Window;
+            this.extNumericUpDown2.TextBoxForeColor = System.Drawing.SystemColors.WindowText;
+            this.extNumericUpDown2.Value = 0;
+            // 
+            // extNumericUpDown1
+            // 
+            this.extNumericUpDown1.AutoSizeTextBox = true;
+            this.extNumericUpDown1.BorderColor = System.Drawing.Color.Transparent;
+            this.extNumericUpDown1.BorderColorScaling = 0.5F;
+            this.extNumericUpDown1.Location = new System.Drawing.Point(632, 124);
+            this.extNumericUpDown1.Maximum = 100;
+            this.extNumericUpDown1.Minimum = 0;
+            this.extNumericUpDown1.Name = "extNumericUpDown1";
+            this.extNumericUpDown1.Size = new System.Drawing.Size(119, 23);
+            this.extNumericUpDown1.TabIndex = 20;
+            this.extNumericUpDown1.Text = "0";
+            this.extNumericUpDown1.TextBoxBackColor = System.Drawing.SystemColors.Window;
+            this.extNumericUpDown1.TextBoxForeColor = System.Drawing.SystemColors.WindowText;
+            this.extNumericUpDown1.Value = 0;
+            // 
             // extGroupBox1
             // 
             this.extGroupBox1.BackColorScaling = 0.5F;
@@ -241,6 +287,7 @@
             // extTabControl1
             // 
             this.extTabControl1.AllowDragReorder = false;
+            this.extTabControl1.AutoForceUpdate = true;
             this.extTabControl1.Controls.Add(this.tabPage1);
             this.extTabControl1.Controls.Add(this.tabPage2);
             this.extTabControl1.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -348,7 +395,7 @@
             this.extRichTextBox1.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
             this.extRichTextBox1.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extRichTextBox1.ShowLineCount = false;
-            this.extRichTextBox1.Size = new System.Drawing.Size(608, 100);
+            this.extRichTextBox1.Size = new System.Drawing.Size(608, 70);
             this.extRichTextBox1.TabIndex = 14;
             this.extRichTextBox1.TextBoxBackColor = System.Drawing.SystemColors.Control;
             this.extRichTextBox1.TextBoxForeColor = System.Drawing.SystemColors.ControlText;
@@ -407,7 +454,7 @@
             this.extTextBox1.EndButtonEnable = true;
             this.extTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("extTextBox1.EndButtonImage")));
             this.extTextBox1.EndButtonSize16ths = 10;
-            this.extTextBox1.EndButtonVisible = false;
+            this.extTextBox1.EndButtonVisible = true;
             this.extTextBox1.InErrorCondition = false;
             this.extTextBox1.Location = new System.Drawing.Point(632, 95);
             this.extTextBox1.Multiline = false;
@@ -651,20 +698,68 @@
             this.extScrollBar1.Value = 0;
             this.extScrollBar1.ValueLimited = 0;
             // 
-            // labelStrikeout
+            // labelData1
             // 
-            this.labelStrikeout.AutoSize = true;
-            this.labelStrikeout.Location = new System.Drawing.Point(352, 59);
-            this.labelStrikeout.Name = "labelStrikeout";
-            this.labelStrikeout.Size = new System.Drawing.Size(49, 13);
-            this.labelStrikeout.TabIndex = 4;
-            this.labelStrikeout.Text = "Strikeout";
+            this.labelData1.BorderColor = System.Drawing.Color.Orange;
+            this.labelData1.BorderWidth = 1;
+            this.labelData1.BoxStyle = ExtendedControls.LabelData.DataBoxStyle.TopBottom;
+            this.labelData1.Data = null;
+            this.labelData1.DataFont = null;
+            this.labelData1.InterSpacing = 4;
+            this.labelData1.Location = new System.Drawing.Point(632, 269);
+            this.labelData1.Name = "labelData1";
+            this.labelData1.NoDataText = null;
+            this.labelData1.Size = new System.Drawing.Size(75, 23);
+            this.labelData1.TabIndex = 22;
+            this.labelData1.TabSpacingData = 0;
+            this.labelData1.Text = "Label {0} Data";
+            // 
+            // upDown1
+            // 
+            this.upDown1.BackColorScaling = 0.5F;
+            this.upDown1.BorderColor = System.Drawing.Color.Gray;
+            this.upDown1.Location = new System.Drawing.Point(758, 140);
+            this.upDown1.MouseOverColor = System.Drawing.SystemColors.ControlLight;
+            this.upDown1.MouseSelectedColor = System.Drawing.SystemColors.ControlLightLight;
+            this.upDown1.MouseSelectedColorScaling = 1.5F;
+            this.upDown1.Name = "upDown1";
+            this.upDown1.Size = new System.Drawing.Size(35, 23);
+            this.upDown1.TabIndex = 23;
+            this.upDown1.Text = "upDown1";
+            // 
+            // tabStrip1
+            // 
+            this.tabStrip1.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.tabStrip1.DropDownBorderColor = System.Drawing.Color.Green;
+            this.tabStrip1.DropDownFitImagesToItemHeight = false;
+            this.tabStrip1.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
+            this.tabStrip1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
+            this.tabStrip1.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
+            this.tabStrip1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
+            this.tabStrip1.EmptyColor = System.Drawing.Color.Empty;
+            this.tabStrip1.EmptyColorScaling = 0.5F;
+            this.tabStrip1.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip1.EmptyPanelIcon")));
+            this.tabStrip1.HelpAction = null;
+            this.tabStrip1.Location = new System.Drawing.Point(17, 574);
+            this.tabStrip1.Name = "tabStrip1";
+            this.tabStrip1.SelectedBackColor = System.Drawing.Color.Transparent;
+            this.tabStrip1.SelectedIndex = -1;
+            this.tabStrip1.ShowPopOut = true;
+            this.tabStrip1.Size = new System.Drawing.Size(562, 87);
+            this.tabStrip1.StripBackColor = System.Drawing.SystemColors.Control;
+            this.tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
+            this.tabStrip1.TabIndex = 24;
             // 
             // TestTheme
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(879, 666);
+            this.ClientSize = new System.Drawing.Size(879, 725);
+            this.Controls.Add(this.tabStrip1);
+            this.Controls.Add(this.upDown1);
+            this.Controls.Add(this.labelData1);
+            this.Controls.Add(this.extNumericUpDown2);
+            this.Controls.Add(this.extNumericUpDown1);
             this.Controls.Add(this.extGroupBox1);
             this.Controls.Add(this.extComboBoxTheme);
             this.Controls.Add(this.extDateTimePicker1);
@@ -747,5 +842,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label labelUnderline;
         private System.Windows.Forms.Label labelStrikeout;
+        private ExtendedControls.ExtNumericUpDown extNumericUpDown1;
+        private ExtendedControls.ExtNumericUpDown extNumericUpDown2;
+        private ExtendedControls.LabelData labelData1;
+        private ExtendedControls.UpDown upDown1;
+        private ExtendedControls.TabStrip tabStrip1;
     }
 }

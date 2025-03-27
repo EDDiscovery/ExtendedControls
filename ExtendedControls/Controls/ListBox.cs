@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2023 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtListBox : Control
+    public class ExtListBox : Control, IThemeable
     {
         // BackColor paints the whole control - set Transparent if you don't want this. (but its a fake transparent note).
 
@@ -478,6 +478,27 @@ namespace ExtendedControls
         public void Repaint()
         {
             this.Invalidate(true);
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.ButtonTextColor;
+            ItemSeperatorColor = t.ButtonBorderColor;
+
+            if (t.IsButtonSystemStyle)
+                FlatStyle = FlatStyle.System;
+            else
+            {
+                BackColor = t.ButtonBackColor;
+                BorderColor = t.ButtonBorderColor;
+                ScrollBarButtonColor = t.TextBlockScrollButton;
+                ScrollBarColor = t.TextBlockSliderBack;
+                FlatStyle = t.ButtonFlatStyle;
+            }
+
+            Repaint();            // force a repaint as the individual settings do not by design.
+
+            return false;
         }
 
         #endregion

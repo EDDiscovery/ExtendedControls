@@ -403,9 +403,8 @@ namespace ExtendedControls
             return WindowsFrame;
         }
 
-        const float mouseoverscaling = 1.3F;
-        const float mouseselectedscaling = 1.5F;
-        static TabStyleCustom tsc = new TabStyleAngled();
+        public const float MouseOverScaling = 1.3F;
+        public const float MouseSelectedScaling = 1.5F;
 
         private void UpdateControls(Control parent, Control myControl, Font fnt, int level, bool noborderoverride = false)    // parent can be null
         {
@@ -417,20 +416,23 @@ namespace ExtendedControls
 #endif
             myControl.SuspendLayout();
 
-            const bool paneldebugmode = false;      // set for some help in those pesky panels
-
             Type controltype = myControl.GetType();
             string parentnamespace = parent?.GetType().Namespace ?? "NoParent";
 
             bool dochildren = true;
 
+            if ( myControl is IThemeable)
+            {
+                dochildren = (myControl as IThemeable).Theme(this,fnt);
+            }
+
             // this dodge allows no themeing on controls
-            if (myControl.TabIndex == TabIndexNoThemeIndicator)
+            else if (myControl.TabIndex == TabIndexNoThemeIndicator)
             {
                 //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Tabindex indicates no theme!");
                 dochildren = false;
             }
-            else if (myControl is Form form)
+            else if (myControl is Form form) // WINFORM
             {
                 form.FormBorderStyle = (WindowsFrame && !noborderoverride) ? FormBorderStyle.Sizable : FormBorderStyle.None;
                 form.Opacity = Opacity / 100;
@@ -438,282 +440,32 @@ namespace ExtendedControls
                 form.Font = fnt;
                 //System.Diagnostics.Debug.WriteLine($"Form scaling now {f.CurrentAutoScaleDimensions} {f.AutoScaleDimensions} {f.CurrentAutoScaleFactor()}");
             }
-            else if (myControl is CompositeAutoScaleButton || myControl is CompositeButton)        // these are not themed, they have a bitmap, and the backcolour is kept
+            else if (myControl is Panel)    // WINFORM, and ext panels rely on this if they don't need to theme
             {
+                myControl.BackColor = GroupBoxOverride(parent, Form);
+                // don't think makes sense myControl.ForeColor = LabelColor;
             }
-            else if (myControl is ExtRichTextBox rtb)
+            else if (myControl is Label)        // WINFORM
             {
-                rtb.TextBoxForeColor = TextBlockColor;
-                rtb.TextBoxBackColor = TextBackColor;
-
-                rtb.BorderColor = Color.Transparent;       // default for text box border styles
-                rtb.BorderStyle = TextBoxStyle;
-
-                if (IsTextBoxColourStyle)
-                    rtb.BorderColor = TextBlockBorderColor;
-
-                if (IsButtonSystemStyle)
-                    rtb.ScrollBarFlatStyle = FlatStyle.System;
-                else
-                {
-                    rtb.ScrollBarBackColor = TextBackColor;
-                    rtb.ScrollBarSliderColor = TextBlockSliderBack;
-                    rtb.ScrollBarBorderColor = rtb.ScrollBarThumbBorderColor =
-                                rtb.ScrollBarArrowBorderColor = TextBlockBorderColor;
-                    rtb.ScrollBarArrowButtonColor = rtb.ScrollBarThumbButtonColor = TextBlockScrollButton;
-                    rtb.ScrollBarMouseOverButtonColor = TextBlockScrollButton.Multiply(mouseoverscaling);
-                    rtb.ScrollBarMousePressedButtonColor = TextBlockScrollButton.Multiply(mouseselectedscaling);
-                    rtb.ScrollBarForeColor = TextBlockScrollArrow;
-                    rtb.ScrollBarFlatStyle = FlatStyle.Popup;
-                }
-
-                if (rtb.ContextMenuStrip != null)      // propegate font
-                    rtb.ContextMenuStrip.Font = fnt;
-
-                rtb.Invalidate();
-                rtb.PerformLayout();
-
-                dochildren = false;
+                myControl.ForeColor = LabelColor;
             }
-            else if (myControl is ExtTextBox tb)
-            {
-                tb.ForeColor = TextBlockColor;
-                tb.BackColor = TextBackColor;
-                tb.BackErrorColor = TextBlockHighlightColor;
-                tb.ControlBackground = TextBackColor; // previously, but not sure why, GroupBoxOverride(parent, Form);
-                tb.AutoSize = true;
-
-                tb.BorderColor = Color.Transparent;
-                tb.BorderStyle = TextBoxStyle;
-
-                if (IsTextBoxColourStyle)
-                    tb.BorderColor = TextBlockBorderColor;
-
-                if (IsTextBoxNoneStyle)
-                    tb.AutoSize = false;                                                 // with no border, the autosize clips the bottom of chars..
-
-                if (myControl is ExtTextBoxAutoComplete || myControl is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
-                {
-                    ExtTextBoxAutoComplete actb = myControl as ExtTextBoxAutoComplete;
-                    actb.DropDownBackgroundColor = ButtonBackColor;
-                    actb.DropDownBorderColor = TextBlockBorderColor;
-                    actb.DropDownScrollBarButtonColor = TextBlockScrollButton;
-                    actb.DropDownScrollBarColor = TextBlockSliderBack;
-                    actb.DropDownMouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
-                    actb.FlatStyle = ButtonFlatStyle;
-                }
-
-                ThemeButton(tb.EndButton);
-                tb.EndButton.FlatAppearance.BorderColor =             // override some of them to make back of button disappear
-                tb.EndButton.BackColor = TextBackColor;
-                tb.EndButton.ButtonColorScaling = tb.EndButton.ButtonDisabledScaling = 1.0F;
-
-                tb.Invalidate();
-
-                dochildren = false;
-            }
-            else if (myControl is ExtButton)
-            {
-                ThemeButton(myControl);
-            }
-            else if (myControl is ExtTabControl etc)
-            {
-                etc.AutoForceUpdate = false;        // make it slightly better
-
-                if (IsButtonSystemStyle) // not system
-                {
-                    etc.FlatStyle = FlatStyle.System;
-                }
-                else
-                {
-                    etc.TabControlBorderColor = TabcontrolBorder.Multiply(0.6F);
-                    etc.TabControlBorderBrightColor = TabcontrolBorder;
-                    etc.TabNotSelectedBorderColor = TabcontrolBorder.Multiply(0.4F);
-                    etc.TabNotSelectedColor = ButtonBackColor;
-                    etc.TabSelectedColor = ButtonBackColor.Multiply(mouseselectedscaling);
-                    etc.TabMouseOverColor = ButtonBackColor.Multiply(mouseoverscaling);
-                    etc.TextSelectedColor = ButtonTextColor;
-                    etc.TextNotSelectedColor = ButtonTextColor.Multiply(0.8F);
-                    etc.SetStyle(ButtonFlatStyle, tsc);
-                }
-                etc.ForceUpdate();
-            }
-            else if (myControl is ExtListBox elb)
-            {
-                elb.ForeColor = ButtonTextColor;
-                elb.ItemSeperatorColor = ButtonBorderColor;
-
-                if (IsButtonSystemStyle)
-                    elb.FlatStyle = FlatStyle.System;
-                else
-                {
-                    elb.BackColor = ButtonBackColor;
-                    elb.BorderColor = ButtonBorderColor;
-                    elb.ScrollBarButtonColor = TextBlockScrollButton;
-                    elb.ScrollBarColor = TextBlockSliderBack;
-                    elb.FlatStyle = ButtonFlatStyle;
-                }
-
-                elb.Repaint();            // force a repaint as the individual settings do not by design.
-
-                dochildren = false;
-            }
-            else if (myControl is ExtSafeChart)  // as a panel, we intercept to say okay before the panel. Item itself needs no themeing
-            {
-            }
-            else if (myControl is ExtChart)     // Note you should be using ExtSafeChart
-            {
-                ThemeChart(fnt, (ExtChart)myControl);
-            }
-            else if (myControl is Chart)
+            else if (myControl is Chart)    // WINFORM
             {
                 System.Diagnostics.Debug.Assert(false, "Warning - Chart not allowed");
             }
-            else if (myControl is MultiPipControl mpc)
-            {
-                mpc.ForeColor = ButtonTextColor;
-                mpc.PipColor = ButtonTextColor;
-                mpc.HalfPipColor = ButtonTextColor.MultiplyBrightness(0.6f);
-                mpc.BorderColor = GridBorderLines;
-            }
-            else if (myControl is ExtPanelResizer)      // Resizers only show when no frame is on
-            {
-                myControl.Visible = !WindowsFrame;
-            }
-            else if (myControl is ExtPanelDropDown pdd)
-            {
-                pdd.ForeColor = ButtonTextColor;
-                pdd.SelectionMarkColor = pdd.ForeColor;
-                pdd.BackColor = pdd.SelectionBackColor = ButtonBackColor;
-                pdd.BorderColor = ButtonBorderColor;
-                pdd.MouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
-                pdd.ScrollBarButtonColor = TextBlockScrollButton;
-                pdd.ScrollBarColor = TextBlockSliderBack;
-                pdd.FlatStyle = FlatStyle.Popup;
-            }
-            else if (myControl is ExtComboBox ecb)
-            {
-                ecb.ForeColor = ButtonTextColor;
-
-                if (IsButtonSystemStyle)
-                    ecb.FlatStyle = FlatStyle.System;
-                else
-                {
-                    ecb.BackColor = ButtonBackColor;
-                    ecb.DropDownBackgroundColor =  ButtonBackColor;
-                    ecb.BorderColor = ButtonBorderColor;
-                    ecb.MouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
-                    ecb.ScrollBarButtonColor = TextBlockScrollButton;
-                    ecb.ScrollBarColor = TextBlockSliderBack;
-                    ecb.FlatStyle = ButtonFlatStyle;
-                }
-
-                ecb.Repaint();            // force a repaint as the individual settings do not by design.
-
-                dochildren = false;
-            }
-            else if (myControl is NumericUpDown)
+            else if (myControl is NumericUpDown)        // WINFORM
             {                                                                   // BACK colour does not work..
                 myControl.ForeColor = TextBlockColor;
             }
-            else if (myControl is ExtButtonDrawn bd)
-            {
-                bd.BackColor = Form;
-                bd.ForeColor = LabelColor;
-                bd.MouseOverColor = LabelColor.Multiply(mouseoverscaling);
-                bd.MouseSelectedColor = LabelColor.Multiply(mouseselectedscaling);
-                bd.BorderWidth = 2;
-                bd.BorderColor = GridBorderLines;
-
-                System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
-                colormap.NewColor = bd.ForeColor;
-                bd.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
-                //System.Diagnostics.Debug.WriteLine("Drawn Panel Image button " + ctrl.Name);
-            }
-            else if (myControl is TableLayoutPanel)
+            else if (myControl is TableLayoutPanel)     // WINFORM
             {
                 myControl.BackColor = GroupBoxOverride(parent, Form);
             }
-            else if (myControl is ExtPanelRollUp)
+            else if (myControl is FlowLayoutPanel flp)  // WINFORM
             {
-                myControl.BackColor = paneldebugmode ? Color.Green : GroupBoxOverride(parent, Form);
+                flp.BackColor = GroupBoxOverride(parent, Form);
             }
-            else if (myControl is FlowLayoutPanel flp)
-            {
-                flp.BackColor = paneldebugmode ? Color.Red : GroupBoxOverride(parent, Form);
-            }
-            else if (myControl is Panel)
-            {
-                if (myControl is PanelNoTheme)      // this type indicates no theme
-                {
-                    //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Panel no theme!");
-                    dochildren = false;
-                }
-                else
-                {
-                    //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " " + myControl.TabIndex + "Panel Theme It!");
-                    myControl.BackColor = paneldebugmode ? Color.Blue : Form;
-                    myControl.ForeColor = LabelColor;
-                }
-            }
-            else if (myControl is Label)
-            {
-                myControl.ForeColor = LabelColor;
-
-                if (myControl is ExtLabel)
-                    (myControl as ExtLabel).TextBackColor = Form;
-            }
-            else if (myControl is ExtGroupBox gb)
-            {
-                gb.ForeColor = GroupFore;
-                gb.BackColor = GroupBack;
-                gb.BorderColor = GroupBorder;
-                gb.FlatStyle = FlatStyle.Flat;           // always in Flat, always apply our border.
-            }
-            else if (myControl is ExtCheckBox cb)
-            {
-                cb.BackColor = GroupBoxOverride(parent, Form);
-
-                if (cb.Appearance == Appearance.Button)
-                {
-                    cb.ForeColor = ButtonTextColor;
-                    cb.MouseOverColor = ButtonBackColor.Multiply(mouseoverscaling);
-                    cb.CheckColor = ButtonBackColor.Multiply(0.9f);
-                }
-                else
-                {
-                    cb.ForeColor = CheckBox;
-                    cb.CheckBoxColor = CheckBox;
-                    cb.CheckBoxInnerColor = CheckBox.Multiply(1.5F);
-                    cb.MouseOverColor = CheckBox.Multiply(1.4F);
-                    cb.TickBoxReductionRatio = 0.75f;
-                    cb.CheckColor = CheckBoxTick;
-                }
-
-                cb.FlatStyle = ButtonFlatStyle;
-
-                if (cb.Image != null)
-                {
-                    System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();
-                    colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
-                    colormap.NewColor = cb.ForeColor;
-                    cb.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
-
-                    cb.ImageLayout = ImageLayout.Stretch;
-                }
-            }
-            else if (myControl is ExtRadioButton rb)
-            {
-                rb.FlatStyle = ButtonFlatStyle;
-                rb.BackColor = GroupBoxOverride(parent, Form);
-                rb.ForeColor = CheckBox;
-                rb.RadioButtonColor = CheckBox;
-                rb.RadioButtonInnerColor = CheckBox.Multiply(1.5F);
-                rb.SelectedColor = rb.BackColor.Multiply(0.75F);
-                rb.MouseOverColor = CheckBox.Multiply(1.4F);
-            }
-            else if (myControl is DataGridView dgv)                     // we theme this directly
+            else if (myControl is DataGridView dgv)  // WINFORM           
             {
                 dgv.EnableHeadersVisualStyles = false;            // without this, the colours for the grid are not applied.
 
@@ -755,98 +507,18 @@ namespace ExtendedControls
                 if (dgv.ContextMenuStrip != null)       // propergate font onto any attached context menus
                     dgv.ContextMenuStrip.Font = fnt;
             }
-            else if (myControl is ExtScrollBar esb)
-            {
-                //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
-                if (IsButtonSystemStyle)
-                    esb.FlatStyle = FlatStyle.System;
-                else
-                {
-                    esb.BorderColor = GridBorderLines;
-                    esb.BackColor = Form;
-                    esb.SliderColor = GridSliderBack;
-                    esb.BorderColor = esb.ThumbBorderColor = esb.ArrowBorderColor = GridBorderLines;
-                    esb.ArrowButtonColor = esb.ThumbButtonColor = GridScrollButton;
-                    esb.MouseOverButtonColor = GridScrollButton.Multiply(mouseoverscaling);
-                    esb.MousePressedButtonColor = GridScrollButton.Multiply(mouseselectedscaling);
-                    esb.ForeColor = GridScrollArrow;
-                    esb.FlatStyle = ButtonFlatStyle;
-                }
-            }
-            else if (myControl is ExtNumericUpDown nud)
-            {
-                nud.TextBoxForeColor = TextBlockColor;
-                nud.TextBoxBackColor = TextBackColor;
-                nud.BorderColor = TextBlockBorderColor;
-
-                Color c1 = TextBlockScrollButton;
-                nud.updown.BackColor = c1;
-                nud.updown.ForeColor = TextBlockScrollArrow;
-                nud.updown.BorderColor = ButtonBorderColor;
-                nud.updown.MouseOverColor = c1.Multiply(mouseoverscaling);
-                nud.updown.MouseSelectedColor = c1.Multiply(mouseselectedscaling);
-                nud.Invalidate();
-
-                dochildren = false;
-            }
-            else if (myControl is CheckedIconUserControl iuc)
-            {
-                iuc.BackColor = Form;
-                iuc.ForeColor = TextBlockColor;
-                iuc.BorderColor = GridBorderLines;
-                iuc.BackColor = Form;
-                iuc.SliderColor = GridSliderBack;
-                iuc.BorderColor = iuc.ThumbBorderColor =
-                        iuc.ArrowBorderColor = GridBorderLines;
-                Color c1 = GridScrollButton;
-                iuc.ArrowButtonColor = iuc.ThumbButtonColor = c1;
-                iuc.MouseOverButtonColor = c1.Multiply(mouseoverscaling);
-                iuc.MousePressedButtonColor = c1.Multiply(mouseselectedscaling);
-                iuc.CheckBoxColor = CheckBox;
-                iuc.CheckBoxInnerColor = CheckBox.Multiply(1.5F);
-                iuc.MouseOverCheckboxColor = CheckBox.Multiply(0.75F);
-                iuc.MouseOverLabelColor = CheckBox.Multiply(0.75F);
-                iuc.TickBoxReductionRatio = 0.75f;
-                iuc.CheckColor = CheckBoxTick;
-            }
-            else if (myControl is PictureBox pb)
+            else if (myControl is PictureBox pb)    // WINFORM
             {
                 if (pb.ContextMenuStrip != null)       // propergate font onto any attached context menus
                     pb.ContextMenuStrip.Font = fnt;
             }
-            else if (myControl is ExtDateTimePicker dtp)
-            {
-                dtp.BorderColor = GridBorderLines;
-                dtp.ForeColor = TextBlockColor;
-                dtp.TextBackColor = TextBackColor;
-                dtp.BackColor = Form;
-                dtp.SelectedColor = TextBlockColor.MultiplyBrightness(0.6F);
-                dtp.checkbox.FlatStyle = ButtonFlatStyle;
-                dtp.checkbox.TickBoxReductionRatio = 0.75f;
-                dtp.checkbox.ForeColor = CheckBox;
-                dtp.checkbox.CheckBoxColor = CheckBox;
-                Color inner = CheckBox.Multiply(1.5F);
-                if (inner.GetBrightness() < 0.1)        // double checking
-                    inner = Color.Gray;
-                dtp.checkbox.CheckBoxInnerColor = inner;
-                dtp.checkbox.CheckColor = CheckBoxTick;
-                dtp.checkbox.MouseOverColor = CheckBox.Multiply(1.4F);
-
-                dtp.updown.BackColor = ButtonBackColor;
-                dtp.updown.BorderColor = GridBorderLines;
-                dtp.updown.ForeColor = TextBlockColor;
-                dtp.updown.MouseOverColor = CheckBox.Multiply(1.4F);
-                dtp.updown.MouseSelectedColor = CheckBox.Multiply(1.5F);
-
-                dochildren = false;
-            }
-            else if (myControl is StatusStrip)
+            else if (myControl is StatusStrip)  // WINFORM
             {
                 myControl.BackColor = Form;
                 myControl.ForeColor = LabelColor;
                 dochildren = false;
             }
-            else if (myControl is ToolStrip)    // MenuStrip is a tool stip
+            else if (myControl is ToolStrip)    // WINFORM MenuStrip is a tool stip
             {
                 myControl.Font = fnt;       // Toolstrips don't seem to inherit Forms font, so force
 
@@ -863,44 +535,13 @@ namespace ExtendedControls
                     }
                 }
             }
-            else if (myControl is TabStrip ts)
-            {
-                //System.Diagnostics.Debug.WriteLine("*************** TAB Strip themeing" + myControl.Name + " " + myControl.Tag);
-                ts.ForeColor = ButtonTextColor;
-                ts.DropDownBackgroundColor = ButtonBackColor;
-                ts.DropDownBorderColor = TextBlockBorderColor;
-                ts.DropDownScrollBarButtonColor = TextBlockScrollButton;
-                ts.DropDownScrollBarColor = TextBlockSliderBack;
-                ts.DropDownMouseOverBackgroundColor = ButtonBackColor.Multiply(mouseoverscaling);
-                ts.DropDownItemSeperatorColor = ButtonBorderColor;
-                ts.EmptyColor = ButtonBackColor;
-                ts.SelectedBackColor = ButtonBackColor;
-            }
-            else if (myControl is Controls.ImageControl)      // no theme
-            {
-            }
-            else if (myControl is TreeView)
+            else if (myControl is TreeView) // WINFORM
             {
                 TreeView ctrl = myControl as TreeView;
                 ctrl.ForeColor = TextBlockColor;
                 ctrl.BackColor = TextBackColor;
             }
-
-            else if (myControl is CompassControl compassControl)
-            {
-                compassControl.ForeColor = TextBlockColor;
-                compassControl.StencilColor = TextBlockColor;
-                compassControl.CentreTickColor = TextBlockColor.Multiply(1.2F);
-                compassControl.BugColor = TextBlockColor.Multiply(0.8F);
-                compassControl.BackColor = Form;
-            }
-
-            else if (myControl is LabelData ld)
-            {
-                ld.BorderColor = TextBlockBorderColor;
-                ld.ForeColor = LabelColor;
-            }
-            else if (myControl is Button wfb)
+            else if (myControl is Button wfb) // WINFORM
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wfb.ForeColor = ButtonTextColor;
@@ -908,18 +549,18 @@ namespace ExtendedControls
                 wfb.FlatStyle = FlatStyle.Popup;
                 wfb.FlatAppearance.BorderColor = ButtonBorderColor;
             }
-            else if (myControl is RadioButton wrb)
+            else if (myControl is RadioButton wrb) // WINFORM
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wrb.ForeColor = ButtonTextColor;
             }
-            else if (myControl is GroupBox wgb)
+            else if (myControl is GroupBox wgb)// WINFORM
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wgb.ForeColor = GroupFore;
                 wgb.BackColor = GroupBack;
             }
-            else if (myControl is CheckBox wchb)
+            else if (myControl is CheckBox wchb) // WINFORM
             {
                 wchb.BackColor = GroupBoxOverride(parent, Form);
 
@@ -934,30 +575,27 @@ namespace ExtendedControls
                 }
 
             }
-            else if (myControl is TextBox wtb)
+            else if (myControl is TextBox wtb) // WINFORM
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wtb.ForeColor = TextBlockColor;
                 wtb.BackColor = TextBackColor;
                 wtb.BorderStyle = BorderStyle.FixedSingle;
             }
-            else if (myControl is RichTextBox wrtb)
+            else if (myControl is RichTextBox wrtb) // WINFORM
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wrtb.ForeColor = TextBlockColor;
                 wrtb.BackColor = TextBackColor;
             }
-            else if (myControl is ComboBox wcb)
+            else if (myControl is ComboBox wcb) // WINFORM
             {
                 System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wcb.ForeColor = ButtonTextColor;
                 wcb.BackColor = ButtonBackColor;
             }
-            else if (myControl is ExtSplitterResizeParent)      // splitter, no theme
-            {
-            }
             // these are not themed or are sub parts of other controls
-            else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar)
+            else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar) // WINFORM
             {
             }
             else
@@ -980,112 +618,6 @@ namespace ExtendedControls
 
             myControl.ResumeLayout();
             //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme Control {myControl.Name} to {myControl.Bounds}");
-        }
-
-        private void ThemeButton(Control myControl)
-        {
-            ExtButton ctrl = (ExtButton)myControl;
-            ctrl.ForeColor = ButtonTextColor;
-
-            if (ctrl.Text.HasChars())      // we autosize text to make it fit.. we do not autosize image buttons
-                ctrl.AutoSize = true;
-
-            if (IsButtonSystemStyle) // system
-            {
-                ctrl.FlatStyle = (ctrl.Image != null) ? FlatStyle.Standard : FlatStyle.System;
-                ctrl.UseVisualStyleBackColor = true;           // this makes it system..
-            }
-            else
-            {
-                ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
-
-                if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
-                {
-                    System.Drawing.Imaging.ColorMap colormap1 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                    colormap1.OldColor = Color.FromArgb(134, 134, 134);                                      // gray is defined as the forecolour
-                    colormap1.NewColor = ctrl.ForeColor;
-                    //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap1.OldColor + " to " + colormap1.NewColor);
-
-                    System.Drawing.Imaging.ColorMap colormap2 = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
-                    colormap2.OldColor = Color.FromArgb(255, 255, 255);                                      // and white is defined as the forecolour
-                    colormap2.NewColor = ctrl.ForeColor;
-                    //System.Diagnostics.Debug.WriteLine("Theme Image in " + ctrl.Name + " Map " + colormap2.OldColor + " to " + colormap2.NewColor);
-
-                    ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap1, colormap2 });     // used ButtonDisabledScaling note!
-                }
-
-                // if image, and no text or text over image centred (so over the image), background is form to make the back disappear
-                if (ctrl.Image != null && (ctrl.Text.Length == 0 || (ctrl.TextAlign == ContentAlignment.MiddleCenter && ctrl.ImageAlign == ContentAlignment.MiddleCenter)))
-                {
-                    if (ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton)       // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
-                    {
-                        ctrl.BackColor = ctrl.Parent.BackColor;
-                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
-                    }
-                    else
-                        ctrl.BackColor = Form;
-                }
-                else
-                {
-                    ctrl.BackColor = ButtonBackColor;       // else its a graduated back
-                }
-
-                ctrl.FlatAppearance.BorderColor = (ctrl.Image != null) ? Form : ButtonBorderColor;
-                ctrl.FlatAppearance.BorderSize = 1;
-                ctrl.FlatAppearance.MouseOverBackColor = ButtonBackColor.Multiply(mouseoverscaling);
-                ctrl.FlatAppearance.MouseDownBackColor = ButtonBackColor.Multiply(mouseselectedscaling);
-                ctrl.FlatStyle = ButtonFlatStyle;
-            }
-
-        }
-
-        // You can reapply themeing individually to a chart if you change the series/chart areas.
-        public void ThemeChart(Font fnt, ExtChart ctrl)
-        {
-            ctrl.Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
-            ctrl.BackColor = Form;
-
-            // so the themer only overrides border/back colours if the user has set them to a value already. It does not override empty entries 
-            // the user can chose if titles/legends border and back is themed
-
-            ctrl.SetAllTitlesColorFont(GridCellText, GetScaledFont(1.5f), GridCellBack,
-                                      Color.Empty, 1,
-                                      GroupBorder, 1, ChartDashStyle.Solid);
-
-            ctrl.SetAllLegendsColorFont(GridCellText, fnt, ctrl.BackColor, 6, Color.FromArgb(128, 0, 0, 0),
-                                        GridCellText, GridCellBack, fnt, StringAlignment.Center, LegendSeparatorStyle.Line, GridBorderLines,
-                                        GridBorderLines, ChartDashStyle.Solid, 0,
-                                        LegendSeparatorStyle.Line, GroupBorder, 1);
-
-            // we theme all chart areas, backwards, so chartarea0 is the one left selected            
-            for (int i = ctrl.ChartAreas.Count - 1; i >= 0; i--)
-            {
-                // System.Diagnostics.Debug.WriteLine($"Themer {ctrl.Parent.Name} Theme Chart Area {i}");
-                ctrl.SetCurrentChartArea(i);
-                ctrl.SetChartAreaColors(GridCellBack, GridBorderLines);
-
-                ctrl.SetXAxisMajorGridWidthColor(1, ChartDashStyle.Solid, GridBorderLines);
-                ctrl.SetYAxisMajorGridWidthColor(1, ChartDashStyle.Solid, GridBorderLines);
-                ctrl.SetXAxisLabelColorFont(GridCellText, fnt);
-                ctrl.SetYAxisLabelColorFont(GridCellText, fnt);
-                ctrl.SetXAxisTitle(ctrl.CurrentChartArea.AxisX.Title, fnt, GridCellText);
-                ctrl.SetYAxisTitle(ctrl.CurrentChartArea.AxisY.Title, fnt, GridCellText);
-
-                ctrl.SetXCursorColors(GridScrollArrow, GridCellText, 2);
-                ctrl.SetYCursorColors(GridScrollArrow, GridCellText, 2);
-
-                ctrl.SetXCursorScrollBarColors(GridSliderBack, GridScrollButton);
-                ctrl.SetYCursorScrollBarColors(GridSliderBack, GridScrollButton);
-            }
-
-            for (int i = ctrl.Series.Count - 1; i >= 0; i--)        // backwards so chart 0 is left the pick
-            {
-                // System.Diagnostics.Debug.WriteLine($"Themer {ctrl.Parent.Name} Theme series {i}");
-                ctrl.SetCurrentSeries(i);
-                ctrl.SetSeriesColor(GetChartColor(i));
-                ctrl.SetSeriesDataLabelsColorFont(GridCellText, fnt, Color.Transparent);
-                ctrl.SetSeriesMarkersColorSize(GridScrollArrow, 4, GridScrollButton, 2);
-            }
         }
 
         private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)
@@ -1169,5 +701,11 @@ namespace ExtendedControls
         {
             return FileHelpers.TryWriteToFile(pathname, ToJSON().ToString(true));
         }
+    }
+
+    // Controls which can theme implement this
+    interface IThemeable
+    {
+        bool Theme(Theme t,Font fnt);
     }
 }

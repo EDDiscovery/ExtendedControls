@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2024 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class ExtPictureBox : PictureBox
+    public partial class ExtPictureBox : PictureBox, IThemeable
     {
         public delegate void OnElement(object sender, MouseEventArgs eventargs, ImageElement i, object tag);
         public event OnElement EnterElement;
@@ -500,6 +500,10 @@ namespace ExtendedControls
 
         #endregion
 
+        public bool Theme(Theme t, Font fnt)
+        {
+            return false;   // no action, no children
+        }
 
         private ImageElement elementin = null;
         private Timer hovertimer = new Timer();

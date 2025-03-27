@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright 2016-2019 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
 
 using System;
@@ -21,7 +19,7 @@ using System.Windows.Forms;
 namespace ExtendedControls
 {
     // resize the parent, either height or width. Place inside the parent container and dock to the size required
-    public class ExtSplitterResizeParent : Splitter
+    public class ExtSplitterResizeParent : Splitter, IThemeable
     {
         // Use MinSize to set minimum parent size, use Dock to indicate direction of growth, use MaxSize to indicate maximum
         // if you dock it between dockable containers, the base functionality will apply - beware
@@ -90,6 +88,11 @@ namespace ExtendedControls
         {
             base.OnMouseUp(e);
             splitstart = new Point(-99999, -99999);
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            return true; // no action, do children
         }
 
         private Point splitstart = new Point(-99999, -99999);

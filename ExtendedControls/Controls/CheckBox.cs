@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,9 +10,8 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
+
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -21,7 +20,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtCheckBox : CheckBox
+    public class ExtCheckBox : CheckBox, IThemeable
     {
         // Flatstyle Popout/Flat mode, not Apprearance Button only
         public Color CheckBoxColor { get; set; } = Color.Gray;          // Normal only border area colour
@@ -258,6 +257,41 @@ namespace ExtendedControls
                     g.DrawString(this.Text, FontToUse, textb, box, fmt);
                 }
             }
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            BackColor = t.GroupBoxOverride(Parent, t.Form);
+
+            if (Appearance == Appearance.Button)
+            {
+                ForeColor = t.ButtonTextColor;
+                MouseOverColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+                CheckColor = t.ButtonBackColor.Multiply(0.9f);
+            }
+            else
+            {
+                ForeColor = t.CheckBox;
+                CheckBoxColor = t.CheckBox;
+                CheckBoxInnerColor = t.CheckBox.Multiply(1.5F);
+                MouseOverColor = t.CheckBox.Multiply(1.4F);
+                TickBoxReductionRatio = 0.75f;
+                CheckColor = t.CheckBoxTick;
+            }
+
+            FlatStyle = t.ButtonFlatStyle;
+
+            if (Image != null)
+            {
+                System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();
+                colormap.OldColor = Color.White;                                                        // white is defined as the forecolour
+                colormap.NewColor = ForeColor;
+                SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
+
+                ImageLayout = ImageLayout.Stretch;
+            }
+
+            return false;
         }
 
         private bool mouseover = false;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2022-2022 EDDiscovery development team
+ * Copyright 2022-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -22,7 +22,7 @@ namespace ExtendedControls
     // use to safely execute in MONO. See ExtChart for help on functions
     // using the return structures (ChartArea etc) it may be null due to chart not being supported - beware
 
-    public class ExtSafeChart : Panel
+    public class ExtSafeChart : Panel, IThemeable
     {
         public static Color RequestTheme = ExtChart.RequestTheme;
         public static Color Disable = ExtChart.Disable;
@@ -88,7 +88,7 @@ namespace ExtendedControls
         public void Theme(Theme thm)
         {
             if (chart != null && thm != null)
-                thm.ThemeChart(thm.GetFont,chart);
+                chart.Theme(thm, thm.GetFont);
         }
 
         public void SetBorder(int width, ChartDashStyle style, Color? b = null)
@@ -572,7 +572,10 @@ namespace ExtendedControls
             }
         }
 
-
+        public bool Theme(Theme t, Font fnt)
+        {
+            return true;    // no action, do children
+        }
 
         private ExtChart chart;
         private ElementPosition leftarrowposition = new ElementPosition();

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2023 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -22,7 +22,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtComboBox : Control
+    public class ExtComboBox : Control, IThemeable
     {
         // ForeColor = text, BackColor = control background
         public Color MouseOverBackgroundColor { get; set; } = Color.Silver;
@@ -382,6 +382,27 @@ namespace ExtendedControls
             base.OnMouseLeave(e);    // same as mouse 
         }
 
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.ButtonTextColor;
+
+            if (t.IsButtonSystemStyle)
+                FlatStyle = FlatStyle.System;
+            else
+            {
+                BackColor = t.ButtonBackColor;
+                DropDownBackgroundColor = t.ButtonBackColor;
+                BorderColor = t.ButtonBorderColor;
+                MouseOverBackgroundColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+                ScrollBarButtonColor = t.TextBlockScrollButton;
+                ScrollBarColor = t.TextBlockSliderBack;
+                FlatStyle = t.ButtonFlatStyle;
+            }
+
+            Repaint();            // force a repaint as the individual settings do not by design.
+
+            return false;
+        }
 
         public class ObjectCollection : IList<string>, ICollection<string>
         {

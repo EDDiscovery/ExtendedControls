@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2022-2022 EDDiscovery development team
+ * Copyright 2022-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
 
 using System;
@@ -23,7 +21,7 @@ namespace ExtendedControls
 {
     // a composite button which autoscales its content to its size
 
-    public class CompositeAutoScaleButton : Panel            
+    public class CompositeAutoScaleButton : Panel, IThemeable
     {
         public CompositeAutoScaleButton()
         {
@@ -147,5 +145,9 @@ namespace ExtendedControls
             return cb;
         }
 
+        public bool Theme(Theme t, Font fnt)
+        {
+            return false;        // no themeing, no child theming
+        }
     }
 }

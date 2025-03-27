@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,9 +10,8 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
+
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,7 +21,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtDateTimePicker : Control
+    public class ExtDateTimePicker : Control, IThemeable
     {
         // its up to you how to use this, what tz info it has.  tries to keep the kind
         public DateTime Value { get { return datetimevalue; } set { datetimevalue = value; Invalidate(); } }
@@ -472,6 +471,34 @@ namespace ExtendedControls
         {
             EventHandler handler = (EventHandler)Events[EVENT_VALUECHANGED];
             if (handler != null) handler(this, new EventArgs());
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            BorderColor = t.GridBorderLines;
+            ForeColor = t.TextBlockColor;
+            TextBackColor = t.TextBackColor;
+            BackColor = t.Form;
+            SelectedColor = t.TextBlockColor.MultiplyBrightness(0.6F);
+            checkbox.FlatStyle = t.ButtonFlatStyle;
+            checkbox.TickBoxReductionRatio = 0.75f;
+            checkbox.ForeColor = t.CheckBox;
+            checkbox.CheckBoxColor = t.CheckBox;
+            Color inner = t.CheckBox.Multiply(1.5F);
+            if (inner.GetBrightness() < 0.1)        // double checking
+                inner = Color.Gray;
+            checkbox.CheckBoxInnerColor = inner;
+            checkbox.CheckColor = t.CheckBoxTick;
+            checkbox.MouseOverColor = t.CheckBox.Multiply(1.4F);
+
+            // we theme the updown ourselves and do not use its themer
+            updown.BackColor = t.ButtonBackColor;
+            updown.BorderColor = t.GridBorderLines;
+            updown.ForeColor = t.TextBlockColor;
+            updown.MouseOverColor = t.CheckBox.Multiply(1.4F);
+            updown.MouseSelectedColor = t.CheckBox.Multiply(1.5F);
+
+            return false;
         }
 
         #region Privates

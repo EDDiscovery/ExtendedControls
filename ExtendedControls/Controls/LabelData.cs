@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2022-2024 EDDiscovery development team
+ * Copyright © 2022-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -12,14 +12,12 @@
  * governing permissions and limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class LabelData : Control
+    public class LabelData : Control, IThemeable
     {
         [System.ComponentModel.Browsable(true)]
         public override string Text { get { return base.Text; } set { base.Text = value; Invalidate(); } }
@@ -213,7 +211,12 @@ namespace ExtendedControls
 
         }
 
-
+        public bool Theme(Theme t, Font fnt)
+        {
+            BorderColor = t.TextBlockBorderColor;
+            ForeColor = t.LabelColor;
+            return false;
+        }
 
         private Color bordercolor = Color.Orange;
         private int borderwidth = 1;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2022-2022 EDDiscovery development team
+ * Copyright 2022-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -21,7 +21,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 namespace ExtendedControls
 {
     // Does not work in MONO
-    public class ExtChart : Chart
+    public class ExtChart : Chart, IThemeable
     {
         // currently selected items in chart
 
@@ -1124,7 +1124,57 @@ namespace ExtendedControls
             }
         }
 
- 
+        public bool Theme(Theme t, Font fnt)
+        {
+            Font = fnt;        // log the font with the chart, so you can use it directly in further explicit themeing
+            BackColor = t.Form;
+
+            // so the themer only overrides border/back colours if the user has set them to a value already. It does not override empty entries 
+            // the user can chose if titles/legends border and back is themed
+
+            SetAllTitlesColorFont(t.GridCellText, t.GetScaledFont(1.5f), t.GridCellBack,
+                                      Color.Empty, 1,
+                                      t.GroupBorder, 1, ChartDashStyle.Solid);
+
+            SetAllLegendsColorFont(t.GridCellText, fnt, BackColor, 6, Color.FromArgb(128, 0, 0, 0),
+                                        t.GridCellText, t.GridCellBack, fnt, StringAlignment.Center, LegendSeparatorStyle.Line, t.GridBorderLines,
+                                        t.GridBorderLines, ChartDashStyle.Solid, 0,
+                                        LegendSeparatorStyle.Line, t.GroupBorder, 1);
+
+            // we theme all chart areas, backwards, so chartarea0 is the one left selected            
+            for (int i = ChartAreas.Count - 1; i >= 0; i--)
+            {
+                // System.Diagnostics.Debug.WriteLine($"Themer {Parent.Name} Theme Chart Area {i}");
+                SetCurrentChartArea(i);
+                SetChartAreaColors(t.GridCellBack, t.GridBorderLines);
+
+                SetXAxisMajorGridWidthColor(1, ChartDashStyle.Solid, t.GridBorderLines);
+                SetYAxisMajorGridWidthColor(1, ChartDashStyle.Solid, t.GridBorderLines);
+                SetXAxisLabelColorFont(t.GridCellText, fnt);
+                SetYAxisLabelColorFont(t.GridCellText, fnt);
+                SetXAxisTitle(CurrentChartArea.AxisX.Title, fnt, t.GridCellText);
+                SetYAxisTitle(CurrentChartArea.AxisY.Title, fnt, t.GridCellText);
+
+                SetXCursorColors(t.GridScrollArrow, t.GridCellText, 2);
+                SetYCursorColors(t.GridScrollArrow, t.GridCellText, 2);
+
+                SetXCursorScrollBarColors(t.GridSliderBack, t.GridScrollButton);
+                SetYCursorScrollBarColors(t.GridSliderBack, t.GridScrollButton);
+            }
+
+            for (int i = Series.Count - 1; i >= 0; i--)        // backwards so chart 0 is left the pick
+            {
+                // System.Diagnostics.Debug.WriteLine($"Themer {Parent.Name} Theme series {i}");
+                SetCurrentSeries(i);
+                SetSeriesColor(t.GetChartColor(i));
+                SetSeriesDataLabelsColorFont(t.GridCellText, fnt, Color.Transparent);
+                SetSeriesMarkersColorSize(t.GridScrollArrow, 4, t.GridScrollButton, 2);
+            }
+
+            return false;
+
+        }
+
         private HashSet<ChartArea> autozoomy = new HashSet<ChartArea>();
         private HashSet<ChartArea> mousewheelx = new HashSet<ChartArea>();
   

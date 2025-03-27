@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2024 EDDiscovery development team
+ * Copyright 2021-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -21,7 +21,7 @@ namespace ExtendedControls
 {
     // apply a ExtPictureBox and a ExtScrollBar to this panel.
     // Support a close icon above the scroll bar if a ButtonDrawn is added to it.  Visibility of this controls if shown
-    public class ExtPictureBoxScroll : Panel      
+    public class ExtPictureBoxScroll : Panel, IThemeable
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
@@ -160,6 +160,11 @@ namespace ExtendedControls
                     vsc.SetValueMaximumLargeChange(0, 10, 100);    // inert the bar, give it numbers which would make it go empty/hide
                 }
             }
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            return true; // no action, do children
         }
 
         #endregion

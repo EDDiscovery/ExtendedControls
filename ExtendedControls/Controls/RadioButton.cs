@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
 
 using System;
@@ -21,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtRadioButton : RadioButton
+    public class ExtRadioButton : RadioButton, IThemeable
     {
         public Color RadioButtonColor { get; set; } = Color.Gray;       // border of
         public Color RadioButtonInnerColor { get; set; } = Color.White; // inner border of
@@ -155,6 +153,18 @@ namespace ExtendedControls
         {
             base.OnMouseEnter(eventargs);
             mouseover = false;
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            FlatStyle = t.ButtonFlatStyle;
+            BackColor = t.GroupBoxOverride(Parent, t.Form);
+            ForeColor = t.CheckBox;
+            RadioButtonColor = t.CheckBox;
+            RadioButtonInnerColor = t.CheckBox.Multiply(1.5F);
+            SelectedColor = BackColor.Multiply(0.75F);
+            MouseOverColor = t.CheckBox.Multiply(1.4F);
+            return false;
         }
 
         private bool mouseover = false;

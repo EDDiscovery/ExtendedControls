@@ -63,7 +63,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
-    <Compile Include="Controls\FlowLayoutPanel.cs">
+    <Compile Include="Controls\PanelFlowLayout.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PanelNoTheme.cs">
@@ -81,7 +81,7 @@
     <Compile Include="Controls\Chart.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ImageControlScroll.cs">
+    <Compile Include="Controls\PanelImageControlScroll.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ImageControl.cs">
@@ -200,7 +200,6 @@
     <Compile Include="Forms\ListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\DataGridViewExtensions.cs" />
     <Compile Include="Controls\PanelDataGridViewScroll.cs">
       <SubType>Component</SubType>
     </Compile>

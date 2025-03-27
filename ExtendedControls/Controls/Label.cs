@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright © 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
 
 using System;
@@ -24,7 +22,7 @@ namespace ExtendedControls
     // draws label using a bitmap - solves problems with aliasing over transparent backgrounds
     // but it does not antialias properly if the background is not drawn..
 
-    public class ExtLabel : Label
+    public class ExtLabel : Label, IThemeable
     {
         private new Color BackColor { get; set; }          // DONT - has no meaning for this label
 
@@ -72,12 +70,19 @@ namespace ExtendedControls
                 }
             }
         }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.LabelColor;
+            TextBackColor = t.Form;
+            return false;
+        }
     }
 
     /// <summary>
     /// Fixed Width label with auto calculated height
     /// </summary>
-    public class ExtLabelAutoHeight : Label
+    public class ExtLabelAutoHeight : Label, IThemeable
     {
         public ExtLabelAutoHeight()
         {
@@ -125,6 +130,11 @@ namespace ExtendedControls
                     }
                 }
             }
+        }
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.LabelColor;
+            return false;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
 
 using System;
@@ -21,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtNumericUpDown : Control
+    public class ExtNumericUpDown : Control, IThemeable
     {
         // Fore not use, Back used as background of whole control (may show if Autosize=on)
         public Color TextBoxBackColor { get { return tbbackcolor; } set { tb.BackColor = tbbackcolor = value; } }
@@ -170,6 +168,23 @@ namespace ExtendedControls
             tb.Text = cv.ToString();
             if (oldvalue != curvalue)
                 OnValueChanged(new EventArgs());
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            TextBoxForeColor = t.TextBlockColor;
+            TextBoxBackColor = t.TextBackColor;
+            BorderColor = t.TextBlockBorderColor;
+
+            // we theme the updown ourselves and do not use its themer
+            updown.BackColor = t.TextBlockScrollButton;
+            updown.ForeColor = t.TextBlockScrollArrow;
+            updown.BorderColor = t.ButtonBorderColor;
+            updown.MouseOverColor = t.TextBlockScrollButton.Multiply(ExtendedControls.Theme.MouseOverScaling);
+            updown.MouseSelectedColor = t.TextBlockScrollButton.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+            Invalidate();
+
+            return false;
         }
 
         #endregion

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2024 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -12,7 +12,6 @@
  * governing permissions and limitations under the License.
  */
 
-using BaseUtils.Win32Constants;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -25,7 +24,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtTabControl : TabControl
+    public class ExtTabControl : TabControl, IThemeable
     {
         #region Properties
 
@@ -396,6 +395,30 @@ namespace ExtendedControls
             {
                 backImageControlBitmap?.Dispose();
             }
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            AutoForceUpdate = false;        // make it slightly better
+
+            if (t.IsButtonSystemStyle) // not system
+            {
+                FlatStyle = FlatStyle.System;
+            }
+            else
+            {
+                TabControlBorderColor = t.TabcontrolBorder.Multiply(0.6F);
+                TabControlBorderBrightColor = t.TabcontrolBorder;
+                TabNotSelectedBorderColor = t.TabcontrolBorder.Multiply(0.4F);
+                TabNotSelectedColor = t.ButtonBackColor;
+                TabSelectedColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseSelectedScaling);
+                TabMouseOverColor = t.ButtonBackColor.Multiply(ExtendedControls.Theme.MouseOverScaling);
+                TextSelectedColor = t.ButtonTextColor;
+                TextNotSelectedColor = t.ButtonTextColor.Multiply(0.8F);
+                SetStyle(t.ButtonFlatStyle, new TabStyleAngled());
+            }
+            ForceUpdate();
+            return true;
         }
         #endregion
 

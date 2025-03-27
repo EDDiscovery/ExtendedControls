@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2022-2024 EDDiscovery development team
+ * Copyright © 2022-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class MultiPipControl : Control
+    public class MultiPipControl : Control, IThemeable
     {
         [System.ComponentModel.Browsable(true)]
         public override string Text { get { return base.Text;} set { base.Text= value; Invalidate(); } }
@@ -150,6 +150,14 @@ namespace ExtendedControls
             ValueChanged?.Invoke(this);
         }
 
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.ButtonTextColor;
+            PipColor = t.ButtonTextColor;
+            HalfPipColor = t.ButtonTextColor.MultiplyBrightness(0.6f);
+            BorderColor = t.GridBorderLines;
+            return false;
+        }
 
         private int pips = 8;
         private int pipmax = 8;

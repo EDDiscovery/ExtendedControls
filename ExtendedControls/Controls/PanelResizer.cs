@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2020 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,21 +10,15 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace ExtendedControls
 {
-    public partial class ExtPanelResizer : Panel               
+    public partial class ExtPanelResizer : Panel, IThemeable
     {
         public DockStyle Movement { get { return movement; } set { SetMovement(value); } }
 
@@ -67,5 +61,11 @@ namespace ExtendedControls
             }
         }
 
+        public bool Theme(Theme t, Font fnt)
+        {
+            BackColor = t.GroupBoxOverride(Parent, t.Form);
+            Visible = !t.WindowsFrame;
+            return true;
+        }
     }
 }

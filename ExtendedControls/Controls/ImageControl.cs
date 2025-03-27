@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2022-2022 EDDiscovery development team
+ * Copyright 2022-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
 */
 
 using System;
@@ -21,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls.Controls
 {
-    public partial class ImageControl : Control
+    public partial class ImageControl : Control, IThemeable
     {
         public Size ImageSize { get; set; } = new Size(128, 128);               // changing this wipes the bitmap at the next draw
         public int ImageDepth { get; set; } = 1;                               // how many bitmaps to overlay
@@ -356,6 +354,11 @@ namespace ExtendedControls.Controls
             Point scaledpos = ImageLayout == ImageLayout.Stretch ? new Point((int)(e.X * xscale), (int)(e.Y * yscale)) : e.Location;
 
             ClickOnMouseArea?.Invoke(this, elementin, scaledpos, e);          // elementin = null if no element clicked
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            return false; // no children, no action
         }
 
 
