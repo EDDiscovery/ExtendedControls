@@ -77,8 +77,10 @@ namespace ExtendedControls
             this.label22 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -123,6 +125,7 @@ namespace ExtendedControls
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_chart1 = new System.Windows.Forms.Panel();
             this.panel_theme61 = new System.Windows.Forms.Panel();
+            this.panel_theme90 = new System.Windows.Forms.Panel();
             this.panel_theme60 = new System.Windows.Forms.Panel();
             this.panel_theme70 = new System.Windows.Forms.Panel();
             this.panel_theme16 = new System.Windows.Forms.Panel();
@@ -152,9 +155,14 @@ namespace ExtendedControls
             this.label3 = new System.Windows.Forms.Label();
             this.checkBoxDarkMode = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.panel_theme90 = new System.Windows.Forms.Panel();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
+            this.numericUpDownDialogFontScaling = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMouseOverScaling = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMouseSelectedScaling = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownDisabledScaling = new System.Windows.Forms.NumericUpDown();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBDir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBDir)).BeginInit();
@@ -168,6 +176,10 @@ namespace ExtendedControls
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBGA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDialogFontScaling)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseOverScaling)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseSelectedScaling)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDisabledScaling)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOK
@@ -338,7 +350,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownCBCS.Location = new System.Drawing.Point(570, 229);
+            this.numericUpDownCBCS.Location = new System.Drawing.Point(570, 264);
             this.numericUpDownCBCS.Maximum = new decimal(new int[] {
             10,
             0,
@@ -357,7 +369,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownCBTS.Location = new System.Drawing.Point(570, 194);
+            this.numericUpDownCBTS.Location = new System.Drawing.Point(570, 224);
             this.numericUpDownCBTS.Maximum = new decimal(new int[] {
             1,
             0,
@@ -469,7 +481,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownCBGA.Location = new System.Drawing.Point(570, 264);
+            this.numericUpDownCBGA.Location = new System.Drawing.Point(570, 194);
             this.numericUpDownCBGA.Maximum = new decimal(new int[] {
             10,
             0,
@@ -551,16 +563,16 @@ namespace ExtendedControls
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(481, 231);
+            this.label40.Location = new System.Drawing.Point(420, 196);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(75, 13);
+            this.label40.Size = new System.Drawing.Size(136, 13);
             this.label40.TabIndex = 6;
-            this.label40.Text = "Colour Scaling";
+            this.label40.Text = "Button Apperance Gradient";
             // 
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(488, 196);
+            this.label39.Location = new System.Drawing.Point(494, 226);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(62, 13);
             this.label39.TabIndex = 6;
@@ -674,6 +686,17 @@ namespace ExtendedControls
             this.label26.TabIndex = 6;
             this.label26.Text = "ToolStrip";
             // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label21.Location = new System.Drawing.Point(462, 161);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(93, 13);
+            this.label21.TabIndex = 6;
+            this.label21.Text = "Button Apperance";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // label28
             // 
             this.label28.AutoSize = true;
@@ -691,6 +714,15 @@ namespace ExtendedControls
             this.label19.Size = new System.Drawing.Size(93, 13);
             this.label19.TabIndex = 6;
             this.label19.Text = "Unknown Position";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(36, 413);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(34, 13);
+            this.label31.TabIndex = 6;
+            this.label31.Text = "Mode";
             // 
             // label4
             // 
@@ -1117,6 +1149,16 @@ namespace ExtendedControls
             this.panel_theme61.TabIndex = 5;
             this.panel_theme61.Tag = "";
             // 
+            // panel_theme90
+            // 
+            this.panel_theme90.AccessibleDescription = "";
+            this.panel_theme90.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_theme90.Location = new System.Drawing.Point(570, 155);
+            this.panel_theme90.Name = "panel_theme90";
+            this.panel_theme90.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme90.TabIndex = 5;
+            this.panel_theme90.Tag = "";
+            // 
             // panel_theme60
             // 
             this.panel_theme60.AccessibleDescription = "";
@@ -1336,9 +1378,17 @@ namespace ExtendedControls
             this.groupBox1.Controls.Add(this.label_opacity);
             this.groupBox1.Controls.Add(this.trackBar_theme_opacity);
             this.groupBox1.Controls.Add(this.textBox_Font);
+            this.groupBox1.Controls.Add(this.numericUpDownDisabledScaling);
+            this.groupBox1.Controls.Add(this.numericUpDownMouseSelectedScaling);
+            this.groupBox1.Controls.Add(this.numericUpDownMouseOverScaling);
+            this.groupBox1.Controls.Add(this.numericUpDownDialogFontScaling);
+            this.groupBox1.Controls.Add(this.label41);
+            this.groupBox1.Controls.Add(this.label37);
+            this.groupBox1.Controls.Add(this.label34);
+            this.groupBox1.Controls.Add(this.label33);
             this.groupBox1.Location = new System.Drawing.Point(3, 470);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(915, 114);
+            this.groupBox1.Size = new System.Drawing.Size(915, 139);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Other Controls";
@@ -1364,8 +1414,7 @@ namespace ExtendedControls
             // 
             // buttonFontChange
             // 
-            this.buttonFontChange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonFontChange.Location = new System.Drawing.Point(399, 27);
+            this.buttonFontChange.Location = new System.Drawing.Point(496, 29);
             this.buttonFontChange.Name = "buttonFontChange";
             this.buttonFontChange.Size = new System.Drawing.Size(80, 24);
             this.buttonFontChange.TabIndex = 0;
@@ -1405,35 +1454,113 @@ namespace ExtendedControls
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // panel_theme90
+            // numericUpDownDialogFontScaling
             // 
-            this.panel_theme90.AccessibleDescription = "";
-            this.panel_theme90.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme90.Location = new System.Drawing.Point(570, 155);
-            this.panel_theme90.Name = "panel_theme90";
-            this.panel_theme90.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme90.TabIndex = 5;
-            this.panel_theme90.Tag = "";
+            this.numericUpDownDialogFontScaling.DecimalPlaces = 2;
+            this.numericUpDownDialogFontScaling.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownDialogFontScaling.Location = new System.Drawing.Point(757, 24);
+            this.numericUpDownDialogFontScaling.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownDialogFontScaling.Name = "numericUpDownDialogFontScaling";
+            this.numericUpDownDialogFontScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownDialogFontScaling.TabIndex = 12;
             // 
-            // label21
+            // numericUpDownMouseOverScaling
             // 
-            this.label21.AutoSize = true;
-            this.label21.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label21.Location = new System.Drawing.Point(493, 161);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(62, 13);
-            this.label21.TabIndex = 6;
-            this.label21.Text = "Button Tick";
-            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.numericUpDownMouseOverScaling.DecimalPlaces = 2;
+            this.numericUpDownMouseOverScaling.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownMouseOverScaling.Location = new System.Drawing.Point(757, 50);
+            this.numericUpDownMouseOverScaling.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownMouseOverScaling.Name = "numericUpDownMouseOverScaling";
+            this.numericUpDownMouseOverScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownMouseOverScaling.TabIndex = 12;
             // 
-            // label31
+            // numericUpDownMouseSelectedScaling
             // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(36, 413);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(34, 13);
-            this.label31.TabIndex = 6;
-            this.label31.Text = "Mode";
+            this.numericUpDownMouseSelectedScaling.DecimalPlaces = 2;
+            this.numericUpDownMouseSelectedScaling.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownMouseSelectedScaling.Location = new System.Drawing.Point(757, 74);
+            this.numericUpDownMouseSelectedScaling.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownMouseSelectedScaling.Name = "numericUpDownMouseSelectedScaling";
+            this.numericUpDownMouseSelectedScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownMouseSelectedScaling.TabIndex = 12;
+            // 
+            // numericUpDownDisabledScaling
+            // 
+            this.numericUpDownDisabledScaling.DecimalPlaces = 2;
+            this.numericUpDownDisabledScaling.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownDisabledScaling.Location = new System.Drawing.Point(757, 100);
+            this.numericUpDownDisabledScaling.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownDisabledScaling.Name = "numericUpDownDisabledScaling";
+            this.numericUpDownDisabledScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownDisabledScaling.TabIndex = 12;
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(643, 26);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(99, 13);
+            this.label33.TabIndex = 6;
+            this.label33.Text = "Dialog Font Scaling";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(606, 52);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(136, 13);
+            this.label34.TabIndex = 6;
+            this.label34.Text = "Mouse Over Colour Scaling";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(586, 76);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(155, 13);
+            this.label37.TabIndex = 6;
+            this.label37.Text = "Mouse Selected Colour Scaling";
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(599, 102);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(142, 13);
+            this.label41.TabIndex = 6;
+            this.label41.Text = "Item Disabled Colour Scaling";
             // 
             // ThemeEditor
             // 
@@ -1465,6 +1592,10 @@ namespace ExtendedControls
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDialogFontScaling)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseOverScaling)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseSelectedScaling)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDisabledScaling)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1583,5 +1714,13 @@ namespace ExtendedControls
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Panel panel_theme90;
         private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.NumericUpDown numericUpDownDisabledScaling;
+        private System.Windows.Forms.NumericUpDown numericUpDownMouseSelectedScaling;
+        private System.Windows.Forms.NumericUpDown numericUpDownMouseOverScaling;
+        private System.Windows.Forms.NumericUpDown numericUpDownDialogFontScaling;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label33;
     }
 }

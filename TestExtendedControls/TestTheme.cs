@@ -97,6 +97,9 @@ namespace TestExtendedControls
 
             tabStrip2.HelpAction = (p) => { System.Diagnostics.Debug.WriteLine("Help at " + p); };
 
+            extCheckBox1.Checked = true;
+            extCheckBox2.Checked = true;
+
         }
 
         private Control OnCreateTab(ExtendedControls.TabStrip t, int no)

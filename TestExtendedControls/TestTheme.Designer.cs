@@ -80,6 +80,7 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
+            this.extButton1 = new ExtendedControls.ExtButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.extGroupBox1.SuspendLayout();
@@ -858,6 +859,19 @@
             this.extScrollBar1.Value = 0;
             this.extScrollBar1.ValueLimited = 0;
             // 
+            // extButton1
+            // 
+            this.extButton1.ButtonColorScaling = 0F;
+            this.extButton1.ButtonDisabledScaling = 0.5F;
+            this.extButton1.Enabled = false;
+            this.extButton1.GradientDirection = 90F;
+            this.extButton1.Location = new System.Drawing.Point(286, 130);
+            this.extButton1.Name = "extButton1";
+            this.extButton1.Size = new System.Drawing.Size(75, 23);
+            this.extButton1.TabIndex = 3;
+            this.extButton1.Text = "Disabled";
+            this.extButton1.UseVisualStyleBackColor = true;
+            // 
             // TestTheme
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -887,6 +901,7 @@
             this.Controls.Add(this.labelUnderline);
             this.Controls.Add(this.labelName);
             this.Controls.Add(this.extButtonClose);
+            this.Controls.Add(this.extButton1);
             this.Controls.Add(this.extButtonLoad);
             this.Controls.Add(this.extButtonSave);
             this.Controls.Add(this.extButtonEdit);
@@ -961,5 +976,6 @@
         private ExtendedControls.ExtPanelDropDown extPanelDropDown1;
         private ExtendedControls.TabStrip tabStrip2;
         private ExtendedControls.ExtCheckBox extCheckBox3;
+        private ExtendedControls.ExtButton extButton1;
     }
 }

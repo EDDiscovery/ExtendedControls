@@ -253,17 +253,18 @@ namespace ExtendedControls
         public float DialogFontScaling { get; set; } = 0.8f;
         public float MouseOverScaling { get; set; } = 1.3F;
         public float MouseSelectedScaling { get; set; } = 1.6F;
+        public float DisabledScaling { get; set; } = 0.5F;
+
         public float ButtonGradientDirection { get; set; } = 90F;
         public float ButtonGradientAmount { get; set; } = 0.5F;
         public float CheckBoxGradientDirection { get; set; } = 225F;
         public float CheckBoxGradientAmount { get; set; } = 0.5F;
-        public float CheckBoxInnerScaling { get; set; } = 1.5F;     // colour difference in checkbox inner area
+        public float CheckBoxInnerScaling { get; set; } = 0.5F;     // colour difference in checkbox inner area
         public float CheckBoxTickSize { get; set; } = 0.75F;
         public float ListBoxGradientDirection { get; set; } = 90F;
         public float ListBoxGradientAmount { get; set; } = 0.5F;
         public float GroupBoxGradientDirection { get; set; } = 90F;
         public float GroupBoxGradientAmount { get; set; } = -1F;       // <0 for off
-        public float DisabledScaling { get; set; } = 0.5F;
 
         // use TabIndex to also indicate no theme by setting tab index to this. Added so base winform controls can disable themeing
         public const int TabIndexNoThemeIndicator = 9090;

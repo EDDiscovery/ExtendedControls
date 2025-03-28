@@ -107,8 +107,13 @@ namespace ExtendedControls
             InitFloat(numericUpDownLBGA, "List Box Gradient Amount", np[nameof(Theme.ListBoxGradientAmount)]);
             InitFloat(numericUpDownGBGA, "Group Box Gradient Amount", np[nameof(Theme.GroupBoxGradientAmount)]);
 
-            InitFloat(numericUpDownCBCS, "Check Box Scaling of colour", np[nameof(Theme.CheckBoxInnerScaling)]);
+            InitFloat(numericUpDownCBCS, "Check Box Button appearance Gradient Amount", np[nameof(Theme.CheckBoxInnerScaling)]);
             InitFloat(numericUpDownCBTS, "Check Box Tick Size as a proportion of the check box", np[nameof(Theme.CheckBoxTickSize)]);
+
+            InitFloat(numericUpDownDialogFontScaling, "", np[nameof(Theme.DialogFontScaling)]);
+            InitFloat(numericUpDownMouseOverScaling, "", np[nameof(Theme.MouseOverScaling)]);
+            InitFloat(numericUpDownMouseSelectedScaling, "", np[nameof(Theme.MouseSelectedScaling)]);
+            InitFloat(numericUpDownDisabledScaling, "", np[nameof(Theme.DisabledScaling)]);
 
             trackBar_theme_opacity.Value = (int)Theme.Opacity;
             comboBox_TextBorder.SelectedItem = Theme.TextBoxBorderStyle;
