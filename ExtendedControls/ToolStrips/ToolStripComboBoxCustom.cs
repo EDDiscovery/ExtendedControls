@@ -55,9 +55,7 @@ namespace ExtendedControls
 
         public Color MouseOverBackgroundColor { get { return ComboBox.MouseOverBackgroundColor; } set { ComboBox.MouseOverBackgroundColor = value; } }
         public Color BorderColor { get { return ComboBox.BorderColor; } set { ComboBox.BorderColor = value; } }
-        public Color DropDownBackgroundColor { get { return ComboBox.DropDownBackgroundColor; } set { ComboBox.DropDownBackgroundColor = value; } }
-        public Color ScrollBarColor { get { return ComboBox.ScrollBarColor; } set { ComboBox.ScrollBarColor = value; } }
-        public Color ScrollBarButtonColor { get { return ComboBox.ScrollBarButtonColor; } set { ComboBox.ScrollBarButtonColor = value; } }
+        public Color DropDownBackgroundColor { get { return ComboBox.DropDownSelectionBackgroundColor; } set { ComboBox.DropDownSelectionBackgroundColor = value; } }
 
         public FlatStyle FlatStyle { get { return ComboBox.FlatStyle; } set { ComboBox.FlatStyle = value; } }
         public float ButtonColorScaling { get { return ComboBox.ButtonColorScaling; } set { ComboBox.ButtonColorScaling = value; } }

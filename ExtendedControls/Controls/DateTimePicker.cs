@@ -29,7 +29,7 @@ namespace ExtendedControls
         // Fore = colour of text
         // Back = colour of background of control
         public Color TextBackColor { get { return textbackcolor; } set { textbackcolor = checkbox.BackColor = calendaricon.BackColor = value; Invalidate(true); } }
-        public Color SelectedColor { get; set; } = Color.Yellow;    // colour when item is selected.
+        public Color SelectedColor { get; set; } = Color.Yellow;    // back colour when item is selected.
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; PerformLayout(); } }
         public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
 
@@ -479,24 +479,24 @@ namespace ExtendedControls
             ForeColor = t.TextBlockColor;
             TextBackColor = t.TextBackColor;
             BackColor = t.Form;
-            SelectedColor = t.TextBlockColor.MultiplyBrightness(0.6F);
+            SelectedColor = t.TextBlockColor.Multiply(t.DisabledScaling);
             checkbox.FlatStyle = t.ButtonFlatStyle;
-            checkbox.TickBoxReductionRatio = 0.75f;
+            checkbox.TickBoxReductionRatio = t.CheckBoxTickSize;
             checkbox.ForeColor = t.CheckBox;
             checkbox.CheckBoxColor = t.CheckBox;
-            Color inner = t.CheckBox.Multiply(1.5F);
+            Color inner = t.CheckBox.Multiply(t.CheckBoxInnerScaling);
             if (inner.GetBrightness() < 0.1)        // double checking
                 inner = Color.Gray;
             checkbox.CheckBoxInnerColor = inner;
             checkbox.CheckColor = t.CheckBoxTick;
-            checkbox.MouseOverColor = t.CheckBox.Multiply(1.4F);
+            checkbox.MouseOverColor = t.CheckBox.Multiply(t.MouseOverScaling);
 
             // we theme the updown ourselves and do not use its themer
             updown.BackColor = t.ButtonBackColor;
             updown.BorderColor = t.GridBorderLines;
             updown.ForeColor = t.TextBlockColor;
-            updown.MouseOverColor = t.CheckBox.Multiply(1.4F);
-            updown.MouseSelectedColor = t.CheckBox.Multiply(1.5F);
+            updown.MouseOverColor = t.CheckBox.Multiply(t.MouseOverScaling);
+            updown.MouseSelectedColor = t.CheckBox.Multiply(t.MouseSelectedScaling);
 
             return false;
         }

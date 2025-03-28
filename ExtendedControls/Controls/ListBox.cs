@@ -24,6 +24,8 @@ namespace ExtendedControls
     {
         // BackColor paints the whole control - set Transparent if you don't want this. (but its a fake transparent note).
 
+        public ExtScrollBar ScrollBar { get; set; }
+
         public FlatStyle FlatStyle { get { return flatstyle; } set { SetFlatStyle(value); } }
 
         // in all styles
@@ -43,13 +45,15 @@ namespace ExtendedControls
 
         public bool FitToItemsHeight { get; set; } = true;              // if set, move the border to integer of item height.
         public bool FitImagesToItemHeight { get; set; } = false;        // if set images scaled to fit within item height
+
+        // Text is in ForeColor
+
         public Color SelectionBackColor { get; set; } = Color.Gray;     // the area actually used (Not system)
         public Color BorderColor { get; set; } = Color.Red;             // not system
         public float GradientColorScaling { get; set; } = 0.5F;
-        public Color ScrollBarColor { get; set; } = Color.LightGray;    // not system
-        public Color ScrollBarButtonColor { get; set; } = Color.LightGray;    // not system
         public Color MouseOverBackgroundColor { get; set; } = Color.Silver;
         public Color ItemSeperatorColor { get; set; } = Color.Red;
+        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
         public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
 
@@ -69,12 +73,12 @@ namespace ExtendedControls
         {
             items = new List<string>();
             SetStyle(ControlStyles.SupportsTransparentBackColor | ControlStyles.OptimizedDoubleBuffer, true);
-            vScrollBar = new ExtScrollBar();
-            vScrollBar.SmallChange = 1;
-            vScrollBar.LargeChange = 1;
-            Controls.Add(vScrollBar);
-            vScrollBar.Visible = false;
-            vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(vScroll);
+            ScrollBar = new ExtScrollBar();
+            ScrollBar.SmallChange = 1;
+            ScrollBar.LargeChange = 1;
+            Controls.Add(ScrollBar);
+            ScrollBar.Visible = false;
+            ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(vScroll);
 
             lbsys = new ListBox();
             this.Controls.Add(lbsys);
@@ -148,21 +152,13 @@ namespace ExtendedControls
 
             if ( items > displayableitems )
             {
-                vScrollBar.Location = new Point(mainarea.Right - ScrollBarWidth, mainarea.Y);
+                ScrollBar.Location = new Point(mainarea.Right - ScrollBarWidth, mainarea.Y);
                 mainarea.Width -= ScrollBarWidth;
-                vScrollBar.Size = new Size(ScrollBarWidth, mainarea.Height);
-                vScrollBar.Minimum = 0;
-                vScrollBar.Maximum = Items.Count - displayableitems;
-                vScrollBar.Visible = true;
-                vScrollBar.FlatStyle = FlatStyle;
-
-                vScrollBar.SliderColor = ScrollBarColor;
-                vScrollBar.BackColor = ScrollBarColor;
-                vScrollBar.BorderColor = vScrollBar.ThumbBorderColor = vScrollBar.ArrowBorderColor = BorderColor;
-                vScrollBar.ArrowButtonColor = vScrollBar.ThumbButtonColor = ScrollBarButtonColor;
-                vScrollBar.MouseOverButtonColor = ScrollBarButtonColor.Multiply(1.4F);
-                vScrollBar.MousePressedButtonColor = ScrollBarButtonColor.Multiply(1.5F);
-                vScrollBar.ForeColor = ScrollBarButtonColor.Multiply(0.25F);
+                ScrollBar.Size = new Size(ScrollBarWidth, mainarea.Height);
+                ScrollBar.Minimum = 0;
+                ScrollBar.Maximum = Items.Count - displayableitems;
+                ScrollBar.Visible = true;
+                ScrollBar.FlatStyle = FlatStyle;
             }
         }
 
@@ -192,7 +188,7 @@ namespace ExtendedControls
                     }
                 }
 
-                vScrollBar.Value = firstindex;
+                ScrollBar.Value = firstindex;
             }
 
             focusindex = (focusindex >= 0) ? focusindex : ((SelectedIndex > 0) ? SelectedIndex : 0);
@@ -211,7 +207,7 @@ namespace ExtendedControls
                 Brush backb;
                 Color c1 = SelectionBackColor;
                 if (FlatStyle == FlatStyle.Popup)
-                    backb = new System.Drawing.Drawing2D.LinearGradientBrush(mainarea, c1, c1.Multiply(GradientColorScaling), 90);
+                    backb = new System.Drawing.Drawing2D.LinearGradientBrush(mainarea, c1, c1.Multiply(GradientColorScaling), GradientDirection);
                 else
                     backb = new SolidBrush(c1);
 
@@ -364,7 +360,7 @@ namespace ExtendedControls
             if (firstindex > 0)
             {
                 firstindex--;
-                vScrollBar.Value = firstindex;
+                ScrollBar.Value = firstindex;
                 Invalidate();
             }
         }
@@ -373,7 +369,7 @@ namespace ExtendedControls
             if (Items != null && firstindex < Items.Count() - displayableitems)
             {
                 firstindex++;
-                vScrollBar.Value = firstindex;
+                ScrollBar.Value = firstindex;
                 Invalidate();
             }
         }
@@ -486,14 +482,18 @@ namespace ExtendedControls
             ItemSeperatorColor = t.ButtonBorderColor;
 
             if (t.IsButtonSystemStyle)
+            {
                 FlatStyle = FlatStyle.System;
+            }
             else
             {
                 BackColor = t.ButtonBackColor;
                 BorderColor = t.ButtonBorderColor;
-                ScrollBarButtonColor = t.TextBlockScrollButton;
-                ScrollBarColor = t.TextBlockSliderBack;
                 FlatStyle = t.ButtonFlatStyle;
+                ScrollBar.Theme(t, fnt);
+                ScrollBar.BorderColor = t.ButtonBorderColor;
+                GradientColorScaling = t.ListBoxGradientAmount;
+                GradientDirection = t.ListBoxGradientDirection;
             }
 
             Repaint();            // force a repaint as the individual settings do not by design.
@@ -503,7 +503,6 @@ namespace ExtendedControls
 
         #endregion
 
-        private ExtScrollBar vScrollBar;
         private Rectangle borderrect, mainarea;
         private int bordersize;
         private int itemslayoutestimatedon = -1;
@@ -517,6 +516,8 @@ namespace ExtendedControls
         private List<Image> imageitems;
         private int itemheight;     // autoset
         private FlatStyle flatstyle = FlatStyle.System;
+        private float gradientdirection = 90F;
+
     }
 }
 

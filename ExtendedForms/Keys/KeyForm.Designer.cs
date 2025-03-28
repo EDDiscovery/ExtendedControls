@@ -235,11 +235,7 @@ namespace ExtendedForms
             this.textBoxSendTo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxSendTo.ClearOnFirstChar = false;
             this.textBoxSendTo.ControlBackground = System.Drawing.SystemColors.Control;
-            this.textBoxSendTo.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.textBoxSendTo.DropDownBorderColor = System.Drawing.Color.Gray;
-            this.textBoxSendTo.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
-            this.textBoxSendTo.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.textBoxSendTo.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.textBoxSendTo.EndButtonEnable = false;
             this.textBoxSendTo.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxSendTo.EndButtonImage")));
             this.textBoxSendTo.EndButtonVisible = false;
@@ -367,13 +363,11 @@ namespace ExtendedForms
             this.comboBoxKeySelector.DataSource = null;
             this.comboBoxKeySelector.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxKeySelector.DisplayMember = "";
-            this.comboBoxKeySelector.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.comboBoxKeySelector.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxKeySelector.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxKeySelector.Location = new System.Drawing.Point(185, 86);
             this.comboBoxKeySelector.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxKeySelector.Name = "comboBoxKeySelector";
-            this.comboBoxKeySelector.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.comboBoxKeySelector.ScrollBarColor = System.Drawing.Color.LightGray;
             this.comboBoxKeySelector.SelectedIndex = -1;
             this.comboBoxKeySelector.SelectedItem = null;
             this.comboBoxKeySelector.SelectedValue = null;

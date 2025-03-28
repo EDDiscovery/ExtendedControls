@@ -44,13 +44,11 @@
             this.comboBoxCustomDevice.DataSource = null;
             this.comboBoxCustomDevice.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomDevice.DisplayMember = "";
-            this.comboBoxCustomDevice.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.comboBoxCustomDevice.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomDevice.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomDevice.Location = new System.Drawing.Point(14, 55);
             this.comboBoxCustomDevice.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomDevice.Name = "comboBoxCustomDevice";
-            this.comboBoxCustomDevice.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomDevice.ScrollBarColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomDevice.SelectedIndex = -1;
             this.comboBoxCustomDevice.SelectedItem = null;
             this.comboBoxCustomDevice.SelectedValue = null;

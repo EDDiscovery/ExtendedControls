@@ -421,17 +421,19 @@ namespace ExtendedControls
             if (this is ExtTextBoxAutoComplete || this is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
             {
                 ExtTextBoxAutoComplete actb = this as ExtTextBoxAutoComplete;
-                actb.DropDownBackgroundColor = t.ButtonBackColor;
-                actb.DropDownBorderColor = t.TextBlockBorderColor;
-                actb.DropDownScrollBarButtonColor = t.TextBlockScrollButton;
-                actb.DropDownScrollBarColor = t.TextBlockSliderBack;
-                actb.DropDownMouseOverBackgroundColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
+                actb.DropDownSliderColor = t.TextBlockSliderBack;
+                actb.DropDownSliderArrowColor = t.ButtonTextColor;
+                actb.DropDownBorderColor = t.ButtonBorderColor;
+                actb.DropDownSliderButtonColor = t.TextBlockScrollButton;
+                actb.MouseOverDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
+                actb.PressedDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
                 actb.FlatStyle = t.ButtonFlatStyle;
             }
 
             EndButton.Theme(t, fnt);
             EndButton.FlatAppearance.BorderColor = EndButton.BackColor = t.TextBackColor;
-            EndButton.ButtonColorScaling = EndButton.ButtonDisabledScaling = 1.0F;
+            EndButton.ButtonColorScaling = 1.0f;
+            EndButton.ButtonDisabledScaling = t.DisabledScaling;
 
             Invalidate();
 

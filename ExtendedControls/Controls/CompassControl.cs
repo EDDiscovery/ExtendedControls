@@ -20,6 +20,8 @@ namespace ExtendedControls
 {
     public partial class CompassControl : Control, IDisposable, IThemeable
     {
+        public float DisabledScaling { get; set; } = 0.5F;      // when disabled, scale down colours
+
         public int WidthDegrees { get { return widthdegrees; } set { widthdegrees = value; Restart(); } }   // no of degrees to show
         public bool ShowNegativeDegrees { get { return degreeoffset != 0; } set { degreeoffset = value ? -180 : 0; Restart(); } }      // -180 to +180
 
@@ -309,10 +311,10 @@ namespace ExtendedControls
                     }
                 }
 
-                Color sc = Enabled ? StencilColor : StencilColor.Multiply(0.5F);
+                Color sc = Enabled ? StencilColor : StencilColor.Multiply(DisabledScaling);
                 Pen p1 = new Pen(sc, 1);
                 Pen p2 = new Pen(sc, 2);
-                Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(0.5F));
+                Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(DisabledScaling));
                 var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(ContentAlignment.MiddleCenter);
 
                 for (int d = pixelstart; d < 360 + pixelstart; d++)
@@ -514,9 +516,10 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
+            DisabledScaling = t.DisabledScaling;
             ForeColor = t.TextBlockColor;
             StencilColor = t.TextBlockColor;
-            CentreTickColor = t.TextBlockColor.Multiply(1.2F);
+            CentreTickColor = t.TextBlockColor.Multiply(t.MouseOverScaling);
             BugColor = t.TextBlockColor.Multiply(0.8F);
             BackColor = t.Form;
             return false;

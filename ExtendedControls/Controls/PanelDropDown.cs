@@ -23,33 +23,37 @@ namespace ExtendedControls
     {
         public event EventHandler SelectedIndexChanged;
 
-        public Color SelectionMarkColor { get; set; } = Color.Yellow;
         public int SelectionSize { get; set; } = 8;
 
-        public List<string> Items { get { return ddc.Items; } set { ddc.Items = value; } }
+        public List<string> Items { get { return dropdown.Items; } set { dropdown.Items = value; } }
 
-        public override Color ForeColor { get { return base.ForeColor; } set { ddc.ForeColor = base.ForeColor = value; } }
-        public bool FitToItemsHeight { get { return ddc.FitToItemsHeight; } set { ddc.FitToItemsHeight = value; } }
+        public override Color ForeColor { get { return base.ForeColor; } set { dropdown.ForeColor = base.ForeColor = value; } }
+        public bool FitToItemsHeight { get { return dropdown.FitToItemsHeight; } set { dropdown.FitToItemsHeight = value; } }
 
-        public Color BorderColor { get { return ddc.BorderColor; } set { ddc.BorderColor = value; } } 
-        public FlatStyle FlatStyle { get { return ddc.FlatStyle; } set { ddc.FlatStyle = value; } }
-        public Color SelectionBackColor { get { return ddc.SelectionBackColor; } set { ddc.SelectionBackColor = value; } }
-        public float GradientColorScaling { get { return ddc.GradientColorScaling; } set { ddc.GradientColorScaling = value; } }
-        public Color ScrollBarColor { get { return ddc.ScrollBarColor; } set { ddc.ScrollBarColor = value; } }
-        public Color ScrollBarButtonColor { get { return ddc.ScrollBarButtonColor; } set { ddc.ScrollBarButtonColor = value; } }
-        public Color MouseOverBackgroundColor { get { return ddc.MouseOverBackgroundColor; } set { ddc.MouseOverBackgroundColor = value; } }
+        public Color SelectionMarkColor { get; set; } = Color.Yellow;
+        public Color BorderColor { get { return dropdown.BorderColor; } set { dropdown.BorderColor = value; } } 
+        public FlatStyle FlatStyle { get { return dropdown.FlatStyle; } set { dropdown.FlatStyle = value; } }
 
-        public int SelectedIndex { get { return ddc.SelectedIndex; } set { ddc.SelectedIndex = value; } }
-        public string SelectedItem { get { return (ddc.SelectedIndex>=0) ? ddc.Items[ddc.SelectedIndex] : null; }  }
+        // drop down box for selection
+        public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
+        public Color DropDownSliderColor { get; set; } = Color.Green;
+        public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
+        public Color DropDownBorderColor { get; set; } = Color.Green;
+        public Color DropDownSliderButtonColor { get; set; } = Color.Blue;
+        public Color MouseOverDropDownSliderButtonColor { get; set; } = Color.Red;
+        public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
 
-        private ExtListBoxForm ddc;
+        public int SelectedIndex { get { return dropdown.SelectedIndex; } set { dropdown.SelectedIndex = value; } }
+        public string SelectedItem { get { return (dropdown.SelectedIndex>=0) ? dropdown.Items[dropdown.SelectedIndex] : null; }  }
+
+        private ExtListBoxForm dropdown;
 
         public ExtPanelDropDown()
         {
             InitializeComponent();
-            ddc = new ExtListBoxForm("PSDD",false);
-            ddc.SelectedIndexChanged += Ddc_SelectedIndexChanged;
-            ddc.Deactivate += Ddc_Deactivate;
+            dropdown = new ExtListBoxForm("PSDD",false);
+            dropdown.SelectedIndexChanged += Ddc_SelectedIndexChanged;
+            dropdown.Deactivate += Ddc_Deactivate;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -80,54 +84,71 @@ namespace ExtendedControls
         protected override void OnFontChanged(EventArgs e)
         {
             base.OnFontChanged(e);
-            ddc.Font = Font;
+            dropdown.Font = Font;
         }
 
-        bool dropdown = false;
+        bool dropdownactivated = false;
 
         protected override void OnMouseClick(MouseEventArgs e)
         {
             base.OnMouseClick(e);
             if ( e.X>=Width-SelectionSize && e.Y>=Height-SelectionSize)
             {
-                if (dropdown == false)
+                if (dropdownactivated == false)
                 {
-                    ddc.PositionBelow(this,this.Width);
-                    ddc.RightAlignedToLocation = true;
-                    System.Diagnostics.Debug.WriteLine("dcc border " + ddc.BorderColor);
-                    ddc.Show(FindForm());
+                    dropdown.ListBox.BackColor = BackColor;
+                    dropdown.ListBox.ForeColor = ForeColor;
+                    dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
+                    dropdown.ListBox.BorderColor = this.BorderColor;
+                    dropdown.ListBox.ScrollBar.BackColor = dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
+                    dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
+                    dropdown.ListBox.ScrollBar.ThumbBorderColor = dropdown.ListBox.ScrollBar.ArrowBorderColor =
+                                                                    dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
+                    dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
+                    dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.MouseOverDropDownSliderButtonColor;
+                    dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
+
+                    dropdown.PositionBelow(this,this.Width);
+                    dropdown.RightAlignedToLocation = true;
+                    System.Diagnostics.Debug.WriteLine("dcc border " + dropdown.BorderColor);
+                    dropdown.Show(FindForm());
                 }
                 else
                 {
-                    ddc.Hide();
+                    dropdown.Hide();
                 }
 
-                dropdown = !dropdown;
+                dropdownactivated = !dropdownactivated;
             }
         }
 
         private void Ddc_Deactivate(object sender, EventArgs e)
         {
-            dropdown = false;
-            ddc.Hide();
+            dropdownactivated = false;
+            dropdown.Hide();
         }
 
         private void Ddc_SelectedIndexChanged(object sender, EventArgs e, bool key)
         {
-            dropdown = false;
-            ddc.Hide();
+            dropdownactivated = false;
+            dropdown.Hide();
             SelectedIndexChanged?.Invoke(this, e);
         }
 
         public bool Theme(Theme t, Font fnt)
         {
+            BackColor = t.ButtonBackColor;
+
             SelectionMarkColor = ForeColor = t.ButtonTextColor;
-            BackColor = SelectionBackColor = t.ButtonBackColor;
             BorderColor = t.ButtonBorderColor;
-            MouseOverBackgroundColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
-            ScrollBarButtonColor = t.TextBlockScrollButton;
-            ScrollBarColor = t.TextBlockSliderBack;
             FlatStyle = FlatStyle.Popup;
+
+            DropDownSliderColor = t.TextBlockSliderBack;
+            DropDownSliderArrowColor = t.ButtonTextColor;
+            DropDownBorderColor = t.ButtonBorderColor;
+            DropDownSliderButtonColor = t.TextBlockScrollButton;
+            MouseOverDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
+            PressedDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
             return true;
         }
     }

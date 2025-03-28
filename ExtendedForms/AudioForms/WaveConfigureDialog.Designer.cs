@@ -315,13 +315,11 @@ namespace ExtendedAudioForms
             this.comboBoxCustomPriority.DataSource = null;
             this.comboBoxCustomPriority.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomPriority.DisplayMember = "";
-            this.comboBoxCustomPriority.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.comboBoxCustomPriority.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomPriority.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomPriority.Location = new System.Drawing.Point(226, 79);
             this.comboBoxCustomPriority.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomPriority.Name = "comboBoxCustomPriority";
-            this.comboBoxCustomPriority.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomPriority.ScrollBarColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomPriority.SelectedIndex = -1;
             this.comboBoxCustomPriority.SelectedItem = null;
             this.comboBoxCustomPriority.SelectedValue = null;

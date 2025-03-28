@@ -26,10 +26,12 @@ namespace ExtendedControls
 
         public Color SelectedColor { get; set; } = Color.DarkBlue;      // the bullit eye color
         public Color SelectedColorRing { get; set; } = Color.Black;     // ring around it, Transparent for off
-
+        public float RadioButtonDisabledScaling { get; set; } = 0.5F;              // when disabled
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;   // mouse over colour
+        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
         private Font FontToUse = null;
+        private float gradientdirection = 225F;
 
         public ExtRadioButton() : base()
         {
@@ -91,7 +93,7 @@ namespace ExtendedControls
                     }
                     else
                     {
-                        using (Brush inner = new LinearGradientBrush(rect, RadioButtonInnerColor, basecolor, 225))
+                        using (Brush inner = new LinearGradientBrush(rect, RadioButtonInnerColor, basecolor, GradientDirection))
                             e.Graphics.FillEllipse(inner, rect);      // fill slightly over size to make sure all pixels are painted
                     }
                 }
@@ -116,7 +118,7 @@ namespace ExtendedControls
                     }
                     else
                     {
-                        using (Brush inner = new LinearGradientBrush(rect, RadioButtonInnerColor, c1, 45))
+                        using (Brush inner = new LinearGradientBrush(rect, RadioButtonInnerColor, c1, (GradientDirection+180.0F) % 360F))
                             e.Graphics.FillEllipse(inner, rect);      // fill slightly over size to make sure all pixels are painted
                     }
 
@@ -127,7 +129,7 @@ namespace ExtendedControls
                     }
                 }
 
-                using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(0.5F)))
+                using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(RadioButtonDisabledScaling)))
                 {
                     using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
                     {
@@ -161,9 +163,11 @@ namespace ExtendedControls
             BackColor = t.GroupBoxOverride(Parent, t.Form);
             ForeColor = t.CheckBox;
             RadioButtonColor = t.CheckBox;
-            RadioButtonInnerColor = t.CheckBox.Multiply(1.5F);
-            SelectedColor = BackColor.Multiply(0.75F);
-            MouseOverColor = t.CheckBox.Multiply(1.4F);
+            RadioButtonInnerColor = t.CheckBox.Multiply(t.CheckBoxInnerScaling);
+            SelectedColor = BackColor.Multiply(t.DisabledScaling);
+            MouseOverColor = t.CheckBox.Multiply(t.MouseOverScaling);
+            GradientDirection = t.CheckBoxGradientDirection;
+            RadioButtonDisabledScaling = t.DisabledScaling;
             return false;
         }
 

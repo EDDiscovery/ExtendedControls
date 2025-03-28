@@ -96,7 +96,7 @@ namespace ExtendedControls
         public Color MouseOverColor { get; set; } = Color.White;
         public Color MouseSelectedColor { get; set; } = Color.Green;
         public bool MouseSelectedColorEnable { get; set; } = true;
-        public float PanelDisabledScaling { get; set; } = 0.25F;        // scaling when disabled
+        public float ButtonDisabledScaling { get; set; } = 0.25F;        // scaling when disabled
         public Color BorderColor { get; set; } = Color.Orange;
         public int BorderWidth { get; set; } = 1;
 
@@ -205,7 +205,7 @@ namespace ExtendedControls
             drawnImageAttributesEnabled?.Dispose();
             drawnImageAttributesEnabled = null;
 
-            DrawingHelpersStaticFunc.ComputeDrawnPanel(out drawnImageAttributesEnabled, out drawnImageAttributesDisabled, PanelDisabledScaling, remap, colormatrix);
+            DrawingHelpersStaticFunc.ComputeDrawnPanel(out drawnImageAttributesEnabled, out drawnImageAttributesDisabled, ButtonDisabledScaling, remap, colormatrix);
 
             if (image != null)
                 Invalidate();
@@ -371,7 +371,7 @@ namespace ExtendedControls
             switch (drawState)
             {
                 case DrawState.Disabled:
-                    cFore = this.ForeColor.Average(this.BackColor, PanelDisabledScaling);
+                    cFore = this.ForeColor.Average(this.BackColor, ButtonDisabledScaling);
                     break;
                 case DrawState.Hover:
                     if (MouseSelectedColorEnable)
@@ -800,7 +800,7 @@ namespace ExtendedControls
                         switch (drawState)
                         {
                             case DrawState.Disabled:
-                                cFore = cFore.Average(this.BackColor, PanelDisabledScaling);
+                                cFore = cFore.Average(this.BackColor, ButtonDisabledScaling);
                                 break;
                             case DrawState.Hover:
                                 if (MouseSelectedColorEnable)
@@ -969,6 +969,7 @@ namespace ExtendedControls
             MouseSelectedColor = t.LabelColor.Multiply(t.MouseSelectedScaling);
             BorderWidth = 2;
             BorderColor = t.GridBorderLines;
+            ButtonDisabledScaling = t.DisabledScaling;
 
             ColorMap colormap = new System.Drawing.Imaging.ColorMap();       // any drawn panel with drawn images
             colormap.OldColor = Color.White;                                                        // white is defined as the forecolour

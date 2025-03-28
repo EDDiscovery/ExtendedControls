@@ -416,6 +416,7 @@ namespace ExtendedControls
                 TextSelectedColor = t.ButtonTextColor;
                 TextNotSelectedColor = t.ButtonTextColor.Multiply(0.8F);
                 SetStyle(t.ButtonFlatStyle, new TabStyleAngled());
+                TabDisabledScaling = t.DisabledScaling;
             }
             ForceUpdate();
             return true;

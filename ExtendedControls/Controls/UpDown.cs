@@ -27,8 +27,11 @@ namespace ExtendedControls
         public Color MouseOverColor { get; set; } = SystemColors.ControlLight;
         public Color MouseSelectedColor { get; set; } = SystemColors.ControlLightLight;
         public Color BorderColor { get; set; } = Color.Gray;
-        public float BackColorScaling { get; set; } = 0.5F;
         public float MouseSelectedColorScaling { get; set; } = 1.5F;
+        public float BackColorScaling { get; set; } = 0.5F;
+        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
+
+        private float gradientdirection = 90F;
 
         public delegate void OnSelected(object sender, MouseEventArgs e);   
         public event OnSelected Selected;
@@ -64,10 +67,10 @@ namespace ExtendedControls
 
             Rectangle area = new Rectangle(0, 0, lower.Width, lower.Height + 1); // seems to make it linear paint bettwe
 
-            using (Brush b = new LinearGradientBrush(area, pcup, pcup.Multiply(BackColorScaling), 90))
+            using (Brush b = new LinearGradientBrush(area, pcup, pcup.Multiply(BackColorScaling), GradientDirection))
                 e.Graphics.FillRectangle(b, upper);
 
-            using (Brush b = new LinearGradientBrush(area, pcdown, pcdown.Multiply(BackColorScaling), 270))
+            using (Brush b = new LinearGradientBrush(area, pcdown, pcdown.Multiply(BackColorScaling), (GradientDirection+180.0F) % 360))
                 e.Graphics.FillRectangle(b, lower);
 
             using (Pen p = new Pen(BorderColor, 1F))
@@ -203,8 +206,10 @@ namespace ExtendedControls
             BackColor = t.ButtonBackColor;
             ForeColor = t.ButtonTextColor;
             BorderColor = t.ButtonBorderColor;
-            MouseOverColor = t.ButtonTextColor.Multiply(1.2F);
-            MouseSelectedColor = t.ButtonTextColor.Multiply(1.5F);
+            MouseOverColor = t.ButtonTextColor.Multiply(t.MouseOverScaling);
+            MouseSelectedColor = t.ButtonTextColor.Multiply(t.MouseSelectedScaling);
+            GradientDirection = t.ButtonGradientDirection;
+            BackColorScaling = t.ButtonGradientAmount;
             return false;
         }
 

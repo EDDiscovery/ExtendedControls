@@ -554,6 +554,8 @@ namespace ExtendedControls
                 MousePressedButtonColor = t.GridScrollButton.Multiply(t.MouseSelectedScaling);
                 ForeColor = t.GridScrollArrow;
                 FlatStyle = t.ButtonFlatStyle;
+
+                // purposely not theming the arrow directions use the theme directions as they are fixed.
             }
 
             return false;

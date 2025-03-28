@@ -19,6 +19,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Menu;
 
 namespace ExtendedControls
 {
@@ -27,13 +28,21 @@ namespace ExtendedControls
         // ForeColor = text, BackColor = control background
         public Color MouseOverBackgroundColor { get; set; } = Color.Silver;
         public Color BorderColor { get; set; } = Color.White;
-        public Color DropDownBackgroundColor { get; set; } = Color.Gray;
-        public Color ScrollBarColor { get; set; } = Color.LightGray;
-        public Color ScrollBarButtonColor { get; set; } = Color.LightGray;
-        public bool DisableBackgroundDisabledShadingGradient { get; set; } = false;     // set, non system only, stop scaling for disabled state (useful for transparency)
 
-        public float ButtonColorScaling { get; set; } = 0.5F;           // Popup style only
+        // Drop down list box
+        public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
+        public Color DropDownSliderColor { get; set; } = Color.Green;
+        public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
+        public Color DropDownBorderColor { get; set; } = Color.Green;
+        public Color DropDownSliderButtonColor { get; set; } = Color.Blue;
+        public Color MouseOverDropDownSliderButtonColor { get; set; } = Color.Red;
+        public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
+
+        public bool DisableBackgroundDisabledShadingGradient { get; set; } = false;     // set, non system only, stop scaling for disabled state (useful for transparency)
+        public float DisabledScaling { get; set; } = 0.5F;      // when disabled, scale down colours
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
+        public float ButtonColorScaling { get { return buttonColorScaling; } set { buttonColorScaling = value; Invalidate(); } }
+        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
         public int SelectedIndex { get { return cbsystem.SelectedIndex; } set { cbsystem.SelectedIndex = value; base.Text = cbsystem.Text; Invalidate(); } }
 
@@ -138,8 +147,8 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    textb = new SolidBrush(ForeColor.Multiply(0.5F));
-                    p = new Pen(BorderColor.Multiply(0.5F));
+                    textb = new SolidBrush(ForeColor.Multiply(DisabledScaling));
+                    p = new Pen(BorderColor.Multiply(DisabledScaling));
                     p2 = null;
                 }
 
@@ -150,13 +159,13 @@ namespace ExtendedControls
                 if (todraw)
                     bck = (mouseover) ? MouseOverBackgroundColor : BackColor;
                 else
-                    bck = DisableBackgroundDisabledShadingGradient ? BackColor : BackColor.Multiply(0.5F);
+                    bck = DisableBackgroundDisabledShadingGradient ? BackColor : BackColor.Multiply(DisabledScaling);
 
                 Brush bbck;
 
                 if (FlatStyle == FlatStyle.Popup && !DisableBackgroundDisabledShadingGradient)
                 {
-                    bbck = new System.Drawing.Drawing2D.LinearGradientBrush(textBoxBackArea, bck, bck.Multiply(ButtonColorScaling), 90);
+                    bbck = new System.Drawing.Drawing2D.LinearGradientBrush(textBoxBackArea, bck, bck.Multiply(ButtonColorScaling), GradientDirection);
                 }
                 else
                 {
@@ -310,27 +319,35 @@ namespace ExtendedControls
             if (Items.Count == 0 || !Enabled)
                 return;
 
-            customdropdown = new ExtListBoxForm(this.Name + "_Listbox");
+            dropdown = new ExtListBoxForm(this.Name + "_Listbox");
 
-            customdropdown.SelectionBackColor = this.DropDownBackgroundColor;
-            customdropdown.MouseOverBackgroundColor = this.MouseOverBackgroundColor;
-            customdropdown.ForeColor = this.ForeColor;
-            customdropdown.BackColor = this.BorderColor;
-            customdropdown.BorderColor = this.BorderColor;
-            customdropdown.Items = this.Items.ToList();
-            customdropdown.SelectedIndex = this.SelectedIndex;
-            customdropdown.FlatStyle = this.FlatStyle;
-            customdropdown.Font = this.Font;
-            customdropdown.ScrollBarColor = this.ScrollBarColor;
-            customdropdown.ScrollBarButtonColor = this.ScrollBarButtonColor;
-            customdropdown.PositionBelow(this);
+            dropdown.ListBox.MouseOverBackgroundColor = this.MouseOverBackgroundColor;
 
-            customdropdown.Activated += customdropdown_Activated;
-            customdropdown.SelectedIndexChanged += customdropdown_SelectedIndexChanged;
-            customdropdown.OtherKeyPressed += customdropdown_OtherKeyPressed;
-            customdropdown.Deactivate += customdropdown_Deactivate;
+            dropdown.ListBox.BackColor = BackColor;
+            dropdown.ListBox.ForeColor = ForeColor;
+            dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
+            dropdown.ListBox.BorderColor = this.BorderColor;
+            dropdown.ListBox.ScrollBar.BackColor =  dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
+            dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
+            dropdown.ListBox.ScrollBar.ThumbBorderColor = dropdown.ListBox.ScrollBar.ArrowBorderColor =
+                                                            dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
+            dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
+            dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.MouseOverDropDownSliderButtonColor;
+            dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
 
-            customdropdown.Show(FindForm());
+            dropdown.SelectedIndex = this.SelectedIndex;
+            dropdown.FlatStyle = this.FlatStyle;
+            dropdown.Font = this.Font;
+            dropdown.Items = this.Items.ToList();
+
+            dropdown.PositionBelow(this);
+
+            dropdown.Activated += customdropdown_Activated;
+            dropdown.SelectedIndexChanged += customdropdown_SelectedIndexChanged;
+            dropdown.OtherKeyPressed += customdropdown_OtherKeyPressed;
+            dropdown.Deactivate += customdropdown_Deactivate;
+
+            dropdown.Show(FindForm());
         }
 
         private void customdropdown_Deactivate(object sender, EventArgs e)
@@ -347,7 +364,7 @@ namespace ExtendedControls
 
         private void customdropdown_SelectedIndexChanged(object sender, EventArgs e, bool key)
         {
-            int selectedindex = customdropdown.SelectedIndex;
+            int selectedindex = dropdown.SelectedIndex;
             isActivated = false;            // call has already closed the custom drop down..
             this.Invalidate(true);
             if (cbsystem.SelectedIndex != selectedindex)
@@ -363,7 +380,7 @@ namespace ExtendedControls
         {
             if ( e.KeyCode == Keys.Escape )
             {
-                customdropdown.Close();
+                dropdown.Close();
                 isActivated = false;
                 this.Invalidate(true);
             }
@@ -386,16 +403,28 @@ namespace ExtendedControls
         {
             ForeColor = t.ButtonTextColor;
 
+            DisabledScaling = t.DisabledScaling;
+
             if (t.IsButtonSystemStyle)
+            {
                 FlatStyle = FlatStyle.System;
+            }
             else
             {
                 BackColor = t.ButtonBackColor;
-                DropDownBackgroundColor = t.ButtonBackColor;
+                DropDownSelectionBackgroundColor = t.ButtonBackColor;
                 BorderColor = t.ButtonBorderColor;
                 MouseOverBackgroundColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
-                ScrollBarButtonColor = t.TextBlockScrollButton;
-                ScrollBarColor = t.TextBlockSliderBack;
+                ButtonColorScaling = t.ButtonGradientAmount;
+                GradientDirection = t.ButtonGradientDirection;
+
+                DropDownSliderColor = t.TextBlockSliderBack;
+                DropDownSliderArrowColor = t.ButtonTextColor;
+                DropDownBorderColor = t.ButtonBorderColor;
+                DropDownSliderButtonColor = t.TextBlockScrollButton;
+                MouseOverDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
+                PressedDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
+
                 FlatStyle = t.ButtonFlatStyle;
             }
 
@@ -564,6 +593,8 @@ namespace ExtendedControls
         private Point arrowpt1c, arrowpt2c, arrowpt3c;
         private bool isActivated = false;
         private bool mouseover = false;
-        private ExtListBoxForm customdropdown;
+        private ExtListBoxForm dropdown;
+        private float gradientdirection = 90F;
+        private float buttonColorScaling = 0.5f;
     }
 }

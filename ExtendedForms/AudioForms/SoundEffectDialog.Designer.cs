@@ -634,13 +634,11 @@ namespace ExtendedAudioForms
             this.comboBoxCustomVoices.DataSource = null;
             this.comboBoxCustomVoices.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomVoices.DisplayMember = "";
-            this.comboBoxCustomVoices.DropDownBackgroundColor = System.Drawing.Color.Gray;
+            this.comboBoxCustomVoices.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomVoices.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomVoices.Location = new System.Drawing.Point(162, 479);
             this.comboBoxCustomVoices.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomVoices.Name = "comboBoxCustomVoices";
-            this.comboBoxCustomVoices.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomVoices.ScrollBarColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomVoices.SelectedIndex = -1;
             this.comboBoxCustomVoices.SelectedItem = null;
             this.comboBoxCustomVoices.SelectedValue = null;

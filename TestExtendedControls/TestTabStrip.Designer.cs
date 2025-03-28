@@ -60,12 +60,7 @@
             // tabStrip1
             // 
             this.tabStrip1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tabStrip1.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.tabStrip1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip1.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
-            this.tabStrip1.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
-            this.tabStrip1.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.tabStrip1.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.tabStrip1.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip1.EmptyColorScaling = 0.5F;
             this.tabStrip1.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip1.EmptyPanelIcon")));
@@ -105,8 +100,6 @@
             this.listControlCustom1.Location = new System.Drawing.Point(588, 507);
             this.listControlCustom1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.listControlCustom1.Name = "listControlCustom1";
-            this.listControlCustom1.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.listControlCustom1.ScrollBarColor = System.Drawing.Color.LightGray;
             this.listControlCustom1.SelectedIndex = -1;
             this.listControlCustom1.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom1.Size = new System.Drawing.Size(75, 143);
@@ -126,8 +119,6 @@
             this.listControlCustom2.Location = new System.Drawing.Point(679, 507);
             this.listControlCustom2.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.listControlCustom2.Name = "listControlCustom2";
-            this.listControlCustom2.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.listControlCustom2.ScrollBarColor = System.Drawing.Color.LightGray;
             this.listControlCustom2.SelectedIndex = -1;
             this.listControlCustom2.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom2.Size = new System.Drawing.Size(75, 143);
@@ -158,8 +149,6 @@
             this.listControlCustom3.Location = new System.Drawing.Point(770, 507);
             this.listControlCustom3.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.listControlCustom3.Name = "listControlCustom3";
-            this.listControlCustom3.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.listControlCustom3.ScrollBarColor = System.Drawing.Color.LightGray;
             this.listControlCustom3.SelectedIndex = -1;
             this.listControlCustom3.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom3.Size = new System.Drawing.Size(74, 143);
@@ -169,12 +158,7 @@
             // tabStrip2
             // 
             this.tabStrip2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tabStrip2.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.tabStrip2.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip2.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
-            this.tabStrip2.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
-            this.tabStrip2.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.tabStrip2.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.tabStrip2.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip2.EmptyColorScaling = 0.5F;
             this.tabStrip2.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip2.EmptyPanelIcon")));
@@ -202,12 +186,7 @@
             // tabStrip3
             // 
             this.tabStrip3.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tabStrip3.DropDownBackgroundColor = System.Drawing.Color.Gainsboro;
             this.tabStrip3.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip3.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
-            this.tabStrip3.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
-            this.tabStrip3.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.tabStrip3.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.tabStrip3.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip3.EmptyColorScaling = 0.5F;
             this.tabStrip3.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip3.EmptyPanelIcon")));
@@ -225,12 +204,7 @@
             // tabStrip4
             // 
             this.tabStrip4.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tabStrip4.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.tabStrip4.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip4.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
-            this.tabStrip4.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
-            this.tabStrip4.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.tabStrip4.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.tabStrip4.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip4.EmptyColorScaling = 0.5F;
             this.tabStrip4.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip4.EmptyPanelIcon")));
@@ -268,12 +242,7 @@
             // tabStrip5
             // 
             this.tabStrip5.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.tabStrip5.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.tabStrip5.DropDownBorderColor = System.Drawing.Color.Green;
-            this.tabStrip5.DropDownItemSeperatorColor = System.Drawing.Color.Purple;
-            this.tabStrip5.DropDownMouseOverBackgroundColor = System.Drawing.Color.Red;
-            this.tabStrip5.DropDownScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.tabStrip5.DropDownScrollBarColor = System.Drawing.Color.LightGray;
             this.tabStrip5.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip5.EmptyColorScaling = 0.5F;
             this.tabStrip5.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip5.EmptyPanelIcon")));
@@ -301,8 +270,6 @@
             this.listControlCustom4.Location = new System.Drawing.Point(865, 507);
             this.listControlCustom4.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.listControlCustom4.Name = "listControlCustom4";
-            this.listControlCustom4.ScrollBarButtonColor = System.Drawing.Color.LightGray;
-            this.listControlCustom4.ScrollBarColor = System.Drawing.Color.LightGray;
             this.listControlCustom4.SelectedIndex = -1;
             this.listControlCustom4.SelectionBackColor = System.Drawing.Color.Gray;
             this.listControlCustom4.Size = new System.Drawing.Size(104, 143);

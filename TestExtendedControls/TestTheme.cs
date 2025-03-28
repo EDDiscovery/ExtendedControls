@@ -1,13 +1,7 @@
 ﻿using ExtendedControls;
 using QuickJSON;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TestExtendedControls
@@ -22,7 +16,9 @@ namespace TestExtendedControls
             stdthemes = new ThemeList();
             stdthemes.LoadBaseThemes();
             stdthemes.SetThemeByName("Elite Verdana");
+
             Theme.Current.WindowsFrame = true;
+            Theme.Current.GroupBack = Color.Beige;
             //Theme.Current = new Theme("Std");
             Theme.Current.ApplyStd(this);
             labelName.Text = Theme.Current.Name;
@@ -34,8 +30,13 @@ namespace TestExtendedControls
                 dataGridView.Rows.Add(new object[] { $"{i}", "two", "three"});
             }
 
-            extComboBox1.Items.AddRange(new string[] { "one", "two", "three" });
-            extListBox1.Items.AddRange(new string[] { "one", "two", "three", "four","five" });
+            for (int i = 0; i < 100; i++)
+            {
+                extComboBox1.Items.Add($"Item {i}");
+                extListBox1.Items.Add($"Item {i}");
+                extPanelDropDown1.Items.Add($"Item {i}");
+            }
+
             extRichTextBox1.Text = "Hello\r\nThere!\r\n1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7";
 
             UpdateLabels(Theme.Current);
@@ -76,6 +77,25 @@ namespace TestExtendedControls
             tabStrip1.SelectedBackColor = Color.Green;
 
             tabStrip1.HelpAction = (p) => { System.Diagnostics.Debug.WriteLine("Help at " + p); };
+
+            tabStrip2.ImageList = new Bitmap[150];
+            tabStrip2.TextList = new string[tabStrip2.ImageList.Length];
+                
+            for ( int i = 0; i < tabStrip2.ImageList.Length; i++ )
+            {
+                tabStrip2.ImageList[i] = i % 2 == 0 ? TestExtendedControls.Properties.Resources.galaxy_red : TestExtendedControls.Properties.Resources.galaxy_gray;
+                tabStrip2.TextList[i] = $"Item {i}";
+            }
+
+            tabStrip2.EmptyColor = Color.Red;
+            tabStrip2.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
+            tabStrip2.SetControlText("Ctext1");
+            tabStrip2.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("Command pop out" + t + " " + i);
+            tabStrip2.OnCreateTab += OnCreateTab;
+            tabStrip2.SelectedBackColor = Color.Green;
+            tabStrip2.StripMode = TabStrip.StripModeType.ListSelection;
+
+            tabStrip2.HelpAction = (p) => { System.Diagnostics.Debug.WriteLine("Help at " + p); };
 
         }
 

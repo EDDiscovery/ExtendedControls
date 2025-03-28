@@ -200,5 +200,13 @@ namespace TestExtendedControls
         {
             compassControl1.GlideSlope = 20.0;
         }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            var stdthemes = new ThemeList();
+            stdthemes.LoadBaseThemes();
+            stdthemes.SetThemeByName("Elite Verdana");
+            Theme.Current.ApplyStd(this);
+        }
     }
 }

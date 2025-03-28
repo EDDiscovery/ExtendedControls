@@ -101,7 +101,7 @@ namespace ExtendedControls
             this.pimageListSelection.MouseSelectedColor = System.Drawing.Color.Green;
             this.pimageListSelection.MouseSelectedColorEnable = true;
             this.pimageListSelection.Name = "pimageListSelection";
-            this.pimageListSelection.PanelDisabledScaling = 0.25F;
+            this.pimageListSelection.ButtonDisabledScaling = 0.25F;
             this.pimageListSelection.Selectable = true;
             this.pimageListSelection.Size = new System.Drawing.Size(24, 24);
             this.pimageListSelection.TabIndex = 3;
@@ -124,7 +124,7 @@ namespace ExtendedControls
             this.extButtonDrawnHelp.MouseSelectedColor = System.Drawing.Color.Green;
             this.extButtonDrawnHelp.MouseSelectedColorEnable = true;
             this.extButtonDrawnHelp.Name = "extButtonDrawnHelp";
-            this.extButtonDrawnHelp.PanelDisabledScaling = 0.25F;
+            this.extButtonDrawnHelp.ButtonDisabledScaling = 0.25F;
             this.extButtonDrawnHelp.Selectable = true;
             this.extButtonDrawnHelp.Size = new System.Drawing.Size(24, 30);
             this.extButtonDrawnHelp.TabIndex = 3;
@@ -145,7 +145,7 @@ namespace ExtendedControls
             this.pimagePopOutIcon.MouseSelectedColor = System.Drawing.Color.Green;
             this.pimagePopOutIcon.MouseSelectedColorEnable = true;
             this.pimagePopOutIcon.Name = "pimagePopOutIcon";
-            this.pimagePopOutIcon.PanelDisabledScaling = 0.25F;
+            this.pimagePopOutIcon.ButtonDisabledScaling = 0.25F;
             this.pimagePopOutIcon.Selectable = true;
             this.pimagePopOutIcon.Size = new System.Drawing.Size(24, 24);
             this.pimagePopOutIcon.TabIndex = 3;

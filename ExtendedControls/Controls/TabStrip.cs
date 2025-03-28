@@ -16,6 +16,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ExtendedControls
 {
@@ -36,14 +37,19 @@ namespace ExtendedControls
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
         public float EmptyColorScaling { get; set; } = 0.5F;
 
-        // only if using ListSelection:
-        public Color DropDownBackgroundColor { get; set; } = Color.Gray;
+        // only if using ListSelection with a drop down box
+        public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
+        public Color DropDownSliderColor { get; set; } = Color.Green;
+        public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
         public Color DropDownBorderColor { get; set; } = Color.Green;
-        public Color DropDownScrollBarColor { get; set; } = Color.LightGray;
-        public Color DropDownScrollBarButtonColor { get; set; } = Color.LightGray;
-        public Color DropDownMouseOverBackgroundColor { get; set; } = Color.Red;
-        public Color DropDownItemSeperatorColor { get; set; } = Color.Purple;
+        public Color DropDownSliderButtonColor { get; set; } = Color.Blue;
+        public Color MouseOverDropDownSliderButtonColor { get; set; } = Color.Red;
+        public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
+
         public bool DropDownFitImagesToItemHeight { get; set; } = false;
+        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
+
+        private float gradientdirection = 90F;
 
         // If non null, a help icon ? appears on the right. When clicked, you get a callback.  P is the lower bottom of the ? icon in screen co-ords
 
@@ -213,7 +219,7 @@ namespace ExtendedControls
             {
                 Rectangle area = panelStrip.Dock == DockStyle.Top ? new Rectangle(0, panelStrip.Height, ClientRectangle.Width, ClientRectangle.Height - panelStrip.Height) : new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height - panelStrip.Height);
 
-                using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(area, emptypanelcolor, emptypanelcolor.Multiply(EmptyColorScaling), 90))
+                using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(area, emptypanelcolor, emptypanelcolor.Multiply(EmptyColorScaling), GradientDirection))
                 {
                     e.Graphics.FillRectangle(b, area);
                 }
@@ -539,16 +545,19 @@ namespace ExtendedControls
 
             dropdown = new ExtListBoxForm("", true);
 
-            dropdown.SelectionBackColor = this.DropDownBackgroundColor;
             dropdown.ForeColor = this.ForeColor;
             dropdown.BackColor = this.DropDownBorderColor;
             dropdown.BorderColor = this.DropDownBorderColor;
-            dropdown.ScrollBarColor = this.DropDownScrollBarColor;
-            dropdown.ScrollBarButtonColor = this.DropDownScrollBarButtonColor;
-            dropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
-            dropdown.ItemSeperatorColor = this.DropDownItemSeperatorColor;
-            dropdown.FitImagesToItemHeight = this.DropDownFitImagesToItemHeight;
 
+            dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
+            dropdown.ListBox.ScrollBar.BackColor = this.DropDownSliderColor;
+            dropdown.ListBox.ScrollBar.ThumbBorderColor = dropdown.ListBox.ScrollBar.ArrowBorderColor =
+                dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
+            dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
+            dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.MouseOverDropDownSliderButtonColor;
+            dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
+
+            dropdown.FitImagesToItemHeight = this.DropDownFitImagesToItemHeight;
             dropdown.Font = Font;
             dropdown.Items = TextList.ToList();
             dropdown.ItemSeperators = ListSelectionItemSeparators;
@@ -604,14 +613,18 @@ namespace ExtendedControls
         {
             //System.Diagnostics.Debug.WriteLine("*************** TAB Strip themeing" + myControl.Name + " " + myControl.Tag);
             ForeColor = t.ButtonTextColor;
-            DropDownBackgroundColor = t.ButtonBackColor;
-            DropDownBorderColor = t.TextBlockBorderColor;
-            DropDownScrollBarButtonColor = t.TextBlockScrollButton;
-            DropDownScrollBarColor = t.TextBlockSliderBack;
-            DropDownMouseOverBackgroundColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
-            DropDownItemSeperatorColor = t.ButtonBorderColor;
+
+            DropDownSliderColor = t.TextBlockSliderBack;
+            DropDownSliderArrowColor = t.ButtonTextColor;
+            DropDownBorderColor = t.ButtonBorderColor;
+            DropDownSliderButtonColor = t.TextBlockScrollButton;
+            MouseOverDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
+            PressedDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
+
             EmptyColor = t.ButtonBackColor;
             SelectedBackColor = t.ButtonBackColor;
+
+            // not themeing the gradient direction as unusual to have this
             return true;
         }
 

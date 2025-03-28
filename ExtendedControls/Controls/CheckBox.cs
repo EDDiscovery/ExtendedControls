@@ -33,13 +33,13 @@ namespace ExtendedControls
         public Image ImageIndeterminate { get; set; } = null;           // Both - optional - can set this, if required, if using indeterminate value
         public float ImageButtonDisabledScaling { get; set; } = 0.5F;   // Both - scaling when disabled - must call SetDrawnBitmapRemapTable
         public float CheckBoxDisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
+        public float ButtonColorScaling { get { return buttonColorScaling; } set { buttonColorScaling = value; Invalidate(); } }
+        public float ButtonGradientDirection { get { return buttongradientdirection; } set { buttongradientdirection = value; Invalidate(); } }
+        public float CheckBoxGradientDirection { get { return checkboxgradientdirection; } set { checkboxgradientdirection = value; Invalidate(); } }
         public ImageLayout ImageLayout { get { return imagelayout; } set { imagelayout = value; Invalidate(); } }   // Both. Also use TextLayout for Buttons
 
         public ImageAttributes DrawnImageAttributesEnabled = null;         // Image override (colour etc) for images using Image
         public ImageAttributes DrawnImageAttributesDisabled = null;         // Image override (colour etc) for images using Image
-
-        private Font FontToUse = null;
-        private ImageLayout imagelayout = ImageLayout.Center;           // image layout
 
         public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)        // call to set up disable scaling
         {
@@ -75,20 +75,33 @@ namespace ExtendedControls
 
                 if (Appearance == Appearance.Button)
                 {
-                    if ( Enabled )
-                    {
-                        Rectangle marea = ClientRectangle;
-                        marea.Inflate(-2, -2);
+                    Rectangle area = ClientRectangle;
 
-                        if ( mouseover )
+                    if (FlatAppearance.BorderSize > 0)
+                    {
+                        using (var p = new Pen(FlatAppearance.BorderColor))     // only 1 pixel wide border
                         {
-                            using (Brush mover = new SolidBrush(MouseOverColor))
-                                e.Graphics.FillRectangle(mover, marea);
+                            e.Graphics.DrawRectangle(p, new Rectangle(0,0,area.Width-1,area.Height-1));
                         }
-                        else if ( CheckState == CheckState.Checked )
+
+                        area.Inflate(-1,-1);
+                    }
+
+                    if (Enabled)
+                    {
+                        if (mouseover || CheckState == CheckState.Checked)
                         {
-                            using (Brush mover = new SolidBrush(CheckColor))
-                                e.Graphics.FillRectangle(mover, marea);
+                            Color bk = mouseover ? MouseOverColor : CheckColor;
+                            if (FlatStyle == FlatStyle.Flat)
+                            {
+                                using (Brush brush = new SolidBrush(bk))
+                                    e.Graphics.FillRectangle(brush, area);
+                            }
+                            else
+                            {
+                                using (var brush = new LinearGradientBrush(area, bk, bk.Multiply(ButtonColorScaling), ButtonGradientDirection))
+                                    e.Graphics.FillRectangle(brush, area);
+                            }
                         }
                     }
 
@@ -119,7 +132,7 @@ namespace ExtendedControls
                         tickarea.X = ClientRectangle.Width - tickarea.Width;
                         textarea.Width -= tickarea.Width;
                     }
-                    else 
+                    else
                     {
                         textarea.X = tickarea.Width;
                         textarea.Width -= tickarea.Width;
@@ -137,80 +150,85 @@ namespace ExtendedControls
 
                     tickarea.Inflate(-1, -1);
 
-                    Rectangle checkarea = tickarea;
-                    checkarea.Width++; checkarea.Height++;          // convert back to area
-
-                    //                System.Diagnostics.Debug.WriteLine("Owner draw " + Name + checkarea + rect);
-
-                    if (hasimages)
+                    if (!tickarea.Size.IsEmpty)
                     {
-                        if (Enabled && mouseover)                // if mouse over, draw a nice box around it
+                        Rectangle checkarea = tickarea;
+                        checkarea.Width++; checkarea.Height++;          // convert back to area
+
+                        //                System.Diagnostics.Debug.WriteLine("Owner draw " + Name + checkarea + rect);
+
+                        if (hasimages)
                         {
-                            using (Brush mover = new SolidBrush(MouseOverColor))
+                            if (Enabled && mouseover)                // if mouse over, draw a nice box around it
                             {
-                                e.Graphics.FillRectangle(mover, checkarea);
+                                using (Brush mover = new SolidBrush(MouseOverColor))
+                                {
+                                    e.Graphics.FillRectangle(mover, checkarea);
+                                }
                             }
                         }
-                    }
-                    else
-                    {                                   // in no image, we draw a set of boxes
-                        using (Pen second = new Pen(CheckBoxInnerColor.Multiply(discaling), 1F))
-                            e.Graphics.DrawRectangle(second, tickarea);
+                        else
+                        {                                   // in no image, we draw a set of boxes
+                            using (Pen second = new Pen(CheckBoxInnerColor.Multiply(discaling), 1F))
+                                e.Graphics.DrawRectangle(second, tickarea);
 
-                        tickarea.Inflate(-1, -1);
+                            tickarea.Inflate(-1, -1);
 
-                        if (FlatStyle == FlatStyle.Flat)
+                            if (!tickarea.Size.IsEmpty)
+                            {
+                                if (FlatStyle == FlatStyle.Flat)
+                                {
+                                    using (Brush inner = new SolidBrush(checkboxbasecolour.Multiply(discaling)))
+                                        e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
+                                }
+                                else
+                                {
+                                    using (Brush inner = new LinearGradientBrush(tickarea, CheckBoxInnerColor.Multiply(discaling), checkboxbasecolour, CheckBoxGradientDirection))
+                                        e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
+                                }
+
+                                using (Pen third = new Pen(checkboxbasecolour.Multiply(discaling), 1F))
+                                    e.Graphics.DrawRectangle(third, tickarea);
+                            }
+                        }
+
+                        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                        using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.FitBlackBox })
+                            DrawText(textarea, e.Graphics, fmt);
+
+                        if (hasimages)
                         {
-                            using (Brush inner = new SolidBrush(checkboxbasecolour.Multiply(discaling)))
-                                e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
+                            DrawImage(checkarea, e.Graphics);
                         }
                         else
                         {
-                            using (Brush inner = new LinearGradientBrush(tickarea, CheckBoxInnerColor.Multiply(discaling), checkboxbasecolour, 225))
-                                e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
-                        }
-
-                        using (Pen third = new Pen(checkboxbasecolour.Multiply(discaling), 1F))
-                            e.Graphics.DrawRectangle(third, tickarea);
-                    }
-
-                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-
-                    using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.FitBlackBox })
-                        DrawText(textarea, e.Graphics, fmt);
-
-                    if (hasimages)
-                    {
-                        DrawImage(checkarea, e.Graphics);
-                    }
-                    else
-                    {
-                        Color c1 = Color.FromArgb(200, CheckColor.Multiply(discaling));
-                        if (CheckState == CheckState.Checked)
-                        {
-                            Point pt1 = new Point(checkarea.X + 2, checkarea.Y + checkarea.Height / 2 - 1);
-                            Point pt2 = new Point(checkarea.X + checkarea.Width / 2 - 1, checkarea.Bottom - 2);
-                            Point pt3 = new Point(checkarea.X + checkarea.Width - 2, checkarea.Y);
-
-                            using (Pen pcheck = new Pen(c1, 2.0F))
+                            Color c1 = Color.FromArgb(200, CheckColor.Multiply(discaling));
+                            if (CheckState == CheckState.Checked)
                             {
-                                e.Graphics.DrawLine(pcheck, pt1, pt2);
-                                e.Graphics.DrawLine(pcheck, pt2, pt3);
-                            }
-                        }
-                        else if (CheckState == CheckState.Indeterminate)
-                        {
-                            Size cb = new Size(checkarea.Width - 5, checkarea.Height - 5);
-                            if (cb.Width > 0 && cb.Height > 0)
-                            {
-                                using (Brush br = new SolidBrush(c1))
+                                Point pt1 = new Point(checkarea.X + 2, checkarea.Y + checkarea.Height / 2 - 1);
+                                Point pt2 = new Point(checkarea.X + checkarea.Width / 2 - 1, checkarea.Bottom - 2);
+                                Point pt3 = new Point(checkarea.X + checkarea.Width - 2, checkarea.Y);
+
+                                using (Pen pcheck = new Pen(c1, 2.0F))
                                 {
-                                    e.Graphics.FillRectangle(br, new Rectangle(new Point(checkarea.X + 2, checkarea.Y + 2), cb));
+                                    e.Graphics.DrawLine(pcheck, pt1, pt2);
+                                    e.Graphics.DrawLine(pcheck, pt2, pt3);
+                                }
+                            }
+                            else if (CheckState == CheckState.Indeterminate)
+                            {
+                                Size cb = new Size(checkarea.Width - 5, checkarea.Height - 5);
+                                if (cb.Width > 0 && cb.Height > 0)
+                                {
+                                    using (Brush br = new SolidBrush(c1))
+                                    {
+                                        e.Graphics.FillRectangle(br, new Rectangle(new Point(checkarea.X + 2, checkarea.Y + 2), cb));
+                                    }
                                 }
                             }
                         }
                     }
-
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
                 }
 
@@ -263,20 +281,27 @@ namespace ExtendedControls
         {
             BackColor = t.GroupBoxOverride(Parent, t.Form);
 
+            CheckBoxGradientDirection = t.CheckBoxGradientDirection;
+            CheckBoxDisabledScaling = t.DisabledScaling;
+
             if (Appearance == Appearance.Button)
             {
                 ForeColor = t.ButtonTextColor;
                 MouseOverColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
-                CheckColor = t.ButtonBackColor.Multiply(0.9f);
+                CheckColor = t.CheckBoxButtonTick;
+                ButtonGradientDirection = t.CheckBoxGradientDirection;
+                ButtonColorScaling = t.CheckBoxGradientAmount;
+                FlatAppearance.BorderColor = t.ButtonBorderColor;
+                FlatAppearance.BorderSize = 1;
             }
             else
             {
                 ForeColor = t.CheckBox;
                 CheckBoxColor = t.CheckBox;
-                CheckBoxInnerColor = t.CheckBox.Multiply(1.5F);
-                MouseOverColor = t.CheckBox.Multiply(1.4F);
-                TickBoxReductionRatio = 0.75f;
                 CheckColor = t.CheckBoxTick;
+                CheckBoxInnerColor = t.CheckBox.Multiply(t.CheckBoxInnerScaling);
+                MouseOverColor = t.CheckBox.Multiply(t.MouseOverScaling);
+                TickBoxReductionRatio = t.CheckBoxTickSize;
             }
 
             FlatStyle = t.ButtonFlatStyle;
@@ -291,10 +316,18 @@ namespace ExtendedControls
                 ImageLayout = ImageLayout.Stretch;
             }
 
+            Invalidate();
+
             return false;
         }
 
         private bool mouseover = false;
+        private Font FontToUse = null;
+        private ImageLayout imagelayout = ImageLayout.Center;           // image layout
+        private float checkboxgradientdirection = 225F;
+        private float buttongradientdirection = 90F;
+        private float buttonColorScaling = 0.5F;
+
     }
 }
 

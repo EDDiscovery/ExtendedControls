@@ -36,6 +36,8 @@ namespace TestExtendedControls
             list.Add("Cthree");
             list.Add("Dfour");
             list.Add("Efive");
+            for (int i = 0; i < 100; i++)
+                list.Add($"Item {i}");
 
             autoCompleteTextBox1.SetAutoCompletor(AutoList);
             autoCompleteTextBox1.EndButtonVisible = true;

@@ -121,6 +121,9 @@ namespace ExtendedControls
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_tick" })]
         public Color CheckBoxTick { get; set; } = SystemColors.MenuHighlight;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_buttontick" })]
+        public Color CheckBoxButtonTick { get; set; } = Color.Transparent;
 
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "menu_back" })]
@@ -246,34 +249,32 @@ namespace ExtendedControls
         public static string TextboxborderstyleFixed3D = TextboxBorderStyles[2];
         public static string TextboxborderstyleColor = TextboxBorderStyles[3];
 
-        // Scaling values
-        public float DialogScaling { get; set; } = 0.8f;
+        // Scaling and direction values, exported using these names
+        public float DialogFontScaling { get; set; } = 0.8f;
         public float MouseOverScaling { get; set; } = 1.3F;
-        public float MouseSelectedScaling { get; set; } = 1.5F;
-
-
-
-
-
-
-
-
-
-        [JsonIgnore]
-        public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
-
-        private static string DefaultFont = "Microsoft Sans Serif";
-        private static float DefaultFontSize = 8.25F;
+        public float MouseSelectedScaling { get; set; } = 1.6F;
+        public float ButtonGradientDirection { get; set; } = 90F;
+        public float ButtonGradientAmount { get; set; } = 0.5F;
+        public float CheckBoxGradientDirection { get; set; } = 225F;
+        public float CheckBoxGradientAmount { get; set; } = 0.5F;
+        public float CheckBoxInnerScaling { get; set; } = 1.5F;     // colour difference in checkbox inner area
+        public float CheckBoxTickSize { get; set; } = 0.75F;
+        public float ListBoxGradientDirection { get; set; } = 90F;
+        public float ListBoxGradientAmount { get; set; } = 0.5F;
+        public float GroupBoxGradientDirection { get; set; } = 90F;
+        public float GroupBoxGradientAmount { get; set; } = -1F;       // <0 for off
+        public float DisabledScaling { get; set; } = 0.5F;
 
         // use TabIndex to also indicate no theme by setting tab index to this. Added so base winform controls can disable themeing
         public const int TabIndexNoThemeIndicator = 9090;
-
-        private static float minFontSize = 4;
 
         public Theme(string name = "Unknown")      // windows default colours
         {
             this.Name = name;
         }
+
+        [JsonIgnore]
+        public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
 
         public Theme(String n, Color form,
                                     Color butback, Color buttext, Color butborder, string bstyle,
@@ -284,7 +285,7 @@ namespace ExtendedControls
                                     Color travelgridnonvisited, Color travelgridvisited,
                                     Color textboxback, Color textboxfore, Color textboxhighlight, Color textboxsuccess, Color textboxborder, string tbbstyle,
                                     Color textboxsliderback, Color textboxscrollarrow, Color textboxscrollbutton,
-                                    Color checkboxfore, Color checkboxtick,
+                                    Color checkboxfore, Color checkboxtick, Color checkboxbuttontick,
                                     Color menuback, Color menufore, Color menudropbackback, Color menudropdownfore,
                                     Color label,
                                     Color groupboxback, Color groupboxtext, Color groupboxlines,
@@ -303,7 +304,7 @@ namespace ExtendedControls
             KnownSystemColor = travelgridvisited; UnknownSystemColor = travelgridnonvisited;
             TextBackColor = textboxback; TextBlockColor = textboxfore; TextBlockHighlightColor = textboxhighlight; TextBlockSuccessColor = textboxsuccess; TextBlockBorderColor = textboxborder;
             TextBlockSliderBack = textboxsliderback; TextBlockScrollArrow = textboxscrollarrow; TextBlockScrollButton = textboxscrollbutton;
-            CheckBox = checkboxfore; CheckBoxTick = checkboxtick;
+            CheckBox = checkboxfore; CheckBoxTick = checkboxtick; CheckBoxButtonTick = checkboxbuttontick;
             MenuBack = menuback; MenuFore = menufore; ToolStripDropdownBack = menudropbackback; ToolStripDropdownFore = menudropdownfore;
             LabelColor = label;
             GroupBack = groupboxback; GroupFore = groupboxtext; GroupBorder = groupboxlines;
@@ -353,7 +354,7 @@ namespace ExtendedControls
         {
             get
             {
-                return GetScaledFont(DialogScaling);
+                return GetScaledFont(DialogFontScaling);
             }
         }
 
@@ -361,7 +362,7 @@ namespace ExtendedControls
         public Font GetDialogScaledFont(float scaling, float max = 999) 
         {
             if (FontSize >= 12)             // only if >=12 do we add on dialog scaling
-                scaling *= DialogScaling;       
+                scaling *= DialogFontScaling;       
 
             return GetScaledFont(scaling, max);
         }
@@ -691,7 +692,16 @@ namespace ExtendedControls
                                     null, altnames ? "AltFmt" : "Std", 
                                     (tt, o) => { if (o is string) return System.Drawing.ColorTranslator.FromHtml((string)o); else return Color.Orange; 
                                     });
+
+            CheckForMissingValues();
+
             return ret is Theme;
+        }
+
+        public void CheckForMissingValues()
+        {
+            if (CheckBoxButtonTick == Color.Transparent)
+                CheckBoxButtonTick = CheckBoxTick;
         }
 
         public bool LoadFile(string pathname, string usethisname = null)
@@ -710,6 +720,10 @@ namespace ExtendedControls
         {
             return FileHelpers.TryWriteToFile(pathname, ToJSON().ToString(true));
         }
+
+        private static string DefaultFont = "Microsoft Sans Serif";
+        private static float DefaultFontSize = 8.25F;
+        private static float minFontSize = 4;
     }
 
     // Controls which can theme implement this

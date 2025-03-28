@@ -57,6 +57,7 @@
             this.button24 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.buttonGS = new System.Windows.Forms.Button();
+            this.button26 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // panel1
@@ -314,6 +315,7 @@
             this.compassControl1.BugColor = System.Drawing.Color.White;
             this.compassControl1.BugSizePixels = 10;
             this.compassControl1.CentreTickColor = System.Drawing.Color.Green;
+            this.compassControl1.DisabledScaling = 0.5F;
             this.compassControl1.DisableMessage = "";
             this.compassControl1.Distance = double.NaN;
             this.compassControl1.DistanceFormat = "{0:0.##}";
@@ -363,6 +365,16 @@
             this.buttonGS.UseVisualStyleBackColor = true;
             this.buttonGS.Click += new System.EventHandler(this.buttonGS_Click);
             // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(730, 358);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(100, 23);
+            this.button26.TabIndex = 3;
+            this.button26.Text = "Theme";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.button26_Click);
+            // 
             // TestCompassControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -378,6 +390,7 @@
             this.Controls.Add(this.button13);
             this.Controls.Add(this.button23);
             this.Controls.Add(this.button18);
+            this.Controls.Add(this.button26);
             this.Controls.Add(this.buttonGS);
             this.Controls.Add(this.button22);
             this.Controls.Add(this.button21);
@@ -435,5 +448,6 @@
         private System.Windows.Forms.Button button24;
         private System.Windows.Forms.Button button25;
         private System.Windows.Forms.Button buttonGS;
+        private System.Windows.Forms.Button button26;
     }
 }

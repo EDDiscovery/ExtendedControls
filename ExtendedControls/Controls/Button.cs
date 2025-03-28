@@ -37,65 +37,9 @@ namespace ExtendedControls
             set { throw new InvalidOperationException("The BackgroundImage property is not supported by this control. Use Image instead."); }
         }
 
-        [Category("Appearance"), DefaultValue(1.25F),
-            Description("When using FlatStyle.Popup, the FlatAppearance.BorderColor will be multiplied by this amount during a hover or click.")]
-        public float BorderColorScaling
-        {
-            get { return borderColorScaling; }
-            set
-            {
-                if (float.IsNaN(value) || float.IsInfinity(value))
-                    return;
-                else if (borderColorScaling != value)
-                {
-                    borderColorScaling = value;
-                    if (drawState > DrawState.Normal && FlatStyle == FlatStyle.Popup)
-                        Invalidate();
-                }
-            }
-        }
-
-        [Category("Appearance"), DefaultValue(0.5F),
-            Description("When using FlatStyle.Popup, the BackColor multiplication factor for the bottom of the background gradient.")]
-        public float ButtonColorScaling
-        {
-            get { return buttonColorScaling; }
-            set
-            {
-                if (float.IsNaN(value) || float.IsInfinity(value))
-                    return;
-                else if (buttonColorScaling != value)
-                {
-                    buttonColorScaling = value;
-                    if (FlatStyle == FlatStyle.Popup)
-                        Invalidate();
-                }
-            }
-        }
-
-        [Category("Appearance"), DefaultValue(0.5F),
-            Description("When using FlatStyle.Popup and not Enabled, this multiplication factor will be used for the background color.")]
-        public float ButtonDisabledScaling
-        {
-            get { return buttonDisabledScaling; }
-            set
-            {
-                if (float.IsNaN(value) || float.IsInfinity(value))
-                    return;
-                else if (buttonDisabledScaling != value)
-                {
-                    buttonDisabledScaling = value;
-                    if (!Enabled && FlatStyle == FlatStyle.Popup)
-                        Invalidate();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Occurs when the control is redrawn.
-        /// </summary>
-        [Category("Appearance"), Description("Occurs when a control needs repainting.")]
-        public new event PaintEventHandler Paint { add { base.Paint += value; _CustomPaint += value; } remove { base.Paint -= value; _CustomPaint -= value; } }
+        public float ButtonColorScaling { get { return buttonColorScaling; } set { buttonColorScaling = value; Invalidate(); }  }
+        public float ButtonDisabledScaling { get { return buttonDisabledScaling; } set { buttonDisabledScaling = value; Invalidate(); } }
+        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
         /// <summary>
         /// Specify a <see cref="Color"/> <paramref name="remap"/> table and corresponding <see cref="ColorMatrix"/>.
@@ -117,22 +61,6 @@ namespace ExtendedControls
         }
 
 
-        private ImageAttributes drawnImageAttributesEnabled = null;         // Image override (colour etc) for background when using Image while Enabled.
-        private ImageAttributes drawnImageAttributesDisabled = null;        // Image override (colour etc) for background when using Image while !Enabled.
-
-        private enum DrawState { Disabled = -1, Normal = 0, Hover, Click };
-        private DrawState drawState = DrawState.Normal;                    // The current state of our control, even if base is currently doing the painting.
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]                   // Visible via BorderColorScaling
-        private float borderColorScaling = 1.25F;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]                   // Visible via ButtonColorScaling
-        private float buttonColorScaling = 0.5F;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]                   // Visible via ButtonDisabledScaling
-        private float buttonDisabledScaling = 0.5F;
-
-        private event PaintEventHandler _CustomPaint;                       // base.OnPaint interferes with our custom painting; mimic it to allow others in on the fun.
-
-
         /// <summary>
         /// Releases the unmanaged resources used by the <see cref="ExtButton"/> and optionally releases the managed
         /// resources.
@@ -146,19 +74,9 @@ namespace ExtendedControls
                 drawnImageAttributesDisabled?.Dispose();
                 drawnImageAttributesEnabled?.Dispose();
             }
-            _CustomPaint = null;
             drawnImageAttributesDisabled = null;
             drawnImageAttributesEnabled = null;
             base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// Raises the <see cref="ExtButton.Paint"/> event with custom painting logic.
-        /// </summary>
-        /// <param name="pe">A <see cref="PaintEventArgs"/> that contains the event data.</param>
-        protected virtual void OnCustomPaint(PaintEventArgs pe)
-        {
-            _CustomPaint?.Invoke(this, pe);
         }
 
         /// <summary>
@@ -285,11 +203,11 @@ namespace ExtendedControls
                         break;
                     case DrawState.Hover:
                         colBack = FlatAppearance.MouseOverBackColor;
-                        colBorder = FlatAppearance.BorderColor.Multiply(borderColorScaling);
+                        colBorder = FlatAppearance.BorderColor.Multiply(buttonColorScaling);
                         break;
                     case DrawState.Click:
                         colBack = FlatAppearance.MouseDownBackColor;
-                        colBorder = FlatAppearance.BorderColor.Multiply(borderColorScaling);
+                        colBorder = FlatAppearance.BorderColor.Multiply(buttonColorScaling);
                         break;
 
                 }
@@ -297,7 +215,7 @@ namespace ExtendedControls
                 if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
                 {
                     //System.Diagnostics.Debug.WriteLine($"{Name} {colBack} { buttonColorScaling}");
-                    using (var b = new LinearGradientBrush(buttonarea, colBack, colBack.Multiply(buttonColorScaling), 90))
+                    using (var b = new LinearGradientBrush(buttonarea, colBack, colBack.Multiply(buttonColorScaling), GradientDirection))
                         pe.Graphics.FillRectangle(b, buttonarea);       // linear grad brushes do not respect smoothing mode, btw
                 }
 
@@ -372,8 +290,6 @@ namespace ExtendedControls
                 }
 
                 pe.Graphics.SmoothingMode = SmoothingMode.Default;
-
-                this.OnCustomPaint(pe);
             }
         }
 
@@ -403,7 +319,9 @@ namespace ExtendedControls
             }
             else
             {
-                ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 0.5F;
+                ctrl.ButtonColorScaling = t.ButtonGradientAmount;
+                ctrl.ButtonDisabledScaling = t.DisabledScaling;
+                ctrl.GradientDirection = t.ButtonGradientDirection;
 
                 if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
                 {
@@ -458,6 +376,14 @@ namespace ExtendedControls
         //    }
         //}
 
+        private ImageAttributes drawnImageAttributesEnabled = null;         // Image override (colour etc) for background when using Image while Enabled.
+        private ImageAttributes drawnImageAttributesDisabled = null;        // Image override (colour etc) for background when using Image while !Enabled.
+        private enum DrawState { Disabled = -1, Normal = 0, Hover, Click };
+        private DrawState drawState = DrawState.Normal;                    // The current state of our control, even if base is currently doing the painting.
+
+        private float buttonColorScaling = 0.0F;
+        private float gradientdirection = 90F;
+        private float buttonDisabledScaling = 0.5F;
 
     }
 }

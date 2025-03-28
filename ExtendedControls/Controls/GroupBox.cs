@@ -27,6 +27,9 @@ namespace ExtendedControls
         public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
         public int TextStartPosition { get; set; } = -1;                // -1 left, +1 right, 0 centre, else pixel start pos
         public int TextPadding { get; set; } = 0;                       // pixels at start/end of text
+        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
+
+        private float gradientdirection = 90F;
 
         public ExtGroupBox() : base()
         {
@@ -40,15 +43,13 @@ namespace ExtendedControls
             {
                 int topline = DisplayRectangle.Y / 2;
 
-                Color colorback = BackColor;
-
-                if (!colorback.IsFullyTransparent())
+                if (!BackColor.IsFullyTransparent())
                 {
-                    Color color2 = (FlatStyle == FlatStyle.Popup) ? colorback.Multiply(BackColorScaling) : BackColor;
+                    Color color2 = (FlatStyle == FlatStyle.Popup) ? BackColor.Multiply(BackColorScaling) : BackColor;
 
                     Rectangle borderrect = ClientRectangle;
 
-                    using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, colorback, color2, 90))
+                    using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, BackColor, color2, GradientDirection))
                         e.Graphics.FillRectangle(b, borderrect);
                 }
 
@@ -109,7 +110,9 @@ namespace ExtendedControls
             ForeColor = t.GroupFore;
             BackColor = t.GroupBack;
             BorderColor = t.GroupBorder;
-            FlatStyle = FlatStyle.Flat;           // always in Flat, always apply our border.
+            FlatStyle = t.GroupBoxGradientAmount < 0 ? FlatStyle.Flat : FlatStyle.Popup;
+            GradientDirection = t.GroupBoxGradientDirection;
+            BackColorScaling = t.GroupBoxGradientAmount;
             return true;
         }
     }

@@ -47,12 +47,26 @@ namespace ExtendedControls
             this.buttonOK = new System.Windows.Forms.Button();
             this.groupBoxColors = new System.Windows.Forms.GroupBox();
             this.label29 = new System.Windows.Forms.Label();
+            this.numericUpDownGBDir = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLBDir = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownCBCS = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownCBTS = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownButDir = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownCBDir = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownGBGA = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLBGA = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownButGA = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownCBGA = new System.Windows.Forms.NumericUpDown();
             this.panel_theme71 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox_ButtonStyle = new System.Windows.Forms.ComboBox();
             this.comboBox_TextBorder = new System.Windows.Forms.ComboBox();
             this.panel_theme19 = new System.Windows.Forms.Panel();
             this.panel_theme18 = new System.Windows.Forms.Panel();
+            this.label40 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
@@ -64,10 +78,8 @@ namespace ExtendedControls
             this.label32 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -79,6 +91,7 @@ namespace ExtendedControls
             this.label30 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel_theme15 = new System.Windows.Forms.Panel();
@@ -123,6 +136,7 @@ namespace ExtendedControls
             this.panel_theme9 = new System.Windows.Forms.Panel();
             this.panel_theme8 = new System.Windows.Forms.Panel();
             this.panel_theme7 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.panel_theme5 = new System.Windows.Forms.Panel();
             this.panel_theme2 = new System.Windows.Forms.Panel();
             this.panel_theme1 = new System.Windows.Forms.Panel();
@@ -134,11 +148,24 @@ namespace ExtendedControls
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label27 = new System.Windows.Forms.Label();
             this.panel_theme72 = new System.Windows.Forms.Panel();
+            this.buttonFontChange = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.checkBoxDarkMode = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonFontChange = new System.Windows.Forms.Button();
+            this.panel_theme90 = new System.Windows.Forms.Panel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
             this.groupBoxColors.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBDir)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBDir)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBCS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBTS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownButDir)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBDir)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBGA)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBGA)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownButGA)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBGA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -146,7 +173,7 @@ namespace ExtendedControls
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(792, 560);
+            this.buttonOK.Location = new System.Drawing.Point(826, 627);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 24);
             this.buttonOK.TabIndex = 0;
@@ -157,12 +184,26 @@ namespace ExtendedControls
             // groupBoxColors
             // 
             this.groupBoxColors.Controls.Add(this.label29);
+            this.groupBoxColors.Controls.Add(this.numericUpDownGBDir);
+            this.groupBoxColors.Controls.Add(this.numericUpDownLBDir);
+            this.groupBoxColors.Controls.Add(this.numericUpDownCBCS);
+            this.groupBoxColors.Controls.Add(this.numericUpDownCBTS);
+            this.groupBoxColors.Controls.Add(this.numericUpDownButDir);
+            this.groupBoxColors.Controls.Add(this.numericUpDownCBDir);
+            this.groupBoxColors.Controls.Add(this.numericUpDownGBGA);
+            this.groupBoxColors.Controls.Add(this.numericUpDownLBGA);
+            this.groupBoxColors.Controls.Add(this.numericUpDownButGA);
+            this.groupBoxColors.Controls.Add(this.numericUpDownCBGA);
             this.groupBoxColors.Controls.Add(this.panel_theme71);
             this.groupBoxColors.Controls.Add(this.label8);
             this.groupBoxColors.Controls.Add(this.comboBox_ButtonStyle);
             this.groupBoxColors.Controls.Add(this.comboBox_TextBorder);
             this.groupBoxColors.Controls.Add(this.panel_theme19);
             this.groupBoxColors.Controls.Add(this.panel_theme18);
+            this.groupBoxColors.Controls.Add(this.label40);
+            this.groupBoxColors.Controls.Add(this.label39);
+            this.groupBoxColors.Controls.Add(this.label36);
+            this.groupBoxColors.Controls.Add(this.label35);
             this.groupBoxColors.Controls.Add(this.label23);
             this.groupBoxColors.Controls.Add(this.label18);
             this.groupBoxColors.Controls.Add(this.label25);
@@ -173,11 +214,11 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.label22);
             this.groupBoxColors.Controls.Add(this.label32);
             this.groupBoxColors.Controls.Add(this.label26);
-            this.groupBoxColors.Controls.Add(this.label28);
             this.groupBoxColors.Controls.Add(this.label21);
+            this.groupBoxColors.Controls.Add(this.label28);
             this.groupBoxColors.Controls.Add(this.label19);
-            this.groupBoxColors.Controls.Add(this.label4);
             this.groupBoxColors.Controls.Add(this.label31);
+            this.groupBoxColors.Controls.Add(this.label4);
             this.groupBoxColors.Controls.Add(this.label15);
             this.groupBoxColors.Controls.Add(this.label7);
             this.groupBoxColors.Controls.Add(this.label6);
@@ -189,6 +230,7 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.label30);
             this.groupBoxColors.Controls.Add(this.label11);
             this.groupBoxColors.Controls.Add(this.label10);
+            this.groupBoxColors.Controls.Add(this.label38);
             this.groupBoxColors.Controls.Add(this.label9);
             this.groupBoxColors.Controls.Add(this.label1);
             this.groupBoxColors.Controls.Add(this.panel_theme15);
@@ -220,6 +262,7 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel1);
             this.groupBoxColors.Controls.Add(this.panel_chart1);
             this.groupBoxColors.Controls.Add(this.panel_theme61);
+            this.groupBoxColors.Controls.Add(this.panel_theme90);
             this.groupBoxColors.Controls.Add(this.panel_theme60);
             this.groupBoxColors.Controls.Add(this.panel_theme70);
             this.groupBoxColors.Controls.Add(this.panel_theme16);
@@ -233,12 +276,13 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel_theme9);
             this.groupBoxColors.Controls.Add(this.panel_theme8);
             this.groupBoxColors.Controls.Add(this.panel_theme7);
+            this.groupBoxColors.Controls.Add(this.panel3);
             this.groupBoxColors.Controls.Add(this.panel_theme5);
             this.groupBoxColors.Controls.Add(this.panel_theme2);
             this.groupBoxColors.Controls.Add(this.panel_theme1);
             this.groupBoxColors.Location = new System.Drawing.Point(3, 12);
             this.groupBoxColors.Name = "groupBoxColors";
-            this.groupBoxColors.Size = new System.Drawing.Size(869, 406);
+            this.groupBoxColors.Size = new System.Drawing.Size(915, 452);
             this.groupBoxColors.TabIndex = 19;
             this.groupBoxColors.TabStop = false;
             this.groupBoxColors.Text = "Colours";
@@ -246,17 +290,200 @@ namespace ExtendedControls
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(563, 231);
+            this.label29.Location = new System.Drawing.Point(627, 335);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(44, 13);
             this.label29.TabIndex = 11;
             this.label29.Text = "S-Panel";
             // 
+            // numericUpDownGBDir
+            // 
+            this.numericUpDownGBDir.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDownGBDir.Location = new System.Drawing.Point(630, 299);
+            this.numericUpDownGBDir.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.numericUpDownGBDir.Name = "numericUpDownGBDir";
+            this.numericUpDownGBDir.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownGBDir.TabIndex = 12;
+            // 
+            // numericUpDownLBDir
+            // 
+            this.numericUpDownLBDir.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDownLBDir.Location = new System.Drawing.Point(450, 299);
+            this.numericUpDownLBDir.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.numericUpDownLBDir.Name = "numericUpDownLBDir";
+            this.numericUpDownLBDir.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownLBDir.TabIndex = 12;
+            // 
+            // numericUpDownCBCS
+            // 
+            this.numericUpDownCBCS.DecimalPlaces = 2;
+            this.numericUpDownCBCS.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownCBCS.Location = new System.Drawing.Point(570, 229);
+            this.numericUpDownCBCS.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownCBCS.Name = "numericUpDownCBCS";
+            this.numericUpDownCBCS.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownCBCS.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.numericUpDownCBCS, "Checkbox colour scaling across its surface");
+            // 
+            // numericUpDownCBTS
+            // 
+            this.numericUpDownCBTS.DecimalPlaces = 2;
+            this.numericUpDownCBTS.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownCBTS.Location = new System.Drawing.Point(570, 194);
+            this.numericUpDownCBTS.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownCBTS.Name = "numericUpDownCBTS";
+            this.numericUpDownCBTS.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownCBTS.TabIndex = 12;
+            // 
+            // numericUpDownButDir
+            // 
+            this.numericUpDownButDir.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDownButDir.Location = new System.Drawing.Point(390, 299);
+            this.numericUpDownButDir.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.numericUpDownButDir.Name = "numericUpDownButDir";
+            this.numericUpDownButDir.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownButDir.TabIndex = 12;
+            // 
+            // numericUpDownCBDir
+            // 
+            this.numericUpDownCBDir.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numericUpDownCBDir.Location = new System.Drawing.Point(570, 299);
+            this.numericUpDownCBDir.Maximum = new decimal(new int[] {
+            360,
+            0,
+            0,
+            0});
+            this.numericUpDownCBDir.Name = "numericUpDownCBDir";
+            this.numericUpDownCBDir.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownCBDir.TabIndex = 12;
+            // 
+            // numericUpDownGBGA
+            // 
+            this.numericUpDownGBGA.DecimalPlaces = 2;
+            this.numericUpDownGBGA.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownGBGA.Location = new System.Drawing.Point(630, 264);
+            this.numericUpDownGBGA.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownGBGA.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownGBGA.Name = "numericUpDownGBGA";
+            this.numericUpDownGBGA.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownGBGA.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.numericUpDownGBGA, "Set negative to disable gradiant");
+            // 
+            // numericUpDownLBGA
+            // 
+            this.numericUpDownLBGA.DecimalPlaces = 2;
+            this.numericUpDownLBGA.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownLBGA.Location = new System.Drawing.Point(450, 264);
+            this.numericUpDownLBGA.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownLBGA.Name = "numericUpDownLBGA";
+            this.numericUpDownLBGA.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownLBGA.TabIndex = 12;
+            // 
+            // numericUpDownButGA
+            // 
+            this.numericUpDownButGA.DecimalPlaces = 2;
+            this.numericUpDownButGA.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownButGA.Location = new System.Drawing.Point(390, 264);
+            this.numericUpDownButGA.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownButGA.Name = "numericUpDownButGA";
+            this.numericUpDownButGA.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownButGA.TabIndex = 12;
+            // 
+            // numericUpDownCBGA
+            // 
+            this.numericUpDownCBGA.DecimalPlaces = 2;
+            this.numericUpDownCBGA.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownCBGA.Location = new System.Drawing.Point(570, 264);
+            this.numericUpDownCBGA.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownCBGA.Name = "numericUpDownCBGA";
+            this.numericUpDownCBGA.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownCBGA.TabIndex = 12;
+            // 
             // panel_theme71
             // 
             this.panel_theme71.AccessibleDescription = "";
             this.panel_theme71.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme71.Location = new System.Drawing.Point(640, 225);
+            this.panel_theme71.Location = new System.Drawing.Point(700, 330);
             this.panel_theme71.Name = "panel_theme71";
             this.panel_theme71.Size = new System.Drawing.Size(28, 28);
             this.panel_theme71.TabIndex = 6;
@@ -279,10 +506,11 @@ namespace ExtendedControls
             "System",
             "Flat",
             "Gradient"});
-            this.comboBox_ButtonStyle.Location = new System.Drawing.Point(403, 374);
+            this.comboBox_ButtonStyle.Location = new System.Drawing.Point(390, 410);
             this.comboBox_ButtonStyle.Name = "comboBox_ButtonStyle";
             this.comboBox_ButtonStyle.Size = new System.Drawing.Size(121, 21);
             this.comboBox_ButtonStyle.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.comboBox_ButtonStyle, "Applies to Button, Checkbox, RadioBox, ComboBox etc");
             this.comboBox_ButtonStyle.SelectionChangeCommitted += new System.EventHandler(this.comboBox_ButtonStyle_SelectionChangeCommitted);
             // 
             // comboBox_TextBorder
@@ -293,17 +521,18 @@ namespace ExtendedControls
             "System",
             "Flat",
             "Gradient"});
-            this.comboBox_TextBorder.Location = new System.Drawing.Point(150, 374);
+            this.comboBox_TextBorder.Location = new System.Drawing.Point(150, 410);
             this.comboBox_TextBorder.Name = "comboBox_TextBorder";
             this.comboBox_TextBorder.Size = new System.Drawing.Size(121, 21);
             this.comboBox_TextBorder.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.comboBox_TextBorder, "Border style to apply to textbox");
             this.comboBox_TextBorder.SelectionChangeCommitted += new System.EventHandler(this.comboBox_TextBorder_SelectionChangeCommitted);
             // 
             // panel_theme19
             // 
             this.panel_theme19.AccessibleDescription = "";
             this.panel_theme19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme19.Location = new System.Drawing.Point(580, 85);
+            this.panel_theme19.Location = new System.Drawing.Point(630, 85);
             this.panel_theme19.Name = "panel_theme19";
             this.panel_theme19.Size = new System.Drawing.Size(28, 28);
             this.panel_theme19.TabIndex = 9;
@@ -313,11 +542,47 @@ namespace ExtendedControls
             // 
             this.panel_theme18.AccessibleDescription = "";
             this.panel_theme18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme18.Location = new System.Drawing.Point(580, 50);
+            this.panel_theme18.Location = new System.Drawing.Point(630, 50);
             this.panel_theme18.Name = "panel_theme18";
             this.panel_theme18.Size = new System.Drawing.Size(28, 28);
             this.panel_theme18.TabIndex = 9;
             this.panel_theme18.Tag = "";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(481, 231);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(75, 13);
+            this.label40.TabIndex = 6;
+            this.label40.Text = "Colour Scaling";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(488, 196);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(62, 13);
+            this.label39.TabIndex = 6;
+            this.label39.Text = "Tick Size %";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(36, 301);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(115, 13);
+            this.label36.TabIndex = 6;
+            this.label36.Text = "Gradient Direction Deg";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(36, 266);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(86, 13);
+            this.label35.TabIndex = 6;
+            this.label35.Text = "Gradient Amount";
             // 
             // label23
             // 
@@ -340,7 +605,7 @@ namespace ExtendedControls
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(659, 196);
+            this.label25.Location = new System.Drawing.Point(709, 196);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(76, 13);
             this.label25.TabIndex = 6;
@@ -349,7 +614,7 @@ namespace ExtendedControls
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(659, 161);
+            this.label24.Location = new System.Drawing.Point(709, 161);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(83, 13);
             this.label24.TabIndex = 6;
@@ -376,7 +641,7 @@ namespace ExtendedControls
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(403, 336);
+            this.label20.Location = new System.Drawing.Point(463, 369);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(80, 13);
             this.label20.TabIndex = 6;
@@ -385,7 +650,7 @@ namespace ExtendedControls
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(563, 336);
+            this.label22.Location = new System.Drawing.Point(627, 369);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(33, 13);
             this.label22.TabIndex = 6;
@@ -394,7 +659,7 @@ namespace ExtendedControls
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(816, 20);
+            this.label32.Location = new System.Drawing.Point(866, 20);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(32, 13);
             this.label32.TabIndex = 6;
@@ -403,7 +668,7 @@ namespace ExtendedControls
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(753, 20);
+            this.label26.Location = new System.Drawing.Point(803, 20);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(49, 13);
             this.label26.TabIndex = 6;
@@ -412,25 +677,16 @@ namespace ExtendedControls
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(563, 301);
+            this.label28.Location = new System.Drawing.Point(493, 126);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(62, 13);
             this.label28.TabIndex = 6;
             this.label28.Text = "Check Tick";
             // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(563, 266);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(55, 13);
-            this.label21.TabIndex = 6;
-            this.label21.Text = "Checkbox";
-            // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(403, 301);
+            this.label19.Location = new System.Drawing.Point(449, 335);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(93, 13);
             this.label19.TabIndex = 6;
@@ -439,25 +695,16 @@ namespace ExtendedControls
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(87, 336);
+            this.label4.Location = new System.Drawing.Point(36, 369);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(48, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Success";
             // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(150, 267);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(109, 13);
-            this.label31.TabIndex = 6;
-            this.label31.Text = "Background Highlight";
-            // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(87, 302);
+            this.label15.Location = new System.Drawing.Point(36, 335);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(48, 13);
             this.label15.TabIndex = 6;
@@ -484,16 +731,16 @@ namespace ExtendedControls
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(573, 20);
+            this.label16.Location = new System.Drawing.Point(623, 20);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(41, 13);
+            this.label16.Size = new System.Drawing.Size(54, 13);
             this.label16.TabIndex = 6;
-            this.label16.Text = "Groups";
+            this.label16.Text = "GroupBox";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(683, 20);
+            this.label5.Location = new System.Drawing.Point(733, 20);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 13);
             this.label5.TabIndex = 6;
@@ -502,7 +749,7 @@ namespace ExtendedControls
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(636, 20);
+            this.label14.Location = new System.Drawing.Point(688, 20);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(29, 13);
             this.label14.TabIndex = 6;
@@ -511,16 +758,16 @@ namespace ExtendedControls
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(503, 20);
+            this.label13.Location = new System.Drawing.Point(563, 20);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(41, 13);
+            this.label13.Size = new System.Drawing.Size(56, 13);
             this.label13.TabIndex = 6;
-            this.label13.Text = "System";
+            this.label13.Text = "CheckBox";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(448, 20);
+            this.label12.Location = new System.Drawing.Point(508, 20);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(34, 13);
             this.label12.TabIndex = 6;
@@ -553,6 +800,15 @@ namespace ExtendedControls
             this.label10.TabIndex = 6;
             this.label10.Text = "Grid Border";
             // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(447, 20);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(41, 13);
+            this.label38.TabIndex = 6;
+            this.label38.Text = "ListBox";
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -575,9 +831,9 @@ namespace ExtendedControls
             // 
             this.panel_theme15.AccessibleDescription = "";
             this.panel_theme15.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme15.Location = new System.Drawing.Point(150, 330);
+            this.panel_theme15.Location = new System.Drawing.Point(150, 365);
             this.panel_theme15.Name = "panel_theme15";
-            this.panel_theme15.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme15.Size = new System.Drawing.Size(28, 29);
             this.panel_theme15.TabIndex = 5;
             this.panel_theme15.Tag = "";
             // 
@@ -595,7 +851,7 @@ namespace ExtendedControls
             // 
             this.panel_theme35.AccessibleDescription = "";
             this.panel_theme35.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme35.Location = new System.Drawing.Point(700, 120);
+            this.panel_theme35.Location = new System.Drawing.Point(750, 120);
             this.panel_theme35.Name = "panel_theme35";
             this.panel_theme35.Size = new System.Drawing.Size(28, 28);
             this.panel_theme35.TabIndex = 5;
@@ -605,7 +861,7 @@ namespace ExtendedControls
             // 
             this.panel_theme33.AccessibleDescription = "";
             this.panel_theme33.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme33.Location = new System.Drawing.Point(580, 120);
+            this.panel_theme33.Location = new System.Drawing.Point(630, 120);
             this.panel_theme33.Name = "panel_theme33";
             this.panel_theme33.Size = new System.Drawing.Size(28, 28);
             this.panel_theme33.TabIndex = 5;
@@ -625,9 +881,9 @@ namespace ExtendedControls
             // 
             this.panel_theme82.AccessibleDescription = "";
             this.panel_theme82.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme82.Location = new System.Drawing.Point(270, 260);
+            this.panel_theme82.Location = new System.Drawing.Point(210, 330);
             this.panel_theme82.Name = "panel_theme82";
-            this.panel_theme82.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme82.Size = new System.Drawing.Size(28, 29);
             this.panel_theme82.TabIndex = 5;
             this.panel_theme82.Tag = "";
             // 
@@ -705,9 +961,9 @@ namespace ExtendedControls
             // 
             this.panel_theme4.AccessibleDescription = "";
             this.panel_theme4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme4.Location = new System.Drawing.Point(150, 295);
+            this.panel_theme4.Location = new System.Drawing.Point(150, 330);
             this.panel_theme4.Name = "panel_theme4";
-            this.panel_theme4.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme4.Size = new System.Drawing.Size(28, 29);
             this.panel_theme4.TabIndex = 5;
             this.panel_theme4.Tag = "";
             // 
@@ -755,9 +1011,9 @@ namespace ExtendedControls
             // 
             this.panel_theme17.AccessibleDescription = "";
             this.panel_theme17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme17.Location = new System.Drawing.Point(640, 330);
+            this.panel_theme17.Location = new System.Drawing.Point(700, 365);
             this.panel_theme17.Name = "panel_theme17";
-            this.panel_theme17.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme17.Size = new System.Drawing.Size(28, 29);
             this.panel_theme17.TabIndex = 5;
             this.panel_theme17.Tag = "";
             // 
@@ -765,7 +1021,7 @@ namespace ExtendedControls
             // 
             this.panel_chart8.AccessibleDescription = "";
             this.panel_chart8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart8.Location = new System.Drawing.Point(820, 295);
+            this.panel_chart8.Location = new System.Drawing.Point(870, 295);
             this.panel_chart8.Name = "panel_chart8";
             this.panel_chart8.Size = new System.Drawing.Size(28, 28);
             this.panel_chart8.TabIndex = 5;
@@ -775,7 +1031,7 @@ namespace ExtendedControls
             // 
             this.panel_chart7.AccessibleDescription = "";
             this.panel_chart7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart7.Location = new System.Drawing.Point(820, 260);
+            this.panel_chart7.Location = new System.Drawing.Point(870, 260);
             this.panel_chart7.Name = "panel_chart7";
             this.panel_chart7.Size = new System.Drawing.Size(28, 28);
             this.panel_chart7.TabIndex = 5;
@@ -785,7 +1041,7 @@ namespace ExtendedControls
             // 
             this.panel_chart6.AccessibleDescription = "";
             this.panel_chart6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart6.Location = new System.Drawing.Point(820, 225);
+            this.panel_chart6.Location = new System.Drawing.Point(870, 225);
             this.panel_chart6.Name = "panel_chart6";
             this.panel_chart6.Size = new System.Drawing.Size(28, 28);
             this.panel_chart6.TabIndex = 5;
@@ -795,7 +1051,7 @@ namespace ExtendedControls
             // 
             this.panel_chart5.AccessibleDescription = "";
             this.panel_chart5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart5.Location = new System.Drawing.Point(820, 190);
+            this.panel_chart5.Location = new System.Drawing.Point(870, 190);
             this.panel_chart5.Name = "panel_chart5";
             this.panel_chart5.Size = new System.Drawing.Size(28, 28);
             this.panel_chart5.TabIndex = 5;
@@ -805,7 +1061,7 @@ namespace ExtendedControls
             // 
             this.panel_chart4.AccessibleDescription = "";
             this.panel_chart4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart4.Location = new System.Drawing.Point(820, 155);
+            this.panel_chart4.Location = new System.Drawing.Point(870, 155);
             this.panel_chart4.Name = "panel_chart4";
             this.panel_chart4.Size = new System.Drawing.Size(28, 28);
             this.panel_chart4.TabIndex = 5;
@@ -815,7 +1071,7 @@ namespace ExtendedControls
             // 
             this.panel_chart3.AccessibleDescription = "";
             this.panel_chart3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart3.Location = new System.Drawing.Point(820, 120);
+            this.panel_chart3.Location = new System.Drawing.Point(870, 120);
             this.panel_chart3.Name = "panel_chart3";
             this.panel_chart3.Size = new System.Drawing.Size(28, 28);
             this.panel_chart3.TabIndex = 5;
@@ -825,7 +1081,7 @@ namespace ExtendedControls
             // 
             this.panel_chart2.AccessibleDescription = "";
             this.panel_chart2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart2.Location = new System.Drawing.Point(820, 85);
+            this.panel_chart2.Location = new System.Drawing.Point(870, 85);
             this.panel_chart2.Name = "panel_chart2";
             this.panel_chart2.Size = new System.Drawing.Size(28, 28);
             this.panel_chart2.TabIndex = 5;
@@ -835,7 +1091,7 @@ namespace ExtendedControls
             // 
             this.panel1.AccessibleDescription = "";
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(820, 85);
+            this.panel1.Location = new System.Drawing.Point(870, 85);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(28, 28);
             this.panel1.TabIndex = 5;
@@ -845,7 +1101,7 @@ namespace ExtendedControls
             // 
             this.panel_chart1.AccessibleDescription = "";
             this.panel_chart1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart1.Location = new System.Drawing.Point(820, 50);
+            this.panel_chart1.Location = new System.Drawing.Point(870, 50);
             this.panel_chart1.Name = "panel_chart1";
             this.panel_chart1.Size = new System.Drawing.Size(28, 28);
             this.panel_chart1.TabIndex = 5;
@@ -855,7 +1111,7 @@ namespace ExtendedControls
             // 
             this.panel_theme61.AccessibleDescription = "";
             this.panel_theme61.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme61.Location = new System.Drawing.Point(760, 120);
+            this.panel_theme61.Location = new System.Drawing.Point(810, 120);
             this.panel_theme61.Name = "panel_theme61";
             this.panel_theme61.Size = new System.Drawing.Size(28, 28);
             this.panel_theme61.TabIndex = 5;
@@ -865,7 +1121,7 @@ namespace ExtendedControls
             // 
             this.panel_theme60.AccessibleDescription = "";
             this.panel_theme60.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme60.Location = new System.Drawing.Point(760, 50);
+            this.panel_theme60.Location = new System.Drawing.Point(810, 50);
             this.panel_theme60.Name = "panel_theme60";
             this.panel_theme60.Size = new System.Drawing.Size(28, 28);
             this.panel_theme60.TabIndex = 5;
@@ -875,7 +1131,7 @@ namespace ExtendedControls
             // 
             this.panel_theme70.AccessibleDescription = "";
             this.panel_theme70.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme70.Location = new System.Drawing.Point(640, 295);
+            this.panel_theme70.Location = new System.Drawing.Point(570, 120);
             this.panel_theme70.Name = "panel_theme70";
             this.panel_theme70.Size = new System.Drawing.Size(28, 28);
             this.panel_theme70.TabIndex = 5;
@@ -885,7 +1141,7 @@ namespace ExtendedControls
             // 
             this.panel_theme16.AccessibleDescription = "";
             this.panel_theme16.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme16.Location = new System.Drawing.Point(640, 260);
+            this.panel_theme16.Location = new System.Drawing.Point(570, 50);
             this.panel_theme16.Name = "panel_theme16";
             this.panel_theme16.Size = new System.Drawing.Size(28, 28);
             this.panel_theme16.TabIndex = 5;
@@ -895,9 +1151,9 @@ namespace ExtendedControls
             // 
             this.panel_theme14.AccessibleDescription = "";
             this.panel_theme14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme14.Location = new System.Drawing.Point(510, 330);
+            this.panel_theme14.Location = new System.Drawing.Point(570, 365);
             this.panel_theme14.Name = "panel_theme14";
-            this.panel_theme14.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme14.Size = new System.Drawing.Size(28, 29);
             this.panel_theme14.TabIndex = 5;
             this.panel_theme14.Tag = "";
             // 
@@ -905,9 +1161,9 @@ namespace ExtendedControls
             // 
             this.panel_theme13.AccessibleDescription = "";
             this.panel_theme13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme13.Location = new System.Drawing.Point(510, 295);
+            this.panel_theme13.Location = new System.Drawing.Point(570, 330);
             this.panel_theme13.Name = "panel_theme13";
-            this.panel_theme13.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme13.Size = new System.Drawing.Size(28, 29);
             this.panel_theme13.TabIndex = 5;
             this.panel_theme13.Tag = "";
             // 
@@ -915,7 +1171,7 @@ namespace ExtendedControls
             // 
             this.panel_theme51.AccessibleDescription = "";
             this.panel_theme51.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme51.Location = new System.Drawing.Point(760, 190);
+            this.panel_theme51.Location = new System.Drawing.Point(810, 190);
             this.panel_theme51.Name = "panel_theme51";
             this.panel_theme51.Size = new System.Drawing.Size(28, 28);
             this.panel_theme51.TabIndex = 5;
@@ -925,7 +1181,7 @@ namespace ExtendedControls
             // 
             this.panel_theme50.AccessibleDescription = "";
             this.panel_theme50.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme50.Location = new System.Drawing.Point(760, 155);
+            this.panel_theme50.Location = new System.Drawing.Point(810, 155);
             this.panel_theme50.Name = "panel_theme50";
             this.panel_theme50.Size = new System.Drawing.Size(28, 28);
             this.panel_theme50.TabIndex = 5;
@@ -935,7 +1191,7 @@ namespace ExtendedControls
             // 
             this.panel_theme12.AccessibleDescription = "";
             this.panel_theme12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme12.Location = new System.Drawing.Point(450, 85);
+            this.panel_theme12.Location = new System.Drawing.Point(510, 85);
             this.panel_theme12.Name = "panel_theme12";
             this.panel_theme12.Size = new System.Drawing.Size(28, 28);
             this.panel_theme12.TabIndex = 5;
@@ -945,7 +1201,7 @@ namespace ExtendedControls
             // 
             this.panel_theme11.AccessibleDescription = "";
             this.panel_theme11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme11.Location = new System.Drawing.Point(450, 50);
+            this.panel_theme11.Location = new System.Drawing.Point(510, 50);
             this.panel_theme11.Name = "panel_theme11";
             this.panel_theme11.Size = new System.Drawing.Size(28, 28);
             this.panel_theme11.TabIndex = 5;
@@ -990,6 +1246,16 @@ namespace ExtendedControls
             this.panel_theme7.Size = new System.Drawing.Size(28, 28);
             this.panel_theme7.TabIndex = 5;
             this.panel_theme7.Tag = "";
+            // 
+            // panel3
+            // 
+            this.panel3.AccessibleDescription = "";
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Location = new System.Drawing.Point(450, 50);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(28, 28);
+            this.panel3.TabIndex = 5;
+            this.panel3.Tag = "";
             // 
             // panel_theme5
             // 
@@ -1070,9 +1336,9 @@ namespace ExtendedControls
             this.groupBox1.Controls.Add(this.label_opacity);
             this.groupBox1.Controls.Add(this.trackBar_theme_opacity);
             this.groupBox1.Controls.Add(this.textBox_Font);
-            this.groupBox1.Location = new System.Drawing.Point(3, 424);
+            this.groupBox1.Location = new System.Drawing.Point(3, 470);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(869, 114);
+            this.groupBox1.Size = new System.Drawing.Size(915, 114);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Other Controls";
@@ -1096,6 +1362,17 @@ namespace ExtendedControls
             this.panel_theme72.TabIndex = 6;
             this.panel_theme72.Tag = "";
             // 
+            // buttonFontChange
+            // 
+            this.buttonFontChange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFontChange.Location = new System.Drawing.Point(399, 27);
+            this.buttonFontChange.Name = "buttonFontChange";
+            this.buttonFontChange.Size = new System.Drawing.Size(80, 24);
+            this.buttonFontChange.TabIndex = 0;
+            this.buttonFontChange.Text = "Change";
+            this.buttonFontChange.UseVisualStyleBackColor = true;
+            this.buttonFontChange.Click += new System.EventHandler(this.buttonFontChange_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -1109,7 +1386,7 @@ namespace ExtendedControls
             // 
             this.checkBoxDarkMode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxDarkMode.AutoSize = true;
-            this.checkBoxDarkMode.Location = new System.Drawing.Point(27, 561);
+            this.checkBoxDarkMode.Location = new System.Drawing.Point(27, 628);
             this.checkBoxDarkMode.Name = "checkBoxDarkMode";
             this.checkBoxDarkMode.Size = new System.Drawing.Size(110, 17);
             this.checkBoxDarkMode.TabIndex = 21;
@@ -1120,7 +1397,7 @@ namespace ExtendedControls
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(703, 560);
+            this.buttonCancel.Location = new System.Drawing.Point(737, 627);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(80, 24);
             this.buttonCancel.TabIndex = 0;
@@ -1128,22 +1405,41 @@ namespace ExtendedControls
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // buttonFontChange
+            // panel_theme90
             // 
-            this.buttonFontChange.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonFontChange.Location = new System.Drawing.Point(478, 28);
-            this.buttonFontChange.Name = "buttonFontChange";
-            this.buttonFontChange.Size = new System.Drawing.Size(80, 24);
-            this.buttonFontChange.TabIndex = 0;
-            this.buttonFontChange.Text = "Change";
-            this.buttonFontChange.UseVisualStyleBackColor = true;
-            this.buttonFontChange.Click += new System.EventHandler(this.buttonFontChange_Click);
+            this.panel_theme90.AccessibleDescription = "";
+            this.panel_theme90.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_theme90.Location = new System.Drawing.Point(570, 155);
+            this.panel_theme90.Name = "panel_theme90";
+            this.panel_theme90.Size = new System.Drawing.Size(28, 28);
+            this.panel_theme90.TabIndex = 5;
+            this.panel_theme90.Tag = "";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label21.Location = new System.Drawing.Point(493, 161);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(62, 13);
+            this.label21.TabIndex = 6;
+            this.label21.Text = "Button Tick";
+            this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(36, 413);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(34, 13);
+            this.label31.TabIndex = 6;
+            this.label31.Text = "Mode";
             // 
             // ThemeEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(889, 597);
+            this.ClientSize = new System.Drawing.Size(923, 664);
             this.Controls.Add(this.checkBoxDarkMode);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxColors);
@@ -1156,6 +1452,16 @@ namespace ExtendedControls
             this.Text = "Edit Theme";
             this.groupBoxColors.ResumeLayout(false);
             this.groupBoxColors.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBDir)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBDir)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBCS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBTS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownButDir)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBDir)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBGA)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBGA)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownButGA)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBGA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1173,7 +1479,6 @@ namespace ExtendedControls
         private System.Windows.Forms.TextBox textBox_Font;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label8;
@@ -1246,7 +1551,6 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_theme81;
         private System.Windows.Forms.Panel panel_theme80;
         private System.Windows.Forms.Panel panel_theme82;
-        private System.Windows.Forms.Label label31;
         private System.Windows.Forms.CheckBox checkBoxDarkMode;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label label32;
@@ -1260,5 +1564,24 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_chart1;
         private System.Windows.Forms.Button buttonFontChange;
+        private System.Windows.Forms.NumericUpDown numericUpDownCBGA;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.NumericUpDown numericUpDownCBDir;
+        private System.Windows.Forms.NumericUpDown numericUpDownButDir;
+        private System.Windows.Forms.NumericUpDown numericUpDownButGA;
+        private System.Windows.Forms.NumericUpDown numericUpDownGBDir;
+        private System.Windows.Forms.NumericUpDown numericUpDownLBDir;
+        private System.Windows.Forms.NumericUpDown numericUpDownGBGA;
+        private System.Windows.Forms.NumericUpDown numericUpDownLBGA;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.NumericUpDown numericUpDownCBTS;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.NumericUpDown numericUpDownCBCS;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Panel panel_theme90;
+        private System.Windows.Forms.Label label31;
     }
 }

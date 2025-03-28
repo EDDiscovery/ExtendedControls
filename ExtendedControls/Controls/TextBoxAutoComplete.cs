@@ -33,14 +33,19 @@ namespace ExtendedControls
         // unless done by this one
         public string TextChangedEvent { get { return base.Text; } set { base.Text = value; } }
         public int AutoCompleteTimeout { get { return waitforautotimer.Interval; } set { waitforautotimer.Interval = value; } }
-        public Color DropDownBackgroundColor { get; set; } = Color.Gray;
+
+        // drop down selection box
+        public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
+        public Color DropDownSliderColor { get; set; } = Color.Green;
+        public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
         public Color DropDownBorderColor { get; set; } = Color.Green;
-        public Color DropDownScrollBarColor { get; set; } = Color.LightGray;
-        public Color DropDownScrollBarButtonColor { get; set; } = Color.LightGray;
-        public Color DropDownMouseOverBackgroundColor { get; set; } = Color.Red;
+        public Color DropDownSliderButtonColor { get; set; } = Color.Blue;
+        public Color MouseOverDropDownSliderButtonColor { get; set; } = Color.Red;
+        public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
+
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 
-        public bool InDropDown { get { return cbdropdown != null; } }
+        public bool InDropDown { get { return dropdown != null; } }
 
         // use EndButtonEnable to turn on autocompleter button
 
@@ -67,7 +72,7 @@ namespace ExtendedControls
 
             EndButtonClick = (s) =>                            // this is the default action if the user turns on the drop down button in text box
             {
-                if ( cbdropdown == null )                           // if off, clear field and autocomplete nothing
+                if ( dropdown == null )                           // if off, clear field and autocomplete nothing
                 {
                     Text = "";
                     AutoComplete("");
@@ -96,12 +101,12 @@ namespace ExtendedControls
                 waitforautotimer.Stop();
             }
 
-            if (cbdropdown != null)
+            if (dropdown != null)
             {
                 //System.Diagnostics.Debug.WriteLine($".. drop down close");
-                cbdropdown.Close();
-                cbdropdown.Dispose();
-                cbdropdown = null;
+                dropdown.Close();
+                dropdown.Dispose();
+                dropdown = null;
                 Invalidate(true);
             }
 
@@ -195,44 +200,50 @@ namespace ExtendedControls
 
             if (count > 0 && !ignoreautocomplete)
             {
-                if (cbdropdown != null && (autocompletelastcount < count || autocompletelastcount > count + 5))
+                if (dropdown != null && (autocompletelastcount < count || autocompletelastcount > count + 5))
                 {                               // close if the counts are wildly different
-                    cbdropdown.Close();
-                    cbdropdown.Dispose();
-                    cbdropdown = null;
+                    dropdown.Close();
+                    dropdown.Dispose();
+                    dropdown = null;
                 }
 
-                if (cbdropdown == null)
+                if (dropdown == null)
                 {
-                    cbdropdown = new ExtListBoxForm("", false);
+                    dropdown = new ExtListBoxForm("", false);
 
-                    cbdropdown.SelectionBackColor = this.DropDownBackgroundColor;
-                    cbdropdown.ForeColor = this.ForeColor;
-                    cbdropdown.BackColor = this.DropDownBorderColor;
-                    cbdropdown.BorderColor = this.DropDownBorderColor;
-                    cbdropdown.Items = autocompletestrings.ToList();
-                    cbdropdown.SelectedIndex = 0;
-                    cbdropdown.FlatStyle = this.FlatStyle;
-                    cbdropdown.Font = this.Font;
-                    cbdropdown.ScrollBarColor = this.DropDownScrollBarColor;
-                    cbdropdown.ScrollBarButtonColor = this.DropDownScrollBarButtonColor;
-                    cbdropdown.MouseOverBackgroundColor = this.DropDownMouseOverBackgroundColor;
-                    cbdropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
-                    cbdropdown.PositionBelow(this);
+                    dropdown.ListBox.BackColor = BackColor;
+                    dropdown.ListBox.ForeColor = ForeColor;
+                    dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
+                    dropdown.ListBox.BorderColor = this.BorderColor;
+                    dropdown.ListBox.ScrollBar.BackColor = dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
+                    dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
+                    dropdown.ListBox.ScrollBar.ThumbBorderColor = dropdown.ListBox.ScrollBar.ArrowBorderColor =
+                                                                    dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
+                    dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
+                    dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.MouseOverDropDownSliderButtonColor;
+                    dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
+
+
+                    dropdown.Items = autocompletestrings.ToList();
+                    dropdown.SelectedIndex = 0;
+                    dropdown.FlatStyle = this.FlatStyle;
+                    dropdown.Font = this.Font;
+                    dropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
+                    dropdown.PositionBelow(this);
                     EndButtonImage = Properties.Resources.ArrowUp;
-                    cbdropdown.Show(FindForm());
+                    dropdown.Show(FindForm());
                     Focus();                // Major change.. we now keep the focus at all times
 
                     if (Environment.OSVersion.Platform != PlatformID.Win32NT)
                     {
-                        cbdropdown.Activated += cbdropdown_Activated;
+                        dropdown.Activated += cbdropdown_Activated;
                     }
                 }
                 else
                 {
-                    cbdropdown.Items.Clear();
-                    cbdropdown.Items = autocompletestrings.ToList();
-                    cbdropdown.Refresh();
+                    dropdown.Items.Clear();
+                    dropdown.Items = autocompletestrings.ToList();
+                    dropdown.Refresh();
                 }
 
                 autocompletelastcount = count;
@@ -252,10 +263,10 @@ namespace ExtendedControls
 
         private void cbdropdown_SelectedIndexChanged(object sender, EventArgs e, bool key)
         {
-            int selectedindex = cbdropdown.SelectedIndex;
-            if (selectedindex >= 0 && selectedindex < cbdropdown.Items.Count)
+            int selectedindex = dropdown.SelectedIndex;
+            if (selectedindex >= 0 && selectedindex < dropdown.Items.Count)
             {
-                string txt = cbdropdown.Items[selectedindex];
+                string txt = dropdown.Items[selectedindex];
 
                 if ( AutoCompleteCommentMarker != null )        // comment marker removes text after it
                 {
@@ -293,13 +304,13 @@ namespace ExtendedControls
         {
             //System.Diagnostics.Debug.WriteLine($"AC Key down Keypress {e.KeyCode}");
 
-            if (cbdropdown != null)        // pass certain keys to the shown drop down
+            if (dropdown != null)        // pass certain keys to the shown drop down
             {
                 //System.Diagnostics.Debug.WriteLine("{0} {1} hit with drop down", Environment.TickCount % 10000, e.KeyCode);
 
                 if (e.KeyCode == Keys.Down || e.KeyCode == Keys.Up || e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
                 {
-                    cbdropdown.KeyDownAction(e);
+                    dropdown.KeyDownAction(e);
                     e.Handled = true;
                 }
                 else if (e.KeyCode == Keys.Escape)
@@ -328,7 +339,7 @@ namespace ExtendedControls
         private bool restartautocomplete = false;
         private System.Threading.Thread ThreadAutoComplete;
         private SortedSet<string> autocompletestrings = null;
-        ExtListBoxForm cbdropdown;
+        ExtListBoxForm dropdown;
         int autocompletelastcount = 0;
         private bool tempdisableauto = false;
         private PerformAutoComplete autoCompleteFunction = null;

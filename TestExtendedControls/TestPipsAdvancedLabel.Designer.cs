@@ -103,7 +103,7 @@
             this.extButtonDrawn1.MouseSelectedColor = System.Drawing.Color.Green;
             this.extButtonDrawn1.MouseSelectedColorEnable = true;
             this.extButtonDrawn1.Name = "extButtonDrawn1";
-            this.extButtonDrawn1.PanelDisabledScaling = 0.25F;
+            this.extButtonDrawn1.ButtonDisabledScaling = 0.25F;
             this.extButtonDrawn1.Selectable = true;
             this.extButtonDrawn1.Size = new System.Drawing.Size(85, 47);
             this.extButtonDrawn1.TabIndex = 1;

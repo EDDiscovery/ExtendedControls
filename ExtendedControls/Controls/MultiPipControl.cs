@@ -154,7 +154,7 @@ namespace ExtendedControls
         {
             ForeColor = t.ButtonTextColor;
             PipColor = t.ButtonTextColor;
-            HalfPipColor = t.ButtonTextColor.MultiplyBrightness(0.6f);
+            HalfPipColor = t.ButtonTextColor.Multiply(0.6F);
             BorderColor = t.GridBorderLines;
             return false;
         }
@@ -163,7 +163,7 @@ namespace ExtendedControls
         private int pipmax = 8;
         private int pipsperclick = 2;
         private Color pipcolor = Color.Orange;
-        private Color halfpipcolor = Color.Orange.Multiply(0.75f);
+        private Color halfpipcolor = Color.DarkOrange;
         private Color bordercolor = Color.Orange;
         private int borderwidth = 2;
         private int interspacegap = 1;
