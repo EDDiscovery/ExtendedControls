@@ -833,16 +833,16 @@ namespace ExtendedControls
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(41, 26);
             this.label30.TabIndex = 6;
-            this.label30.Text = "Alt Grid\r\nText";
+            this.label30.Text = "Alt Grid\r\n Text";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(273, 20);
+            this.label11.Location = new System.Drawing.Point(260, 20);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(26, 13);
+            this.label11.Size = new System.Drawing.Size(50, 13);
             this.label11.TabIndex = 6;
-            this.label11.Text = "Grid";
+            this.label11.Text = "Grid Text";
             // 
             // label10
             // 
