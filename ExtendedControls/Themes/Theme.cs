@@ -116,14 +116,17 @@ namespace ExtendedControls
         public Color TextBlockScrollButton { get; set; } = SystemColors.Control;
 
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox" })]
-        public Color CheckBox { get; set; } = SystemColors.MenuText;
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox" })]     // Fore colour of text
+        public Color CheckBoxText { get; set; } = SystemColors.MenuText;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_back" })]     // Back colour
+        public Color CheckBoxBack { get; set; } = Color.Transparent;            // new! normalised back
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_tick" })]
         public Color CheckBoxTick { get; set; } = SystemColors.MenuHighlight;
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_buttontick" })]
-        public Color CheckBoxButtonTick { get; set; } = Color.Transparent;
+        public Color CheckBoxButtonTickedBack { get; set; } = Color.Transparent;
 
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "menu_back" })]
@@ -258,8 +261,8 @@ namespace ExtendedControls
         public float ButtonGradientDirection { get; set; } = 90F;
         public float ButtonGradientAmount { get; set; } = 0.5F;
         public float CheckBoxGradientDirection { get; set; } = 225F;
-        public float CheckBoxGradientAmount { get; set; } = 0.5F;
-        public float CheckBoxInnerScaling { get; set; } = 0.5F;     // colour difference in checkbox inner area
+        public float CheckBoxButtonStyleGradientAmount { get; set; } = 0.5F;
+        public float CheckBoxTickStyleInnerScaling { get; set; } = 0.5F;     // colour difference in checkbox inner area
         public float CheckBoxTickSize { get; set; } = 0.75F;
         public float ListBoxGradientDirection { get; set; } = 90F;
         public float ListBoxGradientAmount { get; set; } = 0.5F;
@@ -305,7 +308,7 @@ namespace ExtendedControls
             KnownSystemColor = travelgridvisited; UnknownSystemColor = travelgridnonvisited;
             TextBackColor = textboxback; TextBlockColor = textboxfore; TextBlockHighlightColor = textboxhighlight; TextBlockSuccessColor = textboxsuccess; TextBlockBorderColor = textboxborder;
             TextBlockSliderBack = textboxsliderback; TextBlockScrollArrow = textboxscrollarrow; TextBlockScrollButton = textboxscrollbutton;
-            CheckBox = checkboxfore; CheckBoxTick = checkboxtick; CheckBoxButtonTick = checkboxbuttontick;
+            CheckBoxText = CheckBoxBack = checkboxfore; CheckBoxTick = checkboxtick; CheckBoxButtonTickedBack = checkboxbuttontick;
             MenuBack = menuback; MenuFore = menufore; ToolStripDropdownBack = menudropbackback; ToolStripDropdownFore = menudropdownfore;
             LabelColor = label;
             GroupBack = groupboxback; GroupFore = groupboxtext; GroupBorder = groupboxlines;
@@ -582,7 +585,7 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    wchb.ForeColor = CheckBox;
+                    wchb.ForeColor = CheckBoxText;
                 }
 
             }
@@ -701,8 +704,10 @@ namespace ExtendedControls
 
         public void CheckForMissingValues()
         {
-            if (CheckBoxButtonTick == Color.Transparent)
-                CheckBoxButtonTick = CheckBoxTick;
+            if (CheckBoxButtonTickedBack == Color.Transparent)
+                CheckBoxButtonTickedBack = CheckBoxTick;
+            if (CheckBoxBack == Color.Transparent)      // new march 25 synced to "checkbox"
+                CheckBoxBack = CheckBoxText;
         }
 
         public bool LoadFile(string pathname, string usethisname = null)
@@ -722,9 +727,9 @@ namespace ExtendedControls
             return FileHelpers.TryWriteToFile(pathname, ToJSON().ToString(true));
         }
 
-        private static string DefaultFont = "Microsoft Sans Serif";
-        private static float DefaultFontSize = 8.25F;
-        private static float minFontSize = 4;
+        private const string DefaultFont = "Microsoft Sans Serif";
+        private const float DefaultFontSize = 8.25F;
+        private const float minFontSize = 4;
     }
 
     // Controls which can theme implement this

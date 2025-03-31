@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2021 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -10,8 +10,6 @@
  * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
  * ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- * 
- *
  */
 
 using System;
@@ -46,47 +44,72 @@ namespace ExtendedControls
             var tp = typeof(Theme).GetProperties(System.Reflection.BindingFlags.Public| System.Reflection.BindingFlags.Instance);
             Dictionary<string, PropertyInfo> np = tp.ToDictionary(k => k.Name, v => v);
 
-            InitColourPatch(panel_theme1, "Form Back Colour", np[nameof(Theme.Form)]);                  // using tag, and tool tips, hook up patches to enum
-            InitColourPatch(panel_theme2, "Text box Back Colour", np[nameof(Theme.TextBackColor)]);
-            InitColourPatch(panel_theme3, "Text box Text Colour", np[nameof(Theme.TextBlockColor)]);
-            InitColourPatch(panel_theme4, "Text box Highlight Colour", np[nameof(Theme.TextBlockHighlightColor)]);
-            InitColourPatch(panel_theme15, "Text box Success Colour", np[nameof(Theme.TextBlockSuccessColor)]);
-            InitColourPatch(panel_theme5, "Button Back Colour", np[nameof(Theme.ButtonBackColor)]);
-            InitColourPatch(panel_theme6, "Button Text Colour", np[nameof(Theme.ButtonTextColor)]);
-            InitColourPatch(panel_theme7, "Grid Border Back Colour", np[nameof(Theme.GridBorderBack)]);
-            InitColourPatch(panel_theme8, "Grid Border Text Colour", np[nameof(Theme.GridBorderText)]);
-            InitColourPatch(panel_theme9, "Grid Cell Back Colour", np[nameof(Theme.GridCellBack)]);
-            InitColourPatch(panel_theme10, "Grid Cell Text Colour", np[nameof(Theme.GridCellText)]);
-            InitColourPatch(panel_theme11, "Menu Back Colour", np[nameof(Theme.MenuBack)]);
-            InitColourPatch(panel_theme12, "Menu Text Colour", np[nameof(Theme.MenuFore)]);
-            InitColourPatch(panel_theme13, "Visited system without known position", np[nameof(Theme.KnownSystemColor)]);
-            InitColourPatch(panel_theme14, "Visited system with coordinates", np[nameof(Theme.UnknownSystemColor)]);
-            InitColourPatch(panel_theme16, "Check Box Text Colour", np[nameof(Theme.CheckBox)]);
-            InitColourPatch(panel_theme17, "Label Text Colour", np[nameof(Theme.LabelColor)]);
-            InitColourPatch(panel_theme18, "Group box Back Colour", np[nameof(Theme.GroupBack)]);
-            InitColourPatch(panel_theme19, "Group box Text Colour", np[nameof(Theme.GroupFore)]);
-            InitColourPatch(panel_theme30, "Text Box Border Colour", np[nameof(Theme.TextBlockBorderColor)]);
-            InitColourPatch(panel_theme31, "Button Border Colour", np[nameof(Theme.ButtonBorderColor)]);
-            InitColourPatch(panel_theme32, "Grid Border Line Colour", np[nameof(Theme.GridBorderLines)]);
-            InitColourPatch(panel_theme33, "Group box Border Line Colour", np[nameof(Theme.GroupBorder)]);
-            InitColourPatch(panel_theme35, "Tab Control Border Line Colour", np[nameof(Theme.TabcontrolBorder)]);
-            InitColourPatch(panel_theme40, "Text Box Scroll Bar Slider Colour", np[nameof(Theme.TextBlockSliderBack)]);
-            InitColourPatch(panel_theme41, "Text Box Scroll Bar Arrow Colour", np[nameof(Theme.TextBlockScrollArrow)]);
-            InitColourPatch(panel_theme42, "Text Box Scroll Bar Button Colour", np[nameof(Theme.TextBlockScrollButton)]);
-            InitColourPatch(panel_theme43, "Grid Scroll Bar Slider Colour", np[nameof(Theme.GridSliderBack)]);
-            InitColourPatch(panel_theme44, "Grid Scroll Bar Arrow Colour", np[nameof(Theme.GridScrollArrow)]);
-            InitColourPatch(panel_theme45, "Grid Scroll Bar Button Colour", np[nameof(Theme.GridScrollButton)]);
-            InitColourPatch(panel_theme50, "Menu Dropdown Back Colour", np[nameof(Theme.ToolStripDropdownBack)]);
-            InitColourPatch(panel_theme51, "Menu Dropdown Text Colour", np[nameof(Theme.ToolStripDropdownFore)]);
-            InitColourPatch(panel_theme60, "Tool Strip Back Colour", np[nameof(Theme.ToolstripBack)]);
-            InitColourPatch(panel_theme61, "Tool Strip Border Colour", np[nameof(Theme.ToolstripBorder)]);
-            InitColourPatch(panel_theme70, "Check Box Tick Color", np[nameof(Theme.CheckBoxTick)]);
-            InitColourPatch(panel_theme71, "S-Panel Text Colour", np[nameof(Theme.SPanelColor)]);
-            InitColourPatch(panel_theme72, "Transparent Colour Key", np[nameof(Theme.TransparentColorKey)]);
-            InitColourPatch(panel_theme80, "Grid Cell Alt Back Colour", np[nameof(Theme.GridCellAltBack)]);
-            InitColourPatch(panel_theme81, "Grid Cell Alt Text Colour", np[nameof(Theme.GridCellAltText)]);
-            InitColourPatch(panel_theme82, "Grid Highlight Back Colour", np[nameof(Theme.GridHighlightBack)]);
-            InitColourPatch(panel_theme90, "Check Button Tick Color", np[nameof(Theme.CheckBoxButtonTick)]);
+            InitColourPatch(panel_themeForm, "Form Back Colour", np[nameof(Theme.Form)]);                  // using tag, and tool tips, hook up patches to enum
+
+            InitColourPatch(panel_themeTBBack, "Text box Back Colour", np[nameof(Theme.TextBackColor)]);
+            InitColourPatch(panel_themeTBFore, "Text box Text Colour", np[nameof(Theme.TextBlockColor)]);
+            InitColourPatch(panel_themeTBHighlight, "Text box Highlight Colour", np[nameof(Theme.TextBlockHighlightColor)]);
+            InitColourPatch(panel_themeTBSucess, "Text box Success Colour", np[nameof(Theme.TextBlockSuccessColor)]);
+            InitColourPatch(panel_themeTBBorder, "Text Box Border Colour", np[nameof(Theme.TextBlockBorderColor)]);
+            InitColourPatch(panel_themeTBScrollSlider, "Text Box Scroll Bar Slider Colour", np[nameof(Theme.TextBlockSliderBack)]);
+            InitColourPatch(panel_themeTBScrollArrow, "Text Box Scroll Bar Arrow Colour", np[nameof(Theme.TextBlockScrollArrow)]);
+            InitColourPatch(panel_themeTBScrollButton, "Text Box Scroll Bar Button Colour", np[nameof(Theme.TextBlockScrollButton)]);
+
+            InitColourPatch(panel_themeGridBack, "Grid Border Back Colour", np[nameof(Theme.GridBorderBack)]);
+            InitColourPatch(panel_themeGridFore, "Grid Border Text Colour", np[nameof(Theme.GridBorderText)]);
+            InitColourPatch(panel_themeGridBorderBorder, "Grid Border Line Colour", np[nameof(Theme.GridBorderLines)]);
+            InitColourPatch(panel_themeGridScrollSlider, "Grid Scroll Bar Slider Colour", np[nameof(Theme.GridSliderBack)]);
+            InitColourPatch(panel_themeGridScollArrow, "Grid Scroll Bar Arrow Colour", np[nameof(Theme.GridScrollArrow)]);
+            InitColourPatch(panel_themeGridScrollButton, "Grid Scroll Bar Button Colour", np[nameof(Theme.GridScrollButton)]);
+            InitColourPatch(panel_themeGridHighlightBack, "Grid Highlight Back Colour", np[nameof(Theme.GridHighlightBack)]);
+
+            InitColourPatch(panel_themeGridCellBack, "Grid Cell Back Colour", np[nameof(Theme.GridCellBack)]);
+            InitColourPatch(panel_themeGridCellFore, "Grid Cell Text Colour", np[nameof(Theme.GridCellText)]);
+
+            InitColourPatch(panel_themeGridAltBack, "Grid Cell Alt Back Colour", np[nameof(Theme.GridCellAltBack)]);
+            InitColourPatch(panel_themeGridAltFore, "Grid Cell Alt Text Colour", np[nameof(Theme.GridCellAltText)]);
+
+            InitColourPatch(panel_themeUnknown, "Visited system without known position", np[nameof(Theme.KnownSystemColor)]);
+            InitColourPatch(panel_themeKnown, "Visited system with coordinates", np[nameof(Theme.UnknownSystemColor)]);
+
+            InitColourPatch(panel_themeButtonBack, "Button Back Colour", np[nameof(Theme.ButtonBackColor)]);
+            InitColourPatch(panel_themeButtonFore, "Button Text Colour", np[nameof(Theme.ButtonTextColor)]);
+            InitColourPatch(panel_themeButtonBorder, "Button Border Colour", np[nameof(Theme.ButtonBorderColor)]);
+            InitFloat(numericUpDownButGA, "Button Gradient Amount", np[nameof(Theme.ButtonGradientAmount)]);
+            InitFloat(numericUpDownButDir, "Button Gradient Direction in degrees", np[nameof(Theme.ButtonGradientDirection)]);
+
+            InitFloat(numericUpDownLBGA, "List Box Gradient Amount", np[nameof(Theme.ListBoxGradientAmount)]);
+            InitFloat(numericUpDownLBDir, "List Box Gradient Direction in degrees", np[nameof(Theme.ListBoxGradientDirection)]);
+
+            InitColourPatch(panel_themeMenuBack, "Menu Back Colour", np[nameof(Theme.MenuBack)]);
+            InitColourPatch(panel_themeMenuFore, "Menu Text Colour", np[nameof(Theme.MenuFore)]);
+
+            InitColourPatch(panel_themeCheckBoxBack, "Check Box Back Colour", np[nameof(Theme.CheckBoxBack)]);
+            InitColourPatch(panel_themeCheckBoxText, "Check Box Text Colour", np[nameof(Theme.CheckBoxText)]);
+            InitColourPatch(panel_themeCheckBoxTick, "Check Box Tick Color", np[nameof(Theme.CheckBoxTick)]);
+            InitColourPatch(panel_themeCheckBoxButtonApp, "Check Button Syle Back Colour when Ticked", np[nameof(Theme.CheckBoxButtonTickedBack)]);
+            InitFloat(numericUpDownCBButtonStyleGradient, "Check Box Button Style Gradient Amount", np[nameof(Theme.CheckBoxButtonStyleGradientAmount)]);
+            InitFloat(numericUpDownCBTickStyleTickSize, "Check Box Tick Size as a proportion of the check box", np[nameof(Theme.CheckBoxTickSize)]);
+            InitFloat(numericUpDownCBInnerScaling, "Check Box Tick Style Gradient Amount", np[nameof(Theme.CheckBoxTickStyleInnerScaling)]);
+            InitFloat(numericUpDownCBGradiantDir, "Check Box all styles Gradient Direction in degrees", np[nameof(Theme.CheckBoxGradientDirection)]);
+
+            InitColourPatch(panel_themeGBBack, "Group box Back Colour", np[nameof(Theme.GroupBack)]);
+            InitColourPatch(panel_themeGBFore, "Group box Text Colour", np[nameof(Theme.GroupFore)]);
+            InitColourPatch(panel_themeGBBorder, "Group box Border Line Colour", np[nameof(Theme.GroupBorder)]);
+            InitFloat(numericUpDownGBGA, "Group Box Gradient Amount", np[nameof(Theme.GroupBoxGradientAmount)]);
+            InitFloat(numericUpDownGBDir, "Group Box Gradient Direction in degrees", np[nameof(Theme.GroupBoxGradientDirection)]);
+
+            InitColourPatch(panel_themeSPanel, "S-Panel Text Colour", np[nameof(Theme.SPanelColor)]);
+            InitColourPatch(panel_themeLabel, "Label Text Colour", np[nameof(Theme.LabelColor)]);
+
+            InitColourPatch(panel_themeTabControlBorder, "Tab Control Border Line Colour", np[nameof(Theme.TabcontrolBorder)]);
+
+            InitColourPatch(panel_themeToolStripBack, "Tool Strip Back Colour", np[nameof(Theme.ToolstripBack)]);
+            InitColourPatch(panel_themeToolStripBorder, "Tool Strip Border Colour", np[nameof(Theme.ToolstripBorder)]);
+            InitColourPatch(panel_themeDropDownMenuBack, "Menu Dropdown Back Colour", np[nameof(Theme.ToolStripDropdownBack)]);
+            InitColourPatch(panel_themeDropDownMenuText, "Menu Dropdown Text Colour", np[nameof(Theme.ToolStripDropdownFore)]);
+
+            InitColourPatch(panel_themeTransparentColourKey, "Transparent Colour Key", np[nameof(Theme.TransparentColorKey)]);
 
             InitColourPatch(panel_chart1, "Chart Series 1", np[nameof(Theme.Chart1)]);
             InitColourPatch(panel_chart2, "Chart Series 2", np[nameof(Theme.Chart2)]);
@@ -97,23 +120,10 @@ namespace ExtendedControls
             InitColourPatch(panel_chart7, "Chart Series 7", np[nameof(Theme.Chart7)]);
             InitColourPatch(panel_chart8, "Chart Series 8", np[nameof(Theme.Chart8)]);
 
-            InitFloat(numericUpDownButDir, "Button Gradient Direction in degrees", np[nameof(Theme.ButtonGradientDirection)]);
-            InitFloat(numericUpDownCBDir, "Check Box Gradient Direction in degrees", np[nameof(Theme.CheckBoxGradientDirection)]);
-            InitFloat(numericUpDownLBDir, "List Box Gradient Direction in degrees", np[nameof(Theme.ListBoxGradientDirection)]);
-            InitFloat(numericUpDownGBDir, "Group Box Gradient Direction in degrees", np[nameof(Theme.GroupBoxGradientDirection)]);
-
-            InitFloat(numericUpDownButGA, "Button Gradient Amount", np[nameof(Theme.ButtonGradientAmount)]);
-            InitFloat(numericUpDownCBGA, "Check Box Gradient Amount", np[nameof(Theme.CheckBoxGradientAmount)]);
-            InitFloat(numericUpDownLBGA, "List Box Gradient Amount", np[nameof(Theme.ListBoxGradientAmount)]);
-            InitFloat(numericUpDownGBGA, "Group Box Gradient Amount", np[nameof(Theme.GroupBoxGradientAmount)]);
-
-            InitFloat(numericUpDownCBCS, "Check Box Button appearance Gradient Amount", np[nameof(Theme.CheckBoxInnerScaling)]);
-            InitFloat(numericUpDownCBTS, "Check Box Tick Size as a proportion of the check box", np[nameof(Theme.CheckBoxTickSize)]);
-
-            InitFloat(numericUpDownDialogFontScaling, "", np[nameof(Theme.DialogFontScaling)]);
-            InitFloat(numericUpDownMouseOverScaling, "", np[nameof(Theme.MouseOverScaling)]);
-            InitFloat(numericUpDownMouseSelectedScaling, "", np[nameof(Theme.MouseSelectedScaling)]);
-            InitFloat(numericUpDownDisabledScaling, "", np[nameof(Theme.DisabledScaling)]);
+            InitFloat(numericUpDownDialogFontScaling, "Scaling between the normal font size and a dialog font size", np[nameof(Theme.DialogFontScaling)]);
+            InitFloat(numericUpDownMouseOverScaling, "Scaling of colour for mouse over events", np[nameof(Theme.MouseOverScaling)]);
+            InitFloat(numericUpDownMouseSelectedScaling, "Scaling of colour for mouse down selected events", np[nameof(Theme.MouseSelectedScaling)]);
+            InitFloat(numericUpDownDisabledScaling, "Scaling of colour for disabled controls", np[nameof(Theme.DisabledScaling)]);
 
             trackBar_theme_opacity.Value = (int)Theme.Opacity;
             comboBox_TextBorder.SelectedItem = Theme.TextBoxBorderStyle;
@@ -286,7 +296,5 @@ namespace ExtendedControls
                     ChangeLabelColors(c, labeltext);
             }
         }
-
-
     }
 }

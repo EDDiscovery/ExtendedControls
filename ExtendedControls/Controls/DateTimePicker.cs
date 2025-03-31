@@ -482,21 +482,21 @@ namespace ExtendedControls
             SelectedColor = t.TextBlockColor.Multiply(t.DisabledScaling);
             checkbox.FlatStyle = t.ButtonFlatStyle;
             checkbox.TickBoxReductionRatio = t.CheckBoxTickSize;
-            checkbox.ForeColor = t.CheckBox;
-            checkbox.CheckBoxColor = t.CheckBox;
-            Color inner = t.CheckBox.Multiply(t.CheckBoxInnerScaling);
+            checkbox.ForeColor = t.CheckBoxText;
+            checkbox.CheckBoxColor = t.CheckBoxBack;
+            Color inner = t.CheckBoxBack.Multiply(t.CheckBoxTickStyleInnerScaling);
             if (inner.GetBrightness() < 0.1)        // double checking
                 inner = Color.Gray;
             checkbox.CheckBoxInnerColor = inner;
             checkbox.CheckColor = t.CheckBoxTick;
-            checkbox.MouseOverColor = t.CheckBox.Multiply(t.MouseOverScaling);
+            checkbox.MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
 
             // we theme the updown ourselves and do not use its themer
             updown.BackColor = t.ButtonBackColor;
             updown.BorderColor = t.GridBorderLines;
             updown.ForeColor = t.TextBlockColor;
-            updown.MouseOverColor = t.CheckBox.Multiply(t.MouseOverScaling);
-            updown.MouseSelectedColor = t.CheckBox.Multiply(t.MouseSelectedScaling);
+            updown.MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
+            updown.MouseSelectedColor = t.CheckBoxBack.Multiply(t.MouseSelectedScaling);
 
             return false;
         }

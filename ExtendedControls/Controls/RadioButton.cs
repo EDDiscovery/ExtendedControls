@@ -161,11 +161,11 @@ namespace ExtendedControls
         {
             FlatStyle = t.ButtonFlatStyle;
             BackColor = t.GroupBoxOverride(Parent, t.Form);
-            ForeColor = t.CheckBox;
-            RadioButtonColor = t.CheckBox;
-            RadioButtonInnerColor = t.CheckBox.Multiply(t.CheckBoxInnerScaling);
+            ForeColor = t.CheckBoxText;
+            RadioButtonColor = t.CheckBoxBack;
+            RadioButtonInnerColor = t.CheckBoxBack.Multiply(t.CheckBoxTickStyleInnerScaling);
             SelectedColor = BackColor.Multiply(t.DisabledScaling);
-            MouseOverColor = t.CheckBox.Multiply(t.MouseOverScaling);
+            MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
             GradientDirection = t.CheckBoxGradientDirection;
             RadioButtonDisabledScaling = t.DisabledScaling;
             return false;

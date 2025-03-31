@@ -49,21 +49,23 @@ namespace ExtendedControls
             this.label29 = new System.Windows.Forms.Label();
             this.numericUpDownGBDir = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLBDir = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownCBCS = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownCBTS = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownCBInnerScaling = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownCBTickStyleTickSize = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownButDir = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownCBDir = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownCBGradiantDir = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownGBGA = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLBGA = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownButGA = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownCBGA = new System.Windows.Forms.NumericUpDown();
-            this.panel_theme71 = new System.Windows.Forms.Panel();
+            this.numericUpDownCBButtonStyleGradient = new System.Windows.Forms.NumericUpDown();
+            this.panel_themeSPanel = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox_ButtonStyle = new System.Windows.Forms.ComboBox();
             this.comboBox_TextBorder = new System.Windows.Forms.ComboBox();
-            this.panel_theme19 = new System.Windows.Forms.Panel();
-            this.panel_theme18 = new System.Windows.Forms.Panel();
+            this.panel_themeGBFore = new System.Windows.Forms.Panel();
+            this.panel_themeGBBack = new System.Windows.Forms.Panel();
             this.label40 = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.label42 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
@@ -96,25 +98,25 @@ namespace ExtendedControls
             this.label38 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel_theme15 = new System.Windows.Forms.Panel();
-            this.panel_theme31 = new System.Windows.Forms.Panel();
-            this.panel_theme35 = new System.Windows.Forms.Panel();
-            this.panel_theme33 = new System.Windows.Forms.Panel();
-            this.panel_theme32 = new System.Windows.Forms.Panel();
-            this.panel_theme82 = new System.Windows.Forms.Panel();
-            this.panel_theme45 = new System.Windows.Forms.Panel();
-            this.panel_theme42 = new System.Windows.Forms.Panel();
-            this.panel_theme44 = new System.Windows.Forms.Panel();
-            this.panel_theme41 = new System.Windows.Forms.Panel();
-            this.panel_theme43 = new System.Windows.Forms.Panel();
-            this.panel_theme40 = new System.Windows.Forms.Panel();
-            this.panel_theme30 = new System.Windows.Forms.Panel();
-            this.panel_theme4 = new System.Windows.Forms.Panel();
-            this.panel_theme3 = new System.Windows.Forms.Panel();
-            this.panel_theme6 = new System.Windows.Forms.Panel();
-            this.panel_theme81 = new System.Windows.Forms.Panel();
-            this.panel_theme10 = new System.Windows.Forms.Panel();
-            this.panel_theme17 = new System.Windows.Forms.Panel();
+            this.panel_themeTBSucess = new System.Windows.Forms.Panel();
+            this.panel_themeButtonBorder = new System.Windows.Forms.Panel();
+            this.panel_themeTabControlBorder = new System.Windows.Forms.Panel();
+            this.panel_themeGBBorder = new System.Windows.Forms.Panel();
+            this.panel_themeGridBorderBorder = new System.Windows.Forms.Panel();
+            this.panel_themeGridHighlightBack = new System.Windows.Forms.Panel();
+            this.panel_themeGridScrollButton = new System.Windows.Forms.Panel();
+            this.panel_themeTBScrollButton = new System.Windows.Forms.Panel();
+            this.panel_themeGridScollArrow = new System.Windows.Forms.Panel();
+            this.panel_themeTBScrollArrow = new System.Windows.Forms.Panel();
+            this.panel_themeGridScrollSlider = new System.Windows.Forms.Panel();
+            this.panel_themeTBScrollSlider = new System.Windows.Forms.Panel();
+            this.panel_themeTBBorder = new System.Windows.Forms.Panel();
+            this.panel_themeTBHighlight = new System.Windows.Forms.Panel();
+            this.panel_themeTBFore = new System.Windows.Forms.Panel();
+            this.panel_themeButtonFore = new System.Windows.Forms.Panel();
+            this.panel_themeGridAltFore = new System.Windows.Forms.Panel();
+            this.panel_themeGridCellFore = new System.Windows.Forms.Panel();
+            this.panel_themeLabel = new System.Windows.Forms.Panel();
             this.panel_chart8 = new System.Windows.Forms.Panel();
             this.panel_chart7 = new System.Windows.Forms.Panel();
             this.panel_chart6 = new System.Windows.Forms.Panel();
@@ -124,25 +126,25 @@ namespace ExtendedControls
             this.panel_chart2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel_chart1 = new System.Windows.Forms.Panel();
-            this.panel_theme61 = new System.Windows.Forms.Panel();
-            this.panel_theme90 = new System.Windows.Forms.Panel();
-            this.panel_theme60 = new System.Windows.Forms.Panel();
-            this.panel_theme70 = new System.Windows.Forms.Panel();
-            this.panel_theme16 = new System.Windows.Forms.Panel();
-            this.panel_theme14 = new System.Windows.Forms.Panel();
-            this.panel_theme13 = new System.Windows.Forms.Panel();
-            this.panel_theme51 = new System.Windows.Forms.Panel();
-            this.panel_theme50 = new System.Windows.Forms.Panel();
-            this.panel_theme12 = new System.Windows.Forms.Panel();
-            this.panel_theme11 = new System.Windows.Forms.Panel();
-            this.panel_theme80 = new System.Windows.Forms.Panel();
-            this.panel_theme9 = new System.Windows.Forms.Panel();
-            this.panel_theme8 = new System.Windows.Forms.Panel();
-            this.panel_theme7 = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel_theme5 = new System.Windows.Forms.Panel();
-            this.panel_theme2 = new System.Windows.Forms.Panel();
-            this.panel_theme1 = new System.Windows.Forms.Panel();
+            this.panel_themeToolStripBorder = new System.Windows.Forms.Panel();
+            this.panel_themeCheckBoxButtonApp = new System.Windows.Forms.Panel();
+            this.panel_themeToolStripBack = new System.Windows.Forms.Panel();
+            this.panel_themeCheckBoxTick = new System.Windows.Forms.Panel();
+            this.panel_themeCheckBoxText = new System.Windows.Forms.Panel();
+            this.panel_themeCheckBoxBack = new System.Windows.Forms.Panel();
+            this.panel_themeKnown = new System.Windows.Forms.Panel();
+            this.panel_themeUnknown = new System.Windows.Forms.Panel();
+            this.panel_themeDropDownMenuText = new System.Windows.Forms.Panel();
+            this.panel_themeDropDownMenuBack = new System.Windows.Forms.Panel();
+            this.panel_themeMenuFore = new System.Windows.Forms.Panel();
+            this.panel_themeMenuBack = new System.Windows.Forms.Panel();
+            this.panel_themeGridAltBack = new System.Windows.Forms.Panel();
+            this.panel_themeGridCellBack = new System.Windows.Forms.Panel();
+            this.panel_themeGridFore = new System.Windows.Forms.Panel();
+            this.panel_themeGridBack = new System.Windows.Forms.Panel();
+            this.panel_themeButtonBack = new System.Windows.Forms.Panel();
+            this.panel_themeTBBack = new System.Windows.Forms.Panel();
+            this.panel_themeForm = new System.Windows.Forms.Panel();
             this.textBox_Font = new System.Windows.Forms.TextBox();
             this.label_opacity = new System.Windows.Forms.Label();
             this.trackBar_theme_opacity = new System.Windows.Forms.TrackBar();
@@ -150,36 +152,36 @@ namespace ExtendedControls
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label27 = new System.Windows.Forms.Label();
-            this.panel_theme72 = new System.Windows.Forms.Panel();
+            this.panel_themeTransparentColourKey = new System.Windows.Forms.Panel();
             this.buttonFontChange = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.numericUpDownDisabledScaling = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMouseSelectedScaling = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMouseOverScaling = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownDialogFontScaling = new System.Windows.Forms.NumericUpDown();
+            this.label41 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
             this.checkBoxDarkMode = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.numericUpDownDialogFontScaling = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMouseOverScaling = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMouseSelectedScaling = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownDisabledScaling = new System.Windows.Forms.NumericUpDown();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBDir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBDir)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBCS)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBTS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBInnerScaling)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBTickStyleTickSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownButDir)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBDir)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBGradiantDir)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBGA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBGA)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownButGA)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBGA)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBButtonStyleGradient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDialogFontScaling)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseOverScaling)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseSelectedScaling)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDisabledScaling)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseSelectedScaling)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseOverScaling)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDialogFontScaling)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonOK
@@ -198,21 +200,23 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.label29);
             this.groupBoxColors.Controls.Add(this.numericUpDownGBDir);
             this.groupBoxColors.Controls.Add(this.numericUpDownLBDir);
-            this.groupBoxColors.Controls.Add(this.numericUpDownCBCS);
-            this.groupBoxColors.Controls.Add(this.numericUpDownCBTS);
+            this.groupBoxColors.Controls.Add(this.numericUpDownCBInnerScaling);
+            this.groupBoxColors.Controls.Add(this.numericUpDownCBTickStyleTickSize);
             this.groupBoxColors.Controls.Add(this.numericUpDownButDir);
-            this.groupBoxColors.Controls.Add(this.numericUpDownCBDir);
+            this.groupBoxColors.Controls.Add(this.numericUpDownCBGradiantDir);
             this.groupBoxColors.Controls.Add(this.numericUpDownGBGA);
             this.groupBoxColors.Controls.Add(this.numericUpDownLBGA);
             this.groupBoxColors.Controls.Add(this.numericUpDownButGA);
-            this.groupBoxColors.Controls.Add(this.numericUpDownCBGA);
-            this.groupBoxColors.Controls.Add(this.panel_theme71);
+            this.groupBoxColors.Controls.Add(this.numericUpDownCBButtonStyleGradient);
+            this.groupBoxColors.Controls.Add(this.panel_themeSPanel);
             this.groupBoxColors.Controls.Add(this.label8);
             this.groupBoxColors.Controls.Add(this.comboBox_ButtonStyle);
             this.groupBoxColors.Controls.Add(this.comboBox_TextBorder);
-            this.groupBoxColors.Controls.Add(this.panel_theme19);
-            this.groupBoxColors.Controls.Add(this.panel_theme18);
+            this.groupBoxColors.Controls.Add(this.panel_themeGBFore);
+            this.groupBoxColors.Controls.Add(this.panel_themeGBBack);
             this.groupBoxColors.Controls.Add(this.label40);
+            this.groupBoxColors.Controls.Add(this.label43);
+            this.groupBoxColors.Controls.Add(this.label42);
             this.groupBoxColors.Controls.Add(this.label39);
             this.groupBoxColors.Controls.Add(this.label36);
             this.groupBoxColors.Controls.Add(this.label35);
@@ -245,25 +249,25 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.label38);
             this.groupBoxColors.Controls.Add(this.label9);
             this.groupBoxColors.Controls.Add(this.label1);
-            this.groupBoxColors.Controls.Add(this.panel_theme15);
-            this.groupBoxColors.Controls.Add(this.panel_theme31);
-            this.groupBoxColors.Controls.Add(this.panel_theme35);
-            this.groupBoxColors.Controls.Add(this.panel_theme33);
-            this.groupBoxColors.Controls.Add(this.panel_theme32);
-            this.groupBoxColors.Controls.Add(this.panel_theme82);
-            this.groupBoxColors.Controls.Add(this.panel_theme45);
-            this.groupBoxColors.Controls.Add(this.panel_theme42);
-            this.groupBoxColors.Controls.Add(this.panel_theme44);
-            this.groupBoxColors.Controls.Add(this.panel_theme41);
-            this.groupBoxColors.Controls.Add(this.panel_theme43);
-            this.groupBoxColors.Controls.Add(this.panel_theme40);
-            this.groupBoxColors.Controls.Add(this.panel_theme30);
-            this.groupBoxColors.Controls.Add(this.panel_theme4);
-            this.groupBoxColors.Controls.Add(this.panel_theme3);
-            this.groupBoxColors.Controls.Add(this.panel_theme6);
-            this.groupBoxColors.Controls.Add(this.panel_theme81);
-            this.groupBoxColors.Controls.Add(this.panel_theme10);
-            this.groupBoxColors.Controls.Add(this.panel_theme17);
+            this.groupBoxColors.Controls.Add(this.panel_themeTBSucess);
+            this.groupBoxColors.Controls.Add(this.panel_themeButtonBorder);
+            this.groupBoxColors.Controls.Add(this.panel_themeTabControlBorder);
+            this.groupBoxColors.Controls.Add(this.panel_themeGBBorder);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridBorderBorder);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridHighlightBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridScrollButton);
+            this.groupBoxColors.Controls.Add(this.panel_themeTBScrollButton);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridScollArrow);
+            this.groupBoxColors.Controls.Add(this.panel_themeTBScrollArrow);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridScrollSlider);
+            this.groupBoxColors.Controls.Add(this.panel_themeTBScrollSlider);
+            this.groupBoxColors.Controls.Add(this.panel_themeTBBorder);
+            this.groupBoxColors.Controls.Add(this.panel_themeTBHighlight);
+            this.groupBoxColors.Controls.Add(this.panel_themeTBFore);
+            this.groupBoxColors.Controls.Add(this.panel_themeButtonFore);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridAltFore);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridCellFore);
+            this.groupBoxColors.Controls.Add(this.panel_themeLabel);
             this.groupBoxColors.Controls.Add(this.panel_chart8);
             this.groupBoxColors.Controls.Add(this.panel_chart7);
             this.groupBoxColors.Controls.Add(this.panel_chart6);
@@ -273,25 +277,25 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel_chart2);
             this.groupBoxColors.Controls.Add(this.panel1);
             this.groupBoxColors.Controls.Add(this.panel_chart1);
-            this.groupBoxColors.Controls.Add(this.panel_theme61);
-            this.groupBoxColors.Controls.Add(this.panel_theme90);
-            this.groupBoxColors.Controls.Add(this.panel_theme60);
-            this.groupBoxColors.Controls.Add(this.panel_theme70);
-            this.groupBoxColors.Controls.Add(this.panel_theme16);
-            this.groupBoxColors.Controls.Add(this.panel_theme14);
-            this.groupBoxColors.Controls.Add(this.panel_theme13);
-            this.groupBoxColors.Controls.Add(this.panel_theme51);
-            this.groupBoxColors.Controls.Add(this.panel_theme50);
-            this.groupBoxColors.Controls.Add(this.panel_theme12);
-            this.groupBoxColors.Controls.Add(this.panel_theme11);
-            this.groupBoxColors.Controls.Add(this.panel_theme80);
-            this.groupBoxColors.Controls.Add(this.panel_theme9);
-            this.groupBoxColors.Controls.Add(this.panel_theme8);
-            this.groupBoxColors.Controls.Add(this.panel_theme7);
-            this.groupBoxColors.Controls.Add(this.panel3);
-            this.groupBoxColors.Controls.Add(this.panel_theme5);
-            this.groupBoxColors.Controls.Add(this.panel_theme2);
-            this.groupBoxColors.Controls.Add(this.panel_theme1);
+            this.groupBoxColors.Controls.Add(this.panel_themeToolStripBorder);
+            this.groupBoxColors.Controls.Add(this.panel_themeCheckBoxButtonApp);
+            this.groupBoxColors.Controls.Add(this.panel_themeToolStripBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeCheckBoxTick);
+            this.groupBoxColors.Controls.Add(this.panel_themeCheckBoxText);
+            this.groupBoxColors.Controls.Add(this.panel_themeCheckBoxBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeKnown);
+            this.groupBoxColors.Controls.Add(this.panel_themeUnknown);
+            this.groupBoxColors.Controls.Add(this.panel_themeDropDownMenuText);
+            this.groupBoxColors.Controls.Add(this.panel_themeDropDownMenuBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeMenuFore);
+            this.groupBoxColors.Controls.Add(this.panel_themeMenuBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridAltBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridCellBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridFore);
+            this.groupBoxColors.Controls.Add(this.panel_themeGridBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeButtonBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeTBBack);
+            this.groupBoxColors.Controls.Add(this.panel_themeForm);
             this.groupBoxColors.Location = new System.Drawing.Point(3, 12);
             this.groupBoxColors.Name = "groupBoxColors";
             this.groupBoxColors.Size = new System.Drawing.Size(915, 452);
@@ -342,42 +346,41 @@ namespace ExtendedControls
             this.numericUpDownLBDir.Size = new System.Drawing.Size(56, 20);
             this.numericUpDownLBDir.TabIndex = 12;
             // 
-            // numericUpDownCBCS
+            // numericUpDownCBInnerScaling
             // 
-            this.numericUpDownCBCS.DecimalPlaces = 2;
-            this.numericUpDownCBCS.Increment = new decimal(new int[] {
+            this.numericUpDownCBInnerScaling.DecimalPlaces = 2;
+            this.numericUpDownCBInnerScaling.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.numericUpDownCBCS.Location = new System.Drawing.Point(570, 264);
-            this.numericUpDownCBCS.Maximum = new decimal(new int[] {
+            this.numericUpDownCBInnerScaling.Location = new System.Drawing.Point(570, 264);
+            this.numericUpDownCBInnerScaling.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownCBCS.Name = "numericUpDownCBCS";
-            this.numericUpDownCBCS.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownCBCS.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.numericUpDownCBCS, "Checkbox colour scaling across its surface");
+            this.numericUpDownCBInnerScaling.Name = "numericUpDownCBInnerScaling";
+            this.numericUpDownCBInnerScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownCBInnerScaling.TabIndex = 12;
             // 
-            // numericUpDownCBTS
+            // numericUpDownCBTickStyleTickSize
             // 
-            this.numericUpDownCBTS.DecimalPlaces = 2;
-            this.numericUpDownCBTS.Increment = new decimal(new int[] {
+            this.numericUpDownCBTickStyleTickSize.DecimalPlaces = 2;
+            this.numericUpDownCBTickStyleTickSize.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.numericUpDownCBTS.Location = new System.Drawing.Point(570, 224);
-            this.numericUpDownCBTS.Maximum = new decimal(new int[] {
+            this.numericUpDownCBTickStyleTickSize.Location = new System.Drawing.Point(570, 224);
+            this.numericUpDownCBTickStyleTickSize.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDownCBTS.Name = "numericUpDownCBTS";
-            this.numericUpDownCBTS.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownCBTS.TabIndex = 12;
+            this.numericUpDownCBTickStyleTickSize.Name = "numericUpDownCBTickStyleTickSize";
+            this.numericUpDownCBTickStyleTickSize.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownCBTickStyleTickSize.TabIndex = 12;
             // 
             // numericUpDownButDir
             // 
@@ -396,22 +399,22 @@ namespace ExtendedControls
             this.numericUpDownButDir.Size = new System.Drawing.Size(56, 20);
             this.numericUpDownButDir.TabIndex = 12;
             // 
-            // numericUpDownCBDir
+            // numericUpDownCBGradiantDir
             // 
-            this.numericUpDownCBDir.Increment = new decimal(new int[] {
+            this.numericUpDownCBGradiantDir.Increment = new decimal(new int[] {
             5,
             0,
             0,
             0});
-            this.numericUpDownCBDir.Location = new System.Drawing.Point(570, 299);
-            this.numericUpDownCBDir.Maximum = new decimal(new int[] {
+            this.numericUpDownCBGradiantDir.Location = new System.Drawing.Point(570, 299);
+            this.numericUpDownCBGradiantDir.Maximum = new decimal(new int[] {
             360,
             0,
             0,
             0});
-            this.numericUpDownCBDir.Name = "numericUpDownCBDir";
-            this.numericUpDownCBDir.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownCBDir.TabIndex = 12;
+            this.numericUpDownCBGradiantDir.Name = "numericUpDownCBGradiantDir";
+            this.numericUpDownCBGradiantDir.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownCBGradiantDir.TabIndex = 12;
             // 
             // numericUpDownGBGA
             // 
@@ -473,33 +476,33 @@ namespace ExtendedControls
             this.numericUpDownButGA.Size = new System.Drawing.Size(56, 20);
             this.numericUpDownButGA.TabIndex = 12;
             // 
-            // numericUpDownCBGA
+            // numericUpDownCBButtonStyleGradient
             // 
-            this.numericUpDownCBGA.DecimalPlaces = 2;
-            this.numericUpDownCBGA.Increment = new decimal(new int[] {
+            this.numericUpDownCBButtonStyleGradient.DecimalPlaces = 2;
+            this.numericUpDownCBButtonStyleGradient.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.numericUpDownCBGA.Location = new System.Drawing.Point(570, 194);
-            this.numericUpDownCBGA.Maximum = new decimal(new int[] {
+            this.numericUpDownCBButtonStyleGradient.Location = new System.Drawing.Point(570, 194);
+            this.numericUpDownCBButtonStyleGradient.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.numericUpDownCBGA.Name = "numericUpDownCBGA";
-            this.numericUpDownCBGA.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownCBGA.TabIndex = 12;
+            this.numericUpDownCBButtonStyleGradient.Name = "numericUpDownCBButtonStyleGradient";
+            this.numericUpDownCBButtonStyleGradient.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownCBButtonStyleGradient.TabIndex = 12;
             // 
-            // panel_theme71
+            // panel_themeSPanel
             // 
-            this.panel_theme71.AccessibleDescription = "";
-            this.panel_theme71.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme71.Location = new System.Drawing.Point(700, 330);
-            this.panel_theme71.Name = "panel_theme71";
-            this.panel_theme71.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme71.TabIndex = 6;
-            this.panel_theme71.Tag = "";
+            this.panel_themeSPanel.AccessibleDescription = "";
+            this.panel_themeSPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeSPanel.Location = new System.Drawing.Point(700, 330);
+            this.panel_themeSPanel.Name = "panel_themeSPanel";
+            this.panel_themeSPanel.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeSPanel.TabIndex = 6;
+            this.panel_themeSPanel.Tag = "";
             // 
             // label8
             // 
@@ -540,43 +543,61 @@ namespace ExtendedControls
             this.toolTip1.SetToolTip(this.comboBox_TextBorder, "Border style to apply to textbox");
             this.comboBox_TextBorder.SelectionChangeCommitted += new System.EventHandler(this.comboBox_TextBorder_SelectionChangeCommitted);
             // 
-            // panel_theme19
+            // panel_themeGBFore
             // 
-            this.panel_theme19.AccessibleDescription = "";
-            this.panel_theme19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme19.Location = new System.Drawing.Point(630, 85);
-            this.panel_theme19.Name = "panel_theme19";
-            this.panel_theme19.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme19.TabIndex = 9;
-            this.panel_theme19.Tag = "";
+            this.panel_themeGBFore.AccessibleDescription = "";
+            this.panel_themeGBFore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGBFore.Location = new System.Drawing.Point(630, 85);
+            this.panel_themeGBFore.Name = "panel_themeGBFore";
+            this.panel_themeGBFore.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGBFore.TabIndex = 9;
+            this.panel_themeGBFore.Tag = "";
             // 
-            // panel_theme18
+            // panel_themeGBBack
             // 
-            this.panel_theme18.AccessibleDescription = "";
-            this.panel_theme18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme18.Location = new System.Drawing.Point(630, 50);
-            this.panel_theme18.Name = "panel_theme18";
-            this.panel_theme18.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme18.TabIndex = 9;
-            this.panel_theme18.Tag = "";
+            this.panel_themeGBBack.AccessibleDescription = "";
+            this.panel_themeGBBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGBBack.Location = new System.Drawing.Point(630, 50);
+            this.panel_themeGBBack.Name = "panel_themeGBBack";
+            this.panel_themeGBBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGBBack.TabIndex = 9;
+            this.panel_themeGBBack.Tag = "";
             // 
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(420, 196);
+            this.label40.Location = new System.Drawing.Point(449, 196);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(136, 13);
+            this.label40.Size = new System.Drawing.Size(107, 13);
             this.label40.TabIndex = 6;
-            this.label40.Text = "Button Apperance Gradient";
+            this.label40.Text = "Button Style Gradient";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(525, 301);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(29, 13);
+            this.label43.TabIndex = 6;
+            this.label43.Text = "Both";
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(525, 266);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(38, 13);
+            this.label42.TabIndex = 6;
+            this.label42.Text = "Check";
             // 
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(494, 226);
+            this.label39.Location = new System.Drawing.Point(460, 226);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(62, 13);
+            this.label39.Size = new System.Drawing.Size(96, 13);
             this.label39.TabIndex = 6;
-            this.label39.Text = "Tick Size %";
+            this.label39.Text = "Check Tick Size %";
             // 
             // label36
             // 
@@ -653,11 +674,11 @@ namespace ExtendedControls
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(463, 369);
+            this.label20.Location = new System.Drawing.Point(286, 369);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(80, 13);
+            this.label20.Size = new System.Drawing.Size(40, 13);
             this.label20.TabIndex = 6;
-            this.label20.Text = "Known Position";
+            this.label20.Text = "Known";
             // 
             // label22
             // 
@@ -690,11 +711,11 @@ namespace ExtendedControls
             // 
             this.label21.AutoSize = true;
             this.label21.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label21.Location = new System.Drawing.Point(462, 161);
+            this.label21.Location = new System.Drawing.Point(453, 161);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(93, 13);
+            this.label21.Size = new System.Drawing.Size(100, 13);
             this.label21.TabIndex = 6;
-            this.label21.Text = "Button Apperance";
+            this.label21.Text = "Button Style Ticked";
             this.label21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label28
@@ -709,11 +730,11 @@ namespace ExtendedControls
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(449, 335);
+            this.label19.Location = new System.Drawing.Point(273, 335);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(93, 13);
+            this.label19.Size = new System.Drawing.Size(53, 13);
             this.label19.TabIndex = 6;
-            this.label19.Text = "Unknown Position";
+            this.label19.Text = "Unknown";
             // 
             // label31
             // 
@@ -781,7 +802,7 @@ namespace ExtendedControls
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(688, 20);
+            this.label14.Location = new System.Drawing.Point(697, 20);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(29, 13);
             this.label14.TabIndex = 6;
@@ -859,195 +880,195 @@ namespace ExtendedControls
             this.label1.TabIndex = 6;
             this.label1.Text = "Text\r\nTextBox";
             // 
-            // panel_theme15
+            // panel_themeTBSucess
             // 
-            this.panel_theme15.AccessibleDescription = "";
-            this.panel_theme15.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme15.Location = new System.Drawing.Point(150, 365);
-            this.panel_theme15.Name = "panel_theme15";
-            this.panel_theme15.Size = new System.Drawing.Size(28, 29);
-            this.panel_theme15.TabIndex = 5;
-            this.panel_theme15.Tag = "";
+            this.panel_themeTBSucess.AccessibleDescription = "";
+            this.panel_themeTBSucess.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTBSucess.Location = new System.Drawing.Point(150, 365);
+            this.panel_themeTBSucess.Name = "panel_themeTBSucess";
+            this.panel_themeTBSucess.Size = new System.Drawing.Size(28, 29);
+            this.panel_themeTBSucess.TabIndex = 5;
+            this.panel_themeTBSucess.Tag = "";
             // 
-            // panel_theme31
+            // panel_themeButtonBorder
             // 
-            this.panel_theme31.AccessibleDescription = "";
-            this.panel_theme31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme31.Location = new System.Drawing.Point(390, 120);
-            this.panel_theme31.Name = "panel_theme31";
-            this.panel_theme31.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme31.TabIndex = 5;
-            this.panel_theme31.Tag = "";
+            this.panel_themeButtonBorder.AccessibleDescription = "";
+            this.panel_themeButtonBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeButtonBorder.Location = new System.Drawing.Point(390, 120);
+            this.panel_themeButtonBorder.Name = "panel_themeButtonBorder";
+            this.panel_themeButtonBorder.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeButtonBorder.TabIndex = 5;
+            this.panel_themeButtonBorder.Tag = "";
             // 
-            // panel_theme35
+            // panel_themeTabControlBorder
             // 
-            this.panel_theme35.AccessibleDescription = "";
-            this.panel_theme35.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme35.Location = new System.Drawing.Point(750, 120);
-            this.panel_theme35.Name = "panel_theme35";
-            this.panel_theme35.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme35.TabIndex = 5;
-            this.panel_theme35.Tag = "";
+            this.panel_themeTabControlBorder.AccessibleDescription = "";
+            this.panel_themeTabControlBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabControlBorder.Location = new System.Drawing.Point(750, 120);
+            this.panel_themeTabControlBorder.Name = "panel_themeTabControlBorder";
+            this.panel_themeTabControlBorder.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeTabControlBorder.TabIndex = 5;
+            this.panel_themeTabControlBorder.Tag = "";
             // 
-            // panel_theme33
+            // panel_themeGBBorder
             // 
-            this.panel_theme33.AccessibleDescription = "";
-            this.panel_theme33.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme33.Location = new System.Drawing.Point(630, 120);
-            this.panel_theme33.Name = "panel_theme33";
-            this.panel_theme33.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme33.TabIndex = 5;
-            this.panel_theme33.Tag = "";
+            this.panel_themeGBBorder.AccessibleDescription = "";
+            this.panel_themeGBBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGBBorder.Location = new System.Drawing.Point(630, 120);
+            this.panel_themeGBBorder.Name = "panel_themeGBBorder";
+            this.panel_themeGBBorder.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGBBorder.TabIndex = 5;
+            this.panel_themeGBBorder.Tag = "";
             // 
-            // panel_theme32
+            // panel_themeGridBorderBorder
             // 
-            this.panel_theme32.AccessibleDescription = "";
-            this.panel_theme32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme32.Location = new System.Drawing.Point(211, 120);
-            this.panel_theme32.Name = "panel_theme32";
-            this.panel_theme32.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme32.TabIndex = 5;
-            this.panel_theme32.Tag = "";
+            this.panel_themeGridBorderBorder.AccessibleDescription = "";
+            this.panel_themeGridBorderBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridBorderBorder.Location = new System.Drawing.Point(211, 120);
+            this.panel_themeGridBorderBorder.Name = "panel_themeGridBorderBorder";
+            this.panel_themeGridBorderBorder.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridBorderBorder.TabIndex = 5;
+            this.panel_themeGridBorderBorder.Tag = "";
             // 
-            // panel_theme82
+            // panel_themeGridHighlightBack
             // 
-            this.panel_theme82.AccessibleDescription = "";
-            this.panel_theme82.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme82.Location = new System.Drawing.Point(210, 330);
-            this.panel_theme82.Name = "panel_theme82";
-            this.panel_theme82.Size = new System.Drawing.Size(28, 29);
-            this.panel_theme82.TabIndex = 5;
-            this.panel_theme82.Tag = "";
+            this.panel_themeGridHighlightBack.AccessibleDescription = "";
+            this.panel_themeGridHighlightBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridHighlightBack.Location = new System.Drawing.Point(210, 330);
+            this.panel_themeGridHighlightBack.Name = "panel_themeGridHighlightBack";
+            this.panel_themeGridHighlightBack.Size = new System.Drawing.Size(28, 29);
+            this.panel_themeGridHighlightBack.TabIndex = 5;
+            this.panel_themeGridHighlightBack.Tag = "";
             // 
-            // panel_theme45
+            // panel_themeGridScrollButton
             // 
-            this.panel_theme45.AccessibleDescription = "";
-            this.panel_theme45.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme45.Location = new System.Drawing.Point(211, 225);
-            this.panel_theme45.Name = "panel_theme45";
-            this.panel_theme45.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme45.TabIndex = 5;
-            this.panel_theme45.Tag = "";
+            this.panel_themeGridScrollButton.AccessibleDescription = "";
+            this.panel_themeGridScrollButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridScrollButton.Location = new System.Drawing.Point(211, 225);
+            this.panel_themeGridScrollButton.Name = "panel_themeGridScrollButton";
+            this.panel_themeGridScrollButton.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridScrollButton.TabIndex = 5;
+            this.panel_themeGridScrollButton.Tag = "";
             // 
-            // panel_theme42
+            // panel_themeTBScrollButton
             // 
-            this.panel_theme42.AccessibleDescription = "";
-            this.panel_theme42.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme42.Location = new System.Drawing.Point(150, 225);
-            this.panel_theme42.Name = "panel_theme42";
-            this.panel_theme42.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme42.TabIndex = 5;
-            this.panel_theme42.Tag = "";
+            this.panel_themeTBScrollButton.AccessibleDescription = "";
+            this.panel_themeTBScrollButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTBScrollButton.Location = new System.Drawing.Point(150, 225);
+            this.panel_themeTBScrollButton.Name = "panel_themeTBScrollButton";
+            this.panel_themeTBScrollButton.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeTBScrollButton.TabIndex = 5;
+            this.panel_themeTBScrollButton.Tag = "";
             // 
-            // panel_theme44
+            // panel_themeGridScollArrow
             // 
-            this.panel_theme44.AccessibleDescription = "";
-            this.panel_theme44.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme44.Location = new System.Drawing.Point(211, 190);
-            this.panel_theme44.Name = "panel_theme44";
-            this.panel_theme44.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme44.TabIndex = 5;
-            this.panel_theme44.Tag = "";
+            this.panel_themeGridScollArrow.AccessibleDescription = "";
+            this.panel_themeGridScollArrow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridScollArrow.Location = new System.Drawing.Point(211, 190);
+            this.panel_themeGridScollArrow.Name = "panel_themeGridScollArrow";
+            this.panel_themeGridScollArrow.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridScollArrow.TabIndex = 5;
+            this.panel_themeGridScollArrow.Tag = "";
             // 
-            // panel_theme41
+            // panel_themeTBScrollArrow
             // 
-            this.panel_theme41.AccessibleDescription = "";
-            this.panel_theme41.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme41.Location = new System.Drawing.Point(150, 190);
-            this.panel_theme41.Name = "panel_theme41";
-            this.panel_theme41.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme41.TabIndex = 5;
-            this.panel_theme41.Tag = "";
+            this.panel_themeTBScrollArrow.AccessibleDescription = "";
+            this.panel_themeTBScrollArrow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTBScrollArrow.Location = new System.Drawing.Point(150, 190);
+            this.panel_themeTBScrollArrow.Name = "panel_themeTBScrollArrow";
+            this.panel_themeTBScrollArrow.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeTBScrollArrow.TabIndex = 5;
+            this.panel_themeTBScrollArrow.Tag = "";
             // 
-            // panel_theme43
+            // panel_themeGridScrollSlider
             // 
-            this.panel_theme43.AccessibleDescription = "";
-            this.panel_theme43.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme43.Location = new System.Drawing.Point(211, 155);
-            this.panel_theme43.Name = "panel_theme43";
-            this.panel_theme43.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme43.TabIndex = 5;
-            this.panel_theme43.Tag = "";
+            this.panel_themeGridScrollSlider.AccessibleDescription = "";
+            this.panel_themeGridScrollSlider.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridScrollSlider.Location = new System.Drawing.Point(211, 155);
+            this.panel_themeGridScrollSlider.Name = "panel_themeGridScrollSlider";
+            this.panel_themeGridScrollSlider.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridScrollSlider.TabIndex = 5;
+            this.panel_themeGridScrollSlider.Tag = "";
             // 
-            // panel_theme40
+            // panel_themeTBScrollSlider
             // 
-            this.panel_theme40.AccessibleDescription = "";
-            this.panel_theme40.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme40.Location = new System.Drawing.Point(150, 155);
-            this.panel_theme40.Name = "panel_theme40";
-            this.panel_theme40.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme40.TabIndex = 5;
-            this.panel_theme40.Tag = "";
+            this.panel_themeTBScrollSlider.AccessibleDescription = "";
+            this.panel_themeTBScrollSlider.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTBScrollSlider.Location = new System.Drawing.Point(150, 155);
+            this.panel_themeTBScrollSlider.Name = "panel_themeTBScrollSlider";
+            this.panel_themeTBScrollSlider.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeTBScrollSlider.TabIndex = 5;
+            this.panel_themeTBScrollSlider.Tag = "";
             // 
-            // panel_theme30
+            // panel_themeTBBorder
             // 
-            this.panel_theme30.AccessibleDescription = "";
-            this.panel_theme30.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme30.Location = new System.Drawing.Point(150, 120);
-            this.panel_theme30.Name = "panel_theme30";
-            this.panel_theme30.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme30.TabIndex = 5;
-            this.panel_theme30.Tag = "";
+            this.panel_themeTBBorder.AccessibleDescription = "";
+            this.panel_themeTBBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTBBorder.Location = new System.Drawing.Point(150, 120);
+            this.panel_themeTBBorder.Name = "panel_themeTBBorder";
+            this.panel_themeTBBorder.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeTBBorder.TabIndex = 5;
+            this.panel_themeTBBorder.Tag = "";
             // 
-            // panel_theme4
+            // panel_themeTBHighlight
             // 
-            this.panel_theme4.AccessibleDescription = "";
-            this.panel_theme4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme4.Location = new System.Drawing.Point(150, 330);
-            this.panel_theme4.Name = "panel_theme4";
-            this.panel_theme4.Size = new System.Drawing.Size(28, 29);
-            this.panel_theme4.TabIndex = 5;
-            this.panel_theme4.Tag = "";
+            this.panel_themeTBHighlight.AccessibleDescription = "";
+            this.panel_themeTBHighlight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTBHighlight.Location = new System.Drawing.Point(150, 330);
+            this.panel_themeTBHighlight.Name = "panel_themeTBHighlight";
+            this.panel_themeTBHighlight.Size = new System.Drawing.Size(28, 29);
+            this.panel_themeTBHighlight.TabIndex = 5;
+            this.panel_themeTBHighlight.Tag = "";
             // 
-            // panel_theme3
+            // panel_themeTBFore
             // 
-            this.panel_theme3.AccessibleDescription = "";
-            this.panel_theme3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme3.Location = new System.Drawing.Point(150, 85);
-            this.panel_theme3.Name = "panel_theme3";
-            this.panel_theme3.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme3.TabIndex = 5;
-            this.panel_theme3.Tag = "";
+            this.panel_themeTBFore.AccessibleDescription = "";
+            this.panel_themeTBFore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTBFore.Location = new System.Drawing.Point(150, 85);
+            this.panel_themeTBFore.Name = "panel_themeTBFore";
+            this.panel_themeTBFore.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeTBFore.TabIndex = 5;
+            this.panel_themeTBFore.Tag = "";
             // 
-            // panel_theme6
+            // panel_themeButtonFore
             // 
-            this.panel_theme6.AccessibleDescription = "";
-            this.panel_theme6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme6.Location = new System.Drawing.Point(390, 85);
-            this.panel_theme6.Name = "panel_theme6";
-            this.panel_theme6.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme6.TabIndex = 5;
-            this.panel_theme6.Tag = "";
+            this.panel_themeButtonFore.AccessibleDescription = "";
+            this.panel_themeButtonFore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeButtonFore.Location = new System.Drawing.Point(390, 85);
+            this.panel_themeButtonFore.Name = "panel_themeButtonFore";
+            this.panel_themeButtonFore.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeButtonFore.TabIndex = 5;
+            this.panel_themeButtonFore.Tag = "";
             // 
-            // panel_theme81
+            // panel_themeGridAltFore
             // 
-            this.panel_theme81.AccessibleDescription = "";
-            this.panel_theme81.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme81.Location = new System.Drawing.Point(330, 85);
-            this.panel_theme81.Name = "panel_theme81";
-            this.panel_theme81.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme81.TabIndex = 5;
-            this.panel_theme81.Tag = "";
+            this.panel_themeGridAltFore.AccessibleDescription = "";
+            this.panel_themeGridAltFore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridAltFore.Location = new System.Drawing.Point(330, 85);
+            this.panel_themeGridAltFore.Name = "panel_themeGridAltFore";
+            this.panel_themeGridAltFore.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridAltFore.TabIndex = 5;
+            this.panel_themeGridAltFore.Tag = "";
             // 
-            // panel_theme10
+            // panel_themeGridCellFore
             // 
-            this.panel_theme10.AccessibleDescription = "";
-            this.panel_theme10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme10.Location = new System.Drawing.Point(270, 85);
-            this.panel_theme10.Name = "panel_theme10";
-            this.panel_theme10.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme10.TabIndex = 5;
-            this.panel_theme10.Tag = "";
+            this.panel_themeGridCellFore.AccessibleDescription = "";
+            this.panel_themeGridCellFore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridCellFore.Location = new System.Drawing.Point(270, 85);
+            this.panel_themeGridCellFore.Name = "panel_themeGridCellFore";
+            this.panel_themeGridCellFore.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridCellFore.TabIndex = 5;
+            this.panel_themeGridCellFore.Tag = "";
             // 
-            // panel_theme17
+            // panel_themeLabel
             // 
-            this.panel_theme17.AccessibleDescription = "";
-            this.panel_theme17.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme17.Location = new System.Drawing.Point(700, 365);
-            this.panel_theme17.Name = "panel_theme17";
-            this.panel_theme17.Size = new System.Drawing.Size(28, 29);
-            this.panel_theme17.TabIndex = 5;
-            this.panel_theme17.Tag = "";
+            this.panel_themeLabel.AccessibleDescription = "";
+            this.panel_themeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeLabel.Location = new System.Drawing.Point(700, 365);
+            this.panel_themeLabel.Name = "panel_themeLabel";
+            this.panel_themeLabel.Size = new System.Drawing.Size(28, 29);
+            this.panel_themeLabel.TabIndex = 5;
+            this.panel_themeLabel.Tag = "";
             // 
             // panel_chart8
             // 
@@ -1139,195 +1160,195 @@ namespace ExtendedControls
             this.panel_chart1.TabIndex = 5;
             this.panel_chart1.Tag = "";
             // 
-            // panel_theme61
+            // panel_themeToolStripBorder
             // 
-            this.panel_theme61.AccessibleDescription = "";
-            this.panel_theme61.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme61.Location = new System.Drawing.Point(810, 120);
-            this.panel_theme61.Name = "panel_theme61";
-            this.panel_theme61.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme61.TabIndex = 5;
-            this.panel_theme61.Tag = "";
+            this.panel_themeToolStripBorder.AccessibleDescription = "";
+            this.panel_themeToolStripBorder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeToolStripBorder.Location = new System.Drawing.Point(810, 120);
+            this.panel_themeToolStripBorder.Name = "panel_themeToolStripBorder";
+            this.panel_themeToolStripBorder.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeToolStripBorder.TabIndex = 5;
+            this.panel_themeToolStripBorder.Tag = "";
             // 
-            // panel_theme90
+            // panel_themeCheckBoxButtonApp
             // 
-            this.panel_theme90.AccessibleDescription = "";
-            this.panel_theme90.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme90.Location = new System.Drawing.Point(570, 155);
-            this.panel_theme90.Name = "panel_theme90";
-            this.panel_theme90.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme90.TabIndex = 5;
-            this.panel_theme90.Tag = "";
+            this.panel_themeCheckBoxButtonApp.AccessibleDescription = "";
+            this.panel_themeCheckBoxButtonApp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeCheckBoxButtonApp.Location = new System.Drawing.Point(570, 155);
+            this.panel_themeCheckBoxButtonApp.Name = "panel_themeCheckBoxButtonApp";
+            this.panel_themeCheckBoxButtonApp.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeCheckBoxButtonApp.TabIndex = 5;
+            this.panel_themeCheckBoxButtonApp.Tag = "";
             // 
-            // panel_theme60
+            // panel_themeToolStripBack
             // 
-            this.panel_theme60.AccessibleDescription = "";
-            this.panel_theme60.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme60.Location = new System.Drawing.Point(810, 50);
-            this.panel_theme60.Name = "panel_theme60";
-            this.panel_theme60.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme60.TabIndex = 5;
-            this.panel_theme60.Tag = "";
+            this.panel_themeToolStripBack.AccessibleDescription = "";
+            this.panel_themeToolStripBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeToolStripBack.Location = new System.Drawing.Point(810, 50);
+            this.panel_themeToolStripBack.Name = "panel_themeToolStripBack";
+            this.panel_themeToolStripBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeToolStripBack.TabIndex = 5;
+            this.panel_themeToolStripBack.Tag = "";
             // 
-            // panel_theme70
+            // panel_themeCheckBoxTick
             // 
-            this.panel_theme70.AccessibleDescription = "";
-            this.panel_theme70.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme70.Location = new System.Drawing.Point(570, 120);
-            this.panel_theme70.Name = "panel_theme70";
-            this.panel_theme70.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme70.TabIndex = 5;
-            this.panel_theme70.Tag = "";
+            this.panel_themeCheckBoxTick.AccessibleDescription = "";
+            this.panel_themeCheckBoxTick.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeCheckBoxTick.Location = new System.Drawing.Point(570, 120);
+            this.panel_themeCheckBoxTick.Name = "panel_themeCheckBoxTick";
+            this.panel_themeCheckBoxTick.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeCheckBoxTick.TabIndex = 5;
+            this.panel_themeCheckBoxTick.Tag = "";
             // 
-            // panel_theme16
+            // panel_themeCheckBoxText
             // 
-            this.panel_theme16.AccessibleDescription = "";
-            this.panel_theme16.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme16.Location = new System.Drawing.Point(570, 50);
-            this.panel_theme16.Name = "panel_theme16";
-            this.panel_theme16.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme16.TabIndex = 5;
-            this.panel_theme16.Tag = "";
+            this.panel_themeCheckBoxText.AccessibleDescription = "";
+            this.panel_themeCheckBoxText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeCheckBoxText.Location = new System.Drawing.Point(570, 86);
+            this.panel_themeCheckBoxText.Name = "panel_themeCheckBoxText";
+            this.panel_themeCheckBoxText.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeCheckBoxText.TabIndex = 5;
+            this.panel_themeCheckBoxText.Tag = "";
             // 
-            // panel_theme14
+            // panel_themeCheckBoxBack
             // 
-            this.panel_theme14.AccessibleDescription = "";
-            this.panel_theme14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme14.Location = new System.Drawing.Point(570, 365);
-            this.panel_theme14.Name = "panel_theme14";
-            this.panel_theme14.Size = new System.Drawing.Size(28, 29);
-            this.panel_theme14.TabIndex = 5;
-            this.panel_theme14.Tag = "";
+            this.panel_themeCheckBoxBack.AccessibleDescription = "";
+            this.panel_themeCheckBoxBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeCheckBoxBack.Location = new System.Drawing.Point(570, 50);
+            this.panel_themeCheckBoxBack.Name = "panel_themeCheckBoxBack";
+            this.panel_themeCheckBoxBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeCheckBoxBack.TabIndex = 5;
+            this.panel_themeCheckBoxBack.Tag = "";
             // 
-            // panel_theme13
+            // panel_themeKnown
             // 
-            this.panel_theme13.AccessibleDescription = "";
-            this.panel_theme13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme13.Location = new System.Drawing.Point(570, 330);
-            this.panel_theme13.Name = "panel_theme13";
-            this.panel_theme13.Size = new System.Drawing.Size(28, 29);
-            this.panel_theme13.TabIndex = 5;
-            this.panel_theme13.Tag = "";
+            this.panel_themeKnown.AccessibleDescription = "";
+            this.panel_themeKnown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeKnown.Location = new System.Drawing.Point(335, 365);
+            this.panel_themeKnown.Name = "panel_themeKnown";
+            this.panel_themeKnown.Size = new System.Drawing.Size(28, 29);
+            this.panel_themeKnown.TabIndex = 5;
+            this.panel_themeKnown.Tag = "";
             // 
-            // panel_theme51
+            // panel_themeUnknown
             // 
-            this.panel_theme51.AccessibleDescription = "";
-            this.panel_theme51.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme51.Location = new System.Drawing.Point(810, 190);
-            this.panel_theme51.Name = "panel_theme51";
-            this.panel_theme51.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme51.TabIndex = 5;
-            this.panel_theme51.Tag = "";
+            this.panel_themeUnknown.AccessibleDescription = "";
+            this.panel_themeUnknown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeUnknown.Location = new System.Drawing.Point(335, 330);
+            this.panel_themeUnknown.Name = "panel_themeUnknown";
+            this.panel_themeUnknown.Size = new System.Drawing.Size(28, 29);
+            this.panel_themeUnknown.TabIndex = 5;
+            this.panel_themeUnknown.Tag = "";
             // 
-            // panel_theme50
+            // panel_themeDropDownMenuText
             // 
-            this.panel_theme50.AccessibleDescription = "";
-            this.panel_theme50.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme50.Location = new System.Drawing.Point(810, 155);
-            this.panel_theme50.Name = "panel_theme50";
-            this.panel_theme50.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme50.TabIndex = 5;
-            this.panel_theme50.Tag = "";
+            this.panel_themeDropDownMenuText.AccessibleDescription = "";
+            this.panel_themeDropDownMenuText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeDropDownMenuText.Location = new System.Drawing.Point(810, 190);
+            this.panel_themeDropDownMenuText.Name = "panel_themeDropDownMenuText";
+            this.panel_themeDropDownMenuText.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeDropDownMenuText.TabIndex = 5;
+            this.panel_themeDropDownMenuText.Tag = "";
             // 
-            // panel_theme12
+            // panel_themeDropDownMenuBack
             // 
-            this.panel_theme12.AccessibleDescription = "";
-            this.panel_theme12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme12.Location = new System.Drawing.Point(510, 85);
-            this.panel_theme12.Name = "panel_theme12";
-            this.panel_theme12.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme12.TabIndex = 5;
-            this.panel_theme12.Tag = "";
+            this.panel_themeDropDownMenuBack.AccessibleDescription = "";
+            this.panel_themeDropDownMenuBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeDropDownMenuBack.Location = new System.Drawing.Point(810, 155);
+            this.panel_themeDropDownMenuBack.Name = "panel_themeDropDownMenuBack";
+            this.panel_themeDropDownMenuBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeDropDownMenuBack.TabIndex = 5;
+            this.panel_themeDropDownMenuBack.Tag = "";
             // 
-            // panel_theme11
+            // panel_themeMenuFore
             // 
-            this.panel_theme11.AccessibleDescription = "";
-            this.panel_theme11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme11.Location = new System.Drawing.Point(510, 50);
-            this.panel_theme11.Name = "panel_theme11";
-            this.panel_theme11.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme11.TabIndex = 5;
-            this.panel_theme11.Tag = "";
+            this.panel_themeMenuFore.AccessibleDescription = "";
+            this.panel_themeMenuFore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeMenuFore.Location = new System.Drawing.Point(510, 85);
+            this.panel_themeMenuFore.Name = "panel_themeMenuFore";
+            this.panel_themeMenuFore.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeMenuFore.TabIndex = 5;
+            this.panel_themeMenuFore.Tag = "";
             // 
-            // panel_theme80
+            // panel_themeMenuBack
             // 
-            this.panel_theme80.AccessibleDescription = "";
-            this.panel_theme80.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme80.Location = new System.Drawing.Point(330, 50);
-            this.panel_theme80.Name = "panel_theme80";
-            this.panel_theme80.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme80.TabIndex = 5;
-            this.panel_theme80.Tag = "";
+            this.panel_themeMenuBack.AccessibleDescription = "";
+            this.panel_themeMenuBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeMenuBack.Location = new System.Drawing.Point(510, 50);
+            this.panel_themeMenuBack.Name = "panel_themeMenuBack";
+            this.panel_themeMenuBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeMenuBack.TabIndex = 5;
+            this.panel_themeMenuBack.Tag = "";
             // 
-            // panel_theme9
+            // panel_themeGridAltBack
             // 
-            this.panel_theme9.AccessibleDescription = "";
-            this.panel_theme9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme9.Location = new System.Drawing.Point(270, 50);
-            this.panel_theme9.Name = "panel_theme9";
-            this.panel_theme9.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme9.TabIndex = 5;
-            this.panel_theme9.Tag = "";
+            this.panel_themeGridAltBack.AccessibleDescription = "";
+            this.panel_themeGridAltBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridAltBack.Location = new System.Drawing.Point(330, 50);
+            this.panel_themeGridAltBack.Name = "panel_themeGridAltBack";
+            this.panel_themeGridAltBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridAltBack.TabIndex = 5;
+            this.panel_themeGridAltBack.Tag = "";
             // 
-            // panel_theme8
+            // panel_themeGridCellBack
             // 
-            this.panel_theme8.AccessibleDescription = "";
-            this.panel_theme8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme8.Location = new System.Drawing.Point(211, 85);
-            this.panel_theme8.Name = "panel_theme8";
-            this.panel_theme8.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme8.TabIndex = 5;
-            this.panel_theme8.Tag = "";
+            this.panel_themeGridCellBack.AccessibleDescription = "";
+            this.panel_themeGridCellBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridCellBack.Location = new System.Drawing.Point(270, 50);
+            this.panel_themeGridCellBack.Name = "panel_themeGridCellBack";
+            this.panel_themeGridCellBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridCellBack.TabIndex = 5;
+            this.panel_themeGridCellBack.Tag = "";
             // 
-            // panel_theme7
+            // panel_themeGridFore
             // 
-            this.panel_theme7.AccessibleDescription = "";
-            this.panel_theme7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme7.Location = new System.Drawing.Point(210, 50);
-            this.panel_theme7.Name = "panel_theme7";
-            this.panel_theme7.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme7.TabIndex = 5;
-            this.panel_theme7.Tag = "";
+            this.panel_themeGridFore.AccessibleDescription = "";
+            this.panel_themeGridFore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridFore.Location = new System.Drawing.Point(211, 85);
+            this.panel_themeGridFore.Name = "panel_themeGridFore";
+            this.panel_themeGridFore.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridFore.TabIndex = 5;
+            this.panel_themeGridFore.Tag = "";
             // 
-            // panel3
+            // panel_themeGridBack
             // 
-            this.panel3.AccessibleDescription = "";
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Location = new System.Drawing.Point(450, 50);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(28, 28);
-            this.panel3.TabIndex = 5;
-            this.panel3.Tag = "";
+            this.panel_themeGridBack.AccessibleDescription = "";
+            this.panel_themeGridBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeGridBack.Location = new System.Drawing.Point(210, 50);
+            this.panel_themeGridBack.Name = "panel_themeGridBack";
+            this.panel_themeGridBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeGridBack.TabIndex = 5;
+            this.panel_themeGridBack.Tag = "";
             // 
-            // panel_theme5
+            // panel_themeButtonBack
             // 
-            this.panel_theme5.AccessibleDescription = "";
-            this.panel_theme5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme5.Location = new System.Drawing.Point(390, 50);
-            this.panel_theme5.Name = "panel_theme5";
-            this.panel_theme5.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme5.TabIndex = 5;
-            this.panel_theme5.Tag = "";
+            this.panel_themeButtonBack.AccessibleDescription = "";
+            this.panel_themeButtonBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeButtonBack.Location = new System.Drawing.Point(390, 50);
+            this.panel_themeButtonBack.Name = "panel_themeButtonBack";
+            this.panel_themeButtonBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeButtonBack.TabIndex = 5;
+            this.panel_themeButtonBack.Tag = "";
             // 
-            // panel_theme2
+            // panel_themeTBBack
             // 
-            this.panel_theme2.AccessibleDescription = "";
-            this.panel_theme2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme2.Location = new System.Drawing.Point(150, 50);
-            this.panel_theme2.Name = "panel_theme2";
-            this.panel_theme2.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme2.TabIndex = 5;
-            this.panel_theme2.Tag = "";
+            this.panel_themeTBBack.AccessibleDescription = "";
+            this.panel_themeTBBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTBBack.Location = new System.Drawing.Point(150, 50);
+            this.panel_themeTBBack.Name = "panel_themeTBBack";
+            this.panel_themeTBBack.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeTBBack.TabIndex = 5;
+            this.panel_themeTBBack.Tag = "";
             // 
-            // panel_theme1
+            // panel_themeForm
             // 
-            this.panel_theme1.AccessibleDescription = "Button text";
-            this.panel_theme1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme1.Location = new System.Drawing.Point(89, 50);
-            this.panel_theme1.Name = "panel_theme1";
-            this.panel_theme1.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme1.TabIndex = 5;
-            this.panel_theme1.Tag = "";
+            this.panel_themeForm.AccessibleDescription = "Button text";
+            this.panel_themeForm.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeForm.Location = new System.Drawing.Point(89, 50);
+            this.panel_themeForm.Name = "panel_themeForm";
+            this.panel_themeForm.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeForm.TabIndex = 5;
+            this.panel_themeForm.Tag = "";
             // 
             // textBox_Font
             // 
@@ -1372,7 +1393,7 @@ namespace ExtendedControls
             // 
             this.groupBox1.Controls.Add(this.label27);
             this.groupBox1.Controls.Add(this.checkBox_theme_windowframe);
-            this.groupBox1.Controls.Add(this.panel_theme72);
+            this.groupBox1.Controls.Add(this.panel_themeTransparentColourKey);
             this.groupBox1.Controls.Add(this.buttonFontChange);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label_opacity);
@@ -1402,19 +1423,19 @@ namespace ExtendedControls
             this.label27.TabIndex = 11;
             this.label27.Text = "Transparent Colour Key";
             // 
-            // panel_theme72
+            // panel_themeTransparentColourKey
             // 
-            this.panel_theme72.AccessibleDescription = "";
-            this.panel_theme72.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_theme72.Location = new System.Drawing.Point(351, 74);
-            this.panel_theme72.Name = "panel_theme72";
-            this.panel_theme72.Size = new System.Drawing.Size(28, 28);
-            this.panel_theme72.TabIndex = 6;
-            this.panel_theme72.Tag = "";
+            this.panel_themeTransparentColourKey.AccessibleDescription = "";
+            this.panel_themeTransparentColourKey.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTransparentColourKey.Location = new System.Drawing.Point(351, 74);
+            this.panel_themeTransparentColourKey.Name = "panel_themeTransparentColourKey";
+            this.panel_themeTransparentColourKey.Size = new System.Drawing.Size(28, 28);
+            this.panel_themeTransparentColourKey.TabIndex = 6;
+            this.panel_themeTransparentColourKey.Tag = "";
             // 
             // buttonFontChange
             // 
-            this.buttonFontChange.Location = new System.Drawing.Point(496, 29);
+            this.buttonFontChange.Location = new System.Drawing.Point(478, 27);
             this.buttonFontChange.Name = "buttonFontChange";
             this.buttonFontChange.Size = new System.Drawing.Size(80, 24);
             this.buttonFontChange.TabIndex = 0;
@@ -1430,6 +1451,114 @@ namespace ExtendedControls
             this.label3.Size = new System.Drawing.Size(28, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Font";
+            // 
+            // numericUpDownDisabledScaling
+            // 
+            this.numericUpDownDisabledScaling.DecimalPlaces = 2;
+            this.numericUpDownDisabledScaling.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownDisabledScaling.Location = new System.Drawing.Point(757, 100);
+            this.numericUpDownDisabledScaling.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownDisabledScaling.Name = "numericUpDownDisabledScaling";
+            this.numericUpDownDisabledScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownDisabledScaling.TabIndex = 12;
+            // 
+            // numericUpDownMouseSelectedScaling
+            // 
+            this.numericUpDownMouseSelectedScaling.DecimalPlaces = 2;
+            this.numericUpDownMouseSelectedScaling.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownMouseSelectedScaling.Location = new System.Drawing.Point(757, 74);
+            this.numericUpDownMouseSelectedScaling.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownMouseSelectedScaling.Name = "numericUpDownMouseSelectedScaling";
+            this.numericUpDownMouseSelectedScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownMouseSelectedScaling.TabIndex = 12;
+            // 
+            // numericUpDownMouseOverScaling
+            // 
+            this.numericUpDownMouseOverScaling.DecimalPlaces = 2;
+            this.numericUpDownMouseOverScaling.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownMouseOverScaling.Location = new System.Drawing.Point(757, 50);
+            this.numericUpDownMouseOverScaling.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownMouseOverScaling.Name = "numericUpDownMouseOverScaling";
+            this.numericUpDownMouseOverScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownMouseOverScaling.TabIndex = 12;
+            // 
+            // numericUpDownDialogFontScaling
+            // 
+            this.numericUpDownDialogFontScaling.DecimalPlaces = 2;
+            this.numericUpDownDialogFontScaling.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownDialogFontScaling.Location = new System.Drawing.Point(757, 24);
+            this.numericUpDownDialogFontScaling.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownDialogFontScaling.Name = "numericUpDownDialogFontScaling";
+            this.numericUpDownDialogFontScaling.Size = new System.Drawing.Size(56, 20);
+            this.numericUpDownDialogFontScaling.TabIndex = 12;
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(599, 102);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(142, 13);
+            this.label41.TabIndex = 6;
+            this.label41.Text = "Item Disabled Colour Scaling";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(586, 76);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(155, 13);
+            this.label37.TabIndex = 6;
+            this.label37.Text = "Mouse Selected Colour Scaling";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(606, 52);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(136, 13);
+            this.label34.TabIndex = 6;
+            this.label34.Text = "Mouse Over Colour Scaling";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(643, 26);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(99, 13);
+            this.label33.TabIndex = 6;
+            this.label33.Text = "Dialog Font Scaling";
             // 
             // checkBoxDarkMode
             // 
@@ -1454,114 +1583,6 @@ namespace ExtendedControls
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // numericUpDownDialogFontScaling
-            // 
-            this.numericUpDownDialogFontScaling.DecimalPlaces = 2;
-            this.numericUpDownDialogFontScaling.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownDialogFontScaling.Location = new System.Drawing.Point(757, 24);
-            this.numericUpDownDialogFontScaling.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownDialogFontScaling.Name = "numericUpDownDialogFontScaling";
-            this.numericUpDownDialogFontScaling.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownDialogFontScaling.TabIndex = 12;
-            // 
-            // numericUpDownMouseOverScaling
-            // 
-            this.numericUpDownMouseOverScaling.DecimalPlaces = 2;
-            this.numericUpDownMouseOverScaling.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownMouseOverScaling.Location = new System.Drawing.Point(757, 50);
-            this.numericUpDownMouseOverScaling.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownMouseOverScaling.Name = "numericUpDownMouseOverScaling";
-            this.numericUpDownMouseOverScaling.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownMouseOverScaling.TabIndex = 12;
-            // 
-            // numericUpDownMouseSelectedScaling
-            // 
-            this.numericUpDownMouseSelectedScaling.DecimalPlaces = 2;
-            this.numericUpDownMouseSelectedScaling.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownMouseSelectedScaling.Location = new System.Drawing.Point(757, 74);
-            this.numericUpDownMouseSelectedScaling.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownMouseSelectedScaling.Name = "numericUpDownMouseSelectedScaling";
-            this.numericUpDownMouseSelectedScaling.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownMouseSelectedScaling.TabIndex = 12;
-            // 
-            // numericUpDownDisabledScaling
-            // 
-            this.numericUpDownDisabledScaling.DecimalPlaces = 2;
-            this.numericUpDownDisabledScaling.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.numericUpDownDisabledScaling.Location = new System.Drawing.Point(757, 100);
-            this.numericUpDownDisabledScaling.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownDisabledScaling.Name = "numericUpDownDisabledScaling";
-            this.numericUpDownDisabledScaling.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownDisabledScaling.TabIndex = 12;
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(643, 26);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(99, 13);
-            this.label33.TabIndex = 6;
-            this.label33.Text = "Dialog Font Scaling";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(606, 52);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(136, 13);
-            this.label34.TabIndex = 6;
-            this.label34.Text = "Mouse Over Colour Scaling";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(586, 76);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(155, 13);
-            this.label37.TabIndex = 6;
-            this.label37.Text = "Mouse Selected Colour Scaling";
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(599, 102);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(142, 13);
-            this.label41.TabIndex = 6;
-            this.label41.Text = "Item Disabled Colour Scaling";
-            // 
             // ThemeEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1581,21 +1602,21 @@ namespace ExtendedControls
             this.groupBoxColors.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBDir)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBDir)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBCS)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBTS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBInnerScaling)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBTickStyleTickSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownButDir)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBDir)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBGradiantDir)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGBGA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLBGA)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownButGA)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBGA)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBButtonStyleGradient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDialogFontScaling)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseOverScaling)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseSelectedScaling)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDisabledScaling)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseSelectedScaling)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMouseOverScaling)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDialogFontScaling)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1605,8 +1626,8 @@ namespace ExtendedControls
 
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.GroupBox groupBoxColors;
-        private System.Windows.Forms.Panel panel_theme19;
-        private System.Windows.Forms.Panel panel_theme18;
+        private System.Windows.Forms.Panel panel_themeGBFore;
+        private System.Windows.Forms.Panel panel_themeGBBack;
         private System.Windows.Forms.TextBox textBox_Font;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label22;
@@ -1623,65 +1644,65 @@ namespace ExtendedControls
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel_theme15;
-        private System.Windows.Forms.Panel panel_theme4;
-        private System.Windows.Forms.Panel panel_theme3;
-        private System.Windows.Forms.Panel panel_theme6;
-        private System.Windows.Forms.Panel panel_theme10;
-        private System.Windows.Forms.Panel panel_theme17;
-        private System.Windows.Forms.Panel panel_theme16;
-        private System.Windows.Forms.Panel panel_theme14;
-        private System.Windows.Forms.Panel panel_theme13;
-        private System.Windows.Forms.Panel panel_theme12;
-        private System.Windows.Forms.Panel panel_theme11;
-        private System.Windows.Forms.Panel panel_theme9;
-        private System.Windows.Forms.Panel panel_theme8;
-        private System.Windows.Forms.Panel panel_theme7;
-        private System.Windows.Forms.Panel panel_theme5;
-        private System.Windows.Forms.Panel panel_theme2;
-        private System.Windows.Forms.Panel panel_theme1;
+        private System.Windows.Forms.Panel panel_themeTBSucess;
+        private System.Windows.Forms.Panel panel_themeTBHighlight;
+        private System.Windows.Forms.Panel panel_themeTBFore;
+        private System.Windows.Forms.Panel panel_themeButtonFore;
+        private System.Windows.Forms.Panel panel_themeGridCellFore;
+        private System.Windows.Forms.Panel panel_themeLabel;
+        private System.Windows.Forms.Panel panel_themeCheckBoxBack;
+        private System.Windows.Forms.Panel panel_themeKnown;
+        private System.Windows.Forms.Panel panel_themeUnknown;
+        private System.Windows.Forms.Panel panel_themeMenuFore;
+        private System.Windows.Forms.Panel panel_themeMenuBack;
+        private System.Windows.Forms.Panel panel_themeGridCellBack;
+        private System.Windows.Forms.Panel panel_themeGridFore;
+        private System.Windows.Forms.Panel panel_themeGridBack;
+        private System.Windows.Forms.Panel panel_themeButtonBack;
+        private System.Windows.Forms.Panel panel_themeTBBack;
+        private System.Windows.Forms.Panel panel_themeForm;
         private System.Windows.Forms.Label label_opacity;
         private System.Windows.Forms.TrackBar trackBar_theme_opacity;
         private System.Windows.Forms.CheckBox checkBox_theme_windowframe;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Panel panel_theme30;
+        private System.Windows.Forms.Panel panel_themeTBBorder;
         private System.Windows.Forms.ComboBox comboBox_TextBorder;
         private System.Windows.Forms.ComboBox comboBox_ButtonStyle;
-        private System.Windows.Forms.Panel panel_theme31;
+        private System.Windows.Forms.Panel panel_themeButtonBorder;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Panel panel_theme32;
-        private System.Windows.Forms.Panel panel_theme33;
+        private System.Windows.Forms.Panel panel_themeGridBorderBorder;
+        private System.Windows.Forms.Panel panel_themeGBBorder;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Panel panel_theme35;
+        private System.Windows.Forms.Panel panel_themeTabControlBorder;
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Panel panel_theme45;
-        private System.Windows.Forms.Panel panel_theme42;
-        private System.Windows.Forms.Panel panel_theme44;
-        private System.Windows.Forms.Panel panel_theme41;
-        private System.Windows.Forms.Panel panel_theme43;
-        private System.Windows.Forms.Panel panel_theme40;
+        private System.Windows.Forms.Panel panel_themeGridScrollButton;
+        private System.Windows.Forms.Panel panel_themeTBScrollButton;
+        private System.Windows.Forms.Panel panel_themeGridScollArrow;
+        private System.Windows.Forms.Panel panel_themeTBScrollArrow;
+        private System.Windows.Forms.Panel panel_themeGridScrollSlider;
+        private System.Windows.Forms.Panel panel_themeTBScrollSlider;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Panel panel_theme60;
-        private System.Windows.Forms.Panel panel_theme51;
-        private System.Windows.Forms.Panel panel_theme50;
-        private System.Windows.Forms.Panel panel_theme61;
+        private System.Windows.Forms.Panel panel_themeToolStripBack;
+        private System.Windows.Forms.Panel panel_themeDropDownMenuText;
+        private System.Windows.Forms.Panel panel_themeDropDownMenuBack;
+        private System.Windows.Forms.Panel panel_themeToolStripBorder;
         private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Panel panel_theme70;
+        private System.Windows.Forms.Panel panel_themeCheckBoxTick;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Panel panel_theme71;
+        private System.Windows.Forms.Panel panel_themeSPanel;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Panel panel_theme72;
+        private System.Windows.Forms.Panel panel_themeTransparentColourKey;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Panel panel_theme81;
-        private System.Windows.Forms.Panel panel_theme80;
-        private System.Windows.Forms.Panel panel_theme82;
+        private System.Windows.Forms.Panel panel_themeGridAltFore;
+        private System.Windows.Forms.Panel panel_themeGridAltBack;
+        private System.Windows.Forms.Panel panel_themeGridHighlightBack;
         private System.Windows.Forms.CheckBox checkBoxDarkMode;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Label label32;
@@ -1695,10 +1716,10 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel_chart1;
         private System.Windows.Forms.Button buttonFontChange;
-        private System.Windows.Forms.NumericUpDown numericUpDownCBGA;
+        private System.Windows.Forms.NumericUpDown numericUpDownCBButtonStyleGradient;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.NumericUpDown numericUpDownCBDir;
+        private System.Windows.Forms.NumericUpDown numericUpDownCBGradiantDir;
         private System.Windows.Forms.NumericUpDown numericUpDownButDir;
         private System.Windows.Forms.NumericUpDown numericUpDownButGA;
         private System.Windows.Forms.NumericUpDown numericUpDownGBDir;
@@ -1706,13 +1727,12 @@ namespace ExtendedControls
         private System.Windows.Forms.NumericUpDown numericUpDownGBGA;
         private System.Windows.Forms.NumericUpDown numericUpDownLBGA;
         private System.Windows.Forms.Label label38;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.NumericUpDown numericUpDownCBTS;
+        private System.Windows.Forms.NumericUpDown numericUpDownCBTickStyleTickSize;
         private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.NumericUpDown numericUpDownCBCS;
+        private System.Windows.Forms.NumericUpDown numericUpDownCBInnerScaling;
         private System.Windows.Forms.Label label40;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Panel panel_theme90;
+        private System.Windows.Forms.Panel panel_themeCheckBoxButtonApp;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.NumericUpDown numericUpDownDisabledScaling;
         private System.Windows.Forms.NumericUpDown numericUpDownMouseSelectedScaling;
@@ -1722,5 +1742,8 @@ namespace ExtendedControls
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Panel panel_themeCheckBoxText;
+        private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Label label42;
     }
 }

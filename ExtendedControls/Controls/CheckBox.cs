@@ -281,27 +281,26 @@ namespace ExtendedControls
         {
             BackColor = t.GroupBoxOverride(Parent, t.Form);
 
-            CheckBoxGradientDirection = t.CheckBoxGradientDirection;
-            CheckBoxDisabledScaling = t.DisabledScaling;
-
             if (Appearance == Appearance.Button)
             {
                 ForeColor = t.ButtonTextColor;
-                MouseOverColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
-                CheckColor = t.CheckBoxButtonTick;
+                CheckColor = t.CheckBoxButtonTickedBack;
                 ButtonGradientDirection = t.CheckBoxGradientDirection;
-                ButtonColorScaling = t.CheckBoxGradientAmount;
+                ButtonColorScaling = t.CheckBoxButtonStyleGradientAmount;
+                MouseOverColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
                 FlatAppearance.BorderColor = t.ButtonBorderColor;
                 FlatAppearance.BorderSize = 1;
             }
             else
             {
-                ForeColor = t.CheckBox;
-                CheckBoxColor = t.CheckBox;
+                ForeColor = t.CheckBoxText;
+                CheckBoxColor = t.CheckBoxBack;
+                CheckBoxInnerColor = t.CheckBoxBack.Multiply(t.CheckBoxTickStyleInnerScaling);
                 CheckColor = t.CheckBoxTick;
-                CheckBoxInnerColor = t.CheckBox.Multiply(t.CheckBoxInnerScaling);
-                MouseOverColor = t.CheckBox.Multiply(t.MouseOverScaling);
+                CheckBoxGradientDirection = t.CheckBoxGradientDirection;
+                MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
                 TickBoxReductionRatio = t.CheckBoxTickSize;
+                CheckBoxDisabledScaling = t.DisabledScaling;
             }
 
             FlatStyle = t.ButtonFlatStyle;
