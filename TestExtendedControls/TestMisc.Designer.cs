@@ -184,15 +184,12 @@
             // 
             this.extCheckBox1.AutoSize = true;
             this.extCheckBox1.CheckBoxColor = System.Drawing.Color.Gray;
-            this.extCheckBox1.CheckBoxDisabledScaling = 0.5F;
             this.extCheckBox1.CheckBoxInnerColor = System.Drawing.Color.White;
             this.extCheckBox1.CheckColor = System.Drawing.Color.DarkBlue;
-            this.extCheckBox1.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBox1.ImageIndeterminate = null;
             this.extCheckBox1.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.extCheckBox1.ImageUnchecked = null;
             this.extCheckBox1.Location = new System.Drawing.Point(3, 53);
-            this.extCheckBox1.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.extCheckBox1.Name = "extCheckBox1";
             this.extCheckBox1.Size = new System.Drawing.Size(95, 17);
             this.extCheckBox1.TabIndex = 4;
@@ -239,14 +236,12 @@
             // extComboBox1
             // 
             this.extComboBox1.BorderColor = System.Drawing.Color.White;
-            this.extComboBox1.ButtonColorScaling = 0.5F;
             this.extComboBox1.DataSource = null;
             this.extComboBox1.DisableBackgroundDisabledShadingGradient = false;
             this.extComboBox1.DisplayMember = "";
             this.extComboBox1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.extComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extComboBox1.Location = new System.Drawing.Point(3, 3);
-            this.extComboBox1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.extComboBox1.Name = "extComboBox1";
             this.extComboBox1.SelectedIndex = -1;
             this.extComboBox1.SelectedItem = null;
@@ -316,9 +311,7 @@
             // 
             // extGroupBox1
             // 
-            this.extGroupBox1.BackColorScaling = 0.5F;
             this.extGroupBox1.BorderColor = System.Drawing.Color.LightGray;
-            this.extGroupBox1.BorderColorScaling = 0.5F;
             this.extGroupBox1.Controls.Add(this.tableLayoutPanel3);
             this.extGroupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.extGroupBox1.Location = new System.Drawing.Point(0, 244);

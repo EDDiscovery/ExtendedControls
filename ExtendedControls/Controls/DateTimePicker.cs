@@ -32,6 +32,7 @@ namespace ExtendedControls
         public Color SelectedColor { get; set; } = Color.Yellow;    // back colour when item is selected.
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; PerformLayout(); } }
         public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
+        public float DisabledScaling { get; set; } = 0.5F;           
 
         public string CustomFormat { get { return customformat; } set { customformat = value; Recalc(); } }
         public DateTimePickerFormat Format { get { return format; } set { SetFormat(value); } }
@@ -239,7 +240,7 @@ namespace ExtendedControls
             using (Brush br = new SolidBrush(this.TextBackColor))
                 e.Graphics.FillRectangle(br, drawarea);
 
-            using (Brush textb = new SolidBrush(this.ForeColor))
+            using (Brush textb = new SolidBrush(this.ForeColor.Multiply(Enabled ? 1.0F : DisabledScaling)))
             {
                 for (int i = 0; i < partlist.Count; i++)
                 {
@@ -475,28 +476,33 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            BorderColor = t.GridBorderLines;
-            ForeColor = t.TextBlockColor;
-            TextBackColor = t.TextBackColor;
             BackColor = t.Form;
-            SelectedColor = t.TextBlockColor.Multiply(t.DisabledScaling);
-            checkbox.FlatStyle = t.ButtonFlatStyle;
-            checkbox.TickBoxReductionRatio = t.CheckBoxTickSize;
-            checkbox.ForeColor = t.CheckBoxText;
-            checkbox.CheckBoxColor = t.CheckBoxBack;
-            Color inner = t.CheckBoxBack.Multiply(t.CheckBoxTickStyleInnerScaling);
-            if (inner.GetBrightness() < 0.1)        // double checking
-                inner = Color.Gray;
-            checkbox.CheckBoxInnerColor = inner;
-            checkbox.CheckColor = t.CheckBoxTick;
-            checkbox.MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
+            ForeColor = t.TextBlockForeColor;
+            BorderColor = t.GridBorderLines;
+            TextBackColor = t.TextBlockBackColor;
+            SelectedColor = t.TextBlockForeColor.Multiply(t.DisabledScaling);
+            DisabledScaling = t.DisabledScaling;
 
-            // we theme the updown ourselves and do not use its themer
+            checkbox.BackColor = BackColor;
+            checkbox.ForeColor = t.CheckBoxText;
+            checkbox.DisabledScaling = t.DisabledScaling;
+            checkbox.MouseOverScaling = t.MouseOverScaling;
+            checkbox.MouseSelectedScaling = t.MouseSelectedScaling;
+
+            checkbox.CheckBoxColor = t.CheckBoxBack;
+            checkbox.CheckBoxInnerColor = t.CheckBoxBack2;
+            checkbox.CheckColor = t.CheckBoxTick;
+            checkbox.CheckBoxGradientDirection = t.CheckBoxGradientDirection;
+            checkbox.TickBoxReductionRatio = t.CheckBoxTickSize;
+            checkbox.FlatStyle = t.ButtonFlatStyle;
+
             updown.BackColor = t.ButtonBackColor;
-            updown.BorderColor = t.GridBorderLines;
-            updown.ForeColor = t.TextBlockColor;
-            updown.MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
-            updown.MouseSelectedColor = t.CheckBoxBack.Multiply(t.MouseSelectedScaling);
+            updown.BackColor2 = t.ButtonBackColor2;
+            updown.ForeColor = t.ButtonTextColor;
+            updown.MouseOverScaling = t.MouseOverScaling;
+            updown.MouseSelectedScaling = t.MouseSelectedScaling;
+            updown.BorderColor = t.ButtonBorderColor;
+            updown.GradientDirection = t.ButtonGradientDirection;
 
             return false;
         }

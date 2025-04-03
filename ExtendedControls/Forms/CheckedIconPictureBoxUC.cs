@@ -1071,7 +1071,7 @@ namespace ExtendedControls
         public bool Theme(Theme t, Font fnt)
         {
             BackColor = t.Form;
-            ForeColor = t.TextBlockColor;
+            ForeColor = t.TextBlockForeColor;
             BorderColor = t.GridBorderLines;
             BackColor = t.Form;
             SliderColor = t.GridSliderBack;

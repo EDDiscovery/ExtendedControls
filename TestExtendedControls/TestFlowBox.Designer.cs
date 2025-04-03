@@ -145,9 +145,7 @@
             // extGroupBox2
             // 
             this.extGroupBox2.BackColor = System.Drawing.Color.PaleGoldenrod;
-            this.extGroupBox2.BackColorScaling = 0.5F;
             this.extGroupBox2.BorderColor = System.Drawing.Color.LightGray;
-            this.extGroupBox2.BorderColorScaling = 0.5F;
             this.extGroupBox2.Controls.Add(this.extFlowLayoutPanel1);
             this.extGroupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.extGroupBox2.Location = new System.Drawing.Point(0, 174);
@@ -254,9 +252,7 @@
             // extGroupBox1
             // 
             this.extGroupBox1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extGroupBox1.BackColorScaling = 0.5F;
             this.extGroupBox1.BorderColor = System.Drawing.Color.LightGray;
-            this.extGroupBox1.BorderColorScaling = 0.5F;
             this.extGroupBox1.Controls.Add(this.flowLayoutPanel2);
             this.extGroupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.extGroupBox1.Location = new System.Drawing.Point(0, 97);

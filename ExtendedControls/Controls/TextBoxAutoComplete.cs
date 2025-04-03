@@ -36,12 +36,15 @@ namespace ExtendedControls
 
         // drop down selection box
         public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
+        public Color DropDownSelectionBackgroundColor2 { get; set; } = Color.Gray;      // background
+        public Color DropDownSelectionColor { get; set; } = Color.Green;       // selection bar
         public Color DropDownSliderColor { get; set; } = Color.Green;
         public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
         public Color DropDownBorderColor { get; set; } = Color.Green;
         public Color DropDownSliderButtonColor { get; set; } = Color.Blue;
-        public Color MouseOverDropDownSliderButtonColor { get; set; } = Color.Red;
+        public Color DropDownMouseOverSliderButtonColor { get; set; } = Color.Red;
         public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
+        public float GradientDirection { get; set; } = 90F;
 
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 
@@ -214,13 +217,16 @@ namespace ExtendedControls
                     dropdown.ListBox.BackColor = BackColor;
                     dropdown.ListBox.ForeColor = ForeColor;
                     dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
-                    dropdown.ListBox.BorderColor = this.BorderColor;
+                    dropdown.ListBox.SelectionBackColor2 = this.DropDownSelectionBackgroundColor2;
+                    dropdown.ListBox.SelectionColor = this.DropDownSelectionColor;
+                    dropdown.ListBox.GradientDirection = this.GradientDirection;
+                    dropdown.ListBox.BorderColor = this.DropDownBorderColor;
                     dropdown.ListBox.ScrollBar.BackColor = dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
                     dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
                     dropdown.ListBox.ScrollBar.ThumbBorderColor = dropdown.ListBox.ScrollBar.ArrowBorderColor =
                                                                     dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
                     dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
-                    dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.MouseOverDropDownSliderButtonColor;
+                    dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.DropDownMouseOverSliderButtonColor;
                     dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
 
 

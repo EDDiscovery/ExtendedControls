@@ -46,9 +46,7 @@
             this.checkBoxCustom1.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustom1.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustom1.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustom1.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustom1.Location = new System.Drawing.Point(21, 280);
-            this.checkBoxCustom1.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustom1.Name = "checkBoxCustom1";
             this.checkBoxCustom1.Size = new System.Drawing.Size(106, 23);
             this.checkBoxCustom1.TabIndex = 4;
@@ -69,14 +67,12 @@
             // comboBoxCustom1
             // 
             this.comboBoxCustom1.BorderColor = System.Drawing.Color.White;
-            this.comboBoxCustom1.ButtonColorScaling = 0.5F;
             this.comboBoxCustom1.DataSource = null;
             this.comboBoxCustom1.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustom1.DisplayMember = "";
             this.comboBoxCustom1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustom1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBoxCustom1.Location = new System.Drawing.Point(21, 234);
-            this.comboBoxCustom1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustom1.Name = "comboBoxCustom1";
             this.comboBoxCustom1.SelectedIndex = -1;
             this.comboBoxCustom1.SelectedItem = null;

@@ -131,15 +131,12 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxCustomComplete.AutoSize = true;
             this.checkBoxCustomComplete.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomComplete.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomComplete.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomComplete.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomComplete.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustomComplete.ImageIndeterminate = null;
             this.checkBoxCustomComplete.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomComplete.ImageUnchecked = null;
             this.checkBoxCustomComplete.Location = new System.Drawing.Point(15, 132);
-            this.checkBoxCustomComplete.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomComplete.Name = "checkBoxCustomComplete";
             this.checkBoxCustomComplete.Size = new System.Drawing.Size(159, 17);
             this.checkBoxCustomComplete.TabIndex = 1;
@@ -240,14 +237,12 @@ namespace ExtendedAudioForms
             // comboBoxCustomPriority
             // 
             this.comboBoxCustomPriority.BorderColor = System.Drawing.Color.White;
-            this.comboBoxCustomPriority.ButtonColorScaling = 0.5F;
             this.comboBoxCustomPriority.DataSource = null;
             this.comboBoxCustomPriority.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomPriority.DisplayMember = "";
             this.comboBoxCustomPriority.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomPriority.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomPriority.Location = new System.Drawing.Point(305, 132);
-            this.comboBoxCustomPriority.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomPriority.Name = "comboBoxCustomPriority";
             this.comboBoxCustomPriority.SelectedIndex = -1;
             this.comboBoxCustomPriority.SelectedItem = null;
@@ -322,14 +317,12 @@ namespace ExtendedAudioForms
             // comboBoxCustomVoice
             // 
             this.comboBoxCustomVoice.BorderColor = System.Drawing.Color.White;
-            this.comboBoxCustomVoice.ButtonColorScaling = 0.5F;
             this.comboBoxCustomVoice.DataSource = null;
             this.comboBoxCustomVoice.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomVoice.DisplayMember = "";
             this.comboBoxCustomVoice.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomVoice.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomVoice.Location = new System.Drawing.Point(59, 211);
-            this.comboBoxCustomVoice.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomVoice.Name = "comboBoxCustomVoice";
             this.comboBoxCustomVoice.SelectedIndex = -1;
             this.comboBoxCustomVoice.SelectedItem = null;
@@ -344,15 +337,12 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxCustomLiteral.AutoSize = true;
             this.checkBoxCustomLiteral.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomLiteral.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomLiteral.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomLiteral.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomLiteral.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustomLiteral.ImageIndeterminate = null;
             this.checkBoxCustomLiteral.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomLiteral.ImageUnchecked = null;
             this.checkBoxCustomLiteral.Location = new System.Drawing.Point(197, 132);
-            this.checkBoxCustomLiteral.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomLiteral.Name = "checkBoxCustomLiteral";
             this.checkBoxCustomLiteral.Size = new System.Drawing.Size(54, 17);
             this.checkBoxCustomLiteral.TabIndex = 1;
@@ -429,15 +419,12 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxCustomR.AutoSize = true;
             this.checkBoxCustomR.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomR.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomR.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomR.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomR.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustomR.ImageIndeterminate = null;
             this.checkBoxCustomR.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomR.ImageUnchecked = null;
             this.checkBoxCustomR.Location = new System.Drawing.Point(271, 319);
-            this.checkBoxCustomR.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomR.Name = "checkBoxCustomR";
             this.checkBoxCustomR.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomR.TabIndex = 8;
@@ -450,15 +437,12 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxCustomV.AutoSize = true;
             this.checkBoxCustomV.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomV.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomV.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomV.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomV.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustomV.ImageIndeterminate = null;
             this.checkBoxCustomV.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomV.ImageUnchecked = null;
             this.checkBoxCustomV.Location = new System.Drawing.Point(271, 261);
-            this.checkBoxCustomV.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomV.Name = "checkBoxCustomV";
             this.checkBoxCustomV.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomV.TabIndex = 8;

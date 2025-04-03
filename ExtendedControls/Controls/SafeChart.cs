@@ -553,8 +553,7 @@ namespace ExtendedControls
 
                 if (chart.Titles.Count > 0 && leftArrowButton.BackColor != chart.Titles[0].BackColor)       // so here, we want to override the themeing of a button to make it the same as titles
                 {
-                    leftArrowButton.BackColor = chart.Titles[0].BackColor;
-                    leftArrowButton.ButtonColorScaling = 1;
+                    leftArrowButton.BackColor = leftArrowButton.BackColor2 = chart.Titles[0].BackColor;
                 }
 
                 //                System.Diagnostics.Debug.WriteLine($"LA size = {leftArrowButton.Bounds} on {Width} {Height}");
@@ -565,8 +564,7 @@ namespace ExtendedControls
                 rightArrowButton.Bounds = area;
                 if (chart.Titles.Count > 0 && rightArrowButton.BackColor != chart.Titles[0].BackColor)
                 {
-                    rightArrowButton.BackColor = chart.Titles[0].BackColor;
-                    rightArrowButton.ButtonColorScaling = 1;
+                    rightArrowButton.BackColor = rightArrowButton.BackColor2 = chart.Titles[0].BackColor;
                 }
                 
             }

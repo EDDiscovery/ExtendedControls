@@ -25,15 +25,15 @@ namespace ExtendedControls
         // Flatstyle Popout/Flat mode, not Apprearance Button only
         public Color CheckBoxColor { get; set; } = Color.Gray;          // Normal only border area colour
         public Color CheckBoxInnerColor { get; set; } = Color.White;    // Normal only inner colour
-        public Color CheckColor { get; set; } = Color.DarkBlue;         // Button - back colour when checked, Normal - check colour
-        public Color MouseOverColor { get; set; } = Color.CornflowerBlue; // both - Mouse over 
-
+        public Color CheckColor { get; set; } = Color.DarkBlue;         // Button - back colour when checked 1, Normal - check colour
+        public Color CheckColor2 { get; set; } = Color.DarkBlue;        // Button - back colour when checked 2, Normal - unused
+        public float MouseOverScaling { get; set; } = 1.3F;
+        public float MouseSelectedScaling { get; set; } = 1.3F;
         public float TickBoxReductionRatio { get; set; } = 0.75f;       // Normal - size reduction
         public Image ImageUnchecked { get; set; } = null;               // Both - set image when unchecked.  Also set Image
         public Image ImageIndeterminate { get; set; } = null;           // Both - optional - can set this, if required, if using indeterminate value
-        public float ImageButtonDisabledScaling { get; set; } = 0.5F;   // Both - scaling when disabled - must call SetDrawnBitmapRemapTable
-        public float CheckBoxDisabledScaling { get; set; } = 0.5F;      // Both - text and check box scaling when disabled
-        public float ButtonColorScaling { get { return buttonColorScaling; } set { buttonColorScaling = value; Invalidate(); } }
+
+        public float DisabledScaling { get; set; } = 0.5F;   // Both - scaling when disabled - must call SetDrawnBitmapRemapTable
         public float ButtonGradientDirection { get { return buttongradientdirection; } set { buttongradientdirection = value; Invalidate(); } }
         public float CheckBoxGradientDirection { get { return checkboxgradientdirection; } set { checkboxgradientdirection = value; Invalidate(); } }
         public ImageLayout ImageLayout { get { return imagelayout; } set { imagelayout = value; Invalidate(); } }   // Both. Also use TextLayout for Buttons
@@ -43,7 +43,7 @@ namespace ExtendedControls
 
         public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)        // call to set up disable scaling
         {
-            DrawingHelpersStaticFunc.ComputeDrawnPanel(out DrawnImageAttributesEnabled, out DrawnImageAttributesDisabled, ImageButtonDisabledScaling, remap, colormatrix);
+            DrawingHelpersStaticFunc.ComputeDrawnPanel(out DrawnImageAttributesEnabled, out DrawnImageAttributesDisabled, DisabledScaling, remap, colormatrix);
         }
 
         public ExtCheckBox() : base()
@@ -91,15 +91,17 @@ namespace ExtendedControls
                     {
                         if (mouseover || CheckState == CheckState.Checked)
                         {
-                            Color bk = mouseover ? MouseOverColor : CheckColor;
+                            Color bk1 = CheckColor.Multiply(mouseover ? MouseOverScaling : 1.0f);
+                            Color bk2 = CheckColor2.Multiply(mouseover ? MouseOverScaling : 1.0f);
+
                             if (FlatStyle == FlatStyle.Flat)
                             {
-                                using (Brush brush = new SolidBrush(bk))
+                                using (Brush brush = new SolidBrush(bk1))
                                     e.Graphics.FillRectangle(brush, area);
                             }
                             else
                             {
-                                using (var brush = new LinearGradientBrush(area, bk, bk.Multiply(ButtonColorScaling), ButtonGradientDirection))
+                                using (var brush = new LinearGradientBrush(area, bk1, bk2, ButtonGradientDirection))
                                     e.Graphics.FillRectangle(brush, area);
                             }
                         }
@@ -138,9 +140,10 @@ namespace ExtendedControls
                         textarea.Width -= tickarea.Width;
                     }
 
-                    float discaling = Enabled ? 1.0f : CheckBoxDisabledScaling;
+                    float scaling = Enabled ? (mouseover ? MouseOverScaling : 1.0f) : DisabledScaling;
 
-                    Color checkboxbasecolour = (Enabled && mouseover) ? MouseOverColor : CheckBoxColor.Multiply(discaling);
+                    Color checkboxbasecolour = CheckBoxColor.Multiply(scaling);
+                    Color checkboxbasecolour2 = (FlatStyle == FlatStyle.Flat ? CheckBoxColor : CheckBoxInnerColor).Multiply(scaling);
 
                     if (!hasimages)      // draw the over box of the checkbox if no images
                     {
@@ -159,9 +162,9 @@ namespace ExtendedControls
 
                         if (hasimages)
                         {
-                            if (Enabled && mouseover)                // if mouse over, draw a nice box around it
+                            if (Enabled && mouseover)
                             {
-                                using (Brush mover = new SolidBrush(MouseOverColor))
+                                using (Brush mover = new LinearGradientBrush(tickarea, checkboxbasecolour2, checkboxbasecolour, CheckBoxGradientDirection))
                                 {
                                     e.Graphics.FillRectangle(mover, checkarea);
                                 }
@@ -169,25 +172,17 @@ namespace ExtendedControls
                         }
                         else
                         {                                   // in no image, we draw a set of boxes
-                            using (Pen second = new Pen(CheckBoxInnerColor.Multiply(discaling), 1F))
+                            using (Pen second = new Pen(CheckBoxInnerColor.Multiply(scaling), 1F))
                                 e.Graphics.DrawRectangle(second, tickarea);
 
                             tickarea.Inflate(-1, -1);
 
                             if (!tickarea.Size.IsEmpty)
                             {
-                                if (FlatStyle == FlatStyle.Flat)
-                                {
-                                    using (Brush inner = new SolidBrush(checkboxbasecolour.Multiply(discaling)))
-                                        e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
-                                }
-                                else
-                                {
-                                    using (Brush inner = new LinearGradientBrush(tickarea, CheckBoxInnerColor.Multiply(discaling), checkboxbasecolour, CheckBoxGradientDirection))
-                                        e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
-                                }
+                                using (Brush inner = new LinearGradientBrush(tickarea, checkboxbasecolour2, checkboxbasecolour, CheckBoxGradientDirection))
+                                    e.Graphics.FillRectangle(inner, tickarea);      // fill slightly over size to make sure all pixels are painted
 
-                                using (Pen third = new Pen(checkboxbasecolour.Multiply(discaling), 1F))
+                                using (Pen third = new Pen(checkboxbasecolour, 1F))
                                     e.Graphics.DrawRectangle(third, tickarea);
                             }
                         }
@@ -203,7 +198,7 @@ namespace ExtendedControls
                         }
                         else
                         {
-                            Color c1 = Color.FromArgb(200, CheckColor.Multiply(discaling));
+                            Color c1 = Color.FromArgb(200, CheckColor.Multiply(scaling));
                             if (CheckState == CheckState.Checked)
                             {
                                 Point pt1 = new Point(checkarea.X + 2, checkarea.Y + checkarea.Height / 2 - 1);
@@ -267,7 +262,7 @@ namespace ExtendedControls
         {
             if (this.Text.HasChars())
             {
-                using (Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(CheckBoxDisabledScaling)))
+                using (Brush textb = new SolidBrush(Enabled ? this.ForeColor : this.ForeColor.Multiply(DisabledScaling)))
                 {
                     if (FontToUse == null || FontToUse.FontFamily != Font.FontFamily || FontToUse.Style != Font.Style)
                         FontToUse = g.GetFontToFit(this.Text, Font, box.Size, fmt);
@@ -280,27 +275,26 @@ namespace ExtendedControls
         public bool Theme(Theme t, Font fnt)
         {
             BackColor = t.GroupBoxOverride(Parent, t.Form);
+            ForeColor = t.CheckBoxText;
+            DisabledScaling = t.DisabledScaling;
+            MouseOverScaling = t.MouseOverScaling;
+            MouseSelectedScaling = t.MouseSelectedScaling;
 
             if (Appearance == Appearance.Button)
             {
-                ForeColor = t.ButtonTextColor;
                 CheckColor = t.CheckBoxButtonTickedBack;
+                CheckColor2 = t.CheckBoxButtonTickedBack2;
                 ButtonGradientDirection = t.CheckBoxGradientDirection;
-                ButtonColorScaling = t.CheckBoxButtonStyleGradientAmount;
-                MouseOverColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
-                FlatAppearance.BorderColor = t.ButtonBorderColor;
+                FlatAppearance.BorderColor = t.CheckBoxBorderColor;
                 FlatAppearance.BorderSize = 1;
             }
             else
             {
-                ForeColor = t.CheckBoxText;
                 CheckBoxColor = t.CheckBoxBack;
-                CheckBoxInnerColor = t.CheckBoxBack.Multiply(t.CheckBoxTickStyleInnerScaling);
+                CheckBoxInnerColor = t.CheckBoxBack2;
                 CheckColor = t.CheckBoxTick;
                 CheckBoxGradientDirection = t.CheckBoxGradientDirection;
-                MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
                 TickBoxReductionRatio = t.CheckBoxTickSize;
-                CheckBoxDisabledScaling = t.DisabledScaling;
             }
 
             FlatStyle = t.ButtonFlatStyle;
@@ -325,8 +319,6 @@ namespace ExtendedControls
         private ImageLayout imagelayout = ImageLayout.Center;           // image layout
         private float checkboxgradientdirection = 225F;
         private float buttongradientdirection = 90F;
-        private float buttonColorScaling = 0.5F;
-
     }
 }
 

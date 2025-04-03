@@ -20,16 +20,14 @@ namespace ExtendedControls
 {
     public class ExtGroupBox : GroupBox, IThemeable
     {
-        // call Invalidate if changed
-
-        public Color BorderColor { get; set; } = Color.LightGray;       // border
-        public float BackColorScaling { get; set; } = 0.5F;             // Popup style only
-        public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
-        public int TextStartPosition { get; set; } = -1;                // -1 left, +1 right, 0 centre, else pixel start pos
-        public int TextPadding { get; set; } = 0;                       // pixels at start/end of text
+        // ForeColor = text, BackColor = control background colour 1
+        public Color BackColor2 { get { return backColor2; } set { backColor2 = value; Invalidate(); } }
         public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
-        private float gradientdirection = 90F;
+        public Color BorderColor { get; set; } = Color.LightGray;       // border
+        public float BorderColorScaling { get; set; } = 0.7F;
+        public int TextStartPosition { get; set; } = -1;                // -1 left, +1 right, 0 centre, else pixel start pos
+        public int TextPadding { get; set; } = 0;                       // pixels at start/end of text
 
         public ExtGroupBox() : base()
         {
@@ -45,19 +43,13 @@ namespace ExtendedControls
 
                 if (!BackColor.IsFullyTransparent())
                 {
-                    Color color2 = (FlatStyle == FlatStyle.Popup) ? BackColor.Multiply(BackColorScaling) : BackColor;
-
-                    Rectangle borderrect = ClientRectangle;
-
-                    using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, BackColor, color2, GradientDirection))
-                        e.Graphics.FillRectangle(b, borderrect);
+                    Color color2 = (FlatStyle == FlatStyle.Popup) ? BackColor2 : BackColor;
+                    using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(ClientRectangle, BackColor, color2, GradientDirection))
+                        e.Graphics.FillRectangle(b, ClientRectangle);
                 }
 
                 if (!BorderColor.IsFullyTransparent())
                 {
-                    Color color1 = BorderColor;
-                    Color color2 = BorderColor.Multiply(BorderColorScaling);
-                    
                     int textlength = 0;
                     if ( this.Text != "" )
                     {           // +1 for rounding down..
@@ -78,11 +70,11 @@ namespace ExtendedControls
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
                     using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, topline+1, ClientRectangle.Width-2, ClientRectangle.Height - topline - 1, 1,1 , textstart- 1, textlength))
-                    using (Pen pc1 = new Pen(color1, 1.0F))
+                    using (Pen pc1 = new Pen(BorderColor, 1.0F))
                         e.Graphics.DrawPath(pc1, g1);
 
                     using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, topline, ClientRectangle.Width, ClientRectangle.Height - topline - 1, 2, 2 , textstart, textlength))
-                    using (Pen pc2 = new Pen(color2, 1.0F))
+                    using (Pen pc2 = new Pen(BorderColor.Multiply(BorderColorScaling), 1.0F))
                         e.Graphics.DrawPath(pc2, g2);
 
                     if (textlength > 0)
@@ -109,11 +101,14 @@ namespace ExtendedControls
         {
             ForeColor = t.GroupFore;
             BackColor = t.GroupBack;
+            BackColor2 = t.GroupBack2;
             BorderColor = t.GroupBorder;
-            FlatStyle = t.GroupBoxGradientAmount < 0 ? FlatStyle.Flat : FlatStyle.Popup;
+            FlatStyle = FlatStyle.Popup;
             GradientDirection = t.GroupBoxGradientDirection;
-            BackColorScaling = t.GroupBoxGradientAmount;
             return true;
         }
+
+        private Color backColor2 = Color.Red;
+        private float gradientdirection = 90F;
     }
 }

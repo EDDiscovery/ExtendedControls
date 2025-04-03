@@ -30,9 +30,6 @@ namespace ExtendedControls
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;   // mouse over colour
         public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
-        private Font FontToUse = null;
-        private float gradientdirection = 225F;
-
         public ExtRadioButton() : base()
         {
         }
@@ -163,15 +160,18 @@ namespace ExtendedControls
             BackColor = t.GroupBoxOverride(Parent, t.Form);
             ForeColor = t.CheckBoxText;
             RadioButtonColor = t.CheckBoxBack;
-            RadioButtonInnerColor = t.CheckBoxBack.Multiply(t.CheckBoxTickStyleInnerScaling);
-            SelectedColor = BackColor.Multiply(t.DisabledScaling);
+            RadioButtonInnerColor = t.CheckBoxBack2;
             MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
+            SelectedColor = t.CheckBoxTick; //BackColor.Multiply(t.DisabledScaling);
             GradientDirection = t.CheckBoxGradientDirection;
             RadioButtonDisabledScaling = t.DisabledScaling;
             return false;
         }
 
         private bool mouseover = false;
+        private Font FontToUse = null;
+        private float gradientdirection = 225F;
+
 
     }
 }

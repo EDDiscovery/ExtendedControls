@@ -1,7 +1,9 @@
 ﻿using ExtendedControls;
 using QuickJSON;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace TestExtendedControls
@@ -9,17 +11,24 @@ namespace TestExtendedControls
     public partial class TestTheme : Form
     {
         ThemeList stdthemes;
+        List<string> aclist = new List<string>();
 
         public TestTheme()
         {
             InitializeComponent();
             stdthemes = new ThemeList();
             stdthemes.LoadBaseThemes();
-            stdthemes.SetThemeByName("Elite Verdana");
+            //
+            var loadtheme = Theme.LoadFile(@"c:\code\example.theme");
+            if (loadtheme != null)
+            {
+                System.Diagnostics.Debug.WriteLine("Theme loaded from file");
+                Theme.Current = loadtheme;
+            }
+            else
+                stdthemes.SetThemeByName("Elite Verdana");
 
             Theme.Current.WindowsFrame = true;
-            Theme.Current.GroupBack = Color.Beige;
-            //Theme.Current = new Theme("Std");
             Theme.Current.ApplyStd(this);
             labelName.Text = Theme.Current.Name;
 
@@ -69,13 +78,11 @@ namespace TestExtendedControls
                 "icon 18", "icon 19",
             };
 
-            tabStrip1.EmptyColor = Color.Red;
             tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             tabStrip1.SetControlText("Ctext1");
             tabStrip1.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("Command pop out" + t + " " + i);
             tabStrip1.OnCreateTab += OnCreateTab;
-            tabStrip1.SelectedBackColor = Color.Green;
-
+            tabStrip1.OnPostCreateTab += OnPostCreateTab;
             tabStrip1.HelpAction = (p) => { System.Diagnostics.Debug.WriteLine("Help at " + p); };
 
             tabStrip2.ImageList = new Bitmap[150];
@@ -87,19 +94,42 @@ namespace TestExtendedControls
                 tabStrip2.TextList[i] = $"Item {i}";
             }
 
-            tabStrip2.EmptyColor = Color.Red;
             tabStrip2.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
-            tabStrip2.SetControlText("Ctext1");
+            tabStrip2.SetControlText("Ctext2");
             tabStrip2.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("Command pop out" + t + " " + i);
             tabStrip2.OnCreateTab += OnCreateTab;
-            tabStrip2.SelectedBackColor = Color.Green;
             tabStrip2.StripMode = TabStrip.StripModeType.ListSelection;
-
             tabStrip2.HelpAction = (p) => { System.Diagnostics.Debug.WriteLine("Help at " + p); };
 
             extCheckBox1.Checked = true;
             extCheckBox2.Checked = true;
 
+            aclist.Add("one");
+            aclist.Add("only");
+            aclist.Add("onynx");
+            aclist.Add("two");
+            aclist.Add("three");
+            aclist.Add("four");
+            aclist.Add("five");
+            aclist.Add("Aone");
+            aclist.Add("Btwo");
+            aclist.Add("Cthree");
+            aclist.Add("Dfour");
+            aclist.Add("Efive");
+            for (int i = 0; i < 100; i++)
+                aclist.Add($"Item {i}");
+            extTextBoxAutoComplete1.SetAutoCompletor(AutoList);
+
+        }
+
+        public void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
+        {
+            var res = (from x in aclist where x.StartsWith(input, StringComparison.InvariantCultureIgnoreCase) select x).ToList();
+            SortedSet<string> ss = new SortedSet<string>();
+            foreach (var x in res)
+                set.Add(x);
+
+            //  System.Threading.Thread.Sleep(2000);
         }
 
         private Control OnCreateTab(ExtendedControls.TabStrip t, int no)
@@ -110,12 +140,24 @@ namespace TestExtendedControls
             lb.Location = new Point(10, 10);
             lb.Size = new Size(200, 20);
             lb.Text = t.Name + " User Control " + (no + 0);
-            uc.Name = "UC " + no;
+            ExtButton eb = new ExtButton();
+            eb.Size = new Size(40, 24);
+            eb.Text = "but";
+            eb.Location = new Point(10, 30);
+            eb.Name = $"UC {no} Button";
+            uc.Name = $"UC {no}";
             uc.Dock = DockStyle.Fill;
+            uc.Controls.Add(eb);
             uc.Controls.Add(lb);
             t.SetControlText("CT<" + uc.Name + ">");
             return uc;
         }
+
+        private void OnPostCreateTab(ExtendedControls.TabStrip t, Control ctrl, int no)
+        {
+            Theme.Current.ApplyStd(ctrl);
+        }
+
 
         private void UpdateLabels(Theme v)
         {
@@ -173,8 +215,9 @@ namespace TestExtendedControls
             dlg.DefaultExt = ".theme";
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
-                Theme set = new Theme();
-                if ( set.LoadFile(dlg.FileName, System.IO.Path.GetFileNameWithoutExtension(dlg.FileName)))
+                Theme set = Theme.LoadFile(dlg.FileName, System.IO.Path.GetFileNameWithoutExtension(dlg.FileName));
+
+                if (set != null)
                 {
                     Theme.Current = set;
                     Theme.Current.ApplyStd(this);

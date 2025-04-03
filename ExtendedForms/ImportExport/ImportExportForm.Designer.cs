@@ -150,15 +150,12 @@
             // 
             this.checkBoxIncludeHeader.AutoSize = true;
             this.checkBoxIncludeHeader.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxIncludeHeader.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxIncludeHeader.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxIncludeHeader.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxIncludeHeader.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxIncludeHeader.ImageIndeterminate = null;
             this.checkBoxIncludeHeader.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxIncludeHeader.ImageUnchecked = null;
             this.checkBoxIncludeHeader.Location = new System.Drawing.Point(8, 5);
-            this.checkBoxIncludeHeader.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxIncludeHeader.Name = "checkBoxIncludeHeader";
             this.checkBoxIncludeHeader.Size = new System.Drawing.Size(99, 17);
             this.checkBoxIncludeHeader.TabIndex = 1;
@@ -170,15 +167,12 @@
             // 
             this.checkBoxCustomAutoOpen.AutoSize = true;
             this.checkBoxCustomAutoOpen.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomAutoOpen.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomAutoOpen.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomAutoOpen.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomAutoOpen.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustomAutoOpen.ImageIndeterminate = null;
             this.checkBoxCustomAutoOpen.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomAutoOpen.ImageUnchecked = null;
             this.checkBoxCustomAutoOpen.Location = new System.Drawing.Point(180, 5);
-            this.checkBoxCustomAutoOpen.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomAutoOpen.Name = "checkBoxCustomAutoOpen";
             this.checkBoxCustomAutoOpen.Size = new System.Drawing.Size(52, 17);
             this.checkBoxCustomAutoOpen.TabIndex = 1;
@@ -223,14 +217,12 @@
             // comboBoxSelectedType
             // 
             this.comboBoxSelectedType.BorderColor = System.Drawing.Color.White;
-            this.comboBoxSelectedType.ButtonColorScaling = 0.5F;
             this.comboBoxSelectedType.DataSource = null;
             this.comboBoxSelectedType.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxSelectedType.DisplayMember = "";
             this.comboBoxSelectedType.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxSelectedType.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxSelectedType.Location = new System.Drawing.Point(3, 5);
-            this.comboBoxSelectedType.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxSelectedType.Name = "comboBoxSelectedType";
             this.comboBoxSelectedType.SelectedIndex = -1;
             this.comboBoxSelectedType.SelectedItem = null;
@@ -539,17 +531,14 @@
             // 
             this.extCheckBoxExcludeHeader.AutoSize = true;
             this.extCheckBoxExcludeHeader.CheckBoxColor = System.Drawing.Color.Gray;
-            this.extCheckBoxExcludeHeader.CheckBoxDisabledScaling = 0.5F;
             this.extCheckBoxExcludeHeader.CheckBoxInnerColor = System.Drawing.Color.White;
             this.extCheckBoxExcludeHeader.CheckColor = System.Drawing.Color.DarkBlue;
             this.extCheckBoxExcludeHeader.Checked = true;
             this.extCheckBoxExcludeHeader.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.extCheckBoxExcludeHeader.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBoxExcludeHeader.ImageIndeterminate = null;
             this.extCheckBoxExcludeHeader.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.extCheckBoxExcludeHeader.ImageUnchecked = null;
             this.extCheckBoxExcludeHeader.Location = new System.Drawing.Point(8, 5);
-            this.extCheckBoxExcludeHeader.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.extCheckBoxExcludeHeader.Name = "extCheckBoxExcludeHeader";
             this.extCheckBoxExcludeHeader.Size = new System.Drawing.Size(127, 17);
             this.extCheckBoxExcludeHeader.TabIndex = 1;

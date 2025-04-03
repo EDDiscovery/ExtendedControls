@@ -57,14 +57,12 @@
             // extComboBoxFont
             // 
             this.extComboBoxFont.BorderColor = System.Drawing.Color.White;
-            this.extComboBoxFont.ButtonColorScaling = 0.5F;
             this.extComboBoxFont.DataSource = null;
             this.extComboBoxFont.DisableBackgroundDisabledShadingGradient = false;
             this.extComboBoxFont.DisplayMember = "";
             this.extComboBoxFont.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.extComboBoxFont.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extComboBoxFont.Location = new System.Drawing.Point(443, 362);
-            this.extComboBoxFont.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.extComboBoxFont.Name = "extComboBoxFont";
             this.extComboBoxFont.SelectedIndex = -1;
             this.extComboBoxFont.SelectedItem = null;
@@ -79,14 +77,12 @@
             // extComboBoxFontSize
             // 
             this.extComboBoxFontSize.BorderColor = System.Drawing.Color.White;
-            this.extComboBoxFontSize.ButtonColorScaling = 0.5F;
             this.extComboBoxFontSize.DataSource = null;
             this.extComboBoxFontSize.DisableBackgroundDisabledShadingGradient = false;
             this.extComboBoxFontSize.DisplayMember = "";
             this.extComboBoxFontSize.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.extComboBoxFontSize.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extComboBoxFontSize.Location = new System.Drawing.Point(443, 321);
-            this.extComboBoxFontSize.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.extComboBoxFontSize.Name = "extComboBoxFontSize";
             this.extComboBoxFontSize.SelectedIndex = -1;
             this.extComboBoxFontSize.SelectedItem = null;

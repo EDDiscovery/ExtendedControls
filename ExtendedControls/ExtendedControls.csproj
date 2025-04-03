@@ -66,7 +66,7 @@
     <Compile Include="Controls\PanelFlowLayout.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelNoTheme.cs">
+    <Compile Include="Controls\Panels.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PanelVertScroll.cs">
@@ -100,9 +100,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\TextBoxAutoComplete.cs">

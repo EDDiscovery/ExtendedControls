@@ -172,17 +172,17 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            TextBoxForeColor = t.TextBlockColor;
-            TextBoxBackColor = t.TextBackColor;
+            TextBoxForeColor = t.TextBlockForeColor;
+            TextBoxBackColor = t.TextBlockBackColor;
             BorderColor = t.TextBlockBorderColor;
 
             // we theme the updown ourselves and do not use its themer
-            updown.BackColor = t.TextBlockScrollButton;
+
+            updown.BackColor = updown.BackColor2 = t.ButtonBackColor;
             updown.ForeColor = t.TextBlockScrollArrow;
             updown.BorderColor = t.ButtonBorderColor;
-            updown.MouseOverColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
-            updown.MouseSelectedColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
-            Invalidate();
+            updown.MouseOverScaling = t.MouseOverScaling;
+            updown.MouseSelectedScaling = t.MouseSelectedScaling;
 
             return false;
         }

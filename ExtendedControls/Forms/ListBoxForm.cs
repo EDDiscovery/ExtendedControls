@@ -31,16 +31,16 @@ namespace ExtendedControls
         public List<string> Items { get { return ListBox.Items; } set { ListBox.Items = value; } }
         public int[] ItemSeperators { get { return ListBox.ItemSeperators; } set { ListBox.ItemSeperators = value; } }     // set to array giving index of each separator
         public List<Image> ImageItems { get { return ListBox.ImageItems; } set { ListBox.ImageItems = value; } }
-        public Color MouseOverBackgroundColor { get { return ListBox.MouseOverBackgroundColor; } set { ListBox.MouseOverBackgroundColor = value; } }
-        public int SelectedIndex { get { return ListBox.SelectedIndex; } set { ListBox.SelectedIndex = value; } }
         public Color SelectionBackColor { get { return ListBox.SelectionBackColor; } set { ListBox.SelectionBackColor = value; this.BackColor = value; } }
+        public Color SelectionBackColor2 { get { return ListBox.SelectionBackColor2; } set { ListBox.SelectionBackColor2 = value; } }
         public Color BorderColor { get { return ListBox.BorderColor; } set { ListBox.BorderColor = value; } }
+        public Color MouseOverBackgroundColor { get { return ListBox.SelectionColor; } set { ListBox.SelectionColor = value; } }
+        public int SelectedIndex { get { return ListBox.SelectedIndex; } set { ListBox.SelectedIndex = value; } }
+        public Color ItemSeperatorColor { get { return ListBox.ItemSeperatorColor; } set { ListBox.ItemSeperatorColor = value; } }
         public FlatStyle FlatStyle { get { return ListBox.FlatStyle; } set { ListBox.FlatStyle = value; } }
         public new Font Font { get { return base.Font; } set { base.Font = value; ListBox.Font = value; } }
         public bool FitToItemsHeight { get { return ListBox.FitToItemsHeight; } set { ListBox.FitToItemsHeight = value; } }
-        public float GradientColorScaling { get { return ListBox.GradientColorScaling; } set { ListBox.GradientColorScaling = value; } }
         public bool FitImagesToItemHeight { get { return ListBox.FitImagesToItemHeight; } set { ListBox.FitImagesToItemHeight = value; } }                    // if set images need to fit within item height
-        public Color ItemSeperatorColor { get { return ListBox.ItemSeperatorColor; } set { ListBox.ItemSeperatorColor = value; } }
 
         public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location.
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }

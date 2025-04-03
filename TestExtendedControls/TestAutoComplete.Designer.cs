@@ -79,14 +79,12 @@
             // comboBoxCustom1
             // 
             this.comboBoxCustom1.BorderColor = System.Drawing.Color.White;
-            this.comboBoxCustom1.ButtonColorScaling = 0.5F;
             this.comboBoxCustom1.DataSource = null;
             this.comboBoxCustom1.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustom1.DisplayMember = "";
             this.comboBoxCustom1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustom1.Location = new System.Drawing.Point(40, 168);
-            this.comboBoxCustom1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustom1.Name = "comboBoxCustom1";
             this.comboBoxCustom1.SelectedIndex = -1;
             this.comboBoxCustom1.SelectedItem = null;

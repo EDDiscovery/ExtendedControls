@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -56,7 +57,11 @@ namespace ExtendedControls
 
         public HorizontalAlignment TextAlign { get { return textbox.TextAlign; } set { textbox.TextAlign = value; } }
 
+        // Must use ExtTextBoxAutoComplete.
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), EditorBrowsable(EditorBrowsableState.Never)]
         public AutoCompleteMode AutoCompleteMode { get { return textbox.AutoCompleteMode; } set { textbox.AutoCompleteMode = value; } }
+
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), EditorBrowsable(EditorBrowsableState.Never)]
         public AutoCompleteSource AutoCompleteSource { get { return textbox.AutoCompleteSource; } set { textbox.AutoCompleteSource = value; } }
 
         public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(textbox, text); } // only needed for dynamic changes..
@@ -403,10 +408,10 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            ForeColor = t.TextBlockColor;
-            BackColor = t.TextBackColor;
+            ForeColor = t.TextBlockForeColor;
+            BackColor = t.TextBlockBackColor;
             BackErrorColor = t.TextBlockHighlightColor;
-            ControlBackground = t.TextBackColor; // previously, but not sure why, GroupBoxOverride(parent, Form);
+            ControlBackground = t.TextBlockBackColor; // previously, but not sure why, GroupBoxOverride(parent, Form);
             AutoSize = true;
 
             BorderColor = Color.Transparent;
@@ -421,18 +426,20 @@ namespace ExtendedControls
             if (this is ExtTextBoxAutoComplete || this is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
             {
                 ExtTextBoxAutoComplete actb = this as ExtTextBoxAutoComplete;
+                actb.DropDownSelectionBackgroundColor = t.TextBlockDropDownBackColor;
+                actb.DropDownSelectionBackgroundColor2 = t.TextBlockDropDownBackColor2;
+                actb.DropDownSelectionColor = actb.DropDownSelectionBackgroundColor.Multiply(t.MouseSelectedScaling);
                 actb.DropDownSliderColor = t.TextBlockSliderBack;
-                actb.DropDownSliderArrowColor = t.ButtonTextColor;
-                actb.DropDownBorderColor = t.ButtonBorderColor;
+                actb.DropDownSliderArrowColor = t.TextBlockScrollArrow;
+                actb.DropDownBorderColor = t.TextBlockBorderColor;
                 actb.DropDownSliderButtonColor = t.TextBlockScrollButton;
-                actb.MouseOverDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
+                actb.DropDownMouseOverSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
                 actb.PressedDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
                 actb.FlatStyle = t.ButtonFlatStyle;
             }
 
             EndButton.Theme(t, fnt);
-            EndButton.FlatAppearance.BorderColor = EndButton.BackColor = t.TextBackColor;
-            EndButton.ButtonColorScaling = 1.0f;
+            EndButton.FlatAppearance.BorderColor = EndButton.BackColor = EndButton.BackColor2 = t.TextBlockBackColor;
             EndButton.ButtonDisabledScaling = t.DisabledScaling;
 
             Invalidate();

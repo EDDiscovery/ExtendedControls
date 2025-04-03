@@ -25,13 +25,16 @@ namespace ExtendedControls
         public enum StripModeType { StripTop, StripBottom, ListSelection, StripTopOpen };
         public StripModeType StripMode { get { return stripmode; } set { ChangeStripMode(value); } }
         public Image EmptyPanelIcon { get; set; } = Properties.Resources.Stop;
-        public Image[] ImageList;     // images
-        public int[] ListSelectionItemSeparators;   // any separators for ListSelection
-        public string[] TextList;       // text associated - tooltips or text on list selection
-        public object[] TagList;      // tags for them..
+        public Image[] ImageList { get; set; }     // images
+        public int[] ListSelectionItemSeparators { get; set; }   // any separators for ListSelection
+        public string[] TextList { get; set; }       // text associated - tooltips or text on list selection
+        public object[] TagList { get; set; }      // tags for them..
         public bool ShowPopOut { get; set; }= true; // Pop out icon show
         public Color SelectedBackColor { get; set; } = Color.Transparent;   // if set, show selected with a back colour
         public Color StripBackColor { get { return panelStrip.BackColor; } set { panelStrip.BackColor = value; } }
+        public Color StripBackColor2 { get { return panelStrip.BackColor2; } set { panelStrip.BackColor2 = value; } }
+
+        public override Color ForeColor { get => base.ForeColor; set { base.ForeColor = value; labelControlText.ForeColor = value; labelTitle.ForeColor = value; } }
 
         // if you set this, when empty, a panel will appear with the color selected
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
@@ -39,17 +42,17 @@ namespace ExtendedControls
 
         // only if using ListSelection with a drop down box
         public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
+        public Color DropDownSelectionBackgroundColor2 { get; set; } = Color.Gray;      // background
+        public Color DropDownSelectionColor { get; set; } = Color.Green;       // selection bar
         public Color DropDownSliderColor { get; set; } = Color.Green;
         public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
         public Color DropDownBorderColor { get; set; } = Color.Green;
         public Color DropDownSliderButtonColor { get; set; } = Color.Blue;
-        public Color MouseOverDropDownSliderButtonColor { get; set; } = Color.Red;
+        public Color DropDownMouseOverSliderButtonColor { get; set; } = Color.Red;
         public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
 
         public bool DropDownFitImagesToItemHeight { get; set; } = false;
-        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
-
-        private float gradientdirection = 90F;
+        public float GradientDirection { get => panelStrip.GradientDirection; set { panelStrip.GradientDirection = value; Invalidate(); } }
 
         // If non null, a help icon ? appears on the right. When clicked, you get a callback.  P is the lower bottom of the ? icon in screen co-ords
 
@@ -70,36 +73,6 @@ namespace ExtendedControls
         public Action<TabStrip> OnTitleClick;               // when the title is clicked
         public Action<TabStrip> OnControlTextClick;         // when the control text is clicked
 
-        // internals
-
-        private StripModeType stripmode = StripModeType.StripTop;
-        private int selectedindex = -1;
-
-        private enum TabDisplayMode
-        {
-            Compressed,     // strip/list mode compressed
-            Expanded,       // strip/list mode expanded during hover over, will go compressed after mouse exit
-            ExpandedFixed,  // open all the time (StripTopOpen)
-            ExpandedInList,   // List drop down open, expanded..
-            ExpandedContextMenu, // List is expanded, in a context menu
-        }
-
-        private TabDisplayMode tdm = TabDisplayMode.Compressed;
-        private int tabdisplaystart = 0;    // first tab number displayed
-        private int tabsvisibleonscreen = 0;       // number of tabs displayed
-
-        private Timer autofadeinouttimer = new Timer();
-        private TabDisplayMode autofadetabmode;
-
-        const int Spacing = 4;      // spacing distance
-
-        private Timer autorepeat = new Timer();
-        private int autorepeatdir = 0;
-
-        private Color emptypanelcolor = Color.Empty;         // default empty means use base back color.. ambient property
-
-        private PanelNoTheme[] imagepanels;
-
         public TabStrip()
         {
             InitializeComponent();
@@ -107,6 +80,7 @@ namespace ExtendedControls
             labelControlText.MouseDown += (s1, e1) => OnControlTextClick?.Invoke(this);
             labelTitle.Text = "?";
             labelTitle.MouseDown += (s1, e1) => OnTitleClick?.Invoke(this);
+
             autofadeinouttimer.Tick += AutoFadeInOutTick;
             autorepeat.Interval = 200;
             autorepeat.Tick += Autorepeat_Tick;
@@ -212,14 +186,16 @@ namespace ExtendedControls
 
         #region Common 
 
-        protected override void OnPaint(PaintEventArgs e)
+        // paint the UC
+
+        protected override void OnPaintBackground(PaintEventArgs e)
         {
-            base.OnPaint(e);
-            if (emptypanelcolor != Color.Empty && CurrentControl == null)       // this seems the best way to display the non used
+            base.OnPaintBackground(e);
+            if (EmptyColor != Color.Empty && CurrentControl == null)       // this seems the best way to display the non used
             {
                 Rectangle area = panelStrip.Dock == DockStyle.Top ? new Rectangle(0, panelStrip.Height, ClientRectangle.Width, ClientRectangle.Height - panelStrip.Height) : new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height - panelStrip.Height);
 
-                using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(area, emptypanelcolor, emptypanelcolor.Multiply(EmptyColorScaling), GradientDirection))
+                using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(area, EmptyColor, EmptyColor.Multiply(EmptyColorScaling), GradientDirection))
                 {
                     e.Graphics.FillRectangle(b, area);
                 }
@@ -328,11 +304,11 @@ namespace ExtendedControls
 
             if (StripMode != StripModeType.ListSelection && imagepanels == null && ImageList != null)  // on first entry..
             {
-                imagepanels = new PanelNoTheme[ImageList.Length];
+                imagepanels = new ExtPanelChildThemeControl[ImageList.Length];
 
                 for (int inp = 0; inp < imagepanels.Length; inp++)
                 {
-                    imagepanels[inp] = new PanelNoTheme()
+                    imagepanels[inp] = new ExtPanelChildThemeControl()
                     {
                         BackgroundImage = ImageList[inp],
                         Tag = inp,
@@ -545,16 +521,19 @@ namespace ExtendedControls
 
             dropdown = new ExtListBoxForm("", true);
 
-            dropdown.ForeColor = this.ForeColor;
-            dropdown.BackColor = this.DropDownBorderColor;
-            dropdown.BorderColor = this.DropDownBorderColor;
-
-            dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
-            dropdown.ListBox.ScrollBar.BackColor = this.DropDownSliderColor;
+            dropdown.ListBox.BackColor = BackColor;
+            dropdown.ListBox.ForeColor = ForeColor;
+            dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
+            dropdown.ListBox.SelectionBackColor2 = this.DropDownSelectionBackgroundColor2;
+            dropdown.ListBox.SelectionColor = this.DropDownSelectionColor;
+            dropdown.ListBox.GradientDirection = this.GradientDirection;
+            dropdown.ListBox.BorderColor = this.DropDownBorderColor;
+            dropdown.ListBox.ScrollBar.BackColor = dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
+            dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
             dropdown.ListBox.ScrollBar.ThumbBorderColor = dropdown.ListBox.ScrollBar.ArrowBorderColor =
-                dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
+                                                            dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
             dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
-            dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.MouseOverDropDownSliderButtonColor;
+            dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.DropDownMouseOverSliderButtonColor;
             dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
 
             dropdown.FitImagesToItemHeight = this.DropDownFitImagesToItemHeight;
@@ -611,22 +590,65 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            //System.Diagnostics.Debug.WriteLine("*************** TAB Strip themeing" + myControl.Name + " " + myControl.Tag);
-            ForeColor = t.ButtonTextColor;
+            ////System.Diagnostics.Debug.WriteLine("*************** TAB Strip themeing" + myControl.Name + " " + myControl.Tag);
 
-            DropDownSliderColor = t.TextBlockSliderBack;
-            DropDownSliderArrowColor = t.ButtonTextColor;
-            DropDownBorderColor = t.ButtonBorderColor;
-            DropDownSliderButtonColor = t.TextBlockScrollButton;
-            MouseOverDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
-            PressedDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
+            DropDownSelectionBackgroundColor = t.ComboBoxBackColor;
+            DropDownSelectionBackgroundColor2 = t.ComboBoxBackColor2;
+            DropDownSelectionColor = t.ComboBoxBackColor.Multiply(t.MouseSelectedScaling);
+            DropDownSliderColor = t.ComboBoxSliderBack;
+            DropDownSliderArrowColor = t.ComboBoxScrollArrow;
+            DropDownBorderColor = t.ComboBoxBorderColor;
+            DropDownSliderButtonColor = t.ComboBoxScrollButton;
+            DropDownMouseOverSliderButtonColor = DropDownSliderButtonColor.Multiply(t.MouseOverScaling);
+            PressedDropDownSliderButtonColor = DropDownSliderButtonColor.Multiply(t.MouseSelectedScaling);
 
-            EmptyColor = t.ButtonBackColor;
-            SelectedBackColor = t.ButtonBackColor;
+            ForeColor = t.TabStripFore;             // theme our labels
+            EmptyColor = t.Form;
+            SelectedBackColor = t.TabStripSelected;
 
-            // not themeing the gradient direction as unusual to have this
-            return true;
+            StripBackColor = t.TabStripBack;        // theme the tab strip
+            StripBackColor2 = t.TabStripBack2;
+            GradientDirection = t.TabStripGradientDirection;
+
+            if (CurrentControl != null)             // we give the CurrentControl only the chance to theme
+                t.UpdateControls(CurrentControl, fnt, 10, false);
+            
+            return false;   // eveything we own is themed in here.. no children
         }
+
+        #endregion
+
+        #region vars
+
+        // internals
+
+        private StripModeType stripmode = StripModeType.StripTop;
+        private int selectedindex = -1;
+
+        private enum TabDisplayMode
+        {
+            Compressed,     // strip/list mode compressed
+            Expanded,       // strip/list mode expanded during hover over, will go compressed after mouse exit
+            ExpandedFixed,  // open all the time (StripTopOpen)
+            ExpandedInList,   // List drop down open, expanded..
+            ExpandedContextMenu, // List is expanded, in a context menu
+        }
+
+        private TabDisplayMode tdm = TabDisplayMode.Compressed;
+        private int tabdisplaystart = 0;    // first tab number displayed
+        private int tabsvisibleonscreen = 0;       // number of tabs displayed
+
+        private Timer autofadeinouttimer = new Timer();
+        private TabDisplayMode autofadetabmode;
+
+        const int Spacing = 4;      // spacing distance
+
+        private Timer autorepeat = new Timer();
+        private int autorepeatdir = 0;
+
+        private Color emptypanelcolor = Color.Empty;         // default empty means use base back color.. ambient property
+
+        private ExtPanelChildThemeControl[] imagepanels;
 
         #endregion
 

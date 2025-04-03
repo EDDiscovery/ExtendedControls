@@ -410,9 +410,9 @@ namespace ExtendedControls
                 TabControlBorderColor = t.TabcontrolBorder.Multiply(0.6F);
                 TabControlBorderBrightColor = t.TabcontrolBorder;
                 TabNotSelectedBorderColor = t.TabcontrolBorder.Multiply(0.4F);
-                TabNotSelectedColor = t.ButtonBackColor;
-                TabSelectedColor = t.ButtonBackColor.Multiply(t.MouseSelectedScaling);
-                TabMouseOverColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
+                                                        TabNotSelectedColor = t.ButtonBackColor;
+                                                        TabSelectedColor = t.ButtonBackColor.Multiply(t.MouseSelectedScaling);
+                                                        TabMouseOverColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
                 TextSelectedColor = t.ButtonTextColor;
                 TextNotSelectedColor = t.ButtonTextColor.Multiply(0.8F);
                 SetStyle(t.ButtonFlatStyle, new TabStyleAngled());

@@ -436,8 +436,8 @@ namespace ExtendedControls
 
         public bool Theme(Theme t,Font fnt)
         {
-            TextBoxForeColor = t.TextBlockColor;
-            TextBoxBackColor = t.TextBackColor;
+            TextBoxForeColor = t.TextBlockForeColor;
+            TextBoxBackColor = t.TextBlockBackColor;
 
             BorderColor = Color.Transparent;       // default for text box border styles
             BorderStyle = t.TextBoxStyle;
@@ -449,7 +449,7 @@ namespace ExtendedControls
                 ScrollBarFlatStyle = FlatStyle.System;
             else
             {
-                ScrollBarBackColor = t.TextBackColor;
+                ScrollBarBackColor = t.TextBlockBackColor;
                 ScrollBarSliderColor = t.TextBlockSliderBack;
                 ScrollBarBorderColor = ScrollBarThumbBorderColor =
                             ScrollBarArrowBorderColor = t.TextBlockBorderColor;

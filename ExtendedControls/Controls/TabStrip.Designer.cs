@@ -44,7 +44,10 @@ namespace ExtendedControls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.panelStrip = new System.Windows.Forms.Panel();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItemPopOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.panelStrip = new ExtendedControls.ExtPanelGradientFill();
             this.labelControlText = new System.Windows.Forms.Label();
             this.pimageListSelection = new ExtendedControls.ExtButtonDrawn();
             this.extButtonDrawnHelp = new ExtendedControls.ExtButtonDrawn();
@@ -53,16 +56,35 @@ namespace ExtendedControls
             this.panelArrowLeft = new System.Windows.Forms.Panel();
             this.pimageSelectedIcon = new System.Windows.Forms.Panel();
             this.labelTitle = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItemPopOut = new System.Windows.Forms.ToolStripMenuItem();
-            this.panelStrip.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.panelStrip.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.ShowAlways = true;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemPopOut});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 26);
+            this.contextMenuStrip1.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.contextMenuStrip1_Closed);
+            this.contextMenuStrip1.Opened += new System.EventHandler(this.contextMenuStrip1_Opened);
+            // 
+            // toolStripMenuItemPopOut
+            // 
+            this.toolStripMenuItemPopOut.Name = "toolStripMenuItemPopOut";
+            this.toolStripMenuItemPopOut.Size = new System.Drawing.Size(118, 22);
+            this.toolStripMenuItemPopOut.Text = "Pop Out";
+            this.toolStripMenuItemPopOut.Click += new System.EventHandler(this.toolStripMenuItemPopOut_Click);
             // 
             // panelStrip
             // 
             this.panelStrip.AutoSize = true;
+            this.panelStrip.BackColor = System.Drawing.Color.DimGray;
+            this.panelStrip.BackColor2 = System.Drawing.SystemColors.Control;
             this.panelStrip.Controls.Add(this.labelControlText);
             this.panelStrip.Controls.Add(this.pimageListSelection);
             this.panelStrip.Controls.Add(this.extButtonDrawnHelp);
@@ -72,6 +94,7 @@ namespace ExtendedControls
             this.panelStrip.Controls.Add(this.pimageSelectedIcon);
             this.panelStrip.Controls.Add(this.labelTitle);
             this.panelStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelStrip.GradientDirection = 0F;
             this.panelStrip.Location = new System.Drawing.Point(0, 322);
             this.panelStrip.Name = "panelStrip";
             this.panelStrip.Size = new System.Drawing.Size(562, 30);
@@ -82,7 +105,8 @@ namespace ExtendedControls
             // labelControlText
             // 
             this.labelControlText.AutoSize = true;
-            this.labelControlText.Location = new System.Drawing.Point(440, 8);
+            this.labelControlText.BackColor = System.Drawing.Color.Transparent;
+            this.labelControlText.Location = new System.Drawing.Point(97, 8);
             this.labelControlText.Name = "labelControlText";
             this.labelControlText.Size = new System.Drawing.Size(43, 13);
             this.labelControlText.TabIndex = 4;
@@ -93,7 +117,11 @@ namespace ExtendedControls
             // pimageListSelection
             // 
             this.pimageListSelection.AutoEllipsis = false;
+            this.pimageListSelection.BackColor = System.Drawing.Color.Transparent;
             this.pimageListSelection.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pimageListSelection.BorderColor = System.Drawing.Color.Orange;
+            this.pimageListSelection.BorderWidth = 1;
+            this.pimageListSelection.ButtonDisabledScaling = 0.25F;
             this.pimageListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
             this.pimageListSelection.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
             this.pimageListSelection.Location = new System.Drawing.Point(210, 3);
@@ -101,7 +129,6 @@ namespace ExtendedControls
             this.pimageListSelection.MouseSelectedColor = System.Drawing.Color.Green;
             this.pimageListSelection.MouseSelectedColorEnable = true;
             this.pimageListSelection.Name = "pimageListSelection";
-            this.pimageListSelection.ButtonDisabledScaling = 0.25F;
             this.pimageListSelection.Selectable = true;
             this.pimageListSelection.Size = new System.Drawing.Size(24, 24);
             this.pimageListSelection.TabIndex = 3;
@@ -114,8 +141,11 @@ namespace ExtendedControls
             // extButtonDrawnHelp
             // 
             this.extButtonDrawnHelp.AutoEllipsis = false;
-            this.extButtonDrawnHelp.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extButtonDrawnHelp.BackColor = System.Drawing.Color.Transparent;
             this.extButtonDrawnHelp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.extButtonDrawnHelp.BorderColor = System.Drawing.Color.Orange;
+            this.extButtonDrawnHelp.BorderWidth = 1;
+            this.extButtonDrawnHelp.ButtonDisabledScaling = 0.25F;
             this.extButtonDrawnHelp.Dock = System.Windows.Forms.DockStyle.Right;
             this.extButtonDrawnHelp.Image = global::ExtendedControls.Properties.Resources.help;
             this.extButtonDrawnHelp.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
@@ -124,7 +154,6 @@ namespace ExtendedControls
             this.extButtonDrawnHelp.MouseSelectedColor = System.Drawing.Color.Green;
             this.extButtonDrawnHelp.MouseSelectedColorEnable = true;
             this.extButtonDrawnHelp.Name = "extButtonDrawnHelp";
-            this.extButtonDrawnHelp.ButtonDisabledScaling = 0.25F;
             this.extButtonDrawnHelp.Selectable = true;
             this.extButtonDrawnHelp.Size = new System.Drawing.Size(24, 30);
             this.extButtonDrawnHelp.TabIndex = 3;
@@ -137,7 +166,11 @@ namespace ExtendedControls
             // pimagePopOutIcon
             // 
             this.pimagePopOutIcon.AutoEllipsis = false;
+            this.pimagePopOutIcon.BackColor = System.Drawing.Color.Transparent;
             this.pimagePopOutIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pimagePopOutIcon.BorderColor = System.Drawing.Color.Orange;
+            this.pimagePopOutIcon.BorderWidth = 1;
+            this.pimagePopOutIcon.ButtonDisabledScaling = 0.25F;
             this.pimagePopOutIcon.Image = global::ExtendedControls.Properties.Resources.popout;
             this.pimagePopOutIcon.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
             this.pimagePopOutIcon.Location = new System.Drawing.Point(161, 3);
@@ -145,7 +178,6 @@ namespace ExtendedControls
             this.pimagePopOutIcon.MouseSelectedColor = System.Drawing.Color.Green;
             this.pimagePopOutIcon.MouseSelectedColorEnable = true;
             this.pimagePopOutIcon.Name = "pimagePopOutIcon";
-            this.pimagePopOutIcon.ButtonDisabledScaling = 0.25F;
             this.pimagePopOutIcon.Selectable = true;
             this.pimagePopOutIcon.Size = new System.Drawing.Size(24, 24);
             this.pimagePopOutIcon.TabIndex = 3;
@@ -158,6 +190,7 @@ namespace ExtendedControls
             // 
             // panelArrowRight
             // 
+            this.panelArrowRight.BackColor = System.Drawing.Color.Transparent;
             this.panelArrowRight.BackgroundImage = global::ExtendedControls.Properties.Resources.ArrowRight;
             this.panelArrowRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panelArrowRight.Location = new System.Drawing.Point(304, 4);
@@ -173,6 +206,7 @@ namespace ExtendedControls
             // 
             // panelArrowLeft
             // 
+            this.panelArrowLeft.BackColor = System.Drawing.Color.Transparent;
             this.panelArrowLeft.BackgroundImage = global::ExtendedControls.Properties.Resources.ArrowLeft;
             this.panelArrowLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panelArrowLeft.Location = new System.Drawing.Point(272, 4);
@@ -199,6 +233,7 @@ namespace ExtendedControls
             // labelTitle
             // 
             this.labelTitle.AutoSize = true;
+            this.labelTitle.BackColor = System.Drawing.Color.Transparent;
             this.labelTitle.Location = new System.Drawing.Point(33, 8);
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(43, 13);
@@ -207,36 +242,17 @@ namespace ExtendedControls
             this.labelTitle.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.labelTitle.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
-            // toolTip1
-            // 
-            this.toolTip1.ShowAlways = true;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItemPopOut});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 26);
-            this.contextMenuStrip1.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.contextMenuStrip1_Closed);
-            this.contextMenuStrip1.Opened += new System.EventHandler(this.contextMenuStrip1_Opened);
-            // 
-            // toolStripMenuItemPopOut
-            // 
-            this.toolStripMenuItemPopOut.Name = "toolStripMenuItemPopOut";
-            this.toolStripMenuItemPopOut.Size = new System.Drawing.Size(118, 22);
-            this.toolStripMenuItemPopOut.Text = "Pop Out";
-            this.toolStripMenuItemPopOut.Click += new System.EventHandler(this.toolStripMenuItemPopOut_Click);
-            // 
             // TabStrip
             // 
+            this.BackColor = System.Drawing.Color.Gold;
             this.Controls.Add(this.panelStrip);
             this.Name = "TabStrip";
             this.Size = new System.Drawing.Size(562, 352);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.TabStrip_Layout);
             this.Resize += new System.EventHandler(this.TabStrip_Resize);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.panelStrip.ResumeLayout(false);
             this.panelStrip.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,7 +260,7 @@ namespace ExtendedControls
 
         #endregion
 
-        private System.Windows.Forms.Panel panelStrip;
+        private ExtPanelGradientFill panelStrip;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Panel pimageSelectedIcon;
         private System.Windows.Forms.ToolTip toolTip1;
