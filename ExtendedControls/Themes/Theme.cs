@@ -434,13 +434,7 @@ namespace ExtendedControls
         // copy constructor, takes a real copy, with overrides
         public Theme(Theme other, string newname = null, string newfont = null, float newFontSize = 0, double newopacity = -1, FontStyle? fstyle = null)
         {
-            // dynamic copy over of all properties the lazy way
-            foreach (PropertyInfo mi in this.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
-            {
-                //System.Diagnostics.Debug.WriteLine($"Setting {mi.Name}");
-                if (mi.CanWrite)
-                    mi.SetValue(this, mi.GetValue(other));
-            }
+            this.CopyPropertiesFields(other);       // dynamic copy over of all properties the lazy way
             if (newname != null)
                 Name = newname;
             if (newfont != null)
