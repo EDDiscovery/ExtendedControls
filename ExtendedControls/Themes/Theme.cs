@@ -563,12 +563,10 @@ namespace ExtendedControls
             else if (ctrl is Panel)    // WINFORM, and ext panels rely on this if they don't need to theme
             {
                 ctrl.BackColor = GroupBoxOverride(parent, Form);
-                System.Diagnostics.Debug.WriteLine($"Theme panel {ctrl.Name}");
             }
             else if (ctrl is Label)        // WINFORM
             {
                 ctrl.ForeColor = LabelColor;
-                System.Diagnostics.Debug.WriteLine($"Theme label {ctrl.Name}");
             }
             else if (ctrl is Chart)    // WINFORM
             {
