@@ -29,7 +29,7 @@ namespace ExtendedControls
         public new string Name { get { return base.Name; } set { base.Name = value; textbox.Name = value + "_textbox"; endbutton.Name = value + "_button"; } }       // just so underlying control gets the same name
 
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; InternalPositionControls(); Invalidate(true); } }
-        public float BorderColorScaling { get; set; } = 0.5F;
+        public Color BorderColor2 { get { return bordercolor2; } set { bordercolor2 = value; InternalPositionControls(); Invalidate(true); } }
         public System.Windows.Forms.BorderStyle BorderStyle { get { return textbox.BorderStyle; } set { textbox.BorderStyle = value; InternalPositionControls(); Invalidate(true); } }
 
         public override Color ForeColor { get { return textbox.ForeColor; } set { textbox.ForeColor = value; Invalidate(true); } }
@@ -151,13 +151,13 @@ namespace ExtendedControls
 
         const int borderoffset = 3;
 
-        private bool OurBorder { get { return !BorderColor.IsFullyTransparent(); } }
+        private bool HasBorder { get { return !BorderColor.IsFullyTransparent(); } }
 
         private void InternalPositionControls()
         {
             if (ClientRectangle.Width > 0)
             {
-                int bsize = OurBorder ? borderoffset : 0;
+                int bsize = HasBorder ? borderoffset : 0;
                 int butwidth = endbuttontoshow ? (Height*endbuttonsize/16) : 0;
                 int clientcentre = Height / 2;
 
@@ -202,19 +202,16 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("Repaint" + Name + ":" + ClientRectangle.Size + " " + textbox.Location + " " + textbox.Size + " " + BorderColor + " " + textbox.BorderStyle);
 
-            if (OurBorder)
+            if (HasBorder)
             {
                 Rectangle area = ClientRectangle;
 
-                Color color1 = BorderColor;
-                Color color2 = BorderColor.Multiply(BorderColorScaling);
-
                 GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(area.X + 1, area.Y + 1, area.Width - 2, area.Height - 1, 1, 1);
-                using (Pen pc1 = new Pen(color1, 1.0F))
+                using (Pen pc1 = new Pen(BorderColor, 1.0F))
                     e.Graphics.DrawPath(pc1, g1);
 
                 GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(area.X, area.Y, area.Width, area.Height - 1, 2, 2);
-                using (Pen pc2 = new Pen(color2, 1.0F))
+                using (Pen pc2 = new Pen(BorderColor2, 1.0F))
                     e.Graphics.DrawPath(pc2, g2);
             }
         }
@@ -410,31 +407,24 @@ namespace ExtendedControls
         {
             ForeColor = t.TextBlockForeColor;
             BackColor = t.TextBlockBackColor;
-            BackErrorColor = t.TextBlockHighlightColor;
-            ControlBackground = t.TextBlockBackColor; // previously, but not sure why, GroupBoxOverride(parent, Form);
-            AutoSize = true;
+            ControlBackground = t.TextBlockBackColor; 
 
-            BorderColor = Color.Transparent;
+            BorderColor = t.IsTextBoxBorderColour ? t.TextBlockBorderColor : Color.Transparent;
+            BorderColor2 = t.IsTextBoxBorderColour ? t.TextBlockBorderColor2 : Color.Transparent;
             BorderStyle = t.TextBoxStyle;
 
-            if (t.IsTextBoxColourStyle)
-                BorderColor = t.TextBlockBorderColor;
+            BackErrorColor = t.TextBlockHighlightColor;
+            AutoSize = true;
 
-            if (t.IsTextBoxNoneStyle)
+            if (t.IsTextBoxBorderNone)
                 AutoSize = false;                                                 // with no border, the autosize clips the bottom of chars..
 
             if (this is ExtTextBoxAutoComplete || this is ExtDataGridViewColumnAutoComplete.CellEditControl) // derived from text box
             {
                 ExtTextBoxAutoComplete actb = this as ExtTextBoxAutoComplete;
-                actb.DropDownSelectionBackgroundColor = t.TextBlockDropDownBackColor;
-                actb.DropDownSelectionBackgroundColor2 = t.TextBlockDropDownBackColor2;
-                actb.DropDownSelectionColor = actb.DropDownSelectionBackgroundColor.Multiply(t.MouseSelectedScaling);
-                actb.DropDownSliderColor = t.TextBlockSliderBack;
-                actb.DropDownSliderArrowColor = t.TextBlockScrollArrow;
-                actb.DropDownBorderColor = t.TextBlockBorderColor;
-                actb.DropDownSliderButtonColor = t.TextBlockScrollButton;
-                actb.DropDownMouseOverSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
-                actb.PressedDropDownSliderButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
+
+                actb.DropDownTheme.SetFromTextBlock(t);
+
                 actb.FlatStyle = t.ButtonFlatStyle;
             }
 
@@ -453,6 +443,7 @@ namespace ExtendedControls
 
         protected TextBox textbox;
         private Color bordercolor = Color.Transparent;
+        private Color bordercolor2 = Color.Transparent;
         private Color controlbackcolor = SystemColors.Control;
         private Color backnormalcolor;        // normal back colour..
         private Color backerrorcolor;        // error back colour..

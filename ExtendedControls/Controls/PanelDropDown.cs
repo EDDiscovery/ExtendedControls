@@ -26,24 +26,13 @@ namespace ExtendedControls
         public int SelectionSize { get; set; } = 8;
 
         public List<string> Items { get { return dropdown.Items; } set { dropdown.Items = value; } }
-
-        public override Color ForeColor { get { return base.ForeColor; } set { dropdown.ForeColor = base.ForeColor = value; } }
-        public bool FitToItemsHeight { get { return dropdown.FitToItemsHeight; } set { dropdown.FitToItemsHeight = value; } }
-
+        public Color BorderColor { get; set; } = Color.Blue;
         public Color SelectionMarkColor { get; set; } = Color.Yellow;
-        public Color BorderColor { get { return dropdown.BorderColor; } set { dropdown.BorderColor = value; } } 
-        public FlatStyle FlatStyle { get { return dropdown.FlatStyle; } set { dropdown.FlatStyle = value; } }
-        public float GradientDirection { get; set; } = 90F;
+
+        public DropDownTheme DropDownTheme { get; set; } = new DropDownTheme();
+
         // drop down box for selection
-        public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
-        public Color DropDownSelectionBackgroundColor2 { get; set; } = Color.Gray;      // background
-        public Color DropDownSelectionColor { get; set; } = Color.Green;       // selection bar
-        public Color DropDownSliderColor { get; set; } = Color.Green;
-        public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
-        public Color DropDownBorderColor { get; set; } = Color.Green;
-        public Color DropDownSliderButtonColor { get; set; } = Color.Blue;
-        public Color DropDownMouseOverSliderButtonColor { get; set; } = Color.Red;
-        public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
+        public bool FitToItemsHeight { get { return dropdown.FitToItemsHeight; } set { dropdown.FitToItemsHeight = value; } }
 
         public int SelectedIndex { get { return dropdown.SelectedIndex; } set { dropdown.SelectedIndex = value; } }
         public string SelectedItem { get { return (dropdown.SelectedIndex>=0) ? dropdown.Items[dropdown.SelectedIndex] : null; }  }
@@ -98,20 +87,8 @@ namespace ExtendedControls
             {
                 if (dropdownactivated == false)
                 {
-                    dropdown.ListBox.BackColor = BackColor;
-                    dropdown.ListBox.ForeColor = ForeColor;
-                    dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
-                    dropdown.ListBox.SelectionBackColor2 = this.DropDownSelectionBackgroundColor2;
-                    dropdown.ListBox.SelectionColor = this.DropDownSelectionColor;
-                    dropdown.ListBox.GradientDirection = this.GradientDirection;
-                    dropdown.ListBox.BorderColor = this.BorderColor;
-                    dropdown.ListBox.ScrollBar.BackColor = dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
-                    dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
-                    dropdown.ListBox.ScrollBar.ThumbBorderColor = dropdown.ListBox.ScrollBar.ArrowBorderColor =
-                                                                    dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
-                    dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
-                    dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.DropDownMouseOverSliderButtonColor;
-                    dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
+                    DropDownTheme.Theme(dropdown.ListBox, ForeColor, BackColor, BorderColor);
+                    DropDownTheme.Theme(dropdown.ListBox.ScrollBar, BorderColor);
 
                     dropdown.PositionBelow(this,this.Width);
                     dropdown.RightAlignedToLocation = true;
@@ -145,19 +122,8 @@ namespace ExtendedControls
             ForeColor = t.ButtonTextColor;
             SelectionMarkColor = t.ButtonTextColor;
             BorderColor = t.ButtonBorderColor;
-            FlatStyle = FlatStyle.Popup;
-            GradientDirection = t.ComboBoxGradientDirection;
-
-            DropDownSelectionBackgroundColor = t.ComboBoxBackColor;
-            DropDownSelectionBackgroundColor2 = t.ComboBoxBackColor2;
-            DropDownSelectionColor = t.ComboBoxBackColor.Multiply(t.MouseSelectedScaling);
-            DropDownSliderColor = t.ComboBoxSliderBack;
-            DropDownSliderArrowColor = t.ComboBoxScrollArrow;
-            DropDownBorderColor = t.ComboBoxBorderColor;
-            DropDownSliderButtonColor = t.ComboBoxScrollButton;
-            DropDownMouseOverSliderButtonColor = DropDownSliderButtonColor.Multiply(t.MouseOverScaling);
-            PressedDropDownSliderButtonColor = DropDownSliderButtonColor.Multiply(t.MouseSelectedScaling);
-
+            DropDownTheme.SetFromCombo(t);
+            dropdown.FlatStyle = FlatStyle.Popup;
             return true;
         }
     }

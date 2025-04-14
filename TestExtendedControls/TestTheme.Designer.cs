@@ -29,14 +29,30 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTheme));
-            ExtendedControls.TabStyleSquare tabStyleSquare4 = new ExtendedControls.TabStyleSquare();
+            ExtendedControls.DropDownTheme dropDownTheme1 = new ExtendedControls.DropDownTheme();
+            ExtendedControls.DropDownTheme dropDownTheme2 = new ExtendedControls.DropDownTheme();
+            ExtendedControls.TabStyleSquare tabStyleSquare1 = new ExtendedControls.TabStyleSquare();
+            ExtendedControls.DropDownTheme dropDownTheme3 = new ExtendedControls.DropDownTheme();
+            ExtendedControls.DropDownTheme dropDownTheme4 = new ExtendedControls.DropDownTheme();
             this.labelName = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.busyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.twoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.eToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.wToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.qToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -45,8 +61,13 @@
             this.cutToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.copyToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.labelUnderline = new System.Windows.Forms.Label();
             this.labelStrikeout = new System.Windows.Forms.Label();
+            this.extStatusStrip1 = new ExtendedControls.ExtStatusStrip();
+            this.extPanelChildThemeControl1 = new ExtendedControls.ExtPanelChildThemeControl();
+            this.extButton2 = new ExtendedControls.ExtButton();
             this.extTextBoxAutoComplete1 = new ExtendedControls.ExtTextBoxAutoComplete();
             this.tabStrip2 = new ExtendedControls.TabStrip();
             this.extRichTextBox1 = new ExtendedControls.ExtRichTextBox();
@@ -59,7 +80,13 @@
             this.extGroupBox1 = new ExtendedControls.ExtGroupBox();
             this.extTabControl1 = new ExtendedControls.ExtTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.extButton4 = new ExtendedControls.ExtButton();
+            this.extButton3 = new ExtendedControls.ExtButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.extButton6 = new ExtendedControls.ExtButton();
+            this.extButton5 = new ExtendedControls.ExtButton();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.extPanelChildThemeControl2 = new ExtendedControls.ExtPanelChildThemeControl();
             this.extComboBoxTheme = new ExtendedControls.ExtComboBox();
             this.extDateTimePicker2 = new ExtendedControls.ExtDateTimePicker();
             this.extDateTimePicker1 = new ExtendedControls.ExtDateTimePicker();
@@ -86,15 +113,15 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
-            this.extPanelChildThemeControl1 = new ExtendedControls.ExtPanelChildThemeControl();
-            this.extButton2 = new ExtendedControls.ExtButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.extPanelChildThemeControl1.SuspendLayout();
             this.extGroupBox1.SuspendLayout();
             this.extTabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
-            this.extPanelChildThemeControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelName
@@ -110,10 +137,12 @@
             // 
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.busyToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(593, 198);
+            this.busyToolStripMenuItem,
+            this.menu2ToolStripMenuItem,
+            this.menu3ToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(531, 165);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(52, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(198, 24);
             this.menuStrip1.TabIndex = 18;
             this.menuStrip1.Text = "menu";
             // 
@@ -123,11 +152,14 @@
             this.oneToolStripMenuItem,
             this.twoToolStripMenuItem});
             this.busyToolStripMenuItem.Name = "busyToolStripMenuItem";
-            this.busyToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.busyToolStripMenuItem.Text = "Busy";
+            this.busyToolStripMenuItem.Size = new System.Drawing.Size(78, 20);
+            this.busyToolStripMenuItem.Text = "Busy Menu";
             // 
             // oneToolStripMenuItem
             // 
+            this.oneToolStripMenuItem.Checked = true;
+            this.oneToolStripMenuItem.CheckOnClick = true;
+            this.oneToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.oneToolStripMenuItem.Name = "oneToolStripMenuItem";
             this.oneToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.oneToolStripMenuItem.Text = "one";
@@ -138,12 +170,72 @@
             this.twoToolStripMenuItem.Size = new System.Drawing.Size(94, 22);
             this.twoToolStripMenuItem.Text = "two";
             // 
+            // menu2ToolStripMenuItem
+            // 
+            this.menu2ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.wToolStripMenuItem,
+            this.eToolStripMenuItem});
+            this.menu2ToolStripMenuItem.Name = "menu2ToolStripMenuItem";
+            this.menu2ToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.menu2ToolStripMenuItem.Text = "menu2";
+            // 
+            // wToolStripMenuItem
+            // 
+            this.wToolStripMenuItem.Checked = true;
+            this.wToolStripMenuItem.CheckOnClick = true;
+            this.wToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.wToolStripMenuItem.Name = "wToolStripMenuItem";
+            this.wToolStripMenuItem.Size = new System.Drawing.Size(83, 22);
+            this.wToolStripMenuItem.Text = "w";
+            // 
+            // eToolStripMenuItem
+            // 
+            this.eToolStripMenuItem.Name = "eToolStripMenuItem";
+            this.eToolStripMenuItem.Size = new System.Drawing.Size(83, 22);
+            this.eToolStripMenuItem.Text = "e";
+            // 
+            // menu3ToolStripMenuItem
+            // 
+            this.menu3ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.eToolStripMenuItem1,
+            this.wToolStripMenuItem1,
+            this.qToolStripMenuItem,
+            this.rToolStripMenuItem});
+            this.menu3ToolStripMenuItem.Name = "menu3ToolStripMenuItem";
+            this.menu3ToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.menu3ToolStripMenuItem.Text = "menu3";
+            // 
+            // eToolStripMenuItem1
+            // 
+            this.eToolStripMenuItem1.Name = "eToolStripMenuItem1";
+            this.eToolStripMenuItem1.Size = new System.Drawing.Size(83, 22);
+            this.eToolStripMenuItem1.Text = "e";
+            // 
+            // wToolStripMenuItem1
+            // 
+            this.wToolStripMenuItem1.Name = "wToolStripMenuItem1";
+            this.wToolStripMenuItem1.Size = new System.Drawing.Size(83, 22);
+            this.wToolStripMenuItem1.Text = "w";
+            // 
+            // qToolStripMenuItem
+            // 
+            this.qToolStripMenuItem.Name = "qToolStripMenuItem";
+            this.qToolStripMenuItem.Size = new System.Drawing.Size(83, 22);
+            this.qToolStripMenuItem.Text = "q";
+            // 
+            // rToolStripMenuItem
+            // 
+            this.rToolStripMenuItem.Name = "rToolStripMenuItem";
+            this.rToolStripMenuItem.Size = new System.Drawing.Size(83, 22);
+            this.rToolStripMenuItem.Text = "r";
+            // 
             // toolStrip1
             // 
             this.toolStrip1.AutoSize = false;
             this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
+            this.toolStripDropDownButton1,
             this.newToolStripButton,
             this.openToolStripButton,
             this.saveToolStripButton,
@@ -151,10 +243,12 @@
             this.toolStripSeparator,
             this.cutToolStripButton,
             this.copyToolStripButton,
-            this.toolStripSeparator1});
+            this.toolStripSeparator1,
+            this.toolStripButton2,
+            this.toolStripComboBox1});
             this.toolStrip1.Location = new System.Drawing.Point(593, 253);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(237, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(237, 41);
             this.toolStrip1.TabIndex = 19;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -164,8 +258,42 @@
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 38);
             this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.toolStripMenuItem2,
+            this.toolStripMenuItem3});
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 38);
+            this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Checked = true;
+            this.toolStripMenuItem1.CheckOnClick = true;
+            this.toolStripMenuItem1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Text = "toolStripMenuItem1";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Text = "toolStripMenuItem2";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Text = "toolStripMenuItem3";
             // 
             // newToolStripButton
             // 
@@ -173,7 +301,7 @@
             this.newToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripButton.Image")));
             this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripButton.Name = "newToolStripButton";
-            this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.newToolStripButton.Size = new System.Drawing.Size(23, 38);
             this.newToolStripButton.Text = "&New";
             // 
             // openToolStripButton
@@ -182,7 +310,7 @@
             this.openToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripButton.Image")));
             this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripButton.Name = "openToolStripButton";
-            this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.openToolStripButton.Size = new System.Drawing.Size(23, 38);
             this.openToolStripButton.Text = "&Open";
             // 
             // saveToolStripButton
@@ -191,7 +319,7 @@
             this.saveToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripButton.Image")));
             this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolStripButton.Name = "saveToolStripButton";
-            this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.saveToolStripButton.Size = new System.Drawing.Size(23, 38);
             this.saveToolStripButton.Text = "&Save";
             // 
             // printToolStripButton
@@ -200,13 +328,13 @@
             this.printToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("printToolStripButton.Image")));
             this.printToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.printToolStripButton.Name = "printToolStripButton";
-            this.printToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.printToolStripButton.Size = new System.Drawing.Size(23, 38);
             this.printToolStripButton.Text = "&Print";
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator.Size = new System.Drawing.Size(6, 41);
             // 
             // cutToolStripButton
             // 
@@ -214,8 +342,8 @@
             this.cutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripButton.Image")));
             this.cutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.cutToolStripButton.Name = "cutToolStripButton";
-            this.cutToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.cutToolStripButton.Text = "C&ut";
+            this.cutToolStripButton.Size = new System.Drawing.Size(23, 38);
+            this.cutToolStripButton.Text = "r";
             // 
             // copyToolStripButton
             // 
@@ -223,13 +351,31 @@
             this.copyToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripButton.Image")));
             this.copyToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.copyToolStripButton.Name = "copyToolStripButton";
-            this.copyToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.copyToolStripButton.Size = new System.Drawing.Size(23, 38);
             this.copyToolStripButton.Text = "&Copy";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 41);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButton2.Text = "toolStripButton2";
+            // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.Items.AddRange(new object[] {
+            "a",
+            "b",
+            "c"});
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
             // 
             // labelUnderline
             // 
@@ -249,36 +395,76 @@
             this.labelStrikeout.TabIndex = 4;
             this.labelStrikeout.Text = "Strikeout";
             // 
+            // extStatusStrip1
+            // 
+            this.extStatusStrip1.Location = new System.Drawing.Point(0, 703);
+            this.extStatusStrip1.Name = "extStatusStrip1";
+            this.extStatusStrip1.Size = new System.Drawing.Size(984, 22);
+            this.extStatusStrip1.TabIndex = 28;
+            this.extStatusStrip1.Text = "extStatusStrip1";
+            // 
+            // extPanelChildThemeControl1
+            // 
+            this.extPanelChildThemeControl1.ChildrenThemed = false;
+            this.extPanelChildThemeControl1.Controls.Add(this.extButton2);
+            this.extPanelChildThemeControl1.Location = new System.Drawing.Point(699, 433);
+            this.extPanelChildThemeControl1.Name = "extPanelChildThemeControl1";
+            this.extPanelChildThemeControl1.Size = new System.Drawing.Size(131, 57);
+            this.extPanelChildThemeControl1.TabIndex = 27;
+            // 
+            // extButton2
+            // 
+            this.extButton2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extButton2.BackColor2 = System.Drawing.Color.Red;
+            this.extButton2.ButtonDisabledScaling = 0.5F;
+            this.extButton2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.extButton2.GradientDirection = 90F;
+            this.extButton2.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.extButton2.Location = new System.Drawing.Point(21, 17);
+            this.extButton2.MouseOverScaling = 1.3F;
+            this.extButton2.MouseSelectedScaling = 1.3F;
+            this.extButton2.Name = "extButton2";
+            this.extButton2.Size = new System.Drawing.Size(75, 23);
+            this.extButton2.TabIndex = 0;
+            this.extButton2.Text = "Not Themed";
+            this.extButton2.UseVisualStyleBackColor = false;
+            // 
             // extTextBoxAutoComplete1
             // 
             this.extTextBoxAutoComplete1.AutoCompleteCommentMarker = null;
-            this.extTextBoxAutoComplete1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.extTextBoxAutoComplete1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.extTextBoxAutoComplete1.AutoCompleteTimeout = 500;
             this.extTextBoxAutoComplete1.BackErrorColor = System.Drawing.Color.Red;
             this.extTextBoxAutoComplete1.BorderColor = System.Drawing.Color.Transparent;
-            this.extTextBoxAutoComplete1.BorderColorScaling = 0.5F;
+            this.extTextBoxAutoComplete1.BorderColor2 = System.Drawing.Color.Transparent;
             this.extTextBoxAutoComplete1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extTextBoxAutoComplete1.ClearOnFirstChar = false;
             this.extTextBoxAutoComplete1.ControlBackground = System.Drawing.SystemColors.Control;
-            this.extTextBoxAutoComplete1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.extTextBoxAutoComplete1.DropDownMouseOverSliderButtonColor = System.Drawing.Color.Red;
-            this.extTextBoxAutoComplete1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
-            this.extTextBoxAutoComplete1.DropDownSelectionBackgroundColor2 = System.Drawing.Color.Gray;
-            this.extTextBoxAutoComplete1.DropDownSelectionColor = System.Drawing.Color.Green;
-            this.extTextBoxAutoComplete1.DropDownSliderArrowColor = System.Drawing.Color.Cyan;
-            this.extTextBoxAutoComplete1.DropDownSliderButtonColor = System.Drawing.Color.Blue;
-            this.extTextBoxAutoComplete1.DropDownSliderColor = System.Drawing.Color.Green;
+            dropDownTheme1.ListBoxGradientDirection = 0F;
+            dropDownTheme1.ListBoxSelectionBackgroundColor = System.Drawing.Color.Gray;
+            dropDownTheme1.ListBoxSelectionBackgroundColor2 = System.Drawing.Color.Gray;
+            dropDownTheme1.ListBoxSelectionColor = System.Drawing.Color.Green;
+            dropDownTheme1.MouseOverSliderButtonColor = System.Drawing.Color.Red;
+            dropDownTheme1.MouseOverSliderButtonColor2 = System.Drawing.Color.Red;
+            dropDownTheme1.PressedSliderButtonColor = System.Drawing.Color.DarkCyan;
+            dropDownTheme1.PressedSliderButtonColor2 = System.Drawing.Color.DarkCyan;
+            dropDownTheme1.SliderArrowBackColor = System.Drawing.Color.Cyan;
+            dropDownTheme1.SliderArrowBackColor2 = System.Drawing.Color.Cyan;
+            dropDownTheme1.SliderButtonArrowColor = System.Drawing.Color.White;
+            dropDownTheme1.SliderButtonBackColor = System.Drawing.Color.Blue;
+            dropDownTheme1.SliderButtonBackColor2 = System.Drawing.Color.Blue;
+            dropDownTheme1.SliderButtonGradientDirection = 90F;
+            dropDownTheme1.SliderColor = System.Drawing.Color.Green;
+            dropDownTheme1.SliderColor2 = System.Drawing.Color.Green;
+            dropDownTheme1.SliderGradientDirection = 90F;
+            this.extTextBoxAutoComplete1.DropDownTheme = dropDownTheme1;
             this.extTextBoxAutoComplete1.EndButtonEnable = false;
             this.extTextBoxAutoComplete1.EndButtonSize16ths = 10;
             this.extTextBoxAutoComplete1.EndButtonVisible = false;
             this.extTextBoxAutoComplete1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extTextBoxAutoComplete1.GradientDirection = 90F;
             this.extTextBoxAutoComplete1.InErrorCondition = false;
             this.extTextBoxAutoComplete1.Location = new System.Drawing.Point(598, 321);
             this.extTextBoxAutoComplete1.Multiline = false;
             this.extTextBoxAutoComplete1.Name = "extTextBoxAutoComplete1";
-            this.extTextBoxAutoComplete1.PressedDropDownSliderButtonColor = System.Drawing.Color.DarkCyan;
             this.extTextBoxAutoComplete1.ReadOnly = false;
             this.extTextBoxAutoComplete1.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.extTextBoxAutoComplete1.SelectionLength = 0;
@@ -326,7 +512,7 @@
             // extRichTextBox1
             // 
             this.extRichTextBox1.BorderColor = System.Drawing.Color.Transparent;
-            this.extRichTextBox1.BorderColorScaling = 0.5F;
+            this.extRichTextBox1.BorderColor2 = System.Drawing.Color.Transparent;
             this.extRichTextBox1.DetectUrls = true;
             this.extRichTextBox1.HideScrollBar = true;
             this.extRichTextBox1.Location = new System.Drawing.Point(520, 564);
@@ -335,17 +521,6 @@
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
     "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
-            this.extRichTextBox1.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.extRichTextBox1.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extRichTextBox1.ScrollBarBackColor = System.Drawing.SystemColors.Control;
-            this.extRichTextBox1.ScrollBarBorderColor = System.Drawing.Color.White;
-            this.extRichTextBox1.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extRichTextBox1.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.extRichTextBox1.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
-            this.extRichTextBox1.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
-            this.extRichTextBox1.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
-            this.extRichTextBox1.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
-            this.extRichTextBox1.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extRichTextBox1.ShowLineCount = false;
             this.extRichTextBox1.Size = new System.Drawing.Size(260, 70);
             this.extRichTextBox1.TabIndex = 14;
@@ -355,21 +530,28 @@
             // extPanelDropDown1
             // 
             this.extPanelDropDown1.BorderColor = System.Drawing.Color.Red;
-            this.extPanelDropDown1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.extPanelDropDown1.DropDownMouseOverSliderButtonColor = System.Drawing.Color.Red;
-            this.extPanelDropDown1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
-            this.extPanelDropDown1.DropDownSelectionBackgroundColor2 = System.Drawing.Color.Gray;
-            this.extPanelDropDown1.DropDownSelectionColor = System.Drawing.Color.Green;
-            this.extPanelDropDown1.DropDownSliderArrowColor = System.Drawing.Color.Cyan;
-            this.extPanelDropDown1.DropDownSliderButtonColor = System.Drawing.Color.Blue;
-            this.extPanelDropDown1.DropDownSliderColor = System.Drawing.Color.Green;
+            dropDownTheme2.ListBoxGradientDirection = 0F;
+            dropDownTheme2.ListBoxSelectionBackgroundColor = System.Drawing.Color.Gray;
+            dropDownTheme2.ListBoxSelectionBackgroundColor2 = System.Drawing.Color.Gray;
+            dropDownTheme2.ListBoxSelectionColor = System.Drawing.Color.Green;
+            dropDownTheme2.MouseOverSliderButtonColor = System.Drawing.Color.Red;
+            dropDownTheme2.MouseOverSliderButtonColor2 = System.Drawing.Color.Red;
+            dropDownTheme2.PressedSliderButtonColor = System.Drawing.Color.DarkCyan;
+            dropDownTheme2.PressedSliderButtonColor2 = System.Drawing.Color.DarkCyan;
+            dropDownTheme2.SliderArrowBackColor = System.Drawing.Color.Cyan;
+            dropDownTheme2.SliderArrowBackColor2 = System.Drawing.Color.Cyan;
+            dropDownTheme2.SliderButtonArrowColor = System.Drawing.Color.White;
+            dropDownTheme2.SliderButtonBackColor = System.Drawing.Color.Blue;
+            dropDownTheme2.SliderButtonBackColor2 = System.Drawing.Color.Blue;
+            dropDownTheme2.SliderButtonGradientDirection = 90F;
+            dropDownTheme2.SliderColor = System.Drawing.Color.Green;
+            dropDownTheme2.SliderColor2 = System.Drawing.Color.Green;
+            dropDownTheme2.SliderGradientDirection = 90F;
+            this.extPanelDropDown1.DropDownTheme = dropDownTheme2;
             this.extPanelDropDown1.FitToItemsHeight = false;
-            this.extPanelDropDown1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extPanelDropDown1.GradientDirection = 90F;
             this.extPanelDropDown1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("extPanelDropDown1.Items")));
             this.extPanelDropDown1.Location = new System.Drawing.Point(699, 358);
             this.extPanelDropDown1.Name = "extPanelDropDown1";
-            this.extPanelDropDown1.PressedDropDownSliderButtonColor = System.Drawing.Color.DarkCyan;
             this.extPanelDropDown1.SelectedIndex = -1;
             this.extPanelDropDown1.SelectionMarkColor = System.Drawing.Color.Yellow;
             this.extPanelDropDown1.SelectionSize = 8;
@@ -443,7 +625,7 @@
             // 
             this.extNumericUpDown2.AutoSizeTextBox = false;
             this.extNumericUpDown2.BorderColor = System.Drawing.Color.Transparent;
-            this.extNumericUpDown2.BorderColorScaling = 0.5F;
+            this.extNumericUpDown2.BorderColor2 = System.Drawing.Color.Transparent;
             this.extNumericUpDown2.Location = new System.Drawing.Point(653, 199);
             this.extNumericUpDown2.Maximum = 100;
             this.extNumericUpDown2.Minimum = 0;
@@ -459,7 +641,7 @@
             // 
             this.extNumericUpDown1.AutoSizeTextBox = false;
             this.extNumericUpDown1.BorderColor = System.Drawing.Color.Transparent;
-            this.extNumericUpDown1.BorderColorScaling = 0.5F;
+            this.extNumericUpDown1.BorderColor2 = System.Drawing.Color.Transparent;
             this.extNumericUpDown1.Location = new System.Drawing.Point(632, 124);
             this.extNumericUpDown1.Maximum = 100;
             this.extNumericUpDown1.Minimum = 0;
@@ -475,8 +657,9 @@
             // 
             this.extGroupBox1.BackColor2 = System.Drawing.Color.Red;
             this.extGroupBox1.BorderColor = System.Drawing.Color.LightGray;
-            this.extGroupBox1.BorderColorScaling = 0.7F;
+            this.extGroupBox1.BorderColor2 = System.Drawing.Color.Gray;
             this.extGroupBox1.Controls.Add(this.extTabControl1);
+            this.extGroupBox1.Controls.Add(this.extPanelChildThemeControl2);
             this.extGroupBox1.GradientDirection = 90F;
             this.extGroupBox1.Location = new System.Drawing.Point(17, 358);
             this.extGroupBox1.Name = "extGroupBox1";
@@ -493,27 +676,35 @@
             this.extTabControl1.AutoForceUpdate = true;
             this.extTabControl1.Controls.Add(this.tabPage1);
             this.extTabControl1.Controls.Add(this.tabPage2);
+            this.extTabControl1.Controls.Add(this.tabPage3);
             this.extTabControl1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extTabControl1.Location = new System.Drawing.Point(25, 19);
             this.extTabControl1.Name = "extTabControl1";
             this.extTabControl1.SelectedIndex = 0;
             this.extTabControl1.Size = new System.Drawing.Size(612, 100);
             this.extTabControl1.TabBackgroundColor = System.Drawing.Color.Transparent;
-            this.extTabControl1.TabColorScaling = 0.5F;
-            this.extTabControl1.TabControlBorderBrightColor = System.Drawing.Color.LightGray;
-            this.extTabControl1.TabControlBorderColor = System.Drawing.Color.DarkGray;
+            this.extTabControl1.TabBackgroundColor2 = System.Drawing.SystemColors.Control;
+            this.extTabControl1.TabBackgroundGradientDirection = 0F;
+            this.extTabControl1.TabControlBorderColor = System.Drawing.Color.LightGray;
+            this.extTabControl1.TabControlBorderColor2 = System.Drawing.Color.DarkGray;
             this.extTabControl1.TabDisabledScaling = 0.5F;
+            this.extTabControl1.TabGradientDirection = 90F;
             this.extTabControl1.TabIndex = 11;
             this.extTabControl1.TabMouseOverColor = System.Drawing.Color.White;
+            this.extTabControl1.TabMouseOverColor2 = System.Drawing.Color.White;
             this.extTabControl1.TabNotSelectedBorderColor = System.Drawing.Color.Gray;
             this.extTabControl1.TabNotSelectedColor = System.Drawing.Color.Gray;
+            this.extTabControl1.TabNotSelectedColor2 = System.Drawing.Color.Gray;
             this.extTabControl1.TabSelectedColor = System.Drawing.Color.LightGray;
-            this.extTabControl1.TabStyle = tabStyleSquare4;
+            this.extTabControl1.TabSelectedColor2 = System.Drawing.Color.Gray;
+            this.extTabControl1.TabStyle = tabStyleSquare1;
             this.extTabControl1.TextNotSelectedColor = System.Drawing.SystemColors.ControlText;
             this.extTabControl1.TextSelectedColor = System.Drawing.SystemColors.ControlText;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.extButton4);
+            this.tabPage1.Controls.Add(this.extButton3);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -522,44 +713,131 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // extButton4
+            // 
+            this.extButton4.BackColor2 = System.Drawing.Color.Red;
+            this.extButton4.ButtonDisabledScaling = 0.5F;
+            this.extButton4.GradientDirection = 90F;
+            this.extButton4.Location = new System.Drawing.Point(156, 23);
+            this.extButton4.MouseOverScaling = 1.3F;
+            this.extButton4.MouseSelectedScaling = 1.3F;
+            this.extButton4.Name = "extButton4";
+            this.extButton4.Size = new System.Drawing.Size(75, 23);
+            this.extButton4.TabIndex = 0;
+            this.extButton4.Text = "extButton3";
+            this.extButton4.UseVisualStyleBackColor = true;
+            // 
+            // extButton3
+            // 
+            this.extButton3.BackColor2 = System.Drawing.Color.Red;
+            this.extButton3.ButtonDisabledScaling = 0.5F;
+            this.extButton3.GradientDirection = 90F;
+            this.extButton3.Location = new System.Drawing.Point(62, 34);
+            this.extButton3.MouseOverScaling = 1.3F;
+            this.extButton3.MouseSelectedScaling = 1.3F;
+            this.extButton3.Name = "extButton3";
+            this.extButton3.Size = new System.Drawing.Size(75, 23);
+            this.extButton3.TabIndex = 0;
+            this.extButton3.Text = "extButton3";
+            this.extButton3.UseVisualStyleBackColor = true;
+            // 
             // tabPage2
             // 
+            this.tabPage2.BackColor = System.Drawing.Color.Gray;
+            this.tabPage2.Controls.Add(this.extButton6);
+            this.tabPage2.Controls.Add(this.extButton5);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(604, 74);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // extButton6
+            // 
+            this.extButton6.BackColor2 = System.Drawing.Color.Red;
+            this.extButton6.ButtonDisabledScaling = 0.5F;
+            this.extButton6.GradientDirection = 90F;
+            this.extButton6.Location = new System.Drawing.Point(178, 22);
+            this.extButton6.MouseOverScaling = 1.3F;
+            this.extButton6.MouseSelectedScaling = 1.3F;
+            this.extButton6.Name = "extButton6";
+            this.extButton6.Size = new System.Drawing.Size(75, 23);
+            this.extButton6.TabIndex = 0;
+            this.extButton6.Text = "extButton5";
+            this.extButton6.UseVisualStyleBackColor = true;
+            // 
+            // extButton5
+            // 
+            this.extButton5.BackColor2 = System.Drawing.Color.Red;
+            this.extButton5.ButtonDisabledScaling = 0.5F;
+            this.extButton5.GradientDirection = 90F;
+            this.extButton5.Location = new System.Drawing.Point(62, 22);
+            this.extButton5.MouseOverScaling = 1.3F;
+            this.extButton5.MouseSelectedScaling = 1.3F;
+            this.extButton5.Name = "extButton5";
+            this.extButton5.Size = new System.Drawing.Size(75, 23);
+            this.extButton5.TabIndex = 0;
+            this.extButton5.Text = "extButton5";
+            this.extButton5.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(604, 74);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // extPanelChildThemeControl2
+            // 
+            this.extPanelChildThemeControl2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.extPanelChildThemeControl2.ChildrenThemed = true;
+            this.extPanelChildThemeControl2.Location = new System.Drawing.Point(319, 64);
+            this.extPanelChildThemeControl2.Name = "extPanelChildThemeControl2";
+            this.extPanelChildThemeControl2.Size = new System.Drawing.Size(264, 97);
+            this.extPanelChildThemeControl2.TabIndex = 12;
             // 
             // extComboBoxTheme
             // 
             this.extComboBoxTheme.BackColor2 = System.Drawing.Color.Red;
             this.extComboBoxTheme.BorderColor = System.Drawing.Color.White;
+            this.extComboBoxTheme.ControlBackground = System.Drawing.SystemColors.Control;
             this.extComboBoxTheme.DataSource = null;
             this.extComboBoxTheme.DisableBackgroundDisabledShadingGradient = false;
             this.extComboBoxTheme.DisabledScaling = 0.5F;
             this.extComboBoxTheme.DisplayMember = "";
-            this.extComboBoxTheme.DropDownBorderColor = System.Drawing.Color.Green;
-            this.extComboBoxTheme.DropDownMouseOverSliderButtonColor = System.Drawing.Color.Red;
-            this.extComboBoxTheme.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
-            this.extComboBoxTheme.DropDownSelectionBackgroundColor2 = System.Drawing.Color.Gray;
-            this.extComboBoxTheme.DropDownSelectionColor = System.Drawing.Color.Green;
-            this.extComboBoxTheme.DropDownSliderArrowColor = System.Drawing.Color.Cyan;
-            this.extComboBoxTheme.DropDownSliderButtonColor = System.Drawing.Color.Blue;
-            this.extComboBoxTheme.DropDownSliderColor = System.Drawing.Color.Green;
+            dropDownTheme3.ListBoxGradientDirection = 0F;
+            dropDownTheme3.ListBoxSelectionBackgroundColor = System.Drawing.Color.Gray;
+            dropDownTheme3.ListBoxSelectionBackgroundColor2 = System.Drawing.Color.Gray;
+            dropDownTheme3.ListBoxSelectionColor = System.Drawing.Color.Green;
+            dropDownTheme3.MouseOverSliderButtonColor = System.Drawing.Color.Red;
+            dropDownTheme3.MouseOverSliderButtonColor2 = System.Drawing.Color.Red;
+            dropDownTheme3.PressedSliderButtonColor = System.Drawing.Color.DarkCyan;
+            dropDownTheme3.PressedSliderButtonColor2 = System.Drawing.Color.DarkCyan;
+            dropDownTheme3.SliderArrowBackColor = System.Drawing.Color.Cyan;
+            dropDownTheme3.SliderArrowBackColor2 = System.Drawing.Color.Cyan;
+            dropDownTheme3.SliderButtonArrowColor = System.Drawing.Color.White;
+            dropDownTheme3.SliderButtonBackColor = System.Drawing.Color.Blue;
+            dropDownTheme3.SliderButtonBackColor2 = System.Drawing.Color.Blue;
+            dropDownTheme3.SliderButtonGradientDirection = 90F;
+            dropDownTheme3.SliderColor = System.Drawing.Color.Green;
+            dropDownTheme3.SliderColor2 = System.Drawing.Color.Green;
+            dropDownTheme3.SliderGradientDirection = 90F;
+            this.extComboBoxTheme.DropDownTheme = dropDownTheme3;
             this.extComboBoxTheme.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extComboBoxTheme.GradientDirection = 90F;
             this.extComboBoxTheme.Location = new System.Drawing.Point(306, 12);
             this.extComboBoxTheme.MouseOverScalingColor = 1.3F;
             this.extComboBoxTheme.Name = "extComboBoxTheme";
-            this.extComboBoxTheme.PressedDropDownSliderButtonColor = System.Drawing.Color.DarkCyan;
             this.extComboBoxTheme.SelectedIndex = -1;
             this.extComboBoxTheme.SelectedItem = null;
             this.extComboBoxTheme.SelectedValue = null;
             this.extComboBoxTheme.Size = new System.Drawing.Size(266, 21);
             this.extComboBoxTheme.TabIndex = 16;
-            this.extComboBoxTheme.Text = "extComboBox2";
+            this.extComboBoxTheme.Text = "choose..";
             this.extComboBoxTheme.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.extComboBoxTheme.ValueMember = "";
             this.extComboBoxTheme.SelectedIndexChanged += new System.EventHandler(this.extComboBoxTheme_SelectedIndexChanged);
@@ -567,7 +845,7 @@
             // extDateTimePicker2
             // 
             this.extDateTimePicker2.BorderColor = System.Drawing.Color.Transparent;
-            this.extDateTimePicker2.BorderColorScaling = 0.5F;
+            this.extDateTimePicker2.BorderColor2 = System.Drawing.Color.Transparent;
             this.extDateTimePicker2.Checked = false;
             this.extDateTimePicker2.CustomFormat = "dd MMMM yyyy";
             this.extDateTimePicker2.DisabledScaling = 0.5F;
@@ -587,7 +865,7 @@
             // extDateTimePicker1
             // 
             this.extDateTimePicker1.BorderColor = System.Drawing.Color.Transparent;
-            this.extDateTimePicker1.BorderColorScaling = 0.5F;
+            this.extDateTimePicker1.BorderColor2 = System.Drawing.Color.Transparent;
             this.extDateTimePicker1.Checked = false;
             this.extDateTimePicker1.CustomFormat = "dd MMMM yyyy";
             this.extDateTimePicker1.DisabledScaling = 0.5F;
@@ -664,7 +942,7 @@
             this.extCheckBox3.ImageIndeterminate = null;
             this.extCheckBox3.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.extCheckBox3.ImageUnchecked = null;
-            this.extCheckBox3.Location = new System.Drawing.Point(224, 130);
+            this.extCheckBox3.Location = new System.Drawing.Point(233, 130);
             this.extCheckBox3.MouseOverScaling = 1.3F;
             this.extCheckBox3.MouseSelectedScaling = 1.3F;
             this.extCheckBox3.Name = "extCheckBox3";
@@ -747,11 +1025,9 @@
             // 
             // extTextBox1
             // 
-            this.extTextBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.extTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.extTextBox1.BackErrorColor = System.Drawing.Color.Red;
             this.extTextBox1.BorderColor = System.Drawing.Color.Transparent;
-            this.extTextBox1.BorderColorScaling = 0.5F;
+            this.extTextBox1.BorderColor2 = System.Drawing.Color.Transparent;
             this.extTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extTextBox1.ClearOnFirstChar = false;
             this.extTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
@@ -779,38 +1055,42 @@
             this.extScrollBar2.AlwaysHideScrollBar = false;
             this.extScrollBar2.ArrowBorderColor = System.Drawing.Color.LightBlue;
             this.extScrollBar2.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extScrollBar2.ArrowColorScaling = 0.5F;
+            this.extScrollBar2.ArrowButtonColor2 = System.Drawing.Color.LightGray;
             this.extScrollBar2.ArrowDownDrawAngle = 270F;
             this.extScrollBar2.ArrowUpDrawAngle = 90F;
             this.extScrollBar2.BorderColor = System.Drawing.Color.White;
             this.extScrollBar2.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extScrollBar2.HideScrollBar = false;
             this.extScrollBar2.LargeChange = 10;
-            this.extScrollBar2.Location = new System.Drawing.Point(855, 134);
+            this.extScrollBar2.Location = new System.Drawing.Point(904, 134);
             this.extScrollBar2.Maximum = 100;
             this.extScrollBar2.Minimum = 0;
             this.extScrollBar2.MouseOverButtonColor = System.Drawing.Color.Green;
+            this.extScrollBar2.MouseOverButtonColor2 = System.Drawing.Color.Green;
             this.extScrollBar2.MousePressedButtonColor = System.Drawing.Color.Red;
+            this.extScrollBar2.MousePressedButtonColor2 = System.Drawing.Color.Red;
             this.extScrollBar2.Name = "extScrollBar2";
             this.extScrollBar2.Size = new System.Drawing.Size(22, 428);
             this.extScrollBar2.SliderColor = System.Drawing.Color.DarkGray;
+            this.extScrollBar2.SliderColor2 = System.Drawing.Color.DarkGray;
+            this.extScrollBar2.SliderDrawAngle = 90F;
             this.extScrollBar2.SmallChange = 1;
             this.extScrollBar2.TabIndex = 9;
             this.extScrollBar2.Text = "extScrollBar2";
             this.extScrollBar2.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.extScrollBar2.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.extScrollBar2.ThumbColorScaling = 0.5F;
+            this.extScrollBar2.ThumbButtonColor2 = System.Drawing.Color.DarkBlue;
             this.extScrollBar2.ThumbDrawAngle = 0F;
             this.extScrollBar2.Value = 0;
             this.extScrollBar2.ValueLimited = 0;
             // 
             // extListBox1
             // 
+            this.extListBox1.BackGradientDirection = 90F;
             this.extListBox1.BorderColor = System.Drawing.Color.Red;
             this.extListBox1.FitImagesToItemHeight = false;
             this.extListBox1.FitToItemsHeight = true;
             this.extListBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extListBox1.GradientDirection = 90F;
             this.extListBox1.ImageItems = null;
             this.extListBox1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("extListBox1.Items")));
             this.extListBox1.ItemSeperatorColor = System.Drawing.Color.Red;
@@ -829,24 +1109,34 @@
             // 
             this.extComboBox1.BackColor2 = System.Drawing.Color.Red;
             this.extComboBox1.BorderColor = System.Drawing.Color.White;
+            this.extComboBox1.ControlBackground = System.Drawing.SystemColors.Control;
             this.extComboBox1.DataSource = null;
             this.extComboBox1.DisableBackgroundDisabledShadingGradient = false;
             this.extComboBox1.DisabledScaling = 0.5F;
             this.extComboBox1.DisplayMember = "";
-            this.extComboBox1.DropDownBorderColor = System.Drawing.Color.Green;
-            this.extComboBox1.DropDownMouseOverSliderButtonColor = System.Drawing.Color.Red;
-            this.extComboBox1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
-            this.extComboBox1.DropDownSelectionBackgroundColor2 = System.Drawing.Color.Gray;
-            this.extComboBox1.DropDownSelectionColor = System.Drawing.Color.Green;
-            this.extComboBox1.DropDownSliderArrowColor = System.Drawing.Color.Cyan;
-            this.extComboBox1.DropDownSliderButtonColor = System.Drawing.Color.Blue;
-            this.extComboBox1.DropDownSliderColor = System.Drawing.Color.Green;
+            dropDownTheme4.ListBoxGradientDirection = 0F;
+            dropDownTheme4.ListBoxSelectionBackgroundColor = System.Drawing.Color.Gray;
+            dropDownTheme4.ListBoxSelectionBackgroundColor2 = System.Drawing.Color.Gray;
+            dropDownTheme4.ListBoxSelectionColor = System.Drawing.Color.Green;
+            dropDownTheme4.MouseOverSliderButtonColor = System.Drawing.Color.Red;
+            dropDownTheme4.MouseOverSliderButtonColor2 = System.Drawing.Color.Red;
+            dropDownTheme4.PressedSliderButtonColor = System.Drawing.Color.DarkCyan;
+            dropDownTheme4.PressedSliderButtonColor2 = System.Drawing.Color.DarkCyan;
+            dropDownTheme4.SliderArrowBackColor = System.Drawing.Color.Cyan;
+            dropDownTheme4.SliderArrowBackColor2 = System.Drawing.Color.Cyan;
+            dropDownTheme4.SliderButtonArrowColor = System.Drawing.Color.White;
+            dropDownTheme4.SliderButtonBackColor = System.Drawing.Color.Blue;
+            dropDownTheme4.SliderButtonBackColor2 = System.Drawing.Color.Blue;
+            dropDownTheme4.SliderButtonGradientDirection = 90F;
+            dropDownTheme4.SliderColor = System.Drawing.Color.Green;
+            dropDownTheme4.SliderColor2 = System.Drawing.Color.Green;
+            dropDownTheme4.SliderGradientDirection = 90F;
+            this.extComboBox1.DropDownTheme = dropDownTheme4;
             this.extComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extComboBox1.GradientDirection = 90F;
-            this.extComboBox1.Location = new System.Drawing.Point(185, 96);
+            this.extComboBox1.Location = new System.Drawing.Point(185, 85);
             this.extComboBox1.MouseOverScalingColor = 1.3F;
             this.extComboBox1.Name = "extComboBox1";
-            this.extComboBox1.PressedDropDownSliderButtonColor = System.Drawing.Color.DarkCyan;
             this.extComboBox1.SelectedIndex = -1;
             this.extComboBox1.SelectedItem = null;
             this.extComboBox1.SelectedValue = null;
@@ -1021,7 +1311,7 @@
             this.extScrollBar1.AlwaysHideScrollBar = false;
             this.extScrollBar1.ArrowBorderColor = System.Drawing.Color.LightBlue;
             this.extScrollBar1.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extScrollBar1.ArrowColorScaling = 0.5F;
+            this.extScrollBar1.ArrowButtonColor2 = System.Drawing.Color.LightGray;
             this.extScrollBar1.ArrowDownDrawAngle = 270F;
             this.extScrollBar1.ArrowUpDrawAngle = 90F;
             this.extScrollBar1.BorderColor = System.Drawing.Color.White;
@@ -1032,51 +1322,30 @@
             this.extScrollBar1.Maximum = 0;
             this.extScrollBar1.Minimum = 0;
             this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
+            this.extScrollBar1.MouseOverButtonColor2 = System.Drawing.Color.Green;
             this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
+            this.extScrollBar1.MousePressedButtonColor2 = System.Drawing.Color.Red;
             this.extScrollBar1.Name = "extScrollBar1";
             this.extScrollBar1.Size = new System.Drawing.Size(19, 154);
             this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
+            this.extScrollBar1.SliderColor2 = System.Drawing.Color.DarkGray;
+            this.extScrollBar1.SliderDrawAngle = 90F;
             this.extScrollBar1.SmallChange = 1;
             this.extScrollBar1.TabIndex = 0;
             this.extScrollBar1.Text = "extScrollBar1";
             this.extScrollBar1.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.extScrollBar1.ThumbColorScaling = 0.5F;
+            this.extScrollBar1.ThumbButtonColor2 = System.Drawing.Color.DarkBlue;
             this.extScrollBar1.ThumbDrawAngle = 0F;
             this.extScrollBar1.Value = 0;
             this.extScrollBar1.ValueLimited = 0;
-            // 
-            // extPanelChildThemeControl1
-            // 
-            this.extPanelChildThemeControl1.ChildrenThemed = false;
-            this.extPanelChildThemeControl1.Controls.Add(this.extButton2);
-            this.extPanelChildThemeControl1.Location = new System.Drawing.Point(699, 433);
-            this.extPanelChildThemeControl1.Name = "extPanelChildThemeControl1";
-            this.extPanelChildThemeControl1.Size = new System.Drawing.Size(131, 57);
-            this.extPanelChildThemeControl1.TabIndex = 27;
-            // 
-            // extButton2
-            // 
-            this.extButton2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extButton2.BackColor2 = System.Drawing.Color.Red;
-            this.extButton2.ButtonDisabledScaling = 0.5F;
-            this.extButton2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.extButton2.GradientDirection = 90F;
-            this.extButton2.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.extButton2.Location = new System.Drawing.Point(21, 17);
-            this.extButton2.MouseOverScaling = 1.3F;
-            this.extButton2.MouseSelectedScaling = 1.3F;
-            this.extButton2.Name = "extButton2";
-            this.extButton2.Size = new System.Drawing.Size(75, 23);
-            this.extButton2.TabIndex = 0;
-            this.extButton2.Text = "Not Themed";
-            this.extButton2.UseVisualStyleBackColor = false;
             // 
             // TestTheme
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(879, 725);
+            this.ClientSize = new System.Drawing.Size(984, 725);
+            this.Controls.Add(this.extStatusStrip1);
             this.Controls.Add(this.extPanelChildThemeControl1);
             this.Controls.Add(this.extTextBoxAutoComplete1);
             this.Controls.Add(this.tabStrip2);
@@ -1121,11 +1390,13 @@
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.extPanelChildThemeControl1.ResumeLayout(false);
             this.extGroupBox1.ResumeLayout(false);
             this.extTabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
-            this.extPanelChildThemeControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1191,5 +1462,26 @@
         private ExtendedControls.ExtTextBoxAutoComplete extTextBoxAutoComplete1;
         private ExtendedControls.ExtPanelChildThemeControl extPanelChildThemeControl1;
         private ExtendedControls.ExtButton extButton2;
+        private ExtendedControls.ExtButton extButton4;
+        private ExtendedControls.ExtButton extButton3;
+        private ExtendedControls.ExtButton extButton6;
+        private ExtendedControls.ExtButton extButton5;
+        private ExtendedControls.ExtPanelChildThemeControl extPanelChildThemeControl2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.ToolStripMenuItem menu2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem eToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menu3ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem eToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem wToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem qToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private ExtendedControls.ExtStatusStrip extStatusStrip1;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
     }
 }

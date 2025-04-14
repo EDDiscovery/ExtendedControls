@@ -208,7 +208,6 @@
             // extRichTextBox1
             // 
             this.extRichTextBox1.BorderColor = System.Drawing.Color.Transparent;
-            this.extRichTextBox1.BorderColorScaling = 0.5F;
             this.extRichTextBox1.DetectUrls = true;
             this.extRichTextBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.extRichTextBox1.HideScrollBar = true;
@@ -218,17 +217,6 @@
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
     "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
-            this.extRichTextBox1.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.extRichTextBox1.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extRichTextBox1.ScrollBarBackColor = System.Drawing.SystemColors.Info;
-            this.extRichTextBox1.ScrollBarBorderColor = System.Drawing.Color.White;
-            this.extRichTextBox1.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extRichTextBox1.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.extRichTextBox1.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
-            this.extRichTextBox1.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
-            this.extRichTextBox1.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
-            this.extRichTextBox1.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
-            this.extRichTextBox1.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extRichTextBox1.ShowLineCount = false;
             this.extRichTextBox1.Size = new System.Drawing.Size(792, 73);
             this.extRichTextBox1.TabIndex = 0;

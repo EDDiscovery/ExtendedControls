@@ -60,7 +60,6 @@
             this.extComboBoxFont.DataSource = null;
             this.extComboBoxFont.DisableBackgroundDisabledShadingGradient = false;
             this.extComboBoxFont.DisplayMember = "";
-            this.extComboBoxFont.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.extComboBoxFont.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extComboBoxFont.Location = new System.Drawing.Point(443, 362);
             this.extComboBoxFont.Name = "extComboBoxFont";
@@ -80,7 +79,6 @@
             this.extComboBoxFontSize.DataSource = null;
             this.extComboBoxFontSize.DisableBackgroundDisabledShadingGradient = false;
             this.extComboBoxFontSize.DisplayMember = "";
-            this.extComboBoxFontSize.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.extComboBoxFontSize.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extComboBoxFontSize.Location = new System.Drawing.Point(443, 321);
             this.extComboBoxFontSize.Name = "extComboBoxFontSize";
@@ -120,7 +118,6 @@
             this.textBoxDouble1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxDouble1.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxDouble1.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxDouble1.BorderColorScaling = 0.5F;
             this.textBoxDouble1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxDouble1.ClearOnFirstChar = false;
             this.textBoxDouble1.ControlBackground = System.Drawing.SystemColors.Control;
@@ -157,7 +154,6 @@
             this.textBoxDouble2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxDouble2.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxDouble2.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxDouble2.BorderColorScaling = 0.5F;
             this.textBoxDouble2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxDouble2.ClearOnFirstChar = false;
             this.textBoxDouble2.ControlBackground = System.Drawing.SystemColors.Control;
@@ -194,7 +190,6 @@
             this.numberBoxLong2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.numberBoxLong2.BackErrorColor = System.Drawing.Color.Red;
             this.numberBoxLong2.BorderColor = System.Drawing.Color.Transparent;
-            this.numberBoxLong2.BorderColorScaling = 0.5F;
             this.numberBoxLong2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.numberBoxLong2.ClearOnFirstChar = false;
             this.numberBoxLong2.ControlBackground = System.Drawing.SystemColors.Control;
@@ -230,7 +225,6 @@
             this.numberBoxLong1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.numberBoxLong1.BackErrorColor = System.Drawing.Color.Red;
             this.numberBoxLong1.BorderColor = System.Drawing.Color.Transparent;
-            this.numberBoxLong1.BorderColorScaling = 0.5F;
             this.numberBoxLong1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.numberBoxLong1.ClearOnFirstChar = false;
             this.numberBoxLong1.ControlBackground = System.Drawing.SystemColors.Control;
@@ -264,7 +258,6 @@
             // 
             this.extRichTextBox1.BackColor = System.Drawing.Color.Transparent;
             this.extRichTextBox1.BorderColor = System.Drawing.Color.OrangeRed;
-            this.extRichTextBox1.BorderColorScaling = 0.5F;
             this.extRichTextBox1.DetectUrls = true;
             this.extRichTextBox1.HideScrollBar = true;
             this.extRichTextBox1.Location = new System.Drawing.Point(31, 146);
@@ -273,17 +266,6 @@
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
     "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
-            this.extRichTextBox1.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.extRichTextBox1.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extRichTextBox1.ScrollBarBackColor = System.Drawing.SystemColors.Control;
-            this.extRichTextBox1.ScrollBarBorderColor = System.Drawing.Color.White;
-            this.extRichTextBox1.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extRichTextBox1.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.extRichTextBox1.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
-            this.extRichTextBox1.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
-            this.extRichTextBox1.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
-            this.extRichTextBox1.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
-            this.extRichTextBox1.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extRichTextBox1.ShowLineCount = false;
             this.extRichTextBox1.Size = new System.Drawing.Size(406, 439);
             this.extRichTextBox1.TabIndex = 30;
@@ -296,7 +278,6 @@
             this.extTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.extTextBox1.BackErrorColor = System.Drawing.Color.Red;
             this.extTextBox1.BorderColor = System.Drawing.Color.Gold;
-            this.extTextBox1.BorderColorScaling = 0.5F;
             this.extTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extTextBox1.ClearOnFirstChar = false;
             this.extTextBox1.ControlBackground = System.Drawing.SystemColors.Control;

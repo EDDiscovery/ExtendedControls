@@ -69,17 +69,21 @@ namespace ExtendedControls
         // Colours and controls for Scroll bar
         public Color BorderColor { get { return sb.BorderColor; } set { sb.BorderColor = value; } }
         public Color SliderColor { get { return sb.SliderColor; } set { sb.SliderColor = value; } }
+        public Color SliderColor2 { get { return sb.SliderColor2; } set { sb.SliderColor2 = value; } }
+        public float SliderDrawAngle { get { return sb.SliderDrawAngle; } set { sb.SliderDrawAngle = value; } }
         public Color ArrowButtonColor { get { return sb.ArrowButtonColor; } set { sb.ArrowButtonColor = value; } }
+        public Color ArrowButtonColor2 { get { return sb.ArrowButtonColor2; } set { sb.ArrowButtonColor2 = value; } }
         public Color ArrowBorderColor { get { return sb.ArrowBorderColor; } set { sb.ArrowBorderColor = value; } }
         public float ArrowUpDrawAngle { get { return sb.ArrowUpDrawAngle; } set { sb.ArrowUpDrawAngle = value; } }
         public float ArrowDownDrawAngle { get { return sb.ArrowDownDrawAngle; } set { sb.ArrowDownDrawAngle = value; } }
-        public float ArrowColorScaling { get { return sb.ArrowColorScaling; } set { sb.ArrowColorScaling = value; } }
         public Color ThumbButtonColor { get { return sb.ThumbButtonColor; } set { sb.ThumbButtonColor = value; } }
+        public Color ThumbButtonColor2 { get { return sb.ThumbButtonColor2; } set { sb.ThumbButtonColor2 = value; } }
         public Color ThumbBorderColor { get { return sb.ThumbBorderColor; } set { sb.ThumbBorderColor = value; } }
         public float ThumbDrawAngle { get { return sb.ThumbDrawAngle; } set { sb.ThumbDrawAngle = value; } }
-        public float ThumbColorScaling { get { return sb.ThumbColorScaling; } set { sb.ThumbColorScaling = value; } }
         public Color MouseOverButtonColor { get { return sb.MouseOverButtonColor; } set { sb.MouseOverButtonColor = value; } }
+        public Color MouseOverButtonColor2 { get { return sb.MouseOverButtonColor2; } set { sb.MouseOverButtonColor2 = value; } }
         public Color MousePressedButtonColor { get { return sb.MousePressedButtonColor; } set { sb.MousePressedButtonColor = value; } }
+        public Color MousePressedButtonColor2 { get { return sb.MousePressedButtonColor2; } set { sb.MousePressedButtonColor2 = value; } }
         public int LargeChange { get { return sb.LargeChange; } set { sb.LargeChange = value; } }
 
         // Subform, null if not active
@@ -1075,11 +1079,17 @@ namespace ExtendedControls
             BorderColor = t.GridBorderLines;
             BackColor = t.Form;
             SliderColor = t.GridSliderBack;
+            SliderColor2 = t.IsButtonGradientStyle ? t.GridSliderBack2 : t.GridSliderBack;
+            SliderDrawAngle = t.GridSliderGradientDirection;
             BorderColor = ThumbBorderColor = ArrowBorderColor = t.GridBorderLines;
-            Color c1 = t.GridScrollButton;
-            ArrowButtonColor = ThumbButtonColor = c1;
-            MouseOverButtonColor = c1.Multiply(t.MouseOverScaling);
-            MousePressedButtonColor = c1.Multiply(t.MouseSelectedScaling);
+            ArrowButtonColor = t.GridScrollArrowBack;
+            ArrowButtonColor2 = t.IsButtonGradientStyle ? t.GridScrollArrow2Back : t.GridScrollArrowBack;
+            ThumbButtonColor = t.GridScrollButtonBack;
+            ThumbButtonColor2 = t.IsButtonGradientStyle ? t.GridScrollButtonBack2 : t.GridScrollButtonBack;
+            MouseOverButtonColor = ThumbButtonColor.Multiply(t.MouseOverScaling);
+            MouseOverButtonColor2 = ThumbButtonColor2.Multiply(t.MouseOverScaling);
+            MousePressedButtonColor = ThumbButtonColor.Multiply(t.MouseSelectedScaling);
+            MousePressedButtonColor = ThumbButtonColor2.Multiply(t.MouseSelectedScaling);
             CheckBoxColor = t.CheckBoxBack;
             CheckBoxInnerColor = t.CheckBoxBack.Multiply(1.5F);
             MouseOverCheckboxColor = t.CheckBoxBack.Multiply(0.75F);

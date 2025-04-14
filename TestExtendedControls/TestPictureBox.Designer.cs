@@ -105,7 +105,6 @@
             this.extScrollBarForPanel2.AlwaysHideScrollBar = false;
             this.extScrollBarForPanel2.ArrowBorderColor = System.Drawing.Color.LightBlue;
             this.extScrollBarForPanel2.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extScrollBarForPanel2.ArrowColorScaling = 0.5F;
             this.extScrollBarForPanel2.ArrowDownDrawAngle = 270F;
             this.extScrollBarForPanel2.ArrowUpDrawAngle = 90F;
             this.extScrollBarForPanel2.BorderColor = System.Drawing.Color.White;
@@ -125,7 +124,6 @@
             this.extScrollBarForPanel2.Text = "extScrollBar1";
             this.extScrollBarForPanel2.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.extScrollBarForPanel2.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.extScrollBarForPanel2.ThumbColorScaling = 0.5F;
             this.extScrollBarForPanel2.ThumbDrawAngle = 0F;
             this.extScrollBarForPanel2.Value = 0;
             this.extScrollBarForPanel2.ValueLimited = 0;
@@ -176,7 +174,6 @@
             this.extScrollBarForPanel3.AlwaysHideScrollBar = false;
             this.extScrollBarForPanel3.ArrowBorderColor = System.Drawing.Color.LightBlue;
             this.extScrollBarForPanel3.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extScrollBarForPanel3.ArrowColorScaling = 0.5F;
             this.extScrollBarForPanel3.ArrowDownDrawAngle = 270F;
             this.extScrollBarForPanel3.ArrowUpDrawAngle = 90F;
             this.extScrollBarForPanel3.BorderColor = System.Drawing.Color.White;
@@ -196,7 +193,6 @@
             this.extScrollBarForPanel3.Text = "extScrollBar1";
             this.extScrollBarForPanel3.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.extScrollBarForPanel3.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.extScrollBarForPanel3.ThumbColorScaling = 0.5F;
             this.extScrollBarForPanel3.ThumbDrawAngle = 0F;
             this.extScrollBarForPanel3.Value = 0;
             this.extScrollBarForPanel3.ValueLimited = 0;

@@ -163,7 +163,7 @@ namespace ExtendedControls
             RadioButtonInnerColor = t.CheckBoxBack2;
             MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
             SelectedColor = t.CheckBoxTick; //BackColor.Multiply(t.DisabledScaling);
-            GradientDirection = t.CheckBoxGradientDirection;
+            GradientDirection = t.CheckBoxBackGradientDirection;
             RadioButtonDisabledScaling = t.DisabledScaling;
             return false;
         }

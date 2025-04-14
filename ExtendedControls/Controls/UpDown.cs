@@ -204,12 +204,12 @@ namespace ExtendedControls
         public bool Theme(Theme t, Font fnt)
         {
             BackColor = t.ButtonBackColor;
-            BackColor2 = t.ButtonBackColor2;
+            BackColor2 = t.IsButtonGradientStyle ? t.ButtonBackColor2 : t.ButtonBackColor;
             ForeColor = t.ButtonTextColor;
             MouseOverScaling = t.MouseOverScaling;
             MouseSelectedScaling = t.MouseSelectedScaling;
             BorderColor = t.ButtonBorderColor;
-            GradientDirection = t.ButtonGradientDirection;
+            GradientDirection = t.ButtonBackGradientDirection;
             return false;
         }
 

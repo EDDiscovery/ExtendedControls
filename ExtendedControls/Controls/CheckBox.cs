@@ -284,7 +284,7 @@ namespace ExtendedControls
             {
                 CheckColor = t.CheckBoxButtonTickedBack;
                 CheckColor2 = t.CheckBoxButtonTickedBack2;
-                ButtonGradientDirection = t.CheckBoxGradientDirection;
+                ButtonGradientDirection = t.CheckBoxButtonGradientDirection;
                 FlatAppearance.BorderColor = t.CheckBoxBorderColor;
                 FlatAppearance.BorderSize = 1;
             }
@@ -293,7 +293,7 @@ namespace ExtendedControls
                 CheckBoxColor = t.CheckBoxBack;
                 CheckBoxInnerColor = t.CheckBoxBack2;
                 CheckColor = t.CheckBoxTick;
-                CheckBoxGradientDirection = t.CheckBoxGradientDirection;
+                CheckBoxGradientDirection = t.CheckBoxBackGradientDirection;
                 TickBoxReductionRatio = t.CheckBoxTickSize;
             }
 

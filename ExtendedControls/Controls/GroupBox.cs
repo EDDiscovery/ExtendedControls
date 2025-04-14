@@ -25,7 +25,8 @@ namespace ExtendedControls
         public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
         public Color BorderColor { get; set; } = Color.LightGray;       // border
-        public float BorderColorScaling { get; set; } = 0.7F;
+        public Color BorderColor2 { get; set; } = Color.Gray;           // darker
+
         public int TextStartPosition { get; set; } = -1;                // -1 left, +1 right, 0 centre, else pixel start pos
         public int TextPadding { get; set; } = 0;                       // pixels at start/end of text
 
@@ -74,7 +75,7 @@ namespace ExtendedControls
                         e.Graphics.DrawPath(pc1, g1);
 
                     using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, topline, ClientRectangle.Width, ClientRectangle.Height - topline - 1, 2, 2 , textstart, textlength))
-                    using (Pen pc2 = new Pen(BorderColor.Multiply(BorderColorScaling), 1.0F))
+                    using (Pen pc2 = new Pen(BorderColor2, 1.0F))
                         e.Graphics.DrawPath(pc2, g2);
 
                     if (textlength > 0)
@@ -103,6 +104,7 @@ namespace ExtendedControls
             BackColor = t.GroupBack;
             BackColor2 = t.GroupBack2;
             BorderColor = t.GroupBorder;
+            BorderColor2 = t.GroupBorder2;
             FlatStyle = FlatStyle.Popup;
             GradientDirection = t.GroupBoxGradientDirection;
             return true;

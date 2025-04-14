@@ -72,7 +72,6 @@ namespace ExtendedAudioForms
             this.textBoxBorderText.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxBorderText.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderText.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxBorderText.BorderColorScaling = 0.5F;
             this.textBoxBorderText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorderText.ClearOnFirstChar = false;
             this.textBoxBorderText.ControlBackground = System.Drawing.SystemColors.Control;
@@ -243,7 +242,6 @@ namespace ExtendedAudioForms
             this.textBoxBorderStartTrigger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxBorderStartTrigger.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderStartTrigger.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxBorderStartTrigger.BorderColorScaling = 0.5F;
             this.textBoxBorderStartTrigger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorderStartTrigger.ClearOnFirstChar = false;
             this.textBoxBorderStartTrigger.ControlBackground = System.Drawing.SystemColors.Control;
@@ -280,7 +278,6 @@ namespace ExtendedAudioForms
             this.textBoxBorderEndTrigger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxBorderEndTrigger.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderEndTrigger.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxBorderEndTrigger.BorderColorScaling = 0.5F;
             this.textBoxBorderEndTrigger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorderEndTrigger.ClearOnFirstChar = false;
             this.textBoxBorderEndTrigger.ControlBackground = System.Drawing.SystemColors.Control;
@@ -308,7 +305,6 @@ namespace ExtendedAudioForms
             this.comboBoxCustomPriority.DataSource = null;
             this.comboBoxCustomPriority.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomPriority.DisplayMember = "";
-            this.comboBoxCustomPriority.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomPriority.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomPriority.Location = new System.Drawing.Point(226, 79);
             this.comboBoxCustomPriority.Name = "comboBoxCustomPriority";

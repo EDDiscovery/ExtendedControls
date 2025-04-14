@@ -75,7 +75,6 @@ namespace ExtendedControls
             // textBoxInfo
             // 
             this.textBoxInfo.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxInfo.BorderColorScaling = 0.5F;
             this.textBoxInfo.ContextMenuStrip = this.contextMenuStrip;
             this.textBoxInfo.DetectUrls = true;
             this.textBoxInfo.HideScrollBar = true;
@@ -86,17 +85,6 @@ namespace ExtendedControls
             this.textBoxInfo.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
     "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
-            this.textBoxInfo.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.textBoxInfo.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
-            this.textBoxInfo.ScrollBarBackColor = System.Drawing.SystemColors.Control;
-            this.textBoxInfo.ScrollBarBorderColor = System.Drawing.Color.White;
-            this.textBoxInfo.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.textBoxInfo.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBoxInfo.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
-            this.textBoxInfo.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
-            this.textBoxInfo.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
-            this.textBoxInfo.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
-            this.textBoxInfo.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.textBoxInfo.ShowLineCount = false;
             this.textBoxInfo.Size = new System.Drawing.Size(273, 228);
             this.textBoxInfo.TabIndex = 2;

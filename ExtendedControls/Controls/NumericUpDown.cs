@@ -25,7 +25,7 @@ namespace ExtendedControls
         public Color TextBoxBackColor { get { return tbbackcolor; } set { tb.BackColor = tbbackcolor = value; } }
         public Color TextBoxForeColor { get { return tbforecolor; } set { tb.ForeColor = tbforecolor = value; } }
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; PerformLayout(); Invalidate(); } }
-        public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
+        public Color BorderColor2 { get { return bordercolor2; } set { bordercolor2 = value; PerformLayout(); Invalidate(); } }
         public bool AutoSizeTextBox { get { return autosize; } set { autosize = value; PerformLayout(); } }
         public UpDown updown = new UpDown();                            // for setting colours..
         public override string Text { get { return (tb != null) ? (tb.Text) : ""; } }
@@ -70,7 +70,7 @@ namespace ExtendedControls
 
             if (ClientRectangle.Width > 0 && ClientRectangle.Height > 0)
             {
-                int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
+                int bordersize = !BorderColor.IsFullyTransparent() ? 3 : 0;
 
                 tb.Location = new Point(bordersize, bordersize);
                 tb.Size = new Size(ClientRectangle.Width - SpinnerWidth - bordersize * 2, ClientRectangle.Height - bordersize * 2);
@@ -89,17 +89,17 @@ namespace ExtendedControls
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-                Color color1 = BorderColor;
-                Color color2 = BorderColor.Multiply(BorderColorScaling);
-
                 int hg = tb.Height + 6;
                 using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, 1, ClientRectangle.Width - 2, hg - 1, 1, 1))
-                using (Pen pc1 = new Pen(color1, 1.0F))
+                using (Pen pc1 = new Pen(BorderColor, 1.0F))
                     e.Graphics.DrawPath(pc1, g1);
 
-                using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, 0, ClientRectangle.Width, hg - 1, 2, 2))
-                using (Pen pc2 = new Pen(color2, 1.0F))
-                    e.Graphics.DrawPath(pc2, g2);
+                if (BorderColor2 != Color.Transparent)
+                {
+                    using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, 0, ClientRectangle.Width, hg - 1, 2, 2))
+                    using (Pen pc2 = new Pen(BorderColor2, 1.0F))
+                        e.Graphics.DrawPath(pc2, g2);
+                }
             }
         }
 
@@ -174,12 +174,13 @@ namespace ExtendedControls
         {
             TextBoxForeColor = t.TextBlockForeColor;
             TextBoxBackColor = t.TextBlockBackColor;
-            BorderColor = t.TextBlockBorderColor;
+            BorderColor = t.IsTextBoxBorderNone ? Color.Transparent : t.TextBlockBorderColor;
+            BorderColor2 = t.IsTextBoxBorderColour ? t.TextBlockBorderColor2 : Color.Transparent;
 
             // we theme the updown ourselves and do not use its themer
 
             updown.BackColor = updown.BackColor2 = t.ButtonBackColor;
-            updown.ForeColor = t.TextBlockScrollArrow;
+            updown.ForeColor = t.TextBlockScrollArrowBack;
             updown.BorderColor = t.ButtonBorderColor;
             updown.MouseOverScaling = t.MouseOverScaling;
             updown.MouseSelectedScaling = t.MouseSelectedScaling;
@@ -200,5 +201,6 @@ namespace ExtendedControls
         Color tbbackcolor = SystemColors.Window;
         Color tbforecolor = SystemColors.WindowText;
         Color bordercolor = Color.Transparent;
+        Color bordercolor2 = Color.Transparent;
     }
 }

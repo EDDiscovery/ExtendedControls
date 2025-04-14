@@ -1,4 +1,5 @@
-﻿using ExtendedControls;
+﻿using BaseUtils;
+using ExtendedControls;
 using QuickJSON;
 using System;
 using System.Collections.Generic;
@@ -16,17 +17,44 @@ namespace TestExtendedControls
         public TestTheme()
         {
             InitializeComponent();
-            stdthemes = new ThemeList();
-            stdthemes.LoadBaseThemes();
-            //
-            var loadtheme = Theme.LoadFile(@"c:\code\example.theme");
+
+            Theme loadtheme = Theme.LoadFile(@"c:\code\example.theme");
             if (loadtheme != null)
             {
                 System.Diagnostics.Debug.WriteLine("Theme loaded from file");
+                string jsonout = loadtheme.ToJSON().ToString(true);
+                FileHelpers.TryWriteToFile(@"c:\code\loaded.theme", jsonout);
+
                 Theme.Current = loadtheme;
             }
             else
-                stdthemes.SetThemeByName("Elite Verdana");
+            {
+                Color hgb = Color.FromArgb(255, 10, 40, 10);
+                Color c64 = Color.FromArgb(255, 64, 64, 64);
+                Color elitebutback = Color.FromArgb(255, 32, 32, 32);
+                Theme.Current = new Theme("Elite Verdana", Color.Black,
+                          c64, Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient, // button
+                          Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
+                          elitebutback, elitebutback, Color.Orange, Color.Orange, hgb, // back/alt fore/alt
+                          Color.DarkOrange, // borderlines
+                          elitebutback, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
+                          Color.Red, Color.White, // travel
+                          elitebutback, Color.Orange, Color.Red, Color.Green, c64, Theme.TextboxborderstyleColor, // text box
+                          elitebutback, Color.Orange, Color.DarkOrange, // text back, arrow, button
+                          Color.Orange, Color.FromArgb(255, 65, 33, 33), c64,// checkbox
+                          Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  // menu
+                          Color.Orange,  // label
+                          Color.Black, Color.Orange, Color.FromArgb(255, 130, 71, 0), // group
+                          Color.DarkOrange, // tab control
+                          Color.Black, Color.DarkOrange, Color.Orange, // toolstrips
+                          Color.Orange, // spanel
+                          Color.Green, // overlay
+                          false, 100, "Verdana", 10F, FontStyle.Regular);
+            }
+
+            stdthemes = new ThemeList();
+            stdthemes.LoadBaseThemes();
+            //stdthemes.SetThemeByName("Verdana Grey");
 
             Theme.Current.WindowsFrame = true;
             Theme.Current.ApplyStd(this);
@@ -45,6 +73,9 @@ namespace TestExtendedControls
                 extListBox1.Items.Add($"Item {i}");
                 extPanelDropDown1.Items.Add($"Item {i}");
             }
+
+           
+            this.extTabControl1.TabStyle = new ExtendedControls.TabStyleAngled();
 
             extRichTextBox1.Text = "Hello\r\nThere!\r\n1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7";
 
@@ -120,6 +151,10 @@ namespace TestExtendedControls
                 aclist.Add($"Item {i}");
             extTextBoxAutoComplete1.SetAutoCompletor(AutoList);
 
+            UserControl uc1 = new UserControl();
+            uc1.Dock = DockStyle.Fill;
+            uc1.BackColor = Color.Red;
+            tabPage3.Controls.Add(uc1);
         }
 
         public void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)

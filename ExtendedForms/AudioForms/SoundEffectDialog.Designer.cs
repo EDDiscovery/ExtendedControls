@@ -615,7 +615,6 @@ namespace ExtendedAudioForms
             this.comboBoxCustomVoices.DataSource = null;
             this.comboBoxCustomVoices.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomVoices.DisplayMember = "";
-            this.comboBoxCustomVoices.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomVoices.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomVoices.Location = new System.Drawing.Point(162, 479);
             this.comboBoxCustomVoices.Name = "comboBoxCustomVoices";

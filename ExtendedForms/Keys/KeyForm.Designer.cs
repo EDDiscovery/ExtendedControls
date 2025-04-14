@@ -170,7 +170,6 @@ namespace ExtendedForms
             this.textBoxKeys.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxKeys.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxKeys.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxKeys.BorderColorScaling = 0.5F;
             this.textBoxKeys.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxKeys.ClearOnFirstChar = false;
             this.textBoxKeys.ControlBackground = System.Drawing.SystemColors.Control;
@@ -219,11 +218,9 @@ namespace ExtendedForms
             this.textBoxSendTo.AutoCompleteTimeout = 500;
             this.textBoxSendTo.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxSendTo.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxSendTo.BorderColorScaling = 0.5F;
             this.textBoxSendTo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxSendTo.ClearOnFirstChar = false;
             this.textBoxSendTo.ControlBackground = System.Drawing.SystemColors.Control;
-            this.textBoxSendTo.DropDownBorderColor = System.Drawing.Color.Gray;
             this.textBoxSendTo.EndButtonEnable = false;
             this.textBoxSendTo.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxSendTo.EndButtonImage")));
             this.textBoxSendTo.EndButtonVisible = false;
@@ -317,7 +314,6 @@ namespace ExtendedForms
             this.textBoxDefaultDelay.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxDefaultDelay.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxDefaultDelay.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxDefaultDelay.BorderColorScaling = 0.5F;
             this.textBoxDefaultDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxDefaultDelay.ClearOnFirstChar = false;
             this.textBoxDefaultDelay.ControlBackground = System.Drawing.SystemColors.Control;
@@ -350,7 +346,6 @@ namespace ExtendedForms
             this.comboBoxKeySelector.DataSource = null;
             this.comboBoxKeySelector.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxKeySelector.DisplayMember = "";
-            this.comboBoxKeySelector.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxKeySelector.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxKeySelector.Location = new System.Drawing.Point(185, 86);
             this.comboBoxKeySelector.Name = "comboBoxKeySelector";
@@ -429,7 +424,6 @@ namespace ExtendedForms
             this.textBoxCurrentKeyDelay.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxCurrentKeyDelay.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxCurrentKeyDelay.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxCurrentKeyDelay.BorderColorScaling = 0.5F;
             this.textBoxCurrentKeyDelay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxCurrentKeyDelay.ClearOnFirstChar = true;
             this.textBoxCurrentKeyDelay.ControlBackground = System.Drawing.SystemColors.Control;

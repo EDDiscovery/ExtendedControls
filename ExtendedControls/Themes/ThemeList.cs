@@ -36,13 +36,13 @@ namespace ExtendedControls
             themelist.Clear();
 
             themelist.Add(new Theme("Windows Default"));         // windows default..
-            var wd = new Theme("Windows Default");
+
+            var wd = new Theme("Windows Default Gradient Buttons");
             wd.ButtonStyle = Theme.ButtonstyleGradient;
-            wd.Name = "Windows Default Gradient Buttons";
             themelist.Add(wd);
-            wd = new Theme("Windows Default");
+
+            wd = new Theme("Windows Default Flat Buttons");
             wd.ButtonStyle = Theme.ButtonstyleFlat;
-            wd.Name = "Windows Default Flat Buttons";
             themelist.Add(wd);
 
             Color hgb = Color.FromArgb(255, 10, 40, 10);

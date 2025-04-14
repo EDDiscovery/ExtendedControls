@@ -39,21 +39,10 @@ namespace ExtendedControls
         public Color TextBoxForeColor { get { return textBox.ForeColor; } set { textBox.ForeColor = value; } }
         public Color TextBoxBackColor { get { return textBox.BackColor; } set { textBox.BackColor = value; } }
         public Color BorderColor { get; set; } = Color.Transparent;
-        public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
+        public Color BorderColor2 { get; set; } = Color.Transparent;
         public bool ShowLineCount { get; set; } = false;                // count lines
         public bool HideScrollBar { get; set; } = true;                   // hide if no scroll needed
-
-        public FlatStyle ScrollBarFlatStyle { get { return scrollBar.FlatStyle; } set { scrollBar.FlatStyle = value; } }
-        public Color ScrollBarBackColor { get { return scrollBar.BackColor; } set { scrollBar.BackColor = value; } }
-        public Color ScrollBarSliderColor { get { return scrollBar.SliderColor; } set { scrollBar.SliderColor = value; } }
-        public Color ScrollBarBorderColor { get { return scrollBar.BorderColor; } set { scrollBar.BorderColor = value; } }
-        public Color ScrollBarThumbBorderColor { get { return scrollBar.ThumbBorderColor; } set { scrollBar.ThumbBorderColor = value; } }
-        public Color ScrollBarArrowBorderColor { get { return scrollBar.ArrowBorderColor; } set { scrollBar.ArrowBorderColor = value; } }
-        public Color ScrollBarArrowButtonColor { get { return scrollBar.ArrowButtonColor; } set { scrollBar.ArrowButtonColor = value; } }
-        public Color ScrollBarThumbButtonColor { get { return scrollBar.ThumbButtonColor; } set { scrollBar.ThumbButtonColor = value; } }
-        public Color ScrollBarMouseOverButtonColor { get { return scrollBar.MouseOverButtonColor; } set { scrollBar.MouseOverButtonColor = value; } }
-        public Color ScrollBarMousePressedButtonColor { get { return scrollBar.MousePressedButtonColor; } set { scrollBar.MousePressedButtonColor = value; } }
-        public Color ScrollBarForeColor { get { return scrollBar.ForeColor; } set { scrollBar.ForeColor = value; } }
+        public ExtScrollBar ScrollBar { get; set; }
 
         public override string Text { get { return textBox.Text; } set { textBox.Text = value; EstimateLines(); UpdateScrollBar(); } }                // return only textbox text
         public string[] Lines {  get { return textBox.Lines; } }
@@ -146,16 +135,15 @@ namespace ExtendedControls
         #region Implementation
 
         private RichTextBoxBack textBox;                 // Use these with caution.
-        private ExtScrollBar scrollBar;
         private int linecounter = 1;
 
         public ExtRichTextBox() : base()
         {
             textBox = new RichTextBoxBack();
             textBox.Name = "ExtRichTextBox_RTB";
-            scrollBar = new ExtScrollBar();
+            ScrollBar = new ExtScrollBar();
             Controls.Add(textBox);
-            Controls.Add(scrollBar);
+            Controls.Add(ScrollBar);
             textBox.ScrollBars = RichTextBoxScrollBars.None;
             textBox.BorderStyle = BorderStyle.None;
             textBox.BackColor = BackColor;
@@ -169,11 +157,11 @@ namespace ExtendedControls
             textBox.DragDrop += TextBox_DragDrop;
             textBox.LinkClicked += TextBox_LinkClicked;
             textBox.Show();
-            scrollBar.Show();
+            ScrollBar.Show();
             textBox.VScroll += OnVscrollChanged;
             textBox.MouseWheel += new MouseEventHandler(MWheel);        // richtextbox without scroll bars do not handle mouse wheels
             textBox.TextChanged += TextChangeEventHandler;
-            scrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
+            ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(OnScrollBarChanged);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -184,15 +172,12 @@ namespace ExtendedControls
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-                Color color1 = BorderColor;
-                Color color2 = BorderColor.Multiply(BorderColorScaling);
-
                 GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, 1, ClientRectangle.Width - 2, ClientRectangle.Height - 1, 1, 1);
-                using (Pen pc1 = new Pen(color1, 1.0F))
+                using (Pen pc1 = new Pen(BorderColor, 1.0F))
                     e.Graphics.DrawPath(pc1, g1);
 
                 GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, 0, ClientRectangle.Width, ClientRectangle.Height - 1, 2, 2);
-                using (Pen pc2 = new Pen(color2, 1.0F))
+                using (Pen pc2 = new Pen(BorderColor2, 1.0F))
                     e.Graphics.DrawPath(pc2, g2);
             }
         }
@@ -206,13 +191,13 @@ namespace ExtendedControls
             int bordersize = (!BorderColor.IsFullyTransparent()) ? 3 : 0;
             int textboxclienth = ClientRectangle.Height - bordersize * 2;
 
-            scrollbarvisibleonlayout = scrollBar.IsScrollBarOn || DesignMode || !HideScrollBar;  // Hide must be on, or in design mode, or scroll bar is on due to values
+            scrollbarvisibleonlayout = ScrollBar.IsScrollBarOn || DesignMode || !HideScrollBar;  // Hide must be on, or in design mode, or scroll bar is on due to values
 
             textBox.Location = new Point(bordersize, bordersize);
             textBox.Size = new Size(ClientRectangle.Width - (scrollbarvisibleonlayout ? ScrollBarWidth : 0) - bordersize * 2, textboxclienth);
 
-            scrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
-            scrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
+            ScrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
+            ScrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
         }
 
         protected override void OnFontChanged(EventArgs e)      // these events can change visible lines
@@ -281,8 +266,8 @@ namespace ExtendedControls
                 firstVisibleLine = unchecked((int)(long)textBox.SendMessage(BaseUtils.Win32Constants.EM.GETFIRSTVISIBLELINE, IntPtr.Zero, IntPtr.Zero));
             }
 
-            scrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
-            if (scrollBar.IsScrollBarOn != scrollbarvisibleonlayout)     // need to relayout if scroll bars pop on
+            ScrollBar.SetValueMaximumLargeChange(firstVisibleLine, LineCount - 1, visiblelines);
+            if (ScrollBar.IsScrollBarOn != scrollbarvisibleonlayout)     // need to relayout if scroll bars pop on
                 PerformLayout();
         }
 
@@ -310,7 +295,7 @@ namespace ExtendedControls
 
         private void ScrollToBar()              // from the scrollbar, scroll first line to value
         {
-            int scrollvalue = scrollBar.Value;
+            int scrollvalue = ScrollBar.Value;
 
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
@@ -338,9 +323,9 @@ namespace ExtendedControls
         protected virtual void MWheel(object sender, MouseEventArgs e)  // mouse, we move then scroll to bar
         {
             if (e.Delta > 0)
-                scrollBar.ValueLimited--;                  // control takes care of end limits..
+                ScrollBar.ValueLimited--;                  // control takes care of end limits..
             else
-                scrollBar.ValueLimited++;           // end is UserLimit, not maximum
+                ScrollBar.ValueLimited++;           // end is UserLimit, not maximum
 
             ScrollToBar();                          // go to scroll position
         }
@@ -439,25 +424,35 @@ namespace ExtendedControls
             TextBoxForeColor = t.TextBlockForeColor;
             TextBoxBackColor = t.TextBlockBackColor;
 
-            BorderColor = Color.Transparent;       // default for text box border styles
+            BorderColor = t.IsTextBoxBorderColour ? t.TextBlockBorderColor : Color.Transparent;
+            BorderColor2 = t.IsTextBoxBorderColour ? t.TextBlockBorderColor2 : Color.Transparent;
             BorderStyle = t.TextBoxStyle;
 
-            if (t.IsTextBoxColourStyle)
+            if (t.IsTextBoxBorderColour)
                 BorderColor = t.TextBlockBorderColor;
 
             if (t.IsButtonSystemStyle)
-                ScrollBarFlatStyle = FlatStyle.System;
+            {
+                ScrollBar.FlatStyle = FlatStyle.System;
+            }
             else
             {
-                ScrollBarBackColor = t.TextBlockBackColor;
-                ScrollBarSliderColor = t.TextBlockSliderBack;
-                ScrollBarBorderColor = ScrollBarThumbBorderColor =
-                            ScrollBarArrowBorderColor = t.TextBlockBorderColor;
-                ScrollBarArrowButtonColor = ScrollBarThumbButtonColor = t.TextBlockScrollButton;
-                ScrollBarMouseOverButtonColor = t.TextBlockScrollButton.Multiply(t.MouseOverScaling);
-                ScrollBarMousePressedButtonColor = t.TextBlockScrollButton.Multiply(t.MouseSelectedScaling);
-                ScrollBarForeColor = t.TextBlockScrollArrow;
-                ScrollBarFlatStyle = FlatStyle.Popup;
+                ScrollBar.BorderColor = ScrollBar.ThumbBorderColor = ScrollBar.ArrowBorderColor = t.TextBlockBorderColor;
+                ScrollBar.BackColor = t.TextBlockBackColor;
+                ScrollBar.SliderColor = t.TextBlockSliderBack;
+                ScrollBar.SliderColor2 = t.TextBlockSliderBack2;
+                ScrollBar.SliderDrawAngle = t.TextBlockScrollButtonGradientDirection;
+                ScrollBar.ForeColor = t.TextBlockScrollArrow;
+                ScrollBar.ArrowButtonColor = t.TextBlockScrollArrowBack;
+                ScrollBar.ArrowButtonColor2 = t.IsButtonGradientStyle ? t.TextBlockScrollArrowBack2 : t.TextBlockScrollArrowBack;
+                ScrollBar.ThumbButtonColor = t.TextBlockScrollButtonBack;
+                ScrollBar.ThumbButtonColor2 = t.IsButtonGradientStyle ? t.TextBlockScrollButtonBack2 : t.TextBlockScrollButtonBack;
+                ScrollBar.ThumbDrawAngle = t.TextBlockScrollButtonGradientDirection;
+                ScrollBar.MouseOverButtonColor = ScrollBar.ThumbButtonColor.Multiply(t.MouseOverScaling);
+                ScrollBar.MouseOverButtonColor2 = ScrollBar.ThumbButtonColor.Multiply(t.MouseOverScaling);
+                ScrollBar.MousePressedButtonColor = ScrollBar.ThumbButtonColor.Multiply(t.MouseSelectedScaling);
+                ScrollBar.MousePressedButtonColor2 = ScrollBar.ThumbButtonColor.Multiply(t.MouseSelectedScaling);
+                ScrollBar.FlatStyle = FlatStyle.Popup;
             }
 
             if (ContextMenuStrip != null)      // propegate font

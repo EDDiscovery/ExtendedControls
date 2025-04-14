@@ -37,8 +37,6 @@
             // 
             this.checkedIconPictureBoxUserControl1.ArrowBorderColor = System.Drawing.Color.LightBlue;
             this.checkedIconPictureBoxUserControl1.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.checkedIconPictureBoxUserControl1.ArrowColorScaling = 0.5F;
-            this.checkedIconPictureBoxUserControl1.ArrowDownDrawAngle = 270F;
             this.checkedIconPictureBoxUserControl1.ArrowUpDrawAngle = 90F;
             this.checkedIconPictureBoxUserControl1.BorderColor = System.Drawing.Color.White;
             this.checkedIconPictureBoxUserControl1.CheckBoxColor = System.Drawing.Color.Gray;
@@ -61,7 +59,6 @@
             this.checkedIconPictureBoxUserControl1.TabIndex = 0;
             this.checkedIconPictureBoxUserControl1.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.checkedIconPictureBoxUserControl1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.checkedIconPictureBoxUserControl1.ThumbColorScaling = 0.5F;
             this.checkedIconPictureBoxUserControl1.ThumbDrawAngle = 0F;
             this.checkedIconPictureBoxUserControl1.TickBoxReductionRatio = 0.75F;
             this.checkedIconPictureBoxUserControl1.VerticalSpacing = 4;

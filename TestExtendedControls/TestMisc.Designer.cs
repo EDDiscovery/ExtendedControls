@@ -104,11 +104,9 @@
             this.extTextBoxAutoComplete1.AutoCompleteTimeout = 500;
             this.extTextBoxAutoComplete1.BackErrorColor = System.Drawing.Color.Red;
             this.extTextBoxAutoComplete1.BorderColor = System.Drawing.Color.Transparent;
-            this.extTextBoxAutoComplete1.BorderColorScaling = 0.5F;
             this.extTextBoxAutoComplete1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extTextBoxAutoComplete1.ClearOnFirstChar = false;
             this.extTextBoxAutoComplete1.ControlBackground = System.Drawing.SystemColors.Control;
-            this.extTextBoxAutoComplete1.DropDownBorderColor = System.Drawing.Color.Green;
             this.extTextBoxAutoComplete1.EndButtonEnable = false;
             this.extTextBoxAutoComplete1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("extTextBoxAutoComplete1.EndButtonImage")));
             this.extTextBoxAutoComplete1.EndButtonVisible = false;
@@ -130,7 +128,6 @@
             // extRichTextBox1
             // 
             this.extRichTextBox1.BorderColor = System.Drawing.Color.Transparent;
-            this.extRichTextBox1.BorderColorScaling = 0.5F;
             this.extRichTextBox1.DetectUrls = true;
             this.extRichTextBox1.HideScrollBar = true;
             this.extRichTextBox1.Location = new System.Drawing.Point(3, 28);
@@ -139,17 +136,6 @@
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
     "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
-            this.extRichTextBox1.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.extRichTextBox1.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extRichTextBox1.ScrollBarBackColor = System.Drawing.SystemColors.Control;
-            this.extRichTextBox1.ScrollBarBorderColor = System.Drawing.Color.White;
-            this.extRichTextBox1.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extRichTextBox1.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.extRichTextBox1.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
-            this.extRichTextBox1.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
-            this.extRichTextBox1.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
-            this.extRichTextBox1.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
-            this.extRichTextBox1.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extRichTextBox1.ShowLineCount = false;
             this.extRichTextBox1.Size = new System.Drawing.Size(200, 19);
             this.extRichTextBox1.TabIndex = 1;
@@ -160,7 +146,6 @@
             // 
             this.extPanelDropDown1.BorderColor = System.Drawing.Color.Red;
             this.extPanelDropDown1.FitToItemsHeight = false;
-            this.extPanelDropDown1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extPanelDropDown1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("extPanelDropDown1.Items")));
             this.extPanelDropDown1.Location = new System.Drawing.Point(442, 3);
             this.extPanelDropDown1.Name = "extPanelDropDown1";
@@ -200,7 +185,6 @@
             // extDateTimePicker1
             // 
             this.extDateTimePicker1.BorderColor = System.Drawing.Color.Transparent;
-            this.extDateTimePicker1.BorderColorScaling = 0.5F;
             this.extDateTimePicker1.Checked = false;
             this.extDateTimePicker1.CustomFormat = "dd MMMM yyyy";
             this.extDateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Long;
@@ -239,7 +223,6 @@
             this.extComboBox1.DataSource = null;
             this.extComboBox1.DisableBackgroundDisabledShadingGradient = false;
             this.extComboBox1.DisplayMember = "";
-            this.extComboBox1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.extComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.extComboBox1.Location = new System.Drawing.Point(3, 3);
             this.extComboBox1.Name = "extComboBox1";
@@ -379,7 +362,6 @@
             // 
             this.extNumericUpDown1.AutoSizeTextBox = true;
             this.extNumericUpDown1.BorderColor = System.Drawing.Color.Transparent;
-            this.extNumericUpDown1.BorderColorScaling = 0.5F;
             this.extNumericUpDown1.Location = new System.Drawing.Point(3, 63);
             this.extNumericUpDown1.Maximum = 100;
             this.extNumericUpDown1.Minimum = 0;

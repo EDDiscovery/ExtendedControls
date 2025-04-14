@@ -34,18 +34,7 @@ namespace ExtendedControls
         public string TextChangedEvent { get { return base.Text; } set { base.Text = value; } }
         public int AutoCompleteTimeout { get { return waitforautotimer.Interval; } set { waitforautotimer.Interval = value; } }
 
-        // drop down selection box
-        public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
-        public Color DropDownSelectionBackgroundColor2 { get; set; } = Color.Gray;      // background
-        public Color DropDownSelectionColor { get; set; } = Color.Green;       // selection bar
-        public Color DropDownSliderColor { get; set; } = Color.Green;
-        public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
-        public Color DropDownBorderColor { get; set; } = Color.Green;
-        public Color DropDownSliderButtonColor { get; set; } = Color.Blue;
-        public Color DropDownMouseOverSliderButtonColor { get; set; } = Color.Red;
-        public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
-        public float GradientDirection { get; set; } = 90F;
-
+        public DropDownTheme DropDownTheme { get; set; } = new DropDownTheme();
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 
         public bool InDropDown { get { return dropdown != null; } }
@@ -146,6 +135,7 @@ namespace ExtendedControls
             }
         }
 
+
         private void TextChangeEventHandler(object sender, EventArgs e)
         {
             //System.Diagnostics.Debug.WriteLine("AC {0} text change event", Environment.TickCount % 10000);
@@ -214,30 +204,21 @@ namespace ExtendedControls
                 {
                     dropdown = new ExtListBoxForm("", false);
 
-                    dropdown.ListBox.BackColor = BackColor;
-                    dropdown.ListBox.ForeColor = ForeColor;
-                    dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
-                    dropdown.ListBox.SelectionBackColor2 = this.DropDownSelectionBackgroundColor2;
-                    dropdown.ListBox.SelectionColor = this.DropDownSelectionColor;
-                    dropdown.ListBox.GradientDirection = this.GradientDirection;
-                    dropdown.ListBox.BorderColor = this.DropDownBorderColor;
-                    dropdown.ListBox.ScrollBar.BackColor = dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
-                    dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
-                    dropdown.ListBox.ScrollBar.ThumbBorderColor = dropdown.ListBox.ScrollBar.ArrowBorderColor =
-                                                                    dropdown.ListBox.ScrollBar.BorderColor = this.DropDownBorderColor;
-                    dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
-                    dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.DropDownMouseOverSliderButtonColor;
-                    dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
+                    DropDownTheme.Theme(dropdown.ListBox, ForeColor, BackColor, BorderColor);
+                    DropDownTheme.Theme(dropdown.ListBox.ScrollBar, BorderColor);
 
-
-                    dropdown.Items = autocompletestrings.ToList();
                     dropdown.SelectedIndex = 0;
                     dropdown.FlatStyle = this.FlatStyle;
                     dropdown.Font = this.Font;
-                    dropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
+                    dropdown.Items = autocompletestrings.ToList();
+
                     dropdown.PositionBelow(this);
+
+                    dropdown.SelectedIndexChanged += cbdropdown_SelectedIndexChanged;
                     EndButtonImage = Properties.Resources.ArrowUp;
+
                     dropdown.Show(FindForm());
+
                     Focus();                // Major change.. we now keep the focus at all times
 
                     if (Environment.OSVersion.Platform != PlatformID.Win32NT)

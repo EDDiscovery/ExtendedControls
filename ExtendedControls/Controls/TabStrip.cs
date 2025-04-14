@@ -526,7 +526,7 @@ namespace ExtendedControls
             dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
             dropdown.ListBox.SelectionBackColor2 = this.DropDownSelectionBackgroundColor2;
             dropdown.ListBox.SelectionColor = this.DropDownSelectionColor;
-            dropdown.ListBox.GradientDirection = this.GradientDirection;
+            dropdown.ListBox.BackGradientDirection = this.GradientDirection;
             dropdown.ListBox.BorderColor = this.DropDownBorderColor;
             dropdown.ListBox.ScrollBar.BackColor = dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
             dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
@@ -595,10 +595,10 @@ namespace ExtendedControls
             DropDownSelectionBackgroundColor = t.ComboBoxBackColor;
             DropDownSelectionBackgroundColor2 = t.ComboBoxBackColor2;
             DropDownSelectionColor = t.ComboBoxBackColor.Multiply(t.MouseSelectedScaling);
-            DropDownSliderColor = t.ComboBoxSliderBack;
-            DropDownSliderArrowColor = t.ComboBoxScrollArrow;
+            DropDownSliderColor = t.ComboBoxDropDownSliderBack;
+            DropDownSliderArrowColor = t.ComboBoxScrollArrowBack;
             DropDownBorderColor = t.ComboBoxBorderColor;
-            DropDownSliderButtonColor = t.ComboBoxScrollButton;
+            DropDownSliderButtonColor = t.ComboBoxScrollButtonBack;
             DropDownMouseOverSliderButtonColor = DropDownSliderButtonColor.Multiply(t.MouseOverScaling);
             PressedDropDownSliderButtonColor = DropDownSliderButtonColor.Multiply(t.MouseSelectedScaling);
 

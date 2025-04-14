@@ -26,7 +26,7 @@ namespace ExtendedControls
         // Text is in ForeColor
         public Color SelectionBackColor { get; set; } = Color.Gray;     // the area actually painted (Not system)
         public Color SelectionBackColor2 { get; set; } = Color.Gray;     // the area actually painted (Not system)
-        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
+        public float BackGradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
         public Color BorderColor { get; set; } = Color.Red;             // not system
         public Color SelectionColor { get; set; } = Color.Silver;       // solid selection bar
         public Color ItemSeperatorColor { get; set; } = Color.Red;
@@ -204,7 +204,10 @@ namespace ExtendedControls
             {
                 Brush backb;
                 if (FlatStyle == FlatStyle.Popup)
-                    backb = new System.Drawing.Drawing2D.LinearGradientBrush(mainarea, SelectionBackColor, SelectionBackColor2, GradientDirection);
+                {
+                    backb = new System.Drawing.Drawing2D.LinearGradientBrush(mainarea, SelectionBackColor, SelectionBackColor2, BackGradientDirection);
+                    //System.Diagnostics.Debug.WriteLine($"Listbox draw slider at {BackGradientDirection}");
+                }
                 else
                     backb = new SolidBrush(SelectionBackColor);
 
@@ -490,16 +493,26 @@ namespace ExtendedControls
                 SelectionColor = t.ListBoxBackColor.Multiply(t.MouseSelectedScaling);
                 BorderColor = t.ListBoxBorderColor;
                 FlatStyle = t.ButtonFlatStyle;
-                GradientDirection = t.ListBoxGradientDirection;
+                BackGradientDirection = t.ListBoxBackGradientDirection;
 
-                ScrollBar.BackColor = t.Form;
-                ScrollBar.SliderColor = t.ListBoxSliderBack;
-                ScrollBar.BorderColor = ScrollBar.ThumbBorderColor = ScrollBar.ArrowBorderColor = t.ListBoxBorderColor;
-                ScrollBar.ArrowButtonColor = ScrollBar.ThumbButtonColor = t.ListBoxScrollButton;
-                ScrollBar.MouseOverButtonColor = ScrollBar.ArrowButtonColor.Multiply(t.MouseOverScaling);
-                ScrollBar.MousePressedButtonColor = ScrollBar.ArrowButtonColor.Multiply(t.MouseSelectedScaling);
                 ScrollBar.ForeColor = t.ListBoxScrollArrow;
+                ScrollBar.BackColor = t.Form;
+                ScrollBar.BorderColor = ScrollBar.ThumbBorderColor = ScrollBar.ArrowBorderColor = t.ListBoxBorderColor;
+                ScrollBar.SliderColor = t.ListBoxSliderBack;
+                ScrollBar.SliderColor2 = t.IsButtonGradientStyle ? t.ListBoxSliderBack2 : t.ListBoxSliderBack;
+                ScrollBar.SliderDrawAngle = t.ListBoxSliderGradientDirection;
+                ScrollBar.ArrowButtonColor = t.ListBoxScrollArrowBack;
+                ScrollBar.ArrowButtonColor2 = t.IsButtonGradientStyle ? t.ListBoxScrollArrowBack2 : t.ListBoxScrollArrowBack;
+                ScrollBar.ThumbButtonColor = t.ListBoxScrollButtonBack;
+                ScrollBar.ThumbButtonColor2 = t.IsButtonGradientStyle ? t.ListBoxScrollButtonBack2 : t.ListBoxScrollButtonBack;
+                ScrollBar.ThumbDrawAngle = t.ListBoxScrollButtonGradientDirection;
+                ScrollBar.MouseOverButtonColor = ScrollBar.ArrowButtonColor.Multiply(t.MouseOverScaling);
+                ScrollBar.MouseOverButtonColor2 = ScrollBar.ArrowButtonColor2.Multiply(t.MouseOverScaling);
+                ScrollBar.MousePressedButtonColor = ScrollBar.ArrowButtonColor.Multiply(t.MouseSelectedScaling);
+                ScrollBar.MousePressedButtonColor2 = ScrollBar.ArrowButtonColor2.Multiply(t.MouseSelectedScaling);
                 ScrollBar.FlatStyle = t.ButtonFlatStyle;
+
+                //System.Diagnostics.Debug.WriteLine($"ListBox {Name} slider {ScrollBar.SliderColor}->{ScrollBar.SliderColor2} : arrow {ScrollBar.ArrowButtonColor}->{ScrollBar.ArrowButtonColor2} : thm {ScrollBar.ThumbButtonColor}->{ScrollBar.ThumbButtonColor2}");
             }
 
             Repaint();            // force a repaint as the individual settings do not by design.

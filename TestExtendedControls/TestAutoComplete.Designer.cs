@@ -52,11 +52,9 @@
             this.autoCompleteTextBox1.AutoCompleteTimeout = 500;
             this.autoCompleteTextBox1.BackErrorColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox1.BorderColor = System.Drawing.Color.Transparent;
-            this.autoCompleteTextBox1.BorderColorScaling = 0.5F;
             this.autoCompleteTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.autoCompleteTextBox1.ClearOnFirstChar = false;
             this.autoCompleteTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
-            this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
             this.autoCompleteTextBox1.EndButtonEnable = false;
             this.autoCompleteTextBox1.EndButtonSize16ths = 10;
             this.autoCompleteTextBox1.EndButtonVisible = false;
@@ -82,7 +80,6 @@
             this.comboBoxCustom1.DataSource = null;
             this.comboBoxCustom1.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustom1.DisplayMember = "";
-            this.comboBoxCustom1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustom1.Location = new System.Drawing.Point(40, 168);
             this.comboBoxCustom1.Name = "comboBoxCustom1";
@@ -103,11 +100,9 @@
             this.autoCompleteTextBox2.AutoCompleteTimeout = 500;
             this.autoCompleteTextBox2.BackErrorColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox2.BorderColor = System.Drawing.Color.Transparent;
-            this.autoCompleteTextBox2.BorderColorScaling = 0.5F;
             this.autoCompleteTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.autoCompleteTextBox2.ClearOnFirstChar = false;
             this.autoCompleteTextBox2.ControlBackground = System.Drawing.SystemColors.Control;
-            this.autoCompleteTextBox2.DropDownBorderColor = System.Drawing.Color.Green;
             this.autoCompleteTextBox2.EndButtonEnable = false;
             this.autoCompleteTextBox2.EndButtonSize16ths = 10;
             this.autoCompleteTextBox2.EndButtonVisible = true;
@@ -133,7 +128,6 @@
             this.textBoxBorder1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxBorder1.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorder1.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxBorder1.BorderColorScaling = 0.5F;
             this.textBoxBorder1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorder1.ClearOnFirstChar = false;
             this.textBoxBorder1.ControlBackground = System.Drawing.SystemColors.Control;
@@ -190,7 +184,6 @@
             this.extTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.extTextBox1.BackErrorColor = System.Drawing.Color.Red;
             this.extTextBox1.BorderColor = System.Drawing.Color.Transparent;
-            this.extTextBox1.BorderColorScaling = 0.5F;
             this.extTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extTextBox1.ClearOnFirstChar = false;
             this.extTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
@@ -221,11 +214,9 @@
             this.extTextBoxAutoComplete1.AutoCompleteTimeout = 500;
             this.extTextBoxAutoComplete1.BackErrorColor = System.Drawing.Color.Red;
             this.extTextBoxAutoComplete1.BorderColor = System.Drawing.Color.Transparent;
-            this.extTextBoxAutoComplete1.BorderColorScaling = 0.5F;
             this.extTextBoxAutoComplete1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extTextBoxAutoComplete1.ClearOnFirstChar = false;
             this.extTextBoxAutoComplete1.ControlBackground = System.Drawing.SystemColors.Control;
-            this.extTextBoxAutoComplete1.DropDownBorderColor = System.Drawing.Color.Green;
             this.extTextBoxAutoComplete1.EndButtonEnable = false;
             this.extTextBoxAutoComplete1.EndButtonSize16ths = 10;
             this.extTextBoxAutoComplete1.EndButtonVisible = false;

@@ -28,23 +28,32 @@ namespace ExtendedControls
     {
         #region Properties
 
+        // BackColor is whole window control
+        // ForeColor is not used
+
         // Invalidate to repaint - only useful if not system Flatstyle
-        public Color TabControlBorderColor { get; set; } = Color.DarkGray;       //Selected tabs are outlined in this
-        public Color TabControlBorderBrightColor { get; set; } = Color.LightGray;
+        public Color TabControlBorderColor { get; set; } = Color.LightGray;     // bright colour
+        public Color TabControlBorderColor2 { get; set; } = Color.DarkGray;     // darker colour
 
         public Color TabNotSelectedBorderColor { get; set; } = Color.Gray;     //Unselected tabs are outlined in this
 
-        public Color TabNotSelectedColor { get; set; } = Color.Gray;            // tabs are filled with this
-        public Color TabSelectedColor { get; set; } = Color.LightGray;
-        public Color TabMouseOverColor { get; set; } = Color.White;
-
-        public Color TextSelectedColor { get; set; } = SystemColors.ControlText;             // text is painted in this..
+        public Color TabNotSelectedColor { get; set; } = Color.LightGray;        // tabs are filled with this
+        public Color TabNotSelectedColor2 { get; set; } = Color.Gray;            // tabs are filled with this
         public Color TextNotSelectedColor { get; set; } = SystemColors.ControlText;
+        public float TabGradientDirection { get; set; } = 90F;
 
-        public float TabColorScaling { get; set; } = 0.5F;                      // gradiant fill..
+        public Color TabSelectedColor { get; set; } = Color.LightGray;
+        public Color TabSelectedColor2 { get; set; } = Color.Gray;
+        public Color TextSelectedColor { get; set; } = SystemColors.ControlText;             // text is painted in this..
+
+        public Color TabMouseOverColor { get; set; } = Color.White;
+        public Color TabMouseOverColor2 { get; set; } = Color.White;
+
         public float TabDisabledScaling { get; set; } = 0.5F;                   // how much darker if not selected.
 
-        public Color TabBackgroundColor { get { return tabbackcolor;} set { tabbackcolor = value; Invalidate(); } }
+        public Color TabBackgroundColor { get; set; } = SystemColors.Control;
+        public Color TabBackgroundColor2 { get; set; } = SystemColors.Control;
+        public float TabBackgroundGradientDirection { get; set; } = 0F;
 
         public int MinimumTabWidth { set { SendMessage(0x1300 + 49, IntPtr.Zero, (IntPtr)value); } }
 
@@ -129,14 +138,6 @@ namespace ExtendedControls
             return -1;
         }
 
-        // Force the back bitmap to be repainted
-        public void ResetInvalidate()
-        {
-            backImageControlBitmap?.Dispose();
-            backImageControlBitmap = null;
-            Invalidate();
-        }
-
         #endregion
 
         #region Mouse
@@ -171,7 +172,7 @@ namespace ExtendedControls
             }
             else
             {
-                if (mouseover != currentmouseover && flatstyle != FlatStyle.System)
+                if (mouseover != currentmouseover && FlatStyle != FlatStyle.System)
                     Invalidate();
             }
         }
@@ -184,7 +185,7 @@ namespace ExtendedControls
                 mouseover = -1;
                 lasttabclickedinside = -1;
 
-                if (flatstyle != FlatStyle.System)
+                if (FlatStyle != FlatStyle.System)
                     Invalidate();
             }
         }
@@ -193,61 +194,36 @@ namespace ExtendedControls
 
         #region CustomPainting
 
+        // we always draw now the tab background.  If you want it transparent, set the tab back colours to the transparent key
+
+        const int topborder = 2;
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (Parent == null || Width < 1 || Height < 1)
                 return;
 
-            //   System.Diagnostics.Debug.WriteLine($"Paint tab {e.ClipRectangle} {ClientRectangle} {backImageControlBitmap!=null}");
+            // the ClientRectangle is the whole control including tab area, the DisplayRectangle is the area of the tabpage
+            Rectangle tabarea = new Rectangle(0, 0, Width, DisplayRectangle.Y-topborder);   // less 2 for border area
 
-            // if not created, or different size, we need to remake the back image which has the sample of the background below the control
-
-            if (backImageControlBitmap == null || backImageControlBitmap.Width != Width || backImageControlBitmap.Height != Height)  
+            using (Brush br = new LinearGradientBrush(tabarea, TabBackgroundColor, TabBackgroundColor2, TabBackgroundGradientDirection))
             {
-                backImageControlBitmap?.Dispose();
-
-                backImageControlBitmap = new Bitmap(Width, Height);
-
-                using (Graphics graphics = Graphics.FromImage(backImageControlBitmap))
-                {
-                    PaintEventArgs eg = new PaintEventArgs(graphics, ClientRectangle);
-                    InvokePaintBackground(Parent, eg);  // we force it to paint into our bitmap
-                    InvokePaint(Parent, eg);            // to sample the background color, which we paint up onto the screen
-
-                   // System.Diagnostics.Debug.WriteLine($"TabControl Sampled background {Width}x{Height}");
-                    // backImageControlBitmap.Save(@"c:\code\backimage.png", ImageFormat.Png);
-                }
+                e.Graphics.FillRectangle(br, tabarea);
             }
 
-            // now we make a bitmap to paint on..
+            DrawBorder(e.Graphics);
 
-            using (var backImageBitmap = new Bitmap(Width, Height))
+            if (TabCount > 0 )
             {
-                using (var backImageGraphics = Graphics.FromImage(backImageBitmap))
+                for (int i = TabCount - 1; i >= 0; i--)
                 {
-                    // if we are painting a color, fill it, else the sample of the background taken above is used as the base colour
-                    if (tabbackcolor != Color.Transparent)
-                        backImageGraphics.Clear(tabbackcolor);
-                    else
-                        backImageGraphics.DrawImageUnscaled(backImageControlBitmap, 0, 0);      
-
-                    DrawBorder(backImageGraphics);
-
-                    if (TabCount > 0)
-                    {
-                        for (int i = TabCount - 1; i >= 0; i--)
-                        {
-                            if (i != SelectedIndex)
-                                DrawTab(i, backImageGraphics, false, mouseover == i);
-                        }
-
-                        // seen instances of SelectedIndex being set BEFORE tab up, meaning selected index is out of range
-                        if (SelectedIndex >= 0 && SelectedIndex < TabCount)      // and if its selected, we did not draw it     -- seen it above TabCount.. protect
-                            DrawTab(SelectedIndex, backImageGraphics, true, false);     // we paint the selected one last, in case it overwrites the other ones.
-                    }
-
-                    e.Graphics.DrawImageUnscaled(backImageBitmap, 0, 0);
+                    if (i != SelectedIndex)
+                        DrawTab(i, e.Graphics, false, mouseover == i);
                 }
+
+                // seen instances of SelectedIndex being set BEFORE tab up, meaning selected index is out of range
+                if (SelectedIndex >= 0 && SelectedIndex < TabCount)      // and if its selected, we did not draw it     -- seen it above TabCount.. protect
+                    DrawTab(SelectedIndex, e.Graphics, true, false);     // we paint the selected one last, in case it overwrites the other ones.
             }
         }
 
@@ -256,13 +232,13 @@ namespace ExtendedControls
             if (TabStyle == null)
                 throw new ArgumentNullException("Custom style not attached");
 
-            Color tabc1 = (Enabled) ? ((selected) ? TabSelectedColor : ((mouseover) ? TabMouseOverColor : TabNotSelectedColor)) : TabNotSelectedColor.Multiply(TabDisabledScaling);
-            Color tabc2 = (FlatStyle == FlatStyle.Popup) ? tabc1.Multiply(TabColorScaling) : tabc1;
+            Color tabc1 = Enabled ? (selected ? TabSelectedColor : mouseover ? TabMouseOverColor : TabNotSelectedColor) : TabNotSelectedColor.Multiply(TabDisabledScaling);
+            Color tabc2 = Enabled ? (selected ? TabSelectedColor2 : mouseover ? TabMouseOverColor2 : TabNotSelectedColor2) : TabNotSelectedColor.Multiply(TabDisabledScaling);
             Color taboutline = (selected) ? TabControlBorderColor : TabNotSelectedBorderColor;
 
             Image tabimage = null;
 
-            TabStyle.DrawTab(gr, GetTabRect(i), i, selected, tabc1, tabc2, taboutline, Alignment);
+            TabStyle.DrawTab(gr, GetTabRect(i), i, selected, tabc1, tabc2, taboutline, Alignment, TabGradientDirection);
 
             if (this.ImageList != null && this.TabPages[i].ImageIndex >= 0 && this.TabPages[i].ImageIndex < this.ImageList.Images.Count)
                 tabimage = this.ImageList.Images[this.TabPages[i].ImageIndex];
@@ -275,27 +251,38 @@ namespace ExtendedControls
 
         private void DrawBorder(Graphics gr)
         {
-            Pen dark = new Pen(TabControlBorderColor, 1.0F);
-            Pen bright = new Pen(TabControlBorderBrightColor, 1.0F);
-            Pen bright2 = new Pen(TabControlBorderBrightColor, 2.0F);
+            Pen outerrectangle = new Pen(TabControlBorderColor, 1.0F);    // based on 4 width border, bright colour
+            Pen innerrectangle = new Pen(TabControlBorderColor2, 1.0F);     // just a touch brighter, darker colour
+            Pen widefill = new Pen(TabControlBorderColor, 2.0F);
+            
+            int borderheight = ClientRectangle.Height - DisplayRectangle.Y + topborder;         // area of boarder in height
+            int borderwidth = (ClientRectangle.Width - DisplayRectangle.Width) / 2;     // should be 4
 
-            var tabcontrolborder = new Rectangle(0, DisplayRectangle.Y - 2, ClientRectangle.Width - 1, DisplayRectangle.Height + 4);
+            // remember to draw a rectangle it needs to be width-1 
+            
+            // outer rectangle, from left to 1 pixel past the displayrectangle. 1 wide
+            var b1 = new Rectangle(0, DisplayRectangle.Y - topborder, ClientRectangle.Width - 1 - borderwidth + 2, borderheight - 1);
 
-            Rectangle b1 = new Rectangle(tabcontrolborder.X, tabcontrolborder.Y, tabcontrolborder.Width - 2, tabcontrolborder.Height);
-            gr.DrawRectangle(dark, b1);
+            //System.Diagnostics.Debug.WriteLine($"Tabcontrol {borderheight} {borderwidth} {b1}");
 
+            gr.DrawRectangle(outerrectangle, b1);
+
+            // right line
+            gr.DrawLine(widefill, b1.Right + 2, b1.Y, b1.Right + 2, b1.Bottom + 1);
+            // inner rectangle - inside the outer rectangle
             b1.Inflate(-1, -1);
-            gr.DrawRectangle(bright, b1);
+            gr.DrawRectangle(innerrectangle, b1);
+            // fill in the left vert bar
+            gr.DrawLine(widefill, b1.X + 2, b1.Y + 1, b1.X + 2, b1.Y + b1.Height);
+            // fill in bottom horz bar
+            gr.DrawLine(widefill, b1.X + 3, b1.Y + b1.Height - 1, b1.X + b1.Width, b1.Y + b1.Height - 1);
 
-            gr.DrawLine(bright2, b1.X + 2, b1.Y + 1, b1.X + 2, b1.Y + b1.Height);
-            gr.DrawLine(bright2, b1.X + 3, b1.Y + b1.Height - 1, b1.X + b1.Width, b1.Y + b1.Height - 1);
-            gr.DrawLine(bright2, tabcontrolborder.Width, tabcontrolborder.Y, tabcontrolborder.Width, tabcontrolborder.Y + tabcontrolborder.Height + 1);
-            bright.Dispose();
-            bright2.Dispose();
-            dark.Dispose();
+            innerrectangle.Dispose();
+            widefill.Dispose();
+            outerrectangle.Dispose();
         }
 
-        #endregion
+#endregion
 
         #region ChangeStyles
 
@@ -340,7 +327,7 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update In: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
 
-            bool systemmode = flatstyle == FlatStyle.System;
+            bool systemmode = FlatStyle == FlatStyle.System;
 
             // Put it back into system mode. if we don't put it back into system draw, it seems to never resize the tabs
             if (!systemmode)
@@ -365,16 +352,8 @@ namespace ExtendedControls
             if (!systemmode)
                 SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
 
-            //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update Out: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
-            ResetBitmap();
-
+            Invalidate();
             //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update Finish: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
-
-        }
-        private void ResetBitmap()
-        {
-            backImageControlBitmap?.Dispose();
-            backImageControlBitmap = null;
         }
 
         private IntPtr SendMessage(int msg, IntPtr wparam, IntPtr lparam)
@@ -388,35 +367,40 @@ namespace ExtendedControls
 
         #region Helpers
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (disposing)
-            {
-                backImageControlBitmap?.Dispose();
-            }
-        }
-
         public bool Theme(Theme t, Font fnt)
         {
             AutoForceUpdate = false;        // make it slightly better
 
-            if (t.IsButtonSystemStyle) // not system
+            if ( t.IsButtonSystemStyle) // not system
             {
                 FlatStyle = FlatStyle.System;
             }
             else
             {
-                TabControlBorderColor = t.TabcontrolBorder.Multiply(0.6F);
-                TabControlBorderBrightColor = t.TabcontrolBorder;
-                TabNotSelectedBorderColor = t.TabcontrolBorder.Multiply(0.4F);
-                                                        TabNotSelectedColor = t.ButtonBackColor;
-                                                        TabSelectedColor = t.ButtonBackColor.Multiply(t.MouseSelectedScaling);
-                                                        TabMouseOverColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
-                TextSelectedColor = t.ButtonTextColor;
-                TextNotSelectedColor = t.ButtonTextColor.Multiply(0.8F);
-                SetStyle(t.ButtonFlatStyle, new TabStyleAngled());
+                TabBackgroundColor = t.TabControlBack;
+                TabBackgroundColor2 = t.TabControlBack2;
+                TabBackgroundGradientDirection = t.TabControlBackGradientDirection;
+
+                TabControlBorderColor = t.TabControlBorder;
+                TabControlBorderColor2 = t.IsTextBoxBorderNone ? t.TabControlBorder2 : t.TabControlBorder;
+
+                TabNotSelectedColor = t.TabControlButtonBack;
+                TabNotSelectedColor2 = t.IsButtonFlatStyle ? TabNotSelectedColor : t.TabControlButtonBack2;
+                TabGradientDirection = t.TabControlTabGradientDirection;
+
+                TextSelectedColor = t.TabControlText;
+                TextNotSelectedColor = t.TabControlText.Multiply(0.8F);
+
+                TabNotSelectedBorderColor = t.TabControlBorder.Multiply(t.DisabledScaling);
+
+                TabSelectedColor = TabNotSelectedColor.Multiply(t.MouseSelectedScaling);
+                TabSelectedColor2 = TabNotSelectedColor2.Multiply(t.MouseSelectedScaling);
+
+                TabMouseOverColor = TabNotSelectedColor.Multiply(t.MouseOverScaling);
+                TabMouseOverColor2 = TabNotSelectedColor2.Multiply(t.MouseOverScaling);
+
                 TabDisabledScaling = t.DisabledScaling;
+                SetStyle(t.ButtonFlatStyle, new TabStyleAngled());
             }
             ForceUpdate();
             return true;
@@ -424,8 +408,6 @@ namespace ExtendedControls
         #endregion
 
         #region Members
-        private Bitmap backImageControlBitmap = null;
-        private Color tabbackcolor = Color.Transparent;
         private FlatStyle flatstyle = FlatStyle.System;
         private TabStyleCustom tabstyle = new TabStyleSquare();     // change for the shape of tabs.
         private int mouseover = -1;                                 // where the mouse if hovering

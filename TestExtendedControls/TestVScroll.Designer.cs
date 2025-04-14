@@ -38,7 +38,6 @@
             // 
             this.extScrollBar1.ArrowBorderColor = System.Drawing.Color.YellowGreen;
             this.extScrollBar1.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extScrollBar1.ArrowColorScaling = 0.5F;
             this.extScrollBar1.ArrowDownDrawAngle = 270F;
             this.extScrollBar1.ArrowUpDrawAngle = 90F;
             this.extScrollBar1.BorderColor = System.Drawing.Color.White;
@@ -57,7 +56,6 @@
             this.extScrollBar1.TabIndex = 29;
             this.extScrollBar1.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.LightSteelBlue;
-            this.extScrollBar1.ThumbColorScaling = 0.5F;
             this.extScrollBar1.ThumbDrawAngle = 0F;
             this.extScrollBar1.Value = 0;
             this.extScrollBar1.ValueLimited = 0;
@@ -67,7 +65,6 @@
             // 
             this.extScrollBar2.ArrowBorderColor = System.Drawing.Color.YellowGreen;
             this.extScrollBar2.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extScrollBar2.ArrowColorScaling = 0.5F;
             this.extScrollBar2.ArrowDownDrawAngle = 270F;
             this.extScrollBar2.ArrowUpDrawAngle = 90F;
             this.extScrollBar2.BorderColor = System.Drawing.Color.White;
@@ -86,7 +83,6 @@
             this.extScrollBar2.TabIndex = 29;
             this.extScrollBar2.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.extScrollBar2.ThumbButtonColor = System.Drawing.Color.LightSteelBlue;
-            this.extScrollBar2.ThumbColorScaling = 0.5F;
             this.extScrollBar2.ThumbDrawAngle = 0F;
             this.extScrollBar2.Value = 0;
             this.extScrollBar2.ValueLimited = 0;

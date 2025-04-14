@@ -43,7 +43,6 @@
             this.comboBoxCustomDevice.DataSource = null;
             this.comboBoxCustomDevice.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomDevice.DisplayMember = "";
-            this.comboBoxCustomDevice.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomDevice.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomDevice.Location = new System.Drawing.Point(14, 55);
             this.comboBoxCustomDevice.Name = "comboBoxCustomDevice";

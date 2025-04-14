@@ -31,7 +31,7 @@ namespace ExtendedControls
         public Color TextBackColor { get { return textbackcolor; } set { textbackcolor = checkbox.BackColor = calendaricon.BackColor = value; Invalidate(true); } }
         public Color SelectedColor { get; set; } = Color.Yellow;    // back colour when item is selected.
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; PerformLayout(); } }
-        public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
+        public Color BorderColor2 { get { return bordercolor2; } set { bordercolor2 = value; PerformLayout(); } }
         public float DisabledScaling { get; set; } = 0.5F;           
 
         public string CustomFormat { get { return customformat; } set { customformat = value; Recalc(); } }
@@ -221,16 +221,16 @@ namespace ExtendedControls
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-                Color color1 = BorderColor;
-                Color color2 = BorderColor.Multiply(BorderColorScaling);
-
                 using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, 1, ClientRectangle.Width - 2, ClientRectangle.Height - 1, 1, 1))
-                using (Pen pc1 = new Pen(color1, 1.0F))
+                using (Pen pc1 = new Pen(BorderColor, 1.0F))
                     e.Graphics.DrawPath(pc1, g1);
 
-                using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, 0, ClientRectangle.Width, ClientRectangle.Height - 1, 2, 2))
-                using (Pen pc2 = new Pen(color2, 1.0F))
-                    e.Graphics.DrawPath(pc2, g2);
+                if (BorderColor2 != Color.Transparent)
+                {
+                    using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, 0, ClientRectangle.Width, ClientRectangle.Height - 1, 2, 2))
+                    using (Pen pc2 = new Pen(BorderColor2, 1.0F))
+                        e.Graphics.DrawPath(pc2, g2);
+                }
 
                 drawarea.Inflate(-2, -2);
 
@@ -476,11 +476,15 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            BackColor = t.Form;
             ForeColor = t.TextBlockForeColor;
-            BorderColor = t.GridBorderLines;
+            BackColor = t.TextBlockBackColor;
             TextBackColor = t.TextBlockBackColor;
+
+            BorderColor = t.IsTextBoxBorderNone ? Color.Transparent : t.TextBlockBorderColor;
+            BorderColor2 = t.IsTextBoxBorderColour ? t.TextBlockBorderColor2 : Color.Transparent;
+
             SelectedColor = t.TextBlockForeColor.Multiply(t.DisabledScaling);
+
             DisabledScaling = t.DisabledScaling;
 
             checkbox.BackColor = BackColor;
@@ -492,7 +496,7 @@ namespace ExtendedControls
             checkbox.CheckBoxColor = t.CheckBoxBack;
             checkbox.CheckBoxInnerColor = t.CheckBoxBack2;
             checkbox.CheckColor = t.CheckBoxTick;
-            checkbox.CheckBoxGradientDirection = t.CheckBoxGradientDirection;
+            checkbox.CheckBoxGradientDirection = t.CheckBoxBackGradientDirection;
             checkbox.TickBoxReductionRatio = t.CheckBoxTickSize;
             checkbox.FlatStyle = t.ButtonFlatStyle;
 
@@ -502,7 +506,7 @@ namespace ExtendedControls
             updown.MouseOverScaling = t.MouseOverScaling;
             updown.MouseSelectedScaling = t.MouseSelectedScaling;
             updown.BorderColor = t.ButtonBorderColor;
-            updown.GradientDirection = t.ButtonGradientDirection;
+            updown.GradientDirection = t.ButtonBackGradientDirection;
 
             return false;
         }
@@ -517,6 +521,7 @@ namespace ExtendedControls
         private bool showcheckbox = false;
         private Color textbackcolor = Color.DarkBlue;
         private Color bordercolor = Color.Transparent;
+        private Color bordercolor2 = Color.Transparent;
 
         public UpDown updown = new UpDown();                            // for setting colours
         public ExtCheckBox checkbox = new ExtCheckBox();          // for setting colours, note background is forces to TextBackColour

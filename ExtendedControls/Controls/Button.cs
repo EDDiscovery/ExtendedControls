@@ -326,7 +326,7 @@ namespace ExtendedControls
             else
             {
                 ctrl.ButtonDisabledScaling = t.DisabledScaling;
-                ctrl.GradientDirection = t.ButtonGradientDirection;
+                ctrl.GradientDirection = t.ButtonBackGradientDirection;
 
                 if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
                 {

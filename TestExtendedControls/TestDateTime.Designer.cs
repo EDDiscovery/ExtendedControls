@@ -80,7 +80,6 @@
             // 
             this.extDateTimePicker1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.extDateTimePicker1.BorderColor = System.Drawing.Color.Maroon;
-            this.extDateTimePicker1.BorderColorScaling = 0.5F;
             this.extDateTimePicker1.Checked = false;
             this.extDateTimePicker1.CustomFormat = "HH:mm:ss";
             this.extDateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Time;
@@ -98,7 +97,6 @@
             // 
             this.extDateTimePicker2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.extDateTimePicker2.BorderColor = System.Drawing.Color.Transparent;
-            this.extDateTimePicker2.BorderColorScaling = 0.5F;
             this.extDateTimePicker2.Checked = true;
             this.extDateTimePicker2.CustomFormat = "dd MMMM yyyy";
             this.extDateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Long;
@@ -116,7 +114,6 @@
             // 
             this.extDateTimePicker3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.extDateTimePicker3.BorderColor = System.Drawing.Color.Transparent;
-            this.extDateTimePicker3.BorderColorScaling = 0.5F;
             this.extDateTimePicker3.Checked = false;
             this.extDateTimePicker3.CustomFormat = "dd MMMM yyyy";
             this.extDateTimePicker3.Format = System.Windows.Forms.DateTimePickerFormat.Long;
@@ -134,7 +131,6 @@
             // 
             this.extDateTimePicker4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.extDateTimePicker4.BorderColor = System.Drawing.Color.Maroon;
-            this.extDateTimePicker4.BorderColorScaling = 0.5F;
             this.extDateTimePicker4.Checked = false;
             this.extDateTimePicker4.CustomFormat = "HH:mm:ss";
             this.extDateTimePicker4.Format = System.Windows.Forms.DateTimePickerFormat.Time;
