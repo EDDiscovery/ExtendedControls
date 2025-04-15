@@ -95,7 +95,8 @@ namespace ExtendedControls
                         TabStripBack2 = elitebutback, TabStripBack = elitebutbackb,
                         ComboBoxBackColor2 = elitebutback, ComboBoxBackColor = elitebutbackb,
                         ListBoxBackColor2 = elitebutback, ListBoxBackColor = elitebutbackb,
-                        GroupBack = elitebutbackb, GroupBack2 = elitebutback };
+                        GroupBack = elitebutbackb, GroupBack2 = elitebutback ,
+                        TabControlBack = elitebutbackb, TabControlBack2 = elitebutback};
 
             var easydark = new Theme("Easy Dark", Color.FromArgb(255, 65, 65, 65), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 245, 120, 30), Color.FromArgb(255, 41, 46, 51), Theme.ButtonstyleFlat, // button back, text, border
