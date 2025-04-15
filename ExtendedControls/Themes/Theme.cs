@@ -443,15 +443,6 @@ namespace ExtendedControls
         public string TextBoxBorderStyle { get; set; } = TextboxborderstyleFixed3D;
 
         public static readonly string[] TextboxBorderStyles = "None FixedSingle Fixed3D Colour".Split();
-        [JsonIgnore]
-        public BorderStyle TextBoxStyle
-        {
-            get
-            {
-                return TextBoxBorderStyle.Equals(TextboxBorderStyles[1]) ? BorderStyle.FixedSingle :
-                    TextBoxBorderStyle.Equals(TextboxBorderStyles[2]) ? BorderStyle.Fixed3D : BorderStyle.None;
-            }
-        }
 
         [JsonIgnore]
         public bool IsTextBoxBorderColour => TextBoxBorderStyle.Equals(TextboxBorderStyles[3]);
@@ -466,21 +457,83 @@ namespace ExtendedControls
         public static string TextboxborderstyleFixed3D = TextboxBorderStyles[2];
         public static string TextboxborderstyleColor = TextboxBorderStyles[3];
 
+        [JsonIgnore]
+        public BorderStyle TextBoxStyle
+        {
+            get
+            {
+                return TextBoxBorderStyle.Equals(TextboxBorderStyles[1]) ? BorderStyle.FixedSingle :
+                    TextBoxBorderStyle.Equals(TextboxBorderStyles[2]) ? BorderStyle.Fixed3D : BorderStyle.None;
+            }
+        }
+
         // Scaling and direction values, exported using these names
         public float DialogFontScaling { get; set; } = 0.8f;
         public float MouseOverScaling { get; set; } = 1.3F;
         public float MouseSelectedScaling { get; set; } = 1.6F;
         public float DisabledScaling { get; set; } = 0.5F;
 
-        public Theme(string name = "Unknown")      // windows default colours
-        {
-            this.Name = name;
-            FillInNewOptions(false);       // Fill in any missing transparent entries from other info
-        }
-
         [JsonIgnore]
         public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
 
+        [JsonIgnore]
+        public Font GetFont
+        {
+            get
+            {
+                return GetScaledFont(1.0f);
+            }
+        }
+
+
+        [JsonIgnore]
+        // dialogs get a slighly smaller font
+        public Font GetDialogFont
+        {
+            get
+            {
+                return GetScaledFont(DialogFontScaling);
+            }
+        }
+
+        // scale dialog font, as long as font >= 12pt
+        public Font GetDialogScaledFont(float scaling, float max = 999)
+        {
+            if (FontSize >= 12)             // only if >=12 do we add on dialog scaling
+                scaling *= DialogFontScaling;
+
+            return GetScaledFont(scaling, max);
+        }
+
+        public Font GetScaledFont(float scaling, float max = 999, bool underline = false, bool strikeout = false)
+        {
+            float fsize = Math.Max(minFontSize, FontSize * scaling);
+            fsize = Math.Min(fsize, max);
+            FontStyle style = FontStyle;
+            if (underline)
+                style |= FontStyle.Underline;
+            else if (strikeout)
+                style |= FontStyle.Strikeout;
+            // System.Diagnostics.Debug.WriteLine($"Theme Lookup font {FontName} {fsize} {style}");
+            Font fnt = BaseUtils.FontLoader.GetFont(FontName, fsize, style);        // if it does not know the font, it will substitute Sans serif
+            return fnt;
+        }
+
+
+        // create raw, with apr 25 new colours still set up as transparent. Used by ToObject.
+        public Theme()              
+        {
+            Name = "Unset";
+        }
+
+        // windows default colours as set up above, with new apr 25 colours filled in by fillinnewoptions
+        public Theme(string name)         
+        {
+            this.Name = name;
+            FillInNewOptions(false);         // Fill in any missing transparent entries from other info
+        }
+
+        // Create a theme using colours. 
         public Theme(String n, Color form,
                                     Color butback, Color buttext, Color butborder, string bstyle,
                                     Color gridborderback, Color gridbordertext,
@@ -541,18 +594,13 @@ namespace ExtendedControls
             GridScrollButtonBack = gridscrollbutton; GridScrollButtonBack2 = gridscrollbutton.Multiply(sc);
             GridScrollArrow = gridscrollarrow;
 
-
-
             ComboBoxBackColor = butback; ComboBoxBackColor2 = butback.Multiply(sc);
             ComboBoxTextColor = buttext; ComboBoxBorderColor = butborder;
             ComboBoxDropDownSliderBack = textboxsliderback; ComboBoxDropDownSliderBack2 = textboxsliderback.Multiply(sc);
             ComboBoxScrollArrowBack = textboxscrollarrow; ComboBoxScrollArrowBack2 = textboxscrollarrow.Multiply(sc);
             ComboBoxScrollButtonBack = textboxscrollbutton; ComboBoxScrollButtonBack2 = textboxscrollbutton.Multiply(sc);
 
-
-
             KnownSystemColor = travelgridvisited; UnknownSystemColor = travelgridnonvisited;
-            
 
             CheckBoxText = CheckBoxBack = checkboxfore; CheckBoxBack2 = CheckBoxBack.Multiply(sc); 
             CheckBoxTick = checkboxtick;
@@ -565,6 +613,7 @@ namespace ExtendedControls
             MenuDropDownBack = toolstripback; MenuBorder = toolstripborder;
 
             LabelColor = label;
+
             GroupBack = GroupBack2= groupboxback; 
             GroupFore = groupboxtext;
             GroupBorder = groupboxlines; GroupBorder2 = groupboxlines.Multiply(0.7f);
@@ -580,20 +629,22 @@ namespace ExtendedControls
             TabControlBorder = tabborderlines;
             TabControlBorder2 = tabborderlines.Multiply(sc);      // darker colour
 
-
             SPanelColor = sPanel; TransparentColorKey = keycolor;
             TextBoxBorderStyle = tbbstyle;
             WindowsFrame = Environment.OSVersion.Platform == PlatformID.Win32NT ? wf : true;
             Opacity = op; FontName = ft; FontSize = fs; FontStyle = fstyle;
 
-            int count = FillInNewOptions(true);       // will show up any missing sets debug - should be none
+#if DEBUG
+            int count = FillInNewOptions(false);       // will show up any missing sets debug - should be none 
             System.Diagnostics.Debug.Assert(count == 0);
+#endif
         }
 
         // copy constructor, takes a real copy, with overrides
         public Theme(Theme other, string newname = null, string newfont = null, float newFontSize = 0, double newopacity = -1, FontStyle? fstyle = null)
         {
             this.CopyPropertiesFields(other);       // dynamic copy over of all properties the lazy way
+
             if (newname != null)
                 Name = newname;
             if (newfont != null)
@@ -604,49 +655,6 @@ namespace ExtendedControls
                 this.Opacity = newopacity;
             if ( fstyle.HasValue)
                 this.FontStyle = fstyle.Value;  
-        }
-
-        [JsonIgnore]
-        public Font GetFont
-        {
-            get
-            {
-                return GetScaledFont(1.0f);
-            }
-        }
-
-
-        [JsonIgnore]
-        // dialogs get a slighly smaller font
-        public Font GetDialogFont      
-        {
-            get
-            {
-                return GetScaledFont(DialogFontScaling);
-            }
-        }
-
-        // scale dialog font, as long as font >= 12pt
-        public Font GetDialogScaledFont(float scaling, float max = 999) 
-        {
-            if (FontSize >= 12)             // only if >=12 do we add on dialog scaling
-                scaling *= DialogFontScaling;       
-
-            return GetScaledFont(scaling, max);
-        }
-
-        public Font GetScaledFont(float scaling, float max = 999, bool underline = false, bool strikeout = false)
-        {
-            float fsize = Math.Max(minFontSize, FontSize * scaling);
-            fsize = Math.Min(fsize, max);
-            FontStyle style = FontStyle;
-            if (underline)
-                style |= FontStyle.Underline;
-            else if ( strikeout )
-                style |= FontStyle.Strikeout;
-           // System.Diagnostics.Debug.WriteLine($"Theme Lookup font {FontName} {fsize} {style}");
-            Font fnt = BaseUtils.FontLoader.GetFont(FontName, fsize, style);        // if it does not know the font, it will substitute Sans serif
-            return fnt;
         }
 
         public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
@@ -684,19 +692,20 @@ namespace ExtendedControls
             return WindowsFrame;
         }
 
-        // if you want to theme itself.
+        // if you want to theme a specific control
         public void UpdateControls(Control ctrl, Font fnt, int level, bool formnoborderoverride = false)    // parent can be null
         {
             Control parent = ctrl.Parent;
             Type controltype = ctrl.GetType();
 
 #if DEBUG
-            //System.Diagnostics.Debug.WriteLine(new string(' ',256).Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + ctrl.Name.ToString() + " " + ctrl.ToString() + " " + fnt.ToString() + " c.fnt " + ctrl.Font);
+
+            //System.Diagnostics.Debug.WriteLine(new string(' ', 256).Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + ctrl.Name.ToString() + " " + ctrl.ToString() + " " + fnt.ToString() + " c.fnt " + ctrl.Font);
+            //System.Diagnostics.Debug.WriteLine(new string(' ', 256).Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + ctrl.Name.ToString() + " " + ctrl.ToString() + " " + ctrl.BackColor);
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + (myControl.GetType().Name + ":" + myControl.Name??"") + " : " + myControl.GetHeirarchy(false));
             // System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
             ctrl.SuspendLayout();
-
 
             bool dochildren = true;
 
@@ -710,7 +719,7 @@ namespace ExtendedControls
                 form.Opacity = Opacity / 100;
                 form.BackColor = Form;
                 form.Font = fnt;
-                //System.Diagnostics.Debug.WriteLine($"Form scaling now {f.CurrentAutoScaleDimensions} {f.AutoScaleDimensions} {f.CurrentAutoScaleFactor()}");
+                System.Diagnostics.Debug.WriteLine($"Theme form {form.BackColor} scaling {form.CurrentAutoScaleDimensions} {form.AutoScaleDimensions} {form.CurrentAutoScaleFactor()}");
             }
             else if (ctrl is Panel)    // WINFORM, and ext panels rely on this if they don't need to theme
             {
@@ -861,9 +870,6 @@ namespace ExtendedControls
                 System.Diagnostics.Trace.WriteLine($"Themer {ctrl.Name}:{controltype.Name} from {parent.Name} Unknown control!");
             }
 
-            //System.Diagnostics.Debug.WriteLine("                  " + level + " Control " + myControl.Name + " " + myControl.Location + " " + myControl.Size);
-
-            //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme begin sub controls of {myControl.Name} ");
 
             if (dochildren)
             {
@@ -875,10 +881,9 @@ namespace ExtendedControls
             }
 
             ctrl.ResumeLayout();
-            //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme Control {myControl.Name} to {myControl.Bounds}");
         }
 
-        // see the professinal colour table implementation for some sort of meaning
+        // see the ToolStripCustomColourTable for meaning of these colours
         private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)
         {
             bool foretoodark = (MenuFore.GetBrightness() < 0.1);
@@ -931,14 +936,21 @@ namespace ExtendedControls
 
         public JObject ToJSON(bool altnames = true)
         {
-            var jo = JToken.FromObject(this, false, membersearchflags:System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.Public,
+            var ctrl = JToken.GetMemberAttributeSettings(typeof(Theme), "AltFmt", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+            System.Diagnostics.Debug.Assert(ctrl.ContainsKey("GroupBack2"));
+
+            var jo = JToken.FromObject(this, false, membersearchflags: System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public,
                                         setname: altnames ? "AltFmt" : "Std",
-                                        customconvert: (o) => { return JToken.CreateToken(System.Drawing.ColorTranslator.ToHtml((Color)o)); }).Object();
+                                        customconvert: (o) => {
+                                            return JToken.CreateToken(System.Drawing.ColorTranslator.ToHtml((Color)o)); }).Object();
             return jo;
         }
 
         public static Theme FromJSON(JToken jo, bool altnames = true)
         {
+            // convert, can create, using the Theme() constructor to leave new colours transparent if the json does not have it
+
             Object jconv = jo.ToObjectProtected(typeof(Theme), false, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance, new Theme(),
                                     null, altnames ? "AltFmt" : "Std", 
                                     (tt, o) => { if (o is string) return System.Drawing.ColorTranslator.FromHtml((string)o); else return Color.Orange; 
@@ -947,111 +959,13 @@ namespace ExtendedControls
             if (jconv is Theme)
             {
                 Theme ret = (Theme)jconv;
-                ret.FillInNewOptions(true);
+                ret.FillInNewOptions(true);     // fill in and complain about any missing colours
                 return ret;
             }
             else
                 System.Diagnostics.Debug.WriteLine("Theme failed to convert");
 
             return null;
-        }
-
-
-        // New options introduced in march/april 25 are marked as transparent.. if missing, fill them in from existing info
-        public int FillInNewOptions(bool emitdebug)
-        {
-            float sc = 0.6F;
-            int count = 0;
-
-            count += Replace(emitdebug,nameof(ButtonBackColor2), ButtonBackColor.Multiply(sc));       // in order
-
-            count += Replace(emitdebug,nameof(TextBlockBorderColor2), TextBlockBorderColor.Multiply(0.6f));
-            count += Replace(emitdebug,nameof(TextBlockSliderBack2), TextBlockSliderBack.Multiply(0.6f));
-            count += Replace(emitdebug,nameof(TextBlockScrollArrowBack), TextBlockScrollButtonBack);
-            count += Replace(emitdebug,nameof(TextBlockScrollArrowBack2), TextBlockScrollButtonBack.Multiply(0.6f));
-            count += Replace(emitdebug,nameof(TextBlockScrollButtonBack2), TextBlockScrollButtonBack.Multiply(0.6f));
-            count += Replace(emitdebug,nameof(TextBlockDropDownBackColor), TextBlockBackColor);
-            count += Replace(emitdebug,nameof(TextBlockDropDownBackColor2), TextBlockBackColor);
-
-            count += Replace(emitdebug,nameof(ListBoxBackColor), ButtonBackColor);
-            count += Replace(emitdebug,nameof(ListBoxBackColor2), ButtonBackColor2);
-            count += Replace(emitdebug,nameof(ListBoxBorderColor), ButtonBorderColor);
-            count += Replace(emitdebug,nameof(ListBoxTextColor), ButtonTextColor);
-            count += Replace(emitdebug,nameof(ListBoxSliderBack), TextBlockSliderBack);
-            count += Replace(emitdebug,nameof(ListBoxSliderBack2), TextBlockSliderBack.Multiply(sc));
-            count += Replace(emitdebug,nameof(ListBoxScrollArrowBack), TextBlockScrollButtonBack);
-            count += Replace(emitdebug,nameof(ListBoxScrollArrowBack2), TextBlockScrollButtonBack.Multiply(sc));
-            count += Replace(emitdebug,nameof(ListBoxScrollButtonBack), TextBlockScrollButtonBack);
-            count += Replace(emitdebug,nameof(ListBoxScrollButtonBack2), TextBlockScrollButtonBack.Multiply(sc));
-            count += Replace(emitdebug,nameof(ListBoxScrollArrow), TextBlockScrollArrowBack);
-
-            count += Replace(emitdebug,nameof(GridSliderBack2), GridSliderBack.Multiply(sc));
-            count += Replace(emitdebug,nameof(GridScrollArrowBack), GridScrollButtonBack);
-            count += Replace(emitdebug,nameof(GridScrollArrow2Back), GridScrollButtonBack.Multiply(sc));
-            count += Replace(emitdebug,nameof(GridScrollButtonBack2), GridScrollButtonBack.Multiply(sc));
-
-            count += Replace(emitdebug,nameof(ComboBoxBackColor), ButtonBackColor);
-            count += Replace(emitdebug,nameof(ComboBoxBackColor2), ButtonBackColor2);
-            count += Replace(emitdebug,nameof(ComboBoxBorderColor), ButtonBorderColor);
-            count += Replace(emitdebug,nameof(ComboBoxTextColor), ButtonTextColor);
-            count += Replace(emitdebug,nameof(ComboBoxDropDownSliderBack), TextBlockSliderBack);
-            count += Replace(emitdebug,nameof(ComboBoxDropDownSliderBack2), TextBlockSliderBack.Multiply(sc));
-            count += Replace(emitdebug,nameof(ComboBoxScrollArrowBack), TextBlockScrollArrowBack);
-            count += Replace(emitdebug,nameof(ComboBoxScrollArrowBack2), TextBlockScrollArrowBack2);
-            count += Replace(emitdebug,nameof(ComboBoxScrollButtonBack), TextBlockScrollButtonBack);
-            count += Replace(emitdebug,nameof(ComboBoxScrollButtonBack2), TextBlockScrollButtonBack2);
-            count += Replace(emitdebug,nameof(ComboBoxScrollArrow), TextBlockScrollArrow);
-
-            count += Replace(emitdebug,nameof(CheckBoxBack), CheckBoxText);
-            count += Replace(emitdebug,nameof(CheckBoxBack2), CheckBoxText.Multiply(sc));
-            count += Replace(emitdebug,nameof(CheckBoxButtonTickedBack), CheckBoxTick);
-            count += Replace(emitdebug,nameof(CheckBoxButtonTickedBack2), CheckBoxTick.Multiply(sc));
-            count += Replace(emitdebug,nameof(CheckBoxBorderColor), ButtonBorderColor);
-
-            count += Replace(emitdebug,nameof(GroupBack2), GroupBack.Multiply(sc));
-            count += Replace(emitdebug,nameof(GroupBorder2), GroupBorder.Multiply(sc));
-
-            count += Replace(emitdebug,nameof(TabStripBack), Form);
-            count += Replace(emitdebug,nameof(TabStripBack2), Form);
-            count += Replace(emitdebug,nameof(TabStripFore), ButtonTextColor);
-            count += Replace(emitdebug,nameof(TabStripSelected), ButtonBackColor);
-
-            count += Replace(emitdebug,nameof(TabControlBack), Form);
-            count += Replace(emitdebug,nameof(TabControlBack2), Form);
-            count += Replace(emitdebug,nameof(TabControlText), ButtonTextColor);
-            count += Replace(emitdebug,nameof(TabControlButtonBack), ButtonBackColor);
-            count += Replace(emitdebug,nameof(TabControlButtonBack2), ButtonBackColor.Multiply(0.6F));
-            count += Replace(emitdebug,nameof(TabControlBorder2), TabControlBorder.Multiply(0.6F));        // border is bright, this is darker
-
-            // verify we have no transparent colours left due to missing above
-#if DEBUG            
-            var proplist = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            foreach( var p in proplist)
-            {
-                if ( p.PropertyType==typeof(Color))
-                {
-                    Color c = (Color)p.GetValue(this);
-                    System.Diagnostics.Debug.Assert(c != Color.Transparent);
-                }
-            }
-#endif
-            return count;
-        }
-
-        private int Replace(bool debug , string nameofitem, Color y)
-        {
-            PropertyInfo p = typeof(Theme).GetProperty(nameofitem);
-            Color curv = (Color)p.GetValue(this);
-            if (curv == Color.Transparent)
-            {
-                System.Diagnostics.Debug.Assert(y != Color.Transparent);
-                if ( debug )
-                    System.Diagnostics.Debug.WriteLine($"Theme missing item {nameofitem} setting to {y}");
-                p.SetValue(this, y);
-                return 1;
-            }
-            else
-                return 0;
         }
 
         public static Theme LoadFile(string pathname, string usethisname = null)
@@ -1076,6 +990,105 @@ namespace ExtendedControls
         {
             return FileHelpers.TryWriteToFile(pathname, ToJSON().ToString(true));
         }
+
+        // New options introduced in march/april 25 are marked as transparent..
+        // if missing, fill them in from existing info
+        private int FillInNewOptions(bool emitdebug)
+        {
+            float sc = 0.6F;
+            int count = 0;
+
+            count += Replace(emitdebug, nameof(ButtonBackColor2), ButtonBackColor.Multiply(sc));       // in order
+
+            count += Replace(emitdebug, nameof(TextBlockBorderColor2), TextBlockBorderColor.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockSliderBack2), TextBlockSliderBack.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockScrollArrowBack), TextBlockScrollButtonBack);
+            count += Replace(emitdebug, nameof(TextBlockScrollArrowBack2), TextBlockScrollButtonBack.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockScrollButtonBack2), TextBlockScrollButtonBack.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockDropDownBackColor), TextBlockBackColor);
+            count += Replace(emitdebug, nameof(TextBlockDropDownBackColor2), TextBlockBackColor);
+
+            count += Replace(emitdebug, nameof(ListBoxBackColor), ButtonBackColor);
+            count += Replace(emitdebug, nameof(ListBoxBackColor2), ButtonBackColor2);
+            count += Replace(emitdebug, nameof(ListBoxBorderColor), ButtonBorderColor);
+            count += Replace(emitdebug, nameof(ListBoxTextColor), ButtonTextColor);
+            count += Replace(emitdebug, nameof(ListBoxSliderBack), TextBlockSliderBack);
+            count += Replace(emitdebug, nameof(ListBoxSliderBack2), TextBlockSliderBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(ListBoxScrollArrowBack), TextBlockScrollButtonBack);
+            count += Replace(emitdebug, nameof(ListBoxScrollArrowBack2), TextBlockScrollButtonBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(ListBoxScrollButtonBack), TextBlockScrollButtonBack);
+            count += Replace(emitdebug, nameof(ListBoxScrollButtonBack2), TextBlockScrollButtonBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(ListBoxScrollArrow), TextBlockScrollArrowBack);
+
+            count += Replace(emitdebug, nameof(GridSliderBack2), GridSliderBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(GridScrollArrowBack), GridScrollButtonBack);
+            count += Replace(emitdebug, nameof(GridScrollArrow2Back), GridScrollButtonBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(GridScrollButtonBack2), GridScrollButtonBack.Multiply(sc));
+
+            count += Replace(emitdebug, nameof(ComboBoxBackColor), ButtonBackColor);
+            count += Replace(emitdebug, nameof(ComboBoxBackColor2), ButtonBackColor2);
+            count += Replace(emitdebug, nameof(ComboBoxBorderColor), ButtonBorderColor);
+            count += Replace(emitdebug, nameof(ComboBoxTextColor), ButtonTextColor);
+            count += Replace(emitdebug, nameof(ComboBoxDropDownSliderBack), TextBlockSliderBack);
+            count += Replace(emitdebug, nameof(ComboBoxDropDownSliderBack2), TextBlockSliderBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(ComboBoxScrollArrowBack), TextBlockScrollArrowBack);
+            count += Replace(emitdebug, nameof(ComboBoxScrollArrowBack2), TextBlockScrollArrowBack2);
+            count += Replace(emitdebug, nameof(ComboBoxScrollButtonBack), TextBlockScrollButtonBack);
+            count += Replace(emitdebug, nameof(ComboBoxScrollButtonBack2), TextBlockScrollButtonBack2);
+            count += Replace(emitdebug, nameof(ComboBoxScrollArrow), TextBlockScrollArrow);
+
+            count += Replace(emitdebug, nameof(CheckBoxBack), CheckBoxText);
+            count += Replace(emitdebug, nameof(CheckBoxBack2), CheckBoxText.Multiply(sc));
+            count += Replace(emitdebug, nameof(CheckBoxButtonTickedBack), CheckBoxTick);
+            count += Replace(emitdebug, nameof(CheckBoxButtonTickedBack2), CheckBoxTick.Multiply(sc));
+            count += Replace(emitdebug, nameof(CheckBoxBorderColor), ButtonBorderColor);
+
+            count += Replace(emitdebug, nameof(GroupBack2), GroupBack);
+            count += Replace(emitdebug, nameof(GroupBorder2), GroupBorder.Multiply(sc));
+
+            count += Replace(emitdebug, nameof(TabStripBack), Form);
+            count += Replace(emitdebug, nameof(TabStripBack2), Form);
+            count += Replace(emitdebug, nameof(TabStripFore), ButtonTextColor);
+            count += Replace(emitdebug, nameof(TabStripSelected), ButtonBackColor);
+
+            count += Replace(emitdebug, nameof(TabControlBack), Form);
+            count += Replace(emitdebug, nameof(TabControlBack2), Form);
+            count += Replace(emitdebug, nameof(TabControlText), ButtonTextColor);
+            count += Replace(emitdebug, nameof(TabControlButtonBack), ButtonBackColor);
+            count += Replace(emitdebug, nameof(TabControlButtonBack2), ButtonBackColor.Multiply(0.6F));
+            count += Replace(emitdebug, nameof(TabControlBorder2), TabControlBorder.Multiply(0.6F));        // border is bright, this is darker
+
+            // verify we have no transparent colours left due to missing above
+#if DEBUG            
+            var proplist = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            foreach (var p in proplist)
+            {
+                if (p.PropertyType == typeof(Color))
+                {
+                    Color c = (Color)p.GetValue(this);
+                    System.Diagnostics.Debug.Assert(c != Color.Transparent);
+                }
+            }
+#endif
+            return count;
+        }
+
+        private int Replace(bool debug, string nameofitem, Color y)
+        {
+            PropertyInfo p = typeof(Theme).GetProperty(nameofitem);
+            Color curv = (Color)p.GetValue(this);
+            if (curv == Color.Transparent)
+            {
+                System.Diagnostics.Debug.Assert(y != Color.Transparent);
+                if (debug)
+                    System.Diagnostics.Debug.WriteLine($"Theme missing item {nameofitem} setting to {y}");
+                p.SetValue(this, y);
+                return 1;
+            }
+            else
+                return 0;
+        }
+
 
         private const string DefaultFont = "Microsoft Sans Serif";
         private const float DefaultFontSize = 8.25F;

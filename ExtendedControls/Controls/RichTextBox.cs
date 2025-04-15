@@ -428,9 +428,6 @@ namespace ExtendedControls
             BorderColor2 = t.IsTextBoxBorderColour ? t.TextBlockBorderColor2 : Color.Transparent;
             BorderStyle = t.TextBoxStyle;
 
-            if (t.IsTextBoxBorderColour)
-                BorderColor = t.TextBlockBorderColor;
-
             if (t.IsButtonSystemStyle)
             {
                 ScrollBar.FlatStyle = FlatStyle.System;

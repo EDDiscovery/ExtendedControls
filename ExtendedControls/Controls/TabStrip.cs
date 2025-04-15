@@ -592,6 +592,7 @@ namespace ExtendedControls
         {
             ////System.Diagnostics.Debug.WriteLine("*************** TAB Strip themeing" + myControl.Name + " " + myControl.Tag);
 
+            BackColor = t.Form;
             DropDownSelectionBackgroundColor = t.ComboBoxBackColor;
             DropDownSelectionBackgroundColor2 = t.ComboBoxBackColor2;
             DropDownSelectionColor = t.ComboBoxBackColor.Multiply(t.MouseSelectedScaling);
@@ -611,7 +612,7 @@ namespace ExtendedControls
             GradientDirection = t.TabStripGradientDirection;
 
             if (CurrentControl != null)             // we give the CurrentControl only the chance to theme
-                t.UpdateControls(CurrentControl, fnt, 10, false);
+                t.UpdateControls(CurrentControl, fnt, 100, false);
             
             return false;   // eveything we own is themed in here.. no children
         }

@@ -17,11 +17,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-/* Idea from : http://www.codeproject.com/Articles/91387/Painting-Your-Own-Tabs-Second-Edition
- * These parts are provided under the Code Project Open Licence (CPOL)
- * See http://www.codeproject.com/info/cpol10.aspx for details
- */
-
 namespace ExtendedControls
 {
     public class ExtTabControl : TabControl, IThemeable

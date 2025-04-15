@@ -36,7 +36,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="QuickJSON, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\RJKJSoft.QuickJSON.2.7.0\lib\net48\QuickJSON.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\QuickJSON\QuickJSON\bin\Debug\net48\QuickJSON.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -266,7 +267,7 @@
     <Compile Include="Controls\TextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToolStrips\ToolStripComboBoxCustom.cs">
+    <Compile Include="Controls\ToolStripComboBoxCustom.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\UpDown.cs">
@@ -314,7 +315,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Resources\ArrowLeft.png" />
   </ItemGroup>
   <ItemGroup>
