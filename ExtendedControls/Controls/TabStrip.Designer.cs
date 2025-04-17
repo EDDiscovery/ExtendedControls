@@ -141,7 +141,6 @@ namespace ExtendedControls
             // 
             this.panelStrip.AutoSize = true;
             this.panelStrip.BackColor = System.Drawing.SystemColors.Control;
-            this.panelStrip.BackColor2 = System.Drawing.SystemColors.Control;
             this.panelStrip.Controls.Add(this.labelControlText);
             this.panelStrip.Controls.Add(this.pimageListSelection);
             this.panelStrip.Controls.Add(this.extButtonDrawnHelp);

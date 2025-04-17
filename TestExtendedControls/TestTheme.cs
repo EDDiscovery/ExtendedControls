@@ -53,8 +53,8 @@ namespace TestExtendedControls
             }
 
             stdthemes = new ThemeList();
-            stdthemes.LoadBaseThemes();
-            //stdthemes.SetThemeByName("Verdana Grey");
+          //  stdthemes.LoadBaseThemes();
+           // stdthemes.SetThemeByName("Verdana Grey");
 
             Theme.Current.WindowsFrame = true;
             Theme.Current.ApplyStd(this);

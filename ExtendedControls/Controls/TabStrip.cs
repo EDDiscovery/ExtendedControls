@@ -31,10 +31,12 @@ namespace ExtendedControls
         public object[] TagList { get; set; }      // tags for them..
         public bool ShowPopOut { get; set; }= true; // Pop out icon show
         public Color SelectedBackColor { get; set; } = Color.Transparent;   // if set, show selected with a back colour
-        public Color StripBackColor { get { return panelStrip.BackColor; } set { panelStrip.BackColor = value; } }
-        public Color StripBackColor2 { get { return panelStrip.BackColor2; } set { panelStrip.BackColor2 = value; } }
-
         public override Color ForeColor { get => base.ForeColor; set { base.ForeColor = value; labelControlText.ForeColor = value; labelTitle.ForeColor = value; } }
+
+        // ThemeColors only used if ThemeColourSet>=0.  
+        public Color[] ThemeColors { get { return panelStrip.ThemeColors; } set { panelStrip.ThemeColors = value; } }
+        // -1 = system, 0 use tabstrip theme colours, else use panel set 1,2,3,4.. 
+        public int ThemeColorSet { get; set; } = 0;
 
         // if you set this, when empty, a panel will appear with the color selected
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
@@ -43,6 +45,7 @@ namespace ExtendedControls
         // only if using ListSelection with a drop down box
         public Color DropDownSelectionBackgroundColor { get; set; } = Color.Gray;
         public Color DropDownSelectionBackgroundColor2 { get; set; } = Color.Gray;      // background
+        public float DropDownGradient { get; set; } = 90F;
         public Color DropDownSelectionColor { get; set; } = Color.Green;       // selection bar
         public Color DropDownSliderColor { get; set; } = Color.Green;
         public Color DropDownSliderArrowColor { get; set; } = Color.Cyan;
@@ -51,8 +54,8 @@ namespace ExtendedControls
         public Color DropDownMouseOverSliderButtonColor { get; set; } = Color.Red;
         public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
 
+
         public bool DropDownFitImagesToItemHeight { get; set; } = false;
-        public float GradientDirection { get => panelStrip.GradientDirection; set { panelStrip.GradientDirection = value; Invalidate(); } }
 
         // If non null, a help icon ? appears on the right. When clicked, you get a callback.  P is the lower bottom of the ? icon in screen co-ords
 
@@ -88,6 +91,8 @@ namespace ExtendedControls
             pimageSelectedIcon.BackgroundImageLayout = ImageLayout.Stretch;
             pimagePopOutIcon.Visible = pimageListSelection.Visible = false;
             extButtonDrawnHelp.Visible = false;
+
+        //    SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
         #region Public interface
@@ -195,7 +200,7 @@ namespace ExtendedControls
             {
                 Rectangle area = panelStrip.Dock == DockStyle.Top ? new Rectangle(0, panelStrip.Height, ClientRectangle.Width, ClientRectangle.Height - panelStrip.Height) : new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height - panelStrip.Height);
 
-                using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(area, EmptyColor, EmptyColor.Multiply(EmptyColorScaling), GradientDirection))
+                using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(area, EmptyColor, EmptyColor.Multiply(EmptyColorScaling), DropDownGradient))      // reuse drop down gradient
                 {
                     e.Graphics.FillRectangle(b, area);
                 }
@@ -526,7 +531,7 @@ namespace ExtendedControls
             dropdown.ListBox.SelectionBackColor = this.DropDownSelectionBackgroundColor;
             dropdown.ListBox.SelectionBackColor2 = this.DropDownSelectionBackgroundColor2;
             dropdown.ListBox.SelectionColor = this.DropDownSelectionColor;
-            dropdown.ListBox.BackGradientDirection = this.GradientDirection;
+            dropdown.ListBox.BackGradientDirection = this.DropDownGradient;
             dropdown.ListBox.BorderColor = this.DropDownBorderColor;
             dropdown.ListBox.ScrollBar.BackColor = dropdown.ListBox.ScrollBar.SliderColor = this.DropDownSliderColor;
             dropdown.ListBox.ScrollBar.ForeColor = this.DropDownSliderArrowColor;    // arrow
@@ -601,15 +606,24 @@ namespace ExtendedControls
             DropDownBorderColor = t.ComboBoxBorderColor;
             DropDownSliderButtonColor = t.ComboBoxScrollButtonBack;
             DropDownMouseOverSliderButtonColor = DropDownSliderButtonColor.Multiply(t.MouseOverScaling);
+            DropDownGradient = t.ComboBoxBackAndDropDownGradientDirection;
             PressedDropDownSliderButtonColor = DropDownSliderButtonColor.Multiply(t.MouseSelectedScaling);
 
             ForeColor = t.TabStripFore;             // theme our labels
             EmptyColor = t.Form;
             SelectedBackColor = t.TabStripSelected;
 
-            StripBackColor = t.TabStripBack;        // theme the tab strip
-            StripBackColor2 = t.TabStripBack2;
-            GradientDirection = t.TabStripGradientDirection;
+            panelStrip.ThemeColorSet = ThemeColorSet;
+            if (ThemeColorSet > 0)
+            {
+                panelStrip.ThemeColors = t.GetPanelSet(ThemeColorSet);
+                panelStrip.GradientDirection = t.GetPanelDirection(ThemeColorSet);
+            }
+            else
+            {
+                panelStrip.GradientDirection = t.TabStripGradientDirection;
+                panelStrip.ThemeColors = t.TabStripBack;
+            }
 
             if (CurrentControl != null)             // we give the CurrentControl only the chance to theme
                 t.UpdateControls(CurrentControl, fnt, 100, false);

@@ -71,7 +71,6 @@
             this.tabStrip1.SelectedIndex = -1;
             this.tabStrip1.ShowPopOut = true;
             this.tabStrip1.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip1.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip1.TabIndex = 0;
             // 
@@ -163,7 +162,6 @@
             this.tabStrip2.SelectedIndex = -1;
             this.tabStrip2.ShowPopOut = true;
             this.tabStrip2.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip2.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip2.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip2.TabIndex = 1;
             // 
@@ -191,7 +189,6 @@
             this.tabStrip3.SelectedIndex = -1;
             this.tabStrip3.ShowPopOut = true;
             this.tabStrip3.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip3.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip3.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip3.TabIndex = 1;
             // 
@@ -209,7 +206,6 @@
             this.tabStrip4.SelectedIndex = -1;
             this.tabStrip4.ShowPopOut = true;
             this.tabStrip4.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip4.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip4.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip4.TabIndex = 1;
             // 
@@ -247,7 +243,6 @@
             this.tabStrip5.SelectedIndex = -1;
             this.tabStrip5.ShowPopOut = true;
             this.tabStrip5.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip5.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip5.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip5.TabIndex = 1;
             // 

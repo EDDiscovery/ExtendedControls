@@ -46,8 +46,10 @@ namespace ExtendedControls
 
         public float TabDisabledScaling { get; set; } = 0.5F;                   // how much darker if not selected.
 
-        public Color TabBackgroundColor { get; set; } = SystemColors.Control;
-        public Color TabBackgroundColor2 { get; set; } = SystemColors.Control;
+        // ThemeColors only used if ThemeColourSet>=0.  
+        public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
+        // -1 = system, 0 use tabstrip theme colours, else use panel set 1,2,3,4.. 
+        public int ThemeColorSet { get; set; } = -1;
         public float TabBackgroundGradientDirection { get; set; } = 0F;
 
         public int MinimumTabWidth { set { SendMessage(0x1300 + 49, IntPtr.Zero, (IntPtr)value); } }
@@ -86,6 +88,7 @@ namespace ExtendedControls
         #region Initialisation
         public ExtTabControl() : base()
         {
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
         
         public TabPage FindTabPageByName(string name)
@@ -198,13 +201,21 @@ namespace ExtendedControls
             if (Parent == null || Width < 1 || Height < 1)
                 return;
 
-            // the ClientRectangle is the whole control including tab area, the DisplayRectangle is the area of the tabpage
-            Rectangle tabarea = new Rectangle(0, 0, Width, DisplayRectangle.Y-topborder);   // less 2 for border area
-
-            using (Brush br = new LinearGradientBrush(tabarea, TabBackgroundColor, TabBackgroundColor2, TabBackgroundGradientDirection))
+            Rectangle tabarea = new Rectangle(0, 0, Width, DisplayRectangle.Y - topborder);   // less 2 for border area
+            if (ThemeColorSet < 0)
             {
-                e.Graphics.FillRectangle(br, tabarea);
+                using (Brush br = new SolidBrush(BackColor))
+                    e.Graphics.FillRectangle(br, tabarea);
             }
+            else
+                DrawingHelpersStaticFunc.PaintMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, TabBackgroundGradientDirection);
+            //// the ClientRectangle is the whole control including tab area, the DisplayRectangle is the area of the tabpage
+            //Rectangle tabarea = new Rectangle(0, 0, Width, DisplayRectangle.Y - topborder);   // less 2 for border area
+
+            //using (Brush br = new LinearGradientBrush(tabarea, TabBackgroundColor, TabBackgroundColor2, TabBackgroundGradientDirection))
+            //{
+            //    e.Graphics.FillRectangle(br, tabarea);
+            //}
 
             DrawBorder(e.Graphics);
 
@@ -372,9 +383,6 @@ namespace ExtendedControls
             }
             else
             {
-                TabBackgroundColor = t.TabControlBack;
-                TabBackgroundColor2 = t.TabControlBack2;
-                TabBackgroundGradientDirection = t.TabControlBackGradientDirection;
 
                 TabControlBorderColor = t.TabControlBorder;
                 TabControlBorderColor2 = t.IsTextBoxBorderNone ? t.TabControlBorder2 : t.TabControlBorder;
@@ -396,7 +404,19 @@ namespace ExtendedControls
 
                 TabDisabledScaling = t.DisabledScaling;
                 SetStyle(t.ButtonFlatStyle, new TabStyleAngled());
+
+                if (ThemeColorSet > 0)
+                {
+                    ThemeColors = t.GetPanelSet(ThemeColorSet);
+                    TabBackgroundGradientDirection = t.GetPanelDirection(ThemeColorSet);
+                }
+                else
+                {
+                    ThemeColors = t.TabControlBack;
+                    TabBackgroundGradientDirection = t.TabControlBackGradientDirection;
+                }
             }
+
             ForceUpdate();
             return true;
         }

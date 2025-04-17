@@ -141,14 +141,20 @@ namespace ExtendedControls
             InitColourPatch(panel_themeGBBorder2, "Group box Border Line Colour 2", np[nameof(Theme.GroupBorder2)]);
             InitGradient(buttonGBGradient, "Group Box Gradient Direction in degrees", np[nameof(Theme.GroupBoxGradientDirection)]);
 
-            InitColourPatch(panel_themeTabStripBack, "Tab Strip Back Colour", np[nameof(Theme.TabStripBack)]);
-            InitColourPatch(panel_themeTabStripBack2, "Tab Strip Back Color 2", np[nameof(Theme.TabStripBack2)]);
+            InitColourPatch(panel_themeTabStripBack1, "Tab Strip 1 Back Colour", np[nameof(Theme.TabStripBack)], 0);
+            InitColourPatch(panel_themeTabStripBack2, "Tab Strip 2 Back Colour", np[nameof(Theme.TabStripBack)], 1);
+            InitColourPatch(panel_themeTabStripBack3, "Tab Strip 3 Back Colour", np[nameof(Theme.TabStripBack)], 2);
+            InitColourPatch(panel_themeTabStripBack4, "Tab Strip 4 Back Colour", np[nameof(Theme.TabStripBack)], 3);
             InitColourPatch(panel_themeTabStripFore, "Tab Strip Text Colour", np[nameof(Theme.TabStripFore)]);
             InitColourPatch(panel_themeTabStripSelected, "Tab Strip Selected Colour", np[nameof(Theme.TabStripSelected)]);
             InitGradient(buttonTabStripGradient, "Tab Strip Gradient Direction in degrees", np[nameof(Theme.TabStripGradientDirection)]);
 
-            InitColourPatch(panel_themeTabControlBack, "Tab Control Back Colour", np[nameof(Theme.TabControlBack)]);
-            InitColourPatch(panel_themeTabControlBack2, "Tab Control Back Colour 2", np[nameof(Theme.TabControlBack2)]);
+            InitColourPatch(panel_themeTabControlBack1, "Tab Control 1 Back Colour", np[nameof(Theme.TabControlBack)], 0);
+            InitColourPatch(panel_themeTabControlBack2, "Tab Control 2 Back Colour", np[nameof(Theme.TabControlBack)], 1);
+            InitColourPatch(panel_themeTabControlBack3, "Tab Control 3 Back Colour", np[nameof(Theme.TabControlBack)], 2);
+            InitColourPatch(panel_themeTabControlBack4, "Tab Control 4 Back Colour", np[nameof(Theme.TabControlBack)], 3);
+            InitGradient(buttonTabControlTabGradient, "Tab Control Tab Gradient Direction in degrees", np[nameof(Theme.TabControlTabGradientDirection)]);
+
             InitColourPatch(panel_themeTabControlFore, "Tab Control Text Colour", np[nameof(Theme.TabControlText)]);
             InitColourPatch(panel_themeTabControlButtonBack, "Tab Control Button Back Colour", np[nameof(Theme.TabControlButtonBack)]);
             InitColourPatch(panel_themeTabControlButtonBack2, "Tab Control Button Back Colour 2", np[nameof(Theme.TabControlButtonBack2)]);
@@ -172,6 +178,27 @@ namespace ExtendedControls
 
             InitColourPatch(panel_themeTransparentColourKey, "Transparent Colour Key", np[nameof(Theme.TransparentColorKey)]);
 
+            InitColourPatch(panel_themePanel11, "Panel 1 Back Colour", np[nameof(Theme.Panel1)], 0);
+            InitColourPatch(panel_themePanel12, "Panel 1 Back 2 Colour", np[nameof(Theme.Panel1)], 1);
+            InitColourPatch(panel_themePanel13, "Panel 1 Back 3 Colour", np[nameof(Theme.Panel1)], 2);
+            InitColourPatch(panel_themePanel14, "Panel 1 Back 4 Colour", np[nameof(Theme.Panel1)], 3);
+            InitGradient(buttonPanelGradient1, "Panel 1 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 0);
+            InitColourPatch(panel_themePanel21, "Panel 2 Back Colour", np[nameof(Theme.Panel2)], 0);
+            InitColourPatch(panel_themePanel22, "Panel 2 Back 2 Colour", np[nameof(Theme.Panel2)], 1);
+            InitColourPatch(panel_themePanel23, "Panel 2 Back 3 Colour", np[nameof(Theme.Panel2)], 2);
+            InitColourPatch(panel_themePanel24, "Panel 2 Back 4 Colour", np[nameof(Theme.Panel2)], 3);
+            InitGradient(buttonPanelGradient2, "Panel 2 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 1);
+            InitColourPatch(panel_themePanel31, "Panel 3 Back Colour", np[nameof(Theme.Panel3)], 0);
+            InitColourPatch(panel_themePanel32, "Panel 3 Back 2 Colour", np[nameof(Theme.Panel3)], 1);
+            InitColourPatch(panel_themePanel33, "Panel 3 Back 3 Colour", np[nameof(Theme.Panel3)], 2);
+            InitColourPatch(panel_themePanel34, "Panel 3 Back 4 Colour", np[nameof(Theme.Panel3)], 3);
+            InitGradient(buttonPanelGradient3, "Panel 3 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 2);
+            InitColourPatch(panel_themePanel41, "Panel 4 Back Colour", np[nameof(Theme.Panel4)], 0);
+            InitColourPatch(panel_themePanel42, "Panel 4 Back 2 Colour", np[nameof(Theme.Panel4)], 1);
+            InitColourPatch(panel_themePanel43, "Panel 4 Back 3 Colour", np[nameof(Theme.Panel4)], 2);
+            InitColourPatch(panel_themePanel44, "Panel 4 Back 4 Colour", np[nameof(Theme.Panel4)], 3);
+            InitGradient(buttonPanelGradient4, "Panel 4 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 3);
+
             InitColourPatch(panel_chart1, "Chart Series 1", np[nameof(Theme.Chart1)]);
             InitColourPatch(panel_chart2, "Chart Series 2", np[nameof(Theme.Chart2)]);
             InitColourPatch(panel_chart3, "Chart Series 3", np[nameof(Theme.Chart3)]);
@@ -191,15 +218,55 @@ namespace ExtendedControls
             UpdateFontText();
         }
 
-        private void InitColourPatch(Panel pn, string tooltip, PropertyInfo pi)
+        // Colour patch, can handle indexes.
+        private void InitColourPatch(Panel pn, string tooltip, PropertyInfo pi, int index = 0)
         {
             toolTip1.SetToolTip(pn, tooltip);        // assign tool tips and indicate which color to edit
-            pn.Tag = pi;
-            pn.BackColor = (Color)pi.GetValue(Theme);
-            pn.MouseClick += new System.Windows.Forms.MouseEventHandler(this.panel_theme_Click);
+            Array a = null;
+            if (pi.PropertyType.IsArray)
+            {
+                pn.Tag = new Tuple<PropertyInfo, int>(pi, index);
+                a = (Array)pi.GetValue(Theme);
+                pn.BackColor = (Color)a.GetValue(index);
+            }
+            else
+            {
+                pn.Tag = pi;
+                pn.BackColor = (Color)pi.GetValue(Theme);
+            }
+
+            pn.MouseClick += (s, e) =>
+            {
+                Color c;
+                if (pi.PropertyType.IsArray)
+                {
+                    c = (Color)a.GetValue(index);
+                }
+                else
+                    c = (Color)pi.GetValue(Theme);
+
+                ColorDialog MyDialog = new ColorDialog();
+                MyDialog.AllowFullOpen = true;
+                MyDialog.FullOpen = true;
+                MyDialog.Color = c;
+
+                if (MyDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    //System.Diagnostics.Debug.Write($"Theme {pi.Name} with {c}");
+                    Theme.SetCustom();
+                    if (pi.PropertyType.IsArray)
+                    {
+                        a.SetValue(MyDialog.Color, index);
+                    }
+                    else
+                        pi.SetValue(Theme, MyDialog.Color);
+                    pn.BackColor = MyDialog.Color;
+                    ApplyChanges?.Invoke(Theme);
+                }
+
+            };
             pn.ContextMenuStrip = contextMenuStripColours;
             //System.Diagnostics.Debug.WriteLine($"Panel {pn.Name} to {pn.BackColor}");
-
         }
 
         private void InitFloat(NumericUpDown c, string tooltip, PropertyInfo pi)
@@ -215,11 +282,22 @@ namespace ExtendedControls
             };
         }
 
-        private void InitGradient( ButtonAngle c, string tooltip, PropertyInfo pi)
+        // Gradient, can handle indexes.
+        private void InitGradient( ButtonAngle c, string tooltip, PropertyInfo pi, int index = 0)
         {
             toolTip1.SetToolTip(c, tooltip);        // assign tool tips and indicate which color to edit
-            c.Tag = pi;
-            c.Value = (float)pi.GetValue(Theme);
+            Array a = null;
+
+            if (pi.PropertyType.IsArray)
+            {
+                a = (Array)pi.GetValue(Theme);
+                c.Value = (float)a.GetValue(index);
+            }
+            else
+            {
+                c.Value = (float)pi.GetValue(Theme);
+            }
+
             c.Click += (s, e) =>
             {
                 Form f = new Form();
@@ -228,16 +306,23 @@ namespace ExtendedControls
                 f.Size = new Size(190, 28);
                 f.StartPosition = FormStartPosition.Manual;
                 f.Location = this.PointToScreen(new Point(c.Right + 8, c.Top + c.Height / 2 - 4));
+
                 NumericUpDown nup = new NumericUpDown();
                 nup.Size = new Size(120, 24);
                 nup.Location = new Point(8, 4);
                 nup.Maximum = 360;
                 nup.Increment = 10;
-                nup.Value = (decimal)c.Value;
+                if (pi.PropertyType.IsArray)
+                    nup.Value = (decimal)(float)a.GetValue(index);
+                else
+                    nup.Value = (decimal)c.Value;
                 nup.KeyDown += (s2, e2) => { if (e2.KeyCode == Keys.Return) { f.DialogResult = DialogResult.OK; f.Close(); } };
                 nup.ValueChanged += (s3, e3) => {
                     c.Value = (float)nup.Value;
-                    pi.SetValue(Theme, c.Value);
+                    if (pi.PropertyType.IsArray)
+                        a.SetValue(c.Value, index);
+                    else
+                        pi.SetValue(Theme, c.Value);
                     Theme.SetCustom();
                     ApplyChanges?.Invoke(Theme);
                 };
@@ -252,32 +337,15 @@ namespace ExtendedControls
                 if (f.ShowDialog(this) == DialogResult.OK)
                 {
                     c.Value = (float)nup.Value;
-                    pi.SetValue(Theme, c.Value);
+                    if (pi.PropertyType.IsArray)
+                        a.SetValue(c.Value, index);
+                    else
+                        pi.SetValue(Theme, c.Value);
                     Theme.SetCustom();
                     ApplyChanges?.Invoke(Theme);
                 }
                 ;
             };
-        }
-
-        private void panel_theme_Click(object sender, EventArgs e)
-        {
-            Panel panel = (Panel)sender;
-            PropertyInfo pi = (PropertyInfo)(((Control)sender).Tag);
-            Color c = (Color)pi.GetValue(Theme);
-            ColorDialog MyDialog = new ColorDialog();
-            MyDialog.AllowFullOpen = true;
-            MyDialog.FullOpen = true;
-            MyDialog.Color = c;
-
-            if (MyDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                //System.Diagnostics.Debug.Write($"Theme {pi.Name} with {c}");
-                Theme.SetCustom();
-                pi.SetValue(Theme, MyDialog.Color);
-                panel.BackColor = MyDialog.Color;
-                ApplyChanges?.Invoke(Theme);
-            }
         }
 
         private void checkBox_theme_windowframe_CheckedChanged(object sender, EventArgs e)
@@ -362,7 +430,6 @@ namespace ExtendedControls
             Close();
         }
 
-
         private void checkBoxDarkMode_CheckedChanged(object sender, EventArgs e)
         {
             ChangeLabelColors(this, checkBoxDarkMode.Checked ? Color.DarkOrange : Color.Black);
@@ -394,9 +461,20 @@ namespace ExtendedControls
         private void pasteColourToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Control s = contextMenuStripColours.SourceControl;
-            PropertyInfo pi = (PropertyInfo)(s.Tag);
-            Theme.SetCustom();
-            pi.SetValue(Theme, pastecolour.Value);
+            PropertyInfo pi = s.Tag as PropertyInfo;
+
+            if (pi != null)                                             
+            {   
+                pi.SetValue(Theme, pastecolour.Value);                  
+            }
+            else
+            {
+                var tu = (Tuple<PropertyInfo, int>)s.Tag;
+                Array a = (Array)tu.Item1.GetValue(Theme);
+                a.SetValue(pastecolour.Value, tu.Item2);
+            }
+
+           Theme.SetCustom();
             s.BackColor = pastecolour.Value;
             ApplyChanges?.Invoke(Theme);
         }

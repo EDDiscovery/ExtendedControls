@@ -46,6 +46,28 @@ namespace ExtendedControls
             this.components = new System.ComponentModel.Container();
             this.buttonOK = new System.Windows.Forms.Button();
             this.groupBoxColors = new System.Windows.Forms.GroupBox();
+            this.buttonTextBlockButtonGradient = new ExtendedControls.ButtonAngle();
+            this.buttonTextBlockSliderGradient = new ExtendedControls.ButtonAngle();
+            this.buttonTextBlockDropdownGradient = new ExtendedControls.ButtonAngle();
+            this.buttonGridSliderGradient = new ExtendedControls.ButtonAngle();
+            this.buttonGridButtonGradient = new ExtendedControls.ButtonAngle();
+            this.buttonComboBoxButtonGradient = new ExtendedControls.ButtonAngle();
+            this.buttonComboBoxSliderGradient = new ExtendedControls.ButtonAngle();
+            this.buttonListBoxButtonGradient = new ExtendedControls.ButtonAngle();
+            this.buttonCheckBoxButtonGradient = new ExtendedControls.ButtonAngle();
+            this.buttonTabControlTabGradient = new ExtendedControls.ButtonAngle();
+            this.buttonPanelGradient4 = new ExtendedControls.ButtonAngle();
+            this.buttonPanelGradient3 = new ExtendedControls.ButtonAngle();
+            this.buttonPanelGradient2 = new ExtendedControls.ButtonAngle();
+            this.buttonPanelGradient1 = new ExtendedControls.ButtonAngle();
+            this.buttonTabControlBackGradient = new ExtendedControls.ButtonAngle();
+            this.buttonTabStripGradient = new ExtendedControls.ButtonAngle();
+            this.buttonGBGradient = new ExtendedControls.ButtonAngle();
+            this.buttonCheckBoxBackGradient = new ExtendedControls.ButtonAngle();
+            this.buttonButtonBackGradient = new ExtendedControls.ButtonAngle();
+            this.buttonListBoxBackGradient = new ExtendedControls.ButtonAngle();
+            this.buttonListBoxSliderGradient = new ExtendedControls.ButtonAngle();
+            this.buttonComboBoxBackGradient = new ExtendedControls.ButtonAngle();
             this.label36 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.numericUpDownCBTickStyleTickSize = new System.Windows.Forms.NumericUpDown();
@@ -56,17 +78,38 @@ namespace ExtendedControls
             this.panel_themeTabStripSelected = new System.Windows.Forms.Panel();
             this.panel_themeTabControlFore = new System.Windows.Forms.Panel();
             this.panel_themeTabStripFore = new System.Windows.Forms.Panel();
-            this.panel_themeGBFore = new System.Windows.Forms.Panel();
+            this.panel_themePanel44 = new System.Windows.Forms.Panel();
+            this.panel_themePanel34 = new System.Windows.Forms.Panel();
+            this.panel_themePanel24 = new System.Windows.Forms.Panel();
+            this.panel_themeTabControlBack4 = new System.Windows.Forms.Panel();
+            this.panel_themeTabStripBack4 = new System.Windows.Forms.Panel();
+            this.panel_themePanel14 = new System.Windows.Forms.Panel();
+            this.panel_themePanel43 = new System.Windows.Forms.Panel();
+            this.panel_themePanel33 = new System.Windows.Forms.Panel();
+            this.panel_themePanel23 = new System.Windows.Forms.Panel();
+            this.panel_themeTabControlBack3 = new System.Windows.Forms.Panel();
+            this.panel_themeTabStripBack3 = new System.Windows.Forms.Panel();
+            this.panel_themePanel13 = new System.Windows.Forms.Panel();
+            this.panel_themePanel42 = new System.Windows.Forms.Panel();
+            this.panel_themePanel32 = new System.Windows.Forms.Panel();
+            this.panel_themePanel22 = new System.Windows.Forms.Panel();
             this.panel_themeTabControlBack2 = new System.Windows.Forms.Panel();
             this.panel_themeTabStripBack2 = new System.Windows.Forms.Panel();
+            this.panel_themePanel12 = new System.Windows.Forms.Panel();
+            this.panel_themeGBFore = new System.Windows.Forms.Panel();
+            this.panel_themePanel41 = new System.Windows.Forms.Panel();
+            this.panel_themePanel31 = new System.Windows.Forms.Panel();
+            this.panel_themeTabControlBack1 = new System.Windows.Forms.Panel();
+            this.panel_themePanel21 = new System.Windows.Forms.Panel();
+            this.panel_themeTabStripBack1 = new System.Windows.Forms.Panel();
+            this.panel_themePanel11 = new System.Windows.Forms.Panel();
             this.panel_themeGBBack2 = new System.Windows.Forms.Panel();
-            this.panel_themeTabControlBack = new System.Windows.Forms.Panel();
-            this.panel_themeTabStripBack = new System.Windows.Forms.Panel();
             this.panel_themeGBBack = new System.Windows.Forms.Panel();
             this.label39 = new System.Windows.Forms.Label();
             this.label45 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -84,6 +127,7 @@ namespace ExtendedControls
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -206,25 +250,6 @@ namespace ExtendedControls
             this.contextMenuStripColours = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.pasteColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyColourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label24 = new System.Windows.Forms.Label();
-            this.buttonTextBlockButtonGradient = new ExtendedControls.ButtonAngle();
-            this.buttonTextBlockSliderGradient = new ExtendedControls.ButtonAngle();
-            this.buttonTextBlockDropdownGradient = new ExtendedControls.ButtonAngle();
-            this.buttonGridSliderGradient = new ExtendedControls.ButtonAngle();
-            this.buttonGridButtonGradient = new ExtendedControls.ButtonAngle();
-            this.buttonComboBoxButtonGradient = new ExtendedControls.ButtonAngle();
-            this.buttonComboBoxSliderGradient = new ExtendedControls.ButtonAngle();
-            this.buttonListBoxButtonGradient = new ExtendedControls.ButtonAngle();
-            this.buttonCheckBoxButtonGradient = new ExtendedControls.ButtonAngle();
-            this.buttonTabControlTabGradient = new ExtendedControls.ButtonAngle();
-            this.buttonTabControlBackGradient = new ExtendedControls.ButtonAngle();
-            this.buttonTabStripGradient = new ExtendedControls.ButtonAngle();
-            this.buttonGBGradient = new ExtendedControls.ButtonAngle();
-            this.buttonCheckBoxBackGradient = new ExtendedControls.ButtonAngle();
-            this.buttonButtonBackGradient = new ExtendedControls.ButtonAngle();
-            this.buttonListBoxBackGradient = new ExtendedControls.ButtonAngle();
-            this.buttonListBoxSliderGradient = new ExtendedControls.ButtonAngle();
-            this.buttonComboBoxBackGradient = new ExtendedControls.ButtonAngle();
             this.groupBoxColors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownCBTickStyleTickSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_theme_opacity)).BeginInit();
@@ -239,7 +264,7 @@ namespace ExtendedControls
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.Location = new System.Drawing.Point(972, 691);
+            this.buttonOK.Location = new System.Drawing.Point(1166, 691);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(80, 24);
             this.buttonOK.TabIndex = 0;
@@ -259,6 +284,10 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.buttonListBoxButtonGradient);
             this.groupBoxColors.Controls.Add(this.buttonCheckBoxButtonGradient);
             this.groupBoxColors.Controls.Add(this.buttonTabControlTabGradient);
+            this.groupBoxColors.Controls.Add(this.buttonPanelGradient4);
+            this.groupBoxColors.Controls.Add(this.buttonPanelGradient3);
+            this.groupBoxColors.Controls.Add(this.buttonPanelGradient2);
+            this.groupBoxColors.Controls.Add(this.buttonPanelGradient1);
             this.groupBoxColors.Controls.Add(this.buttonTabControlBackGradient);
             this.groupBoxColors.Controls.Add(this.buttonTabStripGradient);
             this.groupBoxColors.Controls.Add(this.buttonGBGradient);
@@ -277,12 +306,32 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel_themeTabStripSelected);
             this.groupBoxColors.Controls.Add(this.panel_themeTabControlFore);
             this.groupBoxColors.Controls.Add(this.panel_themeTabStripFore);
-            this.groupBoxColors.Controls.Add(this.panel_themeGBFore);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel44);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel34);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel24);
+            this.groupBoxColors.Controls.Add(this.panel_themeTabControlBack4);
+            this.groupBoxColors.Controls.Add(this.panel_themeTabStripBack4);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel14);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel43);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel33);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel23);
+            this.groupBoxColors.Controls.Add(this.panel_themeTabControlBack3);
+            this.groupBoxColors.Controls.Add(this.panel_themeTabStripBack3);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel13);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel42);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel32);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel22);
             this.groupBoxColors.Controls.Add(this.panel_themeTabControlBack2);
             this.groupBoxColors.Controls.Add(this.panel_themeTabStripBack2);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel12);
+            this.groupBoxColors.Controls.Add(this.panel_themeGBFore);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel41);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel31);
+            this.groupBoxColors.Controls.Add(this.panel_themeTabControlBack1);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel21);
+            this.groupBoxColors.Controls.Add(this.panel_themeTabStripBack1);
+            this.groupBoxColors.Controls.Add(this.panel_themePanel11);
             this.groupBoxColors.Controls.Add(this.panel_themeGBBack2);
-            this.groupBoxColors.Controls.Add(this.panel_themeTabControlBack);
-            this.groupBoxColors.Controls.Add(this.panel_themeTabStripBack);
             this.groupBoxColors.Controls.Add(this.panel_themeGBBack);
             this.groupBoxColors.Controls.Add(this.label39);
             this.groupBoxColors.Controls.Add(this.label45);
@@ -306,6 +355,7 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.label7);
             this.groupBoxColors.Controls.Add(this.label6);
             this.groupBoxColors.Controls.Add(this.label16);
+            this.groupBoxColors.Controls.Add(this.label14);
             this.groupBoxColors.Controls.Add(this.label35);
             this.groupBoxColors.Controls.Add(this.label5);
             this.groupBoxColors.Controls.Add(this.label13);
@@ -407,10 +457,208 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel_themeForm);
             this.groupBoxColors.Location = new System.Drawing.Point(3, 12);
             this.groupBoxColors.Name = "groupBoxColors";
-            this.groupBoxColors.Size = new System.Drawing.Size(1059, 507);
+            this.groupBoxColors.Size = new System.Drawing.Size(1219, 507);
             this.groupBoxColors.TabIndex = 19;
             this.groupBoxColors.TabStop = false;
             this.groupBoxColors.Text = "Colours";
+            // 
+            // buttonTextBlockButtonGradient
+            // 
+            this.buttonTextBlockButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonTextBlockButtonGradient.Location = new System.Drawing.Point(189, 250);
+            this.buttonTextBlockButtonGradient.Name = "buttonTextBlockButtonGradient";
+            this.buttonTextBlockButtonGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonTextBlockButtonGradient.TabIndex = 13;
+            this.buttonTextBlockButtonGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonTextBlockSliderGradient
+            // 
+            this.buttonTextBlockSliderGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonTextBlockSliderGradient.Location = new System.Drawing.Point(189, 170);
+            this.buttonTextBlockSliderGradient.Name = "buttonTextBlockSliderGradient";
+            this.buttonTextBlockSliderGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonTextBlockSliderGradient.TabIndex = 13;
+            this.buttonTextBlockSliderGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonTextBlockDropdownGradient
+            // 
+            this.buttonTextBlockDropdownGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonTextBlockDropdownGradient.Location = new System.Drawing.Point(189, 330);
+            this.buttonTextBlockDropdownGradient.Name = "buttonTextBlockDropdownGradient";
+            this.buttonTextBlockDropdownGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonTextBlockDropdownGradient.TabIndex = 13;
+            this.buttonTextBlockDropdownGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonGridSliderGradient
+            // 
+            this.buttonGridSliderGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonGridSliderGradient.Location = new System.Drawing.Point(269, 170);
+            this.buttonGridSliderGradient.Name = "buttonGridSliderGradient";
+            this.buttonGridSliderGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonGridSliderGradient.TabIndex = 13;
+            this.buttonGridSliderGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonGridButtonGradient
+            // 
+            this.buttonGridButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonGridButtonGradient.Location = new System.Drawing.Point(269, 250);
+            this.buttonGridButtonGradient.Name = "buttonGridButtonGradient";
+            this.buttonGridButtonGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonGridButtonGradient.TabIndex = 13;
+            this.buttonGridButtonGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonComboBoxButtonGradient
+            // 
+            this.buttonComboBoxButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonComboBoxButtonGradient.Location = new System.Drawing.Point(428, 250);
+            this.buttonComboBoxButtonGradient.Name = "buttonComboBoxButtonGradient";
+            this.buttonComboBoxButtonGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonComboBoxButtonGradient.TabIndex = 13;
+            this.buttonComboBoxButtonGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonComboBoxSliderGradient
+            // 
+            this.buttonComboBoxSliderGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonComboBoxSliderGradient.Location = new System.Drawing.Point(428, 170);
+            this.buttonComboBoxSliderGradient.Name = "buttonComboBoxSliderGradient";
+            this.buttonComboBoxSliderGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonComboBoxSliderGradient.TabIndex = 13;
+            this.buttonComboBoxSliderGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonListBoxButtonGradient
+            // 
+            this.buttonListBoxButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonListBoxButtonGradient.Location = new System.Drawing.Point(510, 250);
+            this.buttonListBoxButtonGradient.Name = "buttonListBoxButtonGradient";
+            this.buttonListBoxButtonGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonListBoxButtonGradient.TabIndex = 13;
+            this.buttonListBoxButtonGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonCheckBoxButtonGradient
+            // 
+            this.buttonCheckBoxButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonCheckBoxButtonGradient.Location = new System.Drawing.Point(669, 251);
+            this.buttonCheckBoxButtonGradient.Name = "buttonCheckBoxButtonGradient";
+            this.buttonCheckBoxButtonGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonCheckBoxButtonGradient.TabIndex = 13;
+            this.buttonCheckBoxButtonGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonTabControlTabGradient
+            // 
+            this.buttonTabControlTabGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonTabControlTabGradient.Location = new System.Drawing.Point(909, 250);
+            this.buttonTabControlTabGradient.Name = "buttonTabControlTabGradient";
+            this.buttonTabControlTabGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonTabControlTabGradient.TabIndex = 13;
+            this.buttonTabControlTabGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonPanelGradient4
+            // 
+            this.buttonPanelGradient4.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonPanelGradient4.Location = new System.Drawing.Point(1040, 171);
+            this.buttonPanelGradient4.Name = "buttonPanelGradient4";
+            this.buttonPanelGradient4.Size = new System.Drawing.Size(32, 32);
+            this.buttonPanelGradient4.TabIndex = 13;
+            this.buttonPanelGradient4.UseVisualStyleBackColor = true;
+            // 
+            // buttonPanelGradient3
+            // 
+            this.buttonPanelGradient3.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonPanelGradient3.Location = new System.Drawing.Point(1040, 131);
+            this.buttonPanelGradient3.Name = "buttonPanelGradient3";
+            this.buttonPanelGradient3.Size = new System.Drawing.Size(32, 32);
+            this.buttonPanelGradient3.TabIndex = 13;
+            this.buttonPanelGradient3.UseVisualStyleBackColor = true;
+            // 
+            // buttonPanelGradient2
+            // 
+            this.buttonPanelGradient2.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonPanelGradient2.Location = new System.Drawing.Point(1040, 92);
+            this.buttonPanelGradient2.Name = "buttonPanelGradient2";
+            this.buttonPanelGradient2.Size = new System.Drawing.Size(32, 32);
+            this.buttonPanelGradient2.TabIndex = 13;
+            this.buttonPanelGradient2.UseVisualStyleBackColor = true;
+            // 
+            // buttonPanelGradient1
+            // 
+            this.buttonPanelGradient1.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonPanelGradient1.Location = new System.Drawing.Point(1040, 50);
+            this.buttonPanelGradient1.Name = "buttonPanelGradient1";
+            this.buttonPanelGradient1.Size = new System.Drawing.Size(32, 32);
+            this.buttonPanelGradient1.TabIndex = 13;
+            this.buttonPanelGradient1.UseVisualStyleBackColor = true;
+            // 
+            // buttonTabControlBackGradient
+            // 
+            this.buttonTabControlBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonTabControlBackGradient.Location = new System.Drawing.Point(911, 51);
+            this.buttonTabControlBackGradient.Name = "buttonTabControlBackGradient";
+            this.buttonTabControlBackGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonTabControlBackGradient.TabIndex = 13;
+            this.buttonTabControlBackGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonTabStripGradient
+            // 
+            this.buttonTabStripGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonTabStripGradient.Location = new System.Drawing.Point(831, 50);
+            this.buttonTabStripGradient.Name = "buttonTabStripGradient";
+            this.buttonTabStripGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonTabStripGradient.TabIndex = 13;
+            this.buttonTabStripGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonGBGradient
+            // 
+            this.buttonGBGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonGBGradient.Location = new System.Drawing.Point(749, 50);
+            this.buttonGBGradient.Name = "buttonGBGradient";
+            this.buttonGBGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonGBGradient.TabIndex = 13;
+            this.buttonGBGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonCheckBoxBackGradient
+            // 
+            this.buttonCheckBoxBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonCheckBoxBackGradient.Location = new System.Drawing.Point(670, 50);
+            this.buttonCheckBoxBackGradient.Name = "buttonCheckBoxBackGradient";
+            this.buttonCheckBoxBackGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonCheckBoxBackGradient.TabIndex = 13;
+            this.buttonCheckBoxBackGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonButtonBackGradient
+            // 
+            this.buttonButtonBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonButtonBackGradient.Location = new System.Drawing.Point(589, 50);
+            this.buttonButtonBackGradient.Name = "buttonButtonBackGradient";
+            this.buttonButtonBackGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonButtonBackGradient.TabIndex = 13;
+            this.buttonButtonBackGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonListBoxBackGradient
+            // 
+            this.buttonListBoxBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonListBoxBackGradient.Location = new System.Drawing.Point(510, 50);
+            this.buttonListBoxBackGradient.Name = "buttonListBoxBackGradient";
+            this.buttonListBoxBackGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonListBoxBackGradient.TabIndex = 13;
+            this.buttonListBoxBackGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonListBoxSliderGradient
+            // 
+            this.buttonListBoxSliderGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonListBoxSliderGradient.Location = new System.Drawing.Point(509, 170);
+            this.buttonListBoxSliderGradient.Name = "buttonListBoxSliderGradient";
+            this.buttonListBoxSliderGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonListBoxSliderGradient.TabIndex = 13;
+            this.buttonListBoxSliderGradient.UseVisualStyleBackColor = true;
+            // 
+            // buttonComboBoxBackGradient
+            // 
+            this.buttonComboBoxBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
+            this.buttonComboBoxBackGradient.Location = new System.Drawing.Point(430, 50);
+            this.buttonComboBoxBackGradient.Name = "buttonComboBoxBackGradient";
+            this.buttonComboBoxBackGradient.Size = new System.Drawing.Size(32, 32);
+            this.buttonComboBoxBackGradient.TabIndex = 13;
+            this.buttonComboBoxBackGradient.UseVisualStyleBackColor = true;
             // 
             // label36
             // 
@@ -527,6 +775,186 @@ namespace ExtendedControls
             this.panel_themeTabStripFore.TabIndex = 9;
             this.panel_themeTabStripFore.Tag = "";
             // 
+            // panel_themePanel44
+            // 
+            this.panel_themePanel44.AccessibleDescription = "";
+            this.panel_themePanel44.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel44.Location = new System.Drawing.Point(1030, 171);
+            this.panel_themePanel44.Name = "panel_themePanel44";
+            this.panel_themePanel44.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel44.TabIndex = 9;
+            this.panel_themePanel44.Tag = "";
+            // 
+            // panel_themePanel34
+            // 
+            this.panel_themePanel34.AccessibleDescription = "";
+            this.panel_themePanel34.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel34.Location = new System.Drawing.Point(1030, 131);
+            this.panel_themePanel34.Name = "panel_themePanel34";
+            this.panel_themePanel34.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel34.TabIndex = 9;
+            this.panel_themePanel34.Tag = "";
+            // 
+            // panel_themePanel24
+            // 
+            this.panel_themePanel24.AccessibleDescription = "";
+            this.panel_themePanel24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel24.Location = new System.Drawing.Point(1030, 92);
+            this.panel_themePanel24.Name = "panel_themePanel24";
+            this.panel_themePanel24.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel24.TabIndex = 9;
+            this.panel_themePanel24.Tag = "";
+            // 
+            // panel_themeTabControlBack4
+            // 
+            this.panel_themeTabControlBack4.AccessibleDescription = "";
+            this.panel_themeTabControlBack4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabControlBack4.Location = new System.Drawing.Point(900, 51);
+            this.panel_themeTabControlBack4.Name = "panel_themeTabControlBack4";
+            this.panel_themeTabControlBack4.Size = new System.Drawing.Size(10, 32);
+            this.panel_themeTabControlBack4.TabIndex = 9;
+            this.panel_themeTabControlBack4.Tag = "";
+            // 
+            // panel_themeTabStripBack4
+            // 
+            this.panel_themeTabStripBack4.AccessibleDescription = "";
+            this.panel_themeTabStripBack4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabStripBack4.Location = new System.Drawing.Point(820, 50);
+            this.panel_themeTabStripBack4.Name = "panel_themeTabStripBack4";
+            this.panel_themeTabStripBack4.Size = new System.Drawing.Size(10, 32);
+            this.panel_themeTabStripBack4.TabIndex = 9;
+            this.panel_themeTabStripBack4.Tag = "";
+            // 
+            // panel_themePanel14
+            // 
+            this.panel_themePanel14.AccessibleDescription = "";
+            this.panel_themePanel14.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel14.Location = new System.Drawing.Point(1030, 50);
+            this.panel_themePanel14.Name = "panel_themePanel14";
+            this.panel_themePanel14.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel14.TabIndex = 9;
+            this.panel_themePanel14.Tag = "";
+            // 
+            // panel_themePanel43
+            // 
+            this.panel_themePanel43.AccessibleDescription = "";
+            this.panel_themePanel43.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel43.Location = new System.Drawing.Point(1020, 171);
+            this.panel_themePanel43.Name = "panel_themePanel43";
+            this.panel_themePanel43.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel43.TabIndex = 9;
+            this.panel_themePanel43.Tag = "";
+            // 
+            // panel_themePanel33
+            // 
+            this.panel_themePanel33.AccessibleDescription = "";
+            this.panel_themePanel33.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel33.Location = new System.Drawing.Point(1020, 131);
+            this.panel_themePanel33.Name = "panel_themePanel33";
+            this.panel_themePanel33.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel33.TabIndex = 9;
+            this.panel_themePanel33.Tag = "";
+            // 
+            // panel_themePanel23
+            // 
+            this.panel_themePanel23.AccessibleDescription = "";
+            this.panel_themePanel23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel23.Location = new System.Drawing.Point(1020, 92);
+            this.panel_themePanel23.Name = "panel_themePanel23";
+            this.panel_themePanel23.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel23.TabIndex = 9;
+            this.panel_themePanel23.Tag = "";
+            // 
+            // panel_themeTabControlBack3
+            // 
+            this.panel_themeTabControlBack3.AccessibleDescription = "";
+            this.panel_themeTabControlBack3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabControlBack3.Location = new System.Drawing.Point(890, 51);
+            this.panel_themeTabControlBack3.Name = "panel_themeTabControlBack3";
+            this.panel_themeTabControlBack3.Size = new System.Drawing.Size(10, 32);
+            this.panel_themeTabControlBack3.TabIndex = 9;
+            this.panel_themeTabControlBack3.Tag = "";
+            // 
+            // panel_themeTabStripBack3
+            // 
+            this.panel_themeTabStripBack3.AccessibleDescription = "";
+            this.panel_themeTabStripBack3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabStripBack3.Location = new System.Drawing.Point(810, 50);
+            this.panel_themeTabStripBack3.Name = "panel_themeTabStripBack3";
+            this.panel_themeTabStripBack3.Size = new System.Drawing.Size(10, 32);
+            this.panel_themeTabStripBack3.TabIndex = 9;
+            this.panel_themeTabStripBack3.Tag = "";
+            // 
+            // panel_themePanel13
+            // 
+            this.panel_themePanel13.AccessibleDescription = "";
+            this.panel_themePanel13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel13.Location = new System.Drawing.Point(1020, 50);
+            this.panel_themePanel13.Name = "panel_themePanel13";
+            this.panel_themePanel13.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel13.TabIndex = 9;
+            this.panel_themePanel13.Tag = "";
+            // 
+            // panel_themePanel42
+            // 
+            this.panel_themePanel42.AccessibleDescription = "";
+            this.panel_themePanel42.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel42.Location = new System.Drawing.Point(1010, 171);
+            this.panel_themePanel42.Name = "panel_themePanel42";
+            this.panel_themePanel42.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel42.TabIndex = 9;
+            this.panel_themePanel42.Tag = "";
+            // 
+            // panel_themePanel32
+            // 
+            this.panel_themePanel32.AccessibleDescription = "";
+            this.panel_themePanel32.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel32.Location = new System.Drawing.Point(1010, 131);
+            this.panel_themePanel32.Name = "panel_themePanel32";
+            this.panel_themePanel32.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel32.TabIndex = 9;
+            this.panel_themePanel32.Tag = "";
+            // 
+            // panel_themePanel22
+            // 
+            this.panel_themePanel22.AccessibleDescription = "";
+            this.panel_themePanel22.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel22.Location = new System.Drawing.Point(1010, 92);
+            this.panel_themePanel22.Name = "panel_themePanel22";
+            this.panel_themePanel22.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel22.TabIndex = 9;
+            this.panel_themePanel22.Tag = "";
+            // 
+            // panel_themeTabControlBack2
+            // 
+            this.panel_themeTabControlBack2.AccessibleDescription = "";
+            this.panel_themeTabControlBack2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabControlBack2.Location = new System.Drawing.Point(880, 51);
+            this.panel_themeTabControlBack2.Name = "panel_themeTabControlBack2";
+            this.panel_themeTabControlBack2.Size = new System.Drawing.Size(10, 32);
+            this.panel_themeTabControlBack2.TabIndex = 9;
+            this.panel_themeTabControlBack2.Tag = "";
+            // 
+            // panel_themeTabStripBack2
+            // 
+            this.panel_themeTabStripBack2.AccessibleDescription = "";
+            this.panel_themeTabStripBack2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabStripBack2.Location = new System.Drawing.Point(800, 50);
+            this.panel_themeTabStripBack2.Name = "panel_themeTabStripBack2";
+            this.panel_themeTabStripBack2.Size = new System.Drawing.Size(10, 32);
+            this.panel_themeTabStripBack2.TabIndex = 9;
+            this.panel_themeTabStripBack2.Tag = "";
+            // 
+            // panel_themePanel12
+            // 
+            this.panel_themePanel12.AccessibleDescription = "";
+            this.panel_themePanel12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel12.Location = new System.Drawing.Point(1010, 50);
+            this.panel_themePanel12.Name = "panel_themePanel12";
+            this.panel_themePanel12.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel12.TabIndex = 9;
+            this.panel_themePanel12.Tag = "";
+            // 
             // panel_themeGBFore
             // 
             this.panel_themeGBFore.AccessibleDescription = "";
@@ -537,25 +965,65 @@ namespace ExtendedControls
             this.panel_themeGBFore.TabIndex = 9;
             this.panel_themeGBFore.Tag = "";
             // 
-            // panel_themeTabControlBack2
+            // panel_themePanel41
             // 
-            this.panel_themeTabControlBack2.AccessibleDescription = "";
-            this.panel_themeTabControlBack2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeTabControlBack2.Location = new System.Drawing.Point(889, 50);
-            this.panel_themeTabControlBack2.Name = "panel_themeTabControlBack2";
-            this.panel_themeTabControlBack2.Size = new System.Drawing.Size(20, 32);
-            this.panel_themeTabControlBack2.TabIndex = 9;
-            this.panel_themeTabControlBack2.Tag = "";
+            this.panel_themePanel41.AccessibleDescription = "";
+            this.panel_themePanel41.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel41.Location = new System.Drawing.Point(1000, 171);
+            this.panel_themePanel41.Name = "panel_themePanel41";
+            this.panel_themePanel41.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel41.TabIndex = 9;
+            this.panel_themePanel41.Tag = "";
             // 
-            // panel_themeTabStripBack2
+            // panel_themePanel31
             // 
-            this.panel_themeTabStripBack2.AccessibleDescription = "";
-            this.panel_themeTabStripBack2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeTabStripBack2.Location = new System.Drawing.Point(809, 50);
-            this.panel_themeTabStripBack2.Name = "panel_themeTabStripBack2";
-            this.panel_themeTabStripBack2.Size = new System.Drawing.Size(20, 32);
-            this.panel_themeTabStripBack2.TabIndex = 9;
-            this.panel_themeTabStripBack2.Tag = "";
+            this.panel_themePanel31.AccessibleDescription = "";
+            this.panel_themePanel31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel31.Location = new System.Drawing.Point(1000, 131);
+            this.panel_themePanel31.Name = "panel_themePanel31";
+            this.panel_themePanel31.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel31.TabIndex = 9;
+            this.panel_themePanel31.Tag = "";
+            // 
+            // panel_themeTabControlBack1
+            // 
+            this.panel_themeTabControlBack1.AccessibleDescription = "";
+            this.panel_themeTabControlBack1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabControlBack1.Location = new System.Drawing.Point(870, 51);
+            this.panel_themeTabControlBack1.Name = "panel_themeTabControlBack1";
+            this.panel_themeTabControlBack1.Size = new System.Drawing.Size(10, 32);
+            this.panel_themeTabControlBack1.TabIndex = 9;
+            this.panel_themeTabControlBack1.Tag = "";
+            // 
+            // panel_themePanel21
+            // 
+            this.panel_themePanel21.AccessibleDescription = "";
+            this.panel_themePanel21.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel21.Location = new System.Drawing.Point(1000, 92);
+            this.panel_themePanel21.Name = "panel_themePanel21";
+            this.panel_themePanel21.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel21.TabIndex = 9;
+            this.panel_themePanel21.Tag = "";
+            // 
+            // panel_themeTabStripBack1
+            // 
+            this.panel_themeTabStripBack1.AccessibleDescription = "";
+            this.panel_themeTabStripBack1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themeTabStripBack1.Location = new System.Drawing.Point(790, 50);
+            this.panel_themeTabStripBack1.Name = "panel_themeTabStripBack1";
+            this.panel_themeTabStripBack1.Size = new System.Drawing.Size(10, 32);
+            this.panel_themeTabStripBack1.TabIndex = 9;
+            this.panel_themeTabStripBack1.Tag = "";
+            // 
+            // panel_themePanel11
+            // 
+            this.panel_themePanel11.AccessibleDescription = "";
+            this.panel_themePanel11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel_themePanel11.Location = new System.Drawing.Point(1000, 50);
+            this.panel_themePanel11.Name = "panel_themePanel11";
+            this.panel_themePanel11.Size = new System.Drawing.Size(10, 32);
+            this.panel_themePanel11.TabIndex = 9;
+            this.panel_themePanel11.Tag = "";
             // 
             // panel_themeGBBack2
             // 
@@ -566,26 +1034,6 @@ namespace ExtendedControls
             this.panel_themeGBBack2.Size = new System.Drawing.Size(20, 32);
             this.panel_themeGBBack2.TabIndex = 9;
             this.panel_themeGBBack2.Tag = "";
-            // 
-            // panel_themeTabControlBack
-            // 
-            this.panel_themeTabControlBack.AccessibleDescription = "";
-            this.panel_themeTabControlBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeTabControlBack.Location = new System.Drawing.Point(870, 50);
-            this.panel_themeTabControlBack.Name = "panel_themeTabControlBack";
-            this.panel_themeTabControlBack.Size = new System.Drawing.Size(20, 32);
-            this.panel_themeTabControlBack.TabIndex = 9;
-            this.panel_themeTabControlBack.Tag = "";
-            // 
-            // panel_themeTabStripBack
-            // 
-            this.panel_themeTabStripBack.AccessibleDescription = "";
-            this.panel_themeTabStripBack.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeTabStripBack.Location = new System.Drawing.Point(790, 50);
-            this.panel_themeTabStripBack.Name = "panel_themeTabStripBack";
-            this.panel_themeTabStripBack.Size = new System.Drawing.Size(20, 32);
-            this.panel_themeTabStripBack.TabIndex = 9;
-            this.panel_themeTabStripBack.Tag = "";
             // 
             // panel_themeGBBack
             // 
@@ -632,6 +1080,15 @@ namespace ExtendedControls
             this.label18.Size = new System.Drawing.Size(91, 13);
             this.label18.TabIndex = 6;
             this.label18.Text = "Scroll Arrow Back";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(892, 414);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(49, 26);
+            this.label24.TabIndex = 6;
+            this.label24.Text = "Selected\r\nBack";
             // 
             // label25
             // 
@@ -681,7 +1138,7 @@ namespace ExtendedControls
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(1011, 15);
+            this.label32.Location = new System.Drawing.Point(1091, 16);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(32, 13);
             this.label32.TabIndex = 6;
@@ -789,6 +1246,15 @@ namespace ExtendedControls
             this.label16.Size = new System.Drawing.Size(54, 13);
             this.label16.TabIndex = 6;
             this.label16.Text = "GroupBox";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(1001, 16);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(39, 13);
+            this.label14.TabIndex = 6;
+            this.label14.Text = "Panels";
             // 
             // label35
             // 
@@ -1402,7 +1868,7 @@ namespace ExtendedControls
             // 
             this.panel_chart8.AccessibleDescription = "";
             this.panel_chart8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart8.Location = new System.Drawing.Point(1010, 330);
+            this.panel_chart8.Location = new System.Drawing.Point(1090, 331);
             this.panel_chart8.Name = "panel_chart8";
             this.panel_chart8.Size = new System.Drawing.Size(32, 32);
             this.panel_chart8.TabIndex = 5;
@@ -1412,7 +1878,7 @@ namespace ExtendedControls
             // 
             this.panel_chart7.AccessibleDescription = "";
             this.panel_chart7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart7.Location = new System.Drawing.Point(1010, 290);
+            this.panel_chart7.Location = new System.Drawing.Point(1090, 291);
             this.panel_chart7.Name = "panel_chart7";
             this.panel_chart7.Size = new System.Drawing.Size(32, 32);
             this.panel_chart7.TabIndex = 5;
@@ -1422,7 +1888,7 @@ namespace ExtendedControls
             // 
             this.panel_chart6.AccessibleDescription = "";
             this.panel_chart6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart6.Location = new System.Drawing.Point(1010, 250);
+            this.panel_chart6.Location = new System.Drawing.Point(1090, 251);
             this.panel_chart6.Name = "panel_chart6";
             this.panel_chart6.Size = new System.Drawing.Size(32, 32);
             this.panel_chart6.TabIndex = 5;
@@ -1432,7 +1898,7 @@ namespace ExtendedControls
             // 
             this.panel_chart5.AccessibleDescription = "";
             this.panel_chart5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart5.Location = new System.Drawing.Point(1010, 210);
+            this.panel_chart5.Location = new System.Drawing.Point(1090, 211);
             this.panel_chart5.Name = "panel_chart5";
             this.panel_chart5.Size = new System.Drawing.Size(32, 32);
             this.panel_chart5.TabIndex = 5;
@@ -1442,7 +1908,7 @@ namespace ExtendedControls
             // 
             this.panel_chart4.AccessibleDescription = "";
             this.panel_chart4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart4.Location = new System.Drawing.Point(1010, 170);
+            this.panel_chart4.Location = new System.Drawing.Point(1090, 171);
             this.panel_chart4.Name = "panel_chart4";
             this.panel_chart4.Size = new System.Drawing.Size(32, 32);
             this.panel_chart4.TabIndex = 5;
@@ -1452,7 +1918,7 @@ namespace ExtendedControls
             // 
             this.panel_chart3.AccessibleDescription = "";
             this.panel_chart3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart3.Location = new System.Drawing.Point(1010, 130);
+            this.panel_chart3.Location = new System.Drawing.Point(1090, 131);
             this.panel_chart3.Name = "panel_chart3";
             this.panel_chart3.Size = new System.Drawing.Size(32, 32);
             this.panel_chart3.TabIndex = 5;
@@ -1462,7 +1928,7 @@ namespace ExtendedControls
             // 
             this.panel_chart2.AccessibleDescription = "";
             this.panel_chart2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart2.Location = new System.Drawing.Point(1010, 91);
+            this.panel_chart2.Location = new System.Drawing.Point(1090, 92);
             this.panel_chart2.Name = "panel_chart2";
             this.panel_chart2.Size = new System.Drawing.Size(32, 32);
             this.panel_chart2.TabIndex = 5;
@@ -1472,7 +1938,7 @@ namespace ExtendedControls
             // 
             this.panel_chart1.AccessibleDescription = "";
             this.panel_chart1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_chart1.Location = new System.Drawing.Point(1010, 50);
+            this.panel_chart1.Location = new System.Drawing.Point(1090, 51);
             this.panel_chart1.Name = "panel_chart1";
             this.panel_chart1.Size = new System.Drawing.Size(32, 32);
             this.panel_chart1.TabIndex = 5;
@@ -1827,7 +2293,7 @@ namespace ExtendedControls
             this.groupBox1.Controls.Add(this.label33);
             this.groupBox1.Location = new System.Drawing.Point(3, 525);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1059, 139);
+            this.groupBox1.Size = new System.Drawing.Size(1133, 139);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Other Controls";
@@ -1879,7 +2345,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownDisabledScaling.Location = new System.Drawing.Point(974, 99);
+            this.numericUpDownDisabledScaling.Location = new System.Drawing.Point(1048, 99);
             this.numericUpDownDisabledScaling.Maximum = new decimal(new int[] {
             10,
             0,
@@ -1898,7 +2364,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownMouseSelectedScaling.Location = new System.Drawing.Point(974, 73);
+            this.numericUpDownMouseSelectedScaling.Location = new System.Drawing.Point(1048, 73);
             this.numericUpDownMouseSelectedScaling.Maximum = new decimal(new int[] {
             10,
             0,
@@ -1917,7 +2383,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownMouseOverScaling.Location = new System.Drawing.Point(974, 49);
+            this.numericUpDownMouseOverScaling.Location = new System.Drawing.Point(1048, 49);
             this.numericUpDownMouseOverScaling.Maximum = new decimal(new int[] {
             10,
             0,
@@ -1936,7 +2402,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownDialogFontScaling.Location = new System.Drawing.Point(974, 23);
+            this.numericUpDownDialogFontScaling.Location = new System.Drawing.Point(1048, 23);
             this.numericUpDownDialogFontScaling.Maximum = new decimal(new int[] {
             10,
             0,
@@ -1950,7 +2416,7 @@ namespace ExtendedControls
             // 
             this.label41.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(816, 101);
+            this.label41.Location = new System.Drawing.Point(890, 101);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(142, 13);
             this.label41.TabIndex = 6;
@@ -1960,7 +2426,7 @@ namespace ExtendedControls
             // 
             this.label37.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(803, 75);
+            this.label37.Location = new System.Drawing.Point(877, 75);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(155, 13);
             this.label37.TabIndex = 6;
@@ -1970,7 +2436,7 @@ namespace ExtendedControls
             // 
             this.label34.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(823, 51);
+            this.label34.Location = new System.Drawing.Point(897, 51);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(136, 13);
             this.label34.TabIndex = 6;
@@ -1980,7 +2446,7 @@ namespace ExtendedControls
             // 
             this.label33.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(860, 25);
+            this.label33.Location = new System.Drawing.Point(934, 25);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(99, 13);
             this.label33.TabIndex = 6;
@@ -2001,7 +2467,7 @@ namespace ExtendedControls
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.Location = new System.Drawing.Point(883, 691);
+            this.buttonCancel.Location = new System.Drawing.Point(1077, 691);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(80, 24);
             this.buttonCancel.TabIndex = 0;
@@ -2015,199 +2481,28 @@ namespace ExtendedControls
             this.pasteColourToolStripMenuItem,
             this.copyColourToolStripMenuItem});
             this.contextMenuStripColours.Name = "contextMenuStripColours";
-            this.contextMenuStripColours.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStripColours.Size = new System.Drawing.Size(142, 48);
             this.contextMenuStripColours.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripColours_Opening);
             // 
             // pasteColourToolStripMenuItem
             // 
             this.pasteColourToolStripMenuItem.Name = "pasteColourToolStripMenuItem";
-            this.pasteColourToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pasteColourToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.pasteColourToolStripMenuItem.Text = "Paste Colour";
             this.pasteColourToolStripMenuItem.Click += new System.EventHandler(this.pasteColourToolStripMenuItem_Click);
             // 
             // copyColourToolStripMenuItem
             // 
             this.copyColourToolStripMenuItem.Name = "copyColourToolStripMenuItem";
-            this.copyColourToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyColourToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.copyColourToolStripMenuItem.Text = "Copy Colour";
             this.copyColourToolStripMenuItem.Click += new System.EventHandler(this.copyColourToolStripMenuItem_Click);
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(892, 414);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(49, 26);
-            this.label24.TabIndex = 6;
-            this.label24.Text = "Selected\r\nBack";
-            // 
-            // buttonTextBlockButtonGradient
-            // 
-            this.buttonTextBlockButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonTextBlockButtonGradient.Location = new System.Drawing.Point(189, 250);
-            this.buttonTextBlockButtonGradient.Name = "buttonTextBlockButtonGradient";
-            this.buttonTextBlockButtonGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonTextBlockButtonGradient.TabIndex = 13;
-            this.buttonTextBlockButtonGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonTextBlockSliderGradient
-            // 
-            this.buttonTextBlockSliderGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonTextBlockSliderGradient.Location = new System.Drawing.Point(189, 170);
-            this.buttonTextBlockSliderGradient.Name = "buttonTextBlockSliderGradient";
-            this.buttonTextBlockSliderGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonTextBlockSliderGradient.TabIndex = 13;
-            this.buttonTextBlockSliderGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonTextBlockDropdownGradient
-            // 
-            this.buttonTextBlockDropdownGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonTextBlockDropdownGradient.Location = new System.Drawing.Point(189, 330);
-            this.buttonTextBlockDropdownGradient.Name = "buttonTextBlockDropdownGradient";
-            this.buttonTextBlockDropdownGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonTextBlockDropdownGradient.TabIndex = 13;
-            this.buttonTextBlockDropdownGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonGridSliderGradient
-            // 
-            this.buttonGridSliderGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonGridSliderGradient.Location = new System.Drawing.Point(269, 170);
-            this.buttonGridSliderGradient.Name = "buttonGridSliderGradient";
-            this.buttonGridSliderGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonGridSliderGradient.TabIndex = 13;
-            this.buttonGridSliderGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonGridButtonGradient
-            // 
-            this.buttonGridButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonGridButtonGradient.Location = new System.Drawing.Point(269, 250);
-            this.buttonGridButtonGradient.Name = "buttonGridButtonGradient";
-            this.buttonGridButtonGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonGridButtonGradient.TabIndex = 13;
-            this.buttonGridButtonGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonComboBoxButtonGradient
-            // 
-            this.buttonComboBoxButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonComboBoxButtonGradient.Location = new System.Drawing.Point(428, 250);
-            this.buttonComboBoxButtonGradient.Name = "buttonComboBoxButtonGradient";
-            this.buttonComboBoxButtonGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonComboBoxButtonGradient.TabIndex = 13;
-            this.buttonComboBoxButtonGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonComboBoxSliderGradient
-            // 
-            this.buttonComboBoxSliderGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonComboBoxSliderGradient.Location = new System.Drawing.Point(428, 170);
-            this.buttonComboBoxSliderGradient.Name = "buttonComboBoxSliderGradient";
-            this.buttonComboBoxSliderGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonComboBoxSliderGradient.TabIndex = 13;
-            this.buttonComboBoxSliderGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonListBoxButtonGradient
-            // 
-            this.buttonListBoxButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonListBoxButtonGradient.Location = new System.Drawing.Point(510, 250);
-            this.buttonListBoxButtonGradient.Name = "buttonListBoxButtonGradient";
-            this.buttonListBoxButtonGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonListBoxButtonGradient.TabIndex = 13;
-            this.buttonListBoxButtonGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonCheckBoxButtonGradient
-            // 
-            this.buttonCheckBoxButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonCheckBoxButtonGradient.Location = new System.Drawing.Point(669, 251);
-            this.buttonCheckBoxButtonGradient.Name = "buttonCheckBoxButtonGradient";
-            this.buttonCheckBoxButtonGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonCheckBoxButtonGradient.TabIndex = 13;
-            this.buttonCheckBoxButtonGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonTabControlTabGradient
-            // 
-            this.buttonTabControlTabGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonTabControlTabGradient.Location = new System.Drawing.Point(909, 250);
-            this.buttonTabControlTabGradient.Name = "buttonTabControlTabGradient";
-            this.buttonTabControlTabGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonTabControlTabGradient.TabIndex = 13;
-            this.buttonTabControlTabGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonTabControlBackGradient
-            // 
-            this.buttonTabControlBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonTabControlBackGradient.Location = new System.Drawing.Point(909, 51);
-            this.buttonTabControlBackGradient.Name = "buttonTabControlBackGradient";
-            this.buttonTabControlBackGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonTabControlBackGradient.TabIndex = 13;
-            this.buttonTabControlBackGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonTabStripGradient
-            // 
-            this.buttonTabStripGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonTabStripGradient.Location = new System.Drawing.Point(829, 50);
-            this.buttonTabStripGradient.Name = "buttonTabStripGradient";
-            this.buttonTabStripGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonTabStripGradient.TabIndex = 13;
-            this.buttonTabStripGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonGBGradient
-            // 
-            this.buttonGBGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonGBGradient.Location = new System.Drawing.Point(749, 50);
-            this.buttonGBGradient.Name = "buttonGBGradient";
-            this.buttonGBGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonGBGradient.TabIndex = 13;
-            this.buttonGBGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonCheckBoxBackGradient
-            // 
-            this.buttonCheckBoxBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonCheckBoxBackGradient.Location = new System.Drawing.Point(670, 50);
-            this.buttonCheckBoxBackGradient.Name = "buttonCheckBoxBackGradient";
-            this.buttonCheckBoxBackGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonCheckBoxBackGradient.TabIndex = 13;
-            this.buttonCheckBoxBackGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonButtonBackGradient
-            // 
-            this.buttonButtonBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonButtonBackGradient.Location = new System.Drawing.Point(589, 50);
-            this.buttonButtonBackGradient.Name = "buttonButtonBackGradient";
-            this.buttonButtonBackGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonButtonBackGradient.TabIndex = 13;
-            this.buttonButtonBackGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonListBoxBackGradient
-            // 
-            this.buttonListBoxBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonListBoxBackGradient.Location = new System.Drawing.Point(510, 50);
-            this.buttonListBoxBackGradient.Name = "buttonListBoxBackGradient";
-            this.buttonListBoxBackGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonListBoxBackGradient.TabIndex = 13;
-            this.buttonListBoxBackGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonListBoxSliderGradient
-            // 
-            this.buttonListBoxSliderGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonListBoxSliderGradient.Location = new System.Drawing.Point(509, 170);
-            this.buttonListBoxSliderGradient.Name = "buttonListBoxSliderGradient";
-            this.buttonListBoxSliderGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonListBoxSliderGradient.TabIndex = 13;
-            this.buttonListBoxSliderGradient.UseVisualStyleBackColor = true;
-            // 
-            // buttonComboBoxBackGradient
-            // 
-            this.buttonComboBoxBackGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonComboBoxBackGradient.Location = new System.Drawing.Point(430, 50);
-            this.buttonComboBoxBackGradient.Name = "buttonComboBoxBackGradient";
-            this.buttonComboBoxBackGradient.Size = new System.Drawing.Size(32, 32);
-            this.buttonComboBoxBackGradient.TabIndex = 13;
-            this.buttonComboBoxBackGradient.UseVisualStyleBackColor = true;
             // 
             // ThemeEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1069, 728);
+            this.ClientSize = new System.Drawing.Size(1263, 728);
             this.Controls.Add(this.checkBoxDarkMode);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBoxColors);
@@ -2359,16 +2654,12 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_themeListBoxScrollButton;
         private System.Windows.Forms.Panel panel_themeListBoxScrollArrowBack;
         private System.Windows.Forms.Panel panel_themeListBoxScrollSlider;
-        private System.Windows.Forms.Panel panel_themeTabStripBack2;
-        private System.Windows.Forms.Panel panel_themeTabStripBack;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Panel panel_themeTabStripFore;
         private System.Windows.Forms.Panel panel_themeTabStripSelected;
         private System.Windows.Forms.Panel panel_themeTextBlockDropDownBackColor2;
         private System.Windows.Forms.Panel panel_themeTextBlockDropDownBackColor;
         private System.Windows.Forms.Label label42;
-        private System.Windows.Forms.Panel panel_themeTabControlBack2;
-        private System.Windows.Forms.Panel panel_themeTabControlBack;
         private System.Windows.Forms.Panel panel_themeTabControlBorder2;
         private System.Windows.Forms.Panel panel_themeGBBorder2;
         private System.Windows.Forms.Panel panel_themeTabControlButtonBack2;
@@ -2417,5 +2708,34 @@ namespace ExtendedControls
         private System.Windows.Forms.ToolStripMenuItem copyColourToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pasteColourToolStripMenuItem;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label14;
+        private ButtonAngle buttonPanelGradient1;
+        private System.Windows.Forms.Panel panel_themePanel13;
+        private System.Windows.Forms.Panel panel_themePanel12;
+        private System.Windows.Forms.Panel panel_themePanel11;
+        private System.Windows.Forms.Panel panel_themePanel14;
+        private ButtonAngle buttonPanelGradient4;
+        private ButtonAngle buttonPanelGradient3;
+        private ButtonAngle buttonPanelGradient2;
+        private System.Windows.Forms.Panel panel_themePanel44;
+        private System.Windows.Forms.Panel panel_themePanel34;
+        private System.Windows.Forms.Panel panel_themePanel24;
+        private System.Windows.Forms.Panel panel_themePanel43;
+        private System.Windows.Forms.Panel panel_themePanel33;
+        private System.Windows.Forms.Panel panel_themePanel23;
+        private System.Windows.Forms.Panel panel_themePanel42;
+        private System.Windows.Forms.Panel panel_themePanel32;
+        private System.Windows.Forms.Panel panel_themePanel22;
+        private System.Windows.Forms.Panel panel_themePanel41;
+        private System.Windows.Forms.Panel panel_themePanel31;
+        private System.Windows.Forms.Panel panel_themePanel21;
+        private System.Windows.Forms.Panel panel_themeTabStripBack4;
+        private System.Windows.Forms.Panel panel_themeTabStripBack3;
+        private System.Windows.Forms.Panel panel_themeTabStripBack2;
+        private System.Windows.Forms.Panel panel_themeTabStripBack1;
+        private System.Windows.Forms.Panel panel_themeTabControlBack4;
+        private System.Windows.Forms.Panel panel_themeTabControlBack3;
+        private System.Windows.Forms.Panel panel_themeTabControlBack2;
+        private System.Windows.Forms.Panel panel_themeTabControlBack1;
     }
 }

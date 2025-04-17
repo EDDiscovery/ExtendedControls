@@ -12,56 +12,56 @@
  * governing permissions and limitations under the License.
  */
 
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    // no theme on this panel, children theme control
-
-    public class ExtPanelChildThemeControl : Panel, IThemeable
-    {
-        public bool ChildrenThemed { get; set; } = true;
-    
-        public ExtPanelChildThemeControl()
-        {
-        }
-
-        public bool Theme(Theme t, Font fnt)
-        {
-            return ChildrenThemed;        // no action and determine if the theme children
-        }
-    }
-
+    // Extended panel with gradient fill and child control
 
     public class ExtPanelGradientFill : Panel, IThemeable
     {
-        public Color BackColor2 { get { return backcolor2; } set { backcolor2 = value; Invalidate(); } }
-        public float GradientDirection { get { return gradientDirection; } set { gradientDirection = value; Invalidate(); } }
+        public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
 
-        private float gradientDirection = 0F;
-        private Color backcolor2 = SystemColors.Control;
-        
+
+        // ThemeColors only used if ThemeColourSet>=0.  
+        public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
+        // -1 = system, 0 use ThemeColours but don't set when calling theme(), else 1,2,3,4.. one of the Panel colour sets
+        public int ThemeColorSet { get; set; } = -1;
+        public float GradientDirection { get; set; }
+
         public ExtPanelGradientFill()
         {
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (BackColor != Color.Transparent && BackColor2 != Color.Transparent)
-            {
-              //  System.Diagnostics.Debug.WriteLine($"PanelGradientFill {BackColor} -> {BackColor2}");
-                using (Brush br = new LinearGradientBrush(ClientRectangle, BackColor, BackColor2, GradientDirection))
-                {
-                    e.Graphics.FillRectangle(br, ClientRectangle);
-                }
-            }
+            if (ThemeColorSet < 0)
+                base.OnPaintBackground(e);
+            else
+                DrawingHelpersStaticFunc.PaintMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, GradientDirection);
         }
 
         public bool Theme(Theme t, Font fnt)
         {
-            return true; // no action, theme children, any themeing needs be done in the parent
+            if (ThemeColorSet > 0)
+            {
+                ThemeColors = t.GetPanelSet(ThemeColorSet);
+                GradientDirection = t.GetPanelDirection(ThemeColorSet);
+            }
+
+            return ChildrenThemed; // theme children, any themeing needs be done in the parent
+        }
+    }
+
+    // as per GradientFill, without child theming
+    public class ExtPanelChildThemeControl : ExtPanelGradientFill
+    {
+        public ExtPanelChildThemeControl() : base()
+        {
+            ChildrenThemed = false;
         }
     }
 

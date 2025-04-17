@@ -33,10 +33,10 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.extFlowLayoutPanel2 = new ExtendedControls.ExtFlowLayoutPanel();
+            this.extFlowLayoutPanel2 = new ExtendedControls.ExtFlowLayoutPanelParentResize();
             this.extButton25 = new ExtendedControls.ExtButton();
             this.extGroupBox2 = new ExtendedControls.ExtGroupBox();
-            this.extFlowLayoutPanel1 = new ExtendedControls.ExtFlowLayoutPanel();
+            this.extFlowLayoutPanel1 = new ExtendedControls.ExtFlowLayoutPanelParentResize();
             this.extButton23 = new ExtendedControls.ExtButton();
             this.extButton24 = new ExtendedControls.ExtButton();
             this.extButton22 = new ExtendedControls.ExtButton();
@@ -538,9 +538,9 @@
         private ExtendedControls.ExtButton extButton23;
         private ExtendedControls.ExtButton extButton24;
         private ExtendedControls.ExtGroupBox extGroupBox2;
-        private ExtendedControls.ExtFlowLayoutPanel extFlowLayoutPanel1;
+        private ExtendedControls.ExtFlowLayoutPanelParentResize extFlowLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
-        private ExtendedControls.ExtFlowLayoutPanel extFlowLayoutPanel2;
+        private ExtendedControls.ExtFlowLayoutPanelParentResize extFlowLayoutPanel2;
         private ExtendedControls.ExtButton extButton25;
         private ExtendedControls.ExtButton extButton31;
         private ExtendedControls.ExtButton extButton26;

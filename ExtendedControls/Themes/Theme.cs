@@ -293,13 +293,10 @@ namespace ExtendedControls
 
         //----------------
 
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabstrip_back" })]
-        public Color TabStripBack { get; set; } = Color.Transparent;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabstrip_back2" })]
-        public Color TabStripBack2 { get; set; } = Color.Transparent;
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] TabStripBack { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
         public float TabStripGradientDirection { get; set; } = 0F;
+
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabstrip_text" })]
         public Color TabStripFore { get; set; } = Color.Transparent;
@@ -309,12 +306,8 @@ namespace ExtendedControls
 
         //-------------------
 
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_back" })]
-        public Color TabControlBack { get; set; } = Color.Transparent;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_back2" })]
-        public Color TabControlBack2 { get; set; } = Color.Transparent;
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] TabControlBack { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
         public float TabControlBackGradientDirection { get; set; } = 0F;
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_text" })]
@@ -367,6 +360,20 @@ namespace ExtendedControls
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "s_panel" })]
         public Color SPanelColor { get; set; } = Color.DarkOrange;
+
+        //-----------------
+
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel1 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel2 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel3 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel4 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        public float[] PanelGradientDirection { get; set; } = new float[4] { 0,0,0,0 };
+        public Color[] GetPanelSet(int i) { return i == 4 ? Panel4 : i == 3 ? Panel3 : i == 2 ? Panel2 : Panel1; }
+        public float GetPanelDirection(int i) { return i == 4 ? PanelGradientDirection[3] : i == 3 ? PanelGradientDirection[2] : i == 2 ? PanelGradientDirection[1] : PanelGradientDirection[0]; }
 
         //-----------------
 
@@ -618,16 +625,19 @@ namespace ExtendedControls
             GroupFore = groupboxtext;
             GroupBorder = groupboxlines; GroupBorder2 = groupboxlines.Multiply(0.7f);
 
-            TabStripBack = TabStripBack2 = form;
+            TabStripBack[0] = TabStripBack[1] = TabStripBack[2] = TabStripBack[3] = form;
             TabStripFore = buttext;
             TabStripSelected = butback;
 
-            TabControlBack = TabControlBack2 = form;
+            TabControlBack[0] = TabControlBack[1] = TabControlBack[2] = TabControlBack[3] = form;
             TabControlText = buttext;
             TabControlButtonBack = butback;
             TabControlButtonBack2 = butback.Multiply(sc);
             TabControlBorder = tabborderlines;
             TabControlBorder2 = tabborderlines.Multiply(sc);      // darker colour
+
+            for (int i = 0; i < Panel1.Length; i++)
+                Panel1[i] = Panel2[i] = Panel3[i] = Panel4[i] = Form;
 
             SPanelColor = sPanel; TransparentColorKey = keycolor;
             TextBoxBorderStyle = tbbstyle;
@@ -963,7 +973,11 @@ namespace ExtendedControls
                 return ret;
             }
             else
-                System.Diagnostics.Debug.WriteLine("Theme failed to convert");
+            {
+                var err = jconv as QuickJSON.JTokenExtensions.ToObjectError;
+                if ( err != null)
+                    System.Diagnostics.Debug.WriteLine($"Theme failed to convert {err.ErrorString}");
+            }
 
             return null;
         }
@@ -1046,17 +1060,23 @@ namespace ExtendedControls
             count += Replace(emitdebug, nameof(GroupBack2), GroupBack);
             count += Replace(emitdebug, nameof(GroupBorder2), GroupBorder.Multiply(sc));
 
-            count += Replace(emitdebug, nameof(TabStripBack), Form);
-            count += Replace(emitdebug, nameof(TabStripBack2), Form);
             count += Replace(emitdebug, nameof(TabStripFore), ButtonTextColor);
             count += Replace(emitdebug, nameof(TabStripSelected), ButtonBackColor);
 
-            count += Replace(emitdebug, nameof(TabControlBack), Form);
-            count += Replace(emitdebug, nameof(TabControlBack2), Form);
             count += Replace(emitdebug, nameof(TabControlText), ButtonTextColor);
             count += Replace(emitdebug, nameof(TabControlButtonBack), ButtonBackColor);
             count += Replace(emitdebug, nameof(TabControlButtonBack2), ButtonBackColor.Multiply(0.6F));
             count += Replace(emitdebug, nameof(TabControlBorder2), TabControlBorder.Multiply(0.6F));        // border is bright, this is darker
+
+            for (int i = 0; i < Panel1.Length; i++)
+            {
+                count += Replace(emitdebug, nameof(TabControlBack), Form, i);
+                count += Replace(emitdebug, nameof(TabStripBack), Form, i);
+                count += Replace(emitdebug, nameof(Panel1), Form, i);
+                count += Replace(emitdebug, nameof(Panel2), Form, i);
+                count += Replace(emitdebug, nameof(Panel3), Form, i);
+                count += Replace(emitdebug, nameof(Panel4), Form, i);
+            }
 
             // verify we have no transparent colours left due to missing above
 #if DEBUG            
@@ -1073,20 +1093,37 @@ namespace ExtendedControls
             return count;
         }
 
-        private int Replace(bool debug, string nameofitem, Color y)
+        private int Replace(bool debug, string nameofitem, Color y, int index = 0 )
         {
+            System.Diagnostics.Debug.Assert(y != Color.Transparent);
+
             PropertyInfo p = typeof(Theme).GetProperty(nameofitem);
-            Color curv = (Color)p.GetValue(this);
-            if (curv == Color.Transparent)
+            if (p.PropertyType.IsArray)
             {
-                System.Diagnostics.Debug.Assert(y != Color.Transparent);
-                if (debug)
-                    System.Diagnostics.Debug.WriteLine($"Theme missing item {nameofitem} setting to {y}");
-                p.SetValue(this, y);
-                return 1;
+                Array a = (Array)p.GetValue(this);
+                Color curv = (Color)a.GetValue(index);
+
+                if (curv == Color.Transparent)
+                {
+                    if (debug)
+                        System.Diagnostics.Debug.WriteLine($"Theme missing item {nameofitem}[{index}] setting to {y}");
+                    a.SetValue(y,index);
+                    return 1;
+                }
             }
             else
-                return 0;
+            {
+                Color curv = (Color)p.GetValue(this);
+                if (curv == Color.Transparent)
+                {
+                    if (debug)
+                        System.Diagnostics.Debug.WriteLine($"Theme missing item {nameofitem} setting to {y}");
+                    p.SetValue(this, y);
+                    return 1;
+                }
+            }
+
+            return 0;
         }
 
 
