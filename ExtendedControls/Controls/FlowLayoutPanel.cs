@@ -29,12 +29,20 @@ namespace ExtendedControls
         public int ThemeColorSet { get; set; } = -1;
         public float GradientDirection { get; set; }
 
+        // if you set this to a colour, the background becomes that colour, for transparency purposes.
+        // If you set it to Color.Transparent, it goes to normal
+        public Color PaintTransparentColor { get { return transparency; } set { transparency = value; Invalidate(); } }
+
+        private Color transparency = Color.Transparent;
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (ThemeColorSet < 0)
+            if (PaintTransparentColor != Color.Transparent)
+                e.Graphics.DrawFilledRectangle(ClientRectangle, PaintTransparentColor);
+            else if (ThemeColorSet < 0)
                 base.OnPaintBackground(e);
             else
-                DrawingHelpersStaticFunc.PaintMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, GradientDirection);
+                e.Graphics.DrawMultiColouredRectangles(ClientRectangle, ThemeColors, GradientDirection);
         }
 
         protected override void OnResize(EventArgs eventargs)

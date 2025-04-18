@@ -277,5 +277,25 @@ namespace TestExtendedControls
 
 
         }
+
+        private void extButton7_Click(object sender, EventArgs e)
+        {
+            TransparencyKey = Color.Gray;
+            this.BackColor = TransparencyKey;
+            tabStrip1.PaintTransparentColor = TransparencyKey;
+            tabStrip2.PaintTransparentColor = TransparencyKey;
+            extTabControl1.PaintTransparentColor = TransparencyKey;
+            extFlowLayoutPanelTop.PaintTransparentColor = TransparencyKey;
+        }
+
+        private void extButton8_Click(object sender, EventArgs e)
+        {
+            this.BackColor = Theme.Current.Form;
+            extFlowLayoutPanelTop.PaintTransparentColor = Color.Transparent;
+            tabStrip1.PaintTransparentColor = Color.Transparent;
+            tabStrip2.PaintTransparentColor = Color.Transparent;
+            extTabControl1.PaintTransparentColor = Color.Transparent;
+
+        }
     }
 }

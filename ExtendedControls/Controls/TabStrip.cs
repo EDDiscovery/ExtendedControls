@@ -54,6 +54,9 @@ namespace ExtendedControls
         public Color DropDownMouseOverSliderButtonColor { get; set; } = Color.Red;
         public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
 
+        // if you set this to a colour, the tab strip background becomes that colour, for transparency purposes.
+        // If you set it to Color.Transparent, it goes to normal
+        public Color PaintTransparentColor { get { return panelStrip.PaintTransparentColor; } set { panelStrip.PaintTransparentColor = value; Invalidate(); } }
 
         public bool DropDownFitImagesToItemHeight { get; set; } = false;
 

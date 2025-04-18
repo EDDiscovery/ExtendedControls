@@ -26,8 +26,14 @@ namespace ExtendedControls
         // ThemeColors only used if ThemeColourSet>=0.  
         public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
         // -1 = system, 0 use ThemeColours but don't set when calling theme(), else 1,2,3,4.. one of the Panel colour sets
-        public int ThemeColorSet { get; set; } = -1;      
-        public float GradientDirection { get; set; }
+        public int ThemeColorSet { get; set; } = -1;
+        public float GradientDirection { get; set; } = 0;
+
+        // if you set this to a colour, the background becomes that colour, for transparency purposes.
+        // If you set it to Color.Transparent, it goes to normal
+        public Color PaintTransparentColor { get { return transparency; } set { transparency = value; Invalidate(); } }
+
+        private Color transparency = Color.Transparent;
 
         protected virtual bool ThemeDerived(Theme t, Font fnt) { return ChildrenThemed; }       // default implementation if derived does not want to do more theming
 
@@ -37,10 +43,12 @@ namespace ExtendedControls
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            if (ThemeColorSet < 0)
+            if (PaintTransparentColor != Color.Transparent)
+                e.Graphics.DrawFilledRectangle(ClientRectangle,PaintTransparentColor);
+            else if (ThemeColorSet < 0)
                 base.OnPaintBackground(e);
             else
-                DrawingHelpersStaticFunc.PaintMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, GradientDirection);
+                e.Graphics.DrawMultiColouredRectangles(ClientRectangle, ThemeColors, GradientDirection);
         }
 
         public bool Theme(Theme t, Font fnt)

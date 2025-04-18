@@ -49,7 +49,7 @@ namespace ExtendedControls
             {
                 int topline = DisplayRectangle.Y / 2;
 
-                DrawingHelpersStaticFunc.PaintMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, GradientDirection);
+                DrawingHelpersStaticFunc.DrawMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, GradientDirection);
 
 
                 if (!BorderColor.IsFullyTransparent())

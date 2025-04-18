@@ -52,6 +52,12 @@ namespace ExtendedControls
         public int ThemeColorSet { get; set; } = -1;
         public float TabBackgroundGradientDirection { get; set; } = 0F;
 
+        // if you set this to a colour, the tab strip background becomes that colour, for transparency purposes.
+        // If you set it to Color.Transparent, it goes to normal painting
+        public Color PaintTransparentColor { get { return transparency; } set { transparency = value; Invalidate(); } }
+
+        private Color transparency = Color.Transparent;
+
         public int MinimumTabWidth { set { SendMessage(0x1300 + 49, IntPtr.Zero, (IntPtr)value); } }
 
         // Auto Invalidates
@@ -202,20 +208,16 @@ namespace ExtendedControls
                 return;
 
             Rectangle tabarea = new Rectangle(0, 0, Width, DisplayRectangle.Y - topborder);   // less 2 for border area
-            if (ThemeColorSet < 0)
+
+            if (PaintTransparentColor != Color.Transparent) // if in transparent mode, ensure transparency of the top strip                                 
+                e.Graphics.DrawFilledRectangle(ClientRectangle, PaintTransparentColor);
+            else if (ThemeColorSet < 0)         
             {
                 using (Brush br = new SolidBrush(BackColor))
                     e.Graphics.FillRectangle(br, tabarea);
             }
             else
-                DrawingHelpersStaticFunc.PaintMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, TabBackgroundGradientDirection);
-            //// the ClientRectangle is the whole control including tab area, the DisplayRectangle is the area of the tabpage
-            //Rectangle tabarea = new Rectangle(0, 0, Width, DisplayRectangle.Y - topborder);   // less 2 for border area
-
-            //using (Brush br = new LinearGradientBrush(tabarea, TabBackgroundColor, TabBackgroundColor2, TabBackgroundGradientDirection))
-            //{
-            //    e.Graphics.FillRectangle(br, tabarea);
-            //}
+                e.Graphics.DrawMultiColouredRectangles(ClientRectangle, ThemeColors, TabBackgroundGradientDirection);
 
             DrawBorder(e.Graphics);
 
