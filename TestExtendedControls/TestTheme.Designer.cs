@@ -84,6 +84,7 @@
             this.extNumericUpDown2 = new ExtendedControls.ExtNumericUpDown();
             this.extNumericUpDown1 = new ExtendedControls.ExtNumericUpDown();
             this.extGroupBox1 = new ExtendedControls.ExtGroupBox();
+            this.extRadioButton2 = new ExtendedControls.ExtRadioButton();
             this.extTabControl1 = new ExtendedControls.ExtTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.extButton4 = new ExtendedControls.ExtButton();
@@ -92,7 +93,7 @@
             this.extButton6 = new ExtendedControls.ExtButton();
             this.extButton5 = new ExtendedControls.ExtButton();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.extPanelChildThemeControl2 = new ExtendedControls.ExtPanelChildThemeControl();
+            this.extCheckBox7 = new ExtendedControls.ExtCheckBox();
             this.extDateTimePicker2 = new ExtendedControls.ExtDateTimePicker();
             this.extDateTimePicker1 = new ExtendedControls.ExtDateTimePicker();
             this.extCheckBox6 = new ExtendedControls.ExtCheckBox();
@@ -114,6 +115,7 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
+            this.extPanelResizer1 = new ExtendedControls.ExtPanelResizer();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.extFlowLayoutPanelTop.SuspendLayout();
@@ -407,7 +409,7 @@
             this.extFlowLayoutPanelTop.Controls.Add(this.extButtonClose);
             this.extFlowLayoutPanelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.extFlowLayoutPanelTop.GradientDirection = 0F;
-            this.extFlowLayoutPanelTop.Location = new System.Drawing.Point(0, 0);
+            this.extFlowLayoutPanelTop.Location = new System.Drawing.Point(0, 23);
             this.extFlowLayoutPanelTop.Name = "extFlowLayoutPanelTop";
             this.extFlowLayoutPanelTop.Size = new System.Drawing.Size(1016, 54);
             this.extFlowLayoutPanelTop.TabIndex = 29;
@@ -638,6 +640,11 @@
             this.tabStrip2.TabIndex = 24;
             this.tabStrip2.TagList = null;
             this.tabStrip2.TextList = null;
+            this.tabStrip2.ThemeColors = new System.Drawing.Color[] {
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control};
             this.tabStrip2.ThemeColorSet = 2;
             // 
             // extRichTextBox1
@@ -719,6 +726,11 @@
             this.tabStrip1.TabIndex = 24;
             this.tabStrip1.TagList = null;
             this.tabStrip1.TextList = null;
+            this.tabStrip1.ThemeColors = new System.Drawing.Color[] {
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control};
             this.tabStrip1.ThemeColorSet = 0;
             // 
             // upDown1
@@ -785,11 +797,12 @@
             // 
             // extGroupBox1
             // 
-            this.extGroupBox1.BackColor2 = System.Drawing.Color.Red;
             this.extGroupBox1.BorderColor = System.Drawing.Color.LightGray;
             this.extGroupBox1.BorderColor2 = System.Drawing.Color.Gray;
+            this.extGroupBox1.ChildrenThemed = true;
+            this.extGroupBox1.Controls.Add(this.extRadioButton2);
             this.extGroupBox1.Controls.Add(this.extTabControl1);
-            this.extGroupBox1.Controls.Add(this.extPanelChildThemeControl2);
+            this.extGroupBox1.Controls.Add(this.extCheckBox7);
             this.extGroupBox1.GradientDirection = 90F;
             this.extGroupBox1.Location = new System.Drawing.Point(16, 383);
             this.extGroupBox1.Name = "extGroupBox1";
@@ -799,6 +812,30 @@
             this.extGroupBox1.Text = "extGroupBox1";
             this.extGroupBox1.TextPadding = 0;
             this.extGroupBox1.TextStartPosition = -1;
+            this.extGroupBox1.ThemeColors = new System.Drawing.Color[] {
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control};
+            this.extGroupBox1.ThemeColorSet = -1;
+            // 
+            // extRadioButton2
+            // 
+            this.extRadioButton2.AutoSize = true;
+            this.extRadioButton2.DisabledScaling = 0.5F;
+            this.extRadioButton2.GradientDirection = 225F;
+            this.extRadioButton2.Location = new System.Drawing.Point(91, 125);
+            this.extRadioButton2.MouseOverColor = System.Drawing.Color.CornflowerBlue;
+            this.extRadioButton2.Name = "extRadioButton2";
+            this.extRadioButton2.RadioButtonColor = System.Drawing.Color.Gray;
+            this.extRadioButton2.RadioButtonInnerColor = System.Drawing.Color.White;
+            this.extRadioButton2.SelectedColor = System.Drawing.Color.DarkBlue;
+            this.extRadioButton2.SelectedColorRing = System.Drawing.Color.Black;
+            this.extRadioButton2.Size = new System.Drawing.Size(86, 17);
+            this.extRadioButton2.TabIndex = 13;
+            this.extRadioButton2.TabStop = true;
+            this.extRadioButton2.Text = "OnGroupBox";
+            this.extRadioButton2.UseVisualStyleBackColor = true;
             // 
             // extTabControl1
             // 
@@ -925,21 +962,28 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // extPanelChildThemeControl2
+            // extCheckBox7
             // 
-            this.extPanelChildThemeControl2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extPanelChildThemeControl2.ChildrenThemed = true;
-            this.extPanelChildThemeControl2.GradientDirection = 0F;
-            this.extPanelChildThemeControl2.Location = new System.Drawing.Point(319, 64);
-            this.extPanelChildThemeControl2.Name = "extPanelChildThemeControl2";
-            this.extPanelChildThemeControl2.Size = new System.Drawing.Size(264, 97);
-            this.extPanelChildThemeControl2.TabIndex = 12;
-            this.extPanelChildThemeControl2.ThemeColors = new System.Drawing.Color[] {
-        System.Drawing.SystemColors.Control,
-        System.Drawing.SystemColors.Control,
-        System.Drawing.SystemColors.Control,
-        System.Drawing.SystemColors.Control};
-            this.extPanelChildThemeControl2.ThemeColorSet = -1;
+            this.extCheckBox7.AutoSize = true;
+            this.extCheckBox7.ButtonGradientDirection = 90F;
+            this.extCheckBox7.CheckBoxColor = System.Drawing.Color.Gray;
+            this.extCheckBox7.CheckBoxGradientDirection = 225F;
+            this.extCheckBox7.CheckBoxInnerColor = System.Drawing.Color.White;
+            this.extCheckBox7.CheckColor = System.Drawing.Color.DarkBlue;
+            this.extCheckBox7.CheckColor2 = System.Drawing.Color.DarkBlue;
+            this.extCheckBox7.DisabledScaling = 0.5F;
+            this.extCheckBox7.ImageIndeterminate = null;
+            this.extCheckBox7.ImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.extCheckBox7.ImageUnchecked = null;
+            this.extCheckBox7.Location = new System.Drawing.Point(6, 125);
+            this.extCheckBox7.MouseOverScaling = 1.3F;
+            this.extCheckBox7.MouseSelectedScaling = 1.3F;
+            this.extCheckBox7.Name = "extCheckBox7";
+            this.extCheckBox7.Size = new System.Drawing.Size(87, 17);
+            this.extCheckBox7.TabIndex = 12;
+            this.extCheckBox7.Text = "OnGroupBox";
+            this.extCheckBox7.TickBoxReductionRatio = 0.75F;
+            this.extCheckBox7.UseVisualStyleBackColor = true;
             // 
             // extDateTimePicker2
             // 
@@ -1270,12 +1314,12 @@
             // extRadioButton1
             // 
             this.extRadioButton1.AutoSize = true;
+            this.extRadioButton1.DisabledScaling = 0.5F;
             this.extRadioButton1.GradientDirection = 225F;
             this.extRadioButton1.Location = new System.Drawing.Point(12, 120);
             this.extRadioButton1.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.extRadioButton1.Name = "extRadioButton1";
             this.extRadioButton1.RadioButtonColor = System.Drawing.Color.Gray;
-            this.extRadioButton1.RadioButtonDisabledScaling = 0.5F;
             this.extRadioButton1.RadioButtonInnerColor = System.Drawing.Color.White;
             this.extRadioButton1.SelectedColor = System.Drawing.Color.DarkBlue;
             this.extRadioButton1.SelectedColorRing = System.Drawing.Color.Black;
@@ -1381,12 +1425,23 @@
             this.extScrollBar1.Value = 0;
             this.extScrollBar1.ValueLimited = 0;
             // 
+            // extPanelResizer1
+            // 
+            this.extPanelResizer1.Cursor = System.Windows.Forms.Cursors.SizeNS;
+            this.extPanelResizer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.extPanelResizer1.Location = new System.Drawing.Point(0, 0);
+            this.extPanelResizer1.Movement = System.Windows.Forms.DockStyle.Top;
+            this.extPanelResizer1.Name = "extPanelResizer1";
+            this.extPanelResizer1.Size = new System.Drawing.Size(1016, 23);
+            this.extPanelResizer1.TabIndex = 30;
+            // 
             // TestTheme
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1016, 932);
             this.Controls.Add(this.extFlowLayoutPanelTop);
+            this.Controls.Add(this.extPanelResizer1);
             this.Controls.Add(this.extStatusStrip1);
             this.Controls.Add(this.extPanelChildThemeControl1);
             this.Controls.Add(this.extTextBoxAutoComplete1);
@@ -1430,6 +1485,7 @@
             this.extFlowLayoutPanelTop.ResumeLayout(false);
             this.extPanelChildThemeControl1.ResumeLayout(false);
             this.extGroupBox1.ResumeLayout(false);
+            this.extGroupBox1.PerformLayout();
             this.extTabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
@@ -1504,7 +1560,6 @@
         private ExtendedControls.ExtButton extButton3;
         private ExtendedControls.ExtButton extButton6;
         private ExtendedControls.ExtButton extButton5;
-        private ExtendedControls.ExtPanelChildThemeControl extPanelChildThemeControl2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.ToolStripMenuItem menu2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem wToolStripMenuItem;
@@ -1522,5 +1577,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private ExtendedControls.ExtFlowLayoutPanel extFlowLayoutPanelTop;
+        private ExtendedControls.ExtCheckBox extCheckBox7;
+        private ExtendedControls.ExtRadioButton extRadioButton2;
+        private ExtendedControls.ExtPanelResizer extPanelResizer1;
     }
 }

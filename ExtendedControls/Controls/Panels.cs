@@ -12,9 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -25,12 +23,13 @@ namespace ExtendedControls
     {
         public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
 
-
         // ThemeColors only used if ThemeColourSet>=0.  
         public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
         // -1 = system, 0 use ThemeColours but don't set when calling theme(), else 1,2,3,4.. one of the Panel colour sets
-        public int ThemeColorSet { get; set; } = -1;
+        public int ThemeColorSet { get; set; } = -1;      
         public float GradientDirection { get; set; }
+
+        protected virtual bool ThemeDerived(Theme t, Font fnt) { return ChildrenThemed; }       // default implementation if derived does not want to do more theming
 
         public ExtPanelGradientFill()
         {
@@ -52,7 +51,8 @@ namespace ExtendedControls
                 GradientDirection = t.GetPanelDirection(ThemeColorSet);
             }
 
-            return ChildrenThemed; // theme children, any themeing needs be done in the parent
+            // interfaces in this version of c# can't be virtual, but we want to give the derived class a go if required
+            return ThemeDerived(t,fnt);
         }
     }
 
@@ -65,18 +65,19 @@ namespace ExtendedControls
         }
     }
 
-    public partial class ExtPanelResizer : Panel, IThemeable
+    // a resizer panel, clicking on it causes a resize.
+
+    public partial class ExtPanelResizer : ExtPanelGradientFill
     {
         public DockStyle Movement { get { return movement; } set { SetMovement(value); } }
-
         private DockStyle movement = DockStyle.Top;
 
         private void SetMovement(DockStyle m)
         {
             if (Movement == DockStyle.Top || Movement == DockStyle.Bottom)
-                Cursor = System.Windows.Forms.Cursors.SizeNS;
+                Cursor = Cursors.SizeNS;
             else
-                Cursor = System.Windows.Forms.Cursors.SizeWE;
+                Cursor = Cursors.SizeWE;
 
             movement = m;
         }
@@ -108,11 +109,10 @@ namespace ExtendedControls
             }
         }
 
-        public bool Theme(Theme t, Font fnt)
+        protected override bool ThemeDerived(Theme t, Font fnt)
         {
-            BackColor = t.GroupBoxOverride(Parent, t.Form);
             Visible = !t.WindowsFrame;
-            return true;
+            return base.ThemeDerived(t, fnt);
         }
     }
 

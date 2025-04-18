@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace TestExtendedControls
 {
-    public partial class TestTheme : Form
+    public partial class TestTheme : DraggableForm
     {
         ThemeList stdthemes;
         List<string> aclist = new List<string>();
@@ -53,7 +53,7 @@ namespace TestExtendedControls
             }
 
             stdthemes = new ThemeList();
-          //  stdthemes.LoadBaseThemes();
+            stdthemes.LoadBaseThemes();
            // stdthemes.SetThemeByName("Verdana Grey");
 
             Theme.Current.WindowsFrame = true;

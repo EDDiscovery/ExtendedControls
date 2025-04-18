@@ -61,7 +61,7 @@ namespace ExtendedControls
     /// supports only one flow layout panel in a container such as a group box or a panel
     /// Margin.Bottom allows for extra space under if required
     /// </summary>
-    public class ExtFlowLayoutPanelParentResize : FlowLayoutPanel
+    public class ExtFlowLayoutPanelParentResize : ExtFlowLayoutPanel
     {
         protected override void OnLayout(LayoutEventArgs levent)
         {

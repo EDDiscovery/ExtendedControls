@@ -64,14 +64,39 @@ namespace ExtendedControls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if ( FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard )
+            if (FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard)
+            {
                 base.OnPaint(e);
+            }
             else
             {
-                bool hasimages = Image != null;
+                if (BackColor == Color.Transparent)     // if we are transparent, only way i've found to make this work is to grab the parent image
+                {
+                    using (var backImageControlBitmap = new Bitmap(Width, Height))
+                    {
+                        using (Graphics backGraphics = Graphics.FromImage(backImageControlBitmap))
+                        {
+                            if (Parent != null)     // double check!
+                            {
+                                // we want the graphics to be offset painted into bitmap 0,0 at our location, so shift axis
+                                backGraphics.TranslateTransform((float)-Location.X, (float)-Location.Y);
+                                PaintEventArgs ep = new PaintEventArgs(backGraphics, ClientRectangle);
+                                InvokePaintBackground(Parent, ep); // we force it to paint into our bitmap
+                                InvokePaint(Parent, ep);
+                            }
+                        }
 
-                using (Brush br = new SolidBrush(this.BackColor))
-                    e.Graphics.FillRectangle(br, ClientRectangle);
+                        backImageControlBitmap.Save(@"c:\code\bitmap.bmp");
+                        e.Graphics.DrawImage(backImageControlBitmap, new Point(0, 0));
+                    }
+                }
+                else
+                {
+                    using (Brush br = new SolidBrush(BackColor))
+                        e.Graphics.FillRectangle(br, ClientRectangle);
+                }
+
+                bool hasimages = Image != null;
 
                 if (Appearance == Appearance.Button)
                 {
@@ -81,10 +106,10 @@ namespace ExtendedControls
                     {
                         using (var p = new Pen(FlatAppearance.BorderColor))     // only 1 pixel wide border
                         {
-                            e.Graphics.DrawRectangle(p, new Rectangle(0,0,area.Width-1,area.Height-1));
+                            e.Graphics.DrawRectangle(p, new Rectangle(0, 0, area.Width - 1, area.Height - 1));
                         }
 
-                        area.Inflate(-1,-1);
+                        area.Inflate(-1, -1);
                     }
 
                     if (Enabled)
@@ -274,7 +299,6 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            BackColor = t.GroupBoxOverride(Parent, t.Form);
             ForeColor = t.CheckBoxText;
             DisabledScaling = t.DisabledScaling;
             MouseOverScaling = t.MouseOverScaling;
@@ -290,6 +314,7 @@ namespace ExtendedControls
             }
             else
             {
+                BackColor = Color.Transparent;
                 CheckBoxColor = t.CheckBoxBack;
                 CheckBoxInnerColor = t.CheckBoxBack2;
                 CheckColor = t.CheckBoxTick;

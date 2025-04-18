@@ -134,8 +134,10 @@ namespace ExtendedControls
             InitGradient(buttonCheckBoxButtonGradient, "Check Box Button Checked Gradient Direction in degrees", np[nameof(Theme.CheckBoxButtonGradientDirection)]);
             InitFloat(numericUpDownCBTickStyleTickSize, "Check Box Tick Size as a proportion of the check box", np[nameof(Theme.CheckBoxTickSize)]);
 
-            InitColourPatch(panel_themeGBBack, "Group box Back Colour", np[nameof(Theme.GroupBack)]);
-            InitColourPatch(panel_themeGBBack2, "Group box Back Colour 2", np[nameof(Theme.GroupBack2)]);
+            InitColourPatch(panel_themeGroupBack1, "Group box Back 1 Colour", np[nameof(Theme.GroupBack)], 0);
+            InitColourPatch(panel_themeGroupBack2, "Group box Back 2 Colour", np[nameof(Theme.GroupBack)], 1);
+            InitColourPatch(panel_themeGroupBack3, "Group box Back 3 Colour", np[nameof(Theme.GroupBack)], 2);
+            InitColourPatch(panel_themeGroupBack4, "Group box Back 4 Colour", np[nameof(Theme.GroupBack)], 3);
             InitColourPatch(panel_themeGBFore, "Group box Text Colour", np[nameof(Theme.GroupFore)]);
             InitColourPatch(panel_themeGBBorder, "Group box Border Line Colour", np[nameof(Theme.GroupBorder)]);
             InitColourPatch(panel_themeGBBorder2, "Group box Border Line Colour 2", np[nameof(Theme.GroupBorder2)]);

@@ -26,12 +26,13 @@ namespace ExtendedControls
 
         public Color SelectedColor { get; set; } = Color.DarkBlue;      // the bullit eye color
         public Color SelectedColorRing { get; set; } = Color.Black;     // ring around it, Transparent for off
-        public float RadioButtonDisabledScaling { get; set; } = 0.5F;              // when disabled
+        public float DisabledScaling { get; set; } = 0.5F;              // when disabled
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;   // mouse over colour
         public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
         public ExtRadioButton() : base()
         {
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
         }
 
         protected override void OnResize(EventArgs e)
@@ -51,14 +52,39 @@ namespace ExtendedControls
             //Console.WriteLine("RB " + Name + ":" + ClientRectangle.ToString());
 
             if (FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard)
+            {
                 base.OnPaint(e);
+            }
             else
             {
+                // if we are transparent, only way i've found to make this work is to grab the parent image
+                // this is the same dodge as found in net/control.cs PaintTransparentBackground
+                if (BackColor == Color.Transparent)     
+                {
+                    using (var backImageControlBitmap = new Bitmap(Width, Height))
+                    {
+                        using (Graphics backGraphics = Graphics.FromImage(backImageControlBitmap))
+                        {
+                            if (Parent != null) // double check!
+                            {
+                                backGraphics.TranslateTransform((float)-Location.X, (float)-Location.Y);
+                                PaintEventArgs ep = new PaintEventArgs(backGraphics, ClientRectangle);
+                                InvokePaintBackground(Parent, ep); // we force it to paint into our bitmap
+                                InvokePaint(Parent, ep);
+                            }
+                        }
+
+                        backImageControlBitmap.Save(@"c:\code\bitmap.bmp");
+                        e.Graphics.DrawImage(backImageControlBitmap, new Point(0, 0));
+                    }
+                }
+                else
+                {
+                    using (Brush br = new SolidBrush(BackColor))
+                        e.Graphics.FillRectangle(br, ClientRectangle);
+                }
+
                 Rectangle rect = ClientRectangle;
-
-                using (Brush br = new SolidBrush(this.BackColor))
-                    e.Graphics.FillRectangle(br, rect);
-
                 rect.Height -= 6;
                 rect.Y += 2;
                 rect.Width = rect.Height;
@@ -115,7 +141,7 @@ namespace ExtendedControls
                     }
                     else
                     {
-                        using (Brush inner = new LinearGradientBrush(rect, RadioButtonInnerColor, c1, (GradientDirection+180.0F) % 360F))
+                        using (Brush inner = new LinearGradientBrush(rect, RadioButtonInnerColor, c1, (GradientDirection + 180.0F) % 360F))
                             e.Graphics.FillEllipse(inner, rect);      // fill slightly over size to make sure all pixels are painted
                     }
 
@@ -126,7 +152,7 @@ namespace ExtendedControls
                     }
                 }
 
-                using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(RadioButtonDisabledScaling)))
+                using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(DisabledScaling)))
                 {
                     using (StringFormat fmt = new StringFormat() { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
                     {
@@ -156,15 +182,15 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            FlatStyle = t.ButtonFlatStyle;
-            BackColor = t.GroupBoxOverride(Parent, t.Form);
             ForeColor = t.CheckBoxText;
+            DisabledScaling = t.DisabledScaling;
+            BackColor = Color.Transparent;
             RadioButtonColor = t.CheckBoxBack;
             RadioButtonInnerColor = t.CheckBoxBack2;
-            MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
             SelectedColor = t.CheckBoxTick; //BackColor.Multiply(t.DisabledScaling);
+            MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
+            FlatStyle = t.ButtonFlatStyle;
             GradientDirection = t.CheckBoxBackGradientDirection;
-            RadioButtonDisabledScaling = t.DisabledScaling;
             return false;
         }
 

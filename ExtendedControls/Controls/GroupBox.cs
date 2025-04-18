@@ -20,9 +20,14 @@ namespace ExtendedControls
 {
     public class ExtGroupBox : GroupBox, IThemeable
     {
-        // ForeColor = text, BackColor = control background colour 1
-        public Color BackColor2 { get { return backColor2; } set { backColor2 = value; Invalidate(); } }
-        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
+        // ForeColor = text, BackColor = for system mode
+        public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
+
+        // ThemeColors only used if ThemeColourSet>=0.  
+        public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
+        // -1 = system, 0 use ThemeColours but don't set when calling theme(), else 1,2,3,4.. one of the Panel colour sets
+        public int ThemeColorSet { get; set; } = -1;
+        public float GradientDirection { get; set; }
 
         public Color BorderColor { get; set; } = Color.LightGray;       // border
         public Color BorderColor2 { get; set; } = Color.Gray;           // darker
@@ -37,22 +42,20 @@ namespace ExtendedControls
         protected override void OnPaint(PaintEventArgs e)
         {
             if (FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard)
+            {
                 base.OnPaint(e);
-            else if ( DisplayRectangle.Width > 0 && DisplayRectangle.Height > 0 ) // Popup and Flat are ours, as long as its got size
+            }
+            else if (DisplayRectangle.Width > 0 && DisplayRectangle.Height > 0) // Popup and Flat are ours, as long as its got size
             {
                 int topline = DisplayRectangle.Y / 2;
 
-                if (!BackColor.IsFullyTransparent())
-                {
-                    Color color2 = (FlatStyle == FlatStyle.Popup) ? BackColor2 : BackColor;
-                    using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(ClientRectangle, BackColor, color2, GradientDirection))
-                        e.Graphics.FillRectangle(b, ClientRectangle);
-                }
+                DrawingHelpersStaticFunc.PaintMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, GradientDirection);
+
 
                 if (!BorderColor.IsFullyTransparent())
                 {
                     int textlength = 0;
-                    if ( this.Text != "" )
+                    if (this.Text != "")
                     {           // +1 for rounding down..
                         textlength = (int)e.Graphics.MeasureString(this.Text, this.Font).Width + TextPadding * 2 + 1;
                     }
@@ -70,11 +73,11 @@ namespace ExtendedControls
 
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-                    using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, topline+1, ClientRectangle.Width-2, ClientRectangle.Height - topline - 1, 1,1 , textstart- 1, textlength))
+                    using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, topline + 1, ClientRectangle.Width - 2, ClientRectangle.Height - topline - 1, 1, 1, textstart - 1, textlength))
                     using (Pen pc1 = new Pen(BorderColor, 1.0F))
                         e.Graphics.DrawPath(pc1, g1);
 
-                    using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, topline, ClientRectangle.Width, ClientRectangle.Height - topline - 1, 2, 2 , textstart, textlength))
+                    using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, topline, ClientRectangle.Width, ClientRectangle.Height - topline - 1, 2, 2, textstart, textlength))
                     using (Pen pc2 = new Pen(BorderColor2, 1.0F))
                         e.Graphics.DrawPath(pc2, g2);
 
@@ -83,7 +86,7 @@ namespace ExtendedControls
                         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
                         int twidth = ClientRectangle.Width - textstart - 4;            // What size have we left..
-                        twidth = (textlength<twidth) ? textlength: twidth;              // clip
+                        twidth = (textlength < twidth) ? textlength : twidth;              // clip
                         Rectangle textarea = new Rectangle(textstart, 0, twidth, DisplayRectangle.Y);
 
                         using (Brush textb = new SolidBrush(this.ForeColor))
@@ -101,8 +104,19 @@ namespace ExtendedControls
         public bool Theme(Theme t, Font fnt)
         {
             ForeColor = t.GroupFore;
-            BackColor = t.GroupBack;
-            BackColor2 = t.GroupBack2;
+            BackColor = t.GroupBack[0]; // for system mode
+
+            if (ThemeColorSet > 0)
+            {
+                ThemeColors = t.GetPanelSet(ThemeColorSet);
+                GradientDirection = t.GetPanelDirection(ThemeColorSet);
+            }
+            else
+            {
+                GradientDirection = t.GroupBoxGradientDirection;
+                ThemeColors = t.GroupBack;
+            }
+
             BorderColor = t.GroupBorder;
             BorderColor2 = t.GroupBorder2;
             FlatStyle = FlatStyle.Popup;
@@ -110,7 +124,5 @@ namespace ExtendedControls
             return true;
         }
 
-        private Color backColor2 = Color.Red;
-        private float gradientdirection = 90F;
     }
 }

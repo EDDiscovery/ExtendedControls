@@ -274,12 +274,8 @@ namespace ExtendedControls
 
         //-----------------
 
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_back" })]
-        public Color GroupBack { get; set; } = SystemColors.Menu;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_back2" })]
-        public Color GroupBack2 { get; set; } = Color.Transparent;
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] GroupBack { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
         public float GroupBoxGradientDirection { get; set; } = 90F;
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_text" })]
@@ -621,7 +617,7 @@ namespace ExtendedControls
 
             LabelColor = label;
 
-            GroupBack = GroupBack2= groupboxback; 
+            GroupBack[0] = GroupBack[1] = GroupBack[2] = GroupBack[3] = groupboxback; 
             GroupFore = groupboxtext;
             GroupBorder = groupboxlines; GroupBorder2 = groupboxlines.Multiply(0.7f);
 
@@ -835,7 +831,7 @@ namespace ExtendedControls
             {
                 //System.Diagnostics.Trace.WriteLine("Themer " + ctrl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wgb.ForeColor = GroupFore;
-                wgb.BackColor = GroupBack;
+                wgb.BackColor = GroupBack[0];
             }
             else if (ctrl is CheckBox wchb) // WINFORM
             {
@@ -931,13 +927,13 @@ namespace ExtendedControls
         }
 
         // if a parent above is a group box behind the control, use the group box back color, else use the form colour
-        public Color GroupBoxOverride(Control parent, Color d)      
+        private Color GroupBoxOverride(Control parent, Color d)      
         {
             Control x = parent;
             while (x != null)
             {
                 if (x is GroupBox)
-                    return GroupBack;
+                    return GroupBack[0];
                 x = x.Parent;
             }
 
@@ -947,8 +943,6 @@ namespace ExtendedControls
         public JObject ToJSON(bool altnames = true)
         {
             var ctrl = JToken.GetMemberAttributeSettings(typeof(Theme), "AltFmt", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-
-            System.Diagnostics.Debug.Assert(ctrl.ContainsKey("GroupBack2"));
 
             var jo = JToken.FromObject(this, false, membersearchflags: System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public,
                                         setname: altnames ? "AltFmt" : "Std",
@@ -1057,7 +1051,6 @@ namespace ExtendedControls
             count += Replace(emitdebug, nameof(CheckBoxButtonTickedBack2), CheckBoxTick.Multiply(sc));
             count += Replace(emitdebug, nameof(CheckBoxBorderColor), ButtonBorderColor);
 
-            count += Replace(emitdebug, nameof(GroupBack2), GroupBack);
             count += Replace(emitdebug, nameof(GroupBorder2), GroupBorder.Multiply(sc));
 
             count += Replace(emitdebug, nameof(TabStripFore), ButtonTextColor);
@@ -1070,6 +1063,7 @@ namespace ExtendedControls
 
             for (int i = 0; i < Panel1.Length; i++)
             {
+                count += Replace(emitdebug, nameof(GroupBack), Form, i);
                 count += Replace(emitdebug, nameof(TabControlBack), Form, i);
                 count += Replace(emitdebug, nameof(TabStripBack), Form, i);
                 count += Replace(emitdebug, nameof(Panel1), Form, i);
