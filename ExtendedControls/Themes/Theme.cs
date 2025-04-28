@@ -966,7 +966,8 @@ namespace ExtendedControls
             return jo;
         }
 
-        public static Theme FromJSON(JToken jo, bool altnames = true)
+        // load from json, normally taking the name from json but can be overridden, and using altnames by default
+        public static Theme FromJSON(JToken jo, string usename = null, bool altnames = true)
         {
             // convert, can create, using the Theme() constructor to leave new colours transparent if the json does not have it
 
@@ -978,6 +979,8 @@ namespace ExtendedControls
             if (jconv is Theme)
             {
                 Theme ret = (Theme)jconv;
+                if (usename!=null)
+                    ret.Name = usename;
                 ret.FillInNewOptions(true);     // fill in and complain about any missing colours
                 return ret;
             }
@@ -991,17 +994,15 @@ namespace ExtendedControls
             return null;
         }
 
-        public static Theme LoadFile(string pathname, string usethisname = null)
+        // load file
+        public static Theme LoadFile(string pathname, string usethisname = null, bool altnames = true)
         {
             JToken jo = pathname.ReadJSONFile();
             if ( jo != null )
             {
-                Theme thm = FromJSON(jo);
+                Theme thm = FromJSON(jo, usethisname, altnames);
                 if (thm != null)
                 {
-                    if (usethisname != null)
-                        thm.Name = usethisname;
-
                     return thm;
                 }
             }
@@ -1116,7 +1117,7 @@ namespace ExtendedControls
                 if (curv == Color.Transparent)
                 {
                     if (debug)
-                        System.Diagnostics.Debug.WriteLine($"Theme missing item {nameofitem}[{index}] setting to {y}");
+                        System.Diagnostics.Debug.WriteLine($"Theme {Name} missing item {nameofitem}[{index}] setting to {y}");
                     a.SetValue(y,index);
                     return 1;
                 }
@@ -1127,7 +1128,7 @@ namespace ExtendedControls
                 if (curv == Color.Transparent)
                 {
                     if (debug)
-                        System.Diagnostics.Debug.WriteLine($"Theme missing item {nameofitem} setting to {y}");
+                        System.Diagnostics.Debug.WriteLine($"Theme {Name} missing item {nameofitem} setting to {y}");
                     p.SetValue(this, y);
                     return 1;
                 }
