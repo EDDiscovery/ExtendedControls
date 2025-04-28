@@ -31,6 +31,8 @@ namespace ExtendedControls
 
         public Theme Theme { get; private set; }            // theme is copied and edited in here
 
+        private bool pendingchanges = false;
+
         public ThemeEditor()
         {
             InitializeComponent();
@@ -162,6 +164,7 @@ namespace ExtendedControls
             InitColourPatch(panel_themeTabControlButtonBack2, "Tab Control Button Back Colour 2", np[nameof(Theme.TabControlButtonBack2)]);
             InitColourPatch(panel_themeTabControlBorder, "Tab Control Border Line Colour", np[nameof(Theme.TabControlBorder)]);
             InitColourPatch(panel_themeTabControlBorder2, "Tab Control Border Line Colour 2", np[nameof(Theme.TabControlBorder2)]);
+            InitColourPatch(panel_themeTabControlPageBack, "Tab Control Page Back Colour", np[nameof(Theme.TabControlPageBack)]);
             InitGradient(buttonTabControlBackGradient, "Tab Control Background Gradient Direction in degrees", np[nameof(Theme.TabControlBackGradientDirection)]);
             InitGradient(buttonTabControlTabGradient, "Tab Control Tab Gradient Direction in degrees", np[nameof(Theme.TabControlTabGradientDirection)]);
 
@@ -174,11 +177,6 @@ namespace ExtendedControls
             InitColourPatch(panel_themeMenuBorder, "Tool Strip Border Colour", np[nameof(Theme.MenuBorder)]);
             InitColourPatch(panel_themeMenuSelectedBack, "Menu Dropdown Back Colour", np[nameof(Theme.MenuSelectedBack)]);
             InitColourPatch(panel_themeMenuSelectedText, "Menu Dropdown Text Colour", np[nameof(Theme.MenuSelectedText)]);
-
-            InitColourPatch(panel_themeSPanel, "S-Panel Text Colour", np[nameof(Theme.SPanelColor)]);
-            InitColourPatch(panel_themeLabel, "Label Text Colour", np[nameof(Theme.LabelColor)]);
-
-            InitColourPatch(panel_themeTransparentColourKey, "Transparent Colour Key", np[nameof(Theme.TransparentColorKey)]);
 
             InitColourPatch(panel_themePanel11, "Panel 1 Back Colour", np[nameof(Theme.Panel1)], 0);
             InitColourPatch(panel_themePanel12, "Panel 1 Back 2 Colour", np[nameof(Theme.Panel1)], 1);
@@ -210,15 +208,48 @@ namespace ExtendedControls
             InitColourPatch(panel_chart7, "Chart Series 7", np[nameof(Theme.Chart7)]);
             InitColourPatch(panel_chart8, "Chart Series 8", np[nameof(Theme.Chart8)]);
 
-            trackBar_theme_opacity.Value = (int)Theme.Opacity;
             comboBox_TextBorder.SelectedItem = Theme.TextBoxBorderStyle;
             comboBox_ButtonStyle.SelectedItem = Theme.ButtonStyle;
-            checkBox_theme_windowframe.Checked = Environment.OSVersion.Platform != PlatformID.Win32NT  ? false : Theme.WindowsFrame;
+
+            InitColourPatch(panel_themeSPanel, "S-Panel Text Colour", np[nameof(Theme.SPanelColor)]);
+            InitColourPatch(panel_themeLabel, "Label Text Colour", np[nameof(Theme.LabelColor)]);
+
+            checkBox_theme_windowframe.Checked = Environment.OSVersion.Platform != PlatformID.Win32NT ? false : Theme.WindowsFrame;
+            UpdateFontText();
+            trackBar_theme_opacity.Value = (int)Theme.Opacity;
+            InitColourPatch(panel_themeTransparentColourKey, "Transparent Colour Key", np[nameof(Theme.TransparentColorKey)]);
+
+            numericUpDownDialogFontScaling.Value = (decimal)Theme.DialogFontScaling;
+            numericUpDownMouseOverScaling.Value = (decimal)Theme.MouseOverScaling;
+            numericUpDownMouseSelectedScaling.Value = (decimal)Theme.MouseSelectedScaling;
+            numericUpDownDisabledScaling.Value = (decimal)Theme.DisabledScaling;
 
             this.checkBox_theme_windowframe.CheckedChanged += new System.EventHandler(this.checkBox_theme_windowframe_CheckedChanged);
             this.trackBar_theme_opacity.ValueChanged += new System.EventHandler(this.trackBar_theme_opacity_ValueChanged);
-            UpdateFontText();
+            this.numericUpDownDisabledScaling.ValueChanged += new System.EventHandler(this.numericUpDownDisabledScaling_ValueChanged);
+            this.numericUpDownMouseSelectedScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseSelectedScaling_ValueChanged);
+            this.numericUpDownMouseOverScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseOverScaling_ValueChanged);
+            this.numericUpDownDialogFontScaling.ValueChanged += new System.EventHandler(this.numericUpDownDialogFontScaling_ValueChanged);
+
+            Theme.ToolStripRendererTheming(false);      // disable themeing of right click menus
         }
+
+
+        // all call this to change 
+        private void Apply()
+        {
+            Theme.SetCustom();
+            if (checkBoxApplyOnEachChange.Checked)
+            {
+                ApplyChanges?.Invoke(Theme);
+                pendingchanges = false;
+            }
+            else
+                pendingchanges = true;
+
+            Theme.ToolStripRendererTheming(false);      // disable again
+        }
+
 
         // Colour patch, can handle indexes.
         private void InitColourPatch(Panel pn, string tooltip, PropertyInfo pi, int index = 0)
@@ -255,7 +286,6 @@ namespace ExtendedControls
                 if (MyDialog.ShowDialog(this) == DialogResult.OK)
                 {
                     //System.Diagnostics.Debug.Write($"Theme {pi.Name} with {c}");
-                    Theme.SetCustom();
                     if (pi.PropertyType.IsArray)
                     {
                         a.SetValue(MyDialog.Color, index);
@@ -263,7 +293,7 @@ namespace ExtendedControls
                     else
                         pi.SetValue(Theme, MyDialog.Color);
                     pn.BackColor = MyDialog.Color;
-                    ApplyChanges?.Invoke(Theme);
+                    Apply();
                 }
 
             };
@@ -279,8 +309,7 @@ namespace ExtendedControls
             c.ValueChanged += (s, e) => {
                 decimal value = c.Value;
                 pi.SetValue(Theme, (float)value);
-                Theme.SetCustom();
-                ApplyChanges?.Invoke(Theme);
+                Apply();
             };
         }
 
@@ -325,8 +354,7 @@ namespace ExtendedControls
                         a.SetValue(c.Value, index);
                     else
                         pi.SetValue(Theme, c.Value);
-                    Theme.SetCustom();
-                    ApplyChanges?.Invoke(Theme);
+                    Apply();
                 };
                 f.Controls.Add(nup);
                 Button ok = new Button();
@@ -343,8 +371,7 @@ namespace ExtendedControls
                         a.SetValue(c.Value, index);
                     else
                         pi.SetValue(Theme, c.Value);
-                    Theme.SetCustom();
-                    ApplyChanges?.Invoke(Theme);
+                    Apply();
                 }
                 ;
             };
@@ -353,17 +380,14 @@ namespace ExtendedControls
         private void checkBox_theme_windowframe_CheckedChanged(object sender, EventArgs e)
         {
             Theme.WindowsFrame = checkBox_theme_windowframe.Checked;
-            Theme.SetCustom();
-            ApplyChanges?.Invoke(Theme);
+            Apply();
         }
 
         private void trackBar_theme_opacity_ValueChanged(object sender, EventArgs e)
         {
             Theme.Opacity = (double)trackBar_theme_opacity.Value;
-            Theme.SetCustom();
-            ApplyChanges?.Invoke(Theme);
+            Apply();
         }
-
 
         private void buttonFontChange_Click(object sender, EventArgs e)
         {
@@ -395,8 +419,7 @@ namespace ExtendedControls
                     Theme.FontSize = fd.Font.Size;
                     Theme.FontStyle = fd.Font.Style;
                     UpdateFontText();
-                    Theme.SetCustom();
-                    ApplyChanges?.Invoke(Theme);
+                    Apply();
                 }
             }
         }
@@ -409,20 +432,21 @@ namespace ExtendedControls
         private void comboBox_TextBorder_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Theme.TextBoxBorderStyle = (string)comboBox_TextBorder.SelectedItem;
-            Theme.SetCustom();
-            ApplyChanges?.Invoke(Theme);
+            Apply();
         }
 
         private void comboBox_ButtonStyle_SelectionChangeCommitted(object sender, EventArgs e)
         {
             Theme.ButtonStyle = (string)comboBox_ButtonStyle.SelectedItem;
-            Theme.SetCustom();
-            ApplyChanges?.Invoke(Theme);
+            Apply();
         }
 
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
+            if (pendingchanges)
+                checkBoxApplyOnEachChange.Checked = true;
+
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -476,15 +500,44 @@ namespace ExtendedControls
                 a.SetValue(pastecolour.Value, tu.Item2);
             }
 
-           Theme.SetCustom();
             s.BackColor = pastecolour.Value;
-            ApplyChanges?.Invoke(Theme);
+            Apply();
         }
 
         private void contextMenuStripColours_Opening(object sender, CancelEventArgs e)
         {
             pasteColourToolStripMenuItem.Enabled = pastecolour != null;
 
+        }
+
+        private void checkBoxApplyOnEachChange_CheckedChanged(object sender, EventArgs e)
+        {
+            if (pendingchanges && checkBoxApplyOnEachChange.Checked)      // if pending changes, and we have gone true, apply
+                Apply();
+        }
+
+        private void numericUpDownDialogFontScaling_ValueChanged(object sender, EventArgs e)
+        {
+            Theme.DialogFontScaling = (float)numericUpDownDisabledScaling.Value;
+            Apply();
+        }
+
+        private void numericUpDownMouseOverScaling_ValueChanged(object sender, EventArgs e)
+        {
+            Theme.MouseOverScaling = (float)numericUpDownMouseOverScaling.Value;
+            Apply();
+        }
+
+        private void numericUpDownMouseSelectedScaling_ValueChanged(object sender, EventArgs e)
+        {
+            Theme.MouseSelectedScaling = (float)numericUpDownMouseSelectedScaling.Value;
+            Apply();
+        }
+
+        private void numericUpDownDisabledScaling_ValueChanged(object sender, EventArgs e)
+        {
+            Theme.DisabledScaling = (float)numericUpDownDisabledScaling.Value;
+            Apply();
         }
     }
 

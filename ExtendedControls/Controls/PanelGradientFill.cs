@@ -12,20 +12,21 @@
  * governing permissions and limitations under the License.
  */
 
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
 namespace ExtendedControls
 {
     // Extended panel with gradient fill and child control
-
+    // base class of many new panels
     public class ExtPanelGradientFill : Panel, IThemeable
     {
         public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
 
         // ThemeColors only used if ThemeColourSet>=0.  
         public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
-        // -1 = system, 0 use ThemeColours but don't set when calling theme(), else 1,2,3,4.. one of the Panel colour sets
+        // -1 = system, 0 use ThemeColours but don't set when calling Theme(), else 1,2,3,4.. one of the Panel colour sets
         public int ThemeColorSet { get; set; } = -1;
         public float GradientDirection { get; set; } = 0;
 
@@ -35,7 +36,9 @@ namespace ExtendedControls
 
         private Color transparency = Color.Transparent;
 
-        protected virtual bool ThemeDerived(Theme t, Font fnt) { return ChildrenThemed; }       // default implementation if derived does not want to do more theming
+        // Override if you want your derived class to have a go at themeing.
+        protected virtual bool ThemeDerived(Theme t, Font fnt) 
+        { return ChildrenThemed; }       
 
         public ExtPanelGradientFill()
         {
@@ -43,6 +46,8 @@ namespace ExtendedControls
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
+            //System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle}");
+
             if (PaintTransparentColor != Color.Transparent)
                 e.Graphics.DrawFilledRectangle(ClientRectangle,PaintTransparentColor);
             else if (ThemeColorSet < 0)
@@ -65,63 +70,13 @@ namespace ExtendedControls
     }
 
     // as per GradientFill, without child theming
-    public class ExtPanelChildThemeControl : ExtPanelGradientFill
+    public class ExtPanelNoChildThemed : ExtPanelGradientFill
     {
-        public ExtPanelChildThemeControl() : base()
+        public ExtPanelNoChildThemed() : base()
         {
             ChildrenThemed = false;
         }
     }
 
-    // a resizer panel, clicking on it causes a resize.
-
-    public partial class ExtPanelResizer : ExtPanelGradientFill
-    {
-        public DockStyle Movement { get { return movement; } set { SetMovement(value); } }
-        private DockStyle movement = DockStyle.Top;
-
-        private void SetMovement(DockStyle m)
-        {
-            if (Movement == DockStyle.Top || Movement == DockStyle.Bottom)
-                Cursor = Cursors.SizeNS;
-            else
-                Cursor = Cursors.SizeWE;
-
-            movement = m;
-        }
-
-        public ExtPanelResizer()
-        {
-            SetMovement(DockStyle.Top);
-        }
-
-        protected override void OnMouseDown(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            Form f = FindForm();
-            if (f != null && f is DraggableForm)
-            {
-                ((DraggableForm)f).PerformResizeMouseDown(this, e, Movement);
-            }
-        }
-
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            Form f = FindForm();
-            if (f != null && f is DraggableForm)
-            {
-                ((DraggableForm)f).PerformResizeMouseUp(this, e, Movement);
-            }
-        }
-
-        protected override bool ThemeDerived(Theme t, Font fnt)
-        {
-            Visible = !t.WindowsFrame;
-            return base.ThemeDerived(t, fnt);
-        }
-    }
 
 }

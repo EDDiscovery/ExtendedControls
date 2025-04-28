@@ -85,13 +85,6 @@ namespace ExtendedControls
             timer.Stop();
         }
 
-        protected override void OnBackColorChanged(EventArgs e)
-        {
-            base.OnBackColorChanged(e);
-            pinbutton.BackColor = BackColor;
-            hiddenmarker1.BackColor = hiddenmarker2.BackColor = BackColor;
-        }
-
         private void Hiddenmarker_Click(object sender, EventArgs e)
         {
             if (mode == Mode.UpAwaitRollDecision)
@@ -331,6 +324,7 @@ namespace ExtendedControls
             if (mode == Mode.RollingUp)        // roll up animation, move one step on, check for end
             {
                 Height = Math.Max((int)(unrolledheight - rolldiff * rollpercent), RolledUpHeight);
+                Refresh();
                 //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height + " child size " + this.FindMaxSubControlArea(0, 0) + " child " + this.Controls[3].FindMaxSubControlArea(0, 0));
 
                 if (Height == RolledUpHeight)    // end
@@ -346,7 +340,8 @@ namespace ExtendedControls
 
                     hiddenmarkershouldbeshown = true;
                     SetHMViz();
-                    System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At min h" + Height);
+                    
+                    //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At min h" + Height);
 
                     mode = Mode.Up;
                     RetractCompleted?.Invoke(this, EventArgs.Empty);
@@ -355,6 +350,7 @@ namespace ExtendedControls
             else if (mode == Mode.RollingDown) // roll down animation, move one step on, check for end
             {
                 Height = Math.Min((int)(RolledUpHeight + rolldiff * rollpercent), unrolledheight);
+                Refresh();
                 //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height);
 
                 if (Height == unrolledheight)        // end, everything is already visible.  hide the hidden marker

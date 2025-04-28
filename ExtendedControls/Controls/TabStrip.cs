@@ -312,11 +312,11 @@ namespace ExtendedControls
 
             if (StripMode != StripModeType.ListSelection && imagepanels == null && ImageList != null)  // on first entry..
             {
-                imagepanels = new ExtPanelChildThemeControl[ImageList.Length];
+                imagepanels = new ExtPanelNoChildThemed[ImageList.Length];
 
                 for (int inp = 0; inp < imagepanels.Length; inp++)
                 {
-                    imagepanels[inp] = new ExtPanelChildThemeControl()
+                    imagepanels[inp] = new ExtPanelNoChildThemed()
                     {
                         BackgroundImage = ImageList[inp],
                         Tag = inp,
@@ -666,7 +666,7 @@ namespace ExtendedControls
 
         private Color emptypanelcolor = Color.Empty;         // default empty means use base back color.. ambient property
 
-        private ExtPanelChildThemeControl[] imagepanels;
+        private ExtPanelNoChildThemed[] imagepanels;
 
         #endregion
 

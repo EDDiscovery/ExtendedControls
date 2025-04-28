@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class ExtPanelDropDown : Panel, IThemeable
+    public partial class ExtPanelDropDown : ExtPanelGradientFill, IThemeable
     {
         public event EventHandler SelectedIndexChanged;
 
@@ -117,7 +117,7 @@ namespace ExtendedControls
             SelectedIndexChanged?.Invoke(this, e);
         }
 
-        public bool Theme(Theme t, Font fnt)
+        protected override bool ThemeDerived(Theme t, Font fnt)
         {
             ForeColor = t.ButtonTextColor;
             SelectionMarkColor = t.ButtonTextColor;

@@ -321,6 +321,9 @@ namespace ExtendedControls
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_borderlines2" })]
         public Color TabControlBorder2 { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_pageback" })]
+        public Color TabControlPageBack { get; set; } = Color.Transparent;
 
         //-------------------
 
@@ -631,6 +634,7 @@ namespace ExtendedControls
             TabControlButtonBack2 = butback.Multiply(sc);
             TabControlBorder = tabborderlines;
             TabControlBorder2 = tabborderlines.Multiply(sc);      // darker colour
+            TabControlPageBack = form;
 
             for (int i = 0; i < Panel1.Length; i++)
                 Panel1[i] = Panel2[i] = Panel3[i] = Panel4[i] = Form;
@@ -686,16 +690,57 @@ namespace ExtendedControls
             return ret;
         }
 
-        internal bool Apply(Control form, Font fnt, bool nowindowsborderoverride = false)
+        internal bool Apply(Control form, Font fnt, bool nowindowsborderoverride = false, bool applytoolstriprendering = true)
         {
             UpdateControls(form, fnt, 0, nowindowsborderoverride);
-
-            if ((ToolStripManager.Renderer as ThemeToolStripRenderer) == null)      // not installed..   install one
-                ToolStripManager.Renderer = new ThemeToolStripRenderer();
-
-            UpdateToolsStripRenderer(ToolStripManager.Renderer as ThemeToolStripRenderer);
-
+            ToolStripRendererTheming(applytoolstriprendering);
             return WindowsFrame;
+        }
+
+        public void ToolStripRendererTheming(bool on)
+        {
+            if (on)
+            {
+                if ((ToolStripManager.Renderer as ThemeToolStripRenderer) == null)      // not installed..   install one
+                    ToolStripManager.Renderer = new ThemeToolStripRenderer();
+
+                var toolstripRenderer = ToolStripManager.Renderer as ThemeToolStripRenderer;
+
+                bool foretoodark = (MenuFore.GetBrightness() < 0.1);
+
+                // horizontal menu bar
+                toolstripRenderer.colortable.colMenuBarBackground = MenuBack;
+                toolstripRenderer.colortable.colMenuText = MenuFore;
+                toolstripRenderer.colortable.colMenuSelectedOrPressedText = MenuSelectedText;
+
+                toolstripRenderer.colortable.colMenuTopLevelHoveredBack = MenuSelectedBack.Multiply(0.8f);
+                toolstripRenderer.colortable.colMenuTopLevelSelectedBack = MenuSelectedBack;
+                toolstripRenderer.colortable.colMenuItemSelectedBack = MenuSelectedBack;
+
+                toolstripRenderer.colortable.colMenuDropDownBackground = MenuDropDownBack;
+                toolstripRenderer.colortable.colMenuLeftMarginBackground = MenuDropDownBack.Multiply(1.2F);
+
+                // we can't seem to set checkmark colour to anything but black so make sure the Fore is not dark            
+                toolstripRenderer.colortable.colMenuItemCheckedBackground = foretoodark ? MenuBack : MenuFore;
+                toolstripRenderer.colortable.colMenuItemHoverOverCheckmarkBackground = foretoodark ? MenuBack : MenuFore.Multiply(MouseSelectedScaling);
+
+                Color border = MenuBorder;
+
+                toolstripRenderer.colortable.colMenuDropDownBorder = border;
+                toolstripRenderer.colortable.colMenuHighlightedPartBorder = border;
+
+                toolstripRenderer.colortable.colToolStripBackground = MenuBack;
+                toolstripRenderer.colortable.colToolStripBorder = border;
+                toolstripRenderer.colortable.colToolStripSeparator = border;
+
+                toolstripRenderer.colortable.colToolStripButtonPressedBack = MenuSelectedBack.Multiply(1.2f);
+                toolstripRenderer.colortable.colToolStripButtonSelectedBack = MenuSelectedBack;
+                toolstripRenderer.colortable.colToolStripButtonPressedSelectedBorder = border.Multiply(MouseSelectedScaling);
+                toolstripRenderer.colortable.colToolBarGripper = MenuFore;
+                toolstripRenderer.colortable.colToolStripOverflowButton = MenuFore;
+            }
+            else
+                ToolStripManager.Renderer = null;
         }
 
         // if you want to theme a specific control
@@ -727,6 +772,10 @@ namespace ExtendedControls
                 form.Font = fnt;
                 System.Diagnostics.Debug.WriteLine($"Theme form {form.BackColor} scaling {form.CurrentAutoScaleDimensions} {form.AutoScaleDimensions} {form.CurrentAutoScaleFactor()}");
             }
+            else if ( ctrl is TabPage)      // TabPage is a panel, get to it first
+            {
+                ctrl.BackColor = TabControlPageBack;
+            }
             else if (ctrl is Panel)    // WINFORM, and ext panels rely on this if they don't need to theme
             {
                 ctrl.BackColor = GroupBoxOverride(parent, Form);
@@ -734,6 +783,7 @@ namespace ExtendedControls
             else if (ctrl is Label)        // WINFORM
             {
                 ctrl.ForeColor = LabelColor;
+                ctrl.BackColor = Color.Transparent; // seems to need it
             }
             else if (ctrl is Chart)    // WINFORM
             {
@@ -890,41 +940,6 @@ namespace ExtendedControls
         }
 
         // see the ToolStripCustomColourTable for meaning of these colours
-        private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)
-        {
-            bool foretoodark = (MenuFore.GetBrightness() < 0.1);
-
-            // horizontal menu bar
-            toolstripRenderer.colortable.colMenuBarBackground = MenuBack;
-            toolstripRenderer.colortable.colMenuText = MenuFore;
-            toolstripRenderer.colortable.colMenuSelectedOrPressedText = MenuSelectedText;
-
-            toolstripRenderer.colortable.colMenuTopLevelHoveredBack = MenuSelectedBack.Multiply(0.8f);
-            toolstripRenderer.colortable.colMenuTopLevelSelectedBack = MenuSelectedBack;
-            toolstripRenderer.colortable.colMenuItemSelectedBack = MenuSelectedBack;
-
-            toolstripRenderer.colortable.colMenuDropDownBackground = MenuDropDownBack;
-            toolstripRenderer.colortable.colMenuLeftMarginBackground = MenuDropDownBack.Multiply(1.2F);
-
-            // we can't seem to set checkmark colour to anything but black so make sure the Fore is not dark            
-            toolstripRenderer.colortable.colMenuItemCheckedBackground = foretoodark ? MenuBack : MenuFore;
-            toolstripRenderer.colortable.colMenuItemHoverOverCheckmarkBackground = foretoodark ? MenuBack : MenuFore.Multiply(MouseSelectedScaling);
-
-            Color border = MenuBorder;
-
-            toolstripRenderer.colortable.colMenuDropDownBorder = border; 
-            toolstripRenderer.colortable.colMenuHighlightedPartBorder = border; 
-
-            toolstripRenderer.colortable.colToolStripBackground = MenuBack;
-            toolstripRenderer.colortable.colToolStripBorder = border;
-            toolstripRenderer.colortable.colToolStripSeparator = border;
-
-            toolstripRenderer.colortable.colToolStripButtonPressedBack = MenuSelectedBack.Multiply(1.2f);
-            toolstripRenderer.colortable.colToolStripButtonSelectedBack = MenuSelectedBack;
-            toolstripRenderer.colortable.colToolStripButtonPressedSelectedBorder = border.Multiply(MouseSelectedScaling);
-            toolstripRenderer.colortable.colToolBarGripper = MenuFore;
-            toolstripRenderer.colortable.colToolStripOverflowButton = MenuFore;
-        }
 
         // if a parent above is a group box behind the control, use the group box back color, else use the form colour
         private Color GroupBoxOverride(Control parent, Color d)      
@@ -1060,6 +1075,7 @@ namespace ExtendedControls
             count += Replace(emitdebug, nameof(TabControlButtonBack), ButtonBackColor);
             count += Replace(emitdebug, nameof(TabControlButtonBack2), ButtonBackColor.Multiply(0.6F));
             count += Replace(emitdebug, nameof(TabControlBorder2), TabControlBorder.Multiply(0.6F));        // border is bright, this is darker
+            count += Replace(emitdebug, nameof(TabControlPageBack), Form);        // border is bright, this is darker
 
             for (int i = 0; i < Panel1.Length; i++)
             {

@@ -67,7 +67,10 @@
     <Compile Include="Controls\FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\Panels.cs">
+    <Compile Include="Controls\PanelGradientFill.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PanelVertScroll.cs">

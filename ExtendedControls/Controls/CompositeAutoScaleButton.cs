@@ -121,7 +121,7 @@ namespace ExtendedControls
 
             foreach (Image i in decals)
             {
-                ExtPanelChildThemeControl d = new ExtPanelChildThemeControl();        // use the no theme, we don't want the backcolor changed. Panels are themed with a back/fore colour.
+                ExtPanelNoChildThemed d = new ExtPanelNoChildThemed();        // use the no theme, we don't want the backcolor changed. Panels are themed with a back/fore colour.
                 d.Name = cb.Name + "_Decals";
                 d.BackgroundImage = i;
                 d.BackgroundImageLayout = ImageLayout.Stretch;
