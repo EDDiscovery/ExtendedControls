@@ -285,14 +285,24 @@ namespace ExtendedControls
 
                 if (flowdirection == System.Windows.Forms.FlowDirection.LeftToRight)
                 {
-                    int x = 0;
+                    int xl = 0;
+                    int xr = ClientRectangle.Width-1;
                     foreach (Control ctrl in Controls)
                     {
                         if (ctrl != pinbutton && ctrl != hiddenmarker1 && ctrl != hiddenmarker2)
                         {
-                            x += ctrl.Margin.Left;
-                            ctrl.Location = new Point(x, ctrl.Top);
-                            x += ctrl.Width + ctrl.Margin.Right;
+                            if ((ctrl.Anchor & AnchorStyles.Left) != 0)
+                            {
+                                xl += ctrl.Margin.Left;
+                                ctrl.Location = new Point(xl, ctrl.Top);
+                                xl += ctrl.Width + ctrl.Margin.Right;
+                            }
+                            else if ((ctrl.Anchor & AnchorStyles.Right) != 0)
+                            {
+                                xr -= ctrl.Margin.Right + ctrl.Width;
+                                ctrl.Location = new Point(xr, ctrl.Top);
+                                xr -= ctrl.Margin.Left;
+                            }
                         }
                     }
                 }
