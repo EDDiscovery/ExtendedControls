@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 
 namespace ExtendedControls
@@ -27,6 +28,7 @@ namespace ExtendedControls
         public int RollUpAnimationTime { get; set; } = 500;            // animation time
         public bool ShowHiddenMarker { get { return hiddenmarkershow; } set { hiddenmarkershow = value; SetHMViz(); } }
 
+        public FlowDirection? FlowDirection { get { return flowdirection; } set { flowdirection = value; } }
         public int HiddenMarkerWidth { get; set; } = 0;   // 0 = full width >0 width from left, <0 width in centre
         public int SecondHiddenMarkerWidth { get; set; } = 0;   // 0 = off, else >0 width on far right.  Only set if HiddenMarkerWidth!=0 (not checked)
 
@@ -173,6 +175,7 @@ namespace ExtendedControls
                     if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2)      // if not hidden markers
                             && IsSetVisible(c))     // and control is set visible
                     {
+                        //System.Diagnostics.Debug.WriteLine($"Set ctrl {c.Name} visible");
                         c.Visible = true;
                     }
                 }
@@ -279,6 +282,21 @@ namespace ExtendedControls
                 hiddenmarker2.Left = ClientRectangle.Width - SecondHiddenMarkerWidth;       // shown on right, when visible
                 hiddenmarker1.Width = hmwidth;
                 hiddenmarker2.Width = SecondHiddenMarkerWidth;       // shown on right, when visible
+
+                if (flowdirection == System.Windows.Forms.FlowDirection.LeftToRight)
+                {
+                    int x = 0;
+                    foreach (Control ctrl in Controls)
+                    {
+                        if (ctrl != pinbutton && ctrl != hiddenmarker1 && ctrl != hiddenmarker2)
+                        {
+                            x += ctrl.Margin.Left;
+                            ctrl.Location = new Point(x, ctrl.Top);
+                            x += ctrl.Width + ctrl.Margin.Right;
+                        }
+                    }
+                }
+
             }
 
             base.OnLayout(levent);
@@ -319,13 +337,14 @@ namespace ExtendedControls
 
             bool inarea = this.IsHandleCreated && this.RectangleScreenCoords().Contains(MousePosition.X, MousePosition.Y);
 
-           // System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent + " mode " + mode + " inarea " + inarea);
+            //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent + " mode " + mode + " inarea " + inarea);
 
             if (mode == Mode.RollingUp)        // roll up animation, move one step on, check for end
             {
                 Height = Math.Max((int)(unrolledheight - rolldiff * rollpercent), RolledUpHeight);
+                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " Roll Up to " + Height);
+
                 Refresh();
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height + " child size " + this.FindMaxSubControlArea(0, 0) + " child " + this.Controls[3].FindMaxSubControlArea(0, 0));
 
                 if (Height == RolledUpHeight)    // end
                 {
@@ -334,8 +353,10 @@ namespace ExtendedControls
                     foreach (Control c in Controls)
                     {
                         // everything hidden but hm
-                        if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2))       
+                        if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2))
+                        {
                             c.Visible = false;
+                        }
                     }
 
                     hiddenmarkershouldbeshown = true;
@@ -350,8 +371,10 @@ namespace ExtendedControls
             else if (mode == Mode.RollingDown) // roll down animation, move one step on, check for end
             {
                 Height = Math.Min((int)(RolledUpHeight + rolldiff * rollpercent), unrolledheight);
+                System.Diagnostics.Debug.WriteLine(Environment.TickCount + " Roll Down to " + Height);
+
+                Invalidate(true);
                 Refresh();
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At " + Height);
 
                 if (Height == unrolledheight)        // end, everything is already visible.  hide the hidden marker
                 {
@@ -423,6 +446,8 @@ namespace ExtendedControls
         private Timer timer;
         private bool hiddenmarkershow = true;           // if to show it at all.
         private bool hiddenmarkershouldbeshown = false; // if to show it now
+
+        private FlowDirection? flowdirection = null;
 
         private Dictionary<Control, bool> visibleState = new Dictionary<Control, bool>();       // presume all visible unless this is set
 

@@ -46,7 +46,7 @@ namespace ExtendedControls
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle}");
+            //System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle} tc {PaintTransparentColor} {ThemeColorSet}");
 
             if (PaintTransparentColor != Color.Transparent)
                 e.Graphics.DrawFilledRectangle(ClientRectangle,PaintTransparentColor);
@@ -67,6 +67,13 @@ namespace ExtendedControls
             // interfaces in this version of c# can't be virtual, but we want to give the derived class a go if required
             return ThemeDerived(t,fnt);
         }
+
+        protected override void OnResize(EventArgs eventargs)
+        {
+            Invalidate();       // need this to cause a repaint
+            base.OnResize(eventargs);
+        }
+
     }
 
     // as per GradientFill, without child theming

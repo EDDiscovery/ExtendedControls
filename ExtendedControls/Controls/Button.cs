@@ -181,13 +181,13 @@ namespace ExtendedControls
             }
             else
             {
+                //System.Diagnostics.Debug.WriteLine($"But Paint {Name} {ClientRectangle} in {Parent.ClientRectangle}");
+
                 Rectangle border = ClientRectangle;
                 border.Width--; border.Height--;
 
                 Rectangle buttonarea = ClientRectangle;
                 buttonarea.Inflate(-1, -1);                     // inside it.
-
-                //System.Diagnostics.Debug.WriteLine("ButPaint " + this.Name + " " + ClientRectangle +" " + border + " " + buttonarea + " c " + BackColor + " " + FlatAppearance.BorderColor + " E:" + Enabled + " D:" + ButtonDisabledScaling + " ms:" + MinimumSize);
 
                 Color colBack = Color.Empty;
                 Color colBack2 = Color.Empty;
