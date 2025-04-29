@@ -124,7 +124,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.extPanelGradientFill2 = new ExtendedControls.ExtPanelGradientFill();
             this.label2 = new System.Windows.Forms.Label();
-            this.extPanelRollUp2 = new ExtendedControls.ExtPanelRollUp();
+            this.extPanelRollUpFlow = new ExtendedControls.ExtPanelRollUp();
             this.extButton10 = new ExtendedControls.ExtButton();
             this.extButton9 = new ExtendedControls.ExtButton();
             this.extComboBox2 = new ExtendedControls.ExtComboBox();
@@ -141,7 +141,7 @@
             this.extPanelRollUp1.SuspendLayout();
             this.extPanelGradientFill1.SuspendLayout();
             this.extPanelGradientFill2.SuspendLayout();
-            this.extPanelRollUp2.SuspendLayout();
+            this.extPanelRollUpFlow.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelName
@@ -583,6 +583,7 @@
             // 
             this.extPanelChildThemeControl1.ChildrenThemed = false;
             this.extPanelChildThemeControl1.Controls.Add(this.extButton2);
+            this.extPanelChildThemeControl1.FlowDirection = null;
             this.extPanelChildThemeControl1.GradientDirection = 0F;
             this.extPanelChildThemeControl1.Location = new System.Drawing.Point(698, 639);
             this.extPanelChildThemeControl1.Name = "extPanelChildThemeControl1";
@@ -739,6 +740,7 @@
             dropDownTheme8.SliderGradientDirection = 90F;
             this.extPanelDropDown1.DropDownTheme = dropDownTheme8;
             this.extPanelDropDown1.FitToItemsHeight = false;
+            this.extPanelDropDown1.FlowDirection = null;
             this.extPanelDropDown1.GradientDirection = 0F;
             this.extPanelDropDown1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("extPanelDropDown1.Items")));
             this.extPanelDropDown1.Location = new System.Drawing.Point(698, 564);
@@ -1492,6 +1494,7 @@
             this.extPanelResizer1.ChildrenThemed = true;
             this.extPanelResizer1.Cursor = System.Windows.Forms.Cursors.SizeNS;
             this.extPanelResizer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.extPanelResizer1.FlowDirection = null;
             this.extPanelResizer1.GradientDirection = 0F;
             this.extPanelResizer1.Location = new System.Drawing.Point(0, 0);
             this.extPanelResizer1.Movement = System.Windows.Forms.DockStyle.Top;
@@ -1558,6 +1561,7 @@
             this.extPanelGradientFill1.Controls.Add(this.label1);
             this.extPanelGradientFill1.Controls.Add(this.extButton1);
             this.extPanelGradientFill1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.extPanelGradientFill1.FlowDirection = null;
             this.extPanelGradientFill1.GradientDirection = 0F;
             this.extPanelGradientFill1.Location = new System.Drawing.Point(0, 146);
             this.extPanelGradientFill1.Name = "extPanelGradientFill1";
@@ -1589,6 +1593,7 @@
             this.extPanelGradientFill2.Controls.Add(this.upDown1);
             this.extPanelGradientFill2.Controls.Add(this.extRichTextBox1);
             this.extPanelGradientFill2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.extPanelGradientFill2.FlowDirection = null;
             this.extPanelGradientFill2.GradientDirection = 0F;
             this.extPanelGradientFill2.Location = new System.Drawing.Point(0, 232);
             this.extPanelGradientFill2.Name = "extPanelGradientFill2";
@@ -1611,37 +1616,37 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Label";
             // 
-            // extPanelRollUp2
+            // extPanelRollUpFlow
             // 
-            this.extPanelRollUp2.AutoHeight = false;
-            this.extPanelRollUp2.AutoHeightWidthDisable = false;
-            this.extPanelRollUp2.AutoWidth = false;
-            this.extPanelRollUp2.ChildrenThemed = true;
-            this.extPanelRollUp2.Controls.Add(this.extButton10);
-            this.extPanelRollUp2.Controls.Add(this.extButton9);
-            this.extPanelRollUp2.Controls.Add(this.extComboBox2);
-            this.extPanelRollUp2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.extPanelRollUp2.FlowDirection = null;
-            this.extPanelRollUp2.GradientDirection = 0F;
-            this.extPanelRollUp2.HiddenMarkerWidth = 0;
-            this.extPanelRollUp2.Location = new System.Drawing.Point(0, 332);
-            this.extPanelRollUp2.Name = "extPanelRollUp2";
-            this.extPanelRollUp2.PaintTransparentColor = System.Drawing.Color.Transparent;
-            this.extPanelRollUp2.PinState = true;
-            this.extPanelRollUp2.RolledUpHeight = 5;
-            this.extPanelRollUp2.RollUpAnimationTime = 500;
-            this.extPanelRollUp2.RollUpDelay = 1000;
-            this.extPanelRollUp2.SecondHiddenMarkerWidth = 0;
-            this.extPanelRollUp2.ShowHiddenMarker = true;
-            this.extPanelRollUp2.Size = new System.Drawing.Size(1016, 35);
-            this.extPanelRollUp2.TabIndex = 24;
-            this.extPanelRollUp2.ThemeColors = new System.Drawing.Color[] {
+            this.extPanelRollUpFlow.AutoHeight = false;
+            this.extPanelRollUpFlow.AutoHeightWidthDisable = false;
+            this.extPanelRollUpFlow.AutoWidth = false;
+            this.extPanelRollUpFlow.ChildrenThemed = true;
+            this.extPanelRollUpFlow.Controls.Add(this.extButton10);
+            this.extPanelRollUpFlow.Controls.Add(this.extButton9);
+            this.extPanelRollUpFlow.Controls.Add(this.extComboBox2);
+            this.extPanelRollUpFlow.Dock = System.Windows.Forms.DockStyle.Top;
+            this.extPanelRollUpFlow.FlowDirection = null;
+            this.extPanelRollUpFlow.GradientDirection = 0F;
+            this.extPanelRollUpFlow.HiddenMarkerWidth = 0;
+            this.extPanelRollUpFlow.Location = new System.Drawing.Point(0, 332);
+            this.extPanelRollUpFlow.Name = "extPanelRollUpFlow";
+            this.extPanelRollUpFlow.PaintTransparentColor = System.Drawing.Color.Transparent;
+            this.extPanelRollUpFlow.PinState = true;
+            this.extPanelRollUpFlow.RolledUpHeight = 5;
+            this.extPanelRollUpFlow.RollUpAnimationTime = 500;
+            this.extPanelRollUpFlow.RollUpDelay = 1000;
+            this.extPanelRollUpFlow.SecondHiddenMarkerWidth = 0;
+            this.extPanelRollUpFlow.ShowHiddenMarker = true;
+            this.extPanelRollUpFlow.Size = new System.Drawing.Size(1016, 35);
+            this.extPanelRollUpFlow.TabIndex = 24;
+            this.extPanelRollUpFlow.ThemeColors = new System.Drawing.Color[] {
         System.Drawing.SystemColors.Control,
         System.Drawing.SystemColors.Control,
         System.Drawing.SystemColors.Control,
         System.Drawing.SystemColors.Control};
-            this.extPanelRollUp2.ThemeColorSet = -1;
-            this.extPanelRollUp2.UnrollHoverDelay = 1000;
+            this.extPanelRollUpFlow.ThemeColorSet = -1;
+            this.extPanelRollUpFlow.UnrollHoverDelay = 1000;
             // 
             // extButton10
             // 
@@ -1717,7 +1722,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1016, 932);
-            this.Controls.Add(this.extPanelRollUp2);
+            this.Controls.Add(this.extPanelRollUpFlow);
             this.Controls.Add(this.extPanelGradientFill2);
             this.Controls.Add(this.extPanelGradientFill1);
             this.Controls.Add(this.extPanelRollUp1);
@@ -1755,7 +1760,7 @@
             this.extPanelGradientFill1.ResumeLayout(false);
             this.extPanelGradientFill1.PerformLayout();
             this.extPanelGradientFill2.ResumeLayout(false);
-            this.extPanelRollUp2.ResumeLayout(false);
+            this.extPanelRollUpFlow.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1852,7 +1857,7 @@
         private ExtendedControls.ExtPanelGradientFill extPanelGradientFill2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private ExtendedControls.ExtPanelRollUp extPanelRollUp2;
+        private ExtendedControls.ExtPanelRollUp extPanelRollUpFlow;
         private ExtendedControls.ExtButton extButton10;
         private ExtendedControls.ExtButton extButton9;
         private ExtendedControls.ExtComboBox extComboBox2;

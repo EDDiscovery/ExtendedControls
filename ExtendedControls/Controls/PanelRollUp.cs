@@ -15,8 +15,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
+using static System.Windows.Forms.MonthCalendar;
 
 namespace ExtendedControls
 {
@@ -26,11 +26,12 @@ namespace ExtendedControls
         public int UnrollHoverDelay { get; set; } = 1000;       // set to large value and forces click to open functionality
         public int RolledUpHeight { get; set; } = 5;
         public int RollUpAnimationTime { get; set; } = 500;            // animation time
-        public bool ShowHiddenMarker { get { return hiddenmarkershow; } set { hiddenmarkershow = value; SetHMViz(); } }
+        public bool ShowHiddenMarker { get { return hiddenmarkershow; } set { hiddenmarkershow = value; } }
 
-        public FlowDirection? FlowDirection { get { return flowdirection; } set { flowdirection = value; } }
-        public int HiddenMarkerWidth { get; set; } = 0;   // 0 = full width >0 width from left, <0 width in centre
-        public int SecondHiddenMarkerWidth { get; set; } = 0;   // 0 = off, else >0 width on far right.  Only set if HiddenMarkerWidth!=0 (not checked)
+        // 0 = full width >0 width from left, <0 width in centre
+        public int HiddenMarkerWidth { get; set; } = 0;
+        // 0 = off, else >0 width on far right.  Only set if HiddenMarkerWidth!=0 (not checked)
+        public int SecondHiddenMarkerWidth { get; set; } = 0;   
 
         public bool PinState { get { return pinbutton.Checked; } set { SetPinState(value); } }
 
@@ -46,7 +47,8 @@ namespace ExtendedControls
             pinbutton = new ExtCheckBox();
             pinbutton.Appearance = Appearance.Normal;
             pinbutton.FlatStyle = FlatStyle.Popup;
-            pinbutton.Size = new Size(32, 32);
+            int sz = Font.ScalePixels(32);
+            pinbutton.Size = new Size(sz, sz);
             pinbutton.Image = ExtendedControls.Properties.Resources.pindownwhite2;          //colours 222 and 255 used
             pinbutton.ImageUnchecked = ExtendedControls.Properties.Resources.pinupwhite2;
             pinbutton.ImageLayout = ImageLayout.Stretch;
@@ -54,20 +56,24 @@ namespace ExtendedControls
             pinbutton.CheckedChanged += Pinbutton_CheckedChanged;
             pinbutton.TickBoxReductionRatio = 1;
             pinbutton.Name = "RUP Pinbutton";
+            pinbutton.Anchor = AnchorStyles.None;
+            pinbutton.Visible = false;
 
             hiddenmarker1 = new ExtButtonDrawn();
-            hiddenmarker1.Name = "Hidden marker";
+            hiddenmarker1.Name = "RUP Hidden marker 1";
             hiddenmarker1.ImageSelected = ExtButtonDrawn.ImageType.Bars;
             hiddenmarker1.Visible = false;
             hiddenmarker1.Padding = new Padding(0);
             hiddenmarker1.Click += Hiddenmarker_Click;
+            hiddenmarker1.Anchor = AnchorStyles.None;
 
             hiddenmarker2 = new ExtButtonDrawn();
-            hiddenmarker2.Name = "Hidden marker";
+            hiddenmarker2.Name = "RUP Hidden marker 2";
             hiddenmarker2.ImageSelected = ExtButtonDrawn.ImageType.Bars;
             hiddenmarker2.Visible = false;
             hiddenmarker2.Padding = new Padding(0);
             hiddenmarker2.Click += Hiddenmarker_Click;
+            hiddenmarker2.Anchor = AnchorStyles.None;
 
             Controls.Add(pinbutton);
             Controls.Add(hiddenmarker1);
@@ -78,31 +84,11 @@ namespace ExtendedControls
             mode = Mode.Down;
             timer = new Timer();
             timer.Tick += Timer_Tick;
-
-            SetPin(false);
         }
 
         protected override void OnHandleDestroyed(EventArgs e)      // seen it continuing to tick
         {
             timer.Stop();
-        }
-
-        private void Hiddenmarker_Click(object sender, EventArgs e)
-        {
-            if (mode == Mode.UpAwaitRollDecision)
-            {
-                //System.Diagnostics.Debug.WriteLine("Cancel roll down pause and expand now");
-                timer.Stop();
-                Timer_Tick(sender, e);
-            }
-        }
-
-        private void SetHMViz()
-        {
-            bool hm1vis = hiddenmarkershow && hiddenmarkershouldbeshown;        // done this way, don't trust visible property, sometimes it can be delayed being set so can't reread it
-            hiddenmarker1.Visible = hm1vis;
-            hiddenmarker2.Visible = hm1vis && SecondHiddenMarkerWidth > 0;            // only visible if width >0 (not full or centre) and both sides
-//            System.Diagnostics.Debug.WriteLine("Hidden vis " + hm1vis + " ci set"  + hiddenmarker1.Size + hiddenmarker1.Location);
         }
 
         public void SetToolTip(ToolTip t, string ttpin = null, string ttmarker = null)
@@ -160,20 +146,21 @@ namespace ExtendedControls
             timer.Stop();
 
             if (mode == Mode.DownAwaitRollDecision)     // cancel the decision
+            {
                 mode = Mode.Down;
+            }
             else if (mode != Mode.Down)
             {
-              //  System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll down, start animating, size " + unrolledheight);
+                //  System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll down, start animating, size " + unrolledheight);
                 mode = Mode.RollingDown;
                 targetrolltimer.TimeoutAt(RollUpAnimationTime);
                 timer.Interval = rolltimerinterval;
                 DeployStarting?.Invoke(this, EventArgs.Empty);
                 timer.Start();
 
-                foreach (Control c in Controls)     // everything except hidden marker visible
+                foreach (Control c in Controls)     // everything except hidden marker and the pin visible
                 {
-                    if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2)      // if not hidden markers
-                            && IsSetVisible(c))     // and control is set visible
+                    if (c!=hiddenmarker1 && c!= hiddenmarker2 && c!= pinbutton && IsSetVisible(c))
                     {
                         //System.Diagnostics.Debug.WriteLine($"Set ctrl {c.Name} visible");
                         c.Visible = true;
@@ -187,10 +174,12 @@ namespace ExtendedControls
             timer.Stop();
 
             if (mode == Mode.UpAwaitRollDecision)     // cancel the decision
-                mode = Mode.Up;
-            else if (mode != Mode.Up )
             {
-               // System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll up, start animating , child size " + this.FindMaxSubControlArea(0, 0));
+                mode = Mode.Up;
+            }
+            else if (mode != Mode.Up)
+            {
+                // System.Diagnostics.Debug.WriteLine(Environment.TickCount + " roll up, start animating , child size " + this.FindMaxSubControlArea(0, 0));
                 mode = Mode.RollingUp;
                 targetrolltimer.TimeoutAt(RollUpAnimationTime);
                 timer.Interval = rolltimerinterval;
@@ -215,101 +204,24 @@ namespace ExtendedControls
             }
         }
 
-        private void StartRollUpTimer()
-        {
-            if (mode == Mode.Down )
-            {
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " start roll up pause mode " + mode + " -> PauseBeforeRollUp");
-                timer.Stop();
-                timer.Interval = RollUpDelay;
-                timer.Start();
-                mode = Mode.DownAwaitRollDecision;
-            }
-        }
-
-        private void StartRollDownTimer()
-        {
-            if (mode == Mode.Up )
-            {
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " start roll down pause mode " + mode + " -> PauseBeforeRollDown");
-                timer.Stop();
-                timer.Interval = UnrollHoverDelay;
-                timer.Start();
-                mode = Mode.UpAwaitRollDecision;
-            }
-        }
-
-        protected override void OnMouseEnter(EventArgs eventargs)
-        {
-            //System.Diagnostics.Debug.WriteLine("RUP Enter panel");
-            base.OnMouseEnter(eventargs);
-            StartRollDownTimer();
-            SetPin(true);
-        }
-
-        private void Control_MouseEnter(object sender, EventArgs e)
-        {
-            //System.Diagnostics.Debug.WriteLine("RUP Entered " + sender.GetType().Name);
-            StartRollDownTimer();
-            SetPin(true);
-        }
-
-        protected override void OnMouseLeave(EventArgs eventargs)
-        {
-            //System.Diagnostics.Debug.WriteLine("RUP Left panel");
-            base.OnMouseLeave(eventargs);
-            StartRollUpTimer();
-        }
-
-        private void Control_MouseLeave(object sender, EventArgs e)
-        {
-            //System.Diagnostics.Debug.WriteLine("RUP Left " + sender.GetType().Name);
-            StartRollUpTimer();
-        }
-
         protected override void OnLayout(LayoutEventArgs levent)
         {
+            base.OnLayout(levent);
+
             if (ClientRectangle.Width > 0)
             {
-                pinbutton.Left = ClientRectangle.Width - pinbutton.Width - 8;
-                pinbutton.Top = 0;
+                pinbutton.Location = new Point(ClientRectangle.Width - pinbutton.Width - 8, 2);
 
                 int hmwidth = Math.Abs(HiddenMarkerWidth);
                 if (hmwidth == 0)
                     hmwidth = ClientRectangle.Width;
 
-                hiddenmarker1.Left = (HiddenMarkerWidth < 0) ? ((ClientRectangle.Width - hmwidth) / 2) : 0;
-                hiddenmarker2.Left = ClientRectangle.Width - SecondHiddenMarkerWidth;       // shown on right, when visible
-                hiddenmarker1.Width = hmwidth;
-                hiddenmarker2.Width = SecondHiddenMarkerWidth;       // shown on right, when visible
+                hiddenmarker1.Bounds = new Rectangle((HiddenMarkerWidth < 0) ? ((ClientRectangle.Width - hmwidth) / 2) : 0, 0, hmwidth, hiddenmarker1.Height);
+                hiddenmarker2.Bounds = new Rectangle(ClientRectangle.Width - SecondHiddenMarkerWidth, 0, SecondHiddenMarkerWidth, hiddenmarker2.Height);
 
-                if (flowdirection == System.Windows.Forms.FlowDirection.LeftToRight)
-                {
-                    int xl = 0;
-                    int xr = ClientRectangle.Width-1;
-                    foreach (Control ctrl in Controls)
-                    {
-                        if (ctrl != pinbutton && ctrl != hiddenmarker1 && ctrl != hiddenmarker2)
-                        {
-                            if ((ctrl.Anchor & AnchorStyles.Left) != 0)
-                            {
-                                xl += ctrl.Margin.Left;
-                                ctrl.Location = new Point(xl, ctrl.Top);
-                                xl += ctrl.Width + ctrl.Margin.Right;
-                            }
-                            else if ((ctrl.Anchor & AnchorStyles.Right) != 0)
-                            {
-                                xr -= ctrl.Margin.Right + ctrl.Width;
-                                ctrl.Location = new Point(xr, ctrl.Top);
-                                xr -= ctrl.Margin.Left;
-                            }
-                        }
-                    }
-                }
-
+               //System.Diagnostics.Debug.WriteLine($"RollUp hidden marker {hiddenmarker1.Location}/{hiddenmarker1.Size} : {hiddenmarker2.Left}");
             }
 
-            base.OnLayout(levent);
         }
 
         protected override void OnResize(EventArgs eventargs)
@@ -340,6 +252,58 @@ namespace ExtendedControls
             }
         }
 
+        private void StartRollUpTimer()
+        {
+            if (mode == Mode.Down)
+            {
+                //System.Diagnostics.Debug.WriteLine($"{Environment.TickCount} RUP start downawaitrolldecision");
+                timer.Stop();
+                timer.Interval = RollUpDelay;
+                timer.Start();
+                mode = Mode.DownAwaitRollDecision;
+            }
+        }
+
+        private void StartRollDownTimer()
+        {
+            if (mode == Mode.Up)
+            {
+                //System.Diagnostics.Debug.WriteLine($"{Environment.TickCount} RUP start upawaitrolldecision");
+                timer.Stop();
+                timer.Interval = UnrollHoverDelay;
+                timer.Start();
+                mode = Mode.UpAwaitRollDecision;
+            }
+        }
+
+        protected override void OnMouseEnter(EventArgs eventargs)
+        {
+            base.OnMouseEnter(eventargs);
+            StartRollDownTimer();
+            pinbutton.Visible = mode == Mode.Down || mode == Mode.DownAwaitRollDecision;        // if we are in these modes, the pin should be made visible
+            //System.Diagnostics.Debug.WriteLine($"{Environment.TickCount} RUP Enter panel Pin {pinbutton.Visible}");
+        }
+
+        private void Control_MouseEnter(object sender, EventArgs e)
+        {
+            StartRollDownTimer();
+            pinbutton.Visible = mode == Mode.Down || mode == Mode.DownAwaitRollDecision;
+            //System.Diagnostics.Debug.WriteLine($"{Environment.TickCount} RUP Entered {sender.GetType().Name} Pin {pinbutton.Visible}");
+        }
+
+        protected override void OnMouseLeave(EventArgs eventargs)
+        {
+            //System.Diagnostics.Debug.WriteLine($"{Environment.TickCount} RUP Left panel");
+            base.OnMouseLeave(eventargs);
+            StartRollUpTimer();
+        }
+
+        private void Control_MouseLeave(object sender, EventArgs e)
+        {
+            //System.Diagnostics.Debug.WriteLine($"{Environment.TickCount} RUP Left {sender.GetType().Name}");
+            StartRollUpTimer();
+        }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             double rollpercent = targetrolltimer.Percentage;
@@ -347,12 +311,26 @@ namespace ExtendedControls
 
             bool inarea = this.IsHandleCreated && this.RectangleScreenCoords().Contains(MousePosition.X, MousePosition.Y);
 
-            //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " " + rollpercent + " mode " + mode + " inarea " + inarea);
+            //System.Diagnostics.Debug.WriteLine($"{Environment.TickCount} {rollpercent}% mode {mode} inarea {inarea}");
 
-            if (mode == Mode.RollingUp)        // roll up animation, move one step on, check for end
+            if (mode == Mode.DownAwaitRollDecision)    // timer up, check if out of area and not pinned, if so roll up
+            {
+                timer.Stop();
+
+                if (!inarea && !pinbutton.Checked)      // if not in area, and its not checked..
+                {
+                    RollUp();
+                }
+                else
+                {
+                    mode = Mode.Down;   // back to down
+                    pinbutton.Visible = inarea;     // pin button visiblity reset
+                    //System.Diagnostics.Debug.WriteLine($".. Pin {pinbutton.Visible}");
+                }
+            }
+            else if (mode == Mode.RollingUp)        // roll up animation, move one step on, check for end
             {
                 Height = Math.Max((int)(unrolledheight - rolldiff * rollpercent), RolledUpHeight);
-                //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " Roll Up to " + Height);
 
                 Refresh();
 
@@ -360,28 +338,37 @@ namespace ExtendedControls
                 {
                     targetrolltimer.Stop();
                     timer.Stop();
-                    foreach (Control c in Controls)
-                    {
-                        // everything hidden but hm
-                        if (!Object.ReferenceEquals(c, hiddenmarker1) && !Object.ReferenceEquals(c, hiddenmarker2))
-                        {
-                            c.Visible = false;
-                        }
-                    }
 
-                    hiddenmarkershouldbeshown = true;
-                    SetHMViz();
+                    // everything first turned off
+                    foreach (Control c in Controls)     
+                        c.Visible = false;
+
+                    // then set on the hidden markers
+                    hiddenmarker1.Visible = hiddenmarkershow;
+                    hiddenmarker2.Visible = hiddenmarkershow && SecondHiddenMarkerWidth > 0;            // only visible if width >0 (not full or centre) and both sides
                     
-                    //System.Diagnostics.Debug.WriteLine(Environment.TickCount + " At min h" + Height);
+                    //System.Diagnostics.Debug.WriteLine($".. Hidden {hiddenmarker1.Visible} Pin {pinbutton.Visible}");
 
                     mode = Mode.Up;
                     RetractCompleted?.Invoke(this, EventArgs.Empty);
                 }
             }
+            else if (mode == Mode.UpAwaitRollDecision) // timer up.. check if in area, if so roll down
+            {
+                timer.Stop();
+
+                if (inarea)
+                {
+                    RollDown();
+                }
+                else
+                {
+                    mode = Mode.Up;     // back to up
+                }
+            }
             else if (mode == Mode.RollingDown) // roll down animation, move one step on, check for end
             {
                 Height = Math.Min((int)(RolledUpHeight + rolldiff * rollpercent), unrolledheight);
-                System.Diagnostics.Debug.WriteLine(Environment.TickCount + " Roll Down to " + Height);
 
                 Invalidate(true);
                 Refresh();
@@ -391,10 +378,13 @@ namespace ExtendedControls
                     targetrolltimer.Stop();
                     timer.Stop();
                     mode = Mode.Down;
-                    hiddenmarkershouldbeshown = false;
+
                     AutoHeightWidthDisable = false;
 
-                    SetHMViz();
+                    hiddenmarker1.Visible = false;          // no markers when down
+                    hiddenmarker2.Visible = false;
+                    pinbutton.Visible = inarea;             // but maybe pin button if mouse is in area
+                    //System.Diagnostics.Debug.WriteLine($".. Hidden {hiddenmarker1.Visible} Pin {pinbutton.Visible}");
 
                     if (wasautosized)
                         this.AutoSize = true;
@@ -408,35 +398,25 @@ namespace ExtendedControls
                 if (!inarea && !pinbutton.Checked)      // but not in area now, and not held.. so start roll up procedure
                     StartRollUpTimer();
             }
-            else if (mode == Mode.UpAwaitRollDecision) // timer up.. check if in area, if so roll down
-            {
-                timer.Stop();
-
-                if (inarea)
-                    RollDown();
-                else
-                    mode = Mode.Up;     // back to up
-            }
-            else if (mode == Mode.DownAwaitRollDecision)    // timer up, check if out of area and not pinned, if so roll up
-            {
-                timer.Stop();
-
-                pinbutton.Visible = inarea;     // visible is same as inarea flag..
-
-                //System.Diagnostics.Debug.WriteLine("Pause before - in area" + inarea + " pin " + pinbutton.Checked);
-                if (!inarea && !pinbutton.Checked)      // if not in area, and its not checked..
-                    RollUp();
-                else
-                    mode = Mode.Down;   // back to down
-            }
         }
 
-        private void SetPin(bool vis)
+        protected override void OnFontChanged(EventArgs e)
         {
+            base.OnFontChanged(e);
             int sz = Font.ScalePixels(32);
             pinbutton.Size = new Size(sz, sz);
-            pinbutton.Visible = vis;
         }
+
+        private void Hiddenmarker_Click(object sender, EventArgs e)
+        {
+            if (mode == Mode.UpAwaitRollDecision)
+            {
+                //System.Diagnostics.Debug.WriteLine("Cancel roll down pause and expand now");
+                timer.Stop();
+                Timer_Tick(sender, e);
+            }
+        }
+
 
         private bool wasautosized = false;
         private List<Panel> autosizedpanels = new List<Panel>();
@@ -455,9 +435,6 @@ namespace ExtendedControls
         private int unrolledheight;     // on resize, and down, its set.
         private Timer timer;
         private bool hiddenmarkershow = true;           // if to show it at all.
-        private bool hiddenmarkershouldbeshown = false; // if to show it now
-
-        private FlowDirection? flowdirection = null;
 
         private Dictionary<Control, bool> visibleState = new Dictionary<Control, bool>();       // presume all visible unless this is set
 

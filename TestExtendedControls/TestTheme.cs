@@ -156,7 +156,7 @@ namespace TestExtendedControls
             uc1.BackColor = Color.Red;
             tabPage3.Controls.Add(uc1);
 
-            extPanelRollUp2.FlowDirection = FlowDirection.LeftToRight;
+            extPanelRollUpFlow.FlowDirection = FlowDirection.LeftToRight;
         }
 
         public void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)

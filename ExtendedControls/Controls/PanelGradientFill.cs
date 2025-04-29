@@ -15,6 +15,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace ExtendedControls
 {
@@ -34,7 +35,8 @@ namespace ExtendedControls
         // If you set it to Color.Transparent, it goes to normal
         public Color PaintTransparentColor { get { return transparency; } set { transparency = value; Invalidate(); } }
 
-        private Color transparency = Color.Transparent;
+        // Set to lefttoright for a basic flow
+        public FlowDirection? FlowDirection { get { return flowdirection; } set { flowdirection = value; } }
 
         // Override if you want your derived class to have a go at themeing.
         protected virtual bool ThemeDerived(Theme t, Font fnt) 
@@ -56,6 +58,38 @@ namespace ExtendedControls
                 e.Graphics.DrawMultiColouredRectangles(ClientRectangle, ThemeColors, GradientDirection);
         }
 
+        protected override void OnLayout(LayoutEventArgs levent)
+        {
+            if (ClientRectangle.Width > 0)
+            {
+                if (flowdirection == System.Windows.Forms.FlowDirection.LeftToRight)
+                {
+                    int xl = 0;
+                    int xr = ClientRectangle.Width - 1;
+                    foreach (Control ctrl in Controls)
+                    {
+                        if ((ctrl.Anchor & AnchorStyles.Left) != 0)
+                        {
+                            xl += ctrl.Margin.Left;
+                            //System.Diagnostics.Debug.WriteLine($"GradientFill flow {ctrl.Name} left to {xl}");
+                            ctrl.Location = new Point(xl, ctrl.Top);
+                            xl += ctrl.Width + ctrl.Margin.Right;
+                        }
+                        else if ((ctrl.Anchor & AnchorStyles.Right) != 0)
+                        {
+                            xr -= ctrl.Margin.Right + ctrl.Width;
+                            //System.Diagnostics.Debug.WriteLine($"GradientFill flow {ctrl.Name} right to {xr}");
+                            ctrl.Location = new Point(xr, ctrl.Top);
+                            xr -= ctrl.Margin.Left;
+                        }
+                    }
+                }
+
+            }
+
+            base.OnLayout(levent);
+        }
+
         public bool Theme(Theme t, Font fnt)
         {
             if (ThemeColorSet > 0)
@@ -74,6 +108,8 @@ namespace ExtendedControls
             base.OnResize(eventargs);
         }
 
+        private Color transparency = Color.Transparent;
+        private FlowDirection? flowdirection = null;
     }
 
     // as per GradientFill, without child theming
