@@ -12,14 +12,22 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils.Win32;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using static BaseUtils.IntRangeList;
 
 namespace ExtendedControls
 {
+    public class ScrollTheme
+    {
+
+    }
+
+
     public class ExtScrollBar : Control, IThemeable
     {
         // BackColor = control back colour
@@ -27,22 +35,30 @@ namespace ExtendedControls
 
         // determine style, System, Popup, Flat..
         public FlatStyle FlatStyle { get { return flatstyle; } set { ChangeFlatStyle(value); } }
+
         public Color BorderColor { get; set; } = Color.White;
+
         public Color SliderColor { get; set; } = Color.DarkGray;
+        public Color SliderColor2 { get; set; } = Color.DarkGray;
+        public float SliderDrawAngle { get; set; } = 90F;                 
 
         public Color ArrowButtonColor { get; set; } = Color.LightGray;
+        public Color ArrowButtonColor2 { get; set; } = Color.LightGray;
         public Color ArrowBorderColor { get; set; } = Color.LightBlue;
         public float ArrowUpDrawAngle { get; set; } = 90F;                  // Popup
         public float ArrowDownDrawAngle { get; set; } = 270F;               // Popup
-        public float ArrowColorScaling { get; set; } = 0.5F;                // Popup
 
         public Color ThumbButtonColor { get; set; } = Color.DarkBlue;
+        public Color ThumbButtonColor2 { get; set; } = Color.DarkBlue;
+
+
         public Color ThumbBorderColor { get; set; } = Color.Yellow;
         public float ThumbDrawAngle { get; set; } = 0F;                     // Popup
-        public float ThumbColorScaling { get; set; } = 0.5F;                // Popup
 
         public Color MouseOverButtonColor { get; set; } = Color.Green;
+        public Color MouseOverButtonColor2 { get; set; } = Color.Green;
         public Color MousePressedButtonColor { get; set; } = Color.Red;
+        public Color MousePressedButtonColor2 { get; set; } = Color.Red;
 
         public bool AlwaysHideScrollBar { get { return alwaysHideScrollBar; } set { alwaysHideScrollBar = value; CalculateThumb(); } }
         public bool HideScrollBar { get { return hideScrollBar; } set { hideScrollBar = value; CalculateThumb(); } }
@@ -138,8 +154,10 @@ namespace ExtendedControls
             }
             else
             {
-                using (Brush br = new SolidBrush(SliderColor))
+                using (Brush br = new LinearGradientBrush(sliderarea, SliderColor, SliderColor2, SliderDrawAngle))
                     e.Graphics.FillRectangle(br, sliderarea);
+
+                //System.Diagnostics.Debug.WriteLine($"Scrollbox draw slider {SliderColor}-> {SliderColor2} at {SliderDrawAngle}");
 
                 using (Pen pr = new Pen(BorderColor))
                     e.Graphics.DrawRectangle(pr, borderrect);
@@ -172,16 +190,19 @@ namespace ExtendedControls
                 if (!thumbenable)
                     return;
 
-                c1 = (mousepressed == but) ? MousePressedButtonColor : ((mouseover == but) ? MouseOverButtonColor : ThumbButtonColor);
-                c2 = (FlatStyle == FlatStyle.Popup) ? c1.Multiply(ThumbColorScaling) : c1;
+                c1 = mousepressed == but ? MousePressedButtonColor : mouseover == but ? MouseOverButtonColor : ThumbButtonColor;
+                c2 = mousepressed == but ? MousePressedButtonColor2 : mouseover == but ? MouseOverButtonColor2 : ThumbButtonColor2;
                 angle = ThumbDrawAngle;
+               // System.Diagnostics.Debug.WriteLine($"Scrollbox draw thumb {c1} {c2} at {angle}");
             }
             else
             {
-                c1 = (mousepressed == but) ? MousePressedButtonColor : ((mouseover == but) ? MouseOverButtonColor : ArrowButtonColor);
-                c2 = (FlatStyle == FlatStyle.Popup) ? c1.Multiply(ArrowColorScaling) : c1;
+                c1 = mousepressed == but ? MousePressedButtonColor : mouseover == but ? MouseOverButtonColor : ArrowButtonColor;
+                c2 = mousepressed == but ? MousePressedButtonColor2 : mouseover == but ? MouseOverButtonColor2 : ArrowButtonColor2;
                 angle = (but == MouseOver.MouseOverUp) ? ArrowUpDrawAngle : ArrowDownDrawAngle;
+               // System.Diagnostics.Debug.WriteLine($"Scrollbox draw button {c1} {c2} at {angle}");
             }
+
 
             using (Brush bbck = new LinearGradientBrush(rect, c1, c2, angle))
                 g.FillRectangle(bbck, rect);
@@ -545,14 +566,24 @@ namespace ExtendedControls
             }
             else
             {
-                BorderColor = t.GridBorderLines;
-                BackColor = t.Form;
-                SliderColor = t.GridSliderBack;
-                BorderColor = ThumbBorderColor = ArrowBorderColor = t.GridBorderLines;
-                ArrowButtonColor = ThumbButtonColor = t.GridScrollButton;
-                MouseOverButtonColor = t.GridScrollButton.Multiply(t.MouseOverScaling);
-                MousePressedButtonColor = t.GridScrollButton.Multiply(t.MouseSelectedScaling);
                 ForeColor = t.GridScrollArrow;
+                BackColor = t.Form;
+                BorderColor = ThumbBorderColor = ArrowBorderColor = t.GridBorderLines;
+                SliderColor = t.GridSliderBack;
+                SliderColor2 = t.IsButtonGradientStyle ? t.GridSliderBack2 : t.GridSliderBack;
+                SliderDrawAngle = t.GridSliderGradientDirection;
+                ArrowButtonColor = t.GridScrollArrowBack;
+                ArrowButtonColor2 = t.IsButtonGradientStyle ? t.GridScrollArrow2Back : t.GridScrollArrowBack;
+                // arrow direction is not config
+                ThumbButtonColor = t.GridScrollButtonBack;
+                ThumbButtonColor2 = t.IsButtonGradientStyle ? t.GridScrollButtonBack2 : t.GridScrollButtonBack;
+                ThumbDrawAngle = t.GridScrollButtonGradientDirection;
+                
+                MouseOverButtonColor = ThumbButtonColor.Multiply(t.MouseOverScaling);
+                MouseOverButtonColor2 = ThumbButtonColor2.Multiply(t.MouseOverScaling);
+                MousePressedButtonColor = ThumbButtonColor.Multiply(t.MouseSelectedScaling);
+                MousePressedButtonColor = ThumbButtonColor2.Multiply(t.MouseSelectedScaling);
+                
                 FlatStyle = t.ButtonFlatStyle;
 
                 // purposely not theming the arrow directions use the theme directions as they are fixed.

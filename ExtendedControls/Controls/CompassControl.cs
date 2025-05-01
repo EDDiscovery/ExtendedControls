@@ -517,10 +517,10 @@ namespace ExtendedControls
         public bool Theme(Theme t, Font fnt)
         {
             DisabledScaling = t.DisabledScaling;
-            ForeColor = t.TextBlockColor;
-            StencilColor = t.TextBlockColor;
-            CentreTickColor = t.TextBlockColor.Multiply(t.MouseOverScaling);
-            BugColor = t.TextBlockColor.Multiply(0.8F);
+            ForeColor = t.TextBlockForeColor;
+            StencilColor = t.TextBlockForeColor;
+            CentreTickColor = t.TextBlockForeColor.Multiply(t.MouseOverScaling);
+            BugColor = t.TextBlockForeColor.Multiply(0.8F);
             BackColor = t.Form;
             return false;
         }

@@ -55,7 +55,6 @@ namespace TestExtendedControls
             tabStrip1.SetControlText("Ctext1");
             tabStrip1.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("Command pop out" + t + " " + i);
             tabStrip1.OnCreateTab += OnCreateTab;
-            tabStrip1.SelectedBackColor = Color.Green;
 
             tabStrip1.HelpAction = (p) => { System.Diagnostics.Debug.WriteLine("Help at " + p); };
 
@@ -113,9 +112,6 @@ namespace TestExtendedControls
             tabStrip4.SetControlText("Ctext3");
             tabStrip4.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("4 Command pop out" + t + " " + i);
             tabStrip4.OnCreateTab += OnCreateTab;
-            tabStrip4.SelectedBackColor = Color.Green;
-            tabStrip4.EmptyColor = Color.Pink;
-
 
             tabStrip5.StripMode = ExtendedControls.TabStrip.StripModeType.ListSelection;
             tabStrip5.SetControlText("Ctext3");

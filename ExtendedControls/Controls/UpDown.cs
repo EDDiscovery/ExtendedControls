@@ -22,16 +22,14 @@ namespace ExtendedControls
     public class UpDown : Control, IThemeable
     {
         // Call Invalidate if you change these..
+        public override Color ForeColor { get; set; } = SystemColors.ControlText;       // arrow
         public override Color BackColor { get; set; } = SystemColors.Control;
-        public override Color ForeColor { get; set; } = SystemColors.ControlText;
-        public Color MouseOverColor { get; set; } = SystemColors.ControlLight;
-        public Color MouseSelectedColor { get; set; } = SystemColors.ControlLightLight;
-        public Color BorderColor { get; set; } = Color.Gray;
-        public float MouseSelectedColorScaling { get; set; } = 1.5F;
-        public float BackColorScaling { get; set; } = 0.5F;
+        public Color BackColor2 { get; set; } = SystemColors.Control;
+        public float MouseOverScaling { get; set; } = 1.3F;
+        public float MouseSelectedScaling { get; set; } = 1.3F;
         public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
-
-        private float gradientdirection = 90F;
+        public Color BorderColor { get; set; } = Color.Gray;
+        public float DisabledScaling { get; set; } = 0.5F;      // when disabled, scale down colours
 
         public delegate void OnSelected(object sender, MouseEventArgs e);   
         public event OnSelected Selected;
@@ -62,15 +60,17 @@ namespace ExtendedControls
             if (upper.Width == 0)
                 return;
 
-            Color pcup = (Enabled) ? ((mousedown == MouseOver.MouseOverUp) ? MouseSelectedColor : ((mouseover == MouseOver.MouseOverUp) ? MouseOverColor : this.BackColor)) : this.BackColor.Multiply(0.5F);
-            Color pcdown = (Enabled) ? ((mousedown == MouseOver.MouseOverDown) ? MouseSelectedColor : ((mouseover == MouseOver.MouseOverDown) ? MouseOverColor : this.BackColor)) : this.BackColor.Multiply(0.5F);
+            float multup = !Enabled ? DisabledScaling : mousepressed == MouseOver.MouseOverUp ? MouseSelectedScaling : mouseover == MouseOver.MouseOverUp ? MouseOverScaling : 1.0f;
+            float multdown = !Enabled ? DisabledScaling : mousepressed == MouseOver.MouseOverDown ? MouseSelectedScaling : mouseover == MouseOver.MouseOverDown ? MouseOverScaling : 1.0f;
 
-            Rectangle area = new Rectangle(0, 0, lower.Width, lower.Height + 1); // seems to make it linear paint bettwe
+            Rectangle area = new Rectangle(0, 0, lower.Width, lower.Height + 1); // seems to make it linear paint between
 
-            using (Brush b = new LinearGradientBrush(area, pcup, pcup.Multiply(BackColorScaling), GradientDirection))
+            //System.Diagnostics.Debug.WriteLine($"Mult Up {multup} {multdown} {BackColor.Multiply(multup)} {BackColor2.Multiply(multup)}");
+
+            using (Brush b = new LinearGradientBrush(area, BackColor.Multiply(multup), BackColor2.Multiply(multup), GradientDirection))
                 e.Graphics.FillRectangle(b, upper);
 
-            using (Brush b = new LinearGradientBrush(area, pcdown, pcdown.Multiply(BackColorScaling), (GradientDirection+180.0F) % 360))
+            using (Brush b = new LinearGradientBrush(area, BackColor.Multiply(multdown), BackColor2.Multiply(multdown), GradientDirection))
                 e.Graphics.FillRectangle(b, lower);
 
             using (Pen p = new Pen(BorderColor, 1F))
@@ -87,7 +87,7 @@ namespace ExtendedControls
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                using (Pen p = new Pen(mousedown == MouseOver.MouseOverUp ? ForeColor.Multiply(MouseSelectedColorScaling) : ForeColor))
+                using (Pen p = new Pen(mousepressed == MouseOver.MouseOverUp ? ForeColor.Multiply(MouseSelectedScaling) : ForeColor))
                 {
                     int hoffset = upper.Width / 3;
                     int voffset = upper.Height / 3;
@@ -99,7 +99,7 @@ namespace ExtendedControls
                     e.Graphics.DrawLine(p, arrowpt2u, arrowpt3u);
                 }
 
-                using (Pen p = new Pen(mousedown == MouseOver.MouseOverDown ? ForeColor.Multiply(MouseSelectedColorScaling) : ForeColor))
+                using (Pen p = new Pen(mousepressed == MouseOver.MouseOverDown ? ForeColor.Multiply(MouseSelectedScaling) : ForeColor))
                 {
                     int hoffset = lower.Width / 3;
                     int voffset = lower.Height / 3;
@@ -147,7 +147,7 @@ namespace ExtendedControls
         {
             base.OnMouseLeave(eventargs);
             mouseover = MouseOver.MouseOverNone;
-            mousedown = MouseOver.MouseOverNone;
+            mousepressed = MouseOver.MouseOverNone;
             Invalidate();
         }
 
@@ -157,7 +157,7 @@ namespace ExtendedControls
 
             if (upper.Contains(mevent.Location))
             {
-                mousedown = MouseOver.MouseOverUp;
+                mousepressed = MouseOver.MouseOverUp;
                 Invalidate();
                 MouseEventArgs me = new MouseEventArgs(mevent.Button, mevent.Clicks, mevent.X, mevent.Y, 1);
                 if (Selected != null)
@@ -167,7 +167,7 @@ namespace ExtendedControls
             }
             else if (lower.Contains(mevent.Location))
             {
-                mousedown = MouseOver.MouseOverDown;
+                mousepressed = MouseOver.MouseOverDown;
                 Invalidate();
                 MouseEventArgs me = new MouseEventArgs(mevent.Button, mevent.Clicks, mevent.X, mevent.Y, -1);
                 if (Selected != null)
@@ -179,7 +179,7 @@ namespace ExtendedControls
         protected override void OnMouseUp(MouseEventArgs mevent)
         {
             base.OnMouseUp(mevent);
-            mousedown = MouseOver.MouseOverNone;
+            mousepressed = MouseOver.MouseOverNone;
             repeatclick.Stop();
             Invalidate();
         }
@@ -204,24 +204,24 @@ namespace ExtendedControls
         public bool Theme(Theme t, Font fnt)
         {
             BackColor = t.ButtonBackColor;
+            BackColor2 = t.IsButtonGradientStyle ? t.ButtonBackColor2 : t.ButtonBackColor;
             ForeColor = t.ButtonTextColor;
+            MouseOverScaling = t.MouseOverScaling;
+            MouseSelectedScaling = t.MouseSelectedScaling;
             BorderColor = t.ButtonBorderColor;
-            MouseOverColor = t.ButtonTextColor.Multiply(t.MouseOverScaling);
-            MouseSelectedColor = t.ButtonTextColor.Multiply(t.MouseSelectedScaling);
-            GradientDirection = t.ButtonGradientDirection;
-            BackColorScaling = t.ButtonGradientAmount;
+            GradientDirection = t.ButtonBackGradientDirection;
             return false;
         }
 
         #endregion
 
-        enum MouseOver {  MouseOverUp , MouseOverDown, MouseOverNone };
+        private enum MouseOver {  MouseOverUp , MouseOverDown, MouseOverNone };
         private MouseOver mouseover = MouseOver.MouseOverNone;
-        private MouseOver mousedown = MouseOver.MouseOverNone;
-        Rectangle upper;
-        Rectangle lower;
-
-        Timer repeatclick;
-        MouseEventArgs mouseargs;
+        private MouseOver mousepressed = MouseOver.MouseOverNone;
+        private Rectangle upper;
+        private Rectangle lower;
+        private float gradientdirection = 90F;
+        private Timer repeatclick;
+        private MouseEventArgs mouseargs;
     }
 }

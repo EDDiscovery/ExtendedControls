@@ -1155,11 +1155,11 @@ namespace ExtendedControls
                 SetXAxisTitle(CurrentChartArea.AxisX.Title, fnt, t.GridCellText);
                 SetYAxisTitle(CurrentChartArea.AxisY.Title, fnt, t.GridCellText);
 
-                SetXCursorColors(t.GridScrollArrow, t.GridCellText, 2);
-                SetYCursorColors(t.GridScrollArrow, t.GridCellText, 2);
+                SetXCursorColors(t.GridScrollArrowBack, t.GridCellText, 2);
+                SetYCursorColors(t.GridScrollArrowBack, t.GridCellText, 2);
 
-                SetXCursorScrollBarColors(t.GridSliderBack, t.GridScrollButton);
-                SetYCursorScrollBarColors(t.GridSliderBack, t.GridScrollButton);
+                SetXCursorScrollBarColors(t.GridSliderBack, t.GridScrollButtonBack);
+                SetYCursorScrollBarColors(t.GridSliderBack, t.GridScrollButtonBack);
             }
 
             for (int i = Series.Count - 1; i >= 0; i--)        // backwards so chart 0 is left the pick
@@ -1168,7 +1168,7 @@ namespace ExtendedControls
                 SetCurrentSeries(i);
                 SetSeriesColor(t.GetChartColor(i));
                 SetSeriesDataLabelsColorFont(t.GridCellText, fnt, Color.Transparent);
-                SetSeriesMarkersColorSize(t.GridScrollArrow, 4, t.GridScrollButton, 2);
+                SetSeriesMarkersColorSize(t.GridScrollArrowBack, 4, t.GridScrollButtonBack, 2);
             }
 
             return false;

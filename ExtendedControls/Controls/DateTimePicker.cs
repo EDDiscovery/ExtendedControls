@@ -31,7 +31,8 @@ namespace ExtendedControls
         public Color TextBackColor { get { return textbackcolor; } set { textbackcolor = checkbox.BackColor = calendaricon.BackColor = value; Invalidate(true); } }
         public Color SelectedColor { get; set; } = Color.Yellow;    // back colour when item is selected.
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; PerformLayout(); } }
-        public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
+        public Color BorderColor2 { get { return bordercolor2; } set { bordercolor2 = value; PerformLayout(); } }
+        public float DisabledScaling { get; set; } = 0.5F;           
 
         public string CustomFormat { get { return customformat; } set { customformat = value; Recalc(); } }
         public DateTimePickerFormat Format { get { return format; } set { SetFormat(value); } }
@@ -220,16 +221,16 @@ namespace ExtendedControls
             {
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-                Color color1 = BorderColor;
-                Color color2 = BorderColor.Multiply(BorderColorScaling);
-
                 using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, 1, ClientRectangle.Width - 2, ClientRectangle.Height - 1, 1, 1))
-                using (Pen pc1 = new Pen(color1, 1.0F))
+                using (Pen pc1 = new Pen(BorderColor, 1.0F))
                     e.Graphics.DrawPath(pc1, g1);
 
-                using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, 0, ClientRectangle.Width, ClientRectangle.Height - 1, 2, 2))
-                using (Pen pc2 = new Pen(color2, 1.0F))
-                    e.Graphics.DrawPath(pc2, g2);
+                if (BorderColor2 != Color.Transparent)
+                {
+                    using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, 0, ClientRectangle.Width, ClientRectangle.Height - 1, 2, 2))
+                    using (Pen pc2 = new Pen(BorderColor2, 1.0F))
+                        e.Graphics.DrawPath(pc2, g2);
+                }
 
                 drawarea.Inflate(-2, -2);
 
@@ -239,7 +240,7 @@ namespace ExtendedControls
             using (Brush br = new SolidBrush(this.TextBackColor))
                 e.Graphics.FillRectangle(br, drawarea);
 
-            using (Brush textb = new SolidBrush(this.ForeColor))
+            using (Brush textb = new SolidBrush(this.ForeColor.Multiply(Enabled ? 1.0F : DisabledScaling)))
             {
                 for (int i = 0; i < partlist.Count; i++)
                 {
@@ -475,28 +476,37 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            BorderColor = t.GridBorderLines;
-            ForeColor = t.TextBlockColor;
-            TextBackColor = t.TextBackColor;
-            BackColor = t.Form;
-            SelectedColor = t.TextBlockColor.Multiply(t.DisabledScaling);
-            checkbox.FlatStyle = t.ButtonFlatStyle;
-            checkbox.TickBoxReductionRatio = t.CheckBoxTickSize;
-            checkbox.ForeColor = t.CheckBoxText;
-            checkbox.CheckBoxColor = t.CheckBoxBack;
-            Color inner = t.CheckBoxBack.Multiply(t.CheckBoxTickStyleInnerScaling);
-            if (inner.GetBrightness() < 0.1)        // double checking
-                inner = Color.Gray;
-            checkbox.CheckBoxInnerColor = inner;
-            checkbox.CheckColor = t.CheckBoxTick;
-            checkbox.MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
+            ForeColor = t.TextBlockForeColor;
+            BackColor = t.TextBlockBackColor;
+            TextBackColor = t.TextBlockBackColor;
 
-            // we theme the updown ourselves and do not use its themer
+            BorderColor = t.IsTextBoxBorderNone ? Color.Transparent : t.TextBlockBorderColor;
+            BorderColor2 = t.IsTextBoxBorderColour ? t.TextBlockBorderColor2 : Color.Transparent;
+
+            SelectedColor = t.TextBlockForeColor.Multiply(t.DisabledScaling);
+
+            DisabledScaling = t.DisabledScaling;
+
+            checkbox.BackColor = BackColor;
+            checkbox.ForeColor = t.CheckBoxText;
+            checkbox.DisabledScaling = t.DisabledScaling;
+            checkbox.MouseOverScaling = t.MouseOverScaling;
+            checkbox.MouseSelectedScaling = t.MouseSelectedScaling;
+
+            checkbox.CheckBoxColor = t.CheckBoxBack;
+            checkbox.CheckBoxInnerColor = t.CheckBoxBack2;
+            checkbox.CheckColor = t.CheckBoxTick;
+            checkbox.CheckBoxGradientDirection = t.CheckBoxBackGradientDirection;
+            checkbox.TickBoxReductionRatio = t.CheckBoxTickSize;
+            checkbox.FlatStyle = t.ButtonFlatStyle;
+
             updown.BackColor = t.ButtonBackColor;
-            updown.BorderColor = t.GridBorderLines;
-            updown.ForeColor = t.TextBlockColor;
-            updown.MouseOverColor = t.CheckBoxBack.Multiply(t.MouseOverScaling);
-            updown.MouseSelectedColor = t.CheckBoxBack.Multiply(t.MouseSelectedScaling);
+            updown.BackColor2 = t.ButtonBackColor2;
+            updown.ForeColor = t.ButtonTextColor;
+            updown.MouseOverScaling = t.MouseOverScaling;
+            updown.MouseSelectedScaling = t.MouseSelectedScaling;
+            updown.BorderColor = t.ButtonBorderColor;
+            updown.GradientDirection = t.ButtonBackGradientDirection;
 
             return false;
         }
@@ -511,6 +521,7 @@ namespace ExtendedControls
         private bool showcheckbox = false;
         private Color textbackcolor = Color.DarkBlue;
         private Color bordercolor = Color.Transparent;
+        private Color bordercolor2 = Color.Transparent;
 
         public UpDown updown = new UpDown();                            // for setting colours
         public ExtCheckBox checkbox = new ExtCheckBox();          // for setting colours, note background is forces to TextBackColour

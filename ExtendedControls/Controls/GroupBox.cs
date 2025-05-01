@@ -20,16 +20,20 @@ namespace ExtendedControls
 {
     public class ExtGroupBox : GroupBox, IThemeable
     {
-        // call Invalidate if changed
+        // ForeColor = text, BackColor = for system mode
+        public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
+
+        // ThemeColors only used if ThemeColourSet>=0.  
+        public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
+        // -1 = system, 0 use ThemeColours but don't set when calling theme(), else 1,2,3,4.. one of the Panel colour sets
+        public int ThemeColorSet { get; set; } = -1;
+        public float GradientDirection { get; set; }
 
         public Color BorderColor { get; set; } = Color.LightGray;       // border
-        public float BackColorScaling { get; set; } = 0.5F;             // Popup style only
-        public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
+        public Color BorderColor2 { get; set; } = Color.Gray;           // darker
+
         public int TextStartPosition { get; set; } = -1;                // -1 left, +1 right, 0 centre, else pixel start pos
         public int TextPadding { get; set; } = 0;                       // pixels at start/end of text
-        public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
-
-        private float gradientdirection = 90F;
 
         public ExtGroupBox() : base()
         {
@@ -38,28 +42,20 @@ namespace ExtendedControls
         protected override void OnPaint(PaintEventArgs e)
         {
             if (FlatStyle == FlatStyle.System || FlatStyle == FlatStyle.Standard)
+            {
                 base.OnPaint(e);
-            else if ( DisplayRectangle.Width > 0 && DisplayRectangle.Height > 0 ) // Popup and Flat are ours, as long as its got size
+            }
+            else if (DisplayRectangle.Width > 0 && DisplayRectangle.Height > 0) // Popup and Flat are ours, as long as its got size
             {
                 int topline = DisplayRectangle.Y / 2;
 
-                if (!BackColor.IsFullyTransparent())
-                {
-                    Color color2 = (FlatStyle == FlatStyle.Popup) ? BackColor.Multiply(BackColorScaling) : BackColor;
+                DrawingHelpersStaticFunc.DrawMultiColouredRectangles(e.Graphics, ClientRectangle, ThemeColors, GradientDirection);
 
-                    Rectangle borderrect = ClientRectangle;
-
-                    using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, BackColor, color2, GradientDirection))
-                        e.Graphics.FillRectangle(b, borderrect);
-                }
 
                 if (!BorderColor.IsFullyTransparent())
                 {
-                    Color color1 = BorderColor;
-                    Color color2 = BorderColor.Multiply(BorderColorScaling);
-                    
                     int textlength = 0;
-                    if ( this.Text != "" )
+                    if (this.Text != "")
                     {           // +1 for rounding down..
                         textlength = (int)e.Graphics.MeasureString(this.Text, this.Font).Width + TextPadding * 2 + 1;
                     }
@@ -77,12 +73,12 @@ namespace ExtendedControls
 
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
 
-                    using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, topline+1, ClientRectangle.Width-2, ClientRectangle.Height - topline - 1, 1,1 , textstart- 1, textlength))
-                    using (Pen pc1 = new Pen(color1, 1.0F))
+                    using (GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, topline + 1, ClientRectangle.Width - 2, ClientRectangle.Height - topline - 1, 1, 1, textstart - 1, textlength))
+                    using (Pen pc1 = new Pen(BorderColor, 1.0F))
                         e.Graphics.DrawPath(pc1, g1);
 
-                    using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, topline, ClientRectangle.Width, ClientRectangle.Height - topline - 1, 2, 2 , textstart, textlength))
-                    using (Pen pc2 = new Pen(color2, 1.0F))
+                    using (GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, topline, ClientRectangle.Width, ClientRectangle.Height - topline - 1, 2, 2, textstart, textlength))
+                    using (Pen pc2 = new Pen(BorderColor2, 1.0F))
                         e.Graphics.DrawPath(pc2, g2);
 
                     if (textlength > 0)
@@ -90,7 +86,7 @@ namespace ExtendedControls
                         e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
                         int twidth = ClientRectangle.Width - textstart - 4;            // What size have we left..
-                        twidth = (textlength<twidth) ? textlength: twidth;              // clip
+                        twidth = (textlength < twidth) ? textlength : twidth;              // clip
                         Rectangle textarea = new Rectangle(textstart, 0, twidth, DisplayRectangle.Y);
 
                         using (Brush textb = new SolidBrush(this.ForeColor))
@@ -108,12 +104,25 @@ namespace ExtendedControls
         public bool Theme(Theme t, Font fnt)
         {
             ForeColor = t.GroupFore;
-            BackColor = t.GroupBack;
+            BackColor = t.GroupBack[0]; // for system mode
+
+            if (ThemeColorSet > 0)
+            {
+                ThemeColors = t.GetPanelSet(ThemeColorSet);
+                GradientDirection = t.GetPanelDirection(ThemeColorSet);
+            }
+            else
+            {
+                GradientDirection = t.GroupBoxGradientDirection;
+                ThemeColors = t.GroupBack;
+            }
+
             BorderColor = t.GroupBorder;
-            FlatStyle = t.GroupBoxGradientAmount < 0 ? FlatStyle.Flat : FlatStyle.Popup;
+            BorderColor2 = t.GroupBorder2;
+            FlatStyle = FlatStyle.Popup;
             GradientDirection = t.GroupBoxGradientDirection;
-            BackColorScaling = t.GroupBoxGradientAmount;
             return true;
         }
+
     }
 }

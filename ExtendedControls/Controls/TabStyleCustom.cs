@@ -20,7 +20,7 @@ namespace ExtendedControls
 {
     public abstract class TabStyleCustom
     {
-        public abstract void DrawTab(Graphics gr, Rectangle borderrect, int index, bool selected, Color color1, Color color2, Color coloroutline, TabAlignment alignment);
+        public abstract void DrawTab(Graphics gr, Rectangle borderrect, int index, bool selected, Color color1, Color color2, Color coloroutline, TabAlignment alignment, float angle);
 
         public virtual void DrawText(Graphics gr, Rectangle borderrect, int index, bool selected, Color color, string text, Font ft, Image icon)        // provide a standard version..
         {
@@ -55,7 +55,7 @@ namespace ExtendedControls
 
     public class TabStyleSquare : TabStyleCustom
     {
-        public override void DrawTab(Graphics gr, Rectangle borderrect, int index, bool selected, Color color1, Color color2, Color coloroutline, TabAlignment alignment)
+        public override void DrawTab(Graphics gr, Rectangle borderrect, int index, bool selected, Color color1, Color color2, Color coloroutline, TabAlignment alignment, float angle)
         {
             System.Diagnostics.Debug.Assert(alignment == TabAlignment.Top);
 
@@ -86,7 +86,7 @@ namespace ExtendedControls
             border.AddLine(xfar, borderrect.Y, xfar, yfar);
 
             gr.SmoothingMode = SmoothingMode.Default;
-            using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, color1, color2, 90))
+            using (Brush b = new LinearGradientBrush(borderrect, color1, color2, angle))
                 gr.FillPath(b, fill);
             using (Pen p = new Pen(coloroutline, 1.0F))
                 gr.DrawPath(p, border);
@@ -103,7 +103,7 @@ namespace ExtendedControls
 
     public class TabStyleRoundedEdge : TabStyleCustom
     {
-        public override void DrawTab(Graphics gr, Rectangle borderrect, int index, bool selected, Color color1, Color color2, Color coloroutline , TabAlignment alignment)
+        public override void DrawTab(Graphics gr, Rectangle borderrect, int index, bool selected, Color color1, Color color2, Color coloroutline , TabAlignment alignment, float angle)
         {
             System.Diagnostics.Debug.Assert(alignment == TabAlignment.Top);
 
@@ -132,7 +132,7 @@ namespace ExtendedControls
 
             gr.SmoothingMode = SmoothingMode.Default;
 
-            using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, color1, color2, 90))
+            using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, color1, color2, angle))
                 gr.FillPath(b, fill);
 
             gr.SmoothingMode = SmoothingMode.AntiAlias;
@@ -154,7 +154,7 @@ namespace ExtendedControls
     {
         private const int shift = 6;
 
-        public override void DrawTab(Graphics gr, Rectangle borderrect, int index, bool selected, Color color1, Color color2, Color coloroutline, TabAlignment alignment)
+        public override void DrawTab(Graphics gr, Rectangle borderrect, int index, bool selected, Color color1, Color color2, Color coloroutline, TabAlignment alignment, float angle)
         {
             GraphicsPath border = new GraphicsPath();
             GraphicsPath fill = new GraphicsPath();
@@ -174,7 +174,7 @@ namespace ExtendedControls
 
             gr.SmoothingMode = SmoothingMode.Default;
 
-            using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, color1, color2, 90))
+            using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(borderrect, color1, color2, angle))
                 gr.FillPath(b, fill);
 
             gr.SmoothingMode = SmoothingMode.AntiAlias;

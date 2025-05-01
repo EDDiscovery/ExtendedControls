@@ -19,6 +19,7 @@ namespace ExtendedControls
 {
     public class LabelData : Control, IThemeable
     {
+        // BackColor (can be transparent), ForeColor used
         [System.ComponentModel.Browsable(true)]
         public override string Text { get { return base.Text; } set { base.Text = value; Invalidate(); } }
 
@@ -213,6 +214,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
+            BackColor = Color.Transparent;
             BorderColor = t.TextBlockBorderColor;
             ForeColor = t.LabelColor;
             return false;

@@ -46,9 +46,7 @@
             this.checkBoxCustom1.CheckBoxColor = System.Drawing.Color.Gray;
             this.checkBoxCustom1.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustom1.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustom1.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustom1.Location = new System.Drawing.Point(21, 280);
-            this.checkBoxCustom1.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustom1.Name = "checkBoxCustom1";
             this.checkBoxCustom1.Size = new System.Drawing.Size(106, 23);
             this.checkBoxCustom1.TabIndex = 4;
@@ -69,14 +67,11 @@
             // comboBoxCustom1
             // 
             this.comboBoxCustom1.BorderColor = System.Drawing.Color.White;
-            this.comboBoxCustom1.ButtonColorScaling = 0.5F;
             this.comboBoxCustom1.DataSource = null;
             this.comboBoxCustom1.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustom1.DisplayMember = "";
-            this.comboBoxCustom1.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustom1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.comboBoxCustom1.Location = new System.Drawing.Point(21, 234);
-            this.comboBoxCustom1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustom1.Name = "comboBoxCustom1";
             this.comboBoxCustom1.SelectedIndex = -1;
             this.comboBoxCustom1.SelectedItem = null;
@@ -94,11 +89,9 @@
             this.autoCompleteTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.autoCompleteTextBox1.BackErrorColor = System.Drawing.Color.Red;
             this.autoCompleteTextBox1.BorderColor = System.Drawing.Color.Transparent;
-            this.autoCompleteTextBox1.BorderColorScaling = 0.5F;
             this.autoCompleteTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.autoCompleteTextBox1.ClearOnFirstChar = false;
             this.autoCompleteTextBox1.ControlBackground = System.Drawing.SystemColors.Control;
-            this.autoCompleteTextBox1.DropDownBorderColor = System.Drawing.Color.Green;
             this.autoCompleteTextBox1.EndButtonEnable = false;
             this.autoCompleteTextBox1.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("autoCompleteTextBox1.EndButtonImage")));
             this.autoCompleteTextBox1.EndButtonVisible = false;
@@ -121,7 +114,6 @@
             // 
             this.panelSelectionList1.BorderColor = System.Drawing.Color.DarkRed;
             this.panelSelectionList1.FitToItemsHeight = true;
-            this.panelSelectionList1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.panelSelectionList1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("panelSelectionList1.Items")));
             this.panelSelectionList1.Location = new System.Drawing.Point(21, 64);
             this.panelSelectionList1.Name = "panelSelectionList1";

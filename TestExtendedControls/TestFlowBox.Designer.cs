@@ -33,10 +33,10 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.extFlowLayoutPanel2 = new ExtendedControls.ExtFlowLayoutPanel();
+            this.extFlowLayoutPanel2 = new ExtendedControls.ExtFlowLayoutPanelParentResize();
             this.extButton25 = new ExtendedControls.ExtButton();
             this.extGroupBox2 = new ExtendedControls.ExtGroupBox();
-            this.extFlowLayoutPanel1 = new ExtendedControls.ExtFlowLayoutPanel();
+            this.extFlowLayoutPanel1 = new ExtendedControls.ExtFlowLayoutPanelParentResize();
             this.extButton23 = new ExtendedControls.ExtButton();
             this.extButton24 = new ExtendedControls.ExtButton();
             this.extButton22 = new ExtendedControls.ExtButton();
@@ -145,9 +145,7 @@
             // extGroupBox2
             // 
             this.extGroupBox2.BackColor = System.Drawing.Color.PaleGoldenrod;
-            this.extGroupBox2.BackColorScaling = 0.5F;
             this.extGroupBox2.BorderColor = System.Drawing.Color.LightGray;
-            this.extGroupBox2.BorderColorScaling = 0.5F;
             this.extGroupBox2.Controls.Add(this.extFlowLayoutPanel1);
             this.extGroupBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.extGroupBox2.Location = new System.Drawing.Point(0, 174);
@@ -254,9 +252,7 @@
             // extGroupBox1
             // 
             this.extGroupBox1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extGroupBox1.BackColorScaling = 0.5F;
             this.extGroupBox1.BorderColor = System.Drawing.Color.LightGray;
-            this.extGroupBox1.BorderColorScaling = 0.5F;
             this.extGroupBox1.Controls.Add(this.flowLayoutPanel2);
             this.extGroupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.extGroupBox1.Location = new System.Drawing.Point(0, 97);
@@ -542,9 +538,9 @@
         private ExtendedControls.ExtButton extButton23;
         private ExtendedControls.ExtButton extButton24;
         private ExtendedControls.ExtGroupBox extGroupBox2;
-        private ExtendedControls.ExtFlowLayoutPanel extFlowLayoutPanel1;
+        private ExtendedControls.ExtFlowLayoutPanelParentResize extFlowLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
-        private ExtendedControls.ExtFlowLayoutPanel extFlowLayoutPanel2;
+        private ExtendedControls.ExtFlowLayoutPanelParentResize extFlowLayoutPanel2;
         private ExtendedControls.ExtButton extButton25;
         private ExtendedControls.ExtButton extButton31;
         private ExtendedControls.ExtButton extButton26;

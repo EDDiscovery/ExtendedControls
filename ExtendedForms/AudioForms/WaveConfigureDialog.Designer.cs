@@ -72,7 +72,6 @@ namespace ExtendedAudioForms
             this.textBoxBorderText.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxBorderText.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderText.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxBorderText.BorderColorScaling = 0.5F;
             this.textBoxBorderText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorderText.ClearOnFirstChar = false;
             this.textBoxBorderText.ControlBackground = System.Drawing.SystemColors.Control;
@@ -128,15 +127,12 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxCustomV.AutoSize = true;
             this.checkBoxCustomV.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomV.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomV.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomV.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomV.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustomV.ImageIndeterminate = null;
             this.checkBoxCustomV.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomV.ImageUnchecked = null;
             this.checkBoxCustomV.Location = new System.Drawing.Point(276, 159);
-            this.checkBoxCustomV.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomV.Name = "checkBoxCustomV";
             this.checkBoxCustomV.Size = new System.Drawing.Size(66, 17);
             this.checkBoxCustomV.TabIndex = 5;
@@ -149,15 +145,12 @@ namespace ExtendedAudioForms
             // 
             this.checkBoxCustomComplete.AutoSize = true;
             this.checkBoxCustomComplete.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomComplete.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomComplete.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomComplete.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomComplete.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustomComplete.ImageIndeterminate = null;
             this.checkBoxCustomComplete.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomComplete.ImageUnchecked = null;
             this.checkBoxCustomComplete.Location = new System.Drawing.Point(12, 82);
-            this.checkBoxCustomComplete.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomComplete.Name = "checkBoxCustomComplete";
             this.checkBoxCustomComplete.Size = new System.Drawing.Size(150, 17);
             this.checkBoxCustomComplete.TabIndex = 2;
@@ -249,7 +242,6 @@ namespace ExtendedAudioForms
             this.textBoxBorderStartTrigger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxBorderStartTrigger.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderStartTrigger.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxBorderStartTrigger.BorderColorScaling = 0.5F;
             this.textBoxBorderStartTrigger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorderStartTrigger.ClearOnFirstChar = false;
             this.textBoxBorderStartTrigger.ControlBackground = System.Drawing.SystemColors.Control;
@@ -286,7 +278,6 @@ namespace ExtendedAudioForms
             this.textBoxBorderEndTrigger.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.textBoxBorderEndTrigger.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderEndTrigger.BorderColor = System.Drawing.Color.Transparent;
-            this.textBoxBorderEndTrigger.BorderColorScaling = 0.5F;
             this.textBoxBorderEndTrigger.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxBorderEndTrigger.ClearOnFirstChar = false;
             this.textBoxBorderEndTrigger.ControlBackground = System.Drawing.SystemColors.Control;
@@ -311,14 +302,11 @@ namespace ExtendedAudioForms
             // comboBoxCustomPriority
             // 
             this.comboBoxCustomPriority.BorderColor = System.Drawing.Color.White;
-            this.comboBoxCustomPriority.ButtonColorScaling = 0.5F;
             this.comboBoxCustomPriority.DataSource = null;
             this.comboBoxCustomPriority.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomPriority.DisplayMember = "";
-            this.comboBoxCustomPriority.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomPriority.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxCustomPriority.Location = new System.Drawing.Point(226, 79);
-            this.comboBoxCustomPriority.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomPriority.Name = "comboBoxCustomPriority";
             this.comboBoxCustomPriority.SelectedIndex = -1;
             this.comboBoxCustomPriority.SelectedItem = null;

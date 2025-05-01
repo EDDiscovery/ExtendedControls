@@ -143,9 +143,8 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(800, 400);
-            this.tabControl1.TabColorScaling = 0.5F;
-            this.tabControl1.TabControlBorderBrightColor = System.Drawing.Color.LightGray;
-            this.tabControl1.TabControlBorderColor = System.Drawing.Color.DarkGray;
+            this.tabControl1.TabControlBorderColor = System.Drawing.Color.LightGray;
+            this.tabControl1.TabControlBorderColor2 = System.Drawing.Color.DarkGray;
             this.tabControl1.TabDisabledScaling = 0.5F;
             this.tabControl1.TabIndex = 0;
             this.tabControl1.TabMouseOverColor = System.Drawing.Color.White;

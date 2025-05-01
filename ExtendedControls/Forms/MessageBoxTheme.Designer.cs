@@ -76,7 +76,6 @@
             // themeTextBox
             // 
             this.themeTextBox.BorderColor = System.Drawing.Color.Transparent;
-            this.themeTextBox.BorderColorScaling = 0.5F;
             this.themeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.themeTextBox.HideScrollBar = true;
             this.themeTextBox.Location = new System.Drawing.Point(67, 0);
@@ -86,17 +85,6 @@
             this.themeTextBox.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
     "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
-            this.themeTextBox.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.themeTextBox.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
-            this.themeTextBox.ScrollBarBackColor = System.Drawing.SystemColors.Control;
-            this.themeTextBox.ScrollBarBorderColor = System.Drawing.Color.White;
-            this.themeTextBox.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.themeTextBox.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.themeTextBox.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
-            this.themeTextBox.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
-            this.themeTextBox.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
-            this.themeTextBox.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
-            this.themeTextBox.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.themeTextBox.ShowLineCount = false;
             this.themeTextBox.Size = new System.Drawing.Size(595, 381);
             this.themeTextBox.TabIndex = 5;

@@ -150,15 +150,12 @@
             // 
             this.checkBoxIncludeHeader.AutoSize = true;
             this.checkBoxIncludeHeader.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxIncludeHeader.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxIncludeHeader.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxIncludeHeader.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxIncludeHeader.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxIncludeHeader.ImageIndeterminate = null;
             this.checkBoxIncludeHeader.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxIncludeHeader.ImageUnchecked = null;
             this.checkBoxIncludeHeader.Location = new System.Drawing.Point(8, 5);
-            this.checkBoxIncludeHeader.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxIncludeHeader.Name = "checkBoxIncludeHeader";
             this.checkBoxIncludeHeader.Size = new System.Drawing.Size(99, 17);
             this.checkBoxIncludeHeader.TabIndex = 1;
@@ -170,15 +167,12 @@
             // 
             this.checkBoxCustomAutoOpen.AutoSize = true;
             this.checkBoxCustomAutoOpen.CheckBoxColor = System.Drawing.Color.Gray;
-            this.checkBoxCustomAutoOpen.CheckBoxDisabledScaling = 0.5F;
             this.checkBoxCustomAutoOpen.CheckBoxInnerColor = System.Drawing.Color.White;
             this.checkBoxCustomAutoOpen.CheckColor = System.Drawing.Color.DarkBlue;
-            this.checkBoxCustomAutoOpen.ImageButtonDisabledScaling = 0.5F;
             this.checkBoxCustomAutoOpen.ImageIndeterminate = null;
             this.checkBoxCustomAutoOpen.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.checkBoxCustomAutoOpen.ImageUnchecked = null;
             this.checkBoxCustomAutoOpen.Location = new System.Drawing.Point(180, 5);
-            this.checkBoxCustomAutoOpen.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.checkBoxCustomAutoOpen.Name = "checkBoxCustomAutoOpen";
             this.checkBoxCustomAutoOpen.Size = new System.Drawing.Size(52, 17);
             this.checkBoxCustomAutoOpen.TabIndex = 1;
@@ -189,7 +183,6 @@
             // customDateTimePickerFrom
             // 
             this.customDateTimePickerFrom.BorderColor = System.Drawing.SystemColors.ControlDark;
-            this.customDateTimePickerFrom.BorderColorScaling = 0.5F;
             this.customDateTimePickerFrom.Checked = false;
             this.customDateTimePickerFrom.CustomFormat = "dd MMMM yyyy    HH:mm:ss";
             this.customDateTimePickerFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
@@ -206,7 +199,6 @@
             // customDateTimePickerTo
             // 
             this.customDateTimePickerTo.BorderColor = System.Drawing.SystemColors.ControlDark;
-            this.customDateTimePickerTo.BorderColorScaling = 0.5F;
             this.customDateTimePickerTo.Checked = false;
             this.customDateTimePickerTo.CustomFormat = "dd MMMM yyyy    HH:mm:ss";
             this.customDateTimePickerTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
@@ -223,14 +215,11 @@
             // comboBoxSelectedType
             // 
             this.comboBoxSelectedType.BorderColor = System.Drawing.Color.White;
-            this.comboBoxSelectedType.ButtonColorScaling = 0.5F;
             this.comboBoxSelectedType.DataSource = null;
             this.comboBoxSelectedType.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxSelectedType.DisplayMember = "";
-            this.comboBoxSelectedType.DropDownSelectionBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxSelectedType.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBoxSelectedType.Location = new System.Drawing.Point(3, 5);
-            this.comboBoxSelectedType.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxSelectedType.Name = "comboBoxSelectedType";
             this.comboBoxSelectedType.SelectedIndex = -1;
             this.comboBoxSelectedType.SelectedItem = null;
@@ -442,7 +431,6 @@
             this.extTextBoxSaveImport.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.extTextBoxSaveImport.BackErrorColor = System.Drawing.Color.Red;
             this.extTextBoxSaveImport.BorderColor = System.Drawing.Color.Transparent;
-            this.extTextBoxSaveImport.BorderColorScaling = 0.5F;
             this.extTextBoxSaveImport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.extTextBoxSaveImport.ClearOnFirstChar = false;
             this.extTextBoxSaveImport.ControlBackground = System.Drawing.SystemColors.Control;
@@ -489,7 +477,6 @@
             // 
             this.extRichTextBoxPaste.AllowDrop = true;
             this.extRichTextBoxPaste.BorderColor = System.Drawing.SystemColors.ControlDark;
-            this.extRichTextBoxPaste.BorderColorScaling = 0.5F;
             this.extRichTextBoxPaste.DetectUrls = true;
             this.extRichTextBoxPaste.HideScrollBar = true;
             this.extRichTextBoxPaste.Location = new System.Drawing.Point(8, 40);
@@ -498,17 +485,6 @@
             this.extRichTextBoxPaste.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
     "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
-            this.extRichTextBoxPaste.ScrollBarArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.extRichTextBoxPaste.ScrollBarArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extRichTextBoxPaste.ScrollBarBackColor = System.Drawing.SystemColors.Control;
-            this.extRichTextBoxPaste.ScrollBarBorderColor = System.Drawing.Color.White;
-            this.extRichTextBoxPaste.ScrollBarFlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extRichTextBoxPaste.ScrollBarForeColor = System.Drawing.SystemColors.ControlText;
-            this.extRichTextBoxPaste.ScrollBarMouseOverButtonColor = System.Drawing.Color.Green;
-            this.extRichTextBoxPaste.ScrollBarMousePressedButtonColor = System.Drawing.Color.Red;
-            this.extRichTextBoxPaste.ScrollBarSliderColor = System.Drawing.Color.DarkGray;
-            this.extRichTextBoxPaste.ScrollBarThumbBorderColor = System.Drawing.Color.Yellow;
-            this.extRichTextBoxPaste.ScrollBarThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extRichTextBoxPaste.ShowLineCount = false;
             this.extRichTextBoxPaste.Size = new System.Drawing.Size(423, 145);
             this.extRichTextBoxPaste.TabIndex = 6;
@@ -539,17 +515,14 @@
             // 
             this.extCheckBoxExcludeHeader.AutoSize = true;
             this.extCheckBoxExcludeHeader.CheckBoxColor = System.Drawing.Color.Gray;
-            this.extCheckBoxExcludeHeader.CheckBoxDisabledScaling = 0.5F;
             this.extCheckBoxExcludeHeader.CheckBoxInnerColor = System.Drawing.Color.White;
             this.extCheckBoxExcludeHeader.CheckColor = System.Drawing.Color.DarkBlue;
             this.extCheckBoxExcludeHeader.Checked = true;
             this.extCheckBoxExcludeHeader.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.extCheckBoxExcludeHeader.ImageButtonDisabledScaling = 0.5F;
             this.extCheckBoxExcludeHeader.ImageIndeterminate = null;
             this.extCheckBoxExcludeHeader.ImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.extCheckBoxExcludeHeader.ImageUnchecked = null;
             this.extCheckBoxExcludeHeader.Location = new System.Drawing.Point(8, 5);
-            this.extCheckBoxExcludeHeader.MouseOverColor = System.Drawing.Color.CornflowerBlue;
             this.extCheckBoxExcludeHeader.Name = "extCheckBoxExcludeHeader";
             this.extCheckBoxExcludeHeader.Size = new System.Drawing.Size(127, 17);
             this.extCheckBoxExcludeHeader.TabIndex = 1;

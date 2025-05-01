@@ -44,100 +44,34 @@ namespace ExtendedControls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.panelStrip = new System.Windows.Forms.Panel();
-            this.labelControlText = new System.Windows.Forms.Label();
-            this.pimageListSelection = new ExtendedControls.ExtButtonDrawn();
-            this.extButtonDrawnHelp = new ExtendedControls.ExtButtonDrawn();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.pimagePopOutIcon = new ExtendedControls.ExtButtonDrawn();
             this.panelArrowRight = new System.Windows.Forms.Panel();
             this.panelArrowLeft = new System.Windows.Forms.Panel();
-            this.pimageSelectedIcon = new System.Windows.Forms.Panel();
-            this.labelTitle = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItemPopOut = new System.Windows.Forms.ToolStripMenuItem();
-            this.panelStrip.SuspendLayout();
+            this.panelStrip = new ExtendedControls.ExtPanelGradientFill();
+            this.labelControlText = new System.Windows.Forms.Label();
+            this.pimageListSelection = new ExtendedControls.ExtButtonDrawn();
+            this.extButtonDrawnHelp = new ExtendedControls.ExtButtonDrawn();
+            this.pimageSelectedIcon = new System.Windows.Forms.Panel();
+            this.labelTitle = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
+            this.panelStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panelStrip
+            // toolTip1
             // 
-            this.panelStrip.AutoSize = true;
-            this.panelStrip.Controls.Add(this.labelControlText);
-            this.panelStrip.Controls.Add(this.pimageListSelection);
-            this.panelStrip.Controls.Add(this.extButtonDrawnHelp);
-            this.panelStrip.Controls.Add(this.pimagePopOutIcon);
-            this.panelStrip.Controls.Add(this.panelArrowRight);
-            this.panelStrip.Controls.Add(this.panelArrowLeft);
-            this.panelStrip.Controls.Add(this.pimageSelectedIcon);
-            this.panelStrip.Controls.Add(this.labelTitle);
-            this.panelStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelStrip.Location = new System.Drawing.Point(0, 322);
-            this.panelStrip.Name = "panelStrip";
-            this.panelStrip.Size = new System.Drawing.Size(562, 30);
-            this.panelStrip.TabIndex = 0;
-            this.panelStrip.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.panelStrip.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
-            // 
-            // labelControlText
-            // 
-            this.labelControlText.AutoSize = true;
-            this.labelControlText.Location = new System.Drawing.Point(440, 8);
-            this.labelControlText.Name = "labelControlText";
-            this.labelControlText.Size = new System.Drawing.Size(43, 13);
-            this.labelControlText.TabIndex = 4;
-            this.labelControlText.Text = "<code>";
-            this.labelControlText.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.labelControlText.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
-            // 
-            // pimageListSelection
-            // 
-            this.pimageListSelection.AutoEllipsis = false;
-            this.pimageListSelection.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pimageListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
-            this.pimageListSelection.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
-            this.pimageListSelection.Location = new System.Drawing.Point(210, 3);
-            this.pimageListSelection.MouseOverColor = System.Drawing.Color.White;
-            this.pimageListSelection.MouseSelectedColor = System.Drawing.Color.Green;
-            this.pimageListSelection.MouseSelectedColorEnable = true;
-            this.pimageListSelection.Name = "pimageListSelection";
-            this.pimageListSelection.ButtonDisabledScaling = 0.25F;
-            this.pimageListSelection.Selectable = true;
-            this.pimageListSelection.Size = new System.Drawing.Size(24, 24);
-            this.pimageListSelection.TabIndex = 3;
-            this.pimageListSelection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.pimageListSelection.UseMnemonic = true;
-            this.pimageListSelection.Click += new System.EventHandler(this.drawnPanelListSelection_Click);
-            this.pimageListSelection.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.pimageListSelection.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
-            // 
-            // extButtonDrawnHelp
-            // 
-            this.extButtonDrawnHelp.AutoEllipsis = false;
-            this.extButtonDrawnHelp.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.extButtonDrawnHelp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.extButtonDrawnHelp.Dock = System.Windows.Forms.DockStyle.Right;
-            this.extButtonDrawnHelp.Image = global::ExtendedControls.Properties.Resources.help;
-            this.extButtonDrawnHelp.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
-            this.extButtonDrawnHelp.Location = new System.Drawing.Point(538, 0);
-            this.extButtonDrawnHelp.MouseOverColor = System.Drawing.Color.White;
-            this.extButtonDrawnHelp.MouseSelectedColor = System.Drawing.Color.Green;
-            this.extButtonDrawnHelp.MouseSelectedColorEnable = true;
-            this.extButtonDrawnHelp.Name = "extButtonDrawnHelp";
-            this.extButtonDrawnHelp.ButtonDisabledScaling = 0.25F;
-            this.extButtonDrawnHelp.Selectable = true;
-            this.extButtonDrawnHelp.Size = new System.Drawing.Size(24, 30);
-            this.extButtonDrawnHelp.TabIndex = 3;
-            this.extButtonDrawnHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.extButtonDrawnHelp.UseMnemonic = true;
-            this.extButtonDrawnHelp.Click += new System.EventHandler(this.extButtonDrawnHelp_Click);
-            this.extButtonDrawnHelp.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.extButtonDrawnHelp.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            this.toolTip1.ShowAlways = true;
             // 
             // pimagePopOutIcon
             // 
             this.pimagePopOutIcon.AutoEllipsis = false;
+            this.pimagePopOutIcon.BackColor = System.Drawing.Color.Transparent;
             this.pimagePopOutIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pimagePopOutIcon.BorderColor = System.Drawing.Color.Orange;
+            this.pimagePopOutIcon.BorderWidth = 1;
+            this.pimagePopOutIcon.ButtonDisabledScaling = 0.25F;
             this.pimagePopOutIcon.Image = global::ExtendedControls.Properties.Resources.popout;
             this.pimagePopOutIcon.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
             this.pimagePopOutIcon.Location = new System.Drawing.Point(161, 3);
@@ -145,7 +79,6 @@ namespace ExtendedControls
             this.pimagePopOutIcon.MouseSelectedColor = System.Drawing.Color.Green;
             this.pimagePopOutIcon.MouseSelectedColorEnable = true;
             this.pimagePopOutIcon.Name = "pimagePopOutIcon";
-            this.pimagePopOutIcon.ButtonDisabledScaling = 0.25F;
             this.pimagePopOutIcon.Selectable = true;
             this.pimagePopOutIcon.Size = new System.Drawing.Size(24, 24);
             this.pimagePopOutIcon.TabIndex = 3;
@@ -158,6 +91,7 @@ namespace ExtendedControls
             // 
             // panelArrowRight
             // 
+            this.panelArrowRight.BackColor = System.Drawing.Color.Transparent;
             this.panelArrowRight.BackgroundImage = global::ExtendedControls.Properties.Resources.ArrowRight;
             this.panelArrowRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panelArrowRight.Location = new System.Drawing.Point(304, 4);
@@ -173,6 +107,7 @@ namespace ExtendedControls
             // 
             // panelArrowLeft
             // 
+            this.panelArrowLeft.BackColor = System.Drawing.Color.Transparent;
             this.panelArrowLeft.BackgroundImage = global::ExtendedControls.Properties.Resources.ArrowLeft;
             this.panelArrowLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panelArrowLeft.Location = new System.Drawing.Point(272, 4);
@@ -185,31 +120,6 @@ namespace ExtendedControls
             this.panelArrowLeft.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.panelArrowLeft.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             this.panelArrowLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelArrowLeft_MouseUp);
-            // 
-            // pimageSelectedIcon
-            // 
-            this.pimageSelectedIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pimageSelectedIcon.Location = new System.Drawing.Point(3, 3);
-            this.pimageSelectedIcon.Name = "pimageSelectedIcon";
-            this.pimageSelectedIcon.Size = new System.Drawing.Size(24, 24);
-            this.pimageSelectedIcon.TabIndex = 1;
-            this.pimageSelectedIcon.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.pimageSelectedIcon.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
-            // 
-            // labelTitle
-            // 
-            this.labelTitle.AutoSize = true;
-            this.labelTitle.Location = new System.Drawing.Point(33, 8);
-            this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(43, 13);
-            this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "<code>";
-            this.labelTitle.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.labelTitle.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
-            // 
-            // toolTip1
-            // 
-            this.toolTip1.ShowAlways = true;
             // 
             // contextMenuStrip1
             // 
@@ -227,16 +137,121 @@ namespace ExtendedControls
             this.toolStripMenuItemPopOut.Text = "Pop Out";
             this.toolStripMenuItemPopOut.Click += new System.EventHandler(this.toolStripMenuItemPopOut_Click);
             // 
+            // panelStrip
+            // 
+            this.panelStrip.AutoSize = true;
+            this.panelStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.panelStrip.Controls.Add(this.labelControlText);
+            this.panelStrip.Controls.Add(this.pimageListSelection);
+            this.panelStrip.Controls.Add(this.extButtonDrawnHelp);
+            this.panelStrip.Controls.Add(this.pimagePopOutIcon);
+            this.panelStrip.Controls.Add(this.panelArrowRight);
+            this.panelStrip.Controls.Add(this.panelArrowLeft);
+            this.panelStrip.Controls.Add(this.pimageSelectedIcon);
+            this.panelStrip.Controls.Add(this.labelTitle);
+            this.panelStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelStrip.GradientDirection = 0F;
+            this.panelStrip.Location = new System.Drawing.Point(0, 322);
+            this.panelStrip.Name = "panelStrip";
+            this.panelStrip.Size = new System.Drawing.Size(562, 30);
+            this.panelStrip.TabIndex = 0;
+            this.panelStrip.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.panelStrip.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            // 
+            // labelControlText
+            // 
+            this.labelControlText.AutoSize = true;
+            this.labelControlText.BackColor = System.Drawing.Color.Transparent;
+            this.labelControlText.Location = new System.Drawing.Point(97, 8);
+            this.labelControlText.Name = "labelControlText";
+            this.labelControlText.Size = new System.Drawing.Size(43, 13);
+            this.labelControlText.TabIndex = 4;
+            this.labelControlText.Text = "<code>";
+            this.labelControlText.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.labelControlText.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            // 
+            // pimageListSelection
+            // 
+            this.pimageListSelection.AutoEllipsis = false;
+            this.pimageListSelection.BackColor = System.Drawing.Color.Transparent;
+            this.pimageListSelection.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pimageListSelection.BorderColor = System.Drawing.Color.Orange;
+            this.pimageListSelection.BorderWidth = 1;
+            this.pimageListSelection.ButtonDisabledScaling = 0.25F;
+            this.pimageListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
+            this.pimageListSelection.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
+            this.pimageListSelection.Location = new System.Drawing.Point(210, 3);
+            this.pimageListSelection.MouseOverColor = System.Drawing.Color.White;
+            this.pimageListSelection.MouseSelectedColor = System.Drawing.Color.Green;
+            this.pimageListSelection.MouseSelectedColorEnable = true;
+            this.pimageListSelection.Name = "pimageListSelection";
+            this.pimageListSelection.Selectable = true;
+            this.pimageListSelection.Size = new System.Drawing.Size(24, 24);
+            this.pimageListSelection.TabIndex = 3;
+            this.pimageListSelection.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.pimageListSelection.UseMnemonic = true;
+            this.pimageListSelection.Click += new System.EventHandler(this.drawnPanelListSelection_Click);
+            this.pimageListSelection.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.pimageListSelection.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            // 
+            // extButtonDrawnHelp
+            // 
+            this.extButtonDrawnHelp.AutoEllipsis = false;
+            this.extButtonDrawnHelp.BackColor = System.Drawing.Color.Transparent;
+            this.extButtonDrawnHelp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.extButtonDrawnHelp.BorderColor = System.Drawing.Color.Orange;
+            this.extButtonDrawnHelp.BorderWidth = 1;
+            this.extButtonDrawnHelp.ButtonDisabledScaling = 0.25F;
+            this.extButtonDrawnHelp.Dock = System.Windows.Forms.DockStyle.Right;
+            this.extButtonDrawnHelp.Image = global::ExtendedControls.Properties.Resources.help;
+            this.extButtonDrawnHelp.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
+            this.extButtonDrawnHelp.Location = new System.Drawing.Point(538, 0);
+            this.extButtonDrawnHelp.MouseOverColor = System.Drawing.Color.White;
+            this.extButtonDrawnHelp.MouseSelectedColor = System.Drawing.Color.Green;
+            this.extButtonDrawnHelp.MouseSelectedColorEnable = true;
+            this.extButtonDrawnHelp.Name = "extButtonDrawnHelp";
+            this.extButtonDrawnHelp.Selectable = true;
+            this.extButtonDrawnHelp.Size = new System.Drawing.Size(24, 30);
+            this.extButtonDrawnHelp.TabIndex = 3;
+            this.extButtonDrawnHelp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.extButtonDrawnHelp.UseMnemonic = true;
+            this.extButtonDrawnHelp.Click += new System.EventHandler(this.extButtonDrawnHelp_Click);
+            this.extButtonDrawnHelp.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.extButtonDrawnHelp.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            // 
+            // pimageSelectedIcon
+            // 
+            this.pimageSelectedIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pimageSelectedIcon.Location = new System.Drawing.Point(3, 3);
+            this.pimageSelectedIcon.Name = "pimageSelectedIcon";
+            this.pimageSelectedIcon.Size = new System.Drawing.Size(24, 24);
+            this.pimageSelectedIcon.TabIndex = 1;
+            this.pimageSelectedIcon.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.pimageSelectedIcon.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            // 
+            // labelTitle
+            // 
+            this.labelTitle.AutoSize = true;
+            this.labelTitle.BackColor = System.Drawing.Color.Transparent;
+            this.labelTitle.Location = new System.Drawing.Point(33, 8);
+            this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Size = new System.Drawing.Size(43, 13);
+            this.labelTitle.TabIndex = 0;
+            this.labelTitle.Text = "<code>";
+            this.labelTitle.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.labelTitle.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            // 
             // TabStrip
             // 
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.Controls.Add(this.panelStrip);
             this.Name = "TabStrip";
             this.Size = new System.Drawing.Size(562, 352);
             this.Layout += new System.Windows.Forms.LayoutEventHandler(this.TabStrip_Layout);
             this.Resize += new System.EventHandler(this.TabStrip_Resize);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.panelStrip.ResumeLayout(false);
             this.panelStrip.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,7 +259,7 @@ namespace ExtendedControls
 
         #endregion
 
-        private System.Windows.Forms.Panel panelStrip;
+        private ExtPanelGradientFill panelStrip;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Panel pimageSelectedIcon;
         private System.Windows.Forms.ToolTip toolTip1;

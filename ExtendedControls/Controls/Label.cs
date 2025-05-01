@@ -18,18 +18,29 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
+    // use this instead of Label for future 
+    public class ExtLabel : Label, IThemeable
+    {
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.LabelColor;
+            BackColor = Color.Transparent; // seems to need it
+            return false;
+        }
+    }
+
     // WARNING ONLY USE IN SPECIAL CIRCUMSTANCES.. NORMALLY YOU WILL WANT THE NORMAL LABEL
     // draws label using a bitmap - solves problems with aliasing over transparent backgrounds
     // but it does not antialias properly if the background is not drawn..
 
-    public class ExtLabel : Label, IThemeable
+    public class ExtLabelBitmap : Label, IThemeable
     {
         private new Color BackColor { get; set; }          // DONT - has no meaning for this label
 
         public Color TextBackColor { get { return textbackcolor; } set { textbackcolor = value; Invalidate(); } }      // area of text box only
         private Color textbackcolor = Color.Transparent;
 
-        public ExtLabel()
+        public ExtLabelBitmap()
         {
         }
 

@@ -20,18 +20,11 @@ namespace ExtendedControls
 {
     // when a flow panel is inside the other panel, the autosize on the outer panel does not work - winform bug
     // this one autoheight fixes it if required
-    public class ExtPanelAutoHeightWidth : Panel
+    public class ExtPanelAutoHeightWidth : ExtPanelGradientFill
     {
         public bool AutoHeight { get { return autoHeight; } set { autoHeight = value; } }
         public bool AutoWidth { get { return autoWidth; } set { autoWidth = value; } }
         public bool AutoHeightWidthDisable { get { return autoDisable; } set { autoDisable = value; } }
-
-        private bool autoHeight = false;
-        private bool autoWidth = false;
-        private bool autoDisable = false;
-        public ExtPanelAutoHeightWidth() : base() { }
-
-        private bool ignoreresize = false;
 
         protected override void OnLayout(LayoutEventArgs levent)
         {
@@ -63,5 +56,11 @@ namespace ExtendedControls
                 }
             }
         }
+
+        private bool autoHeight = false;
+        private bool autoWidth = false;
+        private bool autoDisable = false;
+        private bool ignoreresize = false;
+
     }
 }

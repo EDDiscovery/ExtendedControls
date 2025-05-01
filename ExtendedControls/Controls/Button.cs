@@ -14,7 +14,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -37,7 +36,9 @@ namespace ExtendedControls
             set { throw new InvalidOperationException("The BackgroundImage property is not supported by this control. Use Image instead."); }
         }
 
-        public float ButtonColorScaling { get { return buttonColorScaling; } set { buttonColorScaling = value; Invalidate(); }  }
+        public Color BackColor2 { get { return backColor2; } set { backColor2 = value; Invalidate(); } }
+        public float MouseOverScaling { get; set; } = 1.3F;
+        public float MouseSelectedScaling { get; set; } = 1.3F;
         public float ButtonDisabledScaling { get { return buttonDisabledScaling; } set { buttonDisabledScaling = value; Invalidate(); } }
         public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
 
@@ -180,34 +181,39 @@ namespace ExtendedControls
             }
             else
             {
+                //System.Diagnostics.Debug.WriteLine($"But Paint {Name} {ClientRectangle} in {Parent.ClientRectangle}");
+
                 Rectangle border = ClientRectangle;
                 border.Width--; border.Height--;
 
                 Rectangle buttonarea = ClientRectangle;
                 buttonarea.Inflate(-1, -1);                     // inside it.
 
-                //System.Diagnostics.Debug.WriteLine("ButPaint " + this.Name + " " + ClientRectangle +" " + border + " " + buttonarea + " c " + BackColor + " " + FlatAppearance.BorderColor + " E:" + Enabled + " D:" + ButtonDisabledScaling + " ms:" + MinimumSize);
-
                 Color colBack = Color.Empty;
+                Color colBack2 = Color.Empty;
                 Color colBorder = Color.Empty;
                 switch (drawState)
                 {
                     case DrawState.Disabled:
                         colBack = BackColor.Multiply(buttonDisabledScaling);
+                        colBack2 = BackColor2.Multiply(buttonDisabledScaling);
                         colBorder = FlatAppearance.BorderColor.Multiply(buttonDisabledScaling);
                         break;
                     case DrawState.Normal:
                     default:
                         colBack = BackColor;
+                        colBack2 = BackColor2;
                         colBorder = FlatAppearance.BorderColor;
                         break;
                     case DrawState.Hover:
-                        colBack = FlatAppearance.MouseOverBackColor;
-                        colBorder = FlatAppearance.BorderColor.Multiply(buttonColorScaling);
+                        colBack = BackColor.Multiply(MouseOverScaling);
+                        colBack2 = BackColor2.Multiply(MouseOverScaling);
+                        colBorder = FlatAppearance.BorderColor.Multiply(MouseOverScaling);
                         break;
                     case DrawState.Click:
-                        colBack = FlatAppearance.MouseDownBackColor;
-                        colBorder = FlatAppearance.BorderColor.Multiply(buttonColorScaling);
+                        colBack = BackColor.Multiply(MouseSelectedScaling);
+                        colBack2 = BackColor2.Multiply(MouseSelectedScaling);
+                        colBorder = FlatAppearance.BorderColor.Multiply(MouseSelectedScaling);
                         break;
 
                 }
@@ -215,7 +221,7 @@ namespace ExtendedControls
                 if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
                 {
                     //System.Diagnostics.Debug.WriteLine($"{Name} {colBack} { buttonColorScaling}");
-                    using (var b = new LinearGradientBrush(buttonarea, colBack, colBack.Multiply(buttonColorScaling), GradientDirection))
+                    using (var b = new LinearGradientBrush(buttonarea, colBack, colBack2, GradientDirection))
                         pe.Graphics.FillRectangle(b, buttonarea);       // linear grad brushes do not respect smoothing mode, btw
                 }
 
@@ -319,9 +325,8 @@ namespace ExtendedControls
             }
             else
             {
-                ctrl.ButtonColorScaling = t.ButtonGradientAmount;
                 ctrl.ButtonDisabledScaling = t.DisabledScaling;
-                ctrl.GradientDirection = t.ButtonGradientDirection;
+                ctrl.GradientDirection = t.ButtonBackGradientDirection;
 
                 if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
                 {
@@ -343,21 +348,25 @@ namespace ExtendedControls
                 {
                     if (ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton)       // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
                     {
-                        ctrl.BackColor = ctrl.Parent.BackColor;
-                        ctrl.ButtonColorScaling = ctrl.ButtonDisabledScaling = 1.0F;
+                        ctrl.BackColor = ctrl.BackColor2 = ctrl.Parent.BackColor;
+                        ctrl.ButtonDisabledScaling = 1.0F;
                     }
                     else
-                        ctrl.BackColor = t.Form;
+                    {
+                        ctrl.BackColor = ctrl.BackColor2 = t.Form;
+                    }
+                       
                 }
                 else
                 {
                     ctrl.BackColor = t.ButtonBackColor;       // else its a graduated back
+                    ctrl.BackColor2 = t.ButtonBackColor2;       // else its a graduated back
                 }
 
+                ctrl.MouseOverScaling = t.MouseOverScaling;
+                ctrl.MouseSelectedScaling = t.MouseSelectedScaling;
                 ctrl.FlatAppearance.BorderColor = (ctrl.Image != null) ? t.Form : t.ButtonBorderColor;
                 ctrl.FlatAppearance.BorderSize = 1;
-                ctrl.FlatAppearance.MouseOverBackColor = t.ButtonBackColor.Multiply(t.MouseOverScaling);
-                ctrl.FlatAppearance.MouseDownBackColor = t.ButtonBackColor.Multiply(t.MouseSelectedScaling);
                 ctrl.FlatStyle = t.ButtonFlatStyle;
             }
 
@@ -381,9 +390,9 @@ namespace ExtendedControls
         private enum DrawState { Disabled = -1, Normal = 0, Hover, Click };
         private DrawState drawState = DrawState.Normal;                    // The current state of our control, even if base is currently doing the painting.
 
-        private float buttonColorScaling = 0.0F;
         private float gradientdirection = 90F;
         private float buttonDisabledScaling = 0.5F;
+        private Color backColor2 = Color.Red;
 
     }
 }

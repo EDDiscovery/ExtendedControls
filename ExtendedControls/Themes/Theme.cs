@@ -1,5 +1,4 @@
-﻿/*
- * Copyright 2016-2025 EDDiscovery development team
+﻿/** Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -36,97 +35,297 @@ namespace ExtendedControls
         // using these disassociates the c# name from the JSON name for the future.
 
         [JsonCustomFormat("AltFmt","Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "form" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "form" })]                     //existing
         public Color Form { get; set; } = SystemColors.Menu;
+
+        //-------------
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_back" })]      //existing
+        public Color ButtonBackColor { get; set; } = Color.FromArgb(255, 225, 225, 225);
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_back2" })]
+        public Color ButtonBackColor2 { get; set; } = Color.Transparent;
+        public float ButtonBackGradientDirection { get; set; } = 90F;
+
         [JsonCustomFormat("AltFmt","Std")]
-        [JsonNameAttribute(new string[] {"AltFmt"}, new string[] {"button_back"} )]
-        public Color ButtonBackColor { get; set;} = Color.FromArgb(255,225,225,225);
-        [JsonCustomFormat("AltFmt","Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_border" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_border" })]        //existing
         public Color ButtonBorderColor { get; set; } = SystemColors.ActiveBorder;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_text" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_text" })]      //existing
         public Color ButtonTextColor { get; set; } = SystemColors.ControlText;
 
+        //-------------
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_back" })]
+        public Color ComboBoxBackColor { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_back2" })]
+        public Color ComboBoxBackColor2 { get; set; } = Color.Transparent;
+        public float ComboBoxBackAndDropDownGradientDirection { get; set; } = 90F;                 // background of combo box and drop down
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_border" })]
+        public Color ComboBoxBorderColor { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_text" })]
+        public Color ComboBoxTextColor { get; set; } = Color.Transparent;
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_sliderback" })]
+        public Color ComboBoxDropDownSliderBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_sliderback2" })]    
+        public Color ComboBoxDropDownSliderBack2 { get; set; } = Color.Transparent;
+        public float ComboBoxDropDownSliderGradientDirection { get; set; } = 90F;      
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_scrollarrowback" })]
+        public Color ComboBoxScrollArrowBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_scrollarrowback2" })]   
+        public Color ComboBoxScrollArrowBack2 { get; set; } = Color.Transparent;
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_scrollbuttonback" })]
+        public Color ComboBoxScrollButtonBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_scrollbuttonback2" })]      
+        public Color ComboBoxScrollButtonBack2 { get; set; } = Color.Transparent;
+        public float ComboBoxDropDownScrollButtonGradientDirection { get; set; } = 90F;       
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "combobox_scrollarrow" })]      
+        public Color ComboBoxScrollArrow { get; set; } = Color.Transparent;
+
+        //-------------
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "list_back" })]
+        public Color ListBoxBackColor { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "list_back2" })]
+        public Color ListBoxBackColor2 { get; set; } = Color.Transparent;
+        public float ListBoxBackGradientDirection { get; set; } = 90F;      // tbd designer
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "list_border" })]
+        public Color ListBoxBorderColor { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "list_text" })]
+        public Color ListBoxTextColor { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "listbox_sliderback" })]
+        public Color ListBoxSliderBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "listbox_sliderback2" })]
+        public Color ListBoxSliderBack2 { get; set; } = Color.Transparent;
+        public float ListBoxSliderGradientDirection { get; set; } = 90F;            // tbd designer
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "listbox_scrollarrowback" })]
+        public Color ListBoxScrollArrowBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "listbox_scrollarrowback2" })]
+        public Color ListBoxScrollArrowBack2 { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "listbox_scrollbuttonback" })]
+        public Color ListBoxScrollButtonBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "listbox_scrollbuttonback2" })]
+        public Color ListBoxScrollButtonBack2 { get; set; } = Color.Transparent;
+        public float ListBoxScrollButtonGradientDirection { get; set; } = 90F;            // tbd designer
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "listbox_scrollarrow" })]
+        public Color ListBoxScrollArrow { get; set; } = Color.Transparent;
+
+
+
         [JsonCustomFormat("AltFmt","Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_borderback" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_borderback" })]      //existing
         public Color GridBorderBack { get; set; } = SystemColors.Menu;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_bordertext" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_bordertext" })]      //existing
         public Color GridBorderText { get; set; } = SystemColors.MenuText;
         [JsonCustomFormat("AltFmt","Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_cellbackground" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_cellbackground" })]  //existing
         public Color GridCellBack { get; set; } = SystemColors.ControlLightLight;
-        [JsonCustomFormat("AltFmt","Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_altcellbackground" })]
+        [JsonCustomFormat("AltFmt","Std")]  
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_altcellbackground" })]   //existing
         public Color GridCellAltBack { get; set; } = SystemColors.Control;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_celltext" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_celltext" })]    //existing
         public Color GridCellText { get; set; } = SystemColors.MenuText;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_altcelltext" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_altcelltext" })] //existing
         public Color GridCellAltText { get; set; } = SystemColors.MenuText;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_borderlines" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_borderlines" })] //existing
         public Color GridBorderLines { get; set; } = SystemColors.ControlDark;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_sliderback" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_sliderback" })]  //existing
         public Color GridSliderBack { get; set; } = SystemColors.ControlLight;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_scrollarrow" })]
-        public Color GridScrollArrow { get; set; } = SystemColors.MenuText;
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_sliderback2" })]    
+        public Color GridSliderBack2 { get; set; } = Color.Transparent;
+        public float GridSliderGradientDirection { get; set; } = 90F;       // tbd editor
+
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_scrollbutton" })]
-        public Color GridScrollButton { get; set; } = SystemColors.Control;
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_scrollarrowback" })]
+        public Color GridScrollArrowBack { get; set; } = Color.Transparent;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_highlightback" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_scrollarrowback2" })] 
+        public Color GridScrollArrow2Back { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_scrollbutton" })]    //existing
+        public Color GridScrollButtonBack { get; set; } = SystemColors.Control;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_scrollbuttonback2" })]      
+        public Color GridScrollButtonBack2 { get; set; } = Color.Transparent;
+        public float GridScrollButtonGradientDirection { get; set; } = 90F;        // tbd editor
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_highlightback" })]       //existing
         public Color GridHighlightBack { get; set; } = Color.LightGreen;
 
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "grid_scrollarrow" })]      //existing
+        public Color GridScrollArrow { get; set; } = SystemColors.ControlLight;
+
+
+        //-------------
 
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "travelgrid_visited" })]
-        public Color KnownSystemColor { get; set; } = SystemColors.MenuText;
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_back" })]     //existing
+        public Color TextBlockBackColor { get; set; } = SystemColors.Window;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "travelgrid_nonvisited" })]
-        public Color UnknownSystemColor { get; set; } = Color.Blue;
-
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_fore" })]     //existing
+        public Color TextBlockForeColor { get; set; } = SystemColors.WindowText;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_back" })]
-        public Color TextBackColor { get; set; } = SystemColors.Window;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_fore" })]
-        public Color TextBlockColor { get; set; } = SystemColors.WindowText;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_highlight" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_highlight" })]        //existing
         public Color TextBlockHighlightColor { get; set; } = Color.Red;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_success" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_success" })]      //existing
         public Color TextBlockSuccessColor { get; set; } = Color.Green;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_border" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_border" })]       //existing
         public Color TextBlockBorderColor { get; set; } = SystemColors.Menu;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_sliderback" })]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_border2" })]
+        public Color TextBlockBorderColor2 { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_sliderback" })]   //existing
         public Color TextBlockSliderBack { get; set; } = SystemColors.ControlLight;
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_scrollarrow" })]
-        public Color TextBlockScrollArrow { get; set; } = SystemColors.MenuText;
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_sliderback2" })]
+        public Color TextBlockSliderBack2 { get; set; } = Color.Transparent;
+        public float TextBlockSliderGradientDirection { get; set; } = 90F;       // slider back
+
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_scrollbutton" })]
-        public Color TextBlockScrollButton { get; set; } = SystemColors.Control;
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_scrollarrowback" })]
+        public Color TextBlockScrollArrowBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_scrollarrowback2" })]
+        public Color TextBlockScrollArrowBack2 { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_scrollbutton" })]     //existing
+        public Color TextBlockScrollButtonBack { get; set; } = SystemColors.Control;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_scrollbuttonback2" })]
+        public Color TextBlockScrollButtonBack2 { get; set; } = Color.Transparent;
+        public float TextBlockScrollButtonGradientDirection { get; set; } = 90F;        // thumb
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_scrollarrow" })]      //existing
+        public Color TextBlockScrollArrow { get; set; } = SystemColors.ControlLight;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_dropdownback" })]
+        public Color TextBlockDropDownBackColor { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "textbox_dropdownback2" })]
+        public Color TextBlockDropDownBackColor2 { get; set; } = Color.Transparent;
+        public float TextBlockDropDownBackGradientDirection { get; set; } = 90F;             // Listbox TBD DESIGNER
+
+        //-------------
 
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox" })]     // Fore colour of text
         public Color CheckBoxText { get; set; } = SystemColors.MenuText;
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_back" })]     // Back colour
-        public Color CheckBoxBack { get; set; } = Color.Transparent;            // new! normalised back
+        public Color CheckBoxBack { get; set; } = Color.Transparent;          
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_back2" })]     // Back colour
+        public Color CheckBoxBack2 { get; set; } = Color.Transparent;
+        public float CheckBoxBackGradientDirection { get; set; } = 225F;
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_tick" })]
         public Color CheckBoxTick { get; set; } = SystemColors.MenuHighlight;
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_buttontick" })]
         public Color CheckBoxButtonTickedBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_buttontick2" })]
+        public Color CheckBoxButtonTickedBack2 { get; set; } = Color.Transparent;
+        public float CheckBoxButtonGradientDirection { get; set; } = 90F;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "checkbox_border" })]
+        public Color CheckBoxBorderColor { get; set; } = Color.Transparent;
+        public float CheckBoxTickSize { get; set; } = 0.75F;
+
+        //-----------------
+
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] GroupBack { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        public float GroupBoxGradientDirection { get; set; } = 90F;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_text" })]
+        public Color GroupFore { get; set; } = SystemColors.MenuText;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_borderlines" })]
+        public Color GroupBorder { get; set; } = SystemColors.ControlDark;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_borderlines2" })]
+        public Color GroupBorder2 { get; set; } = Color.Transparent;
+
+        //----------------
+
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] TabStripBack { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        public float TabStripGradientDirection { get; set; } = 0F;
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabstrip_text" })]
+        public Color TabStripFore { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabstrip_selected" })]
+        public Color TabStripSelected { get; set; } = Color.Transparent;
+
+        //-------------------
+
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] TabControlBack { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        public float TabControlBackGradientDirection { get; set; } = 0F;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_text" })]
+        public Color TabControlText { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_buttonback" })]
+        public Color TabControlButtonBack { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_buttonback2" })]
+        public Color TabControlButtonBack2 { get; set; } = Color.Transparent;
+        public float TabControlTabGradientDirection { get; set; } = 90F;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_borderlines" })]
+        public Color TabControlBorder { get; set; } = SystemColors.ControlDark;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_borderlines2" })]
+        public Color TabControlBorder2 { get; set; } = Color.Transparent;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_pageback" })]
+        public Color TabControlPageBack { get; set; } = Color.Transparent;
+
+        //-------------------
 
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "menu_back" })]
@@ -136,44 +335,59 @@ namespace ExtendedControls
         public Color MenuFore { get; set; } = SystemColors.MenuText;
 
         [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "menu_dropdownfore" })]        // repurposed to selected text, which it was used for.
+        public Color MenuSelectedText { get; set; } = SystemColors.MenuText;
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "menu_dropdownback" })]
+        public Color MenuSelectedBack { get; set; } = SystemColors.ControlLightLight;
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "toolstrip_back" })]
+        public Color MenuDropDownBack { get; set; } = SystemColors.Control;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "toolstrip_border" })]
+        public Color MenuBorder { get; set; } = SystemColors.Menu;
+
+
+        //-------------------
+
+        [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "label" })]
         public Color LabelColor { get; set; } = SystemColors.MenuText;
 
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_back" })]
-        public Color GroupBack { get; set; } = SystemColors.Menu;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_text" })]
-        public Color GroupFore { get; set; } = SystemColors.MenuText;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "group_borderlines" })]
-        public Color GroupBorder { get; set; } = SystemColors.ControlDark;
-
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "tabcontrol_borderlines" })]
-        public Color TabcontrolBorder { get; set; } = SystemColors.ControlDark;
-
-
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "toolstrip_back" })]
-        public Color ToolstripBack { get; set; } = SystemColors.Control;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "toolstrip_border" })]
-        public Color ToolstripBorder { get; set; } = SystemColors.Menu;
-
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "menu_dropdownback" })]
-        public Color ToolStripDropdownBack { get; set; } = SystemColors.ControlLightLight;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "menu_dropdownfore" })]
-        public Color ToolStripDropdownFore { get; set; } = SystemColors.MenuText;
-
-        [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "s_panel" })]
         public Color SPanelColor { get; set; } = Color.DarkOrange;
+
+        //-----------------
+
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel1 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel2 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel3 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel4 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        public float[] PanelGradientDirection { get; set; } = new float[4] { 0,0,0,0 };
+        public Color[] GetPanelSet(int i) { return i == 4 ? Panel4 : i == 3 ? Panel3 : i == 2 ? Panel2 : Panel1; }
+        public float GetPanelDirection(int i) { return i == 4 ? PanelGradientDirection[3] : i == 3 ? PanelGradientDirection[2] : i == 2 ? PanelGradientDirection[1] : PanelGradientDirection[0]; }
+
+        //-----------------
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "travelgrid_visited" })]
+        public Color KnownSystemColor { get; set; } = SystemColors.MenuText;
+        [JsonCustomFormat("AltFmt", "Std")]
+        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "travelgrid_nonvisited" })]
+        public Color UnknownSystemColor { get; set; } = Color.Blue;
+
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "transparentcolorkey" })]
         public Color TransparentColorKey { get; set; } = Color.Green;
+
+        //-----------------
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "chart1" })]
         public Color Chart1 { get; set; } = Color.Green;
@@ -224,6 +438,8 @@ namespace ExtendedControls
         public bool IsButtonSystemStyle => ButtonStyle.Equals(ButtonStyles[0]);
         [JsonIgnore]
         public bool IsButtonFlatStyle => ButtonStyle.Equals(ButtonStyles[1]);
+        [JsonIgnore]
+        public bool IsButtonGradientStyle => ButtonStyle.Equals(ButtonStyles[2]);
 
         public static string ButtonstyleSystem = ButtonStyles[0];
         public static string ButtonstyleFlat = ButtonStyles[1];
@@ -233,6 +449,20 @@ namespace ExtendedControls
         public string TextBoxBorderStyle { get; set; } = TextboxborderstyleFixed3D;
 
         public static readonly string[] TextboxBorderStyles = "None FixedSingle Fixed3D Colour".Split();
+
+        [JsonIgnore]
+        public bool IsTextBoxBorderColour => TextBoxBorderStyle.Equals(TextboxBorderStyles[3]);
+        [JsonIgnore]
+        public bool IsTextBoxBorderSingle => TextBoxBorderStyle.Equals(TextboxBorderStyles[1]);
+        [JsonIgnore]
+        public bool IsTextBoxBorder3D => TextBoxBorderStyle.Equals(TextboxBorderStyles[2]);
+        [JsonIgnore]
+        public bool IsTextBoxBorderNone => TextBoxBorderStyle.Equals(TextboxBorderStyles[0]);
+
+        public static string TextboxborderstyleFixedSingle = TextboxBorderStyles[1];
+        public static string TextboxborderstyleFixed3D = TextboxBorderStyles[2];
+        public static string TextboxborderstyleColor = TextboxBorderStyles[3];
+
         [JsonIgnore]
         public BorderStyle TextBoxStyle
         {
@@ -243,43 +473,73 @@ namespace ExtendedControls
             }
         }
 
-        [JsonIgnore]
-        public bool IsTextBoxColourStyle => TextBoxBorderStyle.Equals(TextboxBorderStyles[3]);
-        [JsonIgnore]
-        public bool IsTextBoxNoneStyle => TextBoxBorderStyle.Equals(TextboxBorderStyles[0]);
-
-        public static string TextboxborderstyleFixedSingle = TextboxBorderStyles[1];
-        public static string TextboxborderstyleFixed3D = TextboxBorderStyles[2];
-        public static string TextboxborderstyleColor = TextboxBorderStyles[3];
-
         // Scaling and direction values, exported using these names
         public float DialogFontScaling { get; set; } = 0.8f;
         public float MouseOverScaling { get; set; } = 1.3F;
         public float MouseSelectedScaling { get; set; } = 1.6F;
         public float DisabledScaling { get; set; } = 0.5F;
 
-        public float ButtonGradientDirection { get; set; } = 90F;
-        public float ButtonGradientAmount { get; set; } = 0.5F;
-        public float CheckBoxGradientDirection { get; set; } = 225F;
-        public float CheckBoxButtonStyleGradientAmount { get; set; } = 0.5F;
-        public float CheckBoxTickStyleInnerScaling { get; set; } = 0.5F;     // colour difference in checkbox inner area
-        public float CheckBoxTickSize { get; set; } = 0.75F;
-        public float ListBoxGradientDirection { get; set; } = 90F;
-        public float ListBoxGradientAmount { get; set; } = 0.5F;
-        public float GroupBoxGradientDirection { get; set; } = 90F;
-        public float GroupBoxGradientAmount { get; set; } = -1F;       // <0 for off
-
-        // use TabIndex to also indicate no theme by setting tab index to this. Added so base winform controls can disable themeing
-        public const int TabIndexNoThemeIndicator = 9090;
-
-        public Theme(string name = "Unknown")      // windows default colours
-        {
-            this.Name = name;
-        }
-
         [JsonIgnore]
         public Size IconSize { get { var ft = GetFont; return new Size(ft.ScalePixels(36), ft.ScalePixels(36)); } } // calculated rep scaled icon size to use
 
+        [JsonIgnore]
+        public Font GetFont
+        {
+            get
+            {
+                return GetScaledFont(1.0f);
+            }
+        }
+
+
+        [JsonIgnore]
+        // dialogs get a slighly smaller font
+        public Font GetDialogFont
+        {
+            get
+            {
+                return GetScaledFont(DialogFontScaling);
+            }
+        }
+
+        // scale dialog font, as long as font >= 12pt
+        public Font GetDialogScaledFont(float scaling, float max = 999)
+        {
+            if (FontSize >= 12)             // only if >=12 do we add on dialog scaling
+                scaling *= DialogFontScaling;
+
+            return GetScaledFont(scaling, max);
+        }
+
+        public Font GetScaledFont(float scaling, float max = 999, bool underline = false, bool strikeout = false)
+        {
+            float fsize = Math.Max(minFontSize, FontSize * scaling);
+            fsize = Math.Min(fsize, max);
+            FontStyle style = FontStyle;
+            if (underline)
+                style |= FontStyle.Underline;
+            else if (strikeout)
+                style |= FontStyle.Strikeout;
+            // System.Diagnostics.Debug.WriteLine($"Theme Lookup font {FontName} {fsize} {style}");
+            Font fnt = BaseUtils.FontLoader.GetFont(FontName, fsize, style);        // if it does not know the font, it will substitute Sans serif
+            return fnt;
+        }
+
+
+        // create raw, with apr 25 new colours still set up as transparent. Used by ToObject.
+        public Theme()              
+        {
+            Name = "Unset";
+        }
+
+        // windows default colours as set up above, with new apr 25 colours filled in by fillinnewoptions
+        public Theme(string name)         
+        {
+            this.Name = name;
+            FillInNewOptions(false);         // Fill in any missing transparent entries from other info
+        }
+
+        // Create a theme using colours. 
         public Theme(String n, Color form,
                                     Color butback, Color buttext, Color butborder, string bstyle,
                                     Color gridborderback, Color gridbordertext,
@@ -298,38 +558,103 @@ namespace ExtendedControls
                                     Color sPanel, Color keycolor,
                                     bool wf, double op, string ft, float fs, FontStyle fstyle)             // ft = empty means don't set it
         {
+            float sc = 0.6F;
             Name = n;
             Form = form;
-            ButtonBackColor = butback;           ButtonTextColor = buttext;            ButtonBorderColor = butborder;          
+
+            ButtonBackColor = butback; ButtonBackColor2 = butback.Multiply(sc);
+            ButtonTextColor = buttext; ButtonBorderColor = butborder; 
+            ButtonStyle = bstyle;
+
+            TextBlockBackColor = textboxback;
+            TextBlockForeColor = textboxfore;
+            TextBlockHighlightColor = textboxhighlight;
+            TextBlockSuccessColor = textboxsuccess;
+            TextBlockBorderColor = textboxborder;
+            TextBlockBorderColor2 = textboxborder.Multiply(sc);
+            TextBlockSliderBack = textboxsliderback;
+            TextBlockSliderBack2 = textboxsliderback.Multiply(sc);
+            TextBlockScrollArrowBack = textboxscrollbutton;
+            TextBlockScrollArrowBack2 = textboxscrollbutton.Multiply(sc);
+            TextBlockScrollButtonBack = textboxscrollbutton;
+            TextBlockScrollButtonBack2 = textboxscrollbutton.Multiply(sc);
+            TextBlockScrollArrow = textboxscrollarrow;
+            TextBlockDropDownBackColor = TextBlockDropDownBackColor2 = butback;
+
+            ListBoxBackColor = butback; ListBoxBackColor2 = butback.Multiply(sc);
+            ListBoxTextColor = buttext; ListBoxBorderColor = butborder;
+            ListBoxSliderBack = textboxsliderback;
+            ListBoxSliderBack2 = textboxsliderback.Multiply(sc);
+            ListBoxScrollArrowBack = textboxscrollbutton;
+            ListBoxScrollArrowBack2 = textboxscrollbutton.Multiply(sc);
+            ListBoxScrollButtonBack = textboxscrollbutton;
+            ListBoxScrollButtonBack2 = textboxscrollbutton.Multiply(sc);
+            ListBoxScrollArrow = textboxscrollarrow;
+
             GridBorderBack = gridborderback; GridBorderText = gridbordertext;
-            GridCellBack = gridcellback; GridCellAltBack = gridaltcellback; GridCellText = gridcelltext; GridCellAltText = gridaltcelltext; GridHighlightBack = gridhighlightback;
+            GridCellBack = gridcellback; GridCellAltBack = gridaltcellback;
+            GridCellText = gridcelltext; GridCellAltText = gridaltcelltext; GridHighlightBack = gridhighlightback;
             GridBorderLines = gridborderlines;
-            GridSliderBack = gridsliderback; GridScrollArrow = gridscrollarrow; GridScrollButton = gridscrollbutton;
+            GridSliderBack = gridsliderback; GridSliderBack2 = gridsliderback.Multiply(sc);
+            GridScrollArrowBack = gridscrollbutton; GridScrollArrow2Back = gridscrollbutton.Multiply(sc);
+            GridScrollButtonBack = gridscrollbutton; GridScrollButtonBack2 = gridscrollbutton.Multiply(sc);
+            GridScrollArrow = gridscrollarrow;
+
+            ComboBoxBackColor = butback; ComboBoxBackColor2 = butback.Multiply(sc);
+            ComboBoxTextColor = buttext; ComboBoxBorderColor = butborder;
+            ComboBoxDropDownSliderBack = textboxsliderback; ComboBoxDropDownSliderBack2 = textboxsliderback.Multiply(sc);
+            ComboBoxScrollArrowBack = textboxscrollarrow; ComboBoxScrollArrowBack2 = textboxscrollarrow.Multiply(sc);
+            ComboBoxScrollButtonBack = textboxscrollbutton; ComboBoxScrollButtonBack2 = textboxscrollbutton.Multiply(sc);
+
             KnownSystemColor = travelgridvisited; UnknownSystemColor = travelgridnonvisited;
-            TextBackColor = textboxback; TextBlockColor = textboxfore; TextBlockHighlightColor = textboxhighlight; TextBlockSuccessColor = textboxsuccess; TextBlockBorderColor = textboxborder;
-            TextBlockSliderBack = textboxsliderback; TextBlockScrollArrow = textboxscrollarrow; TextBlockScrollButton = textboxscrollbutton;
-            CheckBoxText = CheckBoxBack = checkboxfore; CheckBoxTick = checkboxtick; CheckBoxButtonTickedBack = checkboxbuttontick;
-            MenuBack = menuback; MenuFore = menufore; ToolStripDropdownBack = menudropbackback; ToolStripDropdownFore = menudropdownfore;
+
+            CheckBoxText = CheckBoxBack = checkboxfore; CheckBoxBack2 = CheckBoxBack.Multiply(sc); 
+            CheckBoxTick = checkboxtick;
+            CheckBoxButtonTickedBack = checkboxbuttontick;
+            CheckBoxButtonTickedBack2 = CheckBoxButtonTickedBack.Multiply(sc);
+            CheckBoxBorderColor = ButtonBorderColor;
+            ComboBoxScrollArrow = textboxscrollarrow;
+
+            MenuBack = menuback; MenuFore = menufore; MenuSelectedBack = menudropbackback; MenuSelectedText = menudropdownfore;
+            MenuDropDownBack = toolstripback; MenuBorder = toolstripborder;
+
             LabelColor = label;
-            GroupBack = groupboxback; GroupFore = groupboxtext; GroupBorder = groupboxlines;
-            TabcontrolBorder = tabborderlines;
-            ToolstripBack = toolstripback; ToolstripBorder = toolstripborder;
+
+            GroupBack[0] = GroupBack[1] = GroupBack[2] = GroupBack[3] = groupboxback; 
+            GroupFore = groupboxtext;
+            GroupBorder = groupboxlines; GroupBorder2 = groupboxlines.Multiply(0.7f);
+
+            TabStripBack[0] = TabStripBack[1] = TabStripBack[2] = TabStripBack[3] = form;
+            TabStripFore = buttext;
+            TabStripSelected = butback;
+
+            TabControlBack[0] = TabControlBack[1] = TabControlBack[2] = TabControlBack[3] = form;
+            TabControlText = buttext;
+            TabControlButtonBack = butback;
+            TabControlButtonBack2 = butback.Multiply(sc);
+            TabControlBorder = tabborderlines;
+            TabControlBorder2 = tabborderlines.Multiply(sc);      // darker colour
+            TabControlPageBack = form;
+
+            for (int i = 0; i < Panel1.Length; i++)
+                Panel1[i] = Panel2[i] = Panel3[i] = Panel4[i] = Form;
+
             SPanelColor = sPanel; TransparentColorKey = keycolor;
-            ButtonStyle = bstyle; TextBoxBorderStyle = tbbstyle;
+            TextBoxBorderStyle = tbbstyle;
             WindowsFrame = Environment.OSVersion.Platform == PlatformID.Win32NT ? wf : true;
             Opacity = op; FontName = ft; FontSize = fs; FontStyle = fstyle;
+
+#if DEBUG
+            int count = FillInNewOptions(false);       // will show up any missing sets debug - should be none 
+            System.Diagnostics.Debug.Assert(count == 0);
+#endif
         }
 
         // copy constructor, takes a real copy, with overrides
         public Theme(Theme other, string newname = null, string newfont = null, float newFontSize = 0, double newopacity = -1, FontStyle? fstyle = null)
         {
-            // dynamic copy over of all properties the lazy way
-            foreach (PropertyInfo mi in this.GetType().GetProperties(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public))
-            {
-                //System.Diagnostics.Debug.WriteLine($"Setting {mi.Name}");
-                if (mi.CanWrite)
-                    mi.SetValue(this, mi.GetValue(other));
-            }
+            this.CopyPropertiesFields(other);       // dynamic copy over of all properties the lazy way
+
             if (newname != null)
                 Name = newname;
             if (newfont != null)
@@ -340,49 +665,6 @@ namespace ExtendedControls
                 this.Opacity = newopacity;
             if ( fstyle.HasValue)
                 this.FontStyle = fstyle.Value;  
-        }
-
-        [JsonIgnore]
-        public Font GetFont
-        {
-            get
-            {
-                return GetScaledFont(1.0f);
-            }
-        }
-
-
-        [JsonIgnore]
-        // dialogs get a slighly smaller font
-        public Font GetDialogFont      
-        {
-            get
-            {
-                return GetScaledFont(DialogFontScaling);
-            }
-        }
-
-        // scale dialog font, as long as font >= 12pt
-        public Font GetDialogScaledFont(float scaling, float max = 999) 
-        {
-            if (FontSize >= 12)             // only if >=12 do we add on dialog scaling
-                scaling *= DialogFontScaling;       
-
-            return GetScaledFont(scaling, max);
-        }
-
-        public Font GetScaledFont(float scaling, float max = 999, bool underline = false, bool strikeout = false)
-        {
-            float fsize = Math.Max(minFontSize, FontSize * scaling);
-            fsize = Math.Min(fsize, max);
-            FontStyle style = FontStyle;
-            if (underline)
-                style |= FontStyle.Underline;
-            else if ( strikeout )
-                style |= FontStyle.Strikeout;
-           // System.Diagnostics.Debug.WriteLine($"Theme Lookup font {FontName} {fsize} {style}");
-            Font fnt = BaseUtils.FontLoader.GetFont(FontName, fsize, style);        // if it does not know the font, it will substitute Sans serif
-            return fnt;
         }
 
         public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
@@ -408,78 +690,118 @@ namespace ExtendedControls
             return ret;
         }
 
-        internal bool Apply(Control form, Font fnt, bool nowindowsborderoverride = false)
+        internal bool Apply(Control form, Font fnt, bool nowindowsborderoverride = false, bool applytoolstriprendering = true)
         {
-            UpdateControls(form.Parent, form, fnt, 0, nowindowsborderoverride);
-
-            if ((ToolStripManager.Renderer as ThemeToolStripRenderer) == null)      // not installed..   install one
-                ToolStripManager.Renderer = new ThemeToolStripRenderer();
-
-            UpdateToolsStripRenderer(ToolStripManager.Renderer as ThemeToolStripRenderer);
-
+            UpdateControls(form, fnt, 0, nowindowsborderoverride);
+            ToolStripRendererTheming(applytoolstriprendering);
             return WindowsFrame;
         }
 
-        private void UpdateControls(Control parent, Control myControl, Font fnt, int level, bool noborderoverride = false)    // parent can be null
+        public void ToolStripRendererTheming(bool on)
         {
+            if (on)
+            {
+                if ((ToolStripManager.Renderer as ThemeToolStripRenderer) == null)      // not installed..   install one
+                    ToolStripManager.Renderer = new ThemeToolStripRenderer();
+
+                var toolstripRenderer = ToolStripManager.Renderer as ThemeToolStripRenderer;
+
+                bool foretoodark = (MenuFore.GetBrightness() < 0.1);
+
+                // horizontal menu bar
+                toolstripRenderer.colortable.colMenuBarBackground = MenuBack;
+                toolstripRenderer.colortable.colMenuText = MenuFore;
+                toolstripRenderer.colortable.colMenuSelectedOrPressedText = MenuSelectedText;
+
+                toolstripRenderer.colortable.colMenuTopLevelHoveredBack = MenuSelectedBack.Multiply(0.8f);
+                toolstripRenderer.colortable.colMenuTopLevelSelectedBack = MenuSelectedBack;
+                toolstripRenderer.colortable.colMenuItemSelectedBack = MenuSelectedBack;
+
+                toolstripRenderer.colortable.colMenuDropDownBackground = MenuDropDownBack;
+                toolstripRenderer.colortable.colMenuLeftMarginBackground = MenuDropDownBack.Multiply(1.2F);
+
+                // we can't seem to set checkmark colour to anything but black so make sure the Fore is not dark            
+                toolstripRenderer.colortable.colMenuItemCheckedBackground = foretoodark ? MenuBack : MenuFore;
+                toolstripRenderer.colortable.colMenuItemHoverOverCheckmarkBackground = foretoodark ? MenuBack : MenuFore.Multiply(MouseSelectedScaling);
+
+                Color border = MenuBorder;
+
+                toolstripRenderer.colortable.colMenuDropDownBorder = border;
+                toolstripRenderer.colortable.colMenuHighlightedPartBorder = border;
+
+                toolstripRenderer.colortable.colToolStripBackground = MenuBack;
+                toolstripRenderer.colortable.colToolStripBorder = border;
+                toolstripRenderer.colortable.colToolStripSeparator = border;
+
+                toolstripRenderer.colortable.colToolStripButtonPressedBack = MenuSelectedBack.Multiply(1.2f);
+                toolstripRenderer.colortable.colToolStripButtonSelectedBack = MenuSelectedBack;
+                toolstripRenderer.colortable.colToolStripButtonPressedSelectedBorder = border.Multiply(MouseSelectedScaling);
+                toolstripRenderer.colortable.colToolBarGripper = MenuFore;
+                toolstripRenderer.colortable.colToolStripOverflowButton = MenuFore;
+            }
+            else
+                ToolStripManager.Renderer = null;
+        }
+
+        // if you want to theme a specific control
+        public void UpdateControls(Control ctrl, Font fnt, int level, bool formnoborderoverride = false)    // parent can be null
+        {
+            Control parent = ctrl.Parent;
+            Type controltype = ctrl.GetType();
 
 #if DEBUG
-            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + fnt.ToString() + " c.fnt " + myControl.Font);
+
+            //System.Diagnostics.Debug.WriteLine(new string(' ', 256).Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + ctrl.Name.ToString() + " " + ctrl.ToString() + " " + fnt.ToString() + " c.fnt " + ctrl.Font);
+            //System.Diagnostics.Debug.WriteLine(new string(' ', 256).Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + ctrl.Name.ToString() + " " + ctrl.ToString() + " " + ctrl.BackColor);
             //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + (myControl.GetType().Name + ":" + myControl.Name??"") + " : " + myControl.GetHeirarchy(false));
             // System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
 #endif
-            myControl.SuspendLayout();
-
-            Type controltype = myControl.GetType();
-            string parentnamespace = parent?.GetType().Namespace ?? "NoParent";
+            ctrl.SuspendLayout();
 
             bool dochildren = true;
 
-            if ( myControl is IThemeable)
+            if ( ctrl is IThemeable)
             {
-                dochildren = (myControl as IThemeable).Theme(this,fnt);
+                dochildren = (ctrl as IThemeable).Theme(this,fnt);
             }
-
-            // this dodge allows no themeing on controls
-            else if (myControl.TabIndex == TabIndexNoThemeIndicator)
+            else if (ctrl is Form form) // WINFORM
             {
-                //System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent?.Name + " Tabindex indicates no theme!");
-                dochildren = false;
-            }
-            else if (myControl is Form form) // WINFORM
-            {
-                form.FormBorderStyle = (WindowsFrame && !noborderoverride) ? FormBorderStyle.Sizable : FormBorderStyle.None;
+                form.FormBorderStyle = (WindowsFrame && !formnoborderoverride) ? FormBorderStyle.Sizable : FormBorderStyle.None;
                 form.Opacity = Opacity / 100;
                 form.BackColor = Form;
                 form.Font = fnt;
-                //System.Diagnostics.Debug.WriteLine($"Form scaling now {f.CurrentAutoScaleDimensions} {f.AutoScaleDimensions} {f.CurrentAutoScaleFactor()}");
+                System.Diagnostics.Debug.WriteLine($"Theme form {form.BackColor} scaling {form.CurrentAutoScaleDimensions} {form.AutoScaleDimensions} {form.CurrentAutoScaleFactor()}");
             }
-            else if (myControl is Panel)    // WINFORM, and ext panels rely on this if they don't need to theme
+            else if ( ctrl is TabPage)      // TabPage is a panel, get to it first
             {
-                myControl.BackColor = GroupBoxOverride(parent, Form);
-                // don't think makes sense myControl.ForeColor = LabelColor;
+                ctrl.BackColor = TabControlPageBack;
             }
-            else if (myControl is Label)        // WINFORM
+            else if (ctrl is Panel)    // WINFORM, and ext panels rely on this if they don't need to theme
             {
-                myControl.ForeColor = LabelColor;
+                ctrl.BackColor = GroupBoxOverride(parent, Form);
             }
-            else if (myControl is Chart)    // WINFORM
+            else if (ctrl is Label)        // WINFORM
+            {
+                ctrl.ForeColor = LabelColor;
+                ctrl.BackColor = Color.Transparent; // seems to need it
+            }
+            else if (ctrl is Chart)    // WINFORM
             {
                 System.Diagnostics.Debug.Assert(false, "Warning - Chart not allowed");
             }
-            else if (myControl is NumericUpDown)        // WINFORM
+            else if (ctrl is NumericUpDown)        // WINFORM
             {                                                                   // BACK colour does not work..
-                myControl.ForeColor = TextBlockColor;
+                ctrl.ForeColor = TextBlockForeColor;
             }
-            else if (myControl is TableLayoutPanel)     // WINFORM
+            else if (ctrl is TableLayoutPanel)     // WINFORM
             {
-                myControl.BackColor = GroupBoxOverride(parent, Form);
+                ctrl.BackColor = GroupBoxOverride(parent, Form);
             }
-            else if (myControl is FlowLayoutPanel flp)  // WINFORM
+            else if (ctrl is FlowLayoutPanel flp)  // WINFORM
             {
                 flp.BackColor = GroupBoxOverride(parent, Form);
             }
-            else if (myControl is DataGridView dgv)  // WINFORM           
+            else if (ctrl is DataGridView dgv)  // WINFORM           
             {
                 dgv.EnableHeadersVisualStyles = false;            // without this, the colours for the grid are not applied.
 
@@ -521,64 +843,51 @@ namespace ExtendedControls
                 if (dgv.ContextMenuStrip != null)       // propergate font onto any attached context menus
                     dgv.ContextMenuStrip.Font = fnt;
             }
-            else if (myControl is PictureBox pb)    // WINFORM
+            else if (ctrl is PictureBox pb)    // WINFORM
             {
                 if (pb.ContextMenuStrip != null)       // propergate font onto any attached context menus
                     pb.ContextMenuStrip.Font = fnt;
             }
-            else if (myControl is StatusStrip)  // WINFORM
+            else if (ctrl is StatusStrip)  // WINFORM
             {
-                myControl.BackColor = Form;
-                myControl.ForeColor = LabelColor;
+                ctrl.BackColor = Form;
+                ctrl.ForeColor = LabelColor;
                 dochildren = false;
             }
-            else if (myControl is ToolStrip)    // WINFORM MenuStrip is a tool stip
+            else if (ctrl is ToolStrip)    // WINFORM MenuStrip is a tool stip
             {
-                myControl.Font = fnt;       // Toolstrips don't seem to inherit Forms font, so force
-
-                foreach (ToolStripItem i in ((ToolStrip)myControl).Items)   // make sure any buttons have the button back colour set
-                {
-                    if (i is ToolStripButton || i is ToolStripDropDownButton)
-                    {           // theme the back colour, this is the way its done.. not via the tool strip renderer
-                        i.BackColor = ButtonBackColor;
-                    }
-                    else if (i is ToolStripTextBox)
-                    {
-                        i.ForeColor = TextBlockColor;
-                        i.BackColor = TextBackColor;
-                    }
-                }
+                ctrl.Font = fnt;       // Toolstrips don't seem to inherit Forms font, so force
             }
-            else if (myControl is TreeView) // WINFORM
+            else if (ctrl is TreeView) // WINFORM
             {
-                TreeView ctrl = myControl as TreeView;
-                ctrl.ForeColor = TextBlockColor;
-                ctrl.BackColor = TextBackColor;
+                TreeView tctrl = ctrl as TreeView;
+                tctrl.ForeColor = TextBlockForeColor;
+                tctrl.BackColor = TextBlockBackColor;
             }
-            else if (myControl is Button wfb) // WINFORM
+            else if (ctrl is Button wfb) // WINFORM
             {
-                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                //System.Diagnostics.Trace.WriteLine("Themer " + ctrl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wfb.ForeColor = ButtonTextColor;
                 wfb.BackColor = ButtonBackColor;
                 wfb.FlatStyle = FlatStyle.Popup;
                 wfb.FlatAppearance.BorderColor = ButtonBorderColor;
             }
-            else if (myControl is RadioButton wrb) // WINFORM
+            else if (ctrl is RadioButton wrb) // WINFORM
             {
-                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                //System.Diagnostics.Trace.WriteLine("Themer " + ctrl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wrb.ForeColor = ButtonTextColor;
             }
-            else if (myControl is GroupBox wgb)// WINFORM
+            else if (ctrl is GroupBox wgb)// WINFORM
             {
-                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                //System.Diagnostics.Trace.WriteLine("Themer " + ctrl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wgb.ForeColor = GroupFore;
-                wgb.BackColor = GroupBack;
+                wgb.BackColor = GroupBack[0];
             }
-            else if (myControl is CheckBox wchb) // WINFORM
+            else if (ctrl is CheckBox wchb) // WINFORM
             {
                 wchb.BackColor = GroupBoxOverride(parent, Form);
 
-                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                //System.Diagnostics.Trace.WriteLine("Themer " + ctrl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 if (wchb.Appearance == Appearance.Button)
                 {
                     wchb.ForeColor = ButtonTextColor;
@@ -589,93 +898,57 @@ namespace ExtendedControls
                 }
 
             }
-            else if (myControl is TextBox wtb) // WINFORM
+            else if (ctrl is TextBox wtb) // WINFORM
             {
-                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
-                wtb.ForeColor = TextBlockColor;
-                wtb.BackColor = TextBackColor;
+                //System.Diagnostics.Trace.WriteLine("Themer " + ctrl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                wtb.ForeColor = TextBlockForeColor;
+                wtb.BackColor = TextBlockBackColor;
                 wtb.BorderStyle = BorderStyle.FixedSingle;
             }
-            else if (myControl is RichTextBox wrtb) // WINFORM
+            else if (ctrl is RichTextBox wrtb) // WINFORM
             {
-                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
-                wrtb.ForeColor = TextBlockColor;
-                wrtb.BackColor = TextBackColor;
+                //System.Diagnostics.Trace.WriteLine("Themer " + ctrl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                wrtb.ForeColor = TextBlockForeColor;
+                wrtb.BackColor = TextBlockBackColor;
             }
-            else if (myControl is ComboBox wcb) // WINFORM
+            else if (ctrl is ComboBox wcb) // WINFORM
             {
-                System.Diagnostics.Trace.WriteLine("Themer " + myControl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
+                //System.Diagnostics.Trace.WriteLine("Themer " + ctrl.Name + " of " + controltype.Name + " from " + parent.Name + " Winform control!");
                 wcb.ForeColor = ButtonTextColor;
                 wcb.BackColor = ButtonBackColor;
             }
             // these are not themed or are sub parts of other controls
-            else if (myControl is UserControl || myControl is SplitContainer || myControl is SplitterPanel || myControl is HScrollBar || myControl is VScrollBar) // WINFORM
+            else if (ctrl is UserControl || ctrl is SplitContainer || ctrl is SplitterPanel || ctrl is HScrollBar || ctrl is VScrollBar) // WINFORM
             {
             }
             else
             {
-                System.Diagnostics.Trace.WriteLine($"Themer {myControl.Name}:{controltype.Name} from {parent.Name} Unknown control!");
+                System.Diagnostics.Trace.WriteLine($"Themer {ctrl.Name}:{controltype.Name} from {parent.Name} Unknown control!");
             }
 
-            //System.Diagnostics.Debug.WriteLine("                  " + level + " Control " + myControl.Name + " " + myControl.Location + " " + myControl.Size);
-
-            //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme begin sub controls of {myControl.Name} ");
 
             if (dochildren)
             {
-                foreach (Control subC in myControl.Controls)
+                foreach (Control subC in ctrl.Controls)
                 {
                     //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme sub controls of {myControl.Name} sub {subC.GetType().Name}");
-                    UpdateControls(myControl, subC, fnt, level + 1);
+                    UpdateControls(subC, fnt, level + 1);
                 }
             }
 
-            myControl.ResumeLayout();
-            //if (myControl.Name == "textBoxSystem")  System.Diagnostics.Debug.WriteLine($"Theme Control {myControl.Name} to {myControl.Bounds}");
+            ctrl.ResumeLayout();
         }
 
-        private void UpdateToolsStripRenderer(ThemeToolStripRenderer toolstripRenderer)
-        {
-            Color menuback = MenuBack;
-            bool toodark = (menuback.GetBrightness() < 0.1);
-
-            toolstripRenderer.colortable.colMenuText = MenuFore;              // and the text
-            toolstripRenderer.colortable.colMenuSelectedText = ToolStripDropdownFore;
-            toolstripRenderer.colortable.colMenuBackground = menuback;
-            toolstripRenderer.colortable.colMenuBarBackground = Form;
-            toolstripRenderer.colortable.colMenuBorder = ButtonBorderColor;
-            toolstripRenderer.colortable.colMenuSelectedBack = ToolStripDropdownBack;
-            toolstripRenderer.colortable.colMenuHighlightBorder = ButtonBorderColor;
-            toolstripRenderer.colortable.colMenuHighlightBack = toodark ? ToolStripDropdownBack.Multiply(0.7F) : MenuBack.Multiply(1.3F);        // whole menu back
-
-            Color menuchecked = toodark ? ToolStripDropdownBack.Multiply(0.8F) : MenuBack.Multiply(1.5F);        // whole menu back
-
-            toolstripRenderer.colortable.colCheckButtonChecked = menuchecked;
-            toolstripRenderer.colortable.colCheckButtonPressed =
-            toolstripRenderer.colortable.colCheckButtonHighlighted = menuchecked.Multiply(1.1F);
-
-            toolstripRenderer.colortable.colToolStripButtonCheckedBack = menuchecked;
-            toolstripRenderer.colortable.colToolStripButtonPressedBack =
-            toolstripRenderer.colortable.colToolStripButtonSelectedBack = menuchecked.Multiply(1.1F);
-
-            toolstripRenderer.colortable.colToolStripBackground = ToolstripBack;
-            toolstripRenderer.colortable.colToolStripBorder = ToolstripBorder;
-            toolstripRenderer.colortable.colToolStripSeparator = ToolstripBorder;
-            toolstripRenderer.colortable.colOverflowButton = MenuBack;
-            toolstripRenderer.colortable.colGripper = ToolstripBorder;
-
-            toolstripRenderer.colortable.colToolStripDropDownMenuImageMargin = ButtonBackColor;
-            toolstripRenderer.colortable.colToolStripDropDownMenuImageRevealed = Color.Purple;      // NO evidence, set to show up
-        }
+        // see the ToolStripCustomColourTable for meaning of these colours
 
         // if a parent above is a group box behind the control, use the group box back color, else use the form colour
-        public Color GroupBoxOverride(Control parent, Color d)      
+        private Color GroupBoxOverride(Control parent, Color d)      
         {
             Control x = parent;
             while (x != null)
             {
                 if (x is GroupBox)
-                    return GroupBack;
+                    return GroupBack[0];
                 x = x.Parent;
             }
 
@@ -684,48 +957,186 @@ namespace ExtendedControls
 
         public JObject ToJSON(bool altnames = true)
         {
-            var jo = JToken.FromObject(this, false, membersearchflags:System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.Public,
+            var ctrl = JToken.GetMemberAttributeSettings(typeof(Theme), "AltFmt", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+
+            var jo = JToken.FromObject(this, false, membersearchflags: System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public,
                                         setname: altnames ? "AltFmt" : "Std",
-                                        customconvert: (o) => { return JToken.CreateToken(System.Drawing.ColorTranslator.ToHtml((Color)o)); }).Object();
+                                        customconvert: (o) => {
+                                            return JToken.CreateToken(System.Drawing.ColorTranslator.ToHtml((Color)o)); }).Object();
             return jo;
         }
 
-        public bool FromJSON(JToken jo, bool altnames = true)
+        // load from json, normally taking the name from json but can be overridden, and using altnames by default
+        public static Theme FromJSON(JToken jo, string usename = null, bool altnames = true)
         {
-            var ret = jo.ToObjectProtected(this.GetType(), false, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance, this,
+            // convert, can create, using the Theme() constructor to leave new colours transparent if the json does not have it
+
+            Object jconv = jo.ToObjectProtected(typeof(Theme), false, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance, new Theme(),
                                     null, altnames ? "AltFmt" : "Std", 
                                     (tt, o) => { if (o is string) return System.Drawing.ColorTranslator.FromHtml((string)o); else return Color.Orange; 
                                     });
 
-            CheckForMissingValues();
+            if (jconv is Theme)
+            {
+                Theme ret = (Theme)jconv;
+                if (usename!=null)
+                    ret.Name = usename;
+                ret.FillInNewOptions(true);     // fill in and complain about any missing colours
+                return ret;
+            }
+            else
+            {
+                var err = jconv as QuickJSON.JTokenExtensions.ToObjectError;
+                if ( err != null)
+                    System.Diagnostics.Debug.WriteLine($"Theme failed to convert {err.ErrorString}");
+            }
 
-            return ret is Theme;
+            return null;
         }
 
-        public void CheckForMissingValues()
-        {
-            if (CheckBoxButtonTickedBack == Color.Transparent)
-                CheckBoxButtonTickedBack = CheckBoxTick;
-            if (CheckBoxBack == Color.Transparent)      // new march 25 synced to "checkbox"
-                CheckBoxBack = CheckBoxText;
-        }
-
-        public bool LoadFile(string pathname, string usethisname = null)
+        // load file
+        public static Theme LoadFile(string pathname, string usethisname = null, bool altnames = true)
         {
             JToken jo = pathname.ReadJSONFile();
-            if ( jo != null && FromJSON(jo))
+            if ( jo != null )
             {
-                if (usethisname!=null)
-                    Name = usethisname;
-                return true;
+                Theme thm = FromJSON(jo, usethisname, altnames);
+                if (thm != null)
+                {
+                    return thm;
+                }
             }
-            return false;
+
+            return null;
         }
 
         public bool SaveFile(string pathname)
         {
             return FileHelpers.TryWriteToFile(pathname, ToJSON().ToString(true));
         }
+
+        // New options introduced in march/april 25 are marked as transparent..
+        // if missing, fill them in from existing info
+        private int FillInNewOptions(bool emitdebug)
+        {
+            float sc = 0.6F;
+            int count = 0;
+
+            count += Replace(emitdebug, nameof(ButtonBackColor2), ButtonBackColor.Multiply(sc));       // in order
+
+            count += Replace(emitdebug, nameof(TextBlockBorderColor2), TextBlockBorderColor.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockSliderBack2), TextBlockSliderBack.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockScrollArrowBack), TextBlockScrollButtonBack);
+            count += Replace(emitdebug, nameof(TextBlockScrollArrowBack2), TextBlockScrollButtonBack.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockScrollButtonBack2), TextBlockScrollButtonBack.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockDropDownBackColor), TextBlockBackColor);
+            count += Replace(emitdebug, nameof(TextBlockDropDownBackColor2), TextBlockBackColor);
+
+            count += Replace(emitdebug, nameof(ListBoxBackColor), ButtonBackColor);
+            count += Replace(emitdebug, nameof(ListBoxBackColor2), ButtonBackColor2);
+            count += Replace(emitdebug, nameof(ListBoxBorderColor), ButtonBorderColor);
+            count += Replace(emitdebug, nameof(ListBoxTextColor), ButtonTextColor);
+            count += Replace(emitdebug, nameof(ListBoxSliderBack), TextBlockSliderBack);
+            count += Replace(emitdebug, nameof(ListBoxSliderBack2), TextBlockSliderBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(ListBoxScrollArrowBack), TextBlockScrollButtonBack);
+            count += Replace(emitdebug, nameof(ListBoxScrollArrowBack2), TextBlockScrollButtonBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(ListBoxScrollButtonBack), TextBlockScrollButtonBack);
+            count += Replace(emitdebug, nameof(ListBoxScrollButtonBack2), TextBlockScrollButtonBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(ListBoxScrollArrow), TextBlockScrollArrowBack);
+
+            count += Replace(emitdebug, nameof(GridSliderBack2), GridSliderBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(GridScrollArrowBack), GridScrollButtonBack);
+            count += Replace(emitdebug, nameof(GridScrollArrow2Back), GridScrollButtonBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(GridScrollButtonBack2), GridScrollButtonBack.Multiply(sc));
+
+            count += Replace(emitdebug, nameof(ComboBoxBackColor), ButtonBackColor);
+            count += Replace(emitdebug, nameof(ComboBoxBackColor2), ButtonBackColor2);
+            count += Replace(emitdebug, nameof(ComboBoxBorderColor), ButtonBorderColor);
+            count += Replace(emitdebug, nameof(ComboBoxTextColor), ButtonTextColor);
+            count += Replace(emitdebug, nameof(ComboBoxDropDownSliderBack), TextBlockSliderBack);
+            count += Replace(emitdebug, nameof(ComboBoxDropDownSliderBack2), TextBlockSliderBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(ComboBoxScrollArrowBack), TextBlockScrollArrowBack);
+            count += Replace(emitdebug, nameof(ComboBoxScrollArrowBack2), TextBlockScrollArrowBack2);
+            count += Replace(emitdebug, nameof(ComboBoxScrollButtonBack), TextBlockScrollButtonBack);
+            count += Replace(emitdebug, nameof(ComboBoxScrollButtonBack2), TextBlockScrollButtonBack2);
+            count += Replace(emitdebug, nameof(ComboBoxScrollArrow), TextBlockScrollArrow);
+
+            count += Replace(emitdebug, nameof(CheckBoxBack), CheckBoxText);
+            count += Replace(emitdebug, nameof(CheckBoxBack2), CheckBoxText.Multiply(sc));
+            count += Replace(emitdebug, nameof(CheckBoxButtonTickedBack), CheckBoxTick);
+            count += Replace(emitdebug, nameof(CheckBoxButtonTickedBack2), CheckBoxTick.Multiply(sc));
+            count += Replace(emitdebug, nameof(CheckBoxBorderColor), ButtonBorderColor);
+
+            count += Replace(emitdebug, nameof(GroupBorder2), GroupBorder.Multiply(sc));
+
+            count += Replace(emitdebug, nameof(TabStripFore), ButtonTextColor);
+            count += Replace(emitdebug, nameof(TabStripSelected), ButtonBackColor);
+
+            count += Replace(emitdebug, nameof(TabControlText), ButtonTextColor);
+            count += Replace(emitdebug, nameof(TabControlButtonBack), ButtonBackColor);
+            count += Replace(emitdebug, nameof(TabControlButtonBack2), ButtonBackColor.Multiply(0.6F));
+            count += Replace(emitdebug, nameof(TabControlBorder2), TabControlBorder.Multiply(0.6F));        // border is bright, this is darker
+            count += Replace(emitdebug, nameof(TabControlPageBack), Form);        // border is bright, this is darker
+
+            for (int i = 0; i < Panel1.Length; i++)
+            {
+                count += Replace(emitdebug, nameof(GroupBack), Form, i);
+                count += Replace(emitdebug, nameof(TabControlBack), Form, i);
+                count += Replace(emitdebug, nameof(TabStripBack), Form, i);
+                count += Replace(emitdebug, nameof(Panel1), Form, i);
+                count += Replace(emitdebug, nameof(Panel2), Form, i);
+                count += Replace(emitdebug, nameof(Panel3), Form, i);
+                count += Replace(emitdebug, nameof(Panel4), Form, i);
+            }
+
+            // verify we have no transparent colours left due to missing above
+#if DEBUG            
+            var proplist = GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+            foreach (var p in proplist)
+            {
+                if (p.PropertyType == typeof(Color))
+                {
+                    Color c = (Color)p.GetValue(this);
+                    System.Diagnostics.Debug.Assert(c != Color.Transparent);
+                }
+            }
+#endif
+            return count;
+        }
+
+        private int Replace(bool debug, string nameofitem, Color y, int index = 0 )
+        {
+            System.Diagnostics.Debug.Assert(y != Color.Transparent);
+
+            PropertyInfo p = typeof(Theme).GetProperty(nameofitem);
+            if (p.PropertyType.IsArray)
+            {
+                Array a = (Array)p.GetValue(this);
+                Color curv = (Color)a.GetValue(index);
+
+                if (curv == Color.Transparent)
+                {
+                    if (debug)
+                        System.Diagnostics.Debug.WriteLine($"Theme {Name} missing item {nameofitem}[{index}] setting to {y}");
+                    a.SetValue(y,index);
+                    return 1;
+                }
+            }
+            else
+            {
+                Color curv = (Color)p.GetValue(this);
+                if (curv == Color.Transparent)
+                {
+                    if (debug)
+                        System.Diagnostics.Debug.WriteLine($"Theme {Name} missing item {nameofitem} setting to {y}");
+                    p.SetValue(this, y);
+                    return 1;
+                }
+            }
+
+            return 0;
+        }
+
 
         private const string DefaultFont = "Microsoft Sans Serif";
         private const float DefaultFontSize = 8.25F;

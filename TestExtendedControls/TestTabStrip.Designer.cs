@@ -71,7 +71,6 @@
             this.tabStrip1.SelectedIndex = -1;
             this.tabStrip1.ShowPopOut = true;
             this.tabStrip1.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip1.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip1.TabIndex = 0;
             // 
@@ -92,13 +91,11 @@
             this.listControlCustom1.BorderColor = System.Drawing.Color.Red;
             this.listControlCustom1.FitToItemsHeight = true;
             this.listControlCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.listControlCustom1.GradientColorScaling = 0.5F;
             this.listControlCustom1.ImageItems = null;
             this.listControlCustom1.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom1.Items")));
             this.listControlCustom1.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom1.ItemSeperators = null;
             this.listControlCustom1.Location = new System.Drawing.Point(588, 507);
-            this.listControlCustom1.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.listControlCustom1.Name = "listControlCustom1";
             this.listControlCustom1.SelectedIndex = -1;
             this.listControlCustom1.SelectionBackColor = System.Drawing.Color.Gray;
@@ -111,13 +108,11 @@
             this.listControlCustom2.BorderColor = System.Drawing.Color.Red;
             this.listControlCustom2.FitToItemsHeight = true;
             this.listControlCustom2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.listControlCustom2.GradientColorScaling = 0.5F;
             this.listControlCustom2.ImageItems = null;
             this.listControlCustom2.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom2.Items")));
             this.listControlCustom2.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom2.ItemSeperators = null;
             this.listControlCustom2.Location = new System.Drawing.Point(679, 507);
-            this.listControlCustom2.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.listControlCustom2.Name = "listControlCustom2";
             this.listControlCustom2.SelectedIndex = -1;
             this.listControlCustom2.SelectionBackColor = System.Drawing.Color.Gray;
@@ -141,13 +136,11 @@
             this.listControlCustom3.BorderColor = System.Drawing.Color.Red;
             this.listControlCustom3.FitToItemsHeight = true;
             this.listControlCustom3.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.listControlCustom3.GradientColorScaling = 0.5F;
             this.listControlCustom3.ImageItems = null;
             this.listControlCustom3.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom3.Items")));
             this.listControlCustom3.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom3.ItemSeperators = null;
             this.listControlCustom3.Location = new System.Drawing.Point(770, 507);
-            this.listControlCustom3.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.listControlCustom3.Name = "listControlCustom3";
             this.listControlCustom3.SelectedIndex = -1;
             this.listControlCustom3.SelectionBackColor = System.Drawing.Color.Gray;
@@ -169,7 +162,6 @@
             this.tabStrip2.SelectedIndex = -1;
             this.tabStrip2.ShowPopOut = true;
             this.tabStrip2.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip2.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip2.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip2.TabIndex = 1;
             // 
@@ -197,7 +189,6 @@
             this.tabStrip3.SelectedIndex = -1;
             this.tabStrip3.ShowPopOut = true;
             this.tabStrip3.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip3.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip3.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip3.TabIndex = 1;
             // 
@@ -215,7 +206,6 @@
             this.tabStrip4.SelectedIndex = -1;
             this.tabStrip4.ShowPopOut = true;
             this.tabStrip4.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip4.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip4.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip4.TabIndex = 1;
             // 
@@ -253,7 +243,6 @@
             this.tabStrip5.SelectedIndex = -1;
             this.tabStrip5.ShowPopOut = true;
             this.tabStrip5.Size = new System.Drawing.Size(484, 96);
-            this.tabStrip5.StripBackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabStrip5.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip5.TabIndex = 1;
             // 
@@ -262,13 +251,11 @@
             this.listControlCustom4.BorderColor = System.Drawing.Color.Red;
             this.listControlCustom4.FitToItemsHeight = true;
             this.listControlCustom4.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.listControlCustom4.GradientColorScaling = 0.5F;
             this.listControlCustom4.ImageItems = null;
             this.listControlCustom4.Items = ((System.Collections.Generic.List<string>)(resources.GetObject("listControlCustom4.Items")));
             this.listControlCustom4.ItemSeperatorColor = System.Drawing.Color.Red;
             this.listControlCustom4.ItemSeperators = null;
             this.listControlCustom4.Location = new System.Drawing.Point(865, 507);
-            this.listControlCustom4.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.listControlCustom4.Name = "listControlCustom4";
             this.listControlCustom4.SelectedIndex = -1;
             this.listControlCustom4.SelectionBackColor = System.Drawing.Color.Gray;

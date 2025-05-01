@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016-2025 EDDiscovery development team
+ * Copyright 2024-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -14,22 +14,21 @@
 
 using System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace ExtendedControls
 {
-    public partial class ExtPanelResizer : Panel, IThemeable
+    // a resizer panel, clicking on it causes a resize.
+    public partial class ExtPanelResizer : ExtPanelGradientFill
     {
         public DockStyle Movement { get { return movement; } set { SetMovement(value); } }
-
         private DockStyle movement = DockStyle.Top;
 
-        private void SetMovement( DockStyle m)
+        private void SetMovement(DockStyle m)
         {
             if (Movement == DockStyle.Top || Movement == DockStyle.Bottom)
-                Cursor = System.Windows.Forms.Cursors.SizeNS;
+                Cursor = Cursors.SizeNS;
             else
-                Cursor = System.Windows.Forms.Cursors.SizeWE;
+                Cursor = Cursors.SizeWE;
 
             movement = m;
         }
@@ -61,11 +60,11 @@ namespace ExtendedControls
             }
         }
 
-        public bool Theme(Theme t, Font fnt)
+        protected override bool ThemeDerived(Theme t, Font fnt)
         {
-            BackColor = t.GroupBoxOverride(Parent, t.Form);
             Visible = !t.WindowsFrame;
-            return true;
+            return base.ThemeDerived(t, fnt);
         }
     }
+
 }

@@ -100,10 +100,8 @@
             this.extTabControl1.Name = "extTabControl1";
             this.extTabControl1.SelectedIndex = 0;
             this.extTabControl1.Size = new System.Drawing.Size(763, 291);
-            this.extTabControl1.TabBackgroundColor = System.Drawing.Color.Transparent;
-            this.extTabControl1.TabColorScaling = 0.5F;
-            this.extTabControl1.TabControlBorderBrightColor = System.Drawing.Color.LightGray;
-            this.extTabControl1.TabControlBorderColor = System.Drawing.Color.DarkGray;
+            this.extTabControl1.TabControlBorderColor = System.Drawing.Color.LightGray;
+            this.extTabControl1.TabControlBorderColor2 = System.Drawing.Color.DarkGray;
             this.extTabControl1.TabDisabledScaling = 0.5F;
             this.extTabControl1.TabIndex = 8;
             this.extTabControl1.TabMouseOverColor = System.Drawing.Color.White;

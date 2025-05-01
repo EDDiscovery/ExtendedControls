@@ -35,8 +35,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuickJSON, Version=2.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\RJKJSoft.QuickJSON.2.7.0\lib\net48\QuickJSON.dll</HintPath>
+    <Reference Include="QuickJSON, Version=2.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\RJKJSoft.QuickJSON.2.8.0\lib\net48\QuickJSON.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DropDownTheme.cs" />
     <Compile Include="Controls\DGVCellPictureBox.cs" />
     <Compile Include="Controls\LabelData.cs">
       <SubType>Component</SubType>
@@ -63,10 +64,13 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DGVColumnAutoComplete.cs" />
-    <Compile Include="Controls\PanelFlowLayout.cs">
+    <Compile Include="Controls\FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelNoTheme.cs">
+    <Compile Include="Controls\PanelGradientFill.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PanelVertScroll.cs">
@@ -100,9 +104,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\TextBoxAutoComplete.cs">
@@ -193,7 +194,7 @@
       <DependentUpon>ThemeEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Themes\ThemeList.cs" />
-    <Compile Include="ToolStrips\ThemeToolStrip.cs" />
+    <Compile Include="Themes\ThemeToolStrip.cs" />
     <Compile Include="Controls\DateTimePicker.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -268,13 +269,13 @@
     <Compile Include="Controls\TextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ToolStrips\ToolStripComboBoxCustom.cs" />
+    <Compile Include="Controls\ToolStripComboBoxCustom.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\UpDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ScrollBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\ScrollBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
@@ -408,6 +409,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ArrowRightSmall.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\clock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
