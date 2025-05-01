@@ -88,7 +88,7 @@ namespace ExtendedControls
                             }
                         }
 
-                        backImageControlBitmap.Save(@"c:\code\bitmap.bmp");
+                   //     backImageControlBitmap.Save(@"c:\code\bitmap.bmp");
                         e.Graphics.DrawImage(backImageControlBitmap, new Point(0, 0));
                     }
                 }
