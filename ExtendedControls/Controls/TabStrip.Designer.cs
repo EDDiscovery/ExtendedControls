@@ -141,6 +141,7 @@ namespace ExtendedControls
             // 
             this.panelStrip.AutoSize = true;
             this.panelStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.panelStrip.ChildrenThemed = true;
             this.panelStrip.Controls.Add(this.labelControlText);
             this.panelStrip.Controls.Add(this.pimageListSelection);
             this.panelStrip.Controls.Add(this.extButtonDrawnHelp);
@@ -150,11 +151,19 @@ namespace ExtendedControls
             this.panelStrip.Controls.Add(this.pimageSelectedIcon);
             this.panelStrip.Controls.Add(this.labelTitle);
             this.panelStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelStrip.FlowDirection = null;
             this.panelStrip.GradientDirection = 0F;
             this.panelStrip.Location = new System.Drawing.Point(0, 322);
             this.panelStrip.Name = "panelStrip";
+            this.panelStrip.PaintTransparentColor = System.Drawing.Color.Transparent;
             this.panelStrip.Size = new System.Drawing.Size(562, 30);
             this.panelStrip.TabIndex = 0;
+            this.panelStrip.ThemeColors = new System.Drawing.Color[] {
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control,
+        System.Drawing.SystemColors.Control};
+            this.panelStrip.ThemeColorSet = -1;
             this.panelStrip.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.panelStrip.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             // 
@@ -221,6 +230,7 @@ namespace ExtendedControls
             // 
             // pimageSelectedIcon
             // 
+            this.pimageSelectedIcon.BackColor = System.Drawing.Color.Transparent;
             this.pimageSelectedIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pimageSelectedIcon.Location = new System.Drawing.Point(3, 3);
             this.pimageSelectedIcon.Name = "pimageSelectedIcon";
