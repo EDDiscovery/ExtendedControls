@@ -967,7 +967,7 @@ namespace ExtendedControls
         }
 
         // load from json, normally taking the name from json but can be overridden, and using altnames by default
-        public static Theme FromJSON(JToken jo, string usename = null, bool altnames = true)
+        public static Theme FromJSON(JToken jo, string usename = null, bool altnames = true, bool emitdebug = false)
         {
             // convert, can create, using the Theme() constructor to leave new colours transparent if the json does not have it
 
@@ -981,7 +981,7 @@ namespace ExtendedControls
                 Theme ret = (Theme)jconv;
                 if (usename!=null)
                     ret.Name = usename;
-                ret.FillInNewOptions(true);     // fill in and complain about any missing colours
+                ret.FillInNewOptions(emitdebug);     // fill in and complain about any missing colours
                 return ret;
             }
             else
@@ -995,12 +995,12 @@ namespace ExtendedControls
         }
 
         // load file
-        public static Theme LoadFile(string pathname, string usethisname = null, bool altnames = true)
+        public static Theme LoadFile(string pathname, string usethisname = null, bool altnames = true, bool emitdebug = false)
         {
             JToken jo = pathname.ReadJSONFile();
             if ( jo != null )
             {
-                Theme thm = FromJSON(jo, usethisname, altnames);
+                Theme thm = FromJSON(jo, usethisname, altnames, emitdebug);
                 if (thm != null)
                 {
                     return thm;

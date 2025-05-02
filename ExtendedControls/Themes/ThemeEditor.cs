@@ -230,8 +230,6 @@ namespace ExtendedControls
             this.numericUpDownMouseSelectedScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseSelectedScaling_ValueChanged);
             this.numericUpDownMouseOverScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseOverScaling_ValueChanged);
             this.numericUpDownDialogFontScaling.ValueChanged += new System.EventHandler(this.numericUpDownDialogFontScaling_ValueChanged);
-
-            Theme.ToolStripRendererTheming(false);      // disable themeing of right click menus
         }
 
 
@@ -246,8 +244,6 @@ namespace ExtendedControls
             }
             else
                 pendingchanges = true;
-
-            Theme.ToolStripRendererTheming(false);      // disable again
         }
 
 
@@ -441,19 +437,27 @@ namespace ExtendedControls
             Apply();
         }
 
-
         private void buttonOK_Click(object sender, EventArgs e)
         {
             if (pendingchanges)
                 checkBoxApplyOnEachChange.Checked = true;
 
             DialogResult = DialogResult.OK;
+            Theme.ToolStripRendererTheming(true);      // turn back on
             Close();
         }
+
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            Theme.ToolStripRendererTheming(true);      // turn back on
             Close();
+        }
+
+        private void checkBoxApplyOnEachChange_CheckedChanged(object sender, EventArgs e)
+        {
+            if (pendingchanges && checkBoxApplyOnEachChange.Checked)      // if pending changes, and we have gone true, apply
+                Apply();
         }
 
         private void checkBoxDarkMode_CheckedChanged(object sender, EventArgs e)
@@ -465,19 +469,7 @@ namespace ExtendedControls
                 this.BackColor = SystemColors.Control;
         }
 
-        private void ChangeLabelColors(Control ctrl, Color labeltext)
-        {
-            foreach (Control c in ctrl.Controls)
-            {
-                if (c is Label || c is CheckBox || c is GroupBox)
-                    c.ForeColor = labeltext;
-                else
-                    ChangeLabelColors(c, labeltext);
-            }
-        }
-
         Color? pastecolour = null;
-
         private void copyColourToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Control s = contextMenuStripColours.SourceControl;
@@ -506,14 +498,13 @@ namespace ExtendedControls
 
         private void contextMenuStripColours_Opening(object sender, CancelEventArgs e)
         {
+            Theme.ToolStripRendererTheming(false);      // turn off so we get a normal right click menu
             pasteColourToolStripMenuItem.Enabled = pastecolour != null;
 
         }
-
-        private void checkBoxApplyOnEachChange_CheckedChanged(object sender, EventArgs e)
+        private void contextMenuStripColours_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
-            if (pendingchanges && checkBoxApplyOnEachChange.Checked)      // if pending changes, and we have gone true, apply
-                Apply();
+            Theme.ToolStripRendererTheming(true);      // turn back on so we get normal theming
         }
 
         private void numericUpDownDialogFontScaling_ValueChanged(object sender, EventArgs e)
@@ -539,6 +530,18 @@ namespace ExtendedControls
             Theme.DisabledScaling = (float)numericUpDownDisabledScaling.Value;
             Apply();
         }
+
+        private void ChangeLabelColors(Control ctrl, Color labeltext)
+        {
+            foreach (Control c in ctrl.Controls)
+            {
+                if (c is Label || c is CheckBox || c is GroupBox)
+                    c.ForeColor = labeltext;
+                else
+                    ChangeLabelColors(c, labeltext);
+            }
+        }
+
     }
 
     public class ButtonAngle : Button
