@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ExtendedControls.Controls
+namespace ExtendedControls
 {
     public partial class ImageControl : Control, IThemeable
     {

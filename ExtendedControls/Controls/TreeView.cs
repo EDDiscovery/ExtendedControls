@@ -17,7 +17,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace ExtendedControls.Controls
+namespace ExtendedControls
 {
     public partial class ExtTreeView : Panel
     {

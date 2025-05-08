@@ -15,7 +15,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace ExtendedControls.Controls
+namespace ExtendedControls
 {
     public partial class ImageControlScroll : Panel
     {

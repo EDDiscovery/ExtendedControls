@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.imageControl1 = new ExtendedControls.Controls.ImageControl();
+            this.imageControl1 = new ExtendedControls.ImageControl();
             this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -86,7 +86,7 @@
 
         #endregion
 
-        private ExtendedControls.Controls.ImageControl imageControl1;
+        private ExtendedControls.ImageControl imageControl1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
     }

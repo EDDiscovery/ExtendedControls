@@ -1,4 +1,4 @@
-﻿namespace ExtendedControls.Controls
+﻿namespace ExtendedControls
 {
     partial class ExtTreeView
     {

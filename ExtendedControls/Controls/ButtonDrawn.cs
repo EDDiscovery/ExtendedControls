@@ -12,7 +12,6 @@
  * governing permissions and limitations under the License.
  */
 
-using ExtendedControls.Controls.Design;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -28,7 +27,6 @@ namespace ExtendedControls
     /// Represents a Windows <see cref="Button"/>-style <see cref="Control"/> that is drawn with enumerated graphics
     /// (see <see cref="ImageSelected"/>) or <see cref="Control.Text"/>.
     /// </summary>
-    [DefaultEvent(nameof(Click)), DefaultProperty(nameof(ImageSelected)), Designer(typeof(DrawnPanelDesigner))]
     public class ExtButtonDrawn : Control, IButtonControl, IThemeable
     {
         public enum ImageType       // Specifies the available image types to be displayed on a <see cref="ExtPanelDrawn"/>.

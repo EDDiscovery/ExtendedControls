@@ -30,9 +30,9 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.imageControlScroll1 = new ExtendedControls.Controls.ImageControlScroll();
+            this.imageControlScroll1 = new ExtendedControls.ImageControlScroll();
             this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
-            this.imageControl1 = new ExtendedControls.Controls.ImageControl();
+            this.imageControl1 = new ExtendedControls.ImageControl();
             this.imageControlScroll1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,10 +131,10 @@
 
         #endregion
 
-        private ExtendedControls.Controls.ImageControl imageControl1;
+        private ExtendedControls.ImageControl imageControl1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private ExtendedControls.Controls.ImageControlScroll imageControlScroll1;
+        private ExtendedControls.ImageControlScroll imageControlScroll1;
         private ExtendedControls.ExtScrollBar extScrollBar1;
     }
 }
