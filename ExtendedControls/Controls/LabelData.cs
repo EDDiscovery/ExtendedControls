@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -38,6 +39,16 @@ namespace ExtendedControls
         public DataBoxStyle BoxStyle { get { return boxstyle; } set { boxstyle = value; Invalidate(); } }
 
         public object[] Data { get { return data; } set { data = value; Invalidate(); } }
+
+        [System.ComponentModel.BrowsableAttribute(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public object Data0 { get { return data?.Length >= 1 ? data[0] : null; } set { if (data == null) data = new object[1]; data[0] = value; } }
+        [System.ComponentModel.BrowsableAttribute(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public object Data1 { get { return data?.Length >= 2 ? data[1] : null; } set { if (data == null) data = new object[2]; data[1] = value; } }
+        [System.ComponentModel.BrowsableAttribute(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public object Data2 { get { return data?.Length >= 3 ? data[2] : null; } set { if (data == null) data = new object[3]; data[2] = value; } }
 
         public LabelData()
         {

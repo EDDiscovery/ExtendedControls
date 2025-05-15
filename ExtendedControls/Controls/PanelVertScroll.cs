@@ -25,11 +25,9 @@ namespace ExtendedControls
 
     public partial class ExtPanelVertScroll : Panel
     {
-        public Action<int, int> ScrollSet;
-
-        public int Value { get { return currentscroll; } set { ScrollTo(value); } }
-
-        public int MaxScroll { get { return maxscroll; } }
+        public Action<int, int> ScrollSet { get; set; }      // called when scroll is set each time
+        public int Value { get { return currentscroll; } set { ScrollTo(value); } } // current scroll
+        public int MaxScroll { get { return maxscroll; } }  // max scroll, controlled by Recalcuate().
 
         public ExtPanelVertScroll()
         {
@@ -146,6 +144,7 @@ namespace ExtendedControls
     public partial class ExtPanelVertScrollWithBar : Panel
     {
         public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
+        public int ContentWidth { get { return Width - ScrollBarWidth; } }
         public int LargeChange { get { return scrollbar.LargeChange; } set { scrollbar.LargeChange = value; } }
         public int SmallChange { get { return scrollbar.SmallChange; } set { scrollbar.SmallChange = value; } }
         public bool HideScrollBar { get { return scrollbar.HideScrollBar; } set { scrollbar.HideScrollBar = value; } }

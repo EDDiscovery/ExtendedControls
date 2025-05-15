@@ -70,7 +70,7 @@ namespace ExtendedControls
             }
             else
             {
-                //System.Diagnostics.Debug.WriteLine($"Control {Name} colour {BackColor}");
+                System.Diagnostics.Debug.WriteLine($"Control {Name} colour {BackColor}");
 
                 if (BackColor == Color.Transparent)     // if we are transparent, only way i've found to make this work is to grab the parent image
                 {
@@ -301,6 +301,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
+            BackColor = Color.Transparent;
             ForeColor = t.CheckBoxText;
             DisabledScaling = t.DisabledScaling;
             MouseOverScaling = t.MouseOverScaling;
@@ -316,7 +317,6 @@ namespace ExtendedControls
             }
             else
             {
-                BackColor = Color.Transparent;
                 CheckBoxColor = t.CheckBoxBack;
                 CheckBoxInnerColor = t.CheckBoxBack2;
                 CheckColor = t.CheckBoxTick;

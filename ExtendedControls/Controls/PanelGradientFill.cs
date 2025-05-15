@@ -19,8 +19,14 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace ExtendedControls
 {
-    // Extended panel with gradient fill and child control
-    // base class of many new panels
+    // Extended panel with gradient fill, child control, Themeing from Panel set, LayoutComplete call back
+    // base class of:
+    // -> ExtPanelAutoHeightWidth
+    // -> ExtPanelDropDown
+    // -> ExtPanelNoChildThemed
+    // -> ExtPanelResizer
+  
+
     public class ExtPanelGradientFill : Panel, IThemeable
     {
         public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
@@ -40,7 +46,9 @@ namespace ExtendedControls
 
         // Override if you want your derived class to have a go at themeing.
         protected virtual bool ThemeDerived(Theme t, Font fnt) 
-        { return ChildrenThemed; }       
+        { return ChildrenThemed; }
+
+        public Action<ExtPanelGradientFill> LayoutComplete;         // callback useful to know when layout is complete - there is no winform one doing this, layout callback is called before layout.
 
         public ExtPanelGradientFill()
         {
@@ -88,6 +96,8 @@ namespace ExtendedControls
             }
 
             base.OnLayout(levent);
+
+            LayoutComplete?.Invoke(this);
         }
 
         public bool Theme(Theme t, Font fnt)
