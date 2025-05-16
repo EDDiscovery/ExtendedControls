@@ -70,7 +70,7 @@ namespace ExtendedControls
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($"Control {Name} colour {BackColor}");
+               // System.Diagnostics.Debug.WriteLine($"Control {Name} colour {BackColor}");
 
                 if (BackColor == Color.Transparent)     // if we are transparent, only way i've found to make this work is to grab the parent image
                 {

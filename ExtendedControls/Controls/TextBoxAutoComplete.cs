@@ -34,6 +34,8 @@ namespace ExtendedControls
         public string TextChangedEvent { get { return base.Text; } set { base.Text = value; } }
         public int AutoCompleteTimeout { get { return waitforautotimer.Interval; } set { waitforautotimer.Interval = value; } }
 
+        [System.ComponentModel.BrowsableAttribute(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DropDownTheme DropDownTheme { get; set; } = new DropDownTheme();
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
 

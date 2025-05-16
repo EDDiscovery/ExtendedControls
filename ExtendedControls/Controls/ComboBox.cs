@@ -15,6 +15,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -33,6 +34,8 @@ namespace ExtendedControls
         public float MouseOverScalingColor { get; set; } = 1.3F;
         public Color BorderColor { get; set; } = Color.White;
         public float GradientDirection { get; set; } = 90F;
+        [System.ComponentModel.BrowsableAttribute(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DropDownTheme DropDownTheme { get; set; } = new DropDownTheme();
         public bool DisableBackgroundDisabledShadingGradient { get; set; } = false;     // set, non system only, stop scaling for disabled state (useful for transparency)
         public float DisabledScaling { get; set; } = 0.5F;      // when disabled, scale down colours

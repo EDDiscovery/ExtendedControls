@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -29,6 +30,8 @@ namespace ExtendedControls
         public Color BorderColor { get; set; } = Color.Blue;
         public Color SelectionMarkColor { get; set; } = Color.Yellow;
 
+        [System.ComponentModel.BrowsableAttribute(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DropDownTheme DropDownTheme { get; set; } = new DropDownTheme();
 
         // drop down box for selection
