@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurableForm\ConfigurableEntriesCreate.cs" />
+    <Compile Include="ConfigurableForm\ConfigurableEntriesFromString.cs" />
     <Compile Include="Controls\DropDownTheme.cs" />
     <Compile Include="Controls\DGVCellPictureBox.cs" />
     <Compile Include="Controls\ColorPanel.cs">
@@ -139,13 +141,13 @@
     <Compile Include="Forms\CheckedIconPictureBoxUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\ConfigurableEntriesSet.cs" />
-    <Compile Include="Forms\ConfigurableEntriesGet.cs" />
-    <Compile Include="Forms\ConfigurableEntries.cs">
+    <Compile Include="ConfigurableForm\ConfigurableEntriesSet.cs" />
+    <Compile Include="ConfigurableForm\ConfigurableEntriesGet.cs" />
+    <Compile Include="ConfigurableForm\ConfigurableEntries.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Forms\ConfigurableDialogInterface.cs" />
-    <Compile Include="Forms\ConfigurableUC.cs">
+    <Compile Include="ConfigurableForm\ConfigurableDialogInterface.cs" />
+    <Compile Include="ConfigurableForm\ConfigurableUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\ExtButtonWithNewCheckedListBox.cs">
@@ -172,7 +174,7 @@
     <Compile Include="Controls\TreeView.Designer.cs">
       <DependentUpon>TreeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ConfigurableForm.cs">
+    <Compile Include="ConfigurableForm\ConfigurableForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\SmartSysMenuForm.cs">

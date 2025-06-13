@@ -27,7 +27,6 @@ namespace ExtendedControls
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; PerformLayout(); Invalidate(); } }
         public Color BorderColor2 { get { return bordercolor2; } set { bordercolor2 = value; PerformLayout(); Invalidate(); } }
         public bool AutoSizeTextBox { get { return autosize; } set { autosize = value; PerformLayout(); } }
-        public UpDown updown = new UpDown();                            // for setting colours..
         public override string Text { get { return (tb != null) ? (tb.Text) : ""; } }
 
         public int Maximum { get { return max; } set { Set(curvalue, value, min); } }
@@ -50,6 +49,7 @@ namespace ExtendedControls
 
         public ExtNumericUpDown() : base()
         {
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             tb = new TextBox();
             tb.BorderStyle = BorderStyle.None;
             tb.BackColor = this.TextBoxBackColor;
@@ -185,11 +185,14 @@ namespace ExtendedControls
             updown.MouseOverScaling = t.MouseOverScaling;
             updown.MouseSelectedScaling = t.MouseSelectedScaling;
 
+            this.BackColor = Color.Transparent;
+
             return false;
         }
 
         #endregion
 
+        private UpDown updown = new UpDown();                            // for setting colours..
         private TextBox tb;
         private bool autosize = true;
         private int max = 100;

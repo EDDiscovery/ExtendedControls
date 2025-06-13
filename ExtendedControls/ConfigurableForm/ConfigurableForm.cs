@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017-2024 EDDiscovery development team
+ * Copyright 2017-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -703,6 +703,10 @@ namespace ExtendedControls
                     ent.MinimumSize = ent.Size;
                 if (ent.BackColor.HasValue)
                     ent.Control.BackColor = ent.BackColor.Value;
+                if ( ent.Control is ExtPanelVertScrollWithBar )
+                {
+                    ((ExtPanelVertScrollWithBar)ent.Control).Recalcuate();      // for this panel, we need to recalc
+                }
             }
 
             initialscrollpanelsize = contentpanel.Size;

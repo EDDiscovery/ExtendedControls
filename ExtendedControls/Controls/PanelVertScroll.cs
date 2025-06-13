@@ -162,6 +162,11 @@ namespace ExtendedControls
             ResumeLayout();
         }
 
+        public void Recalcuate()
+        {
+            panel?.Recalcuate();
+        }
+
         protected override void OnControlAdded(ControlEventArgs e)
         {
             base.OnControlAdded(e);

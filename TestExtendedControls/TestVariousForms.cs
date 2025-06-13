@@ -22,7 +22,6 @@ namespace TestExtendedControls
             InitializeComponent();
             theme = new ThemeList();
             theme.LoadBaseThemes();
-            //theme.SetThemeByName("Elite EuroCaps");
             theme.SetThemeByName("EDSM");
             Theme.Current.FontSize = 12;
 
@@ -342,6 +341,31 @@ namespace TestExtendedControls
                                 new string[] { "t1", "t2", "t3" }, false, 400, 100);
 
         }
+
+        private void extButton42_Click(object sender, EventArgs e)
+        {
+            Theme.Current.FontSize = 12;
+            List<string> ret = PromptMultiLine.ShowDialog(this, "Prompt ML", this.Icon,
+                                new string[] { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" },
+                                new string[] { "done", "dtwo", "dthree", "dfour", "dfive", "dsix", "dseven", "deight", "dnine", "dten" },
+                                true,
+                                new string[] { "t1", "t2", "t3" }, false, 400, 100, -1);
+
+
+        }
+        private void extButton43_Click(object sender, EventArgs e)
+        {
+            Theme.Current.FontSize = 16;
+            Theme.Current.WindowsFrame = false;
+            List<string> ret = PromptMultiLine.ShowDialog(this, "Prompt ML", this.Icon,
+                                new string[] { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten" },
+                                new string[] { "done", "dtwo", "dthree", "dfour", "dfive", "dsix", "dseven", "deight", "dnine", "dten" },
+                                new int[] {32,32,80,32,80, 120,50,40,32,32},
+                                new string[] { "t1", "t2", "t3" }, 
+                                true,false, 400, -1, 8);
+
+        }
+
 
         private void extButton19_Click(object sender, EventArgs e)
         {

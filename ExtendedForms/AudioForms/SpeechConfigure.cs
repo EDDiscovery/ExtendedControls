@@ -183,7 +183,7 @@ namespace ExtendedAudioForms
 
         private void Sfe_TestSettingEvent(SoundEffectsDialog sfe, Variables effects)
         {
-            System.IO.MemoryStream ms = synth.Speak(textBoxBorderTest.Text, "Default", comboBoxCustomVoice.Text, trackBarRate.Value);
+            var ms = synth.Speak(textBoxBorderTest.Text, "Default", comboBoxCustomVoice.Text, trackBarRate.Value);
             if (ms != null)
             {
                 AudioQueue.AudioSample a = queue.Generate(ms, new SoundEffectSettings(effects));
@@ -235,7 +235,7 @@ namespace ExtendedAudioForms
             {
                 try
                 {
-                    System.IO.MemoryStream ms = synth.Speak(textBoxBorderTest.Text, "Default", comboBoxCustomVoice.Text, trackBarRate.Value);
+                    var ms = synth.Speak(textBoxBorderTest.Text, "Default", comboBoxCustomVoice.Text, trackBarRate.Value);
                     if (ms != null)
                     {
                         AudioExtensions.AudioQueue.AudioSample audio = queue.Generate(ms, new SoundEffectSettings(effects));

@@ -41,12 +41,15 @@ namespace TestExtendedControls
             //err += configurableUC1.Entries.Add("\"B1\",button,\"B1\",In:P1,10,10,100,24,\"TipB1\"");
 
             err += configurableUC1.Entries.Add("\"DGV\",dgv,\"\",Dock:Fill,10,10,10,10,\"TipDGV\",100;(text,\"Column 1\",100),(text,\"Column 2\",200),(text,\"Column 3\",300)");
-            err += configurableUC1.Entries.Add("\"P1\",panel,\"\",Dock:Top,0,0,1,100,\"\",\"100,64,128,64\"");
+            err += configurableUC1.Entries.Add("\"P1\",panel,\"\",Dock:Top,0,0,1,200,\"\",\"100,64,1,1\"");
 
 
             err += configurableUC1.Entries.Add("\"B1\",button,\"B1\",In:P1,10,10,60,24,\"TipB1\"");
-            err += configurableUC1.Entries.Add("\"B3\",button,\"File:c:/code/images/general/mountain.png\",In:P1,80,10,32,32,\"TipB1\"");
-            err += configurableUC1.Entries.Add("\"B4\",button,\"File:c:/code/images/general/mountain.png\",In:P1,500,10,48,48,\"TipB1\"");
+            err += configurableUC1.Entries.Add("\"B3\",button,\"File:c:/code/images/general/mountain.png\",In:P1,80,10,32,32,\"Mountain\"");
+            err += configurableUC1.Entries.Add("\"B4\",button,\"File:c:/code/images/general/mountain.png\",In:P1,4,40,48,48,\"Mountain 2\"");
+            err += configurableUC1.Entries.Add("\"RB1\",radiobutton,\"RB1\",In:P1,350,10,60,24,\"Radio B1\"");
+            err += configurableUC1.Entries.Add("\"RB2\",radiobutton,\"RB2\",In:P1,350,40,60,24,\"Radio B2\"");
+            err += configurableUC1.Entries.Add("\"NUD1\",numericupdown,\"20\",In:P1,350,70,120,32,\"Numeric up down\",0,200");
             err += configurableUC1.Entries.Add("\"B2\",dropdownbutton,\"Resource:TestExtendedControls.Resources.Discoveries.png\",In:P1,200,10,32,32,\"TipDDB1\"," +
                                                                     //  \"T3;T4\",1,1,0,1,28,28;" +
                                                                     "\"T3;T4\",1,1,0,0,32,32;" +
@@ -119,8 +122,8 @@ namespace TestExtendedControls
         int addpos = 0;
         private void extButtonAdd_Click(object sender, EventArgs e)
         {
-            configurableUC1.Entries.Add(new ConfigurableEntryList.Entry("BA" + addpos, typeof(ExtButton), "+" + addpos.ToString(), new Point(200, addpos), new Size(99, 24), "N1"));
-            addpos += 50;
+            configurableUC1.Entries.Add(new ConfigurableEntryList.Entry("BA" + addpos, typeof(ExtButton), "+" + addpos.ToString(), new Point(250, addpos), new Size(99, 24), "N1") { InPanel = "P1"});
+            addpos += 40;
             configurableUC1.UpdateEntries();
         }
 

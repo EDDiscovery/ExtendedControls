@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2017-2024 EDDiscovery development team
+ * Copyright 2017-2024 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -54,11 +54,20 @@ namespace ExtendedControls
 
             Entries.UITrigger += (d, c, v1, v2, ct) => TriggerAdv?.Invoke(d, c, v1, v2, ct);
         }
+
         public void UpdateEntries()
         {
             Entries.CreateEntries(contentpanel, null, null, this.FindToolTipControl(), this.FindForm().CurrentAutoScaleFactor(),
                                                 Theme.Current?.GetScaledFont(1.0f), -vertscrollpanel.ScrollValue);
             contentpanel.Recalcuate();  // don't move scroll, but recalc area to scroll
+
+            foreach (var ent in Entries)
+            {
+                if (ent.Control is ExtPanelVertScrollWithBar)
+                {
+                    ((ExtPanelVertScrollWithBar)ent.Control).Recalcuate();      // for this panel, we need to recalc scroll area manually
+                }
+            }
         }
 
         // call after themeing to apply some overrides
@@ -72,6 +81,10 @@ namespace ExtendedControls
                     ent.MinimumSize = ent.Size;
                 if (ent.BackColor.HasValue)
                     ent.Control.BackColor = ent.BackColor.Value;
+                if (ent.Control is ExtPanelVertScrollWithBar)
+                {
+                    ((ExtPanelVertScrollWithBar)ent.Control).Recalcuate();      // for this panel, we need to recalc scroll area manually
+                }
 
                 //System.Diagnostics.Debug.WriteLine($"ConfigUC theme {ent.Name} {ent.Control.Bounds}");
             }
@@ -92,9 +105,14 @@ namespace ExtendedControls
                 int widthdelta = contentpanel.Width - initialscrollpanelsize.Width;
                 int heightdelta = contentpanel.Height - initialscrollpanelsize.Height;
 
-                foreach (var en in Entries)
+                foreach (var ent in Entries)
                 {
-                    en.Control.ApplyAnchor(en.Anchor, en.Location, en.Size, en.MinimumSize, widthdelta, heightdelta);
+                    ent.Control.ApplyAnchor(ent.Anchor, ent.Location, ent.Size, ent.MinimumSize, widthdelta, heightdelta);
+
+                    if (ent.Control is ExtPanelVertScrollWithBar)
+                    {
+                        ((ExtPanelVertScrollWithBar)ent.Control).Recalcuate();      // for this panel, we need to recalc scroll area manually
+                    }
                 }
 
                 //System.Diagnostics.Debug.WriteLine($"ConfigurableUC On Resize scroll panel pos {vertscrollpanel.ScrollValue}");
