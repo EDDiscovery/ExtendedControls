@@ -12,22 +12,14 @@
  * governing permissions and limitations under the License.
  */
 
-using BaseUtils.Win32;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
-using static BaseUtils.IntRangeList;
 
 namespace ExtendedControls
 {
-    public class ScrollTheme
-    {
-
-    }
-
-
     public class ExtScrollBar : Control, IThemeable
     {
         // BackColor = control back colour
@@ -193,7 +185,7 @@ namespace ExtendedControls
                 c1 = mousepressed == but ? MousePressedButtonColor : mouseover == but ? MouseOverButtonColor : ThumbButtonColor;
                 c2 = mousepressed == but ? MousePressedButtonColor2 : mouseover == but ? MouseOverButtonColor2 : ThumbButtonColor2;
                 angle = ThumbDrawAngle;
-               // System.Diagnostics.Debug.WriteLine($"Scrollbox draw thumb {c1} {c2} at {angle}");
+                //System.Diagnostics.Debug.WriteLine($"Scrollbox draw thumb {c1} {c2} at {angle}");
             }
             else
             {
@@ -582,7 +574,7 @@ namespace ExtendedControls
                 MouseOverButtonColor = ThumbButtonColor.Multiply(t.MouseOverScaling);
                 MouseOverButtonColor2 = ThumbButtonColor2.Multiply(t.MouseOverScaling);
                 MousePressedButtonColor = ThumbButtonColor.Multiply(t.MouseSelectedScaling);
-                MousePressedButtonColor = ThumbButtonColor2.Multiply(t.MouseSelectedScaling);
+                MousePressedButtonColor2 = ThumbButtonColor2.Multiply(t.MouseSelectedScaling);
                 
                 FlatStyle = t.ButtonFlatStyle;
 

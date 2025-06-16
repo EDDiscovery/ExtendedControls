@@ -29,27 +29,31 @@ namespace TestExtendedControls
             }
             else
             {
-                Color hgb = Color.FromArgb(255, 10, 40, 10);
-                Color c64 = Color.FromArgb(255, 64, 64, 64);
-                Color elitebutback = Color.FromArgb(255, 32, 32, 32);
-                Theme.Current = new Theme("Elite Verdana", Color.Black,
-                          c64, Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient, // button
-                          Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
-                          elitebutback, elitebutback, Color.Orange, Color.Orange, hgb, // back/alt fore/alt
-                          Color.DarkOrange, // borderlines
-                          elitebutback, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
-                          Color.Red, Color.White, // travel
-                          elitebutback, Color.Orange, Color.Red, Color.Green, c64, Theme.TextboxborderstyleColor, // text box
-                          elitebutback, Color.Orange, Color.DarkOrange, // text back, arrow, button
-                          Color.Orange, Color.FromArgb(255, 65, 33, 33), c64,// checkbox
-                          Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  // menu
-                          Color.Orange,  // label
-                          Color.Black, Color.Orange, Color.FromArgb(255, 130, 71, 0), // group
-                          Color.DarkOrange, // tab control
-                          Color.Black, Color.DarkOrange, Color.Orange, // toolstrips
-                          Color.Orange, // spanel
-                          Color.Green, // overlay
-                          false, 100, "Verdana", 10F, FontStyle.Regular);
+                ThemeList lst = new ThemeList();
+                lst.LoadBaseThemes();
+                Theme.Current = lst.FindTheme("Elite Verdana Gradiant");
+
+                //Color hgb = Color.FromArgb(255, 10, 40, 10);
+                //Color c64 = Color.FromArgb(255, 64, 64, 64);
+                //Color elitebutback = Color.FromArgb(255, 32, 32, 32);
+                //Theme.Current = new Theme("Elite Verdana", Color.Black,
+                //    c64, Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient, // button
+                //    Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
+                //    elitebutback, elitebutback, Color.Orange, Color.Orange, hgb, // back/alt fore/alt
+                //    Color.DarkOrange, // borderlines
+                //    elitebutback, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
+                //    Color.Red, Color.White, // travel
+                //    elitebutback, Color.Orange, Color.Red, Color.Green, c64, Theme.TextboxborderstyleColor, // text box
+                //    elitebutback, Color.Orange, Color.DarkOrange, // text back, arrow, button
+                //    Color.Orange, Color.FromArgb(255, 65, 33, 33), c64,// checkbox
+                //    Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  // menu
+                //    Color.Orange,  // label
+                //    Color.Black, Color.Orange, Color.FromArgb(255, 130, 71, 0), // group
+                //    Color.DarkOrange, // tab control
+                //    Color.Black, Color.DarkOrange, Color.Orange, // toolstrips
+                //    Color.Orange, // spanel
+                //    Color.Green, // overlay
+                //    false, 100, "Verdana", 10F, FontStyle.Regular);
             }
 
             stdthemes = new ThemeList();

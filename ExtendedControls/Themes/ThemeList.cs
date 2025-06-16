@@ -66,38 +66,65 @@ namespace ExtendedControls
                 Color.Orange,  // label
                 Color.FromArgb(255, 32, 32, 32), Color.Orange, Color.FromArgb(255, 130, 71, 0), // group back, text, border
                 Color.DarkOrange, // tab control
-                Color.Black, Color.DarkOrange, Color.Orange, // toolstrip
+                Color.Black, Color.DarkOrange, 
                 Color.Orange, // spanel
                 Color.Green, // overlay
                 false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular);
 
-            var elite = new Theme("Elite EuroCaps Less Border", Color.Black,
-                    c64, Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient, // button
-                    Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
-                    elitebutback, elitebutback, Color.Orange, Color.Orange, hgb, // back/alt fore/alt
-                    Color.DarkOrange, // borderlines
-                    elitebutback, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
-                    Color.Red, Color.White, // travel
-                    elitebutback, Color.Orange, Color.Red, Color.Green, c64, Theme.TextboxborderstyleColor, // text box
-                    elitebutback, Color.Orange, Color.DarkOrange, // text back, arrow, button
-                    Color.Orange, Color.FromArgb(255, 65, 33, 33), c64,// checkbox
-                    Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  // menu
-                    Color.Orange,  // label
-                    Color.Black, Color.Orange, Color.FromArgb(255, 130, 71, 0), // group
-                    Color.DarkOrange, // tab control
-                    Color.Black, Color.DarkOrange, Color.Orange, // toolstrips
-                    Color.Orange, // spanel
-                    Color.Green, // overlay
-                    false, 100, "Euro Caps", 12F, FontStyle.Regular);
+            var elite = new Theme("Elite EuroCaps Less Border",
+                // Form
+                Color.Black, 
+                // ButtonBackColor (+2)/CheckBoxBorderColor, ButtonTextColor, ButtonBorderColor, ButtonStyle
+                c64, Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient, 
+                // GridBorderBack, GridBorderText
+                Color.FromArgb(255, 176, 115, 0), Color.Black,  
+                // GridCellBack, GridCellAltBack, GridCellText, GridCellAltText, GridHightLightBack
+                elitebutback, elitebutback, Color.Orange, Color.Orange, hgb, 
+                // GridBorderLines
+                Color.DarkOrange, 
+                // GridSliderBack (+2), GridScrollArrowBack and GridScrollButtonBack (2), GridArrow 
+                elitebutback, Color.Orange, Color.DarkOrange, 
+                // KnownSystemColor, UnknownSystemColor
+                Color.Red, Color.White,
+                // TextBlockBackColor, TextBoxForeColor, TextBlockHighLightColor, TextBoxSuccessColor
+                elitebutback, Color.Orange, Color.Red, Color.Green,
+                // TextBoxBorderColor (+2), 
+                c64, Theme.TextboxborderstyleColor,
+                // TextBoxSliderBack (+2), TextBoxScrollArrow/ComboBoxScrollArrow, TextBoxScrollArrowBack (+2) and TextBoxScrollButtonBack (+2)
+                elitebutback, Color.Orange, Color.DarkOrange, 
+                // CheckBoxText/CheckBoxBack (+2), CheckBoxTick, CheckBoxButtonTickedBack (+2)
+                Color.Orange, Color.FromArgb(255, 65, 33, 33), c64,
+                // MenuBack, MenuFore, MenuSelectedBack, MenuSelectedText
+                Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  
+                // LabelColor
+                Color.Orange, 
+                // GroupBack[], GroupFore, GroupBorder (+2)
+                Color.Black, Color.Orange, Color.FromArgb(255, 130, 71, 0), 
+                // TabControlBorder (+2)
+                Color.DarkOrange, 
+                // MenuDropDownBack, MenuBorder
+                Color.Black, Color.DarkOrange, 
+                // SPanelColor, TransparentColorKey
+                Color.Orange, Color.Green, 
+                // WindowsFrame, Opacity
+                false, 100, 
+                // FontName, FontSize, FontStyle
+                "Euro Caps", 12F, FontStyle.Regular);
 
-            var elitegradient = new Theme(elite, "Elite EuroCaps Gradient") {
-                        //TextBlockDropDownBackColor2 = elitebutback, TextBlockDropDownBackColor = elitebutbackb,
-                        //TabStripBack2 = elitebutback, TabStripBack = elitebutbackb,
-                        //ComboBoxBackColor2 = elitebutback, ComboBoxBackColor = elitebutbackb,
-                        //ListBoxBackColor2 = elitebutback, ListBoxBackColor = elitebutbackb,
-                        //GroupBack = elitebutbackb, GroupBack2 = elitebutback ,
-                        //TabControlBack = elitebutbackb, TabControlBack2 = elitebutback
-            };
+            var elitegradient = new Theme(elite, "Elite EuroCaps Gradient");
+            elitegradient.TabControlBack[0] = elitegradient.TabStripBack[0] = elitebutback;
+            elitegradient.TabControlBack[1] = elitegradient.TabStripBack[1] = Color.Red.Multiply(0.4f);
+            elitegradient.TabControlBack[2] = elitegradient.TabStripBack[2] = Color.Magenta.Multiply(0.4f);
+            elitegradient.TabControlBack[0] = elitegradient.TabStripBack[3] = elitebutback;
+            elitegradient.GroupBack[0] = elitebutback;
+            elitegradient.GroupBack[1] = Color.Red.Multiply(0.2f);
+            elitegradient.GroupBack[2] = Color.Magenta.Multiply(0.2f);
+            elitegradient.GroupBack[3] = elitebutback;
+            elitegradient.ListBoxBackColor = elitegradient.GroupBack[1];
+            elitegradient.ListBoxBackColor2 = elitegradient.GroupBack[2];
+            elitegradient.ComboBoxBackColor = elitegradient.GroupBack[1];
+            elitegradient.ComboBoxBackColor2 = elitegradient.GroupBack[2];
+            elitegradient.ComboBoxBackAndDropDownGradientDirection = 0;
 
             var easydark = new Theme("Easy Dark", Color.FromArgb(255, 65, 65, 65), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 245, 120, 30), Color.FromArgb(255, 41, 46, 51), Theme.ButtonstyleFlat, // button back, text, border
@@ -113,7 +140,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 240, 240, 240),  // label
                 Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 235, 110, 20), Color.FromArgb(255, 60, 55, 50), // group back, text, border
                 Color.FromArgb(255, 40, 45, 50), // tab control borderlines
-                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
+                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), 
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 Color.Green, // overlay
                 false, 100, "Arial", 9.75F, FontStyle.Regular);
@@ -132,7 +159,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 200, 200, 200),  // label
                 Color.FromArgb(255, 46, 51, 56), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 41, 46, 51), // group back, text, border
                 Color.FromArgb(255, 41, 46, 51), // tab control borderlines
-                Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56), Color.FromArgb(255, 41, 46, 51), // toolstrip, back, border
+                Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56), 
                 Color.FromArgb(255, 255, 0, 0), // spanel
                 Color.Green, // overlay
                 false, 100, "Arial", 10.25F, FontStyle.Regular);
@@ -151,7 +178,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 240, 240, 240),  // label
                 Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 129, 138, 192), // group back, text, border
                 Color.FromArgb(255, 40, 45, 50), // tab control borderlines
-                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 40, 45, 50), // toolstrip, back, border
+                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), 
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 Color.Green, // overlay
                 false, 100, "Microsoft Sans Serif", 9.75F, FontStyle.Regular);
@@ -173,7 +200,7 @@ namespace ExtendedControls
                 r1,  // label
                 Color.FromArgb(255, 8, 8, 8), r1, Color.FromArgb(255, 130, 71, 0), // group
                 r2, // tab control
-                Color.Black, r2, r1, // toolstrip
+                Color.Black, r2, 
                 r1, // spanel
                 Color.Green, // overlay
                 false, 95, "Microsoft Sans Serif", 10F, FontStyle.Regular);
@@ -193,7 +220,7 @@ namespace ExtendedControls
                                         SystemColors.MenuText,  // label
                                         SystemColors.Menu, SystemColors.MenuText, SystemColors.ControlDark, // group
                                         SystemColors.ControlDark, // tab control
-                                        SystemColors.Menu, SystemColors.Menu, SystemColors.MenuText,  // toolstrip
+                                        SystemColors.Menu, SystemColors.Menu, 
                                         SystemColors.ControlLightLight, // spanel
                                         Color.Green, // overlay
                                         false, 95, "Euro Caps", 12F, FontStyle.Regular);
@@ -213,7 +240,7 @@ namespace ExtendedControls
                                         SystemColors.MenuText,  // label
                                         SystemColors.Menu, SystemColors.MenuText, SystemColors.ControlDark, // group
                                         SystemColors.ControlDark, // tab control
-                                        SystemColors.Menu, SystemColors.Menu, SystemColors.MenuText,  // toolstrip
+                                        SystemColors.Menu, SystemColors.Menu, 
                                         SystemColors.ControlLightLight, // spanel
                                         Color.Green, // overlay
                                         false, 95, "Verdana", 8F, FontStyle.Regular);
@@ -232,7 +259,7 @@ namespace ExtendedControls
                                                Color.White,  // label
                                                Color.DarkBlue, Color.White, Color.Blue, // group
                                                Color.Blue,
-                                               Color.DarkBlue, Color.White, Color.Red,  // toolstrip
+                                               Color.DarkBlue, Color.White, 
                                                Color.LightBlue, // spanel
                                                Color.Green, // overlay
                                                false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular);
@@ -252,8 +279,8 @@ namespace ExtendedControls
                                                Color.White,  // label
                                                baizegreen, Color.White, Color.LightGreen, // group
                                                Color.LightGreen,    // tabcontrol
-                                               baizegreen, Color.White, Color.White,
-                                               baizegreen,
+                                               baizegreen, Color.White,
+                                               baizegreen,  // spanel
                                                Color.Green, // overlay
                                                false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular);
 
@@ -299,7 +326,6 @@ namespace ExtendedControls
                             Color.FromArgb(255, 0, 50, 100), // tabcontrol_borderlines
                             Color.FromArgb(255, 0, 0, 0), // toolstrip_back
                             Color.FromArgb(255, 0, 50, 100), // toolstrip_border
-                            Color.FromArgb(255, 0, 0, 0), // unused_entry
                             Color.FromArgb(255, 0, 128, 255), // s_panel
                             Color.FromArgb(255, 0, 128, 0), // transparentcolorkey
                             false, 100, "Verdana", 8, FontStyle.Regular);

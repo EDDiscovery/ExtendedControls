@@ -541,108 +541,109 @@ namespace ExtendedControls
 
         // Create a theme using colours. 
         public Theme(String n, Color form,
-                                    Color butback, Color buttext, Color butborder, string bstyle,
+                                    Color buttonbackcolor_textblockdropdownbackcolor, Color buttontextcolor_listbox_combobox_tab, Color buttonbordercolor_listbox_combobox, string bstyle,
                                     Color gridborderback, Color gridbordertext,
                                     Color gridcellback, Color gridaltcellback, Color gridcelltext, Color gridaltcelltext, Color gridhighlightback,
                                     Color gridborderlines,
-                                    Color gridsliderback, Color gridscrollarrow, Color gridscrollbutton,
-                                    Color travelgridnonvisited, Color travelgridvisited,
-                                    Color textboxback, Color textboxfore, Color textboxhighlight, Color textboxsuccess, Color textboxborder, string tbbstyle,
-                                    Color textboxsliderback, Color textboxscrollarrow, Color textboxscrollbutton,
-                                    Color checkboxfore, Color checkboxtick, Color checkboxbuttontick,
-                                    Color menuback, Color menufore, Color menudropbackback, Color menudropdownfore,
-                                    Color label,
-                                    Color groupboxback, Color groupboxtext, Color groupboxlines,
-                                    Color tabborderlines,
-                                    Color toolstripback, Color toolstripborder, Color _,
-                                    Color sPanel, Color keycolor,
-                                    bool wf, double op, string ft, float fs, FontStyle fstyle)             // ft = empty means don't set it
+                                    Color gridsliderback, Color gridscrollarrow, Color gridscrollbuttonback,
+                                    Color unknownsystemcolor, Color knownsystemcolor,
+                                    Color textboxbackcolor, Color textboxforecolor, Color textboxhighlightcolor, Color textboxsuccesscolor, 
+                                    Color textboxbordercolor, string textboxborderstyle,
+                                    Color textboxsliderback_listbox_combo, Color textboxscrollarrow_listbox_combo, Color textboxscrollbutton_listbox_combo,
+                                    Color checkboxtext_checkboxback, Color checkboxtick, Color checkboxbuttontickedback,
+                                    Color menuback, Color menufore, Color menuselectedback, Color menuselectedtext,
+                                    Color labelcolor,
+                                    Color groupback, Color groupfore, Color groupborder,
+                                    Color tabcontrolborder,
+                                    Color menudropdownback, Color menuborder,
+                                    Color spanelcolor, Color transparentcolorkey,
+                                    bool windowsframe, double opacity, 
+                                    string fontname, float fontsize, FontStyle fontstyle, 
+                                    float scalingsecondcolour = 0.6F)             
         {
-            float sc = 0.6F;
             Name = n;
             Form = form;
 
-            ButtonBackColor = butback; ButtonBackColor2 = butback.Multiply(sc);
-            ButtonTextColor = buttext; ButtonBorderColor = butborder; 
+            ButtonBackColor = buttonbackcolor_textblockdropdownbackcolor; ButtonBackColor2 = buttonbackcolor_textblockdropdownbackcolor.Multiply(scalingsecondcolour);
+            ButtonTextColor = buttontextcolor_listbox_combobox_tab; ButtonBorderColor = buttonbordercolor_listbox_combobox; 
             ButtonStyle = bstyle;
 
-            TextBlockBackColor = textboxback;
-            TextBlockForeColor = textboxfore;
-            TextBlockHighlightColor = textboxhighlight;
-            TextBlockSuccessColor = textboxsuccess;
-            TextBlockBorderColor = textboxborder;
-            TextBlockBorderColor2 = textboxborder.Multiply(sc);
-            TextBlockSliderBack = textboxsliderback;
-            TextBlockSliderBack2 = textboxsliderback.Multiply(sc);
-            TextBlockScrollArrowBack = textboxscrollbutton;
-            TextBlockScrollArrowBack2 = textboxscrollbutton.Multiply(sc);
-            TextBlockScrollButtonBack = textboxscrollbutton;
-            TextBlockScrollButtonBack2 = textboxscrollbutton.Multiply(sc);
-            TextBlockScrollArrow = textboxscrollarrow;
-            TextBlockDropDownBackColor = TextBlockDropDownBackColor2 = butback;
+            TextBlockBackColor = textboxbackcolor;
+            TextBlockForeColor = textboxforecolor;
+            TextBlockHighlightColor = textboxhighlightcolor;
+            TextBlockSuccessColor = textboxsuccesscolor;
+            TextBlockBorderColor = textboxbordercolor;
+            TextBlockBorderColor2 = textboxbordercolor.Multiply(scalingsecondcolour);
+            TextBlockSliderBack = textboxsliderback_listbox_combo;
+            TextBlockSliderBack2 = textboxsliderback_listbox_combo.Multiply(scalingsecondcolour);
+            TextBlockScrollArrowBack = textboxscrollbutton_listbox_combo;
+            TextBlockScrollArrowBack2 = textboxscrollbutton_listbox_combo.Multiply(scalingsecondcolour);
+            TextBlockScrollButtonBack = textboxscrollbutton_listbox_combo;
+            TextBlockScrollButtonBack2 = textboxscrollbutton_listbox_combo.Multiply(scalingsecondcolour);
+            TextBlockScrollArrow = textboxscrollarrow_listbox_combo;
+            TextBlockDropDownBackColor = TextBlockDropDownBackColor2 = buttonbackcolor_textblockdropdownbackcolor;
 
-            ListBoxBackColor = butback; ListBoxBackColor2 = butback.Multiply(sc);
-            ListBoxTextColor = buttext; ListBoxBorderColor = butborder;
-            ListBoxSliderBack = textboxsliderback;
-            ListBoxSliderBack2 = textboxsliderback.Multiply(sc);
-            ListBoxScrollArrowBack = textboxscrollbutton;
-            ListBoxScrollArrowBack2 = textboxscrollbutton.Multiply(sc);
-            ListBoxScrollButtonBack = textboxscrollbutton;
-            ListBoxScrollButtonBack2 = textboxscrollbutton.Multiply(sc);
-            ListBoxScrollArrow = textboxscrollarrow;
+            ListBoxBackColor = buttonbackcolor_textblockdropdownbackcolor; ListBoxBackColor2 = buttonbackcolor_textblockdropdownbackcolor.Multiply(scalingsecondcolour);
+            ListBoxTextColor = buttontextcolor_listbox_combobox_tab; ListBoxBorderColor = buttonbordercolor_listbox_combobox;
+            ListBoxSliderBack = textboxsliderback_listbox_combo;
+            ListBoxSliderBack2 = textboxsliderback_listbox_combo.Multiply(scalingsecondcolour);
+            ListBoxScrollArrowBack = textboxscrollbutton_listbox_combo;
+            ListBoxScrollArrowBack2 = textboxscrollbutton_listbox_combo.Multiply(scalingsecondcolour);
+            ListBoxScrollButtonBack = textboxscrollbutton_listbox_combo;
+            ListBoxScrollButtonBack2 = textboxscrollbutton_listbox_combo.Multiply(scalingsecondcolour);
+            ListBoxScrollArrow = textboxscrollarrow_listbox_combo;
 
             GridBorderBack = gridborderback; GridBorderText = gridbordertext;
             GridCellBack = gridcellback; GridCellAltBack = gridaltcellback;
             GridCellText = gridcelltext; GridCellAltText = gridaltcelltext; GridHighlightBack = gridhighlightback;
             GridBorderLines = gridborderlines;
-            GridSliderBack = gridsliderback; GridSliderBack2 = gridsliderback.Multiply(sc);
-            GridScrollArrowBack = gridscrollbutton; GridScrollArrow2Back = gridscrollbutton.Multiply(sc);
-            GridScrollButtonBack = gridscrollbutton; GridScrollButtonBack2 = gridscrollbutton.Multiply(sc);
+            GridSliderBack = gridsliderback; GridSliderBack2 = gridsliderback.Multiply(scalingsecondcolour);
+            GridScrollArrowBack = gridscrollbuttonback; GridScrollArrow2Back = gridscrollbuttonback.Multiply(scalingsecondcolour);
+            GridScrollButtonBack = gridscrollbuttonback; GridScrollButtonBack2 = gridscrollbuttonback.Multiply(scalingsecondcolour);
             GridScrollArrow = gridscrollarrow;
 
-            ComboBoxBackColor = butback; ComboBoxBackColor2 = butback.Multiply(sc);
-            ComboBoxTextColor = buttext; ComboBoxBorderColor = butborder;
-            ComboBoxDropDownSliderBack = textboxsliderback; ComboBoxDropDownSliderBack2 = textboxsliderback.Multiply(sc);
-            ComboBoxScrollArrowBack = textboxscrollarrow; ComboBoxScrollArrowBack2 = textboxscrollarrow.Multiply(sc);
-            ComboBoxScrollButtonBack = textboxscrollbutton; ComboBoxScrollButtonBack2 = textboxscrollbutton.Multiply(sc);
+            ComboBoxBackColor = buttonbackcolor_textblockdropdownbackcolor; ComboBoxBackColor2 = buttonbackcolor_textblockdropdownbackcolor.Multiply(scalingsecondcolour);
+            ComboBoxTextColor = buttontextcolor_listbox_combobox_tab; ComboBoxBorderColor = buttonbordercolor_listbox_combobox;
+            ComboBoxDropDownSliderBack = textboxsliderback_listbox_combo; ComboBoxDropDownSliderBack2 = textboxsliderback_listbox_combo.Multiply(scalingsecondcolour);
+            ComboBoxScrollArrowBack = textboxscrollarrow_listbox_combo; ComboBoxScrollArrowBack2 = textboxscrollarrow_listbox_combo.Multiply(scalingsecondcolour);
+            ComboBoxScrollButtonBack = textboxscrollbutton_listbox_combo; ComboBoxScrollButtonBack2 = textboxscrollbutton_listbox_combo.Multiply(scalingsecondcolour);
+            ComboBoxScrollArrow = textboxscrollarrow_listbox_combo;
 
-            KnownSystemColor = travelgridvisited; UnknownSystemColor = travelgridnonvisited;
+            KnownSystemColor = knownsystemcolor; UnknownSystemColor = unknownsystemcolor;
 
-            CheckBoxText = CheckBoxBack = checkboxfore; CheckBoxBack2 = CheckBoxBack.Multiply(sc); 
+            CheckBoxText = CheckBoxBack = checkboxtext_checkboxback; CheckBoxBack2 = CheckBoxBack.Multiply(scalingsecondcolour); 
             CheckBoxTick = checkboxtick;
-            CheckBoxButtonTickedBack = checkboxbuttontick;
-            CheckBoxButtonTickedBack2 = CheckBoxButtonTickedBack.Multiply(sc);
+            CheckBoxButtonTickedBack = checkboxbuttontickedback;
+            CheckBoxButtonTickedBack2 = CheckBoxButtonTickedBack.Multiply(scalingsecondcolour);
             CheckBoxBorderColor = ButtonBorderColor;
-            ComboBoxScrollArrow = textboxscrollarrow;
 
-            MenuBack = menuback; MenuFore = menufore; MenuSelectedBack = menudropbackback; MenuSelectedText = menudropdownfore;
-            MenuDropDownBack = toolstripback; MenuBorder = toolstripborder;
+            MenuBack = menuback; MenuFore = menufore; MenuSelectedBack = menuselectedback; MenuSelectedText = menuselectedtext;
+            MenuDropDownBack = menudropdownback; MenuBorder = menuborder;
 
-            LabelColor = label;
+            LabelColor = labelcolor;
 
-            GroupBack[0] = GroupBack[1] = GroupBack[2] = GroupBack[3] = groupboxback; 
-            GroupFore = groupboxtext;
-            GroupBorder = groupboxlines; GroupBorder2 = groupboxlines.Multiply(0.7f);
+            GroupBack[0] = GroupBack[1] = GroupBack[2] = GroupBack[3] = groupback; 
+            GroupFore = groupfore;
+            GroupBorder = groupborder; GroupBorder2 = groupborder.Multiply(scalingsecondcolour);
 
             TabStripBack[0] = TabStripBack[1] = TabStripBack[2] = TabStripBack[3] = form;
-            TabStripFore = buttext;
-            TabStripSelected = butback;
+            TabStripFore = buttontextcolor_listbox_combobox_tab;
+            TabStripSelected = buttonbackcolor_textblockdropdownbackcolor;
 
             TabControlBack[0] = TabControlBack[1] = TabControlBack[2] = TabControlBack[3] = form;
-            TabControlText = buttext;
-            TabControlButtonBack = butback;
-            TabControlButtonBack2 = butback.Multiply(sc);
-            TabControlBorder = tabborderlines;
-            TabControlBorder2 = tabborderlines.Multiply(sc);      // darker colour
+            TabControlText = buttontextcolor_listbox_combobox_tab;
+            TabControlButtonBack = buttonbackcolor_textblockdropdownbackcolor;
+            TabControlButtonBack2 = buttonbackcolor_textblockdropdownbackcolor.Multiply(scalingsecondcolour);
+            TabControlBorder = tabcontrolborder; TabControlBorder2 = tabcontrolborder.Multiply(scalingsecondcolour);      // darker colour
             TabControlPageBack = form;
 
             for (int i = 0; i < Panel1.Length; i++)
                 Panel1[i] = Panel2[i] = Panel3[i] = Panel4[i] = Form;
 
-            SPanelColor = sPanel; TransparentColorKey = keycolor;
-            TextBoxBorderStyle = tbbstyle;
-            WindowsFrame = Environment.OSVersion.Platform == PlatformID.Win32NT ? wf : true;
-            Opacity = op; FontName = ft; FontSize = fs; FontStyle = fstyle;
+            SPanelColor = spanelcolor; TransparentColorKey = transparentcolorkey;
+            TextBoxBorderStyle = textboxborderstyle;
+            WindowsFrame = Environment.OSVersion.Platform == PlatformID.Win32NT ? windowsframe : true;
+            Opacity = opacity; FontName = fontname; FontSize = fontsize; FontStyle = fontstyle;
 
 #if DEBUG
             int count = FillInNewOptions(false);       // will show up any missing sets debug - should be none 
@@ -1024,11 +1025,11 @@ namespace ExtendedControls
 
             count += Replace(emitdebug, nameof(ButtonBackColor2), ButtonBackColor.Multiply(sc));       // in order
 
-            count += Replace(emitdebug, nameof(TextBlockBorderColor2), TextBlockBorderColor.Multiply(0.6f));
-            count += Replace(emitdebug, nameof(TextBlockSliderBack2), TextBlockSliderBack.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockBorderColor2), TextBlockBorderColor.Multiply(sc));
+            count += Replace(emitdebug, nameof(TextBlockSliderBack2), TextBlockSliderBack.Multiply(sc));
             count += Replace(emitdebug, nameof(TextBlockScrollArrowBack), TextBlockScrollButtonBack);
-            count += Replace(emitdebug, nameof(TextBlockScrollArrowBack2), TextBlockScrollButtonBack.Multiply(0.6f));
-            count += Replace(emitdebug, nameof(TextBlockScrollButtonBack2), TextBlockScrollButtonBack.Multiply(0.6f));
+            count += Replace(emitdebug, nameof(TextBlockScrollArrowBack2), TextBlockScrollButtonBack.Multiply(sc));
+            count += Replace(emitdebug, nameof(TextBlockScrollButtonBack2), TextBlockScrollButtonBack.Multiply(sc));
             count += Replace(emitdebug, nameof(TextBlockDropDownBackColor), TextBlockBackColor);
             count += Replace(emitdebug, nameof(TextBlockDropDownBackColor2), TextBlockBackColor);
 
@@ -1074,8 +1075,8 @@ namespace ExtendedControls
 
             count += Replace(emitdebug, nameof(TabControlText), ButtonTextColor);
             count += Replace(emitdebug, nameof(TabControlButtonBack), ButtonBackColor);
-            count += Replace(emitdebug, nameof(TabControlButtonBack2), ButtonBackColor.Multiply(0.6F));
-            count += Replace(emitdebug, nameof(TabControlBorder2), TabControlBorder.Multiply(0.6F));        // border is bright, this is darker
+            count += Replace(emitdebug, nameof(TabControlButtonBack2), ButtonBackColor.Multiply(sc));
+            count += Replace(emitdebug, nameof(TabControlBorder2), TabControlBorder.Multiply(sc));        // border is bright, this is darker
             count += Replace(emitdebug, nameof(TabControlPageBack), Form);        // border is bright, this is darker
 
             for (int i = 0; i < Panel1.Length; i++)
