@@ -63,7 +63,9 @@ namespace ExtendedControls
             else if (ThemeColorSet < 0)
                 base.OnPaintBackground(e);
             else
+            {
                 e.Graphics.DrawMultiColouredRectangles(ClientRectangle, ThemeColors, GradientDirection);
+            }
         }
 
         protected override void OnLayout(LayoutEventArgs levent)

@@ -115,7 +115,11 @@ namespace ExtendedControls
             elitegradient.TabControlBack[0] = elitegradient.TabStripBack[0] = elitebutback;
             elitegradient.TabControlBack[1] = elitegradient.TabStripBack[1] = Color.Red.Multiply(0.4f);
             elitegradient.TabControlBack[2] = elitegradient.TabStripBack[2] = Color.Magenta.Multiply(0.4f);
-            elitegradient.TabControlBack[0] = elitegradient.TabStripBack[3] = elitebutback;
+            elitegradient.TabControlBack[3] = elitegradient.TabStripBack[3] = elitebutback;
+            elitegradient.Panel1[0] = elitebutback;
+            elitegradient.Panel1[1] = Color.Red.Multiply(0.4f);
+            elitegradient.Panel1[2] = Color.Magenta.Multiply(0.4f);
+            elitegradient.Panel1[3] = elitebutback;
             elitegradient.GroupBack[0] = elitebutback;
             elitegradient.GroupBack[1] = Color.Red.Multiply(0.2f);
             elitegradient.GroupBack[2] = Color.Magenta.Multiply(0.2f);
@@ -330,6 +334,8 @@ namespace ExtendedControls
                             Color.FromArgb(255, 0, 128, 0), // transparentcolorkey
                             false, 100, "Verdana", 8, FontStyle.Regular);
 
+            // Now form the theme list up from the above basic sets
+
             themelist.Add(orangetheme);
 
             // ON purpose, always show them the euro caps one to give a hint!
@@ -348,7 +354,8 @@ namespace ExtendedControls
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant", "Verdana", 10F));
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Skinny Scroll", "Verdana", 10F) { SkinnyScrollBars = true });
                 themelist.Add(new Theme(elite, "Elite Verdana Small", "Verdana", 8F));
-                themelist.Add(new Theme(elitegradient, "Elite Verdana Small Gradiant", "Verdana", 8F));
+                themelist.Add(new Theme(elite, "Elite Verdana Small Skinny Scroll", "Verdana", 8F) { SkinnyScrollBars = true });
+                themelist.Add(new Theme(elitegradient, "Elite Verdana Small Gradiant Skinny Scroll", "Verdana", 8F) { SkinnyScrollBars = true });
                 themelist.Add(new Theme(elite, "Elite Verdana High DPI", "Verdana", 20F));
                 themelist.Add(new Theme(elite, "Elite Verdana Alt Grid", "Verdana", 10F) { GridCellAltBack = c55 });
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Alt Grid", "Verdana", 10F) { GridCellAltBack = c55 });
@@ -367,6 +374,7 @@ namespace ExtendedControls
             themelist.Add(new Theme(easydark, "Easy Dark High DPI", "Arial", 20F));
 
             themelist.Add(edsm);
+            themelist.Add(new Theme(edsm, "EDSM Skinny Scroll", "Arial") { SkinnyScrollBars = true});
             themelist.Add(new Theme(edsm, "EDSM High DPI", "Arial", 20F));
 
             if (IsFontAvailable("Arial Narrow"))

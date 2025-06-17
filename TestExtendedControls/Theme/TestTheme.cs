@@ -14,8 +14,27 @@ namespace TestExtendedControls
         ThemeList stdthemes;
         List<string> aclist = new List<string>();
 
+        public class T1
+        {
+            public int a;
+            public int[] array;
+        }
+
         public TestTheme()
         {
+            // Check the CopyPropertiesField
+            T1 c = new T1() { a = 20, array = new int[] { 1, 2, 3 } };
+            T1 d = new T1();
+            d.CopyPropertiesFields(c);
+            c.array[0] = 1000;
+            System.Diagnostics.Debug.Assert(d.array[0] == 1);
+
+
+
+
+
+
+
             InitializeComponent();
 
             Theme loadtheme = Theme.LoadFile(@"c:\code\example.theme");

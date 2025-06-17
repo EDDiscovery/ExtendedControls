@@ -211,13 +211,15 @@ namespace ExtendedControls
 
             if (PaintTransparentColor != Color.Transparent) // if in transparent mode, ensure transparency of the top strip                                 
                 e.Graphics.DrawFilledRectangle(ClientRectangle, PaintTransparentColor);
-            else if (ThemeColorSet < 0)         
+            else if (ThemeColorSet < 0)
             {
                 using (Brush br = new SolidBrush(BackColor))
                     e.Graphics.FillRectangle(br, tabarea);
             }
             else
+            {
                 e.Graphics.DrawMultiColouredRectangles(ClientRectangle, ThemeColors, TabBackgroundGradientDirection);
+            }
 
             DrawBorder(e.Graphics);
 
