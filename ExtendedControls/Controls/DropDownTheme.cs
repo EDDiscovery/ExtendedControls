@@ -38,6 +38,8 @@ namespace ExtendedControls
 
         public Color SliderButtonArrowColor { get; set; } = Color.White;
 
+        public bool SliderSkinnyTheme { get; set; } = false;
+
         public Color MouseOverSliderButtonColor { get; set; } = Color.Red;
         public Color MouseOverSliderButtonColor2 { get; set; } = Color.Red;
         public Color PressedSliderButtonColor { get; set; } = Color.DarkCyan;
@@ -55,7 +57,7 @@ namespace ExtendedControls
             lb.SelectionColor = this.ListBoxSelectionColor;
         }
 
-        public void Theme(ExtScrollBar ScrollBar, Color BorderColor)
+        public void Theme(ExtScrollBar ScrollBar, Color BorderColor, Font f)
         {
             ScrollBar.ThumbBorderColor = ScrollBar.ArrowBorderColor = ScrollBar.BorderColor = BorderColor;
             ScrollBar.BackColor = ScrollBar.SliderColor = this.SliderColor;
@@ -71,6 +73,8 @@ namespace ExtendedControls
             ScrollBar.MouseOverButtonColor2 = this.MouseOverSliderButtonColor2;
             ScrollBar.MousePressedButtonColor = this.PressedSliderButtonColor;
             ScrollBar.MousePressedButtonColor2 = this.PressedSliderButtonColor2;
+            ScrollBar.SkinnyStyle = this.SliderSkinnyTheme;
+            ScrollBar.Width = ExtendedControls.Theme.ScrollBarWidth(f, this.SliderSkinnyTheme);
         }
 
         public void SetFromCombo(Theme t)
@@ -92,6 +96,8 @@ namespace ExtendedControls
             SliderButtonBackColor2 = t.IsButtonGradientStyle ? t.ComboBoxScrollButtonBack2 : t.ComboBoxScrollButtonBack;
             SliderButtonGradientDirection = t.ComboBoxDropDownScrollButtonGradientDirection;
 
+            SliderSkinnyTheme = t.SkinnyScrollBars;
+
             SliderButtonArrowColor = t.ComboBoxScrollArrow;
 
             MouseOverSliderButtonColor = SliderButtonBackColor.Multiply(t.MouseOverScaling);
@@ -100,6 +106,7 @@ namespace ExtendedControls
             PressedSliderButtonColor2 = SliderButtonBackColor2.Multiply(t.MouseSelectedScaling);
 
         }
+
         public void SetFromTextBlock(Theme t)
         {
             ListBoxSelectionBackgroundColor = t.TextBlockDropDownBackColor;
@@ -118,6 +125,8 @@ namespace ExtendedControls
             SliderButtonBackColor = t.TextBlockScrollButtonBack;
             SliderButtonBackColor2 = t.IsButtonGradientStyle ? t.TextBlockScrollButtonBack2 : t.TextBlockScrollButtonBack;
             SliderButtonGradientDirection = t.TextBlockScrollButtonGradientDirection;
+
+            SliderSkinnyTheme = t.SkinnyScrollBars;
 
             MouseOverSliderButtonColor = SliderButtonBackColor.Multiply(t.MouseOverScaling);
             MouseOverSliderButtonColor2 = SliderButtonBackColor2.Multiply(t.MouseOverScaling);

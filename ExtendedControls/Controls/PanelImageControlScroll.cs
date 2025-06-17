@@ -17,15 +17,14 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class ImageControlScroll : Panel
+    public partial class ImageControlScroll : Panel, IThemeable
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
-
-        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }      
+        public int ScrollBarWidth { get { return scrollbarwidth; } set { scrollbarwidth = value; Invalidate(); } }
+        public bool ScrollBarEnabled { get { return scrollbarenabled; } set { scrollbarenabled = value; PerformLayout(); } }
 
         public int ImageControlMinimumHeight { get; set; } = 0;     // if zero, image control height is kept. If non zero, this is the minimum, and stretch out to available
 
-        public bool ScrollBarEnabled { get { return scrollbarenabled; } set { scrollbarenabled = value; PerformLayout(); } }
 
         #region Implementation
 
@@ -126,6 +125,17 @@ namespace ExtendedControls
             }
         }
 
+        public bool Theme(Theme t, Font fnt)
+        {
+            int newwidth = t.ScrollBarWidth();  // theme sets the scroll bar width
+            if (newwidth != ScrollBarWidth)
+            {
+                ScrollBarWidth = newwidth;
+                PerformLayout();    // because we may have changed scroll bar width
+            }
+            return true;
+        }
+
         #endregion
 
         #region Variables
@@ -133,6 +143,7 @@ namespace ExtendedControls
         private ImageControl imgctrl;
         private ExtScrollBar vsc;
         private bool scrollbarenabled = true;
+        private int scrollbarwidth = 48;
 
         #endregion
     }

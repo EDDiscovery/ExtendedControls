@@ -32,6 +32,7 @@ namespace TestExtendedControls
                 ThemeList lst = new ThemeList();
                 lst.LoadBaseThemes();
                 Theme.Current = lst.FindTheme("Elite Verdana Gradiant");
+                Theme.Current = lst.FindTheme("Elite Verdana Gradiant Skinny Scroll");
 
                 //Color hgb = Color.FromArgb(255, 10, 40, 10);
                 //Color c64 = Color.FromArgb(255, 64, 64, 64);
@@ -71,14 +72,22 @@ namespace TestExtendedControls
                 dataGridView.Rows.Add(new object[] { $"{i}", "two", "three"});
             }
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 500; i++)
             {
                 extComboBox1.Items.Add($"Item {i}");
-                extListBox1.Items.Add($"Item {i}");
+            }
+
+            for (int i = 0; i < 50; i++)
+            {
                 extPanelDropDown1.Items.Add($"Item {i}");
             }
 
-           
+            for (int i = 0; i < 50; i++)
+            {
+                extListBox1.Items.Add($"Item {i}");
+            }
+
+
             this.extTabControl1.TabStyle = new ExtendedControls.TabStyleAngled();
 
             extRichTextBox1.Text = "Hello\r\nThere!\r\n1\r\n2\r\n3\r\n4\r\n5\r\n6\r\n7";
@@ -161,6 +170,23 @@ namespace TestExtendedControls
             tabPage3.Controls.Add(uc1);
 
             extPanelRollUpFlow.FlowDirection = FlowDirection.LeftToRight;
+
+            extPanelVertScrollWithBar1.Recalcuate();
+
+            imageControl1.BackgroundImage = Properties.Resources.FleetCarrier;
+            imageControl1.BackColor = Color.Green;
+            imageControl1.ImageSize = new Size(Properties.Resources.FleetCarrier.Width, Properties.Resources.FleetCarrier.Height);
+            imageControl1.ImageLayout = ImageLayout.Stretch;
+            imageControl1.BackgroundImageLayout = ImageLayout.Stretch;
+            imageControlScroll1.ImageControlMinimumHeight = imageControl1.ImageSize.Height;
+
+            for (int i = 0; i < 10; i++)
+            {
+                extPictureBox1.AddTextAutoSize(new Point(0, i*50), new Size(2000, 1000), $"Label {i}", this.Font, Color.Blue, Color.Red, 1.0f);
+            }
+
+            extPictureBox1.Render();
+
         }
 
         public void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)

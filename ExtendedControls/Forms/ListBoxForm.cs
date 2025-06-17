@@ -86,7 +86,7 @@ namespace ExtendedControls
             using (Graphics g = this.CreateGraphics())
             {
                 Size max = ListBox.MeasureItems(g);
-                this.PositionSizeWithinScreen(max.Width + 4 + ListBox.ScrollBarWidth, hw, true, new Size(64,64));    // keep it on the screen. 
+                this.PositionSizeWithinScreen(max.Width + 4 + ListBox.ScrollBar.Width, hw, true, new Size(64,64));    // keep it on the screen. 
             }
 
             //            System.Diagnostics.Debug.WriteLine(".. now " + Location + " " + Size + " Items " + Items.Count + " ih "  + ih + " hw" + hw);

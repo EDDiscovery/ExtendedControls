@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016-2019 EDDiscovery development team
+ * Copyright 2016-2025 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class ExtTreeView : Panel
+    public partial class ExtTreeView : Panel, IThemeable
     {
         public class TreeViewBack : TreeView
         {
@@ -38,7 +38,7 @@ namespace ExtendedControls
         public Color TreeViewForeColor { get { return TreeView.ForeColor; } set { TreeView.ForeColor = value; } }
         public Color TreeViewBackColor { get { return TreeView.BackColor; } set { TreeView.BackColor = value; } }
         public Color BorderColor { get; set; } = Color.Transparent;
-        public float BorderColorScaling { get; set; } = 0.5F;           // Popup style only
+        public Color BorderColor2 { get; set; } = Color.Transparent;
         public bool ShowLineCount { get; set; } = false;                // count lines
         public bool HideScrollBar { get; set; } = true;                   // hide if no scroll needed
 
@@ -53,14 +53,12 @@ namespace ExtendedControls
         public Color ScrollBarMouseOverButtonColor { get { return ScrollBar.MouseOverButtonColor; } set { ScrollBar.MouseOverButtonColor = value; } }
         public Color ScrollBarMousePressedButtonColor { get { return ScrollBar.MousePressedButtonColor; } set { ScrollBar.MousePressedButtonColor = value; } }
         public Color ScrollBarForeColor { get { return ScrollBar.ForeColor; } set { ScrollBar.ForeColor = value; } }
+        public int ScrollBarWidth { get { return scrollbarwidth; } set { scrollbarwidth = value; Invalidate(); } }
 
         public TreeNodeCollection Nodes {get { return TreeView.Nodes; } }
         public bool ShowLines { get {return TreeView.ShowLines; } set { TreeView.ShowLines = value; } }
         public bool ShowRootLines { get {return TreeView.ShowRootLines; } set { TreeView.ShowRootLines = value; } }
         public bool ShowPlusMinus {get {return TreeView.ShowPlusMinus; } set { TreeView.ShowPlusMinus = value;} }
-        
-        TreeView TreeView;                 // Use these with caution.
-        ExtScrollBar ScrollBar;
         
         public ExtTreeView() : base()
         {
@@ -68,7 +66,8 @@ namespace ExtendedControls
             ScrollBar = new ExtScrollBar();
             Controls.Add(TreeView);
             Controls.Add(ScrollBar);
-            TreeView.Scrollable = true;     // TreeView has to be scrollable to scroll at all, just make sure the themed scroll bar is on top of the default Windows one
+            TreeView.Scrollable = true;                     // TreeView has to be scrollable to scroll at all, but this shows the scroll bar
+                                                            // just make sure the themed scroll bar is on top of the default Windows one
             TreeView.BorderStyle = BorderStyle.None;
             TreeView.BackColor = BackColor;
             TreeView.ForeColor = ForeColor;
@@ -79,8 +78,6 @@ namespace ExtendedControls
             TreeView.MouseLeave += TreeView_MouseLeave;
             TreeView.AfterCollapse += TreeView_ExpandChanged;
             TreeView.AfterExpand += TreeView_ExpandChanged;
-            TreeView.Show();
-            ScrollBar.Show();
             TreeView.MouseWheel += new MouseEventHandler(MWheel);        // need to keep our scrollbar in sync with the Windows one, need to catch the mouse wheel
             ScrollBar.Scroll += new ScrollEventHandler(OnScrollBarChanged);
         }
@@ -93,15 +90,12 @@ namespace ExtendedControls
             {
                 e.Graphics.SmoothingMode = SmoothingMode.Default;
 
-                Color color1 = BorderColor;
-                Color color2 = BorderColor.Multiply(BorderColorScaling);
-
                 GraphicsPath g1 = DrawingHelpersStaticFunc.RectCutCorners(1, 1, ClientRectangle.Width - 2, ClientRectangle.Height - 1, 1, 1);
-                using (Pen pc1 = new Pen(color1, 1.0F))
+                using (Pen pc1 = new Pen(BorderColor, 1.0F))
                     e.Graphics.DrawPath(pc1, g1);
 
                 GraphicsPath g2 = DrawingHelpersStaticFunc.RectCutCorners(0, 0, ClientRectangle.Width, ClientRectangle.Height - 1, 2, 2);
-                using (Pen pc2 = new Pen(color2, 1.0F))
+                using (Pen pc2 = new Pen(BorderColor2, 1.0F))
                     e.Graphics.DrawPath(pc2, g2);
             }
         }
@@ -146,13 +140,13 @@ namespace ExtendedControls
             TreeView.Location = new Point(bordersize, bordersize);
             TreeView.Size = new Size(ClientRectangle.Width - bordersize * 2, treeviewclienth);
 
-            int scrollbarwidth = Font.ScaleScrollbar();
-
             ScrollBar.Location = new Point(ClientRectangle.Width - scrollbarwidth - bordersize, bordersize);
             ScrollBar.Size = new Size(scrollbarwidth, treeviewclienth);
             // we're letting the TreeView scroll itself, just hiding the default scroll bar under the themeable custom one when it's needed
-            if (visibleonlayout) ScrollBar.BringToFront();
-            else TreeView.BringToFront();
+            if (visibleonlayout) 
+                ScrollBar.BringToFront();
+            else 
+                TreeView.BringToFront();
         }
 
         void SetScrollBarParameters()
@@ -243,5 +237,25 @@ namespace ExtendedControls
         {
             base.OnMouseUp(e);
         }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.TextBlockForeColor;
+            BackColor = t.TextBlockBackColor;
+            BorderColor = t.TextBlockBorderColor;
+            BorderColor2 = t.TextBlockBorderColor2;
+            // theme sets the scroll bar width, but we never use skinny, as its not wide enough to mask the tree view scroll bar
+            int newwidth = ExtendedControls.Theme.ScrollBarWidth(t.GetFont, false);  
+            if (newwidth != ScrollBarWidth)
+            {
+                scrollbarwidth = newwidth;
+                PerformLayout();
+            }
+            return true;    // allow Scroll Bar to theme itself
+        }
+
+        private TreeView TreeView;                 // Use these with caution.
+        private ExtScrollBar ScrollBar;
+        private int scrollbarwidth = 48;
     }
 }

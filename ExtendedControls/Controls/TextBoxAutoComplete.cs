@@ -207,7 +207,7 @@ namespace ExtendedControls
                     dropdown = new ExtListBoxForm("", false);
 
                     DropDownTheme.Theme(dropdown.ListBox, ForeColor, BackColor, BorderColor);
-                    DropDownTheme.Theme(dropdown.ListBox.ScrollBar, BorderColor);
+                    DropDownTheme.Theme(dropdown.ListBox.ScrollBar, BorderColor, this.Font );
 
                     dropdown.SelectedIndex = 0;
                     dropdown.FlatStyle = this.FlatStyle;

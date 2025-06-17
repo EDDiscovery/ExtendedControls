@@ -346,6 +346,7 @@ namespace ExtendedControls
             {
                 themelist.Add(new Theme(elite, "Elite Verdana", "Verdana", 10F));
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant", "Verdana", 10F));
+                themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Skinny Scroll", "Verdana", 10F) { SkinnyScrollBars = true });
                 themelist.Add(new Theme(elite, "Elite Verdana Small", "Verdana", 8F));
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Small Gradiant", "Verdana", 8F));
                 themelist.Add(new Theme(elite, "Elite Verdana High DPI", "Verdana", 20F));

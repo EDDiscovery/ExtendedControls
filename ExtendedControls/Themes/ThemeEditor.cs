@@ -224,7 +224,10 @@ namespace ExtendedControls
             numericUpDownMouseSelectedScaling.Value = (decimal)Theme.MouseSelectedScaling;
             numericUpDownDisabledScaling.Value = (decimal)Theme.DisabledScaling;
 
+            checkBoxSkinnyScrollBars.Checked = Theme.SkinnyScrollBars;
+
             this.checkBox_theme_windowframe.CheckedChanged += new System.EventHandler(this.checkBox_theme_windowframe_CheckedChanged);
+            this.checkBoxSkinnyScrollBars.CheckedChanged += new System.EventHandler(this.checkBox_skinnyscrollbars_CheckedChanged);
             this.trackBar_theme_opacity.ValueChanged += new System.EventHandler(this.trackBar_theme_opacity_ValueChanged);
             this.numericUpDownDisabledScaling.ValueChanged += new System.EventHandler(this.numericUpDownDisabledScaling_ValueChanged);
             this.numericUpDownMouseSelectedScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseSelectedScaling_ValueChanged);
@@ -376,6 +379,12 @@ namespace ExtendedControls
         private void checkBox_theme_windowframe_CheckedChanged(object sender, EventArgs e)
         {
             Theme.WindowsFrame = checkBox_theme_windowframe.Checked;
+            Apply();
+        }
+
+        private void checkBox_skinnyscrollbars_CheckedChanged(object sender, EventArgs e)
+        {
+            Theme.SkinnyScrollBars = checkBoxSkinnyScrollBars.Checked;
             Apply();
         }
 

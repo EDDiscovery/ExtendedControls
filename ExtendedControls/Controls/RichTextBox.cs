@@ -50,8 +50,6 @@ namespace ExtendedControls
         public string Rtf { get { return textBox.Rtf; } set { textBox.Rtf = value; UpdateScrollBar(); } }
         public int LineCount { get { return textBox.GetLineFromCharIndex(textBox.Text.Length) + 1; } }
 
-        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
-
         public void SetTipDynamically(ToolTip t, string text) { t.SetToolTip(textBox, text); } // only needed for dynamic changes..
 
         // turning this on allows dropping of text or a file into the box to replace all text.
@@ -142,6 +140,7 @@ namespace ExtendedControls
             textBox = new RichTextBoxBack();
             textBox.Name = "ExtRichTextBox_RTB";
             ScrollBar = new ExtScrollBar();
+            ScrollBar.Size = new Size(48, 16);      // width is used
             Controls.Add(textBox);
             Controls.Add(ScrollBar);
             textBox.ScrollBars = RichTextBoxScrollBars.None;
@@ -194,10 +193,10 @@ namespace ExtendedControls
             scrollbarvisibleonlayout = ScrollBar.IsScrollBarOn || DesignMode || !HideScrollBar;  // Hide must be on, or in design mode, or scroll bar is on due to values
 
             textBox.Location = new Point(bordersize, bordersize);
-            textBox.Size = new Size(ClientRectangle.Width - (scrollbarvisibleonlayout ? ScrollBarWidth : 0) - bordersize * 2, textboxclienth);
+            textBox.Size = new Size(ClientRectangle.Width - (scrollbarvisibleonlayout ? ScrollBar.Width : 0) - bordersize * 2, textboxclienth);
 
-            ScrollBar.Location = new Point(ClientRectangle.Width - ScrollBarWidth - bordersize, bordersize);
-            ScrollBar.Size = new Size(ScrollBarWidth, textboxclienth);
+            ScrollBar.Location = new Point(ClientRectangle.Width - ScrollBar.Width - bordersize, bordersize);
+            ScrollBar.Size = new Size(ScrollBar.Width, textboxclienth);
         }
 
         protected override void OnFontChanged(EventArgs e)      // these events can change visible lines
@@ -450,6 +449,15 @@ namespace ExtendedControls
                 ScrollBar.MousePressedButtonColor = ScrollBar.ThumbButtonColor.Multiply(t.MouseSelectedScaling);
                 ScrollBar.MousePressedButtonColor2 = ScrollBar.ThumbButtonColor.Multiply(t.MouseSelectedScaling);
                 ScrollBar.FlatStyle = FlatStyle.Popup;
+                ScrollBar.SkinnyStyle = t.SkinnyScrollBars;
+
+                int newwidth = t.ScrollBarWidth();
+                if (ScrollBar.Width != newwidth)
+                {
+                    ScrollBar.Width = newwidth;
+                    PerformLayout();
+                }
+
             }
 
             if (ContextMenuStrip != null)      // propegate font

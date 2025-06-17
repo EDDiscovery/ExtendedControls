@@ -141,10 +141,10 @@ namespace ExtendedControls
     /// Panel which accepts a ExtPanelVertScroll as child, and has a scroll bar on the right. 
     /// implements the scroll bar controlling the vert scroll, and mouse wheel
 
-    public partial class ExtPanelVertScrollWithBar : Panel
+    public partial class ExtPanelVertScrollWithBar : Panel, IThemeable
     {
-        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
-        public int ContentWidth { get { return Width - ScrollBarWidth; } }
+        public int ScrollBarWidth { get { return scrollbar.Width; } }
+        public int ContentWidth { get { return Width - scrollbar.Width; } }
         public int LargeChange { get { return scrollbar.LargeChange; } set { scrollbar.LargeChange = value; } }
         public int SmallChange { get { return scrollbar.SmallChange; } set { scrollbar.SmallChange = value; } }
         public bool HideScrollBar { get { return scrollbar.HideScrollBar; } set { scrollbar.HideScrollBar = value; } }
@@ -157,7 +157,7 @@ namespace ExtendedControls
             scrollbar.Name = "VScrollPanel";
             scrollbar.Scroll += new ScrollEventHandler(OnScrollBarChanged);
             scrollbar.Dock = DockStyle.Right;
-            scrollbar.Width = ScrollBarWidth;
+            scrollbar.Size = new Size(48, 48);     // width holds the scroll bar width, set by themeing
             Controls.Add(scrollbar);
             ResumeLayout();
         }
@@ -194,7 +194,18 @@ namespace ExtendedControls
         protected override void OnFontChanged(EventArgs e)
         {
             base.OnFontChanged(e);
-            scrollbar.Width = ScrollBarWidth;
+            //scrollbar.Width = ScrollBarWidth;
+        }
+
+        public bool Theme(Theme t, Font fnt)
+        {
+            int newwidth = t.ScrollBarWidth();  // theme sets the scroll bar width
+            if (newwidth != ScrollBarWidth)
+            {
+                scrollbar.Width = newwidth;
+            }
+
+            return true;
         }
 
         private ExtPanelVertScroll panel;

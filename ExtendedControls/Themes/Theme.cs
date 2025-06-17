@@ -416,6 +416,8 @@ namespace ExtendedControls
         // i= 0 to 7
         public Color GetChartColor(int i) { return i == 0 ? Chart1 : i == 1 ? Chart2 : i == 2 ? Chart3 : i == 3 ? Chart4 : i == 4 ? Chart5 : i == 5 ? Chart6 : i == 6 ? Chart7 : Chart8; }
 
+        //------------------
+
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "windowsframe" })]
         public bool WindowsFrame { get; set; } = true;
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "formopacity" })]
@@ -471,6 +473,18 @@ namespace ExtendedControls
                 return TextBoxBorderStyle.Equals(TextboxBorderStyles[1]) ? BorderStyle.FixedSingle :
                     TextBoxBorderStyle.Equals(TextboxBorderStyles[2]) ? BorderStyle.Fixed3D : BorderStyle.None;
             }
+        }
+
+        // scroll bar apperance
+        public bool SkinnyScrollBars { get; set; } = false;
+        public int ScrollBarWidth() { return ScrollBarWidth(GetFont,SkinnyScrollBars); }
+        public static int ScrollBarWidth(Font f, bool skinny) 
+        {
+            int mult = f.GetHeight() < 17 ? 8 : 7;
+            int basic = f.ScaleScrollbar();
+            int size = skinny ? basic * mult / 16 : basic;
+            //System.Diagnostics.Debug.WriteLine($"Scroll bar {f.GetHeight()} basic {basic} mult {mult} skinny {skinny} size {size}");
+            return size; 
         }
 
         // Scaling and direction values, exported using these names

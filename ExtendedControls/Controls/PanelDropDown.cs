@@ -91,7 +91,7 @@ namespace ExtendedControls
                 if (dropdownactivated == false)
                 {
                     DropDownTheme.Theme(dropdown.ListBox, ForeColor, BackColor, BorderColor);
-                    DropDownTheme.Theme(dropdown.ListBox.ScrollBar, BorderColor);
+                    DropDownTheme.Theme(dropdown.ListBox.ScrollBar, BorderColor, this.Font);
 
                     dropdown.PositionBelow(this,this.Width);
                     dropdown.RightAlignedToLocation = true;

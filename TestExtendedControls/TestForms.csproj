@@ -52,430 +52,418 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EDCommander.cs" />
-    <Compile Include="TestSmartSystemForm.cs">
+    <Compile Include="Controls\TestTreeView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestSmartSystemForm.Designer.cs">
+    <Compile Include="Controls\TestTreeView.Designer.cs">
+      <DependentUpon>TestTreeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EDCommander.cs" />
+    <Compile Include="Forms\TestSmartSystemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TestSmartSystemForm.Designer.cs">
       <DependentUpon>TestSmartSystemForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestTabControlWithTransparency.cs">
+    <Compile Include="Tabs\TestTabControlWithTransparency.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestTabControlWithTransparency.Designer.cs">
+    <Compile Include="Tabs\TestTabControlWithTransparency.Designer.cs">
       <DependentUpon>TestTabControlWithTransparency.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestConfigurableUC3.cs">
+    <Compile Include="ConfigurableForms\TestConfigurableUC3.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestConfigurableUC3.Designer.cs">
+    <Compile Include="ConfigurableForms\TestConfigurableUC3.Designer.cs">
       <DependentUpon>TestConfigurableUC3.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestConfigurableUC2.cs">
+    <Compile Include="ConfigurableForms\TestConfigurableUC2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestConfigurableUC2.Designer.cs">
+    <Compile Include="ConfigurableForms\TestConfigurableUC2.Designer.cs">
       <DependentUpon>TestConfigurableUC2.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestImportExport.cs">
+    <Compile Include="Misc\TestImportExport.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestImportExport.Designer.cs">
+    <Compile Include="Misc\TestImportExport.Designer.cs">
       <DependentUpon>TestImportExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestConfigurableUC.cs">
+    <Compile Include="ConfigurableForms\TestConfigurableUC.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestConfigurableUC.Designer.cs">
+    <Compile Include="ConfigurableForms\TestConfigurableUC.Designer.cs">
       <DependentUpon>TestConfigurableUC.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelDGVOtherCells.cs">
+    <Compile Include="Panels and Splitters\TestPanelDGVOtherCells.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelDGVOtherCells.Designer.cs">
+    <Compile Include="Panels and Splitters\TestPanelDGVOtherCells.Designer.cs">
       <DependentUpon>TestPanelDGVOtherCells.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPipsAdvancedLabel.cs">
+    <Compile Include="Controls\TestPipsAdvancedLabel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPipsAdvancedLabel.Designer.cs">
+    <Compile Include="Controls\TestPipsAdvancedLabel.Designer.cs">
       <DependentUpon>TestPipsAdvancedLabel.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanel.cs">
+    <Compile Include="Panels and Splitters\TestPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanel.Designer.cs">
+    <Compile Include="Panels and Splitters\TestPanel.Designer.cs">
       <DependentUpon>TestPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestCheckedIconNewListBoxForm.cs">
+    <Compile Include="CheckedIconLists\TestCheckedIconNewListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestCheckedIconNewListBoxForm.Designer.cs">
+    <Compile Include="CheckedIconLists\TestCheckedIconNewListBoxForm.Designer.cs">
       <DependentUpon>TestCheckedIconNewListBoxForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestCheckedIconPictureGroup.cs">
+    <Compile Include="CheckedIconLists\TestCheckedIconPictureGroup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestCheckedIconPictureGroup.Designer.cs">
+    <Compile Include="CheckedIconLists\TestCheckedIconPictureGroup.Designer.cs">
       <DependentUpon>TestCheckedIconPictureGroup.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestCheckedIconPicture.cs">
+    <Compile Include="CheckedIconLists\TestCheckedIconPicture.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestCheckedIconPicture.Designer.cs">
+    <Compile Include="CheckedIconLists\TestCheckedIconPicture.Designer.cs">
       <DependentUpon>TestCheckedIconPicture.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestLabel.cs">
+    <Compile Include="Controls\TestLabel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestLabel.Designer.cs">
+    <Compile Include="Controls\TestLabel.Designer.cs">
       <DependentUpon>TestLabel.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestProgressBar.cs">
+    <Compile Include="Controls\TestProgressBar.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestProgressBar.Designer.cs">
+    <Compile Include="Controls\TestProgressBar.Designer.cs">
       <DependentUpon>TestProgressBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestFlowBox.cs">
+    <Compile Include="Panels and Splitters\TestFlowBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestFlowBox.Designer.cs">
+    <Compile Include="Panels and Splitters\TestFlowBox.Designer.cs">
       <DependentUpon>TestFlowBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestAutoScaleCompositeButtons.cs">
+    <Compile Include="Buttons\TestAutoScaleCompositeButtons.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestAutoScaleCompositeButtons.Designer.cs">
+    <Compile Include="Buttons\TestAutoScaleCompositeButtons.Designer.cs">
       <DependentUpon>TestAutoScaleCompositeButtons.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestChartPie.cs">
+    <Compile Include="Charts\TestChartPie.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestChartPie.Designer.cs">
+    <Compile Include="Charts\TestChartPie.Designer.cs">
       <DependentUpon>TestChartPie.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestImageControlScroll.cs">
+    <Compile Include="Controls\TestImageControlScroll.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestImageControlScroll.Designer.cs">
+    <Compile Include="Controls\TestImageControlScroll.Designer.cs">
       <DependentUpon>TestImageControlScroll.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestChart.cs">
+    <Compile Include="Charts\TestChart.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestChart.Designer.cs">
+    <Compile Include="Charts\TestChart.Designer.cs">
       <DependentUpon>TestChart.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestSplitterParentResize.cs">
+    <Compile Include="Panels and Splitters\TestSplitterParentResize.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestSplitterParentResize.Designer.cs">
+    <Compile Include="Panels and Splitters\TestSplitterParentResize.Designer.cs">
       <DependentUpon>TestSplitterParentResize.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelScrollDGV.cs">
+    <Compile Include="Panels and Splitters\TestPanelScrollDGV.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelScrollDGV.Designer.cs">
+    <Compile Include="Panels and Splitters\TestPanelScrollDGV.Designer.cs">
       <DependentUpon>TestPanelScrollDGV.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestImageControl.cs">
+    <Compile Include="Controls\TestImageControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestImageControl.Designer.cs">
+    <Compile Include="Controls\TestImageControl.Designer.cs">
       <DependentUpon>TestImageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestTerminal2.cs">
+    <Compile Include="Misc\TestTerminal2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestTerminal2.Designer.cs">
+    <Compile Include="Misc\TestTerminal2.Designer.cs">
       <DependentUpon>TestTerminal2.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestThemeSpeed.cs">
+    <Compile Include="Theme\TestThemeSpeed.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestThemeSpeed.Designer.cs">
+    <Compile Include="Theme\TestThemeSpeed.Designer.cs">
       <DependentUpon>TestThemeSpeed.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestDraggableForm.cs">
+    <Compile Include="Forms\TestDraggableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestDraggableForm.Designer.cs">
+    <Compile Include="Forms\TestDraggableForm.Designer.cs">
       <DependentUpon>TestDraggableForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestDateTime.cs">
+    <Compile Include="Controls\TestDateTime.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestDateTime.Designer.cs">
+    <Compile Include="Controls\TestDateTime.Designer.cs">
       <DependentUpon>TestDateTime.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelScroll2.cs">
+    <Compile Include="Panels and Splitters\TestPanelScroll2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelScroll2.Designer.cs">
+    <Compile Include="Panels and Splitters\TestPanelScroll2.Designer.cs">
       <DependentUpon>TestPanelScroll2.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelScrollOutlining.cs">
+    <Compile Include="Panels and Splitters\TestPanelScrollOutlining.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelScrollOutlining.Designer.cs">
+    <Compile Include="Panels and Splitters\TestPanelScrollOutlining.Designer.cs">
       <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestTextBoxesRTF.cs">
+    <Compile Include="TextBoxes\TestTextBoxesRTF.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestTextBoxesRTF.Designer.cs">
+    <Compile Include="TextBoxes\TestTextBoxesRTF.Designer.cs">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPictureBox.cs">
+    <Compile Include="Controls\TestPictureBox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPictureBox.Designer.cs">
+    <Compile Include="Controls\TestPictureBox.Designer.cs">
       <DependentUpon>TestPictureBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestTheme.cs">
+    <Compile Include="Theme\TestTheme.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestTheme.Designer.cs">
+    <Compile Include="Theme\TestTheme.Designer.cs">
       <DependentUpon>TestTheme.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestVScroll.cs">
+    <Compile Include="Panels and Splitters\TestVScroll.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestVScroll.Designer.cs">
+    <Compile Include="Panels and Splitters\TestVScroll.Designer.cs">
       <DependentUpon>TestVScroll.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestTextBoxes.cs">
+    <Compile Include="TextBoxes\TestTextBoxes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestTextBoxes.Designer.cs">
+    <Compile Include="TextBoxes\TestTextBoxes.Designer.cs">
       <DependentUpon>TestTextBoxes.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestSplitterContainer.cs">
+    <Compile Include="Panels and Splitters\TestSplitterContainer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestSplitterContainer.Designer.cs">
+    <Compile Include="Panels and Splitters\TestSplitterContainer.Designer.cs">
       <DependentUpon>TestSplitterContainer.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestButtons.cs">
+    <Compile Include="Buttons\TestButtons.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestButtons.Designer.cs">
+    <Compile Include="Buttons\TestButtons.Designer.cs">
       <DependentUpon>TestButtons.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestCompassControl.cs">
+    <Compile Include="Controls\TestCompassControl.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestCompassControl.Designer.cs">
+    <Compile Include="Controls\TestCompassControl.Designer.cs">
       <DependentUpon>TestCompassControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestExtendedForms.cs">
+    <Compile Include="Forms\TestExtendedForms.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestExtendedForms.Designer.cs">
+    <Compile Include="Forms\TestExtendedForms.Designer.cs">
       <DependentUpon>TestExtendedForms.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestVariousForms.cs">
+    <Compile Include="Forms\TestVariousForms.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestVariousForms.Designer.cs">
+    <Compile Include="Forms\TestVariousForms.Designer.cs">
       <DependentUpon>TestVariousForms.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelDrawnPanel.cs">
+    <Compile Include="Panels and Splitters\TestPanelDrawnPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelDrawnPanel.Designer.cs">
+    <Compile Include="Panels and Splitters\TestPanelDrawnPanel.Designer.cs">
       <DependentUpon>TestPanelDrawnPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestMisc.cs">
+    <Compile Include="Misc\TestMisc.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestMisc.Designer.cs">
+    <Compile Include="Misc\TestMisc.Designer.cs">
       <DependentUpon>TestMisc.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelDGV.cs">
+    <Compile Include="Panels and Splitters\TestPanelDGV.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelDGV.Designer.cs">
+    <Compile Include="Panels and Splitters\TestPanelDGV.Designer.cs">
       <DependentUpon>TestPanelDGV.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestPanelScroll.cs">
+    <Compile Include="Panels and Splitters\TestPanelScroll.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestPanelScroll.Designer.cs">
+    <Compile Include="Panels and Splitters\TestPanelScroll.Designer.cs">
       <DependentUpon>TestPanelScroll.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestTabControlCustom.cs">
+    <Compile Include="Tabs\TestTabControlCustom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestTabControlCustom.Designer.cs">
+    <Compile Include="Tabs\TestTabControlCustom.Designer.cs">
       <DependentUpon>TestTabControlCustom.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestSelectionPanel.cs">
+    <Compile Include="TextBoxes\TestAutoComplete.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestSelectionPanel.Designer.cs">
-      <DependentUpon>TestSelectionPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TestAutoComplete.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TestAutoComplete.Designer.cs">
+    <Compile Include="TextBoxes\TestAutoComplete.Designer.cs">
       <DependentUpon>TestAutoComplete.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestRollUpPanel.cs">
+    <Compile Include="Panels and Splitters\TestRollUpPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestRollUpPanel.Designer.cs">
+    <Compile Include="Panels and Splitters\TestRollUpPanel.Designer.cs">
       <DependentUpon>TestRollUpPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="TestTabStrip.cs">
+    <Compile Include="Tabs\TestTabStrip.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestTabStrip.Designer.cs">
+    <Compile Include="Tabs\TestTabStrip.Designer.cs">
       <DependentUpon>TestTabStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControl1.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControl1.Designer.cs">
-      <DependentUpon>UserControl1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UserControl2.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControl2.Designer.cs">
-      <DependentUpon>UserControl2.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="TestSmartSystemForm.resx">
+    <EmbeddedResource Include="Controls\TestTreeView.resx">
+      <DependentUpon>TestTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TestSmartSystemForm.resx">
       <DependentUpon>TestSmartSystemForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestTabControlWithTransparency.resx">
+    <EmbeddedResource Include="Tabs\TestTabControlWithTransparency.resx">
       <DependentUpon>TestTabControlWithTransparency.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestConfigurableUC3.resx">
+    <EmbeddedResource Include="ConfigurableForms\TestConfigurableUC3.resx">
       <DependentUpon>TestConfigurableUC3.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestConfigurableUC2.resx">
+    <EmbeddedResource Include="ConfigurableForms\TestConfigurableUC2.resx">
       <DependentUpon>TestConfigurableUC2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestImportExport.resx">
+    <EmbeddedResource Include="Misc\TestImportExport.resx">
       <DependentUpon>TestImportExport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestConfigurableUC.resx">
+    <EmbeddedResource Include="ConfigurableForms\TestConfigurableUC.resx">
       <DependentUpon>TestConfigurableUC.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelDGVOtherCells.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestPanelDGVOtherCells.resx">
       <DependentUpon>TestPanelDGVOtherCells.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPipsAdvancedLabel.resx">
+    <EmbeddedResource Include="Controls\TestPipsAdvancedLabel.resx">
       <DependentUpon>TestPipsAdvancedLabel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanel.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestPanel.resx">
       <DependentUpon>TestPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestCheckedIconNewListBoxForm.resx">
+    <EmbeddedResource Include="CheckedIconLists\TestCheckedIconNewListBoxForm.resx">
       <DependentUpon>TestCheckedIconNewListBoxForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestCheckedIconPictureGroup.resx">
+    <EmbeddedResource Include="CheckedIconLists\TestCheckedIconPictureGroup.resx">
       <DependentUpon>TestCheckedIconPictureGroup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestCheckedIconPicture.resx">
+    <EmbeddedResource Include="CheckedIconLists\TestCheckedIconPicture.resx">
       <DependentUpon>TestCheckedIconPicture.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestLabel.resx">
+    <EmbeddedResource Include="Controls\TestLabel.resx">
       <DependentUpon>TestLabel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestProgressBar.resx">
+    <EmbeddedResource Include="Controls\TestProgressBar.resx">
       <DependentUpon>TestProgressBar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestFlowBox.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestFlowBox.resx">
       <DependentUpon>TestFlowBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestAutoScaleCompositeButtons.resx">
+    <EmbeddedResource Include="Buttons\TestAutoScaleCompositeButtons.resx">
       <DependentUpon>TestAutoScaleCompositeButtons.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestChartPie.resx">
+    <EmbeddedResource Include="Charts\TestChartPie.resx">
       <DependentUpon>TestChartPie.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestImageControlScroll.resx">
+    <EmbeddedResource Include="Controls\TestImageControlScroll.resx">
       <DependentUpon>TestImageControlScroll.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestChart.resx">
+    <EmbeddedResource Include="Charts\TestChart.resx">
       <DependentUpon>TestChart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestSplitterParentResize.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestSplitterParentResize.resx">
       <DependentUpon>TestSplitterParentResize.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelScrollDGV.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestPanelScrollDGV.resx">
       <DependentUpon>TestPanelScrollDGV.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestImageControl.resx">
+    <EmbeddedResource Include="Controls\TestImageControl.resx">
       <DependentUpon>TestImageControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestTerminal2.resx">
+    <EmbeddedResource Include="Misc\TestTerminal2.resx">
       <DependentUpon>TestTerminal2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestThemeSpeed.resx">
+    <EmbeddedResource Include="Theme\TestThemeSpeed.resx">
       <DependentUpon>TestThemeSpeed.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestDraggableForm.resx">
+    <EmbeddedResource Include="Forms\TestDraggableForm.resx">
       <DependentUpon>TestDraggableForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestDateTime.resx">
+    <EmbeddedResource Include="Controls\TestDateTime.resx">
       <DependentUpon>TestDateTime.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelScroll2.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestPanelScroll2.resx">
       <DependentUpon>TestPanelScroll2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelScrollOutlining.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestPanelScrollOutlining.resx">
       <DependentUpon>TestPanelScrollOutlining.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestTextBoxesRTF.resx">
+    <EmbeddedResource Include="TextBoxes\TestTextBoxesRTF.resx">
       <DependentUpon>TestTextBoxesRTF.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPictureBox.resx">
+    <EmbeddedResource Include="Controls\TestPictureBox.resx">
       <DependentUpon>TestPictureBox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestTheme.resx">
+    <EmbeddedResource Include="Theme\TestTheme.resx">
       <DependentUpon>TestTheme.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestVScroll.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestVScroll.resx">
       <DependentUpon>TestVScroll.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestTextBoxes.resx">
+    <EmbeddedResource Include="TextBoxes\TestTextBoxes.resx">
       <DependentUpon>TestTextBoxes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestSplitterContainer.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestSplitterContainer.resx">
       <DependentUpon>TestSplitterContainer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestButtons.resx">
+    <EmbeddedResource Include="Buttons\TestButtons.resx">
       <DependentUpon>TestButtons.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestExtendedForms.resx">
+    <EmbeddedResource Include="Forms\TestExtendedForms.resx">
       <DependentUpon>TestExtendedForms.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestVariousForms.resx">
+    <EmbeddedResource Include="Forms\TestVariousForms.resx">
       <DependentUpon>TestVariousForms.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelDrawnPanel.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestPanelDrawnPanel.resx">
       <DependentUpon>TestPanelDrawnPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestMisc.resx">
+    <EmbeddedResource Include="Misc\TestMisc.resx">
       <DependentUpon>TestMisc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelDGV.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestPanelDGV.resx">
       <DependentUpon>TestPanelDGV.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestPanelScroll.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestPanelScroll.resx">
       <DependentUpon>TestPanelScroll.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestSelectionPanel.resx">
-      <DependentUpon>TestSelectionPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TestAutoComplete.resx">
+    <EmbeddedResource Include="TextBoxes\TestAutoComplete.resx">
       <DependentUpon>TestAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -488,23 +476,17 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="TestRollUpPanel.resx">
+    <EmbeddedResource Include="Panels and Splitters\TestRollUpPanel.resx">
       <DependentUpon>TestRollUpPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestCompassControl.resx">
+    <EmbeddedResource Include="Controls\TestCompassControl.resx">
       <DependentUpon>TestCompassControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestTabControlCustom.resx">
+    <EmbeddedResource Include="Tabs\TestTabControlCustom.resx">
       <DependentUpon>TestTabControlCustom.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestTabStrip.resx">
+    <EmbeddedResource Include="Tabs\TestTabStrip.resx">
       <DependentUpon>TestTabStrip.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControl1.resx">
-      <DependentUpon>UserControl1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControl2.resx">
-      <DependentUpon>UserControl2.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

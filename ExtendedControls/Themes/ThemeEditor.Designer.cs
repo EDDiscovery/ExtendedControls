@@ -242,6 +242,7 @@ namespace ExtendedControls
             this.numericUpDownDialogFontScaling = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label27 = new System.Windows.Forms.Label();
+            this.checkBoxSkinnyScrollBars = new System.Windows.Forms.CheckBox();
             this.panel_themeTransparentColourKey = new System.Windows.Forms.Panel();
             this.buttonFontChange = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -2286,7 +2287,7 @@ namespace ExtendedControls
             // 
             // textBox_Font
             // 
-            this.textBox_Font.Location = new System.Drawing.Point(261, 29);
+            this.textBox_Font.Location = new System.Drawing.Point(330, 29);
             this.textBox_Font.Name = "textBox_Font";
             this.textBox_Font.ReadOnly = true;
             this.textBox_Font.Size = new System.Drawing.Size(211, 20);
@@ -2332,7 +2333,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownDisabledScaling.Location = new System.Drawing.Point(1048, 99);
+            this.numericUpDownDisabledScaling.Location = new System.Drawing.Point(1048, 106);
             this.numericUpDownDisabledScaling.Maximum = new decimal(new int[] {
             10,
             0,
@@ -2352,7 +2353,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownMouseSelectedScaling.Location = new System.Drawing.Point(1048, 73);
+            this.numericUpDownMouseSelectedScaling.Location = new System.Drawing.Point(1048, 80);
             this.numericUpDownMouseSelectedScaling.Maximum = new decimal(new int[] {
             10,
             0,
@@ -2372,7 +2373,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownMouseOverScaling.Location = new System.Drawing.Point(1048, 49);
+            this.numericUpDownMouseOverScaling.Location = new System.Drawing.Point(1048, 56);
             this.numericUpDownMouseOverScaling.Maximum = new decimal(new int[] {
             10,
             0,
@@ -2392,7 +2393,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownDialogFontScaling.Location = new System.Drawing.Point(1048, 23);
+            this.numericUpDownDialogFontScaling.Location = new System.Drawing.Point(1048, 30);
             this.numericUpDownDialogFontScaling.Maximum = new decimal(new int[] {
             10,
             0,
@@ -2406,6 +2407,7 @@ namespace ExtendedControls
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label27);
+            this.groupBox1.Controls.Add(this.checkBoxSkinnyScrollBars);
             this.groupBox1.Controls.Add(this.checkBox_theme_windowframe);
             this.groupBox1.Controls.Add(this.panel_themeTransparentColourKey);
             this.groupBox1.Controls.Add(this.buttonFontChange);
@@ -2437,6 +2439,16 @@ namespace ExtendedControls
             this.label27.TabIndex = 11;
             this.label27.Text = "Transparent Colour Key";
             // 
+            // checkBoxSkinnyScrollBars
+            // 
+            this.checkBoxSkinnyScrollBars.AutoSize = true;
+            this.checkBoxSkinnyScrollBars.Location = new System.Drawing.Point(139, 30);
+            this.checkBoxSkinnyScrollBars.Name = "checkBoxSkinnyScrollBars";
+            this.checkBoxSkinnyScrollBars.Size = new System.Drawing.Size(111, 17);
+            this.checkBoxSkinnyScrollBars.TabIndex = 2;
+            this.checkBoxSkinnyScrollBars.Text = "Skinny Scroll Bars";
+            this.checkBoxSkinnyScrollBars.UseVisualStyleBackColor = true;
+            // 
             // panel_themeTransparentColourKey
             // 
             this.panel_themeTransparentColourKey.AccessibleDescription = "";
@@ -2449,7 +2461,7 @@ namespace ExtendedControls
             // 
             // buttonFontChange
             // 
-            this.buttonFontChange.Location = new System.Drawing.Point(478, 27);
+            this.buttonFontChange.Location = new System.Drawing.Point(547, 27);
             this.buttonFontChange.Name = "buttonFontChange";
             this.buttonFontChange.Size = new System.Drawing.Size(80, 24);
             this.buttonFontChange.TabIndex = 0;
@@ -2460,7 +2472,7 @@ namespace ExtendedControls
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(211, 31);
+            this.label3.Location = new System.Drawing.Point(280, 31);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(28, 13);
             this.label3.TabIndex = 4;
@@ -2470,7 +2482,7 @@ namespace ExtendedControls
             // 
             this.label41.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(890, 101);
+            this.label41.Location = new System.Drawing.Point(890, 108);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(142, 13);
             this.label41.TabIndex = 6;
@@ -2480,7 +2492,7 @@ namespace ExtendedControls
             // 
             this.label37.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(877, 75);
+            this.label37.Location = new System.Drawing.Point(877, 82);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(151, 13);
             this.label37.TabIndex = 6;
@@ -2490,7 +2502,7 @@ namespace ExtendedControls
             // 
             this.label34.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(897, 51);
+            this.label34.Location = new System.Drawing.Point(897, 58);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(136, 13);
             this.label34.TabIndex = 6;
@@ -2500,7 +2512,7 @@ namespace ExtendedControls
             // 
             this.label33.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(934, 25);
+            this.label33.Location = new System.Drawing.Point(934, 32);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(99, 13);
             this.label33.TabIndex = 6;
@@ -2535,21 +2547,21 @@ namespace ExtendedControls
             this.pasteColourToolStripMenuItem,
             this.copyColourToolStripMenuItem});
             this.contextMenuStripColours.Name = "contextMenuStripColours";
-            this.contextMenuStripColours.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStripColours.Size = new System.Drawing.Size(142, 48);
             this.contextMenuStripColours.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.contextMenuStripColours_Closed);
             this.contextMenuStripColours.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStripColours_Opening);
             // 
             // pasteColourToolStripMenuItem
             // 
             this.pasteColourToolStripMenuItem.Name = "pasteColourToolStripMenuItem";
-            this.pasteColourToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pasteColourToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.pasteColourToolStripMenuItem.Text = "Paste Colour";
             this.pasteColourToolStripMenuItem.Click += new System.EventHandler(this.pasteColourToolStripMenuItem_Click);
             // 
             // copyColourToolStripMenuItem
             // 
             this.copyColourToolStripMenuItem.Name = "copyColourToolStripMenuItem";
-            this.copyColourToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyColourToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.copyColourToolStripMenuItem.Text = "Copy Colour";
             this.copyColourToolStripMenuItem.Click += new System.EventHandler(this.copyColourToolStripMenuItem_Click);
             // 
@@ -2811,5 +2823,6 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_themeTabControlPageBack;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.CheckBox checkBoxApplyOnEachChange;
+        private System.Windows.Forms.CheckBox checkBoxSkinnyScrollBars;
     }
 }

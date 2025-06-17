@@ -25,8 +25,9 @@ namespace ExtendedControls
         // BackColor = control back colour
         // ForeColor = button arrow color
 
-        // determine style, System, Popup, Flat..
+        // determine style: System or any other are the two selections
         public FlatStyle FlatStyle { get { return flatstyle; } set { ChangeFlatStyle(value); } }
+        public bool SkinnyStyle { get; set; } = false;           // skinnier look
 
         public Color BorderColor { get; set; } = Color.White;
 
@@ -151,12 +152,19 @@ namespace ExtendedControls
 
                 //System.Diagnostics.Debug.WriteLine($"Scrollbox draw slider {SliderColor}-> {SliderColor2} at {SliderDrawAngle}");
 
-                using (Pen pr = new Pen(BorderColor))
-                    e.Graphics.DrawRectangle(pr, borderrect);
+                if (!SkinnyStyle)
+                {
+                    using (Pen pr = new Pen(BorderColor))
+                        e.Graphics.DrawRectangle(pr, borderrect);
+                }
 
                 //System.Diagnostics.Debug.WriteLine("Scroll bar redraw " + Parent.Parent.Name + " " + e.Graphics.ClipBounds +" " + ClientRectangle + " " + sliderarea + " " + upbuttonarea + " " + downbuttonarea + " " + thumbbuttonarea);
-                DrawButton(e.Graphics, upbuttonarea, MouseOver.MouseOverUp);
-                DrawButton(e.Graphics, downbuttonarea, MouseOver.MouseOverDown);
+                if (!SkinnyStyle)
+                {
+                    DrawButton(e.Graphics, upbuttonarea, MouseOver.MouseOverUp);
+                    DrawButton(e.Graphics, downbuttonarea, MouseOver.MouseOverDown);
+                }
+
                 DrawButton(e.Graphics, thumbbuttonarea, MouseOver.MouseOverThumb);
             }
         }
@@ -456,20 +464,29 @@ namespace ExtendedControls
             base.OnLayout(levent);
             sliderarea = ClientRectangle;
 
-            if ( FlatStyle != FlatStyle.System )                // no border in system..
+            //if ( FlatStyle != FlatStyle.System && !SkinnyStyle)              // no border in system or skiny style
+            if ( FlatStyle != FlatStyle.System)                                // no border in system 
                 sliderarea.Inflate(-1, -1);
 
             int scrollheight = sliderarea.Width;
-            if (scrollheight * 2 > ClientRectangle.Height / 3)  // don't take up too much of the slider with the buttons
+            if (scrollheight * 2 > ClientRectangle.Height / 3)                // don't take up too much of the slider with the buttons
                 scrollheight = ClientRectangle.Height / 6;
 
-            upbuttonarea = sliderarea;
-            upbuttonarea.Height = scrollheight;
-            downbuttonarea = sliderarea;
-            downbuttonarea.Y = sliderarea.Bottom - scrollheight;
-            downbuttonarea.Height = scrollheight;
-            sliderarea.Y += scrollheight;
-            sliderarea.Height -= 2 * scrollheight;
+            if (SkinnyStyle)
+            {
+                upbuttonarea = downbuttonarea = Rectangle.Empty;
+            }
+            else
+            {
+                upbuttonarea = sliderarea;
+                upbuttonarea.Height = scrollheight;
+                downbuttonarea = sliderarea;
+                downbuttonarea.Y = sliderarea.Bottom - scrollheight;
+                downbuttonarea.Height = scrollheight;
+                sliderarea.Y += scrollheight;
+                sliderarea.Height -= 2 * scrollheight;
+            }
+
 
             borderrect = ClientRectangle;
             borderrect.Width--; borderrect.Height--;
@@ -551,7 +568,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            //System.Diagnostics.Debug.WriteLine("VScrollBarCustom Theme " + level + ":" + parent.Name.ToString() + ":" + myControl.Name.ToString() + " " + myControl.ToString() + " " + parentcontroltype.Name);
+            System.Diagnostics.Debug.WriteLine($"VScrollBarCustom Theme {Name}");
             if (t.IsButtonSystemStyle)
             {
                 FlatStyle = FlatStyle.System;
@@ -577,8 +594,10 @@ namespace ExtendedControls
                 MousePressedButtonColor2 = ThumbButtonColor2.Multiply(t.MouseSelectedScaling);
                 
                 FlatStyle = t.ButtonFlatStyle;
+                SkinnyStyle = t.SkinnyScrollBars;
 
-                // purposely not theming the arrow directions use the theme directions as they are fixed.
+                // purposely not theming the arrow directions using theme direction values, they are fixed
+                // not themeing the width by skinny scroll bar, its up to a parent like PanelDataGridViewScroll to do that
             }
 
             return false;

@@ -24,7 +24,8 @@ namespace ExtendedControls
     public class ExtPictureBoxScroll : Panel, IThemeable
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
-        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
+        public int ScrollBarWidth { get { return scrollbarwidth; } set { scrollbarwidth = value; Invalidate(); } }
+
         // disabling it makes the picturebox be the same size as the client area, enabling it means the picture box grows with the data
         public bool ScrollBarEnabled { get { return scrollbarenabled; } set { scrollbarenabled = value; PerformLayout(); } }
 
@@ -164,6 +165,12 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
+            int newwidth = t.ScrollBarWidth();  // theme sets the scroll bar width
+            if (newwidth != ScrollBarWidth)
+            {
+                scrollbarwidth = newwidth;
+                PerformLayout();
+            }
             return true; // no action, do children
         }
 
@@ -175,7 +182,7 @@ namespace ExtendedControls
         private ExtScrollBar vsc;
         private ExtButtonDrawn closeicon;
         private bool scrollbarenabled = true;
-
+        private int scrollbarwidth = 48;
         #endregion
     }
 }

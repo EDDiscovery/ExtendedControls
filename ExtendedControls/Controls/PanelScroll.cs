@@ -23,13 +23,13 @@ using System.Windows.Forms;
 namespace ExtendedControls
 {
     // Written because I could not get the manual autoscroll to work when controls dynamically added
+    // Older version of ExtPanelVertScroll
 
-    public partial class ExtPanelScroll : Panel              
+    public partial class ExtPanelScroll : Panel, IThemeable
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public bool FlowControlsLeftToRight { get; set; } = false;        // if true, position controls left to right overflow
-
-        public int ScrollBarWidth { get { return Font.ScaleScrollbar(); } }
+        public int ScrollBarWidth { get { return scrollbarwidth; } set { scrollbarwidth = value; Invalidate(); } }
 
         public ExtScrollBar ScrollBar = null;
 
@@ -376,8 +376,20 @@ namespace ExtendedControls
             ResumeLayout();
         }
 
+        public bool Theme(Theme t, Font fnt)
+        {
+            int newwidth = t.ScrollBarWidth();  // theme sets the scroll bar width
+            if (newwidth != ScrollBarWidth)
+            {
+                scrollbarwidth = newwidth;
+                PerformLayout();
+            }
+            return true;
+        }
+
         private int ignorelocationchange = 0;      // location changes triggered when we reposition controls to scroll, so we need to mask them 
         private int extsuspendcontrolmonitoring = 0;    // external suspend
         private int scrollpos = 0;
+        private int scrollbarwidth = 48;
     }
 }
