@@ -156,6 +156,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 62, 68, 77), // borderlines
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // grid sliderback, arrow, scrollbutton
                 Color.FromArgb(255, 200, 0, 0), Color.FromArgb(255, 90, 196, 222), // travelgrid_nonvisited, visited
+                
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), Theme.TextboxborderstyleColor, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // text sliderback, scrollarrow, scrollbutton
                 Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 0, 129, 0), c64, // checkbox, checkboxtick
