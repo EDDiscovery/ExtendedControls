@@ -126,7 +126,7 @@ namespace ExtendedControls
 
             // Don't allow this item to become unchecked. Radio Button use mostly
             public bool DisableUncheck { get; set; }
-            // Exclusive list
+            // Exclusive list, which determines others to turn off
             public string Exclusive { get; set; }       
             
             // Its a button not a check box but a button type label
@@ -510,8 +510,7 @@ namespace ExtendedControls
             ItemList.AddRange(std);
         }
 
-        // using SettingsSplittingChar as the separator, respects All or All; as a tag for all
-        // Does not obey exclusive. You can set group.
+        // using SettingsSplittingChar as the separator, see next function for more info
         public void Set(string taglist, bool state = true, int checkbox = 0)        
         {
             if (taglist != null)
@@ -521,14 +520,19 @@ namespace ExtendedControls
             }
         }
 
-        // Set taglist. Does not obey exclusive. You can set group.
+        // Set taglist. if taglist length =1 and first entry is All then sets all but group options on
+        // Does not execute exclusive list
+        // Does not apply group list
         public void Set(IEnumerable<string> taglist, CheckState state = CheckState.Checked, int checkbox = 0)
         {
             if (taglist != null)
             {
+                List<string> tagstoset = taglist.ToList();
+                bool alloption = tagstoset.Count == 1 && tagstoset[0] == All;
+
                 foreach(var x in ItemList)
                 {
-                    if (taglist.Contains(x.Tag) && x.CheckBoxExists(checkbox))
+                    if (x.CheckBoxExists(checkbox) && (taglist.Contains(x.Tag) || (alloption && !x.Group) ))
                     {
                         //System.Diagnostics.Debug.WriteLine($"Set check {controllist[i].tag} to {state}");
                         x.checkbox[checkbox].CheckState = state;
@@ -554,8 +558,11 @@ namespace ExtendedControls
 
             for (int i = startpos; i <= end; i++)  // inclusive
             {
-                if (ItemList[i].CheckBoxExists(checkbox) && !tagignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar) && (ignoregroup==false || !ItemList[i].Group))
+                if (ItemList[i].CheckBoxExists(checkbox) && !tagignorelist.Contains(ItemList[i].Tag + SettingsSplittingChar) &&
+                        (ignoregroup == false || !ItemList[i].Group))
+                {
                     ItemList[i].checkbox[checkbox].CheckState = state;
+                }
             }
         }
 
@@ -1070,6 +1077,7 @@ namespace ExtendedControls
                 CloseSubMenu();
         }
 
+        // used by group to override behaviour and work group options
         protected virtual void CheckChangedEvent(int checkbox, ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) { }
 
         public bool Theme(Theme t, Font fnt)

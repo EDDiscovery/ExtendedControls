@@ -79,7 +79,7 @@ namespace TestExtendedControls
             frm.UC.MultipleColumns = true;
             frm.CloseBoundaryRegion = new Size(64, 64);
             frm.SaveSettings += (s, p) => { AddText($"Save {s}"); };
-            frm.Show(this);
+            frm.Show("t10;t20",new Point(0,0),this);
 
         }
 

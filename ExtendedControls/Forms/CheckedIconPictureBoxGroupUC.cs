@@ -90,16 +90,15 @@ namespace ExtendedControls
             {
                 string taglist = it.Tag;
 
-                // Group button, set to All
-
+                // Group button, if on
                 if (e.NewValue == CheckState.Checked)
                 {
                     bool shift = Control.ModifierKeys.HasFlag(Keys.Control);
 
-                    if (!shift)
+                    if (!shift)         // shift modifies behaviour, normal is to clear all group items
                     {
                         //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} clear all");
-                        Set(0, CheckState.Unchecked, -1, NoneAllIgnore, checkbox, true);        // set all non group items unchecked except NoneAllIgnore ones
+                        Set(0, CheckState.Unchecked, -1, NoneAllIgnore, checkbox, ignoregroup:true);        // set all non group items unchecked except NoneAllIgnore ones
                     }
 
                     // all exclusive group options, look thru and see if its got the same tag list, if so, set it, else clear the tick
@@ -113,12 +112,12 @@ namespace ExtendedControls
                     if (taglist == All)                                     // All sets all except the ignore list
                     {
                         //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} set all");
-                        Set(0, CheckState.Checked, -1, NoneAllIgnore, checkbox, true);        // set all non group items checked except NoneAllIgnore
+                        Set(0, CheckState.Checked, -1, NoneAllIgnore, checkbox, ignoregroup: true);        // set all non group items checked except NoneAllIgnore
                     }
                     else if (taglist == None || it.ExclusiveGroupOption)            // None clears all except the ignore list, or if the group is an exclusive option, clear all
                     {
                         //System.Diagnostics.Debug.WriteLine($"Group checked {checkbox}: {taglist} unset all");
-                        Set(0, CheckState.Unchecked, -1, NoneAllIgnore, checkbox, true);        // set all non group items unchecked except NoneAllIgnore
+                        Set(0, CheckState.Unchecked, -1, NoneAllIgnore, checkbox, ignoregroup: true);        // set all non group items unchecked except NoneAllIgnore
                     }
                     else
                     {
@@ -128,7 +127,7 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    if (it.ExclusiveGroupOption)                       // clicking on exclusive option does not turn it off
+                    if (it.ExclusiveGroupOption)                       // clicking on exclusive option does not turn it off, so turn it back on
                     {
                         //System.Diagnostics.Debug.WriteLine($"Group unchecked {checkbox} exclusive list");
                         Set(taglist, true, checkbox);
@@ -140,13 +139,12 @@ namespace ExtendedControls
                 if (e.NewValue == CheckState.Checked)       // Normal item, not group, if checked on
                 {
                     // uncheck all exclusive group items - this is the only way to turn them off
-
-                    foreach (var eo in exclusivegroupoptions)        
+                    foreach (var eo in exclusivegroupoptions)      
                         Set(eo.Tag, false, checkbox);
                 }
             }
 
-            SetGroupOptions(checkbox);
+            SetGroupOptions(checkbox);      // make sure group options ticks are set right
         }
 
         // This sets the group options ticks of a checkbox set
