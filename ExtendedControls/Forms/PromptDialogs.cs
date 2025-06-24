@@ -54,6 +54,9 @@ namespace ExtendedControls
                      int heightscrollarea = 800,
                      bool requireinput = false)     
         {
+            if (heightboxes == -1)
+                heightboxes = multiline ? 80 : 24;
+
             int[] heightboxesa = new int[labels.Length];
             for (int i = 0; i < labels.Length; i++)
             {
@@ -106,6 +109,7 @@ namespace ExtendedControls
             }
 
             ExtPanelVertScrollWithBar vscroll = new ExtPanelVertScrollWithBar();
+            vscroll.HideScrollBar = true;       // if not needed
 
             ExtPanelVertScroll contentpanel = new ExtPanelVertScroll();
             contentpanel.Dock = DockStyle.Fill;

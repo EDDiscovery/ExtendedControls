@@ -129,16 +129,16 @@
     <Compile Include="Controls\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\CheckedIconNewListBoxForm.cs">
+    <Compile Include="CheckedIconList\CheckedIconNewListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\CheckedIconNewListBoxForm.Designer.cs">
+    <Compile Include="CheckedIconList\CheckedIconNewListBoxForm.Designer.cs">
       <DependentUpon>CheckedIconNewListBoxForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\CheckedIconPictureBoxGroupUC.cs">
+    <Compile Include="CheckedIconList\CheckedIconPictureBoxGroupUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\CheckedIconPictureBoxUC.cs">
+    <Compile Include="CheckedIconList\CheckedIconPictureBoxUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ConfigurableForm\ConfigurableEntriesSet.cs" />
@@ -150,7 +150,7 @@
     <Compile Include="ConfigurableForm\ConfigurableUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\ExtButtonWithNewCheckedListBox.cs">
+    <Compile Include="CheckedIconList\ExtButtonWithNewCheckedListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\CalendarForm.cs">
@@ -293,10 +293,10 @@
     <EmbeddedResource Include="Forms\CalendarForm.resx">
       <DependentUpon>CalendarForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CheckedIconPictureBoxGroupUC.resx">
+    <EmbeddedResource Include="CheckedIconList\CheckedIconPictureBoxGroupUC.resx">
       <DependentUpon>CheckedIconPictureBoxGroupUC.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\CheckedIconPictureBoxUC.resx">
+    <EmbeddedResource Include="CheckedIconList\CheckedIconPictureBoxUC.resx">
       <DependentUpon>CheckedIconPictureBoxUC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InfoForm.resx">

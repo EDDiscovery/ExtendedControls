@@ -568,7 +568,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            System.Diagnostics.Debug.WriteLine($"VScrollBarCustom Theme {Name}");
+            //System.Diagnostics.Debug.WriteLine($"ExtScrollBar Theme {Name}");
             if (t.IsButtonSystemStyle)
             {
                 FlatStyle = FlatStyle.System;

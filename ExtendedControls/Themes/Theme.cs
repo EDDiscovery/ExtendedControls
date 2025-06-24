@@ -785,7 +785,7 @@ namespace ExtendedControls
                 form.Opacity = Opacity / 100;
                 form.BackColor = Form;
                 form.Font = fnt;
-                System.Diagnostics.Debug.WriteLine($"Theme form {form.BackColor} scaling {form.CurrentAutoScaleDimensions} {form.AutoScaleDimensions} {form.CurrentAutoScaleFactor()}");
+                //System.Diagnostics.Debug.WriteLine($"Theme form {form.BackColor} scaling {form.CurrentAutoScaleDimensions} {form.AutoScaleDimensions} {form.CurrentAutoScaleFactor()}");
             }
             else if ( ctrl is TabPage)      // TabPage is a panel, get to it first
             {
