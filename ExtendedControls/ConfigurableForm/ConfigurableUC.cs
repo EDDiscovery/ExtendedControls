@@ -75,15 +75,18 @@ namespace ExtendedControls
         {
             foreach (var ent in Entries)
             {
-                ent.Location = ent.Control.Location;
-                ent.Size = ent.Control.Size;
-                if (ent.MinimumSize == Size.Empty)
-                    ent.MinimumSize = ent.Size;
-                if (ent.BackColor.HasValue)
-                    ent.Control.BackColor = ent.BackColor.Value;
-                if (ent.Control is ExtPanelVertScrollWithBar)
+                if (ent.Control != null)     // in case not made due to description error
                 {
-                    ((ExtPanelVertScrollWithBar)ent.Control).Recalcuate();      // for this panel, we need to recalc scroll area manually
+                    ent.Location = ent.Control.Location;
+                    ent.Size = ent.Control.Size;
+                    if (ent.MinimumSize == Size.Empty)
+                        ent.MinimumSize = ent.Size;
+                    if (ent.BackColor.HasValue)
+                        ent.Control.BackColor = ent.BackColor.Value;
+                    if (ent.Control is ExtPanelVertScrollWithBar)
+                    {
+                        ((ExtPanelVertScrollWithBar)ent.Control).Recalcuate();      // for this panel, we need to recalc scroll area manually
+                    }
                 }
 
                 //System.Diagnostics.Debug.WriteLine($"ConfigUC theme {ent.Name} {ent.Control.Bounds}");

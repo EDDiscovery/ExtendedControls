@@ -25,12 +25,13 @@ namespace ExtendedControls
     {
         public Entry Find(Predicate<Entry> pred)
         {
-            return Entries.Find(pred);
+            var f = Entries.Find(pred);
+            return f != null && f.Control != null ? f : null;
         }
 
         public Entry Find(string controlname)
         {
-            return Entries.Find(x => x.Name.Equals(controlname));
+            return Entries.Find(x => x.Name.Equals(controlname) && x.Control != null);
         }
 
         public List<Entry>.Enumerator GetEnumerator()
@@ -44,7 +45,7 @@ namespace ExtendedControls
         public T GetControl<T>(string controlname) where T : Control      // return value of dialog control
         {
             Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
+            if (t?.Control != null)
                 return (T)t.Control;
             else
                 return null;
@@ -54,7 +55,7 @@ namespace ExtendedControls
         public Control GetControl(string controlname)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
+            if (t?.Control != null)
                 return t.Control;
             else
                 return null;
@@ -66,7 +67,9 @@ namespace ExtendedControls
             // same order as set
 
             Control c = t.Control;
-            if (c is Label || c.GetType() == typeof(ExtButton))
+            if (c == null)
+                return null;
+            else if (c is Label || c.GetType() == typeof(ExtButton))
                 return c.Text;
             else if (c is ExtTextBox)
             {
@@ -127,7 +130,9 @@ namespace ExtendedControls
             // order the same as set
 
             Control c = t.Control;
-            if (c is Label || c.GetType() == typeof(ExtButton))
+            if (c == null)
+                return null;
+            else if (c is Label || c.GetType() == typeof(ExtButton))
                 return c.Text;
             else if (c is ExtTextBox)
             {
@@ -184,7 +189,7 @@ namespace ExtendedControls
         // Return Get() by controlname, 
         public bool Get(string controlname, out string value)
         {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             value = t != null ? Get(t) : null;
             return t != null;
         }
@@ -192,14 +197,14 @@ namespace ExtendedControls
         // Return GetValue() by controlname, null if can't get
         public T GetValue<T>(string controlname)
         {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
             return t != null ? (T)GetValue(t) : default(T);
         }
 
         // Return Get() from controls starting with this name
         public string[] GetByStartingName(string startingcontrolname)
         {
-            var list = Entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            var list = Entries.Where(x => x.Name.StartsWith(startingcontrolname) && x.Control!=null).Select(x => x).ToArray();
             string[] res = new string[list.Length];
             for (int i = 0; i < list.Length; i++)
                 res[i] = Get(list[i]);
@@ -209,7 +214,7 @@ namespace ExtendedControls
         // Return GetValue() from controls starting with this name
         public T[] GetByStartingName<T>(string startingcontrolname)
         {
-            var list = Entries.Where(x => x.Name.StartsWith(startingcontrolname)).Select(x => x).ToArray();
+            var list = Entries.Where(x => x.Name.StartsWith(startingcontrolname)&& x.Control!=null).Select(x => x).ToArray();
             T[] res = new T[list.Length];
             for (int i = 0; i < list.Length; i++)
                 res[i] = (T)GetValue(list[i]);
@@ -219,7 +224,7 @@ namespace ExtendedControls
         // from checkbox
         public bool? GetBool(string controlname)
         {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtCheckBox);
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtCheckBox);
             if (t != null)
             {
                 var cn = t.Control as ExtCheckBox;
@@ -230,7 +235,7 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public double? GetDouble(string controlname)
         {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxDouble);
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxDouble);
             if (t != null)
             {
                 var cn = t.Control as NumberBoxDouble;
@@ -243,7 +248,7 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public long? GetLong(string controlname)
         {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxLong);
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxLong);
             if (t != null)
             {
                 var cn = t.Control as NumberBoxLong;
@@ -255,7 +260,7 @@ namespace ExtendedControls
         // from numberbox, Null if not valid
         public int? GetInt(string controlname)
         {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxInt);
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is NumberBoxInt);
             if (t != null)
             {
                 var cn = t.Control as NumberBoxInt;
@@ -267,7 +272,7 @@ namespace ExtendedControls
         // from DateTimePicker, Null if not valid
         public DateTime? GetDateTime(string controlname)
         {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtDateTimePicker);
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtDateTimePicker);
             if (t != null)
             {
                 ExtDateTimePicker c = t.Control as ExtDateTimePicker;
@@ -340,7 +345,7 @@ namespace ExtendedControls
 
         public object GetDGVColumnSettings(string controlname)
         {
-            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtPanelDataGridViewScroll);
             if (t != null)
             {
                 var cn = t.Control as ExtPanelDataGridViewScroll;

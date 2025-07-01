@@ -348,5 +348,10 @@ namespace TestExtendedControls
             extTabControl1.PaintTransparentColor = Color.Transparent;
 
         }
+
+        private void extButton9_Click(object sender, EventArgs e)
+        {
+            extButton10.Visible = !extButton10.Visible;     // flick a flow button on/off
+        }
     }
 }

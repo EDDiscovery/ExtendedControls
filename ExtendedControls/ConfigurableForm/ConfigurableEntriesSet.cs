@@ -682,7 +682,7 @@ namespace ExtendedControls
         public bool Suspend(string controlname)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
+            if (t?.Control != null)
             {
                 if (t.Control is ExtPanelDataGridViewScroll)
                     (t.Control as ExtPanelDataGridViewScroll).Suspend();
@@ -695,7 +695,7 @@ namespace ExtendedControls
         public bool Resume(string controlname)
         {
             ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
-            if (t != null)
+            if (t?.Control != null)
             {
                 if (t.Control is ExtPanelDataGridViewScroll)
                     (t.Control as ExtPanelDataGridViewScroll).Resume();

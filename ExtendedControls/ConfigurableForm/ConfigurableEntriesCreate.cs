@@ -80,8 +80,7 @@ namespace ExtendedControls
                     else
                     {
                         System.Diagnostics.Trace.WriteLine($"ConfigurableEntries cannot find {ent.Name} in {ent.InPanel}, ensure panel is named correctly and already made before this entry");
-                        System.Diagnostics.Debug.Assert(false, $"ConfigurableEntries cannot find {ent.Name} in {ent.InPanel}, ensure panel is named correctly and already made before this entry");
-                        continue;
+                        contentpanel.Controls.Add(c);       // add to content panel so we don't crash the rest of the system
                     }
                 }
                 else

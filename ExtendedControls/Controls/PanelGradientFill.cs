@@ -78,19 +78,22 @@ namespace ExtendedControls
                     int xr = ClientRectangle.Width - 1;
                     foreach (Control ctrl in Controls)
                     {
-                        if ((ctrl.Anchor & AnchorStyles.Left) != 0)
+                        if (ctrl.Visible)
                         {
-                            xl += ctrl.Margin.Left;
-                            //System.Diagnostics.Debug.WriteLine($"GradientFill flow {ctrl.Name} left to {xl}");
-                            ctrl.Location = new Point(xl, ctrl.Top);
-                            xl += ctrl.Width + ctrl.Margin.Right;
-                        }
-                        else if ((ctrl.Anchor & AnchorStyles.Right) != 0)
-                        {
-                            xr -= ctrl.Margin.Right + ctrl.Width;
-                            //System.Diagnostics.Debug.WriteLine($"GradientFill flow {ctrl.Name} right to {xr}");
-                            ctrl.Location = new Point(xr, ctrl.Top);
-                            xr -= ctrl.Margin.Left;
+                            if ((ctrl.Anchor & AnchorStyles.Left) != 0)
+                            {
+                                xl += ctrl.Margin.Left;
+                                //System.Diagnostics.Debug.WriteLine($"GradientFill flow {ctrl.Name} left to {xl}");
+                                ctrl.Location = new Point(xl, ctrl.Top);
+                                xl += ctrl.Width + ctrl.Margin.Right;
+                            }
+                            else if ((ctrl.Anchor & AnchorStyles.Right) != 0)
+                            {
+                                xr -= ctrl.Margin.Right + ctrl.Width;
+                                //System.Diagnostics.Debug.WriteLine($"GradientFill flow {ctrl.Name} right to {xr}");
+                                ctrl.Location = new Point(xr, ctrl.Top);
+                                xr -= ctrl.Margin.Left;
+                            }
                         }
                     }
                 }
