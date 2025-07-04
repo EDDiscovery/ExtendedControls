@@ -151,6 +151,15 @@ namespace ExtendedControls
                 gr.DrawImage(img, area);
         }
 
+        // set the size of the bitmap to the area specified and draw
+        public void SetDrawImage(Image img, Rectangle area, int bitmap = 0)
+        {
+            ImageSize = area.Size;
+            CheckBitmap();
+            using (Graphics gr = Graphics.FromImage(bitmaps[bitmap]))
+                gr.DrawImage(img, area);
+        }
+
         // remember to use Using to release the graphics
         public Graphics GetGraphics(int bitmap = 0)     
         {

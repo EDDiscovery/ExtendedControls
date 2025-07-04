@@ -12,7 +12,6 @@
  * governing permissions and limitations under the License.
  */
 
-using QuickJSON;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

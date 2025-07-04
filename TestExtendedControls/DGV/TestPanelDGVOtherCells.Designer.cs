@@ -1,4 +1,6 @@
-﻿namespace TestExtendedControls
+﻿using BaseUtils;
+
+namespace TestExtendedControls
 {
     partial class TestPanelDGVOtherCells
     {
@@ -31,12 +33,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.buttonClearRows = new ExtendedControls.ExtButton();
             this.panel = new ExtendedControls.ExtPanelDataGridViewScroll();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
-            this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
+            this.dataGridView = new DataGridViewColumnControl();
             this.Column1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.extScrollBar1 = new ExtendedControls.ExtScrollBar();
             this.panel1.SuspendLayout();
             this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
@@ -53,7 +55,12 @@
             // 
             // buttonClearRows
             // 
+            this.buttonClearRows.BackColor2 = System.Drawing.Color.Red;
+            this.buttonClearRows.ButtonDisabledScaling = 0.5F;
+            this.buttonClearRows.GradientDirection = 90F;
             this.buttonClearRows.Location = new System.Drawing.Point(3, 17);
+            this.buttonClearRows.MouseOverScaling = 1.3F;
+            this.buttonClearRows.MouseSelectedScaling = 1.3F;
             this.buttonClearRows.Name = "buttonClearRows";
             this.buttonClearRows.Size = new System.Drawing.Size(75, 23);
             this.buttonClearRows.TabIndex = 2;
@@ -69,6 +76,7 @@
             this.panel.InternalMargin = new System.Windows.Forms.Padding(0);
             this.panel.Location = new System.Drawing.Point(0, 55);
             this.panel.Name = "panel";
+            this.panel.ScrollBarWidth = 24;
             this.panel.Size = new System.Drawing.Size(1224, 565);
             this.panel.TabIndex = 1;
             this.panel.VerticalScrollBarDockRight = true;
@@ -85,41 +93,17 @@
             this.dataGridView.Location = new System.Drawing.Point(0, 0);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.dataGridView.Size = new System.Drawing.Size(1202, 565);
+            this.dataGridView.Size = new System.Drawing.Size(1200, 565);
             this.dataGridView.TabIndex = 1;
             this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellEnter);
+            this.dataGridView.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellLeave);
             this.dataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
+            this.dataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellMouseEnter);
+            this.dataGridView.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellMouseLeave);
             this.dataGridView.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView1_ColumnWidthChanged);
             this.dataGridView.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.dataGridView1_SortCompare);
             this.dataGridView.Resize += new System.EventHandler(this.dataGridView1_Resize);
-            // 
-            // extScrollBar1
-            // 
-            this.extScrollBar1.AlwaysHideScrollBar = false;
-            this.extScrollBar1.ArrowBorderColor = System.Drawing.Color.LightBlue;
-            this.extScrollBar1.ArrowButtonColor = System.Drawing.Color.LightGray;
-            this.extScrollBar1.ArrowDownDrawAngle = 270F;
-            this.extScrollBar1.ArrowUpDrawAngle = 90F;
-            this.extScrollBar1.BorderColor = System.Drawing.Color.White;
-            this.extScrollBar1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extScrollBar1.HideScrollBar = false;
-            this.extScrollBar1.LargeChange = 1;
-            this.extScrollBar1.Location = new System.Drawing.Point(1202, 0);
-            this.extScrollBar1.Maximum = 0;
-            this.extScrollBar1.Minimum = 0;
-            this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
-            this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
-            this.extScrollBar1.Name = "extScrollBar1";
-            this.extScrollBar1.Size = new System.Drawing.Size(22, 565);
-            this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
-            this.extScrollBar1.SmallChange = 1;
-            this.extScrollBar1.TabIndex = 0;
-            this.extScrollBar1.Text = "extScrollBar1";
-            this.extScrollBar1.ThumbBorderColor = System.Drawing.Color.Yellow;
-            this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
-            this.extScrollBar1.ThumbDrawAngle = 0F;
-            this.extScrollBar1.Value = 0;
-            this.extScrollBar1.ValueLimited = 0;
             // 
             // Column1
             // 
@@ -150,7 +134,42 @@
             this.Column4.HeaderText = "TextCol";
             this.Column4.Name = "Column4";
             // 
-            // TestPanelDGV2
+            // extScrollBar1
+            // 
+            this.extScrollBar1.AlwaysHideScrollBar = false;
+            this.extScrollBar1.ArrowBorderColor = System.Drawing.Color.LightBlue;
+            this.extScrollBar1.ArrowButtonColor = System.Drawing.Color.LightGray;
+            this.extScrollBar1.ArrowButtonColor2 = System.Drawing.Color.LightGray;
+            this.extScrollBar1.ArrowDownDrawAngle = 270F;
+            this.extScrollBar1.ArrowUpDrawAngle = 90F;
+            this.extScrollBar1.BorderColor = System.Drawing.Color.White;
+            this.extScrollBar1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extScrollBar1.HideScrollBar = false;
+            this.extScrollBar1.LargeChange = 1;
+            this.extScrollBar1.Location = new System.Drawing.Point(1200, 0);
+            this.extScrollBar1.Maximum = 0;
+            this.extScrollBar1.Minimum = 0;
+            this.extScrollBar1.MouseOverButtonColor = System.Drawing.Color.Green;
+            this.extScrollBar1.MouseOverButtonColor2 = System.Drawing.Color.Green;
+            this.extScrollBar1.MousePressedButtonColor = System.Drawing.Color.Red;
+            this.extScrollBar1.MousePressedButtonColor2 = System.Drawing.Color.Red;
+            this.extScrollBar1.Name = "extScrollBar1";
+            this.extScrollBar1.Size = new System.Drawing.Size(24, 565);
+            this.extScrollBar1.SkinnyStyle = false;
+            this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
+            this.extScrollBar1.SliderColor2 = System.Drawing.Color.DarkGray;
+            this.extScrollBar1.SliderDrawAngle = 90F;
+            this.extScrollBar1.SmallChange = 1;
+            this.extScrollBar1.TabIndex = 0;
+            this.extScrollBar1.Text = "extScrollBar1";
+            this.extScrollBar1.ThumbBorderColor = System.Drawing.Color.Yellow;
+            this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
+            this.extScrollBar1.ThumbButtonColor2 = System.Drawing.Color.DarkBlue;
+            this.extScrollBar1.ThumbDrawAngle = 0F;
+            this.extScrollBar1.Value = 0;
+            this.extScrollBar1.ValueLimited = 0;
+            // 
+            // TestPanelDGVOtherCells
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -158,7 +177,7 @@
             this.ClientSize = new System.Drawing.Size(1224, 640);
             this.Controls.Add(this.panel);
             this.Controls.Add(this.panel1);
-            this.Name = "TestPanelDGV2";
+            this.Name = "TestPanelDGVOtherCells";
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
             this.panel.ResumeLayout(false);
@@ -170,7 +189,7 @@
         #endregion
         private ExtendedControls.ExtPanelDataGridViewScroll panel;
         private ExtendedControls.ExtScrollBar extScrollBar1;
-        private System.Windows.Forms.DataGridView dataGridView;
+        private DataGridViewColumnControl dataGridView;
         private System.Windows.Forms.Panel panel1;
         private ExtendedControls.ExtButton buttonClearRows;
         private System.Windows.Forms.DataGridViewImageColumn Column1;

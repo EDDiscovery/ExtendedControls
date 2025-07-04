@@ -72,13 +72,19 @@
     <Compile Include="Controls\FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelGradientFill.cs">
+    <Compile Include="Forms\PopUpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PopUpForm.Designer.cs">
+      <DependentUpon>PopUpForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\PanelGradientFill.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelResizer.cs">
+    <Compile Include="Panels\PanelResizer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelVertScroll.cs">
+    <Compile Include="Panels\PanelVertScroll.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PictureBoxElement.cs">
@@ -90,7 +96,7 @@
     <Compile Include="Controls\Chart.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelImageControlScroll.cs">
+    <Compile Include="Panels\PanelImageControlScroll.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ImageControl.cs">
@@ -99,16 +105,16 @@
     <Compile Include="Controls\SplitterResizer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelAutoHeightWidth.cs">
+    <Compile Include="Panels\PanelAutoHeightWidth.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PictureBoxScroll.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelDataGridViewScrollWithDGV.cs">
+    <Compile Include="Panels\PanelDataGridViewScrollWithDGV.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelDataGridViewScrollOutlining.cs">
+    <Compile Include="Panels\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\TextBoxAutoComplete.cs">
@@ -183,10 +189,10 @@
     <Compile Include="Forms\DraggableForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\PanelDropDown.cs">
+    <Compile Include="Panels\PanelDropDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelDropDown.Designer.cs">
+    <Compile Include="Panels\PanelDropDown.Designer.cs">
       <DependentUpon>PanelDropDown.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TranslationIDs.cs" />
@@ -205,7 +211,7 @@
     <Compile Include="Forms\ListBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\PanelDataGridViewScroll.cs">
+    <Compile Include="Panels\PanelDataGridViewScroll.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\ButtonDrawn.cs">
@@ -235,7 +241,7 @@
     <Compile Include="Controls\NumericUpDown.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelScroll.cs">
+    <Compile Include="Panels\PanelScroll.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\PictureBox.cs">
@@ -254,7 +260,7 @@
     <Compile Include="Controls\RichTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PanelRollUp.cs">
+    <Compile Include="Panels\PanelRollUp.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\StatusStrip.cs">
@@ -289,6 +295,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ImageViewer.resx">
       <DependentUpon>ImageViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PopUpForm.resx">
+      <DependentUpon>PopUpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CalendarForm.resx">
       <DependentUpon>CalendarForm.cs</DependentUpon>

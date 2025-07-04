@@ -27,6 +27,8 @@ namespace TestExtendedControls
             theme.SetThemeByName("Elite Verdana");
             Theme.Current.WindowsFrame = true;
 
+            dataGridView.EnableCellHoverOverCallback();
+            dataGridView.HoverOverCell += (a, b, c) => HoverOverCell(a, b, c);
 
             dataGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
             dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
@@ -58,7 +60,7 @@ namespace TestExtendedControls
                 else
                 {
                     DataGridViewProgressCell p1 = new DataGridViewProgressCell();
-                    p1.Value = i/2;
+                    p1.Value = i / 2;
                     p1.BarForeColor = Color.Orange;
                     p1.Style.ForeColor = Color.Red;
                     p1.BarColorScaling = 0.8f;
@@ -67,8 +69,8 @@ namespace TestExtendedControls
                     rw.Cells.Add(p1);
 
                     DataGridViewProgressCell p2 = new DataGridViewProgressCell();
-                    p2.Value = 100 - i/2;
-                    p2.BarHeightPercentage = 100-i/2;
+                    p2.Value = 100 - i / 2;
+                    p2.BarHeightPercentage = 100 - i / 2;
                     rw.Cells.Add(p2);
 
                     DataGridViewTextImageCell c3 = new DataGridViewTextImageCell();
@@ -80,7 +82,7 @@ namespace TestExtendedControls
                     DataGridViewPictureBoxCell p3 = new DataGridViewPictureBoxCell();
                     p3.PictureBox.AddTextAutoSize(new Point(0, 0), new Size(1000, 1000), "Text1", Font, Color.Red, Color.Blue, 1.0f);
                     p3.PictureBox.AddTextAutoSize(new Point(0, 70), new Size(1000, 1000), "Text2", Font, Color.Red, Color.Blue, 1.0f);
-                    p3.PictureBox.AddImage(new Rectangle(0, 20, 32, 32), Properties.Resources.Calendar);
+                    p3.PictureBox.AddImage(new Rectangle(0, 20, 96, 96), Properties.Resources.CaptainsLog);
                     p3.PictureBox.Render();
                     rw.Cells.Add(p3);
 
@@ -105,7 +107,7 @@ namespace TestExtendedControls
         int tickc = 0;
         private void Tme_Tick(object sender, EventArgs e)
         {
-            DataGridViewPictureBoxCell p3 = dataGridView.Rows[0].Cells[3] as DataGridViewPictureBoxCell ;
+            DataGridViewPictureBoxCell p3 = dataGridView.Rows[0].Cells[3] as DataGridViewPictureBoxCell;
             p3.PictureBox.ClearImageList();
             p3.PictureBox.AddTextAutoSize(new Point(0, 0), new Size(1000, 1000), "Count" + tickc, Font, Color.Red, Color.Blue, 1.0f);
             p3.PictureBox.AddTextAutoSize(new Point(0, 70), new Size(1000, 1000), "Text2", Font, Color.Red, Color.Blue, 1.0f);
@@ -156,6 +158,51 @@ namespace TestExtendedControls
         }
 
         private void buttonClearRows_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView_CellEnter(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        void HoverOverCell(DataGridViewCell cell, Rectangle area, Point screenpos)
+        {
+            ulong curtime = (ulong)Environment.TickCount;
+            if (cell.ColumnIndex == 3 && (lastpopoutcelltime - curtime > 500 || lastpopoutcell != cell))
+            {
+                if (popupform != null)
+                    popupform.Close();
+
+                popupform = new PopUpForm(screenpos,new Size(500,500),2000);
+
+                var imgctrl = new ImageControl();
+                imgctrl.SetDrawImage(Properties.Resources.CaptainsLog, new Rectangle(0, 0, 300,300));
+                imgctrl.Bounds = new Rectangle(50,50,300,300);
+                popupform.Controls.Add(imgctrl);
+
+                popupform.Show(this);
+                lastpopoutcell = cell;
+            }
+        }
+
+
+        PopUpForm popupform = null;
+        DataGridViewCell lastpopoutcell = null;
+        ulong lastpopoutcelltime = 0;
+
+        private void dataGridView_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
 
         }

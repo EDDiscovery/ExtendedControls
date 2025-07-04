@@ -377,7 +377,7 @@ namespace ExtendedControls
         DataGridView dgv;
         ExtScrollBar vsc;
         ExtPanelDataGridViewScrollOutlining outlining;
-        private int scrollbarwidth = 48;
+        private int scrollbarwidth = 24;
 
         #endregion
     }

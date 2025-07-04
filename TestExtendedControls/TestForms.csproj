@@ -95,10 +95,10 @@
     <Compile Include="ConfigurableForms\TestConfigurableUC.Designer.cs">
       <DependentUpon>TestConfigurableUC.cs</DependentUpon>
     </Compile>
-    <Compile Include="Panels and Splitters\TestPanelDGVOtherCells.cs">
+    <Compile Include="DGV\TestPanelDGVOtherCells.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Panels and Splitters\TestPanelDGVOtherCells.Designer.cs">
+    <Compile Include="DGV\TestPanelDGVOtherCells.Designer.cs">
       <DependentUpon>TestPanelDGVOtherCells.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TestPipsAdvancedLabel.cs">
@@ -299,10 +299,10 @@
     <Compile Include="Misc\TestMisc.Designer.cs">
       <DependentUpon>TestMisc.cs</DependentUpon>
     </Compile>
-    <Compile Include="Panels and Splitters\TestPanelDGV.cs">
+    <Compile Include="DGV\TestPanelDGV.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Panels and Splitters\TestPanelDGV.Designer.cs">
+    <Compile Include="DGV\TestPanelDGV.Designer.cs">
       <DependentUpon>TestPanelDGV.cs</DependentUpon>
     </Compile>
     <Compile Include="Panels and Splitters\TestPanelScroll.cs">
@@ -358,7 +358,7 @@
     <EmbeddedResource Include="ConfigurableForms\TestConfigurableUC.resx">
       <DependentUpon>TestConfigurableUC.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panels and Splitters\TestPanelDGVOtherCells.resx">
+    <EmbeddedResource Include="DGV\TestPanelDGVOtherCells.resx">
       <DependentUpon>TestPanelDGVOtherCells.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TestPipsAdvancedLabel.resx">
@@ -457,7 +457,7 @@
     <EmbeddedResource Include="Misc\TestMisc.resx">
       <DependentUpon>TestMisc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Panels and Splitters\TestPanelDGV.resx">
+    <EmbeddedResource Include="DGV\TestPanelDGV.resx">
       <DependentUpon>TestPanelDGV.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels and Splitters\TestPanelScroll.resx">
