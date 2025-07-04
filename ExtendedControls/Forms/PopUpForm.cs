@@ -26,18 +26,25 @@ namespace ExtendedControls
 
         public int CheckInterval { get; set; } = 500;
 
+        public Panel ContentPanel { get; }
+
         public PopUpForm()
         {
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.None;
         }
-        public PopUpForm(Point location, Size size, int checkinterval = 500)
+        public PopUpForm(Point location, Size clientsize, int checkinterval = 500)
         {
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.None;
-            Size = size;
+            ShowInTaskbar = false;
+            ClientSize = clientsize;
             SetLocation = location;
             CheckInterval = checkinterval;
+            ContentPanel = new Panel();
+            ContentPanel.BorderStyle = BorderStyle.FixedSingle;
+            ContentPanel.Dock = DockStyle.Fill;
+            Controls.Add(ContentPanel);
         }
 
         protected override void OnActivated(EventArgs e)

@@ -190,7 +190,7 @@ namespace TestExtendedControls
                 var imgctrl = new ImageControl();
                 imgctrl.SetDrawImage(Properties.Resources.CaptainsLog, new Rectangle(0, 0, 300,300));
                 imgctrl.Bounds = new Rectangle(50,50,300,300);
-                popupform.Controls.Add(imgctrl);
+                popupform.ContentPanel.Controls.Add(imgctrl);
 
                 popupform.Show(this);
                 lastpopoutcell = cell;
