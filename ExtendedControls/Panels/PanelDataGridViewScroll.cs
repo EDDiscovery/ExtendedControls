@@ -20,12 +20,13 @@ using System.Windows.Forms;
 namespace ExtendedControls
 {
     // Must have a DGV and a VScroll added as children by the framework
-    public class ExtPanelDataGridViewScroll : Panel, IThemeable
+    public class ExtPanelDataGridViewScroll : Panel, IThemeable, ITranslatableControl
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public Padding InternalMargin { get; set; }            // allows spacing around controls
         public DataGridView DGV { get { return dgv; } }         // return its dgv, after added
         public int ScrollBarWidth { get { return scrollbarwidth; } set { scrollbarwidth = value; Invalidate(); } }
+        public bool TranslateDoChildren => true;
 
         public void UpdateScroll()      // call if hide/unhide cells - no call back for this
         {

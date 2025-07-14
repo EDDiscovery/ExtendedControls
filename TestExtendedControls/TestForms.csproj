@@ -337,6 +337,12 @@
     <Compile Include="Tabs\TestTabStrip.Designer.cs">
       <DependentUpon>TestTabStrip.cs</DependentUpon>
     </Compile>
+    <Compile Include="Translator\TestTranslation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Translator\TestTranslation.Designer.cs">
+      <DependentUpon>TestTranslation.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Controls\TestTreeView.resx">
       <DependentUpon>TestTreeView.cs</DependentUpon>
     </EmbeddedResource>
@@ -487,6 +493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Tabs\TestTabStrip.resx">
       <DependentUpon>TestTabStrip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translator\TestTranslation.resx">
+      <DependentUpon>TestTranslation.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

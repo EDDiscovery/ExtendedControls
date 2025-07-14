@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtTabControl : TabControl, IThemeable
+    public class ExtTabControl : TabControl, IThemeable, ITranslatableControl
     {
         #region Properties
 
@@ -87,6 +87,9 @@ namespace ExtendedControls
         public bool AllowDragReorder { get; set; } = false;
         // Tab clicked.. reports last tab clicked
         public int LastTabClicked { get; private set; } = -1;
+
+        public bool TranslateDoChildren => true;
+
         public void ClearLastTab() { LastTabClicked = -1; }
 
         #endregion

@@ -23,11 +23,12 @@ namespace ExtendedControls
     // on a control add/remove, call BeginPosition/FinishedPosition
     // on a resize, you need to call Recalculate again manually
 
-    public partial class ExtPanelVertScroll : Panel
+    public partial class ExtPanelVertScroll : Panel, ITranslatableControl
     {
         public Action<int, int> ScrollSet { get; set; }      // called when scroll is set each time
         public int Value { get { return currentscroll; } set { ScrollTo(value); } } // current scroll
         public int MaxScroll { get { return maxscroll; } }  // max scroll, controlled by Recalcuate().
+        public bool TranslateDoChildren => true;
 
         public ExtPanelVertScroll()
         {

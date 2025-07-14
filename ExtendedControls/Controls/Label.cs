@@ -19,7 +19,7 @@ using System.Windows.Forms;
 namespace ExtendedControls
 {
     // use this instead of Label for future 
-    public class ExtLabel : Label, IThemeable
+    public class ExtLabel : Label, IThemeable, ITranslatableControl
     {
         public bool Theme(Theme t, Font fnt)
         {
@@ -27,6 +27,8 @@ namespace ExtendedControls
             BackColor = Color.Transparent; // seems to need it
             return false;
         }
+
+        public bool TranslateDoChildren => false;
     }
 
     // WARNING ONLY USE IN SPECIAL CIRCUMSTANCES.. NORMALLY YOU WILL WANT THE NORMAL LABEL

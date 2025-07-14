@@ -25,7 +25,7 @@ namespace ExtendedControls
     // Written because I could not get the manual autoscroll to work when controls dynamically added
     // Older version of ExtPanelVertScroll
 
-    public partial class ExtPanelScroll : Panel, IThemeable
+    public partial class ExtPanelScroll : Panel, IThemeable, ITranslatableControl
     {
         public bool VerticalScrollBarDockRight { get; set; } = true;        // true for dock right
         public bool FlowControlsLeftToRight { get; set; } = false;        // if true, position controls left to right overflow
@@ -35,7 +35,9 @@ namespace ExtendedControls
 
         public int ScrollOffset { get { return -scrollpos; } }
 
-        
+        public bool TranslateDoChildren => true;
+
+
         // use these if your doing mass movement of controls on panel - performs a layout suspend and a monitoring suspend
         public void SuspendControlMonitoring()
         {

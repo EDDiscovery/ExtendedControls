@@ -27,7 +27,7 @@ namespace ExtendedControls
     // -> ExtPanelResizer
   
 
-    public class ExtPanelGradientFill : Panel, IThemeable
+    public class ExtPanelGradientFill : Panel, IThemeable, ITranslatableControl
     {
         public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
 
@@ -50,6 +50,7 @@ namespace ExtendedControls
 
         public Action<ExtPanelGradientFill> LayoutComplete;         // callback useful to know when layout is complete - there is no winform one doing this, layout callback is called before layout.
 
+        public bool TranslateDoChildren => true;
         public ExtPanelGradientFill()
         {
         }

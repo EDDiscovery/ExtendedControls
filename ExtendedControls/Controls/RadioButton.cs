@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtRadioButton : RadioButton, IThemeable
+    public class ExtRadioButton : RadioButton, IThemeable, ITranslatableControl
     {
         public Color RadioButtonColor { get; set; } = Color.Gray;       // border of
         public Color RadioButtonInnerColor { get; set; } = Color.White; // inner border of
@@ -29,6 +29,8 @@ namespace ExtendedControls
         public float DisabledScaling { get; set; } = 0.5F;              // when disabled
         public Color MouseOverColor { get; set; } = Color.CornflowerBlue;   // mouse over colour
         public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
+
+        public bool TranslateDoChildren => false;
 
         public ExtRadioButton() : base()
         {

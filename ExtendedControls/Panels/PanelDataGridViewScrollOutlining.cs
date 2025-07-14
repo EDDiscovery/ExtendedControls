@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtPanelDataGridViewScrollOutlining : Panel      
+    public class ExtPanelDataGridViewScrollOutlining : Panel, ITranslatableControl    
     {
         public class Outline
         {
@@ -34,6 +34,7 @@ namespace ExtendedControls
         }
 
         public int KeepLastEntriesVisibleOnRollUp { get; set; } = 1;
+        public bool TranslateDoChildren => true;
 
         public IEnumerable OutlineSet() { return (from x in Outlines select x.r); }
 

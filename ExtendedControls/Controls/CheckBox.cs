@@ -20,7 +20,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtCheckBox : CheckBox, IThemeable
+    public class ExtCheckBox : CheckBox, IThemeable, ITranslatableControl
     {
         // Flatstyle Popout/Flat mode, not Apprearance Button only
         public Color CheckBoxColor { get; set; } = Color.Gray;          // Normal only border area colour
@@ -40,6 +40,8 @@ namespace ExtendedControls
 
         public ImageAttributes DrawnImageAttributesEnabled = null;         // Image override (colour etc) for images using Image
         public ImageAttributes DrawnImageAttributesDisabled = null;         // Image override (colour etc) for images using Image
+
+        public bool TranslateDoChildren => true;
 
         public void SetDrawnBitmapRemapTable(ColorMap[] remap, float[][] colormatrix = null)        // call to set up disable scaling
         {

@@ -18,7 +18,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtGroupBox : GroupBox, IThemeable
+    public class ExtGroupBox : GroupBox, IThemeable, ITranslatableControl
     {
         // ForeColor = text, BackColor = for system mode
         public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
@@ -34,6 +34,8 @@ namespace ExtendedControls
 
         public int TextStartPosition { get; set; } = -1;                // -1 left, +1 right, 0 centre, else pixel start pos
         public int TextPadding { get; set; } = 0;                       // pixels at start/end of text
+
+        public bool TranslateDoChildren => true;
 
         public ExtGroupBox() : base()
         {

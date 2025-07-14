@@ -25,7 +25,7 @@ namespace ExtendedControls
     /// <summary>
     /// Represents a customizable Windows <see cref="Button"/> <see cref="Control"/>.
     /// </summary>
-    public class ExtButton : Button, IThemeable
+    public class ExtButton : Button, IThemeable, ITranslatableControl
     {
         public ExtButton() : base() { }
 
@@ -41,6 +41,8 @@ namespace ExtendedControls
         public float MouseSelectedScaling { get; set; } = 1.3F;
         public float ButtonDisabledScaling { get { return buttonDisabledScaling; } set { buttonDisabledScaling = value; Invalidate(); } }
         public float GradientDirection { get { return gradientdirection; } set { gradientdirection = value; Invalidate(); } }
+
+        public bool TranslateDoChildren => false;
 
         /// <summary>
         /// Specify a <see cref="Color"/> <paramref name="remap"/> table and corresponding <see cref="ColorMatrix"/>.
