@@ -52,6 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurableForms\TestConfigurableForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurableForms\TestConfigurableForms.Designer.cs">
+      <DependentUpon>TestConfigurableForms.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TestTreeView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -337,6 +343,9 @@
     <Compile Include="Tabs\TestTabStrip.Designer.cs">
       <DependentUpon>TestTabStrip.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ConfigurableForms\TestConfigurableForms.resx">
+      <DependentUpon>TestConfigurableForms.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TestTreeView.resx">
       <DependentUpon>TestTreeView.cs</DependentUpon>
     </EmbeddedResource>
