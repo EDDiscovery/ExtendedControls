@@ -218,7 +218,7 @@ namespace ExtendedControls
                     }
                 }
 
-              //  System.Diagnostics.Debug.WriteLine($"But Paint {Name} {ClientRectangle}, ba {buttonarea} back {colBack}-{colBack2} border {colBorder}");
+                //System.Diagnostics.Debug.WriteLine($"But Paint {Name} {ClientRectangle}, ba {buttonarea} back {colBack}-{colBack2} border {colBorder}");
 
                 if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
                 {
@@ -248,13 +248,13 @@ namespace ExtendedControls
 
                     if ((Enabled && drawnImageAttributesEnabled != null) || (!Enabled && drawnImageAttributesDisabled != null))
                     {
+                        //using (var b = new SolidBrush(Color.FromArgb(128, 64, 0, 0))) pe.Graphics.FillRectangle(b, destrect);       // linear grad brushes do not respect smoothing mode, btw
                         pe.Graphics.DrawImage(Image, destrect,
                                     0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel, (Enabled) ? drawnImageAttributesEnabled : drawnImageAttributesDisabled);
                     }
                     else
                     {
-                        pe.Graphics.DrawImage(Image, destrect,
-                                    0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel);
+                        pe.Graphics.DrawImage(Image, destrect,  0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel);
                     }
                 }
 
@@ -314,7 +314,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            System.Diagnostics.Debug.WriteLine($"But Theme {Name}");
+            //System.Diagnostics.Debug.WriteLine($"But Theme {Name}");
             ExtButton ctrl = this;
             ctrl.ForeColor = t.ButtonTextColor;
 
