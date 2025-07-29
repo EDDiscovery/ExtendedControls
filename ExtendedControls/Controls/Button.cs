@@ -183,42 +183,44 @@ namespace ExtendedControls
             }
             else
             {
-                //System.Diagnostics.Debug.WriteLine($"But Paint {Name} {ClientRectangle} in {Parent.ClientRectangle}");
-
                 Rectangle border = ClientRectangle;
                 border.Width--; border.Height--;
 
                 Rectangle buttonarea = ClientRectangle;
                 buttonarea.Inflate(-1, -1);                     // inside it.
 
-                Color colBack = Color.Empty;
-                Color colBack2 = Color.Empty;
-                Color colBorder = Color.Empty;
-                switch (drawState)
-                {
-                    case DrawState.Disabled:
-                        colBack = BackColor.Multiply(buttonDisabledScaling);
-                        colBack2 = BackColor2.Multiply(buttonDisabledScaling);
-                        colBorder = FlatAppearance.BorderColor.Multiply(buttonDisabledScaling);
-                        break;
-                    case DrawState.Normal:
-                    default:
-                        colBack = BackColor;
-                        colBack2 = BackColor2;
-                        colBorder = FlatAppearance.BorderColor;
-                        break;
-                    case DrawState.Hover:
-                        colBack = BackColor.Multiply(MouseOverScaling);
-                        colBack2 = BackColor2.Multiply(MouseOverScaling);
-                        colBorder = FlatAppearance.BorderColor.Multiply(MouseOverScaling);
-                        break;
-                    case DrawState.Click:
-                        colBack = BackColor.Multiply(MouseSelectedScaling);
-                        colBack2 = BackColor2.Multiply(MouseSelectedScaling);
-                        colBorder = FlatAppearance.BorderColor.Multiply(MouseSelectedScaling);
-                        break;
+                Color colBack = BackColor;
+                Color colBack2 = BackColor2;
+                Color colBorder = FlatAppearance.BorderColor;
 
+                if (drawState == DrawState.Disabled)
+                {
+                    colBack = colBack.Multiply(buttonDisabledScaling);
+                    colBack2 = colBack2.Multiply(buttonDisabledScaling);
+                    colBorder = colBorder.Multiply(buttonDisabledScaling);
                 }
+                else if (drawState != DrawState.Normal)
+                {
+                    if (colBack.GetBrightness() < 0.05f)        // ensure a color for these states, if background is back it won't do anything
+                    {
+                        colBack2 = colBack = Color.FromArgb(255, 32, 32, 32);
+                    }
+
+                    if (drawState == DrawState.Hover)
+                    {
+                        colBack = colBack.Multiply(MouseOverScaling);
+                        colBack2 = colBack2.Multiply(MouseOverScaling);
+                        colBorder = colBorder.Multiply(MouseOverScaling);
+                    }
+                    else
+                    {
+                        colBack = colBack.Multiply(MouseSelectedScaling);
+                        colBack2 = colBack2.Multiply(MouseSelectedScaling);
+                        colBorder = colBorder.Multiply(MouseSelectedScaling);
+                    }
+                }
+
+                //System.Diagnostics.Debug.WriteLine($"But Paint {Name} {ClientRectangle}, ba {buttonarea} back {colBack}-{colBack2} border {colBorder}");
 
                 if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
                 {
@@ -244,17 +246,17 @@ namespace ExtendedControls
                     Size isize = (ImageAlign == ContentAlignment.MiddleCenter) ? new Size(buttonarea.Width, buttonarea.Height) : new Size(buttonarea.Height, buttonarea.Height);
                     var destrect = ImageAlign.ImagePositionFromContentAlignment(buttonarea, isize);
 
-                    //System.Diagnostics.Debug.WriteLine($"ButtonExt {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height} {ImageAlign}");
+                   // System.Diagnostics.Debug.WriteLine($"ButtonExt {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height} {ImageAlign}");
 
                     if ((Enabled && drawnImageAttributesEnabled != null) || (!Enabled && drawnImageAttributesDisabled != null))
                     {
+                        //using (var b = new SolidBrush(Color.FromArgb(128, 64, 0, 0))) pe.Graphics.FillRectangle(b, destrect);       // linear grad brushes do not respect smoothing mode, btw
                         pe.Graphics.DrawImage(Image, destrect,
                                     0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel, (Enabled) ? drawnImageAttributesEnabled : drawnImageAttributesDisabled);
                     }
                     else
                     {
-                        pe.Graphics.DrawImage(Image, destrect,
-                                    0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel);
+                        pe.Graphics.DrawImage(Image, destrect,  0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel);
                     }
                 }
 
@@ -314,6 +316,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
+            //System.Diagnostics.Debug.WriteLine($"But Theme {Name}");
             ExtButton ctrl = this;
             ctrl.ForeColor = t.ButtonTextColor;
 
@@ -357,18 +360,19 @@ namespace ExtendedControls
                     {
                         ctrl.BackColor = ctrl.BackColor2 = t.Form;
                     }
-                       
+                    ctrl.FlatAppearance.BorderColor = t.Form;
+                    ctrl.FlatAppearance.BorderSize = 0;
                 }
                 else
                 {
                     ctrl.BackColor = t.ButtonBackColor;       // else its a graduated back
                     ctrl.BackColor2 = t.ButtonBackColor2;       // else its a graduated back
+                    ctrl.FlatAppearance.BorderColor = t.ButtonBorderColor;
+                    ctrl.FlatAppearance.BorderSize = 1;
                 }
 
                 ctrl.MouseOverScaling = t.MouseOverScaling;
                 ctrl.MouseSelectedScaling = t.MouseSelectedScaling;
-                ctrl.FlatAppearance.BorderColor = (ctrl.Image != null) ? t.Form : t.ButtonBorderColor;
-                ctrl.FlatAppearance.BorderSize = 1;
                 ctrl.FlatStyle = t.ButtonFlatStyle;
             }
 

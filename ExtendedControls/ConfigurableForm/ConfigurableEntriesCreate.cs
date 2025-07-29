@@ -176,9 +176,9 @@ namespace ExtendedControls
                 {
                     NumberBoxLong cb = c as NumberBoxLong;
                     if (ent.NumberBoxLongMinimum.HasValue)
-                        cb.Maximum = ent.NumberBoxLongMinimum.Value;
+                        cb.Minimum = ent.NumberBoxLongMinimum.Value;
                     if (ent.NumberBoxLongMaximum.HasValue)
-                        cb.Minimum = ent.NumberBoxLongMaximum.Value;
+                        cb.Maximum = ent.NumberBoxLongMaximum.Value;
                     if (ent.LongValue.HasValue)
                         cb.Value = ent.LongValue.Value;
                     else if (ent.TextValue != null)

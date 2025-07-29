@@ -147,12 +147,15 @@ namespace ExtendedControls
             }
             else
             {
-                using (Brush br = new LinearGradientBrush(sliderarea, SliderColor, SliderColor2, SliderDrawAngle))
-                    e.Graphics.FillRectangle(br, sliderarea);
+                if (sliderarea.Area()>0)      // if could disappear #3692
+                {
+                    using (Brush br = new LinearGradientBrush(sliderarea, SliderColor, SliderColor2, SliderDrawAngle))
+                        e.Graphics.FillRectangle(br, sliderarea);
+                }
 
                 //System.Diagnostics.Debug.WriteLine($"Scrollbox draw slider {SliderColor}-> {SliderColor2} at {SliderDrawAngle}");
 
-                if (!SkinnyStyle)
+                if (!SkinnyStyle && borderrect.Area()>0)
                 {
                     using (Pen pr = new Pen(BorderColor))
                         e.Graphics.DrawRectangle(pr, borderrect);

@@ -19,13 +19,13 @@ namespace TestExtendedControls
         {
             theme = new ThemeList();
             theme.LoadBaseThemes();
-            theme.SetThemeByName("Elite EuroCaps");
+            theme.SetThemeByName("Elite Verdana");
+            //theme.SetThemeByName("EDSM");
 
-            InitializeComponent();
-
-            Theme.Current.FontName = "Microsoft Sans Serif";
             Theme.Current.FontSize = 12f;
             Theme.Current.WindowsFrame = true;
+
+            InitializeComponent();
 
             Theme.Current.ApplyStd(this);
 
@@ -126,6 +126,11 @@ namespace TestExtendedControls
         private void TestButtons_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Double Click on form");
+
+        }
+
+        private void extButton8_Click(object sender, EventArgs e)
+        {
 
         }
     }
