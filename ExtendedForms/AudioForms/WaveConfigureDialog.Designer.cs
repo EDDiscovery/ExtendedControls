@@ -174,7 +174,7 @@ namespace ExtendedAudioForms
             this.buttonExtOK.Name = "buttonExtOK";
             this.buttonExtOK.Size = new System.Drawing.Size(75, 23);
             this.buttonExtOK.TabIndex = 8;
-            this.buttonExtOK.Text = "%OK%";
+            this.buttonExtOK.Text = "OK";
             this.buttonExtOK.UseVisualStyleBackColor = true;
             this.buttonExtOK.Click += new System.EventHandler(this.buttonExtOK_Click);
             // 
@@ -185,7 +185,7 @@ namespace ExtendedAudioForms
             this.buttonExtCancel.Name = "buttonExtCancel";
             this.buttonExtCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonExtCancel.TabIndex = 9;
-            this.buttonExtCancel.Text = "%Cancel%";
+            this.buttonExtCancel.Text = "Cancel";
             this.buttonExtCancel.UseVisualStyleBackColor = true;
             // 
             // buttonExtEffects

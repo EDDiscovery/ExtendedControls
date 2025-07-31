@@ -64,17 +64,23 @@ namespace ExtendedControls
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.BackColor2 = System.Drawing.Color.Red;
+            this.buttonOK.ButtonDisabledScaling = 0.5F;
+            this.buttonOK.GradientDirection = 90F;
             this.buttonOK.Location = new System.Drawing.Point(697, 5);
+            this.buttonOK.MouseOverScaling = 1.3F;
+            this.buttonOK.MouseSelectedScaling = 1.3F;
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(100, 23);
             this.buttonOK.TabIndex = 1;
-            this.buttonOK.Text = "%OK%";
+            this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // textBoxInfo
             // 
             this.textBoxInfo.BorderColor = System.Drawing.Color.Transparent;
+            this.textBoxInfo.BorderColor2 = System.Drawing.Color.Transparent;
             this.textBoxInfo.ContextMenuStrip = this.contextMenuStrip;
             this.textBoxInfo.DetectUrls = true;
             this.textBoxInfo.HideScrollBar = true;
@@ -83,7 +89,7 @@ namespace ExtendedControls
             this.textBoxInfo.Name = "textBoxInfo";
             this.textBoxInfo.ReadOnly = false;
             this.textBoxInfo.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
-    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
+    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.26100}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
             this.textBoxInfo.ShowLineCount = false;
             this.textBoxInfo.Size = new System.Drawing.Size(273, 228);
@@ -97,19 +103,19 @@ namespace ExtendedControls
             this.toolStripMenuItemCopy,
             this.copyAllToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip.Size = new System.Drawing.Size(120, 48);
             // 
             // toolStripMenuItemCopy
             // 
             this.toolStripMenuItemCopy.Name = "toolStripMenuItemCopy";
-            this.toolStripMenuItemCopy.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemCopy.Size = new System.Drawing.Size(119, 22);
             this.toolStripMenuItemCopy.Text = "Copy";
             this.toolStripMenuItemCopy.Click += new System.EventHandler(this.toolStripMenuItemCopy_Click);
             // 
             // copyAllToolStripMenuItem
             // 
             this.copyAllToolStripMenuItem.Name = "copyAllToolStripMenuItem";
-            this.copyAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.copyAllToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.copyAllToolStripMenuItem.Text = "Copy All";
             this.copyAllToolStripMenuItem.Click += new System.EventHandler(this.copyAllToolStripMenuItem_Click);
             // 
@@ -131,6 +137,7 @@ namespace ExtendedControls
             this.panel_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_close.BorderColor = System.Drawing.Color.Orange;
             this.panel_close.BorderWidth = 1;
+            this.panel_close.ButtonDisabledScaling = 0.25F;
             this.panel_close.Image = null;
             this.panel_close.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Close;
             this.panel_close.Location = new System.Drawing.Point(796, 3);
@@ -139,7 +146,6 @@ namespace ExtendedControls
             this.panel_close.MouseSelectedColorEnable = true;
             this.panel_close.Name = "panel_close";
             this.panel_close.Padding = new System.Windows.Forms.Padding(6);
-            this.panel_close.ButtonDisabledScaling = 0.25F;
             this.panel_close.Selectable = false;
             this.panel_close.Size = new System.Drawing.Size(24, 24);
             this.panel_close.TabIndex = 29;
@@ -155,6 +161,7 @@ namespace ExtendedControls
             this.panel_minimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.panel_minimize.BorderColor = System.Drawing.Color.Orange;
             this.panel_minimize.BorderWidth = 1;
+            this.panel_minimize.ButtonDisabledScaling = 0.25F;
             this.panel_minimize.Image = null;
             this.panel_minimize.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(766, 3);
@@ -163,7 +170,6 @@ namespace ExtendedControls
             this.panel_minimize.MouseSelectedColorEnable = true;
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
-            this.panel_minimize.ButtonDisabledScaling = 0.25F;
             this.panel_minimize.Selectable = false;
             this.panel_minimize.Size = new System.Drawing.Size(24, 24);
             this.panel_minimize.TabIndex = 28;
@@ -198,7 +204,12 @@ namespace ExtendedControls
             // buttonAcknowledge
             // 
             this.buttonAcknowledge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAcknowledge.BackColor2 = System.Drawing.Color.Red;
+            this.buttonAcknowledge.ButtonDisabledScaling = 0.5F;
+            this.buttonAcknowledge.GradientDirection = 90F;
             this.buttonAcknowledge.Location = new System.Drawing.Point(529, 5);
+            this.buttonAcknowledge.MouseOverScaling = 1.3F;
+            this.buttonAcknowledge.MouseSelectedScaling = 1.3F;
             this.buttonAcknowledge.Name = "buttonAcknowledge";
             this.buttonAcknowledge.Size = new System.Drawing.Size(140, 23);
             this.buttonAcknowledge.TabIndex = 1;

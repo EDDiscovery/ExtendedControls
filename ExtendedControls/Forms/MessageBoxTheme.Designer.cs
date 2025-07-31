@@ -76,6 +76,8 @@
             // themeTextBox
             // 
             this.themeTextBox.BorderColor = System.Drawing.Color.Transparent;
+            this.themeTextBox.BorderColor2 = System.Drawing.Color.Transparent;
+            this.themeTextBox.DetectUrls = true;
             this.themeTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.themeTextBox.HideScrollBar = true;
             this.themeTextBox.Location = new System.Drawing.Point(67, 0);
@@ -83,7 +85,7 @@
             this.themeTextBox.Name = "themeTextBox";
             this.themeTextBox.ReadOnly = false;
             this.themeTextBox.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
-    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
+    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.26100}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
             this.themeTextBox.ShowLineCount = false;
             this.themeTextBox.Size = new System.Drawing.Size(595, 381);
@@ -126,7 +128,12 @@
             // buttonExt1
             // 
             this.buttonExt1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonExt1.BackColor2 = System.Drawing.Color.Red;
+            this.buttonExt1.ButtonDisabledScaling = 0.5F;
+            this.buttonExt1.GradientDirection = 90F;
             this.buttonExt1.Location = new System.Drawing.Point(567, 12);
+            this.buttonExt1.MouseOverScaling = 1.3F;
+            this.buttonExt1.MouseSelectedScaling = 1.3F;
             this.buttonExt1.Name = "buttonExt1";
             this.buttonExt1.Size = new System.Drawing.Size(80, 24);
             this.buttonExt1.TabIndex = 2;
@@ -137,7 +144,12 @@
             // buttonExt2
             // 
             this.buttonExt2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonExt2.BackColor2 = System.Drawing.Color.Red;
+            this.buttonExt2.ButtonDisabledScaling = 0.5F;
+            this.buttonExt2.GradientDirection = 90F;
             this.buttonExt2.Location = new System.Drawing.Point(467, 12);
+            this.buttonExt2.MouseOverScaling = 1.3F;
+            this.buttonExt2.MouseSelectedScaling = 1.3F;
             this.buttonExt2.Name = "buttonExt2";
             this.buttonExt2.Size = new System.Drawing.Size(80, 24);
             this.buttonExt2.TabIndex = 3;
@@ -148,7 +160,12 @@
             // buttonExt3
             // 
             this.buttonExt3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonExt3.BackColor2 = System.Drawing.Color.Red;
+            this.buttonExt3.ButtonDisabledScaling = 0.5F;
+            this.buttonExt3.GradientDirection = 90F;
             this.buttonExt3.Location = new System.Drawing.Point(367, 12);
+            this.buttonExt3.MouseOverScaling = 1.3F;
+            this.buttonExt3.MouseSelectedScaling = 1.3F;
             this.buttonExt3.Name = "buttonExt3";
             this.buttonExt3.Size = new System.Drawing.Size(80, 24);
             this.buttonExt3.TabIndex = 4;

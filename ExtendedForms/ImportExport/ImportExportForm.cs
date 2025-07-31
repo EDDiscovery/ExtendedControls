@@ -152,12 +152,7 @@ namespace ExtendedForms
                     suggestedfilenames[i] = suggestedfilenamesp[i % suggestedfilenamesp.Length];       // modulo it
             }
 
-            var enumlist = new Enum[] { ECIDs.ImportExportForm, ECIDs.ImportExportForm_labelCVSSep, ECIDs.ImportExportForm_radioButtonComma, ECIDs.ImportExportForm_radioButtonSemiColon, 
-                    ECIDs.ImportExportForm_checkBoxIncludeHeader, ECIDs.ImportExportForm_checkBoxCustomAutoOpen, ECIDs.ImportExportForm_labelUTCEnd, 
-                    ECIDs.ImportExportForm_labelUTCStart, ECIDs.ImportExportForm_buttonExport, ECIDs.ImportExportForm_labelPaste , ECIDs.ImportExportForm_extRadioButtonTab,
-                    ECIDs.ImportExportForm_extCheckBoxExcludeHeader, ECIDs.ImportExportForm_labelSaveImport};
-
-            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
+            BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             label_index.Text = this.Text;
 
@@ -208,8 +203,8 @@ namespace ExtendedForms
             importdialog = import;
             if (import)
             {
-                this.Text = "Import data".TxID(ECIDs.ImportExportForm_ImportTitle);
-                buttonExport.Text = "Import".TxID(ECIDs.ImportExportForm_ImportButton);
+                this.Text = "Import data".Tx();
+                buttonExport.Text = "Import".Tx();
             }
 
             extRichTextBoxPaste.InstallStandardDragDrop();
@@ -257,7 +252,7 @@ namespace ExtendedForms
                 {
                     OpenFileDialog dlg = new OpenFileDialog();
                     dlg.Filter = outputext[SelectedIndex];
-                    dlg.Title = "Import data".TxID(ECIDs.ImportExportForm_ImportTitle) + " " + dlg.Filter;
+                    dlg.Title = "Import data".Tx() + " " + dlg.Filter;
 
                     if (dlg.ShowDialog(this) == DialogResult.OK)
                     {
@@ -285,7 +280,7 @@ namespace ExtendedForms
                 SaveFileDialog dlg = new SaveFileDialog();
 
                 dlg.Filter = outputext[SelectedIndex];
-                dlg.Title = "Export data".TxID(ECIDs.ImportExportForm) + " " + dlg.Filter;
+                dlg.Title = "Export data".Tx() + " " + dlg.Filter;
                 dlg.FileName = suggestedfilenames[SelectedIndex];
 
                 if (dlg.ShowDialog(this) == DialogResult.OK)

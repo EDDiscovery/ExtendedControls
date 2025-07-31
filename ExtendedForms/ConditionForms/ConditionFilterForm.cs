@@ -71,7 +71,7 @@ namespace ExtendedConditionsForms
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
 
             var enumlist = new Enum[] { };
-            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);        // need to translate the %OK% %Cancel% but no other IDs
+            BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             SetTitle(conditionFilterUC.Groups);
 

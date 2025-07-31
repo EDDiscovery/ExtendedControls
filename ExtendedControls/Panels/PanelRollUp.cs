@@ -93,9 +93,9 @@ namespace ExtendedControls
         public void SetToolTip(ToolTip t, string ttpin = null, string ttmarker = null)
         {
             if (ttpin == null)
-                ttpin = "Pin to stop this menu bar disappearing automatically".TxID(ECIDs.ExtPanelRollUp_RUPPin);
+                ttpin = "Pin to stop this menu bar disappearing automatically".Tx();
             if (ttmarker == null)
-                ttmarker = "Click or hover over this to unroll the menu bar".TxID(ECIDs.ExtPanelRollUp_RUPMarker);
+                ttmarker = "Click or hover over this to unroll the menu bar".Tx();
             t.SetToolTip(pinbutton, ttpin);
             t.SetToolTip(hiddenmarker1, ttmarker);
             t.SetToolTip(hiddenmarker2, ttmarker);

@@ -153,11 +153,11 @@ namespace ExtendedControls
                 contentvpos += tbs[i].Height + boxspacing;
             }
 
-            ExtButton confirmation = new ExtButton() { Text = "OK".TxID(ECIDs.MessageBoxTheme_OK), Width = 100, DialogResult = DialogResult.OK };
+            ExtButton confirmation = new ExtButton() { Text = "OK".Tx(), Width = 100, DialogResult = DialogResult.OK };
             outer.Controls.Add(confirmation);
             confirmation.Click += (sender, e) => { prompt.Close(); };
 
-            ExtButton cancel = new ExtButton() { Text = "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel), Width = 100, DialogResult = DialogResult.Cancel };
+            ExtButton cancel = new ExtButton() { Text = "Cancel".Tx(), Width = 100, DialogResult = DialogResult.Cancel };
             outer.Controls.Add(cancel);
             cancel.Click += (sender, e) => { prompt.Close(); };
 

@@ -56,7 +56,7 @@ namespace ExtendedAudioForms
                                 CFIDs.SoundEffectsDialog_labelChorusDelay, CFIDs.SoundEffectsDialog_labelChorusDepth, 
                                 CFIDs.SoundEffectsDialog_labelReverbHFRatio, CFIDs.SoundEffectsDialog_labelDistortionCentreFreq, 
                                 CFIDs.SoundEffectsDialog_labelDistortionFreqWidth };
-            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
+            BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             if (!shownone)
                 checkBoxCustomNone.Visible = false;

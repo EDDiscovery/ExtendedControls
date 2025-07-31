@@ -392,6 +392,6 @@ namespace ExtendedControls
         private int ignorelocationchange = 0;      // location changes triggered when we reposition controls to scroll, so we need to mask them 
         private int extsuspendcontrolmonitoring = 0;    // external suspend
         private int scrollpos = 0;
-        private int scrollbarwidth = 48;
+        private int scrollbarwidth = 24;
     }
 }

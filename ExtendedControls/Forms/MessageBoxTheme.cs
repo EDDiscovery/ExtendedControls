@@ -68,7 +68,7 @@ namespace ExtendedControls
 
             DialogResult = DialogResult.None;
 
-            this.Text = labelCaption.Text = caption ?? "Warning".TxID(ECIDs.MessageBoxTheme_Warning);
+            this.Text = labelCaption.Text = caption ?? "Warning".Tx();
             themeTextBox.Text = text;
             if (formIcon != null)
                 this.Icon = formIcon;
@@ -97,40 +97,40 @@ namespace ExtendedControls
                     buttonExt1.Visible = buttonExt2.Visible = buttonExt3.Visible = false;
                     break;
                 case MessageBoxButtons.AbortRetryIgnore:
-                    buttonExt1.DialogResult = DialogResult.Ignore; buttonExt1.Text = custombuttontext != null ? custombuttontext[0] : "Ignore".TxID(ECIDs.MessageBoxTheme_Ignore);
-                    buttonExt2.DialogResult = DialogResult.Retry; buttonExt2.Text = custombuttontext != null ? custombuttontext[1] : "Retry".TxID(ECIDs.MessageBoxTheme_Retry);
-                    buttonExt3.DialogResult = DialogResult.Abort; buttonExt3.Text = custombuttontext != null ? custombuttontext[2] : "Abort".TxID(ECIDs.MessageBoxTheme_Abort);
+                    buttonExt1.DialogResult = DialogResult.Ignore; buttonExt1.Text = custombuttontext != null ? custombuttontext[0] : "Ignore".Tx();
+                    buttonExt2.DialogResult = DialogResult.Retry; buttonExt2.Text = custombuttontext != null ? custombuttontext[1] : "Retry".Tx();
+                    buttonExt3.DialogResult = DialogResult.Abort; buttonExt3.Text = custombuttontext != null ? custombuttontext[2] : "Abort".Tx();
                     this.AcceptButton = buttonExt2;
                     this.CancelButton = buttonExt3;
                     break;
                 case MessageBoxButtons.OKCancel:
-                    buttonExt1.DialogResult = DialogResult.Cancel; buttonExt1.Text = custombuttontext != null ? custombuttontext[0] : "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel);
-                    buttonExt2.DialogResult = DialogResult.OK; buttonExt2.Text = custombuttontext != null ? custombuttontext[1] : "OK".TxID(ECIDs.MessageBoxTheme_OK);
+                    buttonExt1.DialogResult = DialogResult.Cancel; buttonExt1.Text = custombuttontext != null ? custombuttontext[0] : "Cancel".Tx();
+                    buttonExt2.DialogResult = DialogResult.OK; buttonExt2.Text = custombuttontext != null ? custombuttontext[1] : "OK".Tx();
                     buttonExt3.Visible = false;
                     this.AcceptButton = buttonExt2;
                     this.CancelButton = buttonExt1;
                     break;
                 case MessageBoxButtons.RetryCancel:
-                    buttonExt1.DialogResult = DialogResult.Cancel; buttonExt1.Text = "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel);
-                    buttonExt2.DialogResult = DialogResult.OK; buttonExt2.Text = "Retry".TxID(ECIDs.MessageBoxTheme_Retry);
+                    buttonExt1.DialogResult = DialogResult.Cancel; buttonExt1.Text = "Cancel".Tx();
+                    buttonExt2.DialogResult = DialogResult.OK; buttonExt2.Text = "Retry".Tx();
                     buttonExt3.Visible = false;
                     this.AcceptButton = buttonExt2;
                     this.CancelButton = buttonExt1;
                     break;
                 case MessageBoxButtons.YesNo:
-                    buttonExt1.DialogResult = DialogResult.No; buttonExt1.Text = "No".TxID(ECIDs.MessageBoxTheme_No);
-                    buttonExt2.DialogResult = DialogResult.Yes; buttonExt2.Text = "Yes".TxID(ECIDs.MessageBoxTheme_Yes);
+                    buttonExt1.DialogResult = DialogResult.No; buttonExt1.Text = "No".Tx();
+                    buttonExt2.DialogResult = DialogResult.Yes; buttonExt2.Text = "Yes".Tx();
                     buttonExt3.Visible = false;
                     break;
                 case MessageBoxButtons.YesNoCancel:
-                    buttonExt1.DialogResult = DialogResult.Cancel; buttonExt1.Text = "Cancel".TxID(ECIDs.MessageBoxTheme_Cancel);
-                    buttonExt2.DialogResult = DialogResult.No; buttonExt2.Text = "No".TxID(ECIDs.MessageBoxTheme_No);
-                    buttonExt3.DialogResult = DialogResult.Yes; buttonExt3.Text = "Yes".TxID(ECIDs.MessageBoxTheme_Yes);
+                    buttonExt1.DialogResult = DialogResult.Cancel; buttonExt1.Text = "Cancel".Tx();
+                    buttonExt2.DialogResult = DialogResult.No; buttonExt2.Text = "No".Tx();
+                    buttonExt3.DialogResult = DialogResult.Yes; buttonExt3.Text = "Yes".Tx();
                     this.AcceptButton = this.CancelButton = buttonExt1;
                     break;
                 case MessageBoxButtons.OK:
                 default:
-                    buttonExt1.DialogResult = DialogResult.OK; buttonExt1.Text = custombuttontext != null ? custombuttontext[0] : "OK".TxID(ECIDs.MessageBoxTheme_OK);
+                    buttonExt1.DialogResult = DialogResult.OK; buttonExt1.Text = custombuttontext != null ? custombuttontext[0] : "OK".Tx();
                     buttonExt2.Visible = false;
                     buttonExt3.Visible = false;
                     this.AcceptButton = this.CancelButton = buttonExt1;

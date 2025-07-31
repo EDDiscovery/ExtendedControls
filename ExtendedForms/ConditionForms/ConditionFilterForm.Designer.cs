@@ -141,7 +141,7 @@ namespace ExtendedConditionsForms
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(100, 23);
             this.buttonCancel.TabIndex = 6;
-            this.buttonCancel.Text = "%Cancel%";
+            this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -152,7 +152,7 @@ namespace ExtendedConditionsForms
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(100, 23);
             this.buttonOK.TabIndex = 7;
-            this.buttonOK.Text = "%OK%";
+            this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
             this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 

@@ -32,8 +32,7 @@ namespace ExtendedControls
         {
             Icon = ic;
 
-            var enumlist = new Enum[] { ECIDs.InfoForm_buttonAcknowledge };
-            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
+            BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             textBoxInfo.SetTabs(array ?? new int[] { 0, 100, 200, 300, 400, 500, 600, 800,900,1000,1100,1200 });
             textBoxInfo.ReadOnly = true;
@@ -124,7 +123,7 @@ namespace ExtendedControls
             }
             catch
             {
-                MessageBox.Show(this, "Copying text to clipboard failed".TxID(ECIDs.InfoForm_Copyingtextfailed));
+                MessageBox.Show(this, "Copying text to clipboard failed".Tx());
             }
         }
 

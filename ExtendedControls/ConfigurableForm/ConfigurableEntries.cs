@@ -201,14 +201,14 @@ namespace ExtendedControls
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("OK", typeof(ExtButton), "OK".TxID(ECIDs.OK), p, sz.Value, tooltip) { Anchor = anchor, PlacedInPanel = paneltype });
+            Add(new Entry("OK", typeof(ExtButton), "OK".Tx(), p, sz.Value, tooltip) { Anchor = anchor, PlacedInPanel = paneltype });
         }
 
         public void AddCancel(Point p, string tooltip = null, Size? sz = null, AnchorStyles anchor = AnchorStyles.None, Entry.PanelType paneltype = Entry.PanelType.Scroll)
         {
             if (sz == null)
                 sz = new Size(80, 24);
-            Add(new Entry("Cancel", typeof(ExtButton), "Cancel".TxID(ECIDs.Cancel), p, sz.Value, tooltip) { Anchor = anchor, PlacedInPanel = paneltype });
+            Add(new Entry("Cancel", typeof(ExtButton), "Cancel".Tx(), p, sz.Value, tooltip) { Anchor = anchor, PlacedInPanel = paneltype });
         }
 
         public void AddLabelAndEntry(string labeltext, Point labelpos, Size labelsize, Entry e)

@@ -43,7 +43,7 @@ namespace ExtendedConditionsForms
             this.Icon = ic;
 
             var enumlist = new Enum[] { };
-            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);        // need to translate the %OK% %Cancel% but no other IDs
+            BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             bool winborder = ExtendedControls.Theme.Current?.ApplyDialog(this) ?? true;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;

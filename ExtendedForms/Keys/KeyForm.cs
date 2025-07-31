@@ -49,8 +49,7 @@ namespace ExtendedForms
                                 List<string> additionalkeys = null,
                                 BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser parser = null)
         {
-            var enumlist = new Enum[] { ECIDs.KeyForm, ECIDs.KeyForm_radioButtonUp, ECIDs.KeyForm_radioButtonDown, ECIDs.KeyForm_radioButtonPress, ECIDs.KeyForm_checkBoxShift, ECIDs.KeyForm_checkBoxCtrl, ECIDs.KeyForm_checkBoxAlt, ECIDs.KeyForm_checkBoxKey, ECIDs.KeyForm_labelNextDelay, ECIDs.KeyForm_labelSelKeys, ECIDs.KeyForm_labelDelay, ECIDs.KeyForm_labelSendTo, ECIDs.KeyForm_buttonReset, ECIDs.KeyForm_labelKeys, ECIDs.KeyForm_buttonDelete, ECIDs.KeyForm_buttonNext, ECIDs.KeyForm_buttonTest };
-            BaseUtils.Translator.Instance.TranslateControls(this, enumlist);
+            BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             if ( i != null )
                 Icon = i;
@@ -197,7 +196,7 @@ namespace ExtendedForms
             Keys ctrlKey = KeyObjectExtensions.ControlKey(checkBoxCtrl.Checked, checkBoxCtrl.Text.Contains("Right"));
             Keys altKey = KeyObjectExtensions.MenuKey(checkBoxAlt.Checked, checkBoxAlt.Text.Contains("Right"));
 
-            checkBoxKey.Text = basekeystroke.HasChars() ? basekeystroke : "Press Key".TxID(ECIDs.KeyForm_PK);
+            checkBoxKey.Text = basekeystroke.HasChars() ? basekeystroke : "Press Key".Tx();
 
             System.Diagnostics.Debug.WriteLine($"Keyform DKS at {curinsertpoint}: {textBoxKeys.Text} ");
 
@@ -293,16 +292,16 @@ namespace ExtendedForms
             if (target.HasChars())
             {
                 if (target == BaseUtils.EnhancedSendKeys.CurrentWindow || target.Equals(DefaultProcessID))
-                    MessageBoxTheme.Show(this, "Name a process to test sending keys".TxID(ECIDs.KeyForm_NOPN));
+                    MessageBoxTheme.Show(this, "Name a process to test sending keys".Tx());
                 else
                 {
                     string err = BaseUtils.EnhancedSendKeys.SendToProcess(textBoxKeys.Text, DefaultDelay <= DefaultDelayID ? 10 : DefaultDelay, 2 , 2, textBoxSendTo.Text, additionalkeyparser);
                     if (err.Length > 0)
-                        MessageBoxTheme.Show(this, string.Format("Error {0} - check entry".TxID(ECIDs.KeyForm_KERR) , err));
+                        MessageBoxTheme.Show(this, string.Format("Error {0} - check entry".Tx() , err));
                 }
             }
             else
-                MessageBoxTheme.Show(this, "No process names to send keys to".TxID(ECIDs.KeyForm_NOP));
+                MessageBoxTheme.Show(this, "No process names to send keys to".Tx());
         }
 
         private void textBoxCurrentKeyDelay_Enter(object sender, EventArgs e)

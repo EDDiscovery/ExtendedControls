@@ -13,6 +13,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -25,6 +26,10 @@ namespace ExtendedControls
 
     public partial class ExtPanelVertScroll : Panel, ITranslatableControl
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Bindable(false)]
+        [Browsable(false)]
         public Action<int, int> ScrollSet { get; set; }      // called when scroll is set each time
         public int Value { get { return currentscroll; } set { ScrollTo(value); } } // current scroll
         public int MaxScroll { get { return maxscroll; } }  // max scroll, controlled by Recalcuate().
