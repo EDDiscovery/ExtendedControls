@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public class ExtPanelDataGridViewScrollOutlining : Panel, ITranslatableControl    
+    public class ExtPanelDataGridViewScrollOutlining : Panel, ITranslatableControl, IThemeable
     {
         public class Outline
         {
@@ -155,7 +155,14 @@ namespace ExtendedControls
             {
                 if (r.button == null)       // check we have a button, if not, add..
                 {
-                    r.button = new ExtButtonDrawn() { Visible = false, ImageSelected = ExtButtonDrawn.ImageType.Collapse, Padding = new Padding(0), Size = new Size(butsize, butsize), ForeColor = this.ForeColor };
+                    r.button = new ExtButtonDrawn()
+                    {
+                        Visible = false,
+                        ImageSelected = ExtButtonDrawn.ImageType.Collapse,
+                        Padding = new Padding(0),
+                        Size = new Size(butsize, butsize),
+                        ForeColor = this.ForeColor
+                    };
                     r.button.Tag = r;
                     r.button.Click += Button_Click;
                     Controls.Add(r.button);
@@ -294,7 +301,8 @@ namespace ExtendedControls
 
         }
 
-        protected override void OnPaint(PaintEventArgs pe)      // note you can't control the controls in here, it causes a repaint!  only can paint
+        // note you can't control the controls in here, it causes a repaint!  only can paint
+        protected override void OnPaint(PaintEventArgs pe)      
         {
             //System.Diagnostics.Debug.WriteLine("Repaint");
             for (int i = 0; i < Outlines.Count; i++)
@@ -439,8 +447,14 @@ namespace ExtendedControls
             if (!processed)       // need some trigger to get the first process done
                 UpdateOutlines();
         }
-
-
+        public bool Theme(Theme t, Font fnt)
+        {
+            ForeColor = t.LabelColor;       // label and form colours
+            BackColor = t.Form;
+            foreach (Control c in Controls)     // ensure any buttons made are also coloured
+                c.ForeColor = ForeColor;
+            return false;
+        }
         #endregion
 
         #region Variables
