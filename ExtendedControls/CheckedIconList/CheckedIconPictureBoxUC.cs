@@ -728,8 +728,10 @@ namespace ExtendedControls
             
             // make items for pictureboxscroll
             picturebox = new ExtPictureBox();
+            
             sb = new ExtScrollBar();
             sb.HideScrollBar = true;    // hide scroll bar
+
             closeicon = new ExtButtonDrawn();
             closeicon.Visible = false;      // default off
             closeicon.ImageSelected = ExtButtonDrawn.ImageType.Close;
@@ -1085,26 +1087,33 @@ namespace ExtendedControls
             BackColor = t.Form;
             ForeColor = t.TextBlockForeColor;
             BorderColor = t.GridBorderLines;
-            BackColor = t.Form;
+
+            // scroll bar
+            BorderColor = ThumbBorderColor = ArrowBorderColor = t.GridBorderLines;
             SliderColor = t.GridSliderBack;
             SliderColor2 = t.IsButtonGradientStyle ? t.GridSliderBack2 : t.GridSliderBack;
             SliderDrawAngle = t.GridSliderGradientDirection;
-            BorderColor = ThumbBorderColor = ArrowBorderColor = t.GridBorderLines;
             ArrowButtonColor = t.GridScrollArrowBack;
             ArrowButtonColor2 = t.IsButtonGradientStyle ? t.GridScrollArrow2Back : t.GridScrollArrowBack;
+            // arrow direction is not config
             ThumbButtonColor = t.GridScrollButtonBack;
             ThumbButtonColor2 = t.IsButtonGradientStyle ? t.GridScrollButtonBack2 : t.GridScrollButtonBack;
             MouseOverButtonColor = ThumbButtonColor.Multiply(t.MouseOverScaling);
             MouseOverButtonColor2 = ThumbButtonColor2.Multiply(t.MouseOverScaling);
             MousePressedButtonColor = ThumbButtonColor.Multiply(t.MouseSelectedScaling);
             MousePressedButtonColor = ThumbButtonColor2.Multiply(t.MouseSelectedScaling);
+            sb.FlatStyle = t.ButtonFlatStyle;
+            sb.SkinnyStyle = t.SkinnyScrollBars;
+
+            // checkbox for us
             CheckBoxColor = t.CheckBoxBack;
             CheckBoxInnerColor = t.CheckBoxBack.Multiply(1.5F);
+            CheckColor = t.CheckBoxTick;
             MouseOverCheckboxColor = t.CheckBoxBack.Multiply(0.75F);
             MouseOverLabelColor = t.CheckBoxBack.Multiply(0.75F);
             TickBoxReductionRatio = 0.75f;
-            CheckColor = t.CheckBoxTick;
 
+            pictureboxscroll.ScrollBarWidth = t.ScrollBarWidth();
             return false;
         }
 

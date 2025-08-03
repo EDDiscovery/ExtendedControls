@@ -65,6 +65,8 @@ namespace TestExtendedControls
             frm.SaveSettings += (s, p) => { AddText($"Save {s} : {frm.UC.GetChecked(false, "", 0)} : {frm.UC.GetChecked(false, "", 1)}"); };
             frm.UC.ShowClose = true;
 
+           // Theme.Current.SkinnyScrollBars = true;
+
             frm.Show(this);
         }
 

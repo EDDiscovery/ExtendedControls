@@ -383,14 +383,22 @@ namespace ExtendedControls
 
             if (imageselected != ImageType.None)
             {
-                int rcwidth = this.ClientRectangle.Width - this.Padding.Horizontal;
-                int rcheight = this.ClientRectangle.Height - this.Padding.Vertical;
+                Padding curpad = this.Padding;
+                int minsize = 10;
+                if (Width < curpad.Horizontal + minsize)      // limit padding if space is very small
+                    curpad.Left = curpad.Right = (Width - minsize) /2;
+                if (Height < curpad.Vertical + minsize)
+                    curpad.Top = curpad.Bottom = (Height - minsize) / 2;
+
+                int rcwidth = this.ClientRectangle.Width - curpad.Horizontal;
+                int rcheight = this.ClientRectangle.Height - curpad.Vertical;
+
                 int shortestDim = Math.Min(rcwidth, rcheight);
 
-                var rc = new Rectangle( this.ClientRectangle.Left + this.Padding.Left, 
-                                        this.ClientRectangle.Top + this.Padding.Top,
-                                        this.ClientRectangle.Width - this.Padding.Horizontal -1,         // -1 takes into account how the rectange is drawn
-                                        this.ClientRectangle.Height - this.Padding.Vertical -1);     
+                var rc = new Rectangle( this.ClientRectangle.Left + curpad.Left, 
+                                        this.ClientRectangle.Top + curpad.Top,
+                                        this.ClientRectangle.Width - curpad.Horizontal -1,         // -1 takes into account how the rectange is drawn
+                                        this.ClientRectangle.Height - curpad.Vertical -1);     
 
                 var sc = new Rectangle( rc.Left + (int)Math.Round((float)(rcwidth - shortestDim) / 2),  // Largest square that fits entirely inside rcClip, centered.
                                         rc.Top + (int)Math.Round((float)(rcheight - shortestDim) / 2), 
