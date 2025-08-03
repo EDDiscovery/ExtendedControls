@@ -35,7 +35,7 @@ namespace TestExtendedControls
                 dataGridView2.Rows.Add(row2);
             }
 
-            Outlining1.ForeColor = Color.Black;
+
             Outlining1.Add(5, 22);
             Outlining1.Add(6, 8);
             System.Diagnostics.Debug.Assert(Outlining1.Add(6, 8)==false); // should fail
@@ -106,6 +106,8 @@ namespace TestExtendedControls
             rl.Add(151, 200);
             rl.Add(31, 201);            // subsume ranges..
             rl.Dump();      // 31-201
+
+            Theme.Current.Apply(this);
 
         }
 
