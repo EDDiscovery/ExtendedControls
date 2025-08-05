@@ -50,6 +50,8 @@ namespace TestExtendedControls
                     new string[] { translatorfolder },
                     1,
                     ".",
+                    null,
+                    true,
                     true
                     );
 

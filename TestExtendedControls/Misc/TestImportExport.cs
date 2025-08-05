@@ -23,12 +23,7 @@ namespace TestExtendedControls
             //theme.SetThemeByName("Elite Verdana");
             //Theme.Current.WindowsFrame = true;
 
-            BaseUtils.Translator.Instance.AddExcludedControls(new Type[]
-             {   typeof(ExtendedControls.ExtComboBox), typeof(ExtendedControls.NumberBoxDouble),typeof(ExtendedControls.NumberBoxFloat),typeof(ExtendedControls.NumberBoxLong),
-                typeof(ExtendedControls.ExtScrollBar),typeof(ExtendedControls.ExtStatusStrip),typeof(ExtendedControls.ExtRichTextBox),typeof(ExtendedControls.ExtTextBox),
-                typeof(ExtendedControls.ExtTextBoxAutoComplete),typeof(ExtendedControls.ExtDateTimePicker),typeof(ExtendedControls.ExtNumericUpDown),
-                typeof(ExtendedControls.MultiPipControl)});
-
+           
         }
 
         private void extButtonExport_Click(object sender, EventArgs e)

@@ -27,10 +27,6 @@ namespace TestExtendedControls
             theme.SetThemeByName("Elite Verdana");
             Theme.Current.FontSize = 12;
 
-            BaseUtils.Translator.Instance.AddExcludedControls(new Type[]
-            {   typeof(ExtendedControls.ExtComboBox), typeof(ExtendedControls.NumberBoxDouble),typeof(ExtendedControls.NumberBoxFloat),typeof(ExtendedControls.NumberBoxLong),
-                typeof(ExtendedControls.ExtScrollBar),typeof(ExtendedControls.ExtStatusStrip),typeof(ExtendedControls.ExtRichTextBox),typeof(ExtendedControls.ExtTextBox),
-                typeof(ExtendedControls.ExtTextBoxAutoComplete),typeof(ExtendedControls.ExtDateTimePicker),typeof(ExtendedControls.ExtNumericUpDown) });
 
         }
 

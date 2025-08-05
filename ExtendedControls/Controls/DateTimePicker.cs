@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -34,7 +35,7 @@ namespace ExtendedControls
         public Color BorderColor2 { get { return bordercolor2; } set { bordercolor2 = value; PerformLayout(); } }
         public float DisabledScaling { get; set; } = 0.5F;           
 
-        public string CustomFormat { get { return customformat; } set { customformat = value; Recalc(); } }
+        public string CustomFormat { get { return customformat; } set { customformat = value; partslist = null; } }     // recalc partslist when painted
         public DateTimePickerFormat Format { get { return format; } set { SetFormat(value); } }
         public bool ShowUpDown { get { return showupdown; } set { showupdown = value; PerformLayout(); } }
         public bool ShowCheckBox { get { return showcheckbox; } set { showcheckbox = value; PerformLayout(); } }
@@ -53,7 +54,6 @@ namespace ExtendedControls
         public ExtDateTimePicker()
         {
             SetStyle(ControlStyles.Selectable, true);
-            Recalc();
             Controls.Add(updown);
             Controls.Add(calendaricon);
             Controls.Add(checkbox);
@@ -63,7 +63,7 @@ namespace ExtendedControls
             checkbox.CheckedChanged += Checkbox_CheckedChanged;
         }
 
-        void SetFormat(DateTimePickerFormat f)
+        private void SetFormat(DateTimePickerFormat f)
         {
             format = f;
             if (format == DateTimePickerFormat.Long)
@@ -73,25 +73,24 @@ namespace ExtendedControls
             else if (format == DateTimePickerFormat.Time)
                 customformat = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern.Trim();
 
-            Recalc();
+            partslist = null;       // and recalc parts list when painted
         }
 
-        void Recalc()    
+        private void RecalcPartsList()    
         {
-            //System.Diagnostics.Debug.WriteLine(Name + " Format " + customformat);
-            partlist.Clear();
-
-            int xpos = 0;
-
-            using (Graphics e = CreateGraphics())
+            if (partslist == null)
             {
+                //System.Diagnostics.Debug.WriteLine(Name + " Format " + customformat);
+                partslist = new List<Parts>();
+
+                int xpos = 0;
                 string fmt = customformat;
 
-                while (fmt.Length>0)
+                while (fmt.Length > 0)
                 {
                     Parts p = null;
 
-                    if ( fmt[0] == '\'')
+                    if (fmt[0] == '\'')
                     {
                         int index = fmt.IndexOf('\'', 1);
                         if (index == -1)
@@ -142,9 +141,9 @@ namespace ExtendedControls
                         p = Make(ref fmt, 2, PartsTypes.Year, "99");
                     else if (fmt.StartsWith("y"))
                         p = Make(ref fmt, 1, PartsTypes.Year, "99");
-                    else if ( fmt[0] != ' ')
+                    else if (fmt[0] != ' ')
                     {
-                        p = new Parts() { maxstring = fmt.Substring(0,1), ptype = PartsTypes.Text }; 
+                        p = new Parts() { maxstring = fmt.Substring(0, 1), ptype = PartsTypes.Text };
                         fmt = fmt.Substring(1).Trim();
                     }
                     else
@@ -153,24 +152,24 @@ namespace ExtendedControls
                     if (p != null)
                     {
                         p.xpos = xpos;
-                        SizeF sz = e.MeasureString(p.maxstring, this.Font);
+                        SizeF sz = BitMapHelpers.MeasureStringInBitmap(p.maxstring, this.Font);
                         int width = (int)(sz.Width + 1);
                         p.endx = xpos + width;
                         xpos = p.endx + 1;
-                        partlist.Add(p);
+                        partslist.Add(p);
                     }
                 }
             }
         }
 
-        Parts Make(ref string c, int len, PartsTypes t, string maxs)
+        private Parts Make(ref string c, int len, PartsTypes t, string maxs)
         {
             Parts p = new Parts() { format = c.Substring(0, len) + " ", ptype = t, maxstring = maxs }; // space at end seems to make multi ones work
             c = c.Substring(len);
             return p;
         }
 
-        string Max(string[] a)
+        private string Max(string[] a)
         {
             string m = "";
             for (int i = 0; i < a.Length; i++)
@@ -208,8 +207,6 @@ namespace ExtendedControls
 
                 //System.Diagnostics.Debug.WriteLine($"DTP {Name} layout bc {BorderColor} bo {borderoffset} h {height} cb {checkbox.Bounds} ud {updown.Bounds} {calendaricon.Bounds} cr {ClientRectangle}");
                 xstart = (showcheckbox ? (checkbox.Right + 2) : 2) + (BorderColor.IsFullyTransparent() ? 2 : 0);
-
-                Recalc();   // cause anything might have changed, like fonts
             }
         }
 
@@ -242,9 +239,11 @@ namespace ExtendedControls
 
             using (Brush textb = new SolidBrush(this.ForeColor.Multiply(Enabled ? 1.0F : DisabledScaling)))
             {
-                for (int i = 0; i < partlist.Count; i++)
+                RecalcPartsList();       // ensure partslist
+
+                for (int i = 0; i < partslist.Count; i++)
                 {
-                    Parts p = partlist[i];
+                    Parts p = partslist[i];
 
                     string t = (p.ptype == PartsTypes.Text) ? p.maxstring : datetimevalue.ToString(p.format);
 
@@ -263,11 +262,13 @@ namespace ExtendedControls
         {
             base.OnMouseDown(mevent);
 
+            RecalcPartsList();  // ensure partslist
+
             //System.Diagnostics.Debug.WriteLine("Mouse down");
 
-            for (int i = 0; i < partlist.Count; i++)
+            for (int i = 0; i < partslist.Count; i++)
             {
-                if (partlist[i].ptype >= PartsTypes.DayName && mevent.X >= partlist[i].xpos+xstart && mevent.X <= partlist[i].endx+xstart)
+                if (partslist[i].ptype >= PartsTypes.DayName && mevent.X >= partslist[i].xpos+xstart && mevent.X <= partslist[i].endx+xstart)
                 {
                     //System.Diagnostics.Debug.WriteLine(".. on " + i);
                     if (selectedpart == i)      // click again, increment
@@ -302,6 +303,8 @@ namespace ExtendedControls
             base.OnKeyDown(e);
             //System.Diagnostics.Debug.WriteLine("Key down" + e.KeyCode);
 
+            RecalcPartsList();  // ensure partslist
+
             if (e.KeyCode == Keys.Up)
                 UpDown(1);
             else if (e.KeyCode == Keys.Down)
@@ -309,7 +312,7 @@ namespace ExtendedControls
             else if (e.KeyCode == Keys.Left && selectedpart > 0)
             {
                 int findprev = selectedpart-1; // back 1
-                while (findprev >= 0 && partlist[findprev].ptype < PartsTypes.DayName)       // back until valid
+                while (findprev >= 0 && partslist[findprev].ptype < PartsTypes.DayName)       // back until valid
                     findprev--;
 
                 if (findprev >= 0)
@@ -318,13 +321,13 @@ namespace ExtendedControls
                     Invalidate();
                 }
             }
-            else if (e.KeyCode == Keys.Right && selectedpart < partlist.Count - 1 )
+            else if (e.KeyCode == Keys.Right && selectedpart < partslist.Count - 1 )
             {
                 int findnext = selectedpart + 1; // fwd 1
-                while (findnext < partlist.Count && partlist[findnext].ptype < PartsTypes.DayName)       // fwd until valid
+                while (findnext < partslist.Count && partslist[findnext].ptype < PartsTypes.DayName)       // fwd until valid
                     findnext++;
 
-                if (findnext < partlist.Count )
+                if (findnext < partslist.Count )
                 {
                     selectedpart = findnext;
                     Invalidate();
@@ -348,7 +351,9 @@ namespace ExtendedControls
             int.TryParse(s, out newvalue);
             DateTime nv = DateTime.Now;
 
-            Parts p = partlist[selectedpart];
+            RecalcPartsList();  // ensure partslist
+
+            Parts p = partslist[selectedpart];
 
             try
             {
@@ -386,9 +391,11 @@ namespace ExtendedControls
         {
             if (selectedpart != -1)
             {
+                RecalcPartsList();  // ensure partslist
+
                 try
                 {                                                       // May except due to out of range
-                    Parts p = partlist[selectedpart];
+                    Parts p = partslist[selectedpart];
                     if (p.ptype == PartsTypes.DayName)
                         datetimevalue = datetimevalue.AddDays(dir);
                     else if (p.ptype == PartsTypes.Day)
@@ -542,7 +549,7 @@ namespace ExtendedControls
             public int endx;
         };
 
-        List<Parts> partlist = new List<Parts>();
+        List<Parts> partslist = null;
         int selectedpart = -1;
 
         #endregion
