@@ -480,7 +480,7 @@ namespace ExtendedControls
         public int ScrollBarWidth() { return ScrollBarWidth(GetFont,SkinnyScrollBars); }
         public static int ScrollBarWidth(Font f, bool skinny) 
         {
-            int mult = f.GetHeight() < 17 ? 8 : 7;
+            int mult = f.GetHeight() < 17 ? 10 : 8;
             int basic = f.ScaleScrollbar();
             int size = skinny ? basic * mult / 16 : basic;
             //System.Diagnostics.Debug.WriteLine($"Scroll bar {f.GetHeight()} basic {basic} mult {mult} skinny {skinny} size {size}");
