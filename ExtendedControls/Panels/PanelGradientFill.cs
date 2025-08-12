@@ -51,13 +51,37 @@ namespace ExtendedControls
         public Action<ExtPanelGradientFill> LayoutComplete;         // callback useful to know when layout is complete - there is no winform one doing this, layout callback is called before layout.
 
         public bool TranslateDoChildren => true;
+        
         public ExtPanelGradientFill()
         {
         }
 
+        // Add a right click menu for configuring the colour set
+        public void InstallRightClickThemeColorSetSelector(Action<ExtPanelGradientFill> callback)
+        {
+            ContextMenuStrip cms = new ContextMenuStrip();
+
+            cms.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
+            {
+                new System.Windows.Forms.ToolStripMenuItem() {Text="Panel Color Set 1",},
+                new System.Windows.Forms.ToolStripMenuItem() {Text="Panel Color Set 2"},
+                new System.Windows.Forms.ToolStripMenuItem() {Text="Panel Color Set 3"},
+                new System.Windows.Forms.ToolStripMenuItem() {Text="Panel Color Set 4"},
+                //new System.Windows.Forms.ToolStripMenuItem() {Text="Default".Tx()},
+            });
+
+            cms.Items[0].Click += (s, e) => { ThemeColorSet = 1; callback?.Invoke(this); };
+            cms.Items[1].Click += (s, e) => { ThemeColorSet = 2; callback?.Invoke(this); };
+            cms.Items[2].Click += (s, e) => { ThemeColorSet = 3; callback?.Invoke(this); };
+            cms.Items[3].Click += (s, e) => { ThemeColorSet = 4; callback?.Invoke(this); };
+            //cms.Items[4].Click += (s, e) => { ThemeColorSet = 0; UserSetThemeColorSet?.Invoke(this); };
+
+            ContextMenuStrip = cms;
+        }
+
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            //System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle} tc {PaintTransparentColor} {ThemeColorSet}");
+            System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle} tc {PaintTransparentColor} {ThemeColorSet}");
 
             if (PaintTransparentColor != Color.Transparent)
                 e.Graphics.DrawFilledRectangle(ClientRectangle,PaintTransparentColor);

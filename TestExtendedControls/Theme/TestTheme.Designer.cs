@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTheme));
-            ExtendedControls.TabStyleSquare tabStyleSquare2 = new ExtendedControls.TabStyleSquare();
+            ExtendedControls.TabStyleSquare tabStyleSquare1 = new ExtendedControls.TabStyleSquare();
             this.labelName = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.busyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -698,7 +698,7 @@
             this.extRichTextBox1.Name = "extRichTextBox1";
             this.extRichTextBox1.ReadOnly = false;
             this.extRichTextBox1.Rtf = "{\\rtf1\\ansi\\ansicpg1252\\deff0\\nouicompat\\deflang2057{\\fonttbl{\\f0\\fnil\\fcharset0 " +
-    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.19041}\\viewkind4\\uc1 \r\n\\par" +
+    "Microsoft Sans Serif;}}\r\n{\\*\\generator Riched20 10.0.26100}\\viewkind4\\uc1 \r\n\\par" +
     "d\\f0\\fs17\\par\r\n}\r\n";
             this.extRichTextBox1.ShowLineCount = false;
             this.extRichTextBox1.Size = new System.Drawing.Size(260, 70);
@@ -907,7 +907,7 @@
             this.extTabControl1.TabNotSelectedColor2 = System.Drawing.Color.Gray;
             this.extTabControl1.TabSelectedColor = System.Drawing.Color.LightGray;
             this.extTabControl1.TabSelectedColor2 = System.Drawing.Color.Gray;
-            this.extTabControl1.TabStyle = tabStyleSquare2;
+            this.extTabControl1.TabStyle = tabStyleSquare1;
             this.extTabControl1.TextNotSelectedColor = System.Drawing.SystemColors.ControlText;
             this.extTabControl1.TextSelectedColor = System.Drawing.SystemColors.ControlText;
             this.extTabControl1.ThemeColors = new System.Drawing.Color[] {
@@ -1261,7 +1261,7 @@
             this.extScrollBar2.MousePressedButtonColor2 = System.Drawing.Color.Red;
             this.extScrollBar2.Name = "extScrollBar2";
             this.extScrollBar2.Size = new System.Drawing.Size(22, 428);
-            this.extScrollBar2.SkinnyStyle = false;
+            this.extScrollBar2.SkinnyStyle = ExtendedControls.ExtScrollBar.ScrollStyle.Normal;
             this.extScrollBar2.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar2.SliderColor2 = System.Drawing.Color.DarkGray;
             this.extScrollBar2.SliderDrawAngle = 90F;
@@ -1441,13 +1441,12 @@
             this.extScrollBar1.MousePressedButtonColor2 = System.Drawing.Color.Red;
             this.extScrollBar1.Name = "extScrollBar1";
             this.extScrollBar1.Size = new System.Drawing.Size(11, 154);
-            this.extScrollBar1.SkinnyStyle = false;
+            this.extScrollBar1.SkinnyStyle = ExtendedControls.ExtScrollBar.ScrollStyle.Normal;
             this.extScrollBar1.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar1.SliderColor2 = System.Drawing.Color.DarkGray;
             this.extScrollBar1.SliderDrawAngle = 90F;
             this.extScrollBar1.SmallChange = 1;
             this.extScrollBar1.TabIndex = 0;
-            this.extScrollBar1.Text = "";
             this.extScrollBar1.ThumbBorderColor = System.Drawing.Color.Yellow;
             this.extScrollBar1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.extScrollBar1.ThumbButtonColor2 = System.Drawing.Color.DarkBlue;
@@ -1703,7 +1702,7 @@
             this.extScrollBar4.MousePressedButtonColor2 = System.Drawing.Color.Red;
             this.extScrollBar4.Name = "extScrollBar4";
             this.extScrollBar4.Size = new System.Drawing.Size(8, 428);
-            this.extScrollBar4.SkinnyStyle = true;
+            this.extScrollBar4.SkinnyStyle = ExtendedControls.ExtScrollBar.ScrollStyle.Normal;
             this.extScrollBar4.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar4.SliderColor2 = System.Drawing.Color.DarkGray;
             this.extScrollBar4.SliderDrawAngle = 90F;
@@ -1834,7 +1833,7 @@
             this.extScrollBar3.MousePressedButtonColor2 = System.Drawing.Color.Red;
             this.extScrollBar3.Name = "extScrollBar3";
             this.extScrollBar3.Size = new System.Drawing.Size(48, 122);
-            this.extScrollBar3.SkinnyStyle = false;
+            this.extScrollBar3.SkinnyStyle = ExtendedControls.ExtScrollBar.ScrollStyle.Normal;
             this.extScrollBar3.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar3.SliderColor2 = System.Drawing.Color.DarkGray;
             this.extScrollBar3.SliderDrawAngle = 90F;
@@ -1899,7 +1898,7 @@
             this.extScrollBar5.MousePressedButtonColor2 = System.Drawing.Color.Red;
             this.extScrollBar5.Name = "extScrollBar5";
             this.extScrollBar5.Size = new System.Drawing.Size(48, 94);
-            this.extScrollBar5.SkinnyStyle = false;
+            this.extScrollBar5.SkinnyStyle = ExtendedControls.ExtScrollBar.ScrollStyle.Normal;
             this.extScrollBar5.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar5.SliderColor2 = System.Drawing.Color.DarkGray;
             this.extScrollBar5.SliderDrawAngle = 90F;
@@ -1991,7 +1990,7 @@
             this.extScrollBar6.MousePressedButtonColor2 = System.Drawing.Color.Red;
             this.extScrollBar6.Name = "extScrollBar6";
             this.extScrollBar6.Size = new System.Drawing.Size(48, 100);
-            this.extScrollBar6.SkinnyStyle = false;
+            this.extScrollBar6.SkinnyStyle = ExtendedControls.ExtScrollBar.ScrollStyle.Normal;
             this.extScrollBar6.SliderColor = System.Drawing.Color.DarkGray;
             this.extScrollBar6.SliderColor2 = System.Drawing.Color.DarkGray;
             this.extScrollBar6.SliderDrawAngle = 90F;

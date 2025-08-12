@@ -206,6 +206,8 @@ namespace TestExtendedControls
 
             extPictureBox1.Render();
 
+            extPanelRollUp1.InstallRightClickThemeColorSetSelector((s) => { s.Theme(Theme.Current,Theme.Current.GetFont); s.Invalidate(); });
+
         }
 
         public void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)

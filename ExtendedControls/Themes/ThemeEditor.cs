@@ -27,7 +27,7 @@ namespace ExtendedControls
 
     public partial class ThemeEditor : Form
     {
-        public Action<Theme> ApplyChanges = null;
+        public Action<Theme> ApplyChanges { get; set; } = null;
 
         public Theme Theme { get; private set; }            // theme is copied and edited in here
 
@@ -224,17 +224,15 @@ namespace ExtendedControls
             numericUpDownMouseSelectedScaling.Value = (decimal)Theme.MouseSelectedScaling;
             numericUpDownDisabledScaling.Value = (decimal)Theme.DisabledScaling;
 
-            checkBoxSkinnyScrollBars.Checked = Theme.SkinnyScrollBars;
-
             this.checkBox_theme_windowframe.CheckedChanged += new System.EventHandler(this.checkBox_theme_windowframe_CheckedChanged);
-            this.checkBoxSkinnyScrollBars.CheckedChanged += new System.EventHandler(this.checkBox_skinnyscrollbars_CheckedChanged);
+            this.comboBoxSkinnyStyle.SelectedIndex = Theme.SkinnyScrollBars ? (Theme.SkinnyScrollBarsHaveButtons ? 2 : 1) : 0;
+            this.comboBoxSkinnyStyle.SelectedIndexChanged += ComboBoxSkinnyStyle_SelectedIndexChanged;
             this.trackBar_theme_opacity.ValueChanged += new System.EventHandler(this.trackBar_theme_opacity_ValueChanged);
             this.numericUpDownDisabledScaling.ValueChanged += new System.EventHandler(this.numericUpDownDisabledScaling_ValueChanged);
             this.numericUpDownMouseSelectedScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseSelectedScaling_ValueChanged);
             this.numericUpDownMouseOverScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseOverScaling_ValueChanged);
             this.numericUpDownDialogFontScaling.ValueChanged += new System.EventHandler(this.numericUpDownDialogFontScaling_ValueChanged);
         }
-
 
         // all call this to change 
         private void Apply()
@@ -382,9 +380,10 @@ namespace ExtendedControls
             Apply();
         }
 
-        private void checkBox_skinnyscrollbars_CheckedChanged(object sender, EventArgs e)
+        private void ComboBoxSkinnyStyle_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Theme.SkinnyScrollBars = checkBoxSkinnyScrollBars.Checked;
+            Theme.SkinnyScrollBars = comboBoxSkinnyStyle.SelectedIndex > 0;
+            Theme.SkinnyScrollBarsHaveButtons = comboBoxSkinnyStyle.SelectedIndex == 2;
             Apply();
         }
 

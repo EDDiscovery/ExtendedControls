@@ -117,9 +117,21 @@ namespace ExtendedControls
             elitegradient.TabControlBack[2] = elitegradient.TabStripBack[2] = Color.Magenta.Multiply(0.4f);
             elitegradient.TabControlBack[3] = elitegradient.TabStripBack[3] = elitebutback;
             elitegradient.Panel1[0] = elitebutback;
-            elitegradient.Panel1[1] = Color.Red.Multiply(0.4f);
-            elitegradient.Panel1[2] = Color.Magenta.Multiply(0.4f);
-            elitegradient.Panel1[3] = elitebutback;
+            elitegradient.Panel1[1] = Color.Red.Multiply(0.2f);
+            elitegradient.Panel1[2] = Color.Magenta.Multiply(0.2f);
+            elitegradient.Panel1[3] = elitebutback.Multiply(0.8f);
+            elitegradient.Panel2[0] = elitebutback;
+            elitegradient.Panel2[1] = Color.Red.Multiply(0.3f);
+            elitegradient.Panel2[2] = Color.Red.Multiply(0.4f);
+            elitegradient.Panel2[3] = elitebutback;
+            elitegradient.Panel3[0] = elitebutback;
+            elitegradient.Panel3[1] = Color.Orange.Multiply(0.3f);
+            elitegradient.Panel3[2] = Color.Orange.Multiply(0.4f);
+            elitegradient.Panel3[3] = elitebutback;
+            elitegradient.Panel4[0] = elitebutback;
+            elitegradient.Panel4[1] = Color.Yellow.Multiply(0.3f);
+            elitegradient.Panel4[2] = Color.Yellow.Multiply(0.4f);
+            elitegradient.Panel4[3] = elitebutback;
             elitegradient.GroupBack[0] = elitebutback;
             elitegradient.GroupBack[1] = Color.Red.Multiply(0.2f);
             elitegradient.GroupBack[2] = Color.Magenta.Multiply(0.2f);
@@ -353,10 +365,10 @@ namespace ExtendedControls
             {
                 themelist.Add(new Theme(elite, "Elite Verdana", "Verdana", 10F));
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant", "Verdana", 10F));
-                themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Skinny Scroll", "Verdana", 10F) { SkinnyScrollBars = true });
+                themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Skinny Scroll", "Verdana", 10F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
                 themelist.Add(new Theme(elite, "Elite Verdana Small", "Verdana", 8F));
-                themelist.Add(new Theme(elite, "Elite Verdana Small Skinny Scroll", "Verdana", 8F) { SkinnyScrollBars = true });
-                themelist.Add(new Theme(elitegradient, "Elite Verdana Small Gradiant Skinny Scroll", "Verdana", 8F) { SkinnyScrollBars = true });
+                themelist.Add(new Theme(elite, "Elite Verdana Small Skinny Scroll", "Verdana", 8F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
+                themelist.Add(new Theme(elitegradient, "Elite Verdana Small Gradiant Skinny Scroll", "Verdana", 8F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
                 themelist.Add(new Theme(elite, "Elite Verdana High DPI", "Verdana", 20F));
                 themelist.Add(new Theme(elite, "Elite Verdana Alt Grid", "Verdana", 10F) { GridCellAltBack = c55 });
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Alt Grid", "Verdana", 10F) { GridCellAltBack = c55 });

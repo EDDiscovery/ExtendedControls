@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils.Win32Constants;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -27,7 +28,14 @@ namespace ExtendedControls
 
         // determine style: System or any other are the two selections
         public FlatStyle FlatStyle { get { return flatstyle; } set { ChangeFlatStyle(value); } }
-        public bool SkinnyStyle { get; set; } = false;           // skinnier look
+
+        public enum ScrollStyle { Normal, Skinny, SkinnyWithButtons};
+        public ScrollStyle SkinnyStyle { get; set; } = ScrollStyle.Normal;
+
+        public void SetStyle(Theme c)
+        {
+            SkinnyStyle = c.SkinnyScrollBars ? (c.SkinnyScrollBarsHaveButtons ? ScrollStyle.SkinnyWithButtons : ScrollStyle.Skinny) : ScrollStyle.Normal;
+        }
 
         public Color BorderColor { get; set; } = Color.White;
 
@@ -147,27 +155,34 @@ namespace ExtendedControls
             }
             else
             {
-                if (sliderarea.Area()>0)      // if could disappear #3692
+                //System.Diagnostics.Debug.WriteLine("Scroll bar redraw ");
+
+                // with both skinny and normal, the slider area needs painting (with or without buttons).
+                // With skinny/buttons we need to paint the client rectangle as we may or may not have buttons, but the slider area is outside the buttons
+                var sliderrect = SkinnyStyle == ScrollStyle.SkinnyWithButtons ? ClientRectangle : sliderarea;
+                if (sliderrect.Area()>0)      // if could disappear #3692
                 {
-                    using (Brush br = new LinearGradientBrush(sliderarea, SliderColor, SliderColor2, SliderDrawAngle))
-                        e.Graphics.FillRectangle(br, sliderarea);
+                    using (Brush br = new LinearGradientBrush(sliderrect, SliderColor, SliderColor2, SliderDrawAngle))
+                        e.Graphics.FillRectangle(br, sliderrect);
                 }
 
                 //System.Diagnostics.Debug.WriteLine($"Scrollbox draw slider {SliderColor}-> {SliderColor2} at {SliderDrawAngle}");
 
-                if (!SkinnyStyle && borderrect.Area()>0)
+                // border only in normal
+                if (SkinnyStyle == ScrollStyle.Normal && borderrect.Area()>0)
                 {
                     using (Pen pr = new Pen(BorderColor))
                         e.Graphics.DrawRectangle(pr, borderrect);
                 }
 
-                //System.Diagnostics.Debug.WriteLine("Scroll bar redraw " + Parent.Parent.Name + " " + e.Graphics.ClipBounds +" " + ClientRectangle + " " + sliderarea + " " + upbuttonarea + " " + downbuttonarea + " " + thumbbuttonarea);
-                if (!SkinnyStyle)
+                // in normal, or skinny with buttons and we are over the scroll area
+                if (SkinnyStyle == ScrollStyle.Normal || (SkinnyStyle == ScrollStyle.SkinnyWithButtons && mouseover != MouseOver.MouseOverNone))
                 {
                     DrawButton(e.Graphics, upbuttonarea, MouseOver.MouseOverUp);
                     DrawButton(e.Graphics, downbuttonarea, MouseOver.MouseOverDown);
                 }
 
+                // draw thumb
                 DrawButton(e.Graphics, thumbbuttonarea, MouseOver.MouseOverThumb);
             }
         }
@@ -187,6 +202,7 @@ namespace ExtendedControls
             bool isthumb = (but == MouseOver.MouseOverThumb);
             Color c1, c2;
             float angle;
+            bool background = true;
 
             if ( isthumb )
             {
@@ -203,38 +219,62 @@ namespace ExtendedControls
                 c1 = mousepressed == but ? MousePressedButtonColor : mouseover == but ? MouseOverButtonColor : ArrowButtonColor;
                 c2 = mousepressed == but ? MousePressedButtonColor2 : mouseover == but ? MouseOverButtonColor2 : ArrowButtonColor2;
                 angle = (but == MouseOver.MouseOverUp) ? ArrowUpDrawAngle : ArrowDownDrawAngle;
+
+                if (SkinnyStyle == ScrollStyle.SkinnyWithButtons)
+                    background = false;
                // System.Diagnostics.Debug.WriteLine($"Scrollbox draw button {c1} {c2} at {angle}");
             }
 
-
-            using (Brush bbck = new LinearGradientBrush(rect, c1, c2, angle))
-                g.FillRectangle(bbck, rect);
+            if (background)
+            {
+                using (Brush bbck = new LinearGradientBrush(rect, c1, c2, angle))
+                    g.FillRectangle(bbck, rect);
+            }
 
             if (Enabled && thumbenable && !isthumb)
             {
-                int hoffset = rect.Width / 3;
-                int voffset = rect.Height / 3;
-                Point arrowpt1 = new Point(rect.X + hoffset, rect.Y + voffset);
-                Point arrowpt2 = new Point(rect.X + rect.Width / 2, rect.Y + rect.Height - voffset);
-                Point arrowpt3 = new Point(rect.X + rect.Width - hoffset, arrowpt1.Y);
+                int sizer = SkinnyStyle == ScrollStyle.Normal ? 5 : 3;      // left in incase we need to do it by style
+                int hoffset = rect.Width * sizer / 16;
+                int voffset = rect.Height * sizer / 16;
 
-                Point arrowpt1c = new Point(arrowpt1.X, arrowpt2.Y);
-                Point arrowpt2c = new Point(arrowpt2.X, arrowpt1.Y);
-                Point arrowpt3c = new Point(arrowpt3.X, arrowpt2.Y);
+                Point arrowpt1d = new Point(rect.X + hoffset, rect.Y + voffset);                        // left top
+                Point arrowpt2d = new Point(rect.X + rect.Width / 2, rect.Y + rect.Height - 1 - voffset);   // bottom mid
+                Point arrowpt3d = new Point(rect.X + rect.Width - hoffset, arrowpt1d.Y);                // right top
+
+                Point arrowpt1u = new Point(arrowpt1d.X, arrowpt2d.Y);      // left bot
+                Point arrowpt2u = new Point(arrowpt2d.X, arrowpt1d.Y);      // top mid
+                Point arrowpt3u = new Point(arrowpt3d.X, arrowpt2d.Y);      // right bot
 
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                using (Pen p2 = new Pen(ForeColor))
+                if (SkinnyStyle == ScrollStyle.SkinnyWithButtons )
                 {
-                    if (but == MouseOver.MouseOverDown)
+                    using (Brush br = new SolidBrush(ForeColor))
                     {
-                        g.DrawLine(p2, arrowpt1, arrowpt2);            // the arrow!
-                        g.DrawLine(p2, arrowpt2, arrowpt3);
+                        if (but == MouseOver.MouseOverDown)
+                        {
+                            g.FillPolygon(br, new System.Drawing.Point[] { arrowpt1d, arrowpt2d, arrowpt3d });
+                        }
+                        else
+                        {
+                            g.FillPolygon(br, new System.Drawing.Point[] { arrowpt1u, arrowpt2u, arrowpt3u });
+                        }
                     }
-                    else
+                }
+                else
+                {
+                    using (Pen p2 = new Pen(ForeColor))
                     {
-                        g.DrawLine(p2, arrowpt1c, arrowpt2c);            // the arrow!
-                        g.DrawLine(p2, arrowpt2c, arrowpt3c);
+                        if (but == MouseOver.MouseOverDown)
+                        {
+                            g.DrawLine(p2, arrowpt1d, arrowpt2d);            // the arrow!
+                            g.DrawLine(p2, arrowpt2d, arrowpt3d);
+                        }
+                        else
+                        {
+                            g.DrawLine(p2, arrowpt1u, arrowpt2u);            // the arrow!
+                            g.DrawLine(p2, arrowpt2u, arrowpt3u);
+                        }
                     }
                 }
 
@@ -303,10 +343,11 @@ namespace ExtendedControls
                     Invalidate();
                 }
             }
-            else if (mouseover != MouseOver.MouseOverNone)
+            else if ( mouseover != MouseOver.MouseOverBar )
             {
-                mouseover = MouseOver.MouseOverNone;
-                Invalidate();
+                mouseover = MouseOver.MouseOverBar;
+                if ( SkinnyStyle == ScrollStyle.SkinnyWithButtons )
+                    Invalidate();
             }
         }
 
@@ -475,7 +516,7 @@ namespace ExtendedControls
             if (scrollheight * 2 > ClientRectangle.Height / 3)                // don't take up too much of the slider with the buttons
                 scrollheight = ClientRectangle.Height / 6;
 
-            if (SkinnyStyle)
+            if (SkinnyStyle == ScrollStyle.Skinny)
             {
                 upbuttonarea = downbuttonarea = Rectangle.Empty;
             }
@@ -489,7 +530,6 @@ namespace ExtendedControls
                 sliderarea.Y += scrollheight;
                 sliderarea.Height -= 2 * scrollheight;
             }
-
 
             borderrect = ClientRectangle;
             borderrect.Width--; borderrect.Height--;
@@ -597,7 +637,7 @@ namespace ExtendedControls
                 MousePressedButtonColor2 = ThumbButtonColor2.Multiply(t.MouseSelectedScaling);
                 
                 FlatStyle = t.ButtonFlatStyle;
-                SkinnyStyle = t.SkinnyScrollBars;
+                SetStyle(t);
 
                 // purposely not theming the arrow directions using theme direction values, they are fixed
                 // not themeing the width by skinny scroll bar, its up to a parent like PanelDataGridViewScroll to do that
@@ -610,7 +650,7 @@ namespace ExtendedControls
 
         #region Variables
 
-        enum MouseOver { MouseOverNone, MouseOverUp, MouseOverDown, MouseOverThumb };
+        enum MouseOver { MouseOverNone, MouseOverUp, MouseOverDown, MouseOverThumb , MouseOverBar };
         private MouseOver mouseover = MouseOver.MouseOverNone;
         private MouseOver mousepressed = MouseOver.MouseOverNone;
         private bool thumbmove = false;

@@ -242,7 +242,6 @@ namespace ExtendedControls
             this.numericUpDownDialogFontScaling = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label27 = new System.Windows.Forms.Label();
-            this.checkBoxSkinnyScrollBars = new System.Windows.Forms.CheckBox();
             this.panel_themeTransparentColourKey = new System.Windows.Forms.Panel();
             this.buttonFontChange = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -250,6 +249,8 @@ namespace ExtendedControls
             this.label37 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
+            this.comboBoxSkinnyStyle = new System.Windows.Forms.ComboBox();
+            this.label46 = new System.Windows.Forms.Label();
             this.checkBoxDarkMode = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.contextMenuStripColours = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -2407,7 +2408,6 @@ namespace ExtendedControls
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label27);
-            this.groupBox1.Controls.Add(this.checkBoxSkinnyScrollBars);
             this.groupBox1.Controls.Add(this.checkBox_theme_windowframe);
             this.groupBox1.Controls.Add(this.panel_themeTransparentColourKey);
             this.groupBox1.Controls.Add(this.buttonFontChange);
@@ -2423,6 +2423,8 @@ namespace ExtendedControls
             this.groupBox1.Controls.Add(this.label37);
             this.groupBox1.Controls.Add(this.label34);
             this.groupBox1.Controls.Add(this.label33);
+            this.groupBox1.Controls.Add(this.comboBoxSkinnyStyle);
+            this.groupBox1.Controls.Add(this.label46);
             this.groupBox1.Location = new System.Drawing.Point(3, 525);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(1142, 139);
@@ -2438,16 +2440,6 @@ namespace ExtendedControls
             this.label27.Size = new System.Drawing.Size(118, 13);
             this.label27.TabIndex = 11;
             this.label27.Text = "Transparent Colour Key";
-            // 
-            // checkBoxSkinnyScrollBars
-            // 
-            this.checkBoxSkinnyScrollBars.AutoSize = true;
-            this.checkBoxSkinnyScrollBars.Location = new System.Drawing.Point(400, 28);
-            this.checkBoxSkinnyScrollBars.Name = "checkBoxSkinnyScrollBars";
-            this.checkBoxSkinnyScrollBars.Size = new System.Drawing.Size(111, 17);
-            this.checkBoxSkinnyScrollBars.TabIndex = 2;
-            this.checkBoxSkinnyScrollBars.Text = "Skinny Scroll Bars";
-            this.checkBoxSkinnyScrollBars.UseVisualStyleBackColor = true;
             // 
             // panel_themeTransparentColourKey
             // 
@@ -2517,6 +2509,29 @@ namespace ExtendedControls
             this.label33.Size = new System.Drawing.Size(99, 13);
             this.label33.TabIndex = 6;
             this.label33.Text = "Dialog Font Scaling";
+            // 
+            // comboBoxSkinnyStyle
+            // 
+            this.comboBoxSkinnyStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSkinnyStyle.FormattingEnabled = true;
+            this.comboBoxSkinnyStyle.Items.AddRange(new object[] {
+            "Normal",
+            "Skinny",
+            "Skinny with buttons"});
+            this.comboBoxSkinnyStyle.Location = new System.Drawing.Point(491, 28);
+            this.comboBoxSkinnyStyle.Name = "comboBoxSkinnyStyle";
+            this.comboBoxSkinnyStyle.Size = new System.Drawing.Size(137, 21);
+            this.comboBoxSkinnyStyle.TabIndex = 10;
+            this.comboBoxSkinnyStyle.SelectionChangeCommitted += new System.EventHandler(this.comboBox_ButtonStyle_SelectionChangeCommitted);
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(384, 30);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(78, 13);
+            this.label46.TabIndex = 6;
+            this.label46.Text = "Scroll Bar Style";
             // 
             // checkBoxDarkMode
             // 
@@ -2823,6 +2838,7 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_themeTabControlPageBack;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.CheckBox checkBoxApplyOnEachChange;
-        private System.Windows.Forms.CheckBox checkBoxSkinnyScrollBars;
+        private System.Windows.Forms.ComboBox comboBoxSkinnyStyle;
+        private System.Windows.Forms.Label label46;
     }
 }

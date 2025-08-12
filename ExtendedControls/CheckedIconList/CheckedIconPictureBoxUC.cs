@@ -1101,7 +1101,7 @@ namespace ExtendedControls
             MousePressedButtonColor = ThumbButtonColor.Multiply(t.MouseSelectedScaling);
             MousePressedButtonColor = ThumbButtonColor2.Multiply(t.MouseSelectedScaling);
             sb.FlatStyle = t.ButtonFlatStyle;
-            sb.SkinnyStyle = t.SkinnyScrollBars;
+            sb.SetStyle(t);
 
             // checkbox for us
             CheckBoxColor = t.CheckBoxBack;

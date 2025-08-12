@@ -39,6 +39,7 @@ namespace ExtendedControls
         public Color SliderButtonArrowColor { get; set; } = Color.White;
 
         public bool SliderSkinnyTheme { get; set; } = false;
+        public bool SliderSkinnyThemeWithButtons { get; set; } = false;
 
         public Color MouseOverSliderButtonColor { get; set; } = Color.Red;
         public Color MouseOverSliderButtonColor2 { get; set; } = Color.Red;
@@ -73,7 +74,7 @@ namespace ExtendedControls
             ScrollBar.MouseOverButtonColor2 = this.MouseOverSliderButtonColor2;
             ScrollBar.MousePressedButtonColor = this.PressedSliderButtonColor;
             ScrollBar.MousePressedButtonColor2 = this.PressedSliderButtonColor2;
-            ScrollBar.SkinnyStyle = this.SliderSkinnyTheme;
+            ScrollBar.SkinnyStyle = SliderSkinnyTheme ? (SliderSkinnyThemeWithButtons ? ExtScrollBar.ScrollStyle.SkinnyWithButtons : ExtScrollBar.ScrollStyle.Skinny) : ExtScrollBar.ScrollStyle.Normal;
             ScrollBar.Width = ExtendedControls.Theme.ScrollBarWidth(f, this.SliderSkinnyTheme);
         }
 

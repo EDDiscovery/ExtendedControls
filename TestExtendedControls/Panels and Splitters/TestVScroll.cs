@@ -23,6 +23,10 @@ namespace TestExtendedControls
             theme.SetThemeByName("Elite Verdana");
             Theme.Current.WindowsFrame = true;
             Theme.Current.ApplyStd(this);
+            extScrollBar1.SkinnyStyle = ExtScrollBar.ScrollStyle.SkinnyWithButtons;
+            extScrollBar1.Width = 16;
+            extScrollBar3.SkinnyStyle = ExtScrollBar.ScrollStyle.Skinny;
+            extScrollBar1.Width = 16;
         }
 
         private void extScrollBar2_ValueChanged(object sender, EventArgs e)

@@ -477,14 +477,23 @@ namespace ExtendedControls
 
         // scroll bar apperance
         public bool SkinnyScrollBars { get; set; } = false;
+        public bool SkinnyScrollBarsHaveButtons { get; set; } = false;
         public int ScrollBarWidth() { return ScrollBarWidth(GetFont,SkinnyScrollBars); }
         public static int ScrollBarWidth(Font f, bool skinny) 
         {
-            int mult = f.GetHeight() < 17 ? 10 : 8;
-            int basic = f.ScaleScrollbar();
-            int size = skinny ? basic * mult / 16 : basic;
-            //System.Diagnostics.Debug.WriteLine($"Scroll bar {f.GetHeight()} basic {basic} mult {mult} skinny {skinny} size {size}");
-            return size; 
+            int stdsize = f.ScaleScrollbar();
+            int mult = f.GetHeight() < 17 ? 11 : 10;
+            if (skinny)
+            {
+                int size = stdsize * mult / 16;
+               // System.Diagnostics.Debug.WriteLine($"Scroll bar Skinny {f.GetHeight()} stdsize {stdsize} mult {mult} size {size}");
+                return size;
+            }
+            else
+            {
+               // System.Diagnostics.Debug.WriteLine($"Scroll bar Normal {f.GetHeight()} stdsize {stdsize}");
+                return stdsize;
+            }
         }
 
         // Scaling and direction values, exported using these names
@@ -684,9 +693,9 @@ namespace ExtendedControls
 
         public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
         {
-            // System.Diagnostics.Debug.WriteLine($"Themer apply standard {ctrl.Name} Font {GetFont}");
+             System.Diagnostics.Debug.WriteLine($"Themer apply standard {ctrl.Name} {ctrl.GetType().Name} Font {GetFont}");
             var ret = Apply(ctrl, GetFont, nowindowsborderoverride);
-            //System.Diagnostics.Debug.WriteLine($"Finish standard themeing to {ctrl.Name}");
+            System.Diagnostics.Debug.WriteLine($"Finish standard themeing to {ctrl.Name}");
             return ret;
         }
 
@@ -986,6 +995,35 @@ namespace ExtendedControls
         {
             // convert, can create, using the Theme() constructor to leave new colours transparent if the json does not have it
 
+            // so the original theme for gradients did not define the other panel contents, so detect if its set up like currently, and copy
+            if (jo.Contains("Panel1") && jo.Contains("Panel2") && jo.Contains("Panel3") && jo.Contains("Panel4"))
+            {
+                var p1 = jo["Panel1"].Array();
+
+                if (p1[0].Str() == "#202020" && p1[1].Str() == "#660000" && p1.Array()[2].Str() == "#660066" && p1[3].Str() == "#202020")
+                {
+                    int count = 0;
+                    for (int i = 2; i <= 4; i++)
+                    {
+                        var array = jo[$"Panel{i}"].Array();
+                        if (array[0].Str() == "Black" && array[0].Str() == "Black" && array[0].Str() == "Black" && array[0].Str() == "Black")
+                            count++;
+                    }
+
+                    if ( count == 3)
+                    {
+                        for(int i = 2; i <= 4; i++)
+                        {
+                            var array = jo[$"Panel{i}"].Array();
+                            array[0] = p1[0];
+                            array[1] = p1[1];
+                            array[2] = p1[2];
+                            array[3] = p1[3];
+                        }
+                    }
+                }
+            }
+
             Object jconv = jo.ToObjectProtected(typeof(Theme), false, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance, new Theme(),
                                     null, altnames ? "AltFmt" : "Std", 
                                     (tt, o) => { if (o is string) return System.Drawing.ColorTranslator.FromHtml((string)o); else return Color.Orange; 
@@ -996,6 +1034,7 @@ namespace ExtendedControls
                 Theme ret = (Theme)jconv;
                 if (usename!=null)
                     ret.Name = usename;
+
                 ret.FillInNewOptions(emitdebug);     // fill in and complain about any missing colours
                 return ret;
             }

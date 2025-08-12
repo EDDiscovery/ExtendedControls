@@ -449,7 +449,7 @@ namespace ExtendedControls
                 ScrollBar.MousePressedButtonColor = ScrollBar.ThumbButtonColor.Multiply(t.MouseSelectedScaling);
                 ScrollBar.MousePressedButtonColor2 = ScrollBar.ThumbButtonColor.Multiply(t.MouseSelectedScaling);
                 ScrollBar.FlatStyle = FlatStyle.Popup;
-                ScrollBar.SkinnyStyle = t.SkinnyScrollBars;
+                ScrollBar.SetStyle(t);
 
                 int newwidth = t.ScrollBarWidth();
                 if (ScrollBar.Width != newwidth)
