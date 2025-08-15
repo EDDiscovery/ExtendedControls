@@ -19,9 +19,8 @@ namespace TestExtendedControls
         {
             theme = new ThemeList();
             theme.LoadBaseThemes();
-            theme.SetThemeByName("Elite Verdana");
+            theme.SetThemeByName("Elite Verdana Small Gradiant Skinny Scroll");
             Theme.Current.WindowsFrame = true;
-            Theme.Current.FontSize = 15;
             
             InitializeComponent();
             tabStrip1.ImageList = new Bitmap[] {
@@ -51,6 +50,7 @@ namespace TestExtendedControls
             };
 
             tabStrip1.EmptyColor = Color.Red;
+            tabStrip1.ThemeColorSet = 3;
             tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             tabStrip1.SetControlText("Ctext1");
             tabStrip1.OnPopOut += (t, i) => System.Diagnostics.Debug.WriteLine("Command pop out" + t + " " + i);
@@ -205,6 +205,7 @@ namespace TestExtendedControls
 
             listBox1.Items.AddRange(lv.ToArray());
 
+            Theme.Current.ApplyStd(this);
         }
 
         private Control OnCreateTab(ExtendedControls.TabStrip t, int no)

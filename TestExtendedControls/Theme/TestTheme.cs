@@ -22,19 +22,6 @@ namespace TestExtendedControls
 
         public TestTheme()
         {
-            // Check the CopyPropertiesField
-            T1 c = new T1() { a = 20, array = new int[] { 1, 2, 3 } };
-            T1 d = new T1();
-            d.CopyPropertiesFields(c);
-            c.array[0] = 1000;
-            System.Diagnostics.Debug.Assert(d.array[0] == 1);
-
-
-
-
-
-
-
             InitializeComponent();
 
             Theme loadtheme = Theme.LoadFile(@"c:\code\example.theme");
@@ -206,9 +193,51 @@ namespace TestExtendedControls
 
             extPictureBox1.Render();
 
-            extPanelRollUp1.InstallRightClickThemeColorSetSelector((s) => { s.Theme(Theme.Current,Theme.Current.GetFont); s.Invalidate(); });
+            extPanelGradientFill1.ContextMenuStrip = ExtPanelGradientFill.RightClickThemeColorSetSelector((s) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Theme color {s}");
+                extPanelGradientFill1.ThemeColorSet = s;
+                extPanelGradientFill1.Theme(Theme.Current, Theme.Current.GetFont);
+            });
 
+            extFlowLayoutPanelTop.ContextMenuStrip = ExtPanelGradientFill.RightClickThemeColorSetSelector((s) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Theme color {s}");
+                extFlowLayoutPanelTop.ThemeColorSet = s;
+                extFlowLayoutPanelTop.Theme(Theme.Current, Theme.Current.GetFont);
+            });
+
+            extPanelRollUp1.ContextMenuStrip = ExtPanelGradientFill.RightClickThemeColorSetSelector((s) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Theme color {s}");
+                extPanelRollUp1.ThemeColorSet = s;
+                extPanelRollUp1.Theme(Theme.Current, Theme.Current.GetFont);
+            });
+
+            extPanelGradientFill2.ContextMenuStrip = ExtPanelGradientFill.RightClickThemeColorSetSelector((s) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Theme color {s}");
+                extPanelGradientFill2.ThemeColorSet = s;
+                extPanelGradientFill2.Theme(Theme.Current, Theme.Current.GetFont);
+            });
+
+            contextMenuStripTabs = ExtPanelGradientFill.RightClickThemeColorSetSelector((s) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Theme color {s}");
+                extTabControl1.ThemeColorSet = s;
+                extTabControl1.Theme(Theme.Current, Theme.Current.GetFont);
+            },"Default");
+
+            tabStrip1.ContextMenuStrip = ExtPanelGradientFill.RightClickThemeColorSetSelector((s) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"Theme color {s}");
+                tabStrip1.ThemeColorSet = s;
+                tabStrip1.Theme(Theme.Current, Theme.Current.GetFont);
+                //tabStrip1.Refresh();
+            }, "Default");
         }
+
+        ContextMenuStrip contextMenuStripTabs;
 
         public void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
         {
@@ -354,6 +383,16 @@ namespace TestExtendedControls
         private void extButton9_Click(object sender, EventArgs e)
         {
             extButton10.Visible = !extButton10.Visible;     // flick a flow button on/off
+        }
+
+        private void extTabControl1_MouseDown(object sender, MouseEventArgs e)
+        {
+            contextMenuStripTabs.Show(extTabControl1.PointToScreen(e.Location));
+        }
+
+        private void TestTheme_MouseDown(object sender, MouseEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Click on form");
         }
     }
 }

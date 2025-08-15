@@ -362,6 +362,8 @@ namespace ExtendedControls
 
         //-----------------
 
+        const int PanelsSets = 8;
+
         [JsonCustomFormatArray("AltFmt", "Std")]
         public Color[] Panel1 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
         [JsonCustomFormatArray("AltFmt", "Std")]
@@ -370,9 +372,21 @@ namespace ExtendedControls
         public Color[] Panel3 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
         [JsonCustomFormatArray("AltFmt", "Std")]
         public Color[] Panel4 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
-        public float[] PanelGradientDirection { get; set; } = new float[4] { 0,0,0,0 };
-        public Color[] GetPanelSet(int i) { return i == 4 ? Panel4 : i == 3 ? Panel3 : i == 2 ? Panel2 : Panel1; }
-        public float GetPanelDirection(int i) { return i == 4 ? PanelGradientDirection[3] : i == 3 ? PanelGradientDirection[2] : i == 2 ? PanelGradientDirection[1] : PanelGradientDirection[0]; }
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel5 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel6 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel7 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+        [JsonCustomFormatArray("AltFmt", "Std")]
+        public Color[] Panel8 { get; set; } = new Color[4] { Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent };
+
+        [JsonCustomArrayLength(PanelsSets)]     // previously, only 4 entries, force using QuickJSON 2.9 to min size
+        public float[] PanelGradientDirection { get; set; } = new float[PanelsSets];        // all set to zero, default
+
+        // i = 1 to N
+        public Color[] GetPanelSet(int i) { return i == 8 ? Panel8 : i == 7 ? Panel7 : i == 6 ? Panel6 : i == 5 ? Panel5 : i == 4 ? Panel4 : i == 3 ? Panel3 : i == 2 ? Panel2 : Panel1; }
+        public float GetPanelDirection(int i) { return PanelGradientDirection[i - 1]; }
 
         //-----------------
 
@@ -660,8 +674,40 @@ namespace ExtendedControls
             TabControlBorder = tabcontrolborder; TabControlBorder2 = tabcontrolborder.Multiply(scalingsecondcolour);      // darker colour
             TabControlPageBack = form;
 
+            // default colours for panel1 is form
             for (int i = 0; i < Panel1.Length; i++)
-                Panel1[i] = Panel2[i] = Panel3[i] = Panel4[i] = Form;
+                Panel1[i] = form;
+
+            // the rest are set to gentle flow of colours
+
+            Panel2[0] = textboxbackcolor;
+            Panel2[1] = Color.Red.Multiply(0.3f);
+            Panel2[2] = Color.Red.Multiply(0.4f);
+            Panel2[3] = textboxbackcolor;
+            Panel3[0] = textboxbackcolor;
+            Panel3[1] = Color.Orange.Multiply(0.3f);
+            Panel3[2] = Color.Orange.Multiply(0.4f);
+            Panel3[3] = textboxbackcolor;
+            Panel4[0] = textboxbackcolor;
+            Panel4[1] = Color.Yellow.Multiply(0.3f);
+            Panel4[2] = Color.Yellow.Multiply(0.4f);
+            Panel4[3] = textboxbackcolor;
+            Panel5[0] = textboxbackcolor;
+            Panel5[1] = Color.Magenta.Multiply(0.3f);
+            Panel5[2] = Color.Magenta.Multiply(0.4f);
+            Panel5[3] = textboxbackcolor;
+            Panel6[0] = textboxbackcolor;
+            Panel6[1] = Color.Green.Multiply(0.3f);
+            Panel6[2] = Color.Green.Multiply(0.4f);
+            Panel6[3] = textboxbackcolor;
+            Panel7[0] = textboxbackcolor;
+            Panel7[1] = Color.Blue.Multiply(0.3f);
+            Panel7[2] = Color.Blue.Multiply(0.4f);
+            Panel7[3] = textboxbackcolor;
+            Panel8[0] = textboxbackcolor;
+            Panel8[1] = Color.Gold.Multiply(0.3f);
+            Panel8[2] = Color.Gold.Multiply(0.4f);
+            Panel8[3] = textboxbackcolor;
 
             SPanelColor = spanelcolor; TransparentColorKey = transparentcolorkey;
             TextBoxBorderStyle = textboxborderstyle;
@@ -985,7 +1031,7 @@ namespace ExtendedControls
 
             var jo = JToken.FromObject(this, false, membersearchflags: System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public,
                                         setname: altnames ? "AltFmt" : "Std",
-                                        customconvert: (o) => {
+                                        customconverter: (mi,o) => {
                                             return JToken.CreateToken(System.Drawing.ColorTranslator.ToHtml((Color)o)); }).Object();
             return jo;
         }
@@ -995,33 +1041,22 @@ namespace ExtendedControls
         {
             // convert, can create, using the Theme() constructor to leave new colours transparent if the json does not have it
 
-            // so the original theme for gradients did not define the other panel contents, so detect if its set up like currently, and copy
-            if (jo.Contains("Panel1") && jo.Contains("Panel2") && jo.Contains("Panel3") && jo.Contains("Panel4"))
+            bool lackingthemepanelcolours = false;
+
+            // so the original theme for gradients did not define the other panel from 2 onwards, so detect if its set up like currently
+
+            int count = 0;
+            for (int i = 2; i <= PanelsSets; i++)       // all 2..7 must be black
             {
-                var p1 = jo["Panel1"].Array();
+                var array = jo[$"Panel{i}"].Array();
+                // if not there, or all black
+                if (array == null || (array[0].Str() == "Black" && array[0].Str() == "Black" && array[0].Str() == "Black" && array[0].Str() == "Black"))
+                    count++;
+            }
 
-                if (p1[0].Str() == "#202020" && p1[1].Str() == "#660000" && p1.Array()[2].Str() == "#660066" && p1[3].Str() == "#202020")
-                {
-                    int count = 0;
-                    for (int i = 2; i <= 4; i++)
-                    {
-                        var array = jo[$"Panel{i}"].Array();
-                        if (array[0].Str() == "Black" && array[0].Str() == "Black" && array[0].Str() == "Black" && array[0].Str() == "Black")
-                            count++;
-                    }
-
-                    if ( count == 3)
-                    {
-                        for(int i = 2; i <= 4; i++)
-                        {
-                            var array = jo[$"Panel{i}"].Array();
-                            array[0] = p1[0];
-                            array[1] = p1[1];
-                            array[2] = p1[2];
-                            array[3] = p1[3];
-                        }
-                    }
-                }
+            if (count == PanelsSets - 1)    // all are black
+            {
+                lackingthemepanelcolours = true;
             }
 
             Object jconv = jo.ToObjectProtected(typeof(Theme), false, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance, new Theme(),
@@ -1032,6 +1067,23 @@ namespace ExtendedControls
             if (jconv is Theme)
             {
                 Theme ret = (Theme)jconv;
+
+                if ( lackingthemepanelcolours ) // if reset panel colours 2 to 8
+                {
+                    ThemeList tl = new ThemeList();
+                    tl.LoadBaseThemes();
+                    Theme r = tl.FindTheme("Elite Verdana Gradiant");       // load a set with gradients
+                    for (int i = 2; i <= PanelsSets; i++)
+                    {
+                        var ps = ret.GetPanelSet(i);
+                        var ss = r.GetPanelSet(i);
+                        ps[0] = ss[0];
+                        ps[1] = ss[1];
+                        ps[2] = ss[2];
+                        ps[3] = ss[3];
+                    }
+                }
+
                 if (usename!=null)
                     ret.Name = usename;
 
@@ -1051,6 +1103,7 @@ namespace ExtendedControls
         // load file
         public static Theme LoadFile(string pathname, string usethisname = null, bool altnames = true, bool emitdebug = false)
         {
+
             JToken jo = pathname.ReadJSONFile();
             if ( jo != null )
             {
@@ -1137,10 +1190,9 @@ namespace ExtendedControls
                 count += Replace(emitdebug, nameof(GroupBack), Form, i);
                 count += Replace(emitdebug, nameof(TabControlBack), Form, i);
                 count += Replace(emitdebug, nameof(TabStripBack), Form, i);
-                count += Replace(emitdebug, nameof(Panel1), Form, i);
-                count += Replace(emitdebug, nameof(Panel2), Form, i);
-                count += Replace(emitdebug, nameof(Panel3), Form, i);
-                count += Replace(emitdebug, nameof(Panel4), Form, i);
+
+                for( int j =  1; j <= PanelsSets;j++)
+                    count += Replace(emitdebug, $"Panel{j}", Form, i);
             }
 
             // verify we have no transparent colours left due to missing above

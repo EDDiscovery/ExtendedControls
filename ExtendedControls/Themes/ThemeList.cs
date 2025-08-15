@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace ExtendedControls
 {
@@ -46,11 +47,10 @@ namespace ExtendedControls
             themelist.Add(wd);
 
             Color hgb = Color.FromArgb(255, 10, 40, 10);
-            Color c55 = Color.FromArgb(255, 55, 55, 55);
             Color c64 = Color.FromArgb(255, 64, 64, 64);
+            Color c55 = Color.FromArgb(255, 55, 55, 55);
             Color c48 = Color.FromArgb(255, 48,48,48);
-            Color elitebutback = Color.FromArgb(255, 32, 32, 32);
-            Color elitebutbackb = Color.FromArgb(255, 64, 64, 64);
+            Color c32 = Color.FromArgb(255, 32, 32, 32);
 
             var orangetheme = new Theme("Orange Delight", Color.Black,
                 c48, Color.Orange, Color.DarkOrange, Theme.ButtonstyleGradient, // button
@@ -79,19 +79,19 @@ namespace ExtendedControls
                 // GridBorderBack, GridBorderText
                 Color.FromArgb(255, 176, 115, 0), Color.Black,  
                 // GridCellBack, GridCellAltBack, GridCellText, GridCellAltText, GridHightLightBack
-                elitebutback, elitebutback, Color.Orange, Color.Orange, hgb, 
+                c32, c32, Color.Orange, Color.Orange, hgb, 
                 // GridBorderLines
                 Color.DarkOrange, 
                 // GridSliderBack (+2), GridScrollArrowBack and GridScrollButtonBack (2), GridArrow 
-                elitebutback, Color.Orange, Color.DarkOrange, 
+                c32, Color.Orange, Color.DarkOrange, 
                 // KnownSystemColor, UnknownSystemColor
                 Color.Red, Color.White,
                 // TextBlockBackColor, TextBoxForeColor, TextBlockHighLightColor, TextBoxSuccessColor
-                elitebutback, Color.Orange, Color.Red, Color.Green,
+                c32, Color.Orange, Color.Red, Color.Green,
                 // TextBoxBorderColor (+2), 
                 c64, Theme.TextboxborderstyleColor,
                 // TextBoxSliderBack (+2), TextBoxScrollArrow/ComboBoxScrollArrow, TextBoxScrollArrowBack (+2) and TextBoxScrollButtonBack (+2)
-                elitebutback, Color.Orange, Color.DarkOrange, 
+                c32, Color.Orange, Color.DarkOrange, 
                 // CheckBoxText/CheckBoxBack (+2), CheckBoxTick, CheckBoxButtonTickedBack (+2)
                 Color.Orange, Color.FromArgb(255, 65, 33, 33), c64,
                 // MenuBack, MenuFore, MenuSelectedBack, MenuSelectedText
@@ -111,31 +111,12 @@ namespace ExtendedControls
                 // FontName, FontSize, FontStyle
                 "Euro Caps", 12F, FontStyle.Regular);
 
+
             var elitegradient = new Theme(elite, "Elite EuroCaps Gradient");
-            elitegradient.TabControlBack[0] = elitegradient.TabStripBack[0] = elitebutback;
-            elitegradient.TabControlBack[1] = elitegradient.TabStripBack[1] = Color.Red.Multiply(0.4f);
-            elitegradient.TabControlBack[2] = elitegradient.TabStripBack[2] = Color.Magenta.Multiply(0.4f);
-            elitegradient.TabControlBack[3] = elitegradient.TabStripBack[3] = elitebutback;
-            elitegradient.Panel1[0] = elitebutback;
-            elitegradient.Panel1[1] = Color.Red.Multiply(0.2f);
-            elitegradient.Panel1[2] = Color.Magenta.Multiply(0.2f);
-            elitegradient.Panel1[3] = elitebutback.Multiply(0.8f);
-            elitegradient.Panel2[0] = elitebutback;
-            elitegradient.Panel2[1] = Color.Red.Multiply(0.3f);
-            elitegradient.Panel2[2] = Color.Red.Multiply(0.4f);
-            elitegradient.Panel2[3] = elitebutback;
-            elitegradient.Panel3[0] = elitebutback;
-            elitegradient.Panel3[1] = Color.Orange.Multiply(0.3f);
-            elitegradient.Panel3[2] = Color.Orange.Multiply(0.4f);
-            elitegradient.Panel3[3] = elitebutback;
-            elitegradient.Panel4[0] = elitebutback;
-            elitegradient.Panel4[1] = Color.Yellow.Multiply(0.3f);
-            elitegradient.Panel4[2] = Color.Yellow.Multiply(0.4f);
-            elitegradient.Panel4[3] = elitebutback;
-            elitegradient.GroupBack[0] = elitebutback;
-            elitegradient.GroupBack[1] = Color.Red.Multiply(0.2f);
-            elitegradient.GroupBack[2] = Color.Magenta.Multiply(0.2f);
-            elitegradient.GroupBack[3] = elitebutback;
+            elitegradient.GroupBack[0] = elitegradient.Panel1[0] = elitegradient.TabControlBack[0] = elitegradient.TabStripBack[0] = c32;
+            elitegradient.GroupBack[1] = elitegradient.Panel1[1] = elitegradient.TabControlBack[1] = elitegradient.TabStripBack[1] = Color.Red.Multiply(0.4f);
+            elitegradient.GroupBack[2] =elitegradient.Panel1[2] = elitegradient.TabControlBack[2] = elitegradient.TabStripBack[2] = Color.Magenta.Multiply(0.4f);
+            elitegradient.GroupBack[3] = elitegradient.Panel1[3] = elitegradient.TabControlBack[3] = elitegradient.TabStripBack[3] = c32;
             elitegradient.ListBoxBackColor = elitegradient.GroupBack[1];
             elitegradient.ListBoxBackColor2 = elitegradient.GroupBack[2];
             elitegradient.ComboBoxBackColor = elitegradient.GroupBack[1];

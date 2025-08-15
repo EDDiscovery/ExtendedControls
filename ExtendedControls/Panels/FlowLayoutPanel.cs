@@ -58,7 +58,8 @@ namespace ExtendedControls
                 ThemeColors = t.GetPanelSet(ThemeColorSet);
                 GradientDirection = t.GetPanelDirection(ThemeColorSet);
             }
-            
+
+            Invalidate();
             return ChildrenThemed;
         }
     }

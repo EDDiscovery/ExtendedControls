@@ -199,6 +199,27 @@ namespace ExtendedControls
             InitColourPatch(panel_themePanel44, "Panel 4 Back 4 Colour", np[nameof(Theme.Panel4)], 3);
             InitGradient(buttonPanelGradient4, "Panel 4 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 3);
 
+            InitColourPatch(panel_themePanel51, "Panel 5 Back Colour", np[nameof(Theme.Panel5)], 0);
+            InitColourPatch(panel_themePanel52, "Panel 5 Back 2 Colour", np[nameof(Theme.Panel5)], 1);
+            InitColourPatch(panel_themePanel53, "Panel 5 Back 3 Colour", np[nameof(Theme.Panel5)], 2);
+            InitColourPatch(panel_themePanel54, "Panel 5 Back 4 Colour", np[nameof(Theme.Panel5)], 3);
+            InitGradient(buttonPanelGradient5, "Panel 5 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 4);
+            InitColourPatch(panel_themePanel61, "Panel 6 Back Colour", np[nameof(Theme.Panel6)], 0);
+            InitColourPatch(panel_themePanel62, "Panel 6 Back 2 Colour", np[nameof(Theme.Panel6)], 1);
+            InitColourPatch(panel_themePanel63, "Panel 6 Back 3 Colour", np[nameof(Theme.Panel6)], 2);
+            InitColourPatch(panel_themePanel64, "Panel 6 Back 4 Colour", np[nameof(Theme.Panel6)], 3);
+            InitGradient(buttonPanelGradient6, "Panel 6 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 5);
+            InitColourPatch(panel_themePanel71, "Panel 7 Back Colour", np[nameof(Theme.Panel7)], 0);
+            InitColourPatch(panel_themePanel72, "Panel 7 Back 2 Colour", np[nameof(Theme.Panel7)], 1);
+            InitColourPatch(panel_themePanel73, "Panel 7 Back 3 Colour", np[nameof(Theme.Panel7)], 2);
+            InitColourPatch(panel_themePanel74, "Panel 7 Back 4 Colour", np[nameof(Theme.Panel7)], 3);
+            InitGradient(buttonPanelGradient7, "Panel 7 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 6);
+            InitColourPatch(panel_themePanel81, "Panel 8 Back Colour", np[nameof(Theme.Panel8)], 0);
+            InitColourPatch(panel_themePanel82, "Panel 8 Back 2 Colour", np[nameof(Theme.Panel8)], 1);
+            InitColourPatch(panel_themePanel83, "Panel 8 Back 3 Colour", np[nameof(Theme.Panel8)], 2);
+            InitColourPatch(panel_themePanel84, "Panel 8 Back 4 Colour", np[nameof(Theme.Panel8)], 3);
+            InitGradient(buttonPanelGradient8, "Panel 8 Gradient Direction in degrees", np[nameof(Theme.PanelGradientDirection)], 7);
+
             InitColourPatch(panel_chart1, "Chart Series 1", np[nameof(Theme.Chart1)]);
             InitColourPatch(panel_chart2, "Chart Series 2", np[nameof(Theme.Chart2)]);
             InitColourPatch(panel_chart3, "Chart Series 3", np[nameof(Theme.Chart3)]);

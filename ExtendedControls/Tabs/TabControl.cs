@@ -56,32 +56,34 @@ namespace ExtendedControls
         // If you set it to Color.Transparent, it goes to normal painting
         public Color PaintTransparentColor { get { return transparency; } set { transparency = value; Invalidate(); } }
 
-        private Color transparency = Color.Transparent;
-
         public int MinimumTabWidth { set { SendMessage(0x1300 + 49, IntPtr.Zero, (IntPtr)value); } }
 
-        // Auto Invalidates
-        // style is Flat, Popup (gradient) and System
-        public FlatStyle FlatStyle { get { return flatstyle; } set { if ( value != flatstyle ) ChangeFlatStyle(value); } }
+        // Auto Invalidates, style is Flat, Popup (gradient) and System
+        public FlatStyle FlatStyle { get { return flatstyle; } set { if ( value != flatstyle ) SetStyle(value); } }
 
-        // attach a tab style class which determines the shape and formatting.
-        public TabStyleCustom TabStyle { get { return tabstyle; } set { if (value != tabstyle ) ChangeTabStyle(value); } }
+        // Auto Invalidates attach a tab style class which determines the shape and formatting.
+        public TabStyleCustom TabStyle { get { return tabstyle; } set { if (value != tabstyle ) SetStyle(null,value); } }
 
-        // change both
-
-        public void SetStyle(FlatStyle fsstyle, TabStyleCustom tabstylep)
+        // change both, or either
+        public void SetStyle(FlatStyle? fsstyle, TabStyleCustom tabstylep = null)
         {
-            if (fsstyle != flatstyle || tabstylep != tabstyle)
+            if (tabstylep != null)
             {
-                flatstyle = fsstyle;
                 tabstyle = tabstylep;
-                if (AutoForceUpdate)
-                    ForceUpdate();
+                Invalidate();
+            }
+
+            if ( fsstyle.HasValue && fsstyle.Value != FlatStyle)
+            {
+                flatstyle = fsstyle.Value;
+
+                if (flatstyle == FlatStyle.System)
+                    SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);
+                else
+                    SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
+                Invalidate();
             }
         }
-
-        // this does the ForceUpdate() call when things change.  But its slow, may be better to do manually
-        public bool AutoForceUpdate { get; set; } = true;           
 
         // reordering 
         public bool AllowDragReorder { get; set; } = false;
@@ -94,7 +96,8 @@ namespace ExtendedControls
 
         #endregion
 
-        #region Initialisation
+        #region Initialisation and Helpers
+
         public ExtTabControl() : base()
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -143,6 +146,39 @@ namespace ExtendedControls
             }
 
             return -1;
+        }
+
+        // called by OnFontChanged.
+        // You should only need to call this if 1) you defined your own tab control font and 2) you scale the control (say by changing parent font)
+        // setting your own TC font stops the OnFontChanged being called for this class, and its at that point this fix needs to be applied
+        public void ForceSizeUpdate()
+        {
+            System.Diagnostics.Debug.WriteLine($"Tabcontrol ForceSizeUpdate: {Font}  {Font.Height}");
+
+            // go back to system
+            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);      
+
+            //// in anything but fixed, we set the itemsize and the minimum tab width based on Font
+            if (SizeMode != TabSizeMode.Fixed)
+            {
+                int minsize = CalculateMinimumTabWidth();           // set the minimum size
+                var size = new Size(minsize, Math.Max(16, Font.Height + 4));
+                System.Diagnostics.Debug.WriteLine($" .. tab size {minsize} itemsize {size}");
+                ItemSize = size;       // set the item height, and minimum width in anything else but fixed
+                MinimumTabWidth = minsize;
+            }
+
+            // if in multiline, it goes hairwire if its gets bigger. Clear multiline, set multiline. Winforms recreates the handle with and the sizing resets
+            if (Multiline)
+            {
+                Multiline = false;
+                Multiline = true;
+            }
+
+            if (FlatStyle != FlatStyle.System)
+                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
+
+            Invalidate();
         }
 
         #endregion
@@ -202,8 +238,6 @@ namespace ExtendedControls
         #region CustomPainting
 
         // we always draw now the tab background.  If you want it transparent, set the tab back colours to the transparent key
-
-        const int topborder = 2;
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -295,98 +329,27 @@ namespace ExtendedControls
             outerrectangle.Dispose();
         }
 
-#endregion
+        #endregion
 
-        #region ChangeStyles
-
-        private void ChangeTabStyle(TabStyleCustom fs)
-        {
-            tabstyle = fs;
-            if (AutoForceUpdate)
-                ForceUpdate();
-        }
-
-        private void ChangeFlatStyle(FlatStyle fs)
-        {
-            // set style back to system mode so that if we are going from flat->system we will force it there.
-            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);
-            flatstyle = fs;
-            if (AutoForceUpdate)
-                ForceUpdate();
-        }
-
-        // turns out not needed, keep for reference
-        // we intercept this as this occurs during Form Font scaling, and thus themeing, and force an update. The Font changed is not called.
-        //protected override void ScaleControl(SizeF factor, BoundsSpecified specified)
-        //{
-        //    System.Diagnostics.Debug.WriteLine($"Tabcontrol ScaleControl.1 : {factor} {specified} = {Bounds} ml {Multiline} Font {Font}");
-        //    base.ScaleControl(factor, specified);
-        //    System.Diagnostics.Debug.WriteLine($"Tabcontrol ScaleControl.2 : {factor} {specified} = {Bounds} ml {Multiline} Font {Font}");
-        //    ForceUpdate();
-        //}
+        #region Reactors to events
 
         protected override void OnFontChanged(EventArgs e)
         {
             base.OnFontChanged(e);
-            //System.Diagnostics.Debug.WriteLine($"Tabcontrol Font Change: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
-            if (AutoForceUpdate)
-                ForceUpdate();
-        }
+            System.Diagnostics.Debug.WriteLine($"Tabcontrol OnFontChange: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
 
-        public void ForceUpdate()
-        {
-            if (Parent == null)         // no parent, not attached yet
-                return;
-
-            //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update In: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
-
-            bool systemmode = FlatStyle == FlatStyle.System;
-
-            // Put it back into system mode. if we don't put it back into system draw, it seems to never resize the tabs
-            if (!systemmode)
-                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);      // go back to system
-
-            // in anything but fixed, we set the itemsize and the minimum tab width
-            if (SizeMode != TabSizeMode.Fixed)
-            {
-                int minsize = CalculateMinimumTabWidth();           // set the minimum size
-                ItemSize = new Size(minsize, Math.Max(16,Font.Height + 4));       // set the item height, and minimum width in anything else but fixed
-                MinimumTabWidth = minsize;
-            }
-
-            // if in multiline, it goes hairwire if its gets bigger. Clear multiline, set multiline. Winforms recreates the handle with and the sizing resets
-            if (Multiline)
-            {
-                Multiline = false;
-                Multiline = true;
-            }
-
-            // put it back into user draw if applicable
-            if (!systemmode)
-                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
-
-            Invalidate();
-            //System.Diagnostics.Debug.WriteLine($"Tabcontrol Force Update Finish: flat {flatstyle} size {SizeMode} Multiline {Multiline} Font {Font}");
-        }
-
-        private IntPtr SendMessage(int msg, IntPtr wparam, IntPtr lparam)
-        {
-            Message message = Message.Create(this.Handle, msg, wparam, lparam);
-            this.WndProc(ref message);
-            return message.Result;
+            ForceSizeUpdate();
         }
 
         #endregion
 
-        #region Helpers
+        #region Themer
 
         public bool Theme(Theme t, Font fnt)
         {
-            AutoForceUpdate = false;        // make it slightly better
-
             if ( t.IsButtonSystemStyle) // not system
             {
-                FlatStyle = FlatStyle.System;
+                SetStyle(FlatStyle.System, new TabStyleAngled());   
             }
             else
             {
@@ -410,7 +373,6 @@ namespace ExtendedControls
                 TabMouseOverColor2 = TabNotSelectedColor2.Multiply(t.MouseOverScaling);
 
                 TabDisabledScaling = t.DisabledScaling;
-                SetStyle(t.ButtonFlatStyle, new TabStyleAngled());
 
                 if (ThemeColorSet > 0)
                 {
@@ -422,18 +384,34 @@ namespace ExtendedControls
                     ThemeColors = t.TabControlBack;
                     TabBackgroundGradientDirection = t.TabControlBackGradientDirection;
                 }
+
+                SetStyle(t.ButtonFlatStyle, new TabStyleAngled());
             }
 
-            ForceUpdate();
+            Invalidate();
             return true;
         }
+
+        #endregion
+
+
+        #region Helpers
+        private IntPtr SendMessage(int msg, IntPtr wparam, IntPtr lparam)
+        {
+            Message message = Message.Create(this.Handle, msg, wparam, lparam);
+            this.WndProc(ref message);
+            return message.Result;
+        }
+
         #endregion
 
         #region Members
         private FlatStyle flatstyle = FlatStyle.System;
         private TabStyleCustom tabstyle = new TabStyleSquare();     // change for the shape of tabs.
         private int mouseover = -1;                                 // where the mouse if hovering
-        int lasttabclickedinside = -1;                              // LastTabClicked is persistent.. this is wiped by leaving the control
+        private int lasttabclickedinside = -1;                              // LastTabClicked is persistent.. this is wiped by leaving the control
+        private Color transparency = Color.Transparent;
+        const int topborder = 2;
 
         #endregion
     }

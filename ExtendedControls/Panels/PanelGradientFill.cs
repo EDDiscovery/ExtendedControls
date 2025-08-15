@@ -15,7 +15,6 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace ExtendedControls
 {
@@ -25,8 +24,8 @@ namespace ExtendedControls
     // -> ExtPanelDropDown
     // -> ExtPanelNoChildThemed
     // -> ExtPanelResizer
+    // -> TabStrip
   
-
     public class ExtPanelGradientFill : Panel, IThemeable, ITranslatableControl
     {
         public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
@@ -57,26 +56,48 @@ namespace ExtendedControls
         }
 
         // Add a right click menu for configuring the colour set
-        public void InstallRightClickThemeColorSetSelector(Action<ExtPanelGradientFill> callback)
+        public static ContextMenuStrip RightClickThemeColorSetSelector(Action<int> callback, string defaultselection = null)
         {
             ContextMenuStrip cms = new ContextMenuStrip();
+            RightClickThemeColorSetSelector(cms.Items, callback, defaultselection);
+            return cms;
+        }
 
-            cms.Items.AddRange(new System.Windows.Forms.ToolStripItem[]
+        public static void RightClickThemeColorSetSelector(ToolStripItemCollection cms, Action<int> callback, string defaultselection = null)
+        {
+            ToolStripMenuItem i;
+
+            if (defaultselection != null)
             {
-                new System.Windows.Forms.ToolStripMenuItem() {Text="Panel Color Set 1",},
-                new System.Windows.Forms.ToolStripMenuItem() {Text="Panel Color Set 2"},
-                new System.Windows.Forms.ToolStripMenuItem() {Text="Panel Color Set 3"},
-                new System.Windows.Forms.ToolStripMenuItem() {Text="Panel Color Set 4"},
-                //new System.Windows.Forms.ToolStripMenuItem() {Text="Default".Tx()},
-            });
+                i = new System.Windows.Forms.ToolStripMenuItem() { Text = defaultselection };
+                i.Click += (s, e) => { callback?.Invoke(0); };
+                cms.Add(i);
+            }
 
-            cms.Items[0].Click += (s, e) => { ThemeColorSet = 1; callback?.Invoke(this); };
-            cms.Items[1].Click += (s, e) => { ThemeColorSet = 2; callback?.Invoke(this); };
-            cms.Items[2].Click += (s, e) => { ThemeColorSet = 3; callback?.Invoke(this); };
-            cms.Items[3].Click += (s, e) => { ThemeColorSet = 4; callback?.Invoke(this); };
-            //cms.Items[4].Click += (s, e) => { ThemeColorSet = 0; UserSetThemeColorSet?.Invoke(this); };
-
-            ContextMenuStrip = cms;
+            i = new System.Windows.Forms.ToolStripMenuItem() { Text = $"Panel Colour".Tx() + " 1" };
+            i.Click += (s, e) => { callback?.Invoke(1); };
+            cms.Add(i);
+            i = new System.Windows.Forms.ToolStripMenuItem() { Text = $"Panel Colour".Tx() + " 2" };
+            i.Click += (s, e) => { callback?.Invoke(2); };
+            cms.Add(i);
+            i = new System.Windows.Forms.ToolStripMenuItem() { Text = $"Panel Colour".Tx() + " 3" };
+            i.Click += (s, e) => { callback?.Invoke(3); };
+            cms.Add(i);
+            i = new System.Windows.Forms.ToolStripMenuItem() { Text = $"Panel Colour".Tx() + " 4" };
+            i.Click += (s, e) => { callback?.Invoke(4); };
+            cms.Add(i);
+            i = new System.Windows.Forms.ToolStripMenuItem() { Text = $"Panel Colour".Tx() + " 5" };
+            i.Click += (s, e) => { callback?.Invoke(5); };
+            cms.Add(i);
+            i = new System.Windows.Forms.ToolStripMenuItem() { Text = $"Panel Colour".Tx() + " 6" };
+            i.Click += (s, e) => { callback?.Invoke(6); };
+            cms.Add(i);
+            i = new System.Windows.Forms.ToolStripMenuItem() { Text = $"Panel Colour".Tx() + " 7" };
+            i.Click += (s, e) => { callback?.Invoke(7); };
+            cms.Add(i);
+            i = new System.Windows.Forms.ToolStripMenuItem() { Text = $"Panel Colour".Tx() + " 8" };
+            i.Click += (s, e) => { callback?.Invoke(8); };
+            cms.Add(i);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -132,6 +153,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
+            System.Diagnostics.Debug.WriteLine($"Theme GradientFill {Name} {ThemeColorSet}");
             if (ThemeColorSet > 0)
             {
                 ThemeColors = t.GetPanelSet(ThemeColorSet);
@@ -139,7 +161,11 @@ namespace ExtendedControls
             }
 
             // interfaces in this version of c# can't be virtual, but we want to give the derived class a go if required
-            return ThemeDerived(t,fnt);
+            var ret = ThemeDerived(t, fnt);
+
+            Invalidate();
+
+            return ret;
         }
 
         protected override void OnResize(EventArgs eventargs)

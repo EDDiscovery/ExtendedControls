@@ -16,12 +16,21 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ExtendedControls
 {
-    public partial class TabStrip : UserControl, IThemeable
+    public partial class TabStrip : Panel, IThemeable
     {
+        // ThemeColors only used if ThemeColourSet>=0.  
+        public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
+        // -1 = system, 0 use ThemeColours but don't set when calling Theme(), else 1,2,3,4.. one of the Panel colour sets
+        public int ThemeColorSet { get; set; } = -1;
+        public float GradientDirection { get; set; } = 0;
+
+        // if you set this to a colour, the background becomes that colour, for transparency purposes.
+        // If you set it to Color.Transparent, it goes to normal
+        public Color PaintTransparentColor { get { return panelStrip.PaintTransparentColor; } set { panelStrip.PaintTransparentColor = value; panelStrip.Invalidate(); } }
+
         public enum StripModeType { StripTop, StripBottom, ListSelection, StripTopOpen };
         public StripModeType StripMode { get { return stripmode; } set { ChangeStripMode(value); } }
         public Image EmptyPanelIcon { get; set; } = Properties.Resources.Stop;
@@ -29,14 +38,9 @@ namespace ExtendedControls
         public int[] ListSelectionItemSeparators { get; set; }   // any separators for ListSelection
         public string[] TextList { get; set; }       // text associated - tooltips or text on list selection
         public object[] TagList { get; set; }      // tags for them..
-        public bool ShowPopOut { get; set; }= true; // Pop out icon show
+        public bool ShowPopOut { get; set; } = true; // Pop out icon show
         public Color SelectedBackColor { get; set; } = Color.Transparent;   // if set, show selected with a back colour
         public override Color ForeColor { get => base.ForeColor; set { base.ForeColor = value; labelControlText.ForeColor = value; labelTitle.ForeColor = value; } }
-
-        // ThemeColors only used if ThemeColourSet>=0.  
-        public Color[] ThemeColors { get { return panelStrip.ThemeColors; } set { panelStrip.ThemeColors = value; } }
-        // -1 = system, 0 use tabstrip theme colours, else use panel set 1,2,3,4.. 
-        public int ThemeColorSet { get; set; } = 0;
 
         // if you set this, when empty, a panel will appear with the color selected
         public Color EmptyColor { get { return emptypanelcolor; } set { emptypanelcolor = value; Invalidate(); } }
@@ -54,15 +58,11 @@ namespace ExtendedControls
         public Color DropDownMouseOverSliderButtonColor { get; set; } = Color.Red;
         public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
 
-        // if you set this to a colour, the tab strip background becomes that colour, for transparency purposes.
-        // If you set it to Color.Transparent, it goes to normal
-        public Color PaintTransparentColor { get { return panelStrip.PaintTransparentColor; } set { panelStrip.PaintTransparentColor = value; Invalidate(); } }
-
         public bool DropDownFitImagesToItemHeight { get; set; } = false;
 
         // If non null, a help icon ? appears on the right. When clicked, you get a callback.  P is the lower bottom of the ? icon in screen co-ords
 
-        public Action<Point> HelpAction { get; set; }  = null;
+        public Action<Point> HelpAction { get; set; } = null;
 
         public static Image HelpIcon { get { return global::ExtendedControls.Properties.Resources.help; } }
 
@@ -71,31 +71,161 @@ namespace ExtendedControls
         public Control CurrentControl;
 
         // events
-        public Func<TabStrip, int, Control,bool> AllowClose;     // called if a panel is being closed, true to allow it
+        public Func<TabStrip, int, Control, bool> AllowClose;     // called if a panel is being closed, true to allow it
         public Action<TabStrip, Control> OnRemoving;        // called due to ChangePanel or Close
-        public Func<TabStrip, int,Control> OnCreateTab;     // called due to  Create or due to ChangePanel
+        public Func<TabStrip, int, Control> OnCreateTab;     // called due to  Create or due to ChangePanel
         public Action<TabStrip, Control, int> OnPostCreateTab;  // called due to ChangePanel 
         public Action<TabStrip, int> OnPopOut;              // when the popout button clicked
         public Action<TabStrip> OnTitleClick;               // when the title is clicked
         public Action<TabStrip> OnControlTextClick;         // when the control text is clicked
 
+        private ExtPanelGradientFill panelStrip;
+        private System.Windows.Forms.Label labelTitle;
+        private System.Windows.Forms.Panel pimageSelectedIcon;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Panel panelArrowRight;
+        private System.Windows.Forms.Panel panelArrowLeft;
+        private ExtendedControls.ExtButtonDrawn pimagePopOutIcon;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemPopOut;
+        private System.Windows.Forms.Label labelControlText;
+        private ExtButtonDrawn pimageListSelection;
+        private ExtButtonDrawn extButtonDrawnHelp;
+
+        private System.ComponentModel.IContainer components = null;
+
         public TabStrip()
         {
-            InitializeComponent();
-            labelControlText.Text = "";
-            labelControlText.MouseDown += (s1, e1) => OnControlTextClick?.Invoke(this);
-            labelTitle.Text = "?";
-            labelTitle.MouseDown += (s1, e1) => OnTitleClick?.Invoke(this);
+            this.components = new System.ComponentModel.Container();
+
+            toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripMenuItemPopOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemPopOut.Click += new System.EventHandler(this.toolStripMenuItemPopOut_Click);
+
+            pimageSelectedIcon = new Panel();
+            this.pimageSelectedIcon.BackColor = System.Drawing.Color.Transparent;
+            this.pimageSelectedIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pimageSelectedIcon.Location = new System.Drawing.Point(3, 3);
+            this.pimageSelectedIcon.Size = new System.Drawing.Size(24, 24);
+            this.pimageSelectedIcon.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.pimageSelectedIcon.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+
+            labelTitle = new System.Windows.Forms.Label();
+            this.labelTitle.AutoSize = true;
+            this.labelTitle.Text = "?";
+            this.labelTitle.Location = new System.Drawing.Point(33, 8);
+            this.labelTitle.Size = new System.Drawing.Size(43, 13);
+            this.labelTitle.MouseDown += (s1, e1) => OnTitleClick?.Invoke(this);
+            this.labelTitle.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.labelTitle.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+
+            labelControlText = new System.Windows.Forms.Label();
+            this.labelControlText.AutoSize = true;
+            this.labelControlText.Location = new System.Drawing.Point(97, 8);
+            this.labelControlText.Text = "";
+            this.labelControlText.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.labelControlText.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            this.labelControlText.MouseDown += (s1, e1) => OnControlTextClick?.Invoke(this);
+
+            pimagePopOutIcon = new ExtButtonDrawn();
+            this.pimagePopOutIcon.BackColor = System.Drawing.Color.Transparent;
+            this.pimagePopOutIcon.Image = global::ExtendedControls.Properties.Resources.popout;
+            this.pimagePopOutIcon.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
+            this.pimagePopOutIcon.Location = new System.Drawing.Point(161, 3);
+            this.pimagePopOutIcon.MouseOverColor = System.Drawing.Color.White;
+            this.pimagePopOutIcon.Size = new System.Drawing.Size(24, 24);
+            this.toolTip1.SetToolTip(this.pimagePopOutIcon, "Click to pop out the current panel into another window");
+            this.pimagePopOutIcon.Click += new System.EventHandler(this.panelPopOut_Click);
+            this.pimagePopOutIcon.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.pimagePopOutIcon.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+
+            pimageListSelection = new ExtButtonDrawn();
+            this.pimageListSelection.BackColor = System.Drawing.Color.Transparent;
+            this.pimageListSelection.Image = global::ExtendedControls.Properties.Resources.panels;
+            this.pimageListSelection.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
+            this.pimageListSelection.Location = new System.Drawing.Point(210, 3);
+            this.pimageListSelection.Size = new System.Drawing.Size(24, 24);
+            this.pimageListSelection.Click += new System.EventHandler(this.drawnPanelListSelection_Click);
+            this.pimageListSelection.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.pimageListSelection.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+
+            extButtonDrawnHelp = new ExtButtonDrawn();
+            this.extButtonDrawnHelp.Visible = false;
+            this.extButtonDrawnHelp.BackColor = System.Drawing.Color.Transparent;
+            this.extButtonDrawnHelp.Dock = System.Windows.Forms.DockStyle.Right;
+            this.extButtonDrawnHelp.Image = global::ExtendedControls.Properties.Resources.help;
+            this.extButtonDrawnHelp.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.None;
+            this.extButtonDrawnHelp.Size = new System.Drawing.Size(24, 30);
+            this.extButtonDrawnHelp.Click += new System.EventHandler(this.extButtonDrawnHelp_Click);
+            this.extButtonDrawnHelp.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.extButtonDrawnHelp.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+
+            panelArrowRight = new Panel();
+            this.panelArrowRight.BackColor = System.Drawing.Color.Transparent;
+            this.panelArrowRight.BackgroundImage = global::ExtendedControls.Properties.Resources.ArrowRight;
+            this.panelArrowRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panelArrowRight.Size = new System.Drawing.Size(12, 20);
+            this.toolTip1.SetToolTip(this.panelArrowRight, "Click to scroll the list right");
+            this.panelArrowRight.Visible = false;
+            this.panelArrowRight.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelArrowRight_MouseDown);
+            this.panelArrowRight.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.panelArrowRight.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            this.panelArrowRight.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelArrowRight_MouseUp);
+
+            panelArrowLeft = new Panel();
+            this.panelArrowLeft.BackColor = System.Drawing.Color.Transparent;
+            this.panelArrowLeft.BackgroundImage = global::ExtendedControls.Properties.Resources.ArrowLeft;
+            this.panelArrowLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panelArrowLeft.Location = new System.Drawing.Point(272, 4);
+            this.panelArrowLeft.Size = new System.Drawing.Size(12, 20);
+            this.toolTip1.SetToolTip(this.panelArrowLeft, "Click to scroll the list left");
+            this.panelArrowLeft.Visible = false;
+            this.panelArrowLeft.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelArrowLeft_MouseDown);
+            this.panelArrowLeft.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.panelArrowLeft.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            this.panelArrowLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelArrowLeft_MouseUp);
+
+            this.panelStrip = new ExtendedControls.ExtPanelGradientFill();
+            this.panelStrip.Name = Name + "_panelstrip";
+            this.panelStrip.ChildrenThemed = true;
+            this.panelStrip.Controls.Add(this.labelControlText);
+            this.panelStrip.Controls.Add(this.pimageListSelection);
+            this.panelStrip.Controls.Add(this.extButtonDrawnHelp);
+            this.panelStrip.Controls.Add(this.pimagePopOutIcon);
+            this.panelStrip.Controls.Add(this.panelArrowRight);
+            this.panelStrip.Controls.Add(this.panelArrowLeft);
+            this.panelStrip.Controls.Add(this.pimageSelectedIcon);
+            this.panelStrip.Controls.Add(this.labelTitle);
+            this.panelStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelStrip.Location = new System.Drawing.Point(0, 322);
+            this.panelStrip.Size = new System.Drawing.Size(562, 30);
+            this.panelStrip.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.panelStrip.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+
+            contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripMenuItemPopOut});
+            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 26);
+            this.contextMenuStrip1.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.contextMenuStrip1_Closed);
+            this.contextMenuStrip1.Opened += new System.EventHandler(this.contextMenuStrip1_Opened);
+
+            this.Controls.Add(this.panelStrip);
+            this.toolStripMenuItemPopOut.Text = "Pop Out";
+            this.toolStripMenuItemPopOut.Click += new System.EventHandler(this.toolStripMenuItemPopOut_Click);
+            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.TabStrip_Layout);
+            this.Resize += new System.EventHandler(this.TabStrip_Resize);
 
             autofadeinouttimer.Tick += AutoFadeInOutTick;
             autorepeat.Interval = 200;
             autorepeat.Tick += Autorepeat_Tick;
-            pimageSelectedIcon.BackgroundImage = EmptyPanelIcon;
-            pimageSelectedIcon.BackgroundImageLayout = ImageLayout.Stretch;
-            pimagePopOutIcon.Visible = pimageListSelection.Visible = false;
-            extButtonDrawnHelp.Visible = false;
+        }
 
-        //    SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         #region Public interface
@@ -110,7 +240,7 @@ namespace ExtendedControls
         {
             if (i >= 0 && i < ImageList.Length)
             {
-                if ( Close() )
+                if (Close())
                 {
                     Create(i);
                     PostCreate();
@@ -178,7 +308,7 @@ namespace ExtendedControls
 
         public void PostCreate()        // ask for post create phase
         {
-            if (CurrentControl != null && OnPostCreateTab != null )
+            if (CurrentControl != null && OnPostCreateTab != null)
             {
                 OnPostCreateTab(this, CurrentControl, selectedindex);       // now tab is in control set, give it a chance to configure itself and set its name
             }
@@ -193,22 +323,6 @@ namespace ExtendedControls
         #endregion
 
         #region Common 
-
-        // paint the UC
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            base.OnPaintBackground(e);
-            if (EmptyColor != Color.Empty && CurrentControl == null)       // this seems the best way to display the non used
-            {
-                Rectangle area = panelStrip.Dock == DockStyle.Top ? new Rectangle(0, panelStrip.Height, ClientRectangle.Width, ClientRectangle.Height - panelStrip.Height) : new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height - panelStrip.Height);
-
-                using (Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(area, EmptyColor, EmptyColor.Multiply(EmptyColorScaling), DropDownGradient))      // reuse drop down gradient
-                {
-                    e.Graphics.FillRectangle(b, area);
-                }
-            }
-        }
 
         private void AddControlToView(Control c)
         {
@@ -264,7 +378,7 @@ namespace ExtendedControls
         {
             autofadeinouttimer.Stop();
 
-            if (tdm == TabDisplayMode.Compressed )      // if in compressed..
+            if (tdm == TabDisplayMode.Compressed)      // if in compressed..
             {
                 autofadetabmode = TabDisplayMode.Expanded;
                 autofadeinouttimer.Interval = 350;
@@ -277,7 +391,7 @@ namespace ExtendedControls
         {
             autofadeinouttimer.Stop();
 
-            if (tdm == TabDisplayMode.Expanded )      // if in expanded
+            if (tdm == TabDisplayMode.Expanded)      // if in expanded
             {
                 autofadetabmode = TabDisplayMode.Compressed;
                 autofadeinouttimer.Interval = 750;
@@ -292,7 +406,7 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("{0} {1} Fade {2}" , Environment.TickCount, Name, tobevisible);
 
-            if (tdm != autofadetabmode )
+            if (tdm != autofadetabmode)
             {
                 tdm = autofadetabmode;
                 Display();
@@ -305,6 +419,7 @@ namespace ExtendedControls
 
         void Display()
         {
+            System.Diagnostics.Debug.WriteLine("TabStrip display");
             if (ImageList == null)
                 return;
 
@@ -323,7 +438,7 @@ namespace ExtendedControls
                         BackgroundImageLayout = ImageLayout.Stretch,
                         Visible = false,
                         Size = pimageSelectedIcon.Size,
-                       
+
                     };
 
                     imagepanels[inp].Click += TabIconClicked;
@@ -375,7 +490,7 @@ namespace ExtendedControls
                     imagepanels[tabno].Visible = false;
 
                 // don't trust extButtonDrawnHelp.Visible - we all know that does not get set until its redrawn.  use another decision to decide on width
-                int stoppoint = DisplayRectangle.Width - Spacing - (CurrentControl!=null && HelpAction!=null ? extButtonDrawnHelp.Width : 0); // stop here
+                int stoppoint = DisplayRectangle.Width - Spacing - (CurrentControl != null && HelpAction != null ? extButtonDrawnHelp.Width : 0); // stop here
 
                 int spaceforarrowsandoneicon = panelArrowLeft.Width + Spacing + imagepanels[0].Width + Spacing + panelArrowRight.Width;
 
@@ -425,7 +540,7 @@ namespace ExtendedControls
                 }
                 else
                 {
-                    if (ShowPopOut && showselectionicon )
+                    if (ShowPopOut && showselectionicon)
                     {
                         showselectionicon = false;
                         showpopouticon = true;
@@ -499,7 +614,7 @@ namespace ExtendedControls
             autorepeat.Stop();
 
             int newpos = tabdisplaystart + autorepeatdir;
-            if ( newpos >= 0 && newpos <= imagepanels.Length - tabsvisibleonscreen)
+            if (newpos >= 0 && newpos <= imagepanels.Length - tabsvisibleonscreen)
             {
                 tabdisplaystart = newpos;
                 Display();
@@ -592,7 +707,7 @@ namespace ExtendedControls
 
         private void contextMenuStrip1_Opened(object sender, EventArgs e)
         {
-            if ( tdm == TabDisplayMode.Expanded )       // if in expanded, go to context menu to hold.. if in a mode such as ExpandedFixed, don't change
+            if (tdm == TabDisplayMode.Expanded)       // if in expanded, go to context menu to hold.. if in a mode such as ExpandedFixed, don't change
                 tdm = TabDisplayMode.ExpandedContextMenu;
         }
 
@@ -630,7 +745,8 @@ namespace ExtendedControls
 
             if (CurrentControl != null)             // we give the CurrentControl only the chance to theme
                 t.UpdateControls(CurrentControl, fnt, 100, false);
-            
+
+            panelStrip.Invalidate();
             return false;   // eveything we own is themed in here.. no children
         }
 

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTheme));
-            ExtendedControls.TabStyleSquare tabStyleSquare1 = new ExtendedControls.TabStyleSquare();
+            ExtendedControls.TabStyleSquare tabStyleSquare2 = new ExtendedControls.TabStyleSquare();
             this.labelName = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.busyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -666,17 +666,18 @@
             this.tabStrip2.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip2.EmptyColorScaling = 0.5F;
             this.tabStrip2.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip2.EmptyPanelIcon")));
+            this.tabStrip2.GradientDirection = 0F;
             this.tabStrip2.HelpAction = null;
             this.tabStrip2.ImageList = null;
             this.tabStrip2.ListSelectionItemSeparators = null;
-            this.tabStrip2.Location = new System.Drawing.Point(225, 747);
+            this.tabStrip2.Location = new System.Drawing.Point(507, 747);
             this.tabStrip2.Name = "tabStrip2";
             this.tabStrip2.PaintTransparentColor = System.Drawing.Color.Transparent;
             this.tabStrip2.PressedDropDownSliderButtonColor = System.Drawing.Color.Yellow;
             this.tabStrip2.SelectedBackColor = System.Drawing.Color.Transparent;
             this.tabStrip2.SelectedIndex = -1;
             this.tabStrip2.ShowPopOut = true;
-            this.tabStrip2.Size = new System.Drawing.Size(197, 87);
+            this.tabStrip2.Size = new System.Drawing.Size(129, 87);
             this.tabStrip2.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip2.TabIndex = 24;
             this.tabStrip2.TagList = null;
@@ -755,6 +756,7 @@
             this.tabStrip1.EmptyColor = System.Drawing.Color.Empty;
             this.tabStrip1.EmptyColorScaling = 0.5F;
             this.tabStrip1.EmptyPanelIcon = ((System.Drawing.Image)(resources.GetObject("tabStrip1.EmptyPanelIcon")));
+            this.tabStrip1.GradientDirection = 0F;
             this.tabStrip1.HelpAction = null;
             this.tabStrip1.ImageList = null;
             this.tabStrip1.ListSelectionItemSeparators = null;
@@ -765,7 +767,7 @@
             this.tabStrip1.SelectedBackColor = System.Drawing.Color.Transparent;
             this.tabStrip1.SelectedIndex = -1;
             this.tabStrip1.ShowPopOut = true;
-            this.tabStrip1.Size = new System.Drawing.Size(197, 87);
+            this.tabStrip1.Size = new System.Drawing.Size(459, 87);
             this.tabStrip1.StripMode = ExtendedControls.TabStrip.StripModeType.StripTop;
             this.tabStrip1.TabIndex = 24;
             this.tabStrip1.TagList = null;
@@ -884,7 +886,6 @@
             // extTabControl1
             // 
             this.extTabControl1.AllowDragReorder = false;
-            this.extTabControl1.AutoForceUpdate = true;
             this.extTabControl1.Controls.Add(this.tabPage1);
             this.extTabControl1.Controls.Add(this.tabPage2);
             this.extTabControl1.Controls.Add(this.tabPage3);
@@ -907,7 +908,7 @@
             this.extTabControl1.TabNotSelectedColor2 = System.Drawing.Color.Gray;
             this.extTabControl1.TabSelectedColor = System.Drawing.Color.LightGray;
             this.extTabControl1.TabSelectedColor2 = System.Drawing.Color.Gray;
-            this.extTabControl1.TabStyle = tabStyleSquare1;
+            this.extTabControl1.TabStyle = tabStyleSquare2;
             this.extTabControl1.TextNotSelectedColor = System.Drawing.SystemColors.ControlText;
             this.extTabControl1.TextSelectedColor = System.Drawing.SystemColors.ControlText;
             this.extTabControl1.ThemeColors = new System.Drawing.Color[] {
@@ -916,6 +917,7 @@
         System.Drawing.SystemColors.Control,
         System.Drawing.SystemColors.Control};
             this.extTabControl1.ThemeColorSet = 0;
+            this.extTabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.extTabControl1_MouseDown);
             // 
             // tabPage1
             // 
@@ -2036,6 +2038,7 @@
             this.Name = "TestTheme";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form1";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TestTheme_MouseDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);

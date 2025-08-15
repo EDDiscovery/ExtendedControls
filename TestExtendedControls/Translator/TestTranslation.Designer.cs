@@ -62,7 +62,6 @@
             // extTabControl1
             // 
             this.extTabControl1.AllowDragReorder = false;
-            this.extTabControl1.AutoForceUpdate = true;
             this.extTabControl1.Controls.Add(this.tabPage1);
             this.extTabControl1.Controls.Add(this.tabPage2);
             this.extTabControl1.FlatStyle = System.Windows.Forms.FlatStyle.System;

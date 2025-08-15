@@ -35,8 +35,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuickJSON, Version=2.8.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\RJKJSoft.QuickJSON.2.8.0\lib\net48\QuickJSON.dll</HintPath>
+    <Reference Include="QuickJSON, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RJKJSoft.QuickJSON.2.9.0\lib\net48\QuickJSON.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,22 +54,22 @@
   <ItemGroup>
     <Compile Include="ConfigurableForm\ConfigurableEntriesCreate.cs" />
     <Compile Include="ConfigurableForm\ConfigurableEntriesFromString.cs" />
-    <Compile Include="Controls\DropDownTheme.cs" />
-    <Compile Include="Controls\DGVCellPictureBox.cs" />
+    <Compile Include="Helpers\DropDownTheme.cs" />
+    <Compile Include="DGV\DGVCellPictureBox.cs" />
     <Compile Include="Controls\ColorPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\LabelData.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\MultiPipControl.cs">
+    <Compile Include="Custom\MultiPipControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\CompositeAutoScaleButton.cs">
+    <Compile Include="Custom\CompositeAutoScaleButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\DGVColumnAutoComplete.cs" />
-    <Compile Include="Controls\FlowLayoutPanel.cs">
+    <Compile Include="DGV\DGVColumnAutoComplete.cs" />
+    <Compile Include="Panels\FlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\PopUpForm.cs">
@@ -105,34 +105,37 @@
     <Compile Include="Controls\SplitterResizer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Panels\PanelAutoHeightWidth.cs">
+    <Compile Include="DGV\PanelAutoHeightWidth.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PictureBoxScroll.cs">
+    <Compile Include="Panels\PictureBoxScroll.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Panels\PanelDataGridViewScrollWithDGV.cs">
+    <Compile Include="DGV\PanelDataGridViewScrollWithDGV.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Panels\PanelDataGridViewScrollOutlining.cs">
+    <Compile Include="DGV\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TextBoxAutoComplete.cs">
+    <Compile Include="Tabs\TabStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\Button.cs">
+    <Compile Include="TextBoxes\TextBoxAutoComplete.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\CompassControl.cs">
+    <Compile Include="Buttons\Button.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\CompositeButton.cs">
+    <Compile Include="Custom\CompassControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\NumberBox.cs">
+    <Compile Include="Custom\CompositeButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\CheckBox.cs">
+    <Compile Include="TextBoxes\NumberBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Buttons\CheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CheckedIconList\CheckedIconNewListBoxForm.cs">
@@ -168,10 +171,10 @@
     <Compile Include="Controls\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ImageViewer.cs">
+    <Compile Include="Custom\ImageViewer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ImageViewer.Designer.cs">
+    <Compile Include="Custom\ImageViewer.Designer.cs">
       <DependentUpon>ImageViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TreeView.cs">
@@ -213,10 +216,10 @@
     <Compile Include="Panels\PanelDataGridViewScroll.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ButtonDrawn.cs">
+    <Compile Include="Buttons\ButtonDrawn.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GroupBox.cs">
+    <Compile Include="Panels\GroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\InfoForm.cs">
@@ -256,7 +259,7 @@
     <Compile Include="Controls\RadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\RichTextBox.cs">
+    <Compile Include="TextBoxes\RichTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Panels\PanelRollUp.cs">
@@ -265,20 +268,14 @@
     <Compile Include="Controls\StatusStrip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TabControl.cs">
+    <Compile Include="Tabs\TabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\TabStrip.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\TabStrip.Designer.cs">
-      <DependentUpon>TabStrip.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TabStyleCustom.cs" />
-    <Compile Include="Controls\TextBox.cs">
+    <Compile Include="Tabs\TabStyleCustom.cs" />
+    <Compile Include="TextBoxes\TextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ToolStripComboBoxCustom.cs">
+    <Compile Include="Helpers\ToolStripComboBoxCustom.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\UpDown.cs">
@@ -289,10 +286,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Controls\TextBoxAutoComplete.resx">
+    <EmbeddedResource Include="TextBoxes\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\ImageViewer.resx">
+    <EmbeddedResource Include="Custom\ImageViewer.resx">
       <DependentUpon>ImageViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PopUpForm.resx">
@@ -320,11 +317,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\RichTextBox.resx">
+    <EmbeddedResource Include="TextBoxes\RichTextBox.resx">
       <DependentUpon>RichTextBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Controls\TabStrip.resx">
-      <DependentUpon>TabStrip.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Themes\ThemeEditor.resx">
       <DependentUpon>ThemeEditor.cs</DependentUpon>
