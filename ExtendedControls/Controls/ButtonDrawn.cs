@@ -969,7 +969,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            BackColor = Color.Transparent;
+            BackColor = t.Form;
             ForeColor = t.LabelColor;
             MouseOverColor = t.LabelColor.Multiply(t.MouseOverScaling);
             MouseSelectedColor = t.LabelColor.Multiply(t.MouseSelectedScaling);
