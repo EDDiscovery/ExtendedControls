@@ -36,6 +36,7 @@ namespace ExtendedControls
         public Image EmptyPanelIcon { get; set; } = Properties.Resources.Stop;
         public Image[] ImageList { get; set; }     // images
         public int[] ListSelectionItemSeparators { get; set; }   // any separators for ListSelection
+        public int ScrollBarWidthListSelection { get; set; } = 48;
         public string[] TextList { get; set; }       // text associated - tooltips or text on list selection
         public object[] TagList { get; set; }      // tags for them..
         public bool ShowPopOut { get; set; } = true; // Pop out icon show
@@ -104,7 +105,8 @@ namespace ExtendedControls
 
             pimageSelectedIcon = new Panel();
             this.pimageSelectedIcon.BackColor = System.Drawing.Color.Transparent;
-            this.pimageSelectedIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pimageSelectedIcon.BackgroundImage = EmptyPanelIcon;
+            this.pimageSelectedIcon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.pimageSelectedIcon.Location = new System.Drawing.Point(3, 3);
             this.pimageSelectedIcon.Size = new System.Drawing.Size(24, 24);
             this.pimageSelectedIcon.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
@@ -196,7 +198,6 @@ namespace ExtendedControls
             this.panelStrip.Controls.Add(this.panelArrowLeft);
             this.panelStrip.Controls.Add(this.pimageSelectedIcon);
             this.panelStrip.Controls.Add(this.labelTitle);
-            this.panelStrip.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelStrip.Location = new System.Drawing.Point(0, 322);
             this.panelStrip.Size = new System.Drawing.Size(562, 30);
             this.panelStrip.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
@@ -211,8 +212,8 @@ namespace ExtendedControls
             this.Controls.Add(this.panelStrip);
             this.toolStripMenuItemPopOut.Text = "Pop Out";
             this.toolStripMenuItemPopOut.Click += new System.EventHandler(this.toolStripMenuItemPopOut_Click);
-            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.TabStrip_Layout);
-            this.Resize += new System.EventHandler(this.TabStrip_Resize);
+
+            ChangeStripMode(StripModeType.StripBottom);     // default 
 
             autofadeinouttimer.Tick += AutoFadeInOutTick;
             autorepeat.Interval = 200;
@@ -243,14 +244,18 @@ namespace ExtendedControls
                 if (Close())
                 {
                     Create(i);
-                    PostCreate();
+
+                    // if made, now tab is in control set, give it a chance to configure itself and set its name
+                    if (CurrentControl != null && OnPostCreateTab != null)      
+                    {
+                        OnPostCreateTab(this, CurrentControl, selectedindex);      
+                    }
+
                     return true;
                 }
-                else
-                    return false;
             }
-            else
-                return false;
+
+            return false;
         }
 
         public bool Close()     // close down
@@ -290,7 +295,7 @@ namespace ExtendedControls
 
                     CurrentControl.Dock = DockStyle.Fill;
 
-                    AddControlToView(CurrentControl);
+                    Controls.Add(CurrentControl);
 
                     //System.Diagnostics.Debug.WriteLine("Panel " + i + " post create " + CurrentControl.Name);
 
@@ -306,14 +311,6 @@ namespace ExtendedControls
             Display();
         }
 
-        public void PostCreate()        // ask for post create phase
-        {
-            if (CurrentControl != null && OnPostCreateTab != null)
-            {
-                OnPostCreateTab(this, CurrentControl, selectedindex);       // now tab is in control set, give it a chance to configure itself and set its name
-            }
-        }
-
         public void SetControlText(string t)
         {
             labelControlText.Text = t;
@@ -324,39 +321,11 @@ namespace ExtendedControls
 
         #region Common 
 
-        private void AddControlToView(Control c)
+        protected override void OnResize(EventArgs eventargs)
         {
-            SuspendLayout();
-
-            Controls.Clear();
-
-            if (StripMode != StripModeType.StripBottom)
-            {
-                Controls.Add(c);
-                Controls.Add(panelStrip);
-            }
-            else
-            {
-                Controls.Add(panelStrip);
-                Controls.Add(c);
-            }
-
-            ResumeLayout();
-        }
-
-        private void TabStrip_Layout(object sender, LayoutEventArgs e)
-        {
-            if ((StripMode == StripModeType.StripTop || StripMode == StripModeType.StripTopOpen) && panelStrip.Dock != DockStyle.Top)
-            {
-                panelStrip.Dock = DockStyle.Top;
-            }
-        }
-
-        private void TabStrip_Resize(object sender, EventArgs e)
-        {
+            base.OnResize(eventargs);
             tabdisplaystart = 0;        // because we will display a different set next time
         }
-
         private void panelPopOut_Click(object sender, EventArgs e)
         {
             if (OnPopOut != null && selectedindex >= 0)
@@ -366,7 +335,8 @@ namespace ExtendedControls
         private void ChangeStripMode(StripModeType mt)
         {
             stripmode = mt;
-            tdm = stripmode == StripModeType.StripTopOpen ? TabDisplayMode.ExpandedFixed : TabDisplayMode.Compressed;
+            tabdisplaymode = stripmode == StripModeType.StripTopOpen ? TabDisplayMode.ExpandedFixed : TabDisplayMode.Compressed;
+            panelStrip.Dock = stripmode == StripModeType.StripBottom ? DockStyle.Bottom : DockStyle.Top;
             Display();
         }
 
@@ -378,7 +348,7 @@ namespace ExtendedControls
         {
             autofadeinouttimer.Stop();
 
-            if (tdm == TabDisplayMode.Compressed)      // if in compressed..
+            if (tabdisplaymode == TabDisplayMode.Compressed)      // if in compressed..
             {
                 autofadetabmode = TabDisplayMode.Expanded;
                 autofadeinouttimer.Interval = 350;
@@ -391,7 +361,7 @@ namespace ExtendedControls
         {
             autofadeinouttimer.Stop();
 
-            if (tdm == TabDisplayMode.Expanded)      // if in expanded
+            if (tabdisplaymode == TabDisplayMode.Expanded)      // if in expanded
             {
                 autofadetabmode = TabDisplayMode.Compressed;
                 autofadeinouttimer.Interval = 750;
@@ -406,9 +376,9 @@ namespace ExtendedControls
 
             //System.Diagnostics.Debug.WriteLine("{0} {1} Fade {2}" , Environment.TickCount, Name, tobevisible);
 
-            if (tdm != autofadetabmode)
+            if (tabdisplaymode != autofadetabmode)
             {
-                tdm = autofadetabmode;
+                tabdisplaymode = autofadetabmode;
                 Display();
             }
         }
@@ -472,7 +442,7 @@ namespace ExtendedControls
 
             if (StripMode == StripModeType.ListSelection)               // in list mode
             {
-                if (tdm != TabDisplayMode.Compressed)                   // values are Compressed.. Expanded.. ExpandedInList
+                if (tabdisplaymode != TabDisplayMode.Compressed)                   // values are Compressed.. Expanded.. ExpandedInList
                 {
                     if (ShowPopOut)
                     {
@@ -484,7 +454,7 @@ namespace ExtendedControls
                     xpos += pimageListSelection.Width + tabfieldspacing; // space on for allowing panel selector
                 }
             }
-            else if (tdm != TabDisplayMode.Compressed)      // show icons..
+            else if (tabdisplaymode != TabDisplayMode.Compressed)      // show icons..
             {
                 for (; tabno < tabdisplaystart; tabno++)
                     imagepanels[tabno].Visible = false;
@@ -494,7 +464,7 @@ namespace ExtendedControls
 
                 int spaceforarrowsandoneicon = panelArrowLeft.Width + Spacing + imagepanels[0].Width + Spacing + panelArrowRight.Width;
 
-                if (xpos + spaceforarrowsandoneicon > stoppoint || tdm == TabDisplayMode.ExpandedFixed)   // no space at all or fixed open
+                if (xpos + spaceforarrowsandoneicon > stoppoint || tabdisplaymode == TabDisplayMode.ExpandedFixed)   // no space at all or fixed open
                 {
                     xpos = 0;                                       // turn off titles, use all the space
                     showselectionicon = false;
@@ -534,7 +504,7 @@ namespace ExtendedControls
                 if (arrowson)
                     panelArrowRight.Location = new Point(xpos, 4);
 
-                if (tdm == TabDisplayMode.ExpandedFixed)
+                if (tabdisplaymode == TabDisplayMode.ExpandedFixed)
                 {
                     showtext = true;
                 }
@@ -658,6 +628,7 @@ namespace ExtendedControls
             dropdown.ListBox.ScrollBar.ArrowButtonColor = dropdown.ListBox.ScrollBar.ThumbButtonColor = this.DropDownSliderButtonColor;
             dropdown.ListBox.ScrollBar.MouseOverButtonColor = this.DropDownMouseOverSliderButtonColor;
             dropdown.ListBox.ScrollBar.MousePressedButtonColor = this.PressedDropDownSliderButtonColor;
+            dropdown.ListBox.ScrollBar.Width = ScrollBarWidthListSelection;
 
             dropdown.FitImagesToItemHeight = this.DropDownFitImagesToItemHeight;
             dropdown.Font = Font;
@@ -669,18 +640,18 @@ namespace ExtendedControls
 
             dropdown.SelectedIndexChanged += (s, ea, key) =>
             {
-                tdm = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
+                tabdisplaymode = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
                 ChangePanel(dropdown.SelectedIndex);
             };
 
             dropdown.Deactivate += (s, ea) =>               // will also be called on selected index because we have auto close on (in constructor)
             {
-                tdm = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
+                tabdisplaymode = TabDisplayMode.Expanded;              // deactivate drop down.. leave in expanded mode
                 MouseLeavePanelObjects(sender, e);          // same as a mouse leave on one of the controls
             };
 
             dropdown.Show(this.FindForm());
-            tdm = TabDisplayMode.ExpandedInList;            // hold display in here during list presentation
+            tabdisplaymode = TabDisplayMode.ExpandedInList;            // hold display in here during list presentation
         }
 
         #endregion
@@ -699,16 +670,16 @@ namespace ExtendedControls
 
         private void contextMenuStrip1_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
-            if (tdm == TabDisplayMode.ExpandedContextMenu) // if in context menu, go back to expanded
-                tdm = TabDisplayMode.Expanded;
+            if (tabdisplaymode == TabDisplayMode.ExpandedContextMenu) // if in context menu, go back to expanded
+                tabdisplaymode = TabDisplayMode.Expanded;
 
             MouseLeavePanelObjects(sender, e);      // same as a mouse leave on one of the controls
         }
 
         private void contextMenuStrip1_Opened(object sender, EventArgs e)
         {
-            if (tdm == TabDisplayMode.Expanded)       // if in expanded, go to context menu to hold.. if in a mode such as ExpandedFixed, don't change
-                tdm = TabDisplayMode.ExpandedContextMenu;
+            if (tabdisplaymode == TabDisplayMode.Expanded)       // if in expanded, go to context menu to hold.. if in a mode such as ExpandedFixed, don't change
+                tabdisplaymode = TabDisplayMode.ExpandedContextMenu;
         }
 
         public bool Theme(Theme t, Font fnt)
@@ -730,6 +701,8 @@ namespace ExtendedControls
             ForeColor = t.TabStripFore;             // theme our labels
             EmptyColor = t.Form;
             SelectedBackColor = t.TabStripSelected;
+
+            ScrollBarWidthListSelection = t.ScrollBarWidth();
 
             panelStrip.ThemeColorSet = ThemeColorSet;
             if (ThemeColorSet > 0)
@@ -768,7 +741,7 @@ namespace ExtendedControls
             ExpandedContextMenu, // List is expanded, in a context menu
         }
 
-        private TabDisplayMode tdm = TabDisplayMode.Compressed;
+        private TabDisplayMode tabdisplaymode = TabDisplayMode.Compressed;
         private int tabdisplaystart = 0;    // first tab number displayed
         private int tabsvisibleonscreen = 0;       // number of tabs displayed
 
