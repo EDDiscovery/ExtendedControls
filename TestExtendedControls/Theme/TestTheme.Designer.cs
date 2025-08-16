@@ -146,6 +146,7 @@
             this.extPictureBoxScroll1 = new ExtendedControls.ExtPictureBoxScroll();
             this.extPictureBox1 = new ExtendedControls.ExtPictureBox();
             this.extScrollBar6 = new ExtendedControls.ExtScrollBar();
+            this.extButtonDrawn2 = new ExtendedControls.ExtButtonDrawn();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.extFlowLayoutPanelTop.SuspendLayout();
@@ -1524,6 +1525,7 @@
             this.extPanelGradientFill1.Controls.Add(this.extCheckBox6);
             this.extPanelGradientFill1.Controls.Add(this.extCheckBox2);
             this.extPanelGradientFill1.Controls.Add(this.extCheckBox3);
+            this.extPanelGradientFill1.Controls.Add(this.extButtonDrawn2);
             this.extPanelGradientFill1.Controls.Add(this.extButtonDrawn1);
             this.extPanelGradientFill1.Controls.Add(this.label1);
             this.extPanelGradientFill1.Controls.Add(this.extButton1);
@@ -2006,6 +2008,27 @@
             this.extScrollBar6.Value = 0;
             this.extScrollBar6.ValueLimited = 0;
             // 
+            // extButtonDrawn2
+            // 
+            this.extButtonDrawn2.AutoEllipsis = false;
+            this.extButtonDrawn2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.extButtonDrawn2.BorderColor = System.Drawing.Color.Orange;
+            this.extButtonDrawn2.BorderWidth = 1;
+            this.extButtonDrawn2.ButtonDisabledScaling = 0.25F;
+            this.extButtonDrawn2.Image = null;
+            this.extButtonDrawn2.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.InverseText;
+            this.extButtonDrawn2.Location = new System.Drawing.Point(488, 3);
+            this.extButtonDrawn2.MouseOverColor = System.Drawing.Color.White;
+            this.extButtonDrawn2.MouseSelectedColor = System.Drawing.Color.Green;
+            this.extButtonDrawn2.MouseSelectedColorEnable = true;
+            this.extButtonDrawn2.Name = "extButtonDrawn2";
+            this.extButtonDrawn2.Selectable = true;
+            this.extButtonDrawn2.Size = new System.Drawing.Size(56, 24);
+            this.extButtonDrawn2.TabIndex = 6;
+            this.extButtonDrawn2.Text = "InvT";
+            this.extButtonDrawn2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.extButtonDrawn2.UseMnemonic = true;
+            // 
             // TestTheme
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2191,5 +2214,6 @@
         private ExtendedControls.ExtScrollBar extScrollBar6;
         private ExtendedControls.ExtPictureBox extPictureBox1;
         private ExtendedControls.ExtButton extButton11;
+        private ExtendedControls.ExtButtonDrawn extButtonDrawn2;
     }
 }
