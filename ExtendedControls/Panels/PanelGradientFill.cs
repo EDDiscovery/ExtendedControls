@@ -102,7 +102,7 @@ namespace ExtendedControls
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle} tc {PaintTransparentColor} {ThemeColorSet}");
+            System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle} tc {PaintTransparentColor} {ThemeColorSet} {GradientDirection}");
 
             if (PaintTransparentColor != Color.Transparent)
                 e.Graphics.DrawFilledRectangle(ClientRectangle,PaintTransparentColor);
@@ -153,7 +153,7 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            System.Diagnostics.Debug.WriteLine($"Theme GradientFill {Name} {ThemeColorSet}");
+            //System.Diagnostics.Debug.WriteLine($"Theme GradientFill {Name} {ThemeColorSet}");
             if (ThemeColorSet > 0)
             {
                 ThemeColors = t.GetPanelSet(ThemeColorSet);

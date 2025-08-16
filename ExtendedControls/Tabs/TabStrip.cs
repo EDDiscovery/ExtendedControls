@@ -29,7 +29,7 @@ namespace ExtendedControls
 
         // if you set this to a colour, the background becomes that colour, for transparency purposes.
         // If you set it to Color.Transparent, it goes to normal
-        public Color PaintTransparentColor { get { return panelStrip.PaintTransparentColor; } set { panelStrip.PaintTransparentColor = value; panelStrip.Invalidate(); } }
+        public Color PaintTransparentColor { get { return selectorStrip.PaintTransparentColor; } set { selectorStrip.PaintTransparentColor = value; selectorStrip.Invalidate(); } }
 
         public enum StripModeType { StripTop, StripBottom, ListSelection, StripTopOpen };
         public StripModeType StripMode { get { return stripmode; } set { ChangeStripMode(value); } }
@@ -80,7 +80,7 @@ namespace ExtendedControls
         public Action<TabStrip> OnTitleClick;               // when the title is clicked
         public Action<TabStrip> OnControlTextClick;         // when the control text is clicked
 
-        private ExtPanelGradientFill panelStrip;
+        private ExtPanelGradientFill selectorStrip;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Panel pimageSelectedIcon;
         private System.Windows.Forms.ToolTip toolTip1;
@@ -115,6 +115,7 @@ namespace ExtendedControls
             labelTitle = new System.Windows.Forms.Label();
             this.labelTitle.AutoSize = true;
             this.labelTitle.Text = "?";
+            this.labelTitle.BackColor = System.Drawing.Color.Transparent;
             this.labelTitle.Location = new System.Drawing.Point(33, 8);
             this.labelTitle.Size = new System.Drawing.Size(43, 13);
             this.labelTitle.MouseDown += (s1, e1) => OnTitleClick?.Invoke(this);
@@ -125,6 +126,7 @@ namespace ExtendedControls
             this.labelControlText.AutoSize = true;
             this.labelControlText.Location = new System.Drawing.Point(97, 8);
             this.labelControlText.Text = "";
+            this.labelControlText.BackColor = System.Drawing.Color.Transparent;
             this.labelControlText.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
             this.labelControlText.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             this.labelControlText.MouseDown += (s1, e1) => OnControlTextClick?.Invoke(this);
@@ -187,21 +189,21 @@ namespace ExtendedControls
             this.panelArrowLeft.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             this.panelArrowLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelArrowLeft_MouseUp);
 
-            this.panelStrip = new ExtendedControls.ExtPanelGradientFill();
-            this.panelStrip.Name = Name + "_panelstrip";
-            this.panelStrip.ChildrenThemed = true;
-            this.panelStrip.Controls.Add(this.labelControlText);
-            this.panelStrip.Controls.Add(this.pimageListSelection);
-            this.panelStrip.Controls.Add(this.extButtonDrawnHelp);
-            this.panelStrip.Controls.Add(this.pimagePopOutIcon);
-            this.panelStrip.Controls.Add(this.panelArrowRight);
-            this.panelStrip.Controls.Add(this.panelArrowLeft);
-            this.panelStrip.Controls.Add(this.pimageSelectedIcon);
-            this.panelStrip.Controls.Add(this.labelTitle);
-            this.panelStrip.Location = new System.Drawing.Point(0, 322);
-            this.panelStrip.Size = new System.Drawing.Size(562, 30);
-            this.panelStrip.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
-            this.panelStrip.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
+            this.selectorStrip = new ExtendedControls.ExtPanelGradientFill();
+            this.selectorStrip.Name = "tabstrip_selectorstrip";
+            this.selectorStrip.ChildrenThemed = true;
+            this.selectorStrip.Controls.Add(this.labelControlText);
+            this.selectorStrip.Controls.Add(this.pimageListSelection);
+            this.selectorStrip.Controls.Add(this.extButtonDrawnHelp);
+            this.selectorStrip.Controls.Add(this.pimagePopOutIcon);
+            this.selectorStrip.Controls.Add(this.panelArrowRight);
+            this.selectorStrip.Controls.Add(this.panelArrowLeft);
+            this.selectorStrip.Controls.Add(this.pimageSelectedIcon);
+            this.selectorStrip.Controls.Add(this.labelTitle);
+            this.selectorStrip.Location = new System.Drawing.Point(0, 322);
+            this.selectorStrip.Size = new System.Drawing.Size(562, 30);
+            this.selectorStrip.MouseEnter += new System.EventHandler(this.MouseEnterPanelObjects);
+            this.selectorStrip.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
 
             contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] { this.toolStripMenuItemPopOut});
@@ -209,7 +211,7 @@ namespace ExtendedControls
             this.contextMenuStrip1.Closed += new System.Windows.Forms.ToolStripDropDownClosedEventHandler(this.contextMenuStrip1_Closed);
             this.contextMenuStrip1.Opened += new System.EventHandler(this.contextMenuStrip1_Opened);
 
-            this.Controls.Add(this.panelStrip);
+            this.Controls.Add(this.selectorStrip);
             this.toolStripMenuItemPopOut.Text = "Pop Out";
             this.toolStripMenuItemPopOut.Click += new System.EventHandler(this.toolStripMenuItemPopOut_Click);
 
@@ -336,7 +338,7 @@ namespace ExtendedControls
         {
             stripmode = mt;
             tabdisplaymode = stripmode == StripModeType.StripTopOpen ? TabDisplayMode.ExpandedFixed : TabDisplayMode.Compressed;
-            panelStrip.Dock = stripmode == StripModeType.StripBottom ? DockStyle.Bottom : DockStyle.Top;
+            selectorStrip.Dock = stripmode == StripModeType.StripBottom ? DockStyle.Bottom : DockStyle.Top;
             Display();
         }
 
@@ -389,7 +391,6 @@ namespace ExtendedControls
 
         void Display()
         {
-            System.Diagnostics.Debug.WriteLine("TabStrip display");
             if (ImageList == null)
                 return;
 
@@ -424,7 +425,7 @@ namespace ExtendedControls
                         toolTip1.ShowAlways = true;      // if not, it never appears
                     }
 
-                    panelStrip.Controls.Add(imagepanels[inp]);
+                    selectorStrip.Controls.Add(imagepanels[inp]);
                 }
             }
 
@@ -526,7 +527,7 @@ namespace ExtendedControls
                     imagepanels[tabno].Visible = false;
             }
 
-            panelStrip.SuspendLayout(); // important to suspend layout otherwise we get popping
+            selectorStrip.SuspendLayout(); // important to suspend layout otherwise we get popping
 
             //System.Diagnostics.Debug.WriteLine(this.Name + " seli" + showselectionicon + " showp " + showpopouticon + " text" + showtext + " lists " + showlistselection);
             pimageListSelection.Size = pimagePopOutIcon.Size = pimageSelectedIcon.Size; // duplicate size across so panelstrip does not resize
@@ -548,7 +549,7 @@ namespace ExtendedControls
 
             panelArrowRight.Visible = panelArrowLeft.Visible = arrowson;
 
-            panelStrip.ResumeLayout();
+            selectorStrip.ResumeLayout();
         }
 
         public void TabIconClicked(object sender, EventArgs e)
@@ -599,7 +600,7 @@ namespace ExtendedControls
 
         private void extButtonDrawnHelp_Click(object sender, EventArgs e)
         {
-            HelpAction?.Invoke(panelStrip.PointToScreen(new Point(extButtonDrawnHelp.Left, extButtonDrawnHelp.Bottom)));
+            HelpAction?.Invoke(selectorStrip.PointToScreen(new Point(extButtonDrawnHelp.Left, extButtonDrawnHelp.Bottom)));
         }
 
         #endregion
@@ -704,22 +705,22 @@ namespace ExtendedControls
 
             ScrollBarWidthListSelection = t.ScrollBarWidth();
 
-            panelStrip.ThemeColorSet = ThemeColorSet;
+            selectorStrip.ThemeColorSet = ThemeColorSet;
             if (ThemeColorSet > 0)
             {
-                panelStrip.ThemeColors = t.GetPanelSet(ThemeColorSet);
-                panelStrip.GradientDirection = t.GetPanelDirection(ThemeColorSet);
+                selectorStrip.ThemeColors = t.GetPanelSet(ThemeColorSet);
+                selectorStrip.GradientDirection = t.GetPanelDirection(ThemeColorSet);
             }
             else
             {
-                panelStrip.GradientDirection = t.TabStripGradientDirection;
-                panelStrip.ThemeColors = t.TabStripBack;
+                selectorStrip.ThemeColors = t.TabStripBack;
+                selectorStrip.GradientDirection = t.TabStripGradientDirection;
             }
 
             if (CurrentControl != null)             // we give the CurrentControl only the chance to theme
                 t.UpdateControls(CurrentControl, fnt, 100, false);
 
-            panelStrip.Invalidate();
+            selectorStrip.Invalidate();
             return false;   // eveything we own is themed in here.. no children
         }
 
