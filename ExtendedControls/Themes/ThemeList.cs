@@ -113,10 +113,14 @@ namespace ExtendedControls
 
 
             var elitegradient = new Theme(elite, "Elite EuroCaps Gradient");
-            elitegradient.GroupBack[0] = elitegradient.Panel1[0] = elitegradient.TabControlBack[0] = elitegradient.TabStripBack[0] = c32;
-            elitegradient.GroupBack[1] = elitegradient.Panel1[1] = elitegradient.TabControlBack[1] = elitegradient.TabStripBack[1] = Color.Red.Multiply(0.4f);
-            elitegradient.GroupBack[2] =elitegradient.Panel1[2] = elitegradient.TabControlBack[2] = elitegradient.TabStripBack[2] = Color.Magenta.Multiply(0.4f);
-            elitegradient.GroupBack[3] = elitegradient.Panel1[3] = elitegradient.TabControlBack[3] = elitegradient.TabStripBack[3] = c32;
+            elitegradient.Panel1[0] = elitegradient.TabControlBack[0] = elitegradient.TabStripBack[0] = c32;
+            elitegradient.Panel1[1] = elitegradient.TabControlBack[1] = elitegradient.TabStripBack[1] = Color.Red.Multiply(0.4f);
+            elitegradient.Panel1[2] = elitegradient.TabControlBack[2] = elitegradient.TabStripBack[2] = Color.Magenta.Multiply(0.4f);
+            elitegradient.Panel1[3] = elitegradient.TabControlBack[3] = elitegradient.TabStripBack[3] = c32;
+            elitegradient.GroupBack[0] = elitegradient.Panel1[0].Multiply(0.5f);
+            elitegradient.GroupBack[1] = elitegradient.Panel1[1].Multiply(0.5f);
+            elitegradient.GroupBack[2] = elitegradient.Panel1[2].Multiply(0.5f);
+            elitegradient.GroupBack[3] = elitegradient.Panel1[3].Multiply(0.5f);
             elitegradient.ListBoxBackColor = elitegradient.GroupBack[1];
             elitegradient.ListBoxBackColor2 = elitegradient.GroupBack[2];
             elitegradient.ComboBoxBackColor = elitegradient.GroupBack[1];

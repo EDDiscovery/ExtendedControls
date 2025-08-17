@@ -102,7 +102,7 @@ namespace ExtendedControls
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle} tc {PaintTransparentColor} {ThemeColorSet} {GradientDirection}");
+            //System.Diagnostics.Debug.WriteLine($"PanelGradient {Name} OnPaintBackground {ClientRectangle} tc {PaintTransparentColor} {ThemeColorSet} {GradientDirection}");
 
             if (PaintTransparentColor != Color.Transparent)
                 e.Graphics.DrawFilledRectangle(ClientRectangle,PaintTransparentColor);

@@ -11,8 +11,9 @@ namespace TestExtendedControls
 {
     public partial class TestTheme : DraggableForm
     {
-        ThemeList stdthemes;
+        ThemeList themelist;
         List<string> aclist = new List<string>();
+        Timer timer = new Timer();
 
         public class T1
         {
@@ -24,54 +25,29 @@ namespace TestExtendedControls
         {
             InitializeComponent();
 
+            themelist = new ThemeList();
+            themelist.LoadBaseThemes();
+
             Theme loadtheme = Theme.LoadFile(@"c:\code\example.theme");
             if (loadtheme != null)
             {
                 System.Diagnostics.Debug.WriteLine("Theme loaded from file");
                 string jsonout = loadtheme.ToJSON().ToString(true);
                 FileHelpers.TryWriteToFile(@"c:\code\loaded.theme", jsonout);
-
                 Theme.Current = loadtheme;
             }
             else
             {
-                ThemeList lst = new ThemeList();
-                lst.LoadBaseThemes();
-                Theme.Current = lst.FindTheme("Elite Verdana Gradiant");
-                Theme.Current = lst.FindTheme("Elite Verdana Gradiant Skinny Scroll");
-
-                //Color hgb = Color.FromArgb(255, 10, 40, 10);
-                //Color c64 = Color.FromArgb(255, 64, 64, 64);
-                //Color elitebutback = Color.FromArgb(255, 32, 32, 32);
-                //Theme.Current = new Theme("Elite Verdana", Color.Black,
-                //    c64, Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient, // button
-                //    Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
-                //    elitebutback, elitebutback, Color.Orange, Color.Orange, hgb, // back/alt fore/alt
-                //    Color.DarkOrange, // borderlines
-                //    elitebutback, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
-                //    Color.Red, Color.White, // travel
-                //    elitebutback, Color.Orange, Color.Red, Color.Green, c64, Theme.TextboxborderstyleColor, // text box
-                //    elitebutback, Color.Orange, Color.DarkOrange, // text back, arrow, button
-                //    Color.Orange, Color.FromArgb(255, 65, 33, 33), c64,// checkbox
-                //    Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  // menu
-                //    Color.Orange,  // label
-                //    Color.Black, Color.Orange, Color.FromArgb(255, 130, 71, 0), // group
-                //    Color.DarkOrange, // tab control
-                //    Color.Black, Color.DarkOrange, Color.Orange, // toolstrips
-                //    Color.Orange, // spanel
-                //    Color.Green, // overlay
-                //    false, 100, "Verdana", 10F, FontStyle.Regular);
+                Theme.Current = themelist.FindTheme("Elite Verdana Gradiant Skinny Scroll");
             }
 
-            stdthemes = new ThemeList();
-            stdthemes.LoadBaseThemes();
-           // stdthemes.SetThemeByName("Verdana Grey");
+            // stdthemes.SetThemeByName("Verdana Grey");
 
             Theme.Current.WindowsFrame = true;
             Theme.Current.ApplyStd(this);
             labelName.Text = Theme.Current.Name;
 
-            extComboBoxTheme.Items.AddRange(stdthemes.GetThemeNames());
+            extComboBoxTheme.Items.AddRange(themelist.GetThemeNames());
 
             for (int i = 0; i < 20; i++)
             {
@@ -235,8 +211,19 @@ namespace TestExtendedControls
                 tabStrip1.Theme(Theme.Current, Theme.Current.GetFont);
                 //tabStrip1.Refresh();
             }, "Default");
+
+            timer.Interval = 500;
+            timer.Tick += (s,e) =>
+            {
+                if (Theme.Current.Name.Contains("Windows"))
+                    extButtonVerdana_Click(null, null);
+                else
+                    extButtonStd_Click(null, null);
+            };
+            //timer.Start();
         }
 
+        
         ContextMenuStrip contextMenuStripTabs;
 
         public void AutoList(string input, ExtTextBoxAutoComplete t, SortedSet<string> set)
@@ -353,7 +340,7 @@ namespace TestExtendedControls
         private void extComboBoxTheme_SelectedIndexChanged(object sender, EventArgs e)
         {
             string name = (string)extComboBoxTheme.SelectedItem;
-            Theme.Current = stdthemes.FindTheme(name);
+            Theme.Current = themelist.FindTheme(name);
             Theme.Current.ApplyStd(this);
             labelName.Text = name;
 
@@ -393,6 +380,33 @@ namespace TestExtendedControls
         private void TestTheme_MouseDown(object sender, MouseEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Click on form");
+        }
+
+        private void extButtonVSkinny_Click(object sender, EventArgs e)
+        {
+            Theme.Current = themelist.FindTheme("Elite Verdana Small Skinny Scroll");
+            Theme.Current.Apply(this);
+        }
+
+        private void extButtonVerdana_Click(object sender, EventArgs e)
+        {
+            Theme.Current = themelist.FindTheme("Elite Verdana High DPI");
+            Theme.Current.Apply(this);
+
+        }
+
+        private void extButtonStd_Click(object sender, EventArgs e)
+        {
+            Theme.Current = themelist.FindTheme("Windows Default");
+            Theme.Current.Apply(this);
+
+        }
+
+        private void extButtonEDSM_Click(object sender, EventArgs e)
+        {
+            Theme.Current = themelist.FindTheme("EDSM");
+            Theme.Current.Apply(this);
+
         }
     }
 }

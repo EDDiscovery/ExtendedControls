@@ -153,7 +153,7 @@ namespace ExtendedControls
         // setting your own TC font stops the OnFontChanged being called for this class, and its at that point this fix needs to be applied
         public void ForceSizeUpdate()
         {
-            System.Diagnostics.Debug.WriteLine($"Tabcontrol ForceSizeUpdate: {Font}  {Font.Height}");
+            //System.Diagnostics.Debug.WriteLine($"Tabcontrol ForceSizeUpdate: {Font}  {Font.Height}");
 
             // go back to system
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);      
@@ -163,7 +163,7 @@ namespace ExtendedControls
             {
                 int minsize = CalculateMinimumTabWidth();           // set the minimum size
                 var size = new Size(minsize, Math.Max(16, Font.Height + 4));
-                System.Diagnostics.Debug.WriteLine($" .. tab size {minsize} itemsize {size}");
+                //System.Diagnostics.Debug.WriteLine($" .. tab size {minsize} itemsize {size}");
                 ItemSize = size;       // set the item height, and minimum width in anything else but fixed
                 MinimumTabWidth = minsize;
             }
@@ -336,7 +336,7 @@ namespace ExtendedControls
         protected override void OnFontChanged(EventArgs e)
         {
             base.OnFontChanged(e);
-            System.Diagnostics.Debug.WriteLine($"Tabcontrol OnFontChange: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
+            //System.Diagnostics.Debug.WriteLine($"Tabcontrol OnFontChange: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
 
             ForceSizeUpdate();
         }

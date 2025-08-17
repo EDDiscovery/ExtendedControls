@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestTheme));
-            ExtendedControls.TabStyleSquare tabStyleSquare2 = new ExtendedControls.TabStyleSquare();
+            ExtendedControls.TabStyleSquare tabStyleSquare4 = new ExtendedControls.TabStyleSquare();
             this.labelName = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.busyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,6 +117,7 @@
             this.extPanelResizer1 = new ExtendedControls.ExtPanelResizer();
             this.extPanelRollUp1 = new ExtendedControls.ExtPanelRollUp();
             this.extPanelGradientFill1 = new ExtendedControls.ExtPanelGradientFill();
+            this.extButtonDrawn2 = new ExtendedControls.ExtButtonDrawn();
             this.label1 = new System.Windows.Forms.Label();
             this.extPanelGradientFill2 = new ExtendedControls.ExtPanelGradientFill();
             this.label2 = new System.Windows.Forms.Label();
@@ -146,7 +147,10 @@
             this.extPictureBoxScroll1 = new ExtendedControls.ExtPictureBoxScroll();
             this.extPictureBox1 = new ExtendedControls.ExtPictureBox();
             this.extScrollBar6 = new ExtendedControls.ExtScrollBar();
-            this.extButtonDrawn2 = new ExtendedControls.ExtButtonDrawn();
+            this.extButtonStd = new ExtendedControls.ExtButton();
+            this.extButtonVerdana = new ExtendedControls.ExtButton();
+            this.extButtonEDSM = new ExtendedControls.ExtButton();
+            this.extButtonVSkinny = new ExtendedControls.ExtButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.extFlowLayoutPanelTop.SuspendLayout();
@@ -450,6 +454,10 @@
             this.extFlowLayoutPanelTop.Controls.Add(this.extComboBoxTheme);
             this.extFlowLayoutPanelTop.Controls.Add(this.extButton7);
             this.extFlowLayoutPanelTop.Controls.Add(this.extButton8);
+            this.extFlowLayoutPanelTop.Controls.Add(this.extButtonStd);
+            this.extFlowLayoutPanelTop.Controls.Add(this.extButtonVerdana);
+            this.extFlowLayoutPanelTop.Controls.Add(this.extButtonVSkinny);
+            this.extFlowLayoutPanelTop.Controls.Add(this.extButtonEDSM);
             this.extFlowLayoutPanelTop.Controls.Add(this.extButtonClose);
             this.extFlowLayoutPanelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.extFlowLayoutPanelTop.GradientDirection = 0F;
@@ -569,7 +577,7 @@
             this.extButtonClose.BackColor2 = System.Drawing.Color.Red;
             this.extButtonClose.ButtonDisabledScaling = 0.5F;
             this.extButtonClose.GradientDirection = 90F;
-            this.extButtonClose.Location = new System.Drawing.Point(680, 3);
+            this.extButtonClose.Location = new System.Drawing.Point(924, 3);
             this.extButtonClose.MouseOverScaling = 1.3F;
             this.extButtonClose.MouseSelectedScaling = 1.3F;
             this.extButtonClose.Name = "extButtonClose";
@@ -675,6 +683,7 @@
             this.tabStrip2.Name = "tabStrip2";
             this.tabStrip2.PaintTransparentColor = System.Drawing.Color.Transparent;
             this.tabStrip2.PressedDropDownSliderButtonColor = System.Drawing.Color.Yellow;
+            this.tabStrip2.ScrollBarWidthListSelection = 48;
             this.tabStrip2.SelectedBackColor = System.Drawing.Color.Transparent;
             this.tabStrip2.SelectedIndex = -1;
             this.tabStrip2.ShowPopOut = true;
@@ -765,6 +774,7 @@
             this.tabStrip1.Name = "tabStrip1";
             this.tabStrip1.PaintTransparentColor = System.Drawing.Color.Transparent;
             this.tabStrip1.PressedDropDownSliderButtonColor = System.Drawing.Color.Yellow;
+            this.tabStrip1.ScrollBarWidthListSelection = 48;
             this.tabStrip1.SelectedBackColor = System.Drawing.Color.Transparent;
             this.tabStrip1.SelectedIndex = -1;
             this.tabStrip1.ShowPopOut = true;
@@ -909,7 +919,7 @@
             this.extTabControl1.TabNotSelectedColor2 = System.Drawing.Color.Gray;
             this.extTabControl1.TabSelectedColor = System.Drawing.Color.LightGray;
             this.extTabControl1.TabSelectedColor2 = System.Drawing.Color.Gray;
-            this.extTabControl1.TabStyle = tabStyleSquare2;
+            this.extTabControl1.TabStyle = tabStyleSquare4;
             this.extTabControl1.TextNotSelectedColor = System.Drawing.SystemColors.ControlText;
             this.extTabControl1.TextSelectedColor = System.Drawing.SystemColors.ControlText;
             this.extTabControl1.ThemeColors = new System.Drawing.Color[] {
@@ -1544,6 +1554,27 @@
         System.Drawing.SystemColors.Control};
             this.extPanelGradientFill1.ThemeColorSet = 3;
             // 
+            // extButtonDrawn2
+            // 
+            this.extButtonDrawn2.AutoEllipsis = false;
+            this.extButtonDrawn2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.extButtonDrawn2.BorderColor = System.Drawing.Color.Orange;
+            this.extButtonDrawn2.BorderWidth = 1;
+            this.extButtonDrawn2.ButtonDisabledScaling = 0.25F;
+            this.extButtonDrawn2.Image = null;
+            this.extButtonDrawn2.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.InverseText;
+            this.extButtonDrawn2.Location = new System.Drawing.Point(488, 3);
+            this.extButtonDrawn2.MouseOverColor = System.Drawing.Color.White;
+            this.extButtonDrawn2.MouseSelectedColor = System.Drawing.Color.Green;
+            this.extButtonDrawn2.MouseSelectedColorEnable = true;
+            this.extButtonDrawn2.Name = "extButtonDrawn2";
+            this.extButtonDrawn2.Selectable = true;
+            this.extButtonDrawn2.Size = new System.Drawing.Size(56, 24);
+            this.extButtonDrawn2.TabIndex = 6;
+            this.extButtonDrawn2.Text = "InvT";
+            this.extButtonDrawn2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.extButtonDrawn2.UseMnemonic = true;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -2008,26 +2039,65 @@
             this.extScrollBar6.Value = 0;
             this.extScrollBar6.ValueLimited = 0;
             // 
-            // extButtonDrawn2
+            // extButtonStd
             // 
-            this.extButtonDrawn2.AutoEllipsis = false;
-            this.extButtonDrawn2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.extButtonDrawn2.BorderColor = System.Drawing.Color.Orange;
-            this.extButtonDrawn2.BorderWidth = 1;
-            this.extButtonDrawn2.ButtonDisabledScaling = 0.25F;
-            this.extButtonDrawn2.Image = null;
-            this.extButtonDrawn2.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.InverseText;
-            this.extButtonDrawn2.Location = new System.Drawing.Point(488, 3);
-            this.extButtonDrawn2.MouseOverColor = System.Drawing.Color.White;
-            this.extButtonDrawn2.MouseSelectedColor = System.Drawing.Color.Green;
-            this.extButtonDrawn2.MouseSelectedColorEnable = true;
-            this.extButtonDrawn2.Name = "extButtonDrawn2";
-            this.extButtonDrawn2.Selectable = true;
-            this.extButtonDrawn2.Size = new System.Drawing.Size(56, 24);
-            this.extButtonDrawn2.TabIndex = 6;
-            this.extButtonDrawn2.Text = "InvT";
-            this.extButtonDrawn2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.extButtonDrawn2.UseMnemonic = true;
+            this.extButtonStd.BackColor2 = System.Drawing.Color.Red;
+            this.extButtonStd.ButtonDisabledScaling = 0.5F;
+            this.extButtonStd.GradientDirection = 90F;
+            this.extButtonStd.Location = new System.Drawing.Point(680, 3);
+            this.extButtonStd.MouseOverScaling = 1.3F;
+            this.extButtonStd.MouseSelectedScaling = 1.3F;
+            this.extButtonStd.Name = "extButtonStd";
+            this.extButtonStd.Size = new System.Drawing.Size(55, 23);
+            this.extButtonStd.TabIndex = 3;
+            this.extButtonStd.Text = "Std";
+            this.extButtonStd.UseVisualStyleBackColor = true;
+            this.extButtonStd.Click += new System.EventHandler(this.extButtonStd_Click);
+            // 
+            // extButtonVerdana
+            // 
+            this.extButtonVerdana.BackColor2 = System.Drawing.Color.Red;
+            this.extButtonVerdana.ButtonDisabledScaling = 0.5F;
+            this.extButtonVerdana.GradientDirection = 90F;
+            this.extButtonVerdana.Location = new System.Drawing.Point(741, 3);
+            this.extButtonVerdana.MouseOverScaling = 1.3F;
+            this.extButtonVerdana.MouseSelectedScaling = 1.3F;
+            this.extButtonVerdana.Name = "extButtonVerdana";
+            this.extButtonVerdana.Size = new System.Drawing.Size(55, 23);
+            this.extButtonVerdana.TabIndex = 3;
+            this.extButtonVerdana.Text = "Verdana";
+            this.extButtonVerdana.UseVisualStyleBackColor = true;
+            this.extButtonVerdana.Click += new System.EventHandler(this.extButtonVerdana_Click);
+            // 
+            // extButtonEDSM
+            // 
+            this.extButtonEDSM.BackColor2 = System.Drawing.Color.Red;
+            this.extButtonEDSM.ButtonDisabledScaling = 0.5F;
+            this.extButtonEDSM.GradientDirection = 90F;
+            this.extButtonEDSM.Location = new System.Drawing.Point(863, 3);
+            this.extButtonEDSM.MouseOverScaling = 1.3F;
+            this.extButtonEDSM.MouseSelectedScaling = 1.3F;
+            this.extButtonEDSM.Name = "extButtonEDSM";
+            this.extButtonEDSM.Size = new System.Drawing.Size(55, 23);
+            this.extButtonEDSM.TabIndex = 3;
+            this.extButtonEDSM.Text = "EDSM";
+            this.extButtonEDSM.UseVisualStyleBackColor = true;
+            this.extButtonEDSM.Click += new System.EventHandler(this.extButtonEDSM_Click);
+            // 
+            // extButtonVSkinny
+            // 
+            this.extButtonVSkinny.BackColor2 = System.Drawing.Color.Red;
+            this.extButtonVSkinny.ButtonDisabledScaling = 0.5F;
+            this.extButtonVSkinny.GradientDirection = 90F;
+            this.extButtonVSkinny.Location = new System.Drawing.Point(802, 3);
+            this.extButtonVSkinny.MouseOverScaling = 1.3F;
+            this.extButtonVSkinny.MouseSelectedScaling = 1.3F;
+            this.extButtonVSkinny.Name = "extButtonVSkinny";
+            this.extButtonVSkinny.Size = new System.Drawing.Size(55, 23);
+            this.extButtonVSkinny.TabIndex = 3;
+            this.extButtonVSkinny.Text = "VSkinny";
+            this.extButtonVSkinny.UseVisualStyleBackColor = true;
+            this.extButtonVSkinny.Click += new System.EventHandler(this.extButtonVSkinny_Click);
             // 
             // TestTheme
             // 
@@ -2215,5 +2285,9 @@
         private ExtendedControls.ExtPictureBox extPictureBox1;
         private ExtendedControls.ExtButton extButton11;
         private ExtendedControls.ExtButtonDrawn extButtonDrawn2;
+        private ExtendedControls.ExtButton extButtonStd;
+        private ExtendedControls.ExtButton extButtonVerdana;
+        private ExtendedControls.ExtButton extButtonEDSM;
+        private ExtendedControls.ExtButton extButtonVSkinny;
     }
 }

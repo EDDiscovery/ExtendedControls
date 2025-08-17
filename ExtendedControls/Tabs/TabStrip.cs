@@ -298,6 +298,7 @@ namespace ExtendedControls
                     CurrentControl.Dock = DockStyle.Fill;
 
                     Controls.Add(CurrentControl);
+                    Controls.SetChildIndex(CurrentControl, 0);
 
                     //System.Diagnostics.Debug.WriteLine("Panel " + i + " post create " + CurrentControl.Name);
 

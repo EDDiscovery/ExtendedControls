@@ -145,7 +145,7 @@ namespace ExtendedControls
             borderrect.Inflate(bordersize,bordersize);
             borderrect.Width--; borderrect.Height--;        // adjust to rect not area.
 
-            System.Diagnostics.Debug.WriteLine("List box" + mainarea + " " + items + "  " + displayableitems);
+            //System.Diagnostics.Debug.WriteLine("List box" + mainarea + " " + items + "  " + displayableitems);
 
             if ( items > displayableitems )
             {

@@ -137,13 +137,17 @@ namespace TestExtendedControls
         {
             UserControl uc = new UserControl();
             uc.BackColor = Color.Cyan;
-            Label lb = new Label();
-            lb.Location = new Point(10, 10);
-            lb.Size = new Size(200, 20);
-            lb.Text = t.Name + " User Control " + (no+0);
             uc.Name = "UC " + no;
-            uc.Dock = DockStyle.Fill;
-            uc.Controls.Add(lb);
+
+            for ( int i =0; i <= 100; i+=20)
+            {
+                Label lb = new Label();
+                lb.Location = new Point(4, i);
+                lb.Size = new Size(200, 20);
+                lb.Text = $"{i} {t.Name} Instance {no}";
+                uc.Controls.Add(lb);
+            }
+
             t.SetControlText("CT<" + uc.Name + ">");
             return uc;
         }
