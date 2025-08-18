@@ -80,7 +80,7 @@ namespace ExtendedControls
         public Action<TabStrip> OnTitleClick;               // when the title is clicked
         public Action<TabStrip> OnControlTextClick;         // when the control text is clicked
 
-        private ExtPanelGradientFill selectorStrip;
+        private ExtPanelNoChildThemed selectorStrip;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Panel pimageSelectedIcon;
         private System.Windows.Forms.ToolTip toolTip1;
@@ -189,9 +189,9 @@ namespace ExtendedControls
             this.panelArrowLeft.MouseLeave += new System.EventHandler(this.MouseLeavePanelObjects);
             this.panelArrowLeft.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelArrowLeft_MouseUp);
 
-            this.selectorStrip = new ExtendedControls.ExtPanelGradientFill();
+            this.selectorStrip = new ExtendedControls.ExtPanelNoChildThemed();
+            this.selectorStrip.ThisThemed = false;          // we don't theme children of us, or theme us
             this.selectorStrip.Name = "tabstrip_selectorstrip";
-            this.selectorStrip.ChildrenThemed = true;
             this.selectorStrip.Controls.Add(this.labelControlText);
             this.selectorStrip.Controls.Add(this.pimageListSelection);
             this.selectorStrip.Controls.Add(this.extButtonDrawnHelp);
@@ -718,11 +718,11 @@ namespace ExtendedControls
                 selectorStrip.GradientDirection = t.TabStripGradientDirection;
             }
 
-            if (CurrentControl != null)             // we give the CurrentControl only the chance to theme
-                t.UpdateControls(CurrentControl, fnt, 100, false);
-
             selectorStrip.Invalidate();
-            return false;   // eveything we own is themed in here.. no children
+
+            // selectorstrip is set to no theme/no children as we theme it in here
+            // The only other thing is the user control, which is to be themed
+            return true;   
         }
 
         #endregion

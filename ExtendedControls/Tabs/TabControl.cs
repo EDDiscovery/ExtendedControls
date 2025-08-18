@@ -100,6 +100,7 @@ namespace ExtendedControls
         public ExtTabControl() : base()
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetTabsHeight();
         }
         
         public TabPage FindTabPageByName(string name)
@@ -115,19 +116,20 @@ namespace ExtendedControls
             return null;
         }
 
-        public int CalculateMinimumTabWidth()                                // given fonts and the tab text, whats the minimum width?
+        // given fonts and the tab text, whats the minimum width? Only needed externally if your in fixed mode
+        public SizeF CalculateMinimumTabWidthHeight()                               
         {
-            int minsize = 16;
+            SizeF min = new Size(16, 12);
 
             foreach (TabPage p in TabPages)
             {
                 //Console.WriteLine("Text is " + p.Text);
                 SizeF sz = BitMapHelpers.MeasureStringInBitmap(p.Text, this.Font);
 
-                if (sz.Width > minsize)
-                    minsize = (int)sz.Width + 1;  // +1 due to float round down..
+                min = new SizeF(Math.Max(min.Width,sz.Width),Math.Max(min.Height,sz.Height));
             }
-            return minsize;
+
+            return min;
         }
 
         public int TabAt(Point position)
@@ -147,35 +149,31 @@ namespace ExtendedControls
         // setting your own TC font stops the OnFontChanged being called for this class, and its at that point this fix needs to be applied
         public void ForceSizeUpdate()
         {
-          //  System.Diagnostics.Debug.WriteLine($"Tabcontrol ForceSizeUpdate: {Font}  {Font.Height}");
+           // System.Diagnostics.Debug.WriteLine($"Tabcontrol ForceSizeUpdate: {Font}  {Font.Height}");
 
             // go back to system
-            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);      
+            //SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);
 
-            //// in anything but fixed, we set the itemsize and the minimum tab width based on Font
-            if (SizeMode != TabSizeMode.Fixed)
-            {
-                int minsize = CalculateMinimumTabWidth();           // set the minimum size
-                var size = new Size(minsize, Math.Max(16, Font.Height + 4));
-
-               // System.Diagnostics.Debug.WriteLine($" .. tab size {size}");
-
-                ItemSize = size;       // set the item height, and minimum width in anything else but fixed
-            }
+            SetTabsHeight();
 
             // so, it we have multiline, and we have def more than width, or we already have multiple rows,
             // we need to fix the tab control issue with multiline and font changes
             // turning multiline off on calls RecreateHandle, so we just do that, to fix the issue
             // this can upset anything currently executing which is under the tab so don't call from a call back using the tab control
 
-            if (Multiline && (RowCount > 1 || ItemSize.Width * TabCount > Width))
+            if (Multiline)
             {
-               // System.Diagnostics.Debug.WriteLine($".. Multiline, min length {ItemSize.Width * TabCount} ");
-                RecreateHandle();
+                var sf = CalculateMinimumTabWidthHeight(); // estimate width needed for text.
+
+                if (RowCount > 1 || (sf.Width + 8) * TabCount > Width)
+                {
+                    // System.Diagnostics.Debug.WriteLine($".. Multiline, min length {ItemSize.Width * TabCount} ");
+                    RecreateHandle();
+                }
             }
 
-            if (FlatStyle != FlatStyle.System)
-                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
+//            if (FlatStyle != FlatStyle.System)
+  //              SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
 
             Invalidate();
         }
@@ -237,7 +235,6 @@ namespace ExtendedControls
         #region CustomPainting
 
         // we always draw now the tab background.  If you want it transparent, set the tab back colours to the transparent key
-
         protected override void OnPaint(PaintEventArgs e)
         {
             if (Parent == null || Width < 1 || Height < 1)
@@ -394,7 +391,22 @@ namespace ExtendedControls
 
         #endregion
 
-       
+        #region Helpers
+
+        private void SetTabsHeight()
+        {
+            if (SizeMode != TabSizeMode.Fixed)
+            {
+                SizeF sf = BitMapHelpers.MeasureStringInBitmap("akakAKAKAKyyyyxzzzyyjj0192892", this.Font);
+                var size = new Size(1, ((int)sf.Height) + 8);       // set the height only, width is auto calculated
+                ItemSize = size;
+             //   System.Diagnostics.Debug.WriteLine($"TabControl set tab size {size}");
+            }
+        }
+
+        #endregion
+
+
         #region Members
         private FlatStyle flatstyle = FlatStyle.System;
         private TabStyleCustom tabstyle = new TabStyleSquare();     // change for the shape of tabs.
@@ -406,6 +418,7 @@ namespace ExtendedControls
         #endregion
 
 #if false
+//  not needed I think
         private IntPtr SendMessage(int msg, IntPtr wparam, IntPtr lparam)
         {
             Message message = Message.Create(this.Handle, msg, wparam, lparam);

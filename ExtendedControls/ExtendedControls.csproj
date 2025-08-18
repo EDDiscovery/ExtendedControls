@@ -105,7 +105,7 @@
     <Compile Include="Controls\SplitterResizer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DGV\PanelAutoHeightWidth.cs">
+    <Compile Include="Panels\PanelAutoHeightWidth.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Panels\PictureBoxScroll.cs">

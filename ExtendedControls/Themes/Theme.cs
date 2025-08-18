@@ -782,13 +782,6 @@ namespace ExtendedControls
             Control parent = ctrl.Parent;
             Type controltype = ctrl.GetType();
 
-            if ( level>90)
-            {
-
-            }
-
-            System.Diagnostics.Debug.WriteLine($"{new string(' ', 256).Substring(0, level)} {level} : {parent?.Name} -> {ctrl.Name} ({ctrl.GetType().Name})");
-
             ctrl.SuspendLayout();
 
             bool dochildren = true;
@@ -959,6 +952,7 @@ namespace ExtendedControls
                 System.Diagnostics.Trace.WriteLine($"Themer {ctrl.Name}:{controltype.Name} from {parent.Name} Unknown control!");
             }
 
+          //  System.Diagnostics.Debug.WriteLine($"{new string(' ', 256).Substring(0, level)} {level} : {ctrl.Name} <- {parent?.Name} : {ctrl.GetType().Name} ChildThemed {dochildren}");
 
             if (dochildren)
             {

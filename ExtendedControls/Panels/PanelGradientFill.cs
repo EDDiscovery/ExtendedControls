@@ -24,11 +24,11 @@ namespace ExtendedControls
     // -> ExtPanelDropDown
     // -> ExtPanelNoChildThemed
     // -> ExtPanelResizer
-    // -> TabStrip
   
     public class ExtPanelGradientFill : Panel, IThemeable, ITranslatableControl
     {
         public bool ChildrenThemed { get; set; } = true;        // Control if children is themed
+        public bool ThisThemed { get; set; } = true;            // Control if we are themed
 
         // ThemeColors only used if ThemeColourSet>=0.  
         public Color[] ThemeColors { get; set; } = new Color[4] { SystemColors.Control, SystemColors.Control, SystemColors.Control, SystemColors.Control };
@@ -43,9 +43,8 @@ namespace ExtendedControls
         // Set to lefttoright for a basic flow
         public FlowDirection? FlowDirection { get { return flowdirection; } set { flowdirection = value; } }
 
-        // Override if you want your derived class to have a go at themeing.
-        protected virtual bool ThemeDerived(Theme t, Font fnt) 
-        { return ChildrenThemed; }
+        // Override if you want your derived class to have a go at themeing, only if ThisThemed
+        protected virtual bool ThemeDerived(Theme t, Font fnt) { return ChildrenThemed; }
 
         public Action<ExtPanelGradientFill> LayoutComplete;         // callback useful to know when layout is complete - there is no winform one doing this, layout callback is called before layout.
 
@@ -153,19 +152,27 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            //System.Diagnostics.Debug.WriteLine($"Theme GradientFill {Name} {ThemeColorSet}");
-            if (ThemeColorSet > 0)
+            if (ThisThemed)
             {
-                ThemeColors = t.GetPanelSet(ThemeColorSet);
-                GradientDirection = t.GetPanelDirection(ThemeColorSet);
+                //System.Diagnostics.Debug.WriteLine($"Theme GradientFill {Name} {ThemeColorSet}");
+                if (ThemeColorSet > 0)
+                {
+                    ThemeColors = t.GetPanelSet(ThemeColorSet);
+                    GradientDirection = t.GetPanelDirection(ThemeColorSet);
+                }
+
+                // interfaces in this version of c# can't be virtual, but we want to give the derived class a go if required
+                var ret = ThemeDerived(t, fnt);
+
+                Invalidate();
+
+                return ret;
             }
-
-            // interfaces in this version of c# can't be virtual, but we want to give the derived class a go if required
-            var ret = ThemeDerived(t, fnt);
-
-            Invalidate();
-
-            return ret;
+            else
+            {
+                //System.Diagnostics.Debug.WriteLine($"PanelGradientFill {Name} no theme Child Themed {ChildrenThemed}");
+                return ChildrenThemed;
+            }
         }
 
         protected override void OnResize(EventArgs eventargs)
