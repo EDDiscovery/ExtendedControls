@@ -109,7 +109,6 @@ namespace TestExtendedControls
             p1.Text = $"Tab {tabno}";
             tabno++;
             extTabControl1.Controls.Add(p1);
-            extTabControl1.MinimumTabWidth = extTabControl1.CalculateMinimumTabWidth();
         }
 
         private void extButton4_Click(object sender, EventArgs e)

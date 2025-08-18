@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -56,8 +57,6 @@ namespace ExtendedControls
         // If you set it to Color.Transparent, it goes to normal painting
         public Color PaintTransparentColor { get { return transparency; } set { transparency = value; Invalidate(); } }
 
-        public int MinimumTabWidth { set { SendMessage(0x1300 + 49, IntPtr.Zero, (IntPtr)value); } }
-
         // Auto Invalidates, style is Flat, Popup (gradient) and System
         public FlatStyle FlatStyle { get { return flatstyle; } set { if ( value != flatstyle ) SetStyle(value); } }
 
@@ -89,10 +88,10 @@ namespace ExtendedControls
         public bool AllowDragReorder { get; set; } = false;
         // Tab clicked.. reports last tab clicked
         public int LastTabClicked { get; private set; } = -1;
+        public void ClearLastTab() { LastTabClicked = -1; }
+
 
         public bool TranslateDoChildren => true;
-
-        public void ClearLastTab() { LastTabClicked = -1; }
 
         #endregion
 
@@ -118,21 +117,16 @@ namespace ExtendedControls
 
         public int CalculateMinimumTabWidth()                                // given fonts and the tab text, whats the minimum width?
         {
-            Graphics gr = Parent.CreateGraphics();
-
             int minsize = 16;
 
             foreach (TabPage p in TabPages)
             {
                 //Console.WriteLine("Text is " + p.Text);
-                SizeF sz = gr.MeasureString(p.Text, this.Font);
+                SizeF sz = BitMapHelpers.MeasureStringInBitmap(p.Text, this.Font);
 
                 if (sz.Width > minsize)
                     minsize = (int)sz.Width + 1;  // +1 due to float round down..
             }
-
-            gr.Dispose();
-
             return minsize;
         }
 
@@ -153,7 +147,7 @@ namespace ExtendedControls
         // setting your own TC font stops the OnFontChanged being called for this class, and its at that point this fix needs to be applied
         public void ForceSizeUpdate()
         {
-            //System.Diagnostics.Debug.WriteLine($"Tabcontrol ForceSizeUpdate: {Font}  {Font.Height}");
+          //  System.Diagnostics.Debug.WriteLine($"Tabcontrol ForceSizeUpdate: {Font}  {Font.Height}");
 
             // go back to system
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);      
@@ -163,16 +157,21 @@ namespace ExtendedControls
             {
                 int minsize = CalculateMinimumTabWidth();           // set the minimum size
                 var size = new Size(minsize, Math.Max(16, Font.Height + 4));
-                //System.Diagnostics.Debug.WriteLine($" .. tab size {minsize} itemsize {size}");
+
+               // System.Diagnostics.Debug.WriteLine($" .. tab size {size}");
+
                 ItemSize = size;       // set the item height, and minimum width in anything else but fixed
-                MinimumTabWidth = minsize;
             }
 
-            // if in multiline, it goes hairwire if its gets bigger. Clear multiline, set multiline. Winforms recreates the handle with and the sizing resets
-            if (Multiline)
+            // so, it we have multiline, and we have def more than width, or we already have multiple rows,
+            // we need to fix the tab control issue with multiline and font changes
+            // turning multiline off on calls RecreateHandle, so we just do that, to fix the issue
+            // this can upset anything currently executing which is under the tab so don't call from a call back using the tab control
+
+            if (Multiline && (RowCount > 1 || ItemSize.Width * TabCount > Width))
             {
-                Multiline = false;
-                Multiline = true;
+               // System.Diagnostics.Debug.WriteLine($".. Multiline, min length {ItemSize.Width * TabCount} ");
+                RecreateHandle();
             }
 
             if (FlatStyle != FlatStyle.System)
@@ -338,6 +337,7 @@ namespace ExtendedControls
             base.OnFontChanged(e);
             //System.Diagnostics.Debug.WriteLine($"Tabcontrol OnFontChange: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
 
+            // we make sure we are happy with the tabs 
             ForceSizeUpdate();
         }
 
@@ -394,17 +394,7 @@ namespace ExtendedControls
 
         #endregion
 
-
-        #region Helpers
-        private IntPtr SendMessage(int msg, IntPtr wparam, IntPtr lparam)
-        {
-            Message message = Message.Create(this.Handle, msg, wparam, lparam);
-            this.WndProc(ref message);
-            return message.Result;
-        }
-
-        #endregion
-
+       
         #region Members
         private FlatStyle flatstyle = FlatStyle.System;
         private TabStyleCustom tabstyle = new TabStyleSquare();     // change for the shape of tabs.
@@ -414,6 +404,21 @@ namespace ExtendedControls
         const int topborder = 2;
 
         #endregion
+
+#if false
+        private IntPtr SendMessage(int msg, IntPtr wparam, IntPtr lparam)
+        {
+            Message message = Message.Create(this.Handle, msg, wparam, lparam);
+            this.WndProc(ref message);
+            return message.Result;
+        }
+
+
+        // kept code but not used as of aug 25
+        public int MinimumTabWidth { set { SendMessage(0x1300 + 49, IntPtr.Zero, (IntPtr)value); } }
+    
+#endif
+
     }
 }
 

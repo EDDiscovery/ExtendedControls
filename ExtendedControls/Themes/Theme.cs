@@ -26,6 +26,8 @@ namespace ExtendedControls
     {
         public static Theme Current { get; set; } = null;             // current theme
 
+        #region Properties
+
         public string Name { get; set; }
         public void SetCustom()
         { Name = "Custom"; }                                // set so custom..
@@ -562,6 +564,9 @@ namespace ExtendedControls
             return fnt;
         }
 
+        #endregion
+
+        #region Construction
 
         // create raw, with apr 25 new colours still set up as transparent. Used by ToObject.
         public Theme()              
@@ -737,6 +742,10 @@ namespace ExtendedControls
                 this.FontStyle = fstyle.Value;  
         }
 
+        #endregion
+
+        #region Theming
+
         public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
         {
              System.Diagnostics.Debug.WriteLine($"Themer apply standard {ctrl.Name} {ctrl.GetType().Name} Font {GetFont}");
@@ -767,65 +776,19 @@ namespace ExtendedControls
             return WindowsFrame;
         }
 
-        public void ToolStripRendererTheming(bool on)
-        {
-            if (on)
-            {
-                if ((ToolStripManager.Renderer as ThemeToolStripRenderer) == null)      // not installed..   install one
-                    ToolStripManager.Renderer = new ThemeToolStripRenderer();
-
-                var toolstripRenderer = ToolStripManager.Renderer as ThemeToolStripRenderer;
-
-                bool foretoodark = (MenuFore.GetBrightness() < 0.1);
-
-                // horizontal menu bar
-                toolstripRenderer.colortable.colMenuBarBackground = MenuBack;
-                toolstripRenderer.colortable.colMenuText = MenuFore;
-                toolstripRenderer.colortable.colMenuSelectedOrPressedText = MenuSelectedText;
-
-                toolstripRenderer.colortable.colMenuTopLevelHoveredBack = MenuSelectedBack.Multiply(0.8f);
-                toolstripRenderer.colortable.colMenuTopLevelSelectedBack = MenuSelectedBack;
-                toolstripRenderer.colortable.colMenuItemSelectedBack = MenuSelectedBack;
-
-                toolstripRenderer.colortable.colMenuDropDownBackground = MenuDropDownBack;
-                toolstripRenderer.colortable.colMenuLeftMarginBackground = MenuDropDownBack.Multiply(1.2F);
-
-                // we can't seem to set checkmark colour to anything but black so make sure the Fore is not dark            
-                toolstripRenderer.colortable.colMenuItemCheckedBackground = foretoodark ? MenuBack : MenuFore;
-                toolstripRenderer.colortable.colMenuItemHoverOverCheckmarkBackground = foretoodark ? MenuBack : MenuFore.Multiply(MouseSelectedScaling);
-
-                Color border = MenuBorder;
-
-                toolstripRenderer.colortable.colMenuDropDownBorder = border;
-                toolstripRenderer.colortable.colMenuHighlightedPartBorder = border;
-
-                toolstripRenderer.colortable.colToolStripBackground = MenuBack;
-                toolstripRenderer.colortable.colToolStripBorder = border;
-                toolstripRenderer.colortable.colToolStripSeparator = border;
-
-                toolstripRenderer.colortable.colToolStripButtonPressedBack = MenuSelectedBack.Multiply(1.2f);
-                toolstripRenderer.colortable.colToolStripButtonSelectedBack = MenuSelectedBack;
-                toolstripRenderer.colortable.colToolStripButtonPressedSelectedBorder = border.Multiply(MouseSelectedScaling);
-                toolstripRenderer.colortable.colToolBarGripper = MenuFore;
-                toolstripRenderer.colortable.colToolStripOverflowButton = MenuFore;
-            }
-            else
-                ToolStripManager.Renderer = null;
-        }
-
         // if you want to theme a specific control
         public void UpdateControls(Control ctrl, Font fnt, int level, bool formnoborderoverride = false)    // parent can be null
         {
             Control parent = ctrl.Parent;
             Type controltype = ctrl.GetType();
 
-#if DEBUG
+            if ( level>90)
+            {
 
-            //System.Diagnostics.Debug.WriteLine(new string(' ', 256).Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + ctrl.Name.ToString() + " " + ctrl.ToString() + " " + fnt.ToString() + " c.fnt " + ctrl.Font);
-            //System.Diagnostics.Debug.WriteLine(new string(' ', 256).Substring(0, level) + level + ":" + parent?.Name.ToString() + ":" + ctrl.Name.ToString() + " " + ctrl.ToString() + " " + ctrl.BackColor);
-            //System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + (myControl.GetType().Name + ":" + myControl.Name??"") + " : " + myControl.GetHeirarchy(false));
-            // System.Diagnostics.Debug.WriteLine("                             ".Substring(0, level) + level + ":" + myControl.GetType().Name + (myControl.Name.HasChars() ? " " + myControl.Name : "") + " : " + myControl.GetHeirarchy(false) + " " + myControl.Size);
-#endif
+            }
+
+            System.Diagnostics.Debug.WriteLine($"{new string(' ', 256).Substring(0, level)} {level} : {parent?.Name} -> {ctrl.Name} ({ctrl.GetType().Name})");
+
             ctrl.SuspendLayout();
 
             bool dochildren = true;
@@ -1010,20 +973,55 @@ namespace ExtendedControls
         }
 
         // see the ToolStripCustomColourTable for meaning of these colours
-
-        // if a parent above is a group box behind the control, use the group box back color, else use the form colour
-        private Color GroupBoxOverride(Control parent, Color d)      
+        public void ToolStripRendererTheming(bool on)
         {
-            Control x = parent;
-            while (x != null)
+            if (on)
             {
-                if (x is GroupBox)
-                    return GroupBack[0];
-                x = x.Parent;
-            }
+                if ((ToolStripManager.Renderer as ThemeToolStripRenderer) == null)      // not installed..   install one
+                    ToolStripManager.Renderer = new ThemeToolStripRenderer();
 
-            return d;
+                var toolstripRenderer = ToolStripManager.Renderer as ThemeToolStripRenderer;
+
+                bool foretoodark = (MenuFore.GetBrightness() < 0.1);
+
+                // horizontal menu bar
+                toolstripRenderer.colortable.colMenuBarBackground = MenuBack;
+                toolstripRenderer.colortable.colMenuText = MenuFore;
+                toolstripRenderer.colortable.colMenuSelectedOrPressedText = MenuSelectedText;
+
+                toolstripRenderer.colortable.colMenuTopLevelHoveredBack = MenuSelectedBack.Multiply(0.8f);
+                toolstripRenderer.colortable.colMenuTopLevelSelectedBack = MenuSelectedBack;
+                toolstripRenderer.colortable.colMenuItemSelectedBack = MenuSelectedBack;
+
+                toolstripRenderer.colortable.colMenuDropDownBackground = MenuDropDownBack;
+                toolstripRenderer.colortable.colMenuLeftMarginBackground = MenuDropDownBack.Multiply(1.2F);
+
+                // we can't seem to set checkmark colour to anything but black so make sure the Fore is not dark            
+                toolstripRenderer.colortable.colMenuItemCheckedBackground = foretoodark ? MenuBack : MenuFore;
+                toolstripRenderer.colortable.colMenuItemHoverOverCheckmarkBackground = foretoodark ? MenuBack : MenuFore.Multiply(MouseSelectedScaling);
+
+                Color border = MenuBorder;
+
+                toolstripRenderer.colortable.colMenuDropDownBorder = border;
+                toolstripRenderer.colortable.colMenuHighlightedPartBorder = border;
+
+                toolstripRenderer.colortable.colToolStripBackground = MenuBack;
+                toolstripRenderer.colortable.colToolStripBorder = border;
+                toolstripRenderer.colortable.colToolStripSeparator = border;
+
+                toolstripRenderer.colortable.colToolStripButtonPressedBack = MenuSelectedBack.Multiply(1.2f);
+                toolstripRenderer.colortable.colToolStripButtonSelectedBack = MenuSelectedBack;
+                toolstripRenderer.colortable.colToolStripButtonPressedSelectedBorder = border.Multiply(MouseSelectedScaling);
+                toolstripRenderer.colortable.colToolBarGripper = MenuFore;
+                toolstripRenderer.colortable.colToolStripOverflowButton = MenuFore;
+            }
+            else
+                ToolStripManager.Renderer = null;
         }
+
+        #endregion
+
+        #region Save Load
 
         public JObject ToJSON(bool altnames = true)
         {
@@ -1116,10 +1114,27 @@ namespace ExtendedControls
 
             return null;
         }
-
         public bool SaveFile(string pathname)
         {
             return FileHelpers.TryWriteToFile(pathname, ToJSON().ToString(true));
+        }
+
+        #endregion
+
+        #region Helpers
+
+        // if a parent above is a group box behind the control, use the group box back color, else use the form colour
+        private Color GroupBoxOverride(Control parent, Color d)
+        {
+            Control x = parent;
+            while (x != null)
+            {
+                if (x is GroupBox)
+                    return GroupBack[0];
+                x = x.Parent;
+            }
+
+            return d;
         }
 
         // New options introduced in march/april 25 are marked as transparent..
@@ -1243,6 +1258,7 @@ namespace ExtendedControls
             return 0;
         }
 
+        #endregion
 
         private const string DefaultFont = "Microsoft Sans Serif";
         private const float DefaultFontSize = 8.25F;
