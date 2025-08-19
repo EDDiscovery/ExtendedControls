@@ -21,6 +21,7 @@ namespace TestExtendedControls
             themelist = new ThemeList();
             themelist.LoadBaseThemes();
             themelist.SetThemeByName("Elite Verdana Small Gradiant Skinny Scroll");
+            //themelist.SetThemeByName("Windows Default");
             Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
@@ -28,7 +29,7 @@ namespace TestExtendedControls
             tabControl1.TabStyle = new TabStyleAngled();
             tabControl1.AllowDragReorder = true;
             tabControl1.ThemeColorSet = 0;
-            tabControl1.Padding = new Point(8, 8);      // height is immaterial
+            tabControl1.Padding = new Point(8, 4);      // 4 appears space reserved at top.
 
             Theme.Current.ApplyStd(this);
 

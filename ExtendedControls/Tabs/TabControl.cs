@@ -319,7 +319,7 @@ namespace ExtendedControls
             if (SizeMode != TabSizeMode.Fixed)
             {
                 SizeF sf = BitMapHelpers.MeasureStringInBitmap("akakAKAKAKyyyyxzzzyyjj0192892", this.Font);
-                var size = new Size(100, ((int)sf.Height) + Padding.Y);       // set the height only, width is auto calculated
+                var size = new Size(100, ((int)sf.Height) + Padding.Y*2);       // set the height only, width is auto calculated. Padding.Y in system mode appears to be height at top
                 ItemSize = size;
                 //System.Diagnostics.Debug.WriteLine($"TabControl set tab size {size}");
 

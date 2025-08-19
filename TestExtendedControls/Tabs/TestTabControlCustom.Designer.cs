@@ -43,7 +43,9 @@
             this.extButtonAddTab = new ExtendedControls.ExtButton();
             this.buttonTCFont = new ExtendedControls.ExtButton();
             this.tabControl1 = new ExtendedControls.ExtTabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -249,6 +251,7 @@
             // tabControl1
             // 
             this.tabControl1.AllowDragReorder = false;
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.tabControl1.ItemSize = new System.Drawing.Size(1, 21);
             this.tabControl1.Location = new System.Drawing.Point(0, 100);
@@ -280,6 +283,16 @@
         System.Drawing.SystemColors.Control};
             this.tabControl1.ThemeColorSet = -1;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(792, 371);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // TestTabControlCustom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -290,6 +303,7 @@
             this.Name = "TestTabControlCustom";
             this.Text = "Form1";
             this.panel1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -310,5 +324,6 @@
         private ExtendedControls.ExtButton extButtonRemoveTab;
         private ExtendedControls.ExtButton extButtonAddTab;
         private ExtendedControls.ExtButton extButtonT85Std;
+        private System.Windows.Forms.TabPage tabPage1;
     }
 }
