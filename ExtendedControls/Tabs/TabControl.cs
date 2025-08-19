@@ -58,10 +58,10 @@ namespace ExtendedControls
         public Color PaintTransparentColor { get { return transparency; } set { transparency = value; Invalidate(); } }
 
         // Auto Invalidates, style is Flat, Popup (gradient) and System
-        public FlatStyle FlatStyle { get { return flatstyle; } set { if ( value != flatstyle ) SetStyle(value); } }
+        public FlatStyle FlatStyle { get { return flatstyle; } set { if (value != flatstyle) SetStyle(value); } }
 
         // Auto Invalidates attach a tab style class which determines the shape and formatting.
-        public TabStyleCustom TabStyle { get { return tabstyle; } set { if (value != tabstyle ) SetStyle(null,value); } }
+        public TabStyleCustom TabStyle { get { return tabstyle; } set { if (value != tabstyle) SetStyle(null, value); } }
 
         // change both, or either
         public void SetStyle(FlatStyle? fsstyle, TabStyleCustom tabstylep = null)
@@ -72,7 +72,7 @@ namespace ExtendedControls
                 Invalidate();
             }
 
-            if ( fsstyle.HasValue && fsstyle.Value != FlatStyle)
+            if (fsstyle.HasValue && fsstyle.Value != FlatStyle)
             {
                 flatstyle = fsstyle.Value;
 
@@ -80,6 +80,7 @@ namespace ExtendedControls
                     SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);
                 else
                     SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
+
                 Invalidate();
             }
         }
@@ -100,9 +101,8 @@ namespace ExtendedControls
         public ExtTabControl() : base()
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            SetTabsHeight();
         }
-        
+
         public TabPage FindTabPageByName(string name)
         {
             foreach (TabPage p in TabPages)
@@ -117,7 +117,7 @@ namespace ExtendedControls
         }
 
         // given fonts and the tab text, whats the minimum width? Only needed externally if your in fixed mode
-        public SizeF CalculateMinimumTabWidthHeight()                               
+        public SizeF CalculateMinimumTabWidthHeight()
         {
             SizeF min = new Size(16, 12);
 
@@ -126,7 +126,7 @@ namespace ExtendedControls
                 //Console.WriteLine("Text is " + p.Text);
                 SizeF sz = BitMapHelpers.MeasureStringInBitmap(p.Text, this.Font);
 
-                min = new SizeF(Math.Max(min.Width,sz.Width),Math.Max(min.Height,sz.Height));
+                min = new SizeF(Math.Max(min.Width, sz.Width), Math.Max(min.Height, sz.Height));
             }
 
             return min;
@@ -144,38 +144,11 @@ namespace ExtendedControls
             return -1;
         }
 
-        // called by OnFontChanged.
         // You should only need to call this if 1) you defined your own tab control font and 2) you scale the control (say by changing parent font)
         // setting your own TC font stops the OnFontChanged being called for this class, and its at that point this fix needs to be applied
-        public void ForceSizeUpdate()
+        public void ForceTabUpdate()
         {
-           // System.Diagnostics.Debug.WriteLine($"Tabcontrol ForceSizeUpdate: {Font}  {Font.Height}");
-
-            // go back to system
-            //SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);
-
-            SetTabsHeight();
-
-            // so, it we have multiline, and we have def more than width, or we already have multiple rows,
-            // we need to fix the tab control issue with multiline and font changes
-            // turning multiline off on calls RecreateHandle, so we just do that, to fix the issue
-            // this can upset anything currently executing which is under the tab so don't call from a call back using the tab control
-
-            if (Multiline)
-            {
-                var sf = CalculateMinimumTabWidthHeight(); // estimate width needed for text.
-
-                if (RowCount > 1 || (sf.Width + 8) * TabCount > Width)
-                {
-                    // System.Diagnostics.Debug.WriteLine($".. Multiline, min length {ItemSize.Width * TabCount} ");
-                    RecreateHandle();
-                }
-            }
-
-//            if (FlatStyle != FlatStyle.System)
-  //              SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
-
-            Invalidate();
+            OnFontChanged(null);
         }
 
         #endregion
@@ -256,7 +229,7 @@ namespace ExtendedControls
 
             DrawBorder(e.Graphics);
 
-            if (TabCount > 0 )
+            if (TabCount > 0)
             {
                 for (int i = TabCount - 1; i >= 0; i--)
                 {
@@ -287,7 +260,7 @@ namespace ExtendedControls
                 tabimage = this.ImageList.Images[this.TabPages[i].ImageIndex];
 
             Color tabtextc = (Enabled) ? ((selected) ? TextSelectedColor : TextNotSelectedColor) : TextNotSelectedColor.Multiply(TabDisabledScaling);
-            TabStyle.DrawText(gr, GetTabRect(i), i, selected, tabtextc, this.TabPages[i].Text, Font , tabimage);
+            TabStyle.DrawText(gr, GetTabRect(i), i, selected, tabtextc, this.TabPages[i].Text, Font, tabimage);
 
             gr.SmoothingMode = SmoothingMode.Default;
         }
@@ -297,12 +270,12 @@ namespace ExtendedControls
             Pen outerrectangle = new Pen(TabControlBorderColor, 1.0F);    // based on 4 width border, bright colour
             Pen innerrectangle = new Pen(TabControlBorderColor2, 1.0F);     // just a touch brighter, darker colour
             Pen widefill = new Pen(TabControlBorderColor, 2.0F);
-            
+
             int borderheight = ClientRectangle.Height - DisplayRectangle.Y + topborder;         // area of boarder in height
             int borderwidth = (ClientRectangle.Width - DisplayRectangle.Width) / 2;     // should be 4
 
             // remember to draw a rectangle it needs to be width-1 
-            
+
             // outer rectangle, from left to 1 pixel past the displayrectangle. 1 wide
             var b1 = new Rectangle(0, DisplayRectangle.Y - topborder, ClientRectangle.Width - 1 - borderwidth + 2, borderheight - 1);
 
@@ -332,10 +305,25 @@ namespace ExtendedControls
         protected override void OnFontChanged(EventArgs e)
         {
             base.OnFontChanged(e);
-            //System.Diagnostics.Debug.WriteLine($"Tabcontrol OnFontChange: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} {flatstyle}");
 
-            // we make sure we are happy with the tabs 
-            ForceSizeUpdate();
+            //System.Diagnostics.Debug.WriteLine($"Tabcontrol OnFontChange: {Font}  {Font.Height} : Item size {ItemSize} Multiline {Multiline} RowCount {RowCount} {flatstyle}");
+
+            // Put it back into system mode. if we don't put it back into system draw, it seems to never resize the tabs
+            if (FlatStyle != FlatStyle.System)
+                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, false);      // go back to system
+
+            if (SizeMode != TabSizeMode.Fixed)
+            {
+                SizeF sf = BitMapHelpers.MeasureStringInBitmap("akakAKAKAKyyyyxzzzyyjj0192892", this.Font);
+                var size = new Size(100, ((int)sf.Height) + Padding.Y);       // set the height only, width is auto calculated
+                ItemSize = size;
+                //System.Diagnostics.Debug.WriteLine($"TabControl set tab size {size}");
+
+                RecreateHandle();           // only sure way of making the font change work with tab sizing, as all other methods end up calling this
+            }
+
+            if (FlatStyle != FlatStyle.System)
+                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.Opaque | ControlStyles.ResizeRedraw, true);
         }
 
         #endregion
@@ -344,9 +332,9 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            if ( t.IsButtonSystemStyle) // not system
+            if (t.IsButtonSystemStyle) // not system
             {
-                SetStyle(FlatStyle.System, new TabStyleAngled());   
+                SetStyle(FlatStyle.System, new TabStyleAngled());
             }
             else
             {
@@ -391,22 +379,6 @@ namespace ExtendedControls
 
         #endregion
 
-        #region Helpers
-
-        private void SetTabsHeight()
-        {
-            if (SizeMode != TabSizeMode.Fixed)
-            {
-                SizeF sf = BitMapHelpers.MeasureStringInBitmap("akakAKAKAKyyyyxzzzyyjj0192892", this.Font);
-                var size = new Size(1, ((int)sf.Height) + 8);       // set the height only, width is auto calculated
-                ItemSize = size;
-             //   System.Diagnostics.Debug.WriteLine($"TabControl set tab size {size}");
-            }
-        }
-
-        #endregion
-
-
         #region Members
         private FlatStyle flatstyle = FlatStyle.System;
         private TabStyleCustom tabstyle = new TabStyleSquare();     // change for the shape of tabs.
@@ -429,7 +401,8 @@ namespace ExtendedControls
 
         // kept code but not used as of aug 25
         public int MinimumTabWidth { set { SendMessage(0x1300 + 49, IntPtr.Zero, (IntPtr)value); } }
-    
+        public void SetPadding(int x,int y) { SendMessage(0x1300 + 43, IntPtr.Zero, (IntPtr)((y<<16) | (x & 0xffff))); }
+
 #endif
 
     }

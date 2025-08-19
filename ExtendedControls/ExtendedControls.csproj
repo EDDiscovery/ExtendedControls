@@ -117,6 +117,9 @@
     <Compile Include="DGV\PanelDataGridViewScrollOutlining.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Tabs\TabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Tabs\TabStrip.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -266,9 +269,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\StatusStrip.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Tabs\TabControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Tabs\TabStyleCustom.cs" />

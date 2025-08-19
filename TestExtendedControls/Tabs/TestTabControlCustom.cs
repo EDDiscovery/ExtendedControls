@@ -13,14 +13,14 @@ namespace TestExtendedControls
 {
     public partial class TestTabControlCustom : Form
     {
-        ThemeList theme;
+        ThemeList themelist;
 
         int tabpageno = 0;
         public TestTabControlCustom()
         {
-            theme = new ThemeList();
-            theme.LoadBaseThemes();
-            theme.SetThemeByName("Elite Verdana Small Gradiant Skinny Scroll");
+            themelist = new ThemeList();
+            themelist.LoadBaseThemes();
+            themelist.SetThemeByName("Elite Verdana Small Gradiant Skinny Scroll");
             Theme.Current.WindowsFrame = true;
 
             InitializeComponent();
@@ -28,21 +28,27 @@ namespace TestExtendedControls
             tabControl1.TabStyle = new TabStyleAngled();
             tabControl1.AllowDragReorder = true;
             tabControl1.ThemeColorSet = 0;
-            while (tabpageno < 20)
-                MakeTabPage();
+            tabControl1.Padding = new Point(8, 8);      // height is immaterial
+
             Theme.Current.ApplyStd(this);
+
+            while (tabpageno < 9)
+                MakeTabPage();
+            
+
         }
 
         void MakeTabPage()
         {
             TabPage p = new TabPage();
-            Label l = new Label() { Location = new Point(20, 20), Text = $"Tab Page {tabpageno}", AutoSize = true};
+            Label l = new Label() { Location = new Point(3, 3), Text = $"Tab Page {tabpageno}", AutoSize = true};
             p.Controls.Add(l);
+            Theme.Current.ApplyStd(p);
             tabControl1.TabPages.Add(p);
             p.Text = $"Tab page {tabpageno}";
             tabpageno++;
         }
-        private void extButton1_Click(object sender, EventArgs e)
+        private void extButtonT12_Click(object sender, EventArgs e)
         {
             Theme.Current.FontSize = 12;
             Theme.Current.ApplyStd(this);
@@ -50,14 +56,14 @@ namespace TestExtendedControls
 
         }
 
-        private void extButton2_Click(object sender, EventArgs e)
+        private void extButtonT20_Click(object sender, EventArgs e)
         {
             Theme.Current.FontSize = 20;
             Theme.Current.ApplyStd(this);
             System.Diagnostics.Debug.WriteLine("Test Applied Font " + this.Font + " " + this.Font.Height);
         }
 
-        private void extButton3_Click(object sender, EventArgs e)
+        private void extButtonT85_Click(object sender, EventArgs e)
         {
             Theme.Current.FontSize = 8.5f;
             Theme.Current.ApplyStd(this);
@@ -65,14 +71,21 @@ namespace TestExtendedControls
 
         }
 
+        private void extButtonT85Std_Click(object sender, EventArgs e)
+        {
+            themelist.SetThemeByName("Windows Default");
+            Theme.Current.ApplyStd(this);
+            System.Diagnostics.Debug.WriteLine("Test Applied Font " + this.Font + " " + this.Font.Height);
+        }
+
         int tabstyle = 0;
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonEnable_Click(object sender, EventArgs e)
         {
             tabControl1.Enabled = !tabControl1.Enabled;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void buttonTabStyle_Click(object sender, EventArgs e)
         {
             if (tabstyle == 0)
                 tabControl1.TabStyle = new ExtendedControls.TabStyleAngled();
@@ -85,7 +98,7 @@ namespace TestExtendedControls
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void buttonFlatStyle_Click(object sender, EventArgs e)
         {
             FlatStyle fs = tabControl1.FlatStyle;
             if (fs == FlatStyle.System)
@@ -95,9 +108,7 @@ namespace TestExtendedControls
             if (fs == FlatStyle.Flat)
                 tabControl1.FlatStyle = FlatStyle.System;
 
-
         }
-
         private void extButtonFormFont_Click(object sender, EventArgs e)
         {
             Font fnt = this.Font;
@@ -113,14 +124,29 @@ namespace TestExtendedControls
 
         private void buttonTCFont_Click(object sender, EventArgs e)
         {
-            Font fnt = tabControl1.Font;
-
-            if (fnt.Name.Equals("Arial"))
-                fnt = new Font("Microsoft Sans Serif", 8.0F);
-            else
-                fnt = new Font("Arial", 14.0F);
-
+            Font fnt;
+            fnt = new Font("Arial", 14.0F);
             tabControl1.Font = fnt;
         }
+
+        private void buttonTC2Font_Click(object sender, EventArgs e)
+        {
+            Font fnt;
+            fnt = new Font("Microsoft Sans Serif", 8.0F);
+            tabControl1.Font = fnt;
+
+        }
+
+        private void extButtonAddTab_Click(object sender, EventArgs e)
+        {
+            MakeTabPage();
+        }
+
+        private void extButtonRemoveTab_Click(object sender, EventArgs e)
+        {
+            tabControl1.TabPages.RemoveAt(0);
+        }
+
+
     }
 }
