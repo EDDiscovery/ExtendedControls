@@ -254,13 +254,17 @@ namespace ExtendedControls
 
             Image tabimage = null;
 
-            TabStyle.DrawTab(gr, GetTabRect(i), i, selected, tabc1, tabc2, taboutline, Alignment, TabGradientDirection);
+            Rectangle tabrect = GetTabRect(i);      
+            if (tabrect.Area() < 1)     // defensive check
+                return;
+
+            TabStyle.DrawTab(gr, tabrect, i, selected, tabc1, tabc2, taboutline, Alignment, TabGradientDirection);
 
             if (this.ImageList != null && this.TabPages[i].ImageIndex >= 0 && this.TabPages[i].ImageIndex < this.ImageList.Images.Count)
                 tabimage = this.ImageList.Images[this.TabPages[i].ImageIndex];
 
             Color tabtextc = (Enabled) ? ((selected) ? TextSelectedColor : TextNotSelectedColor) : TextNotSelectedColor.Multiply(TabDisabledScaling);
-            TabStyle.DrawText(gr, GetTabRect(i), i, selected, tabtextc, this.TabPages[i].Text, Font, tabimage);
+            TabStyle.DrawText(gr, tabrect, i, selected, tabtextc, this.TabPages[i].Text, Font, tabimage);
 
             gr.SmoothingMode = SmoothingMode.Default;
         }
