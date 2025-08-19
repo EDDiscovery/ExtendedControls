@@ -29,7 +29,7 @@ namespace TestExtendedControls
             themelist.LoadBaseThemes();
 
             Theme loadtheme = Theme.LoadFile(@"c:\code\example.theme");
-            if (loadtheme != null)
+            if (loadtheme != null && false)
             {
                 System.Diagnostics.Debug.WriteLine("Theme loaded from file");
                 string jsonout = loadtheme.ToJSON().ToString(true);
@@ -41,10 +41,11 @@ namespace TestExtendedControls
                 Theme.Current = themelist.FindTheme("Elite Verdana Gradiant Skinny Scroll");
             }
 
-            // stdthemes.SetThemeByName("Verdana Grey");
+           //themelist.SetThemeByName("Windows Default");
+            // themelist.SetThemeByName("Verdana Grey");
 
             Theme.Current.WindowsFrame = true;
-            Theme.Current.ApplyStd(this);
+           Theme.Current.ApplyStd(this);
             labelName.Text = Theme.Current.Name;
 
             extComboBoxTheme.Items.AddRange(themelist.GetThemeNames());

@@ -326,8 +326,6 @@ namespace ExtendedControls
                 TickBoxReductionRatio = t.CheckBoxTickSize;
             }
 
-            FlatStyle = t.ButtonFlatStyle;
-
             if (Image != null)
             {
                 System.Drawing.Imaging.ColorMap colormap = new System.Drawing.Imaging.ColorMap();
@@ -336,6 +334,14 @@ namespace ExtendedControls
                 SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap });
 
                 ImageLayout = ImageLayout.Stretch;
+
+                // so to display an icon, it needs to be in standard, not system.  So make sure it is
+
+                FlatStyle = t.ButtonFlatStyle == FlatStyle.System ? FlatStyle.Standard : t.ButtonFlatStyle;
+            }
+            else
+            {
+                FlatStyle = t.ButtonFlatStyle;
             }
 
             Invalidate();
