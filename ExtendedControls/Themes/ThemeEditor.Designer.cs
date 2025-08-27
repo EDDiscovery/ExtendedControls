@@ -136,14 +136,12 @@ namespace ExtendedControls
             this.label25 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
             this.label43 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -231,8 +229,6 @@ namespace ExtendedControls
             this.panel_themeCheckBoxText = new System.Windows.Forms.Panel();
             this.panel_themeCheckBoxBack2 = new System.Windows.Forms.Panel();
             this.panel_themeCheckBoxBack = new System.Windows.Forms.Panel();
-            this.panel_themeKnown = new System.Windows.Forms.Panel();
-            this.panel_themeUnknown = new System.Windows.Forms.Panel();
             this.panel_themeMenuSelectedText = new System.Windows.Forms.Panel();
             this.panel_themeMenuSelectedBack = new System.Windows.Forms.Panel();
             this.panel_themeMenuFore = new System.Windows.Forms.Panel();
@@ -391,14 +387,12 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.label25);
             this.groupBoxColors.Controls.Add(this.label17);
             this.groupBoxColors.Controls.Add(this.label2);
-            this.groupBoxColors.Controls.Add(this.label20);
             this.groupBoxColors.Controls.Add(this.label22);
             this.groupBoxColors.Controls.Add(this.label32);
             this.groupBoxColors.Controls.Add(this.label26);
             this.groupBoxColors.Controls.Add(this.label43);
             this.groupBoxColors.Controls.Add(this.label21);
             this.groupBoxColors.Controls.Add(this.label28);
-            this.groupBoxColors.Controls.Add(this.label19);
             this.groupBoxColors.Controls.Add(this.label44);
             this.groupBoxColors.Controls.Add(this.label31);
             this.groupBoxColors.Controls.Add(this.label4);
@@ -486,8 +480,6 @@ namespace ExtendedControls
             this.groupBoxColors.Controls.Add(this.panel_themeCheckBoxText);
             this.groupBoxColors.Controls.Add(this.panel_themeCheckBoxBack2);
             this.groupBoxColors.Controls.Add(this.panel_themeCheckBoxBack);
-            this.groupBoxColors.Controls.Add(this.panel_themeKnown);
-            this.groupBoxColors.Controls.Add(this.panel_themeUnknown);
             this.groupBoxColors.Controls.Add(this.panel_themeMenuSelectedText);
             this.groupBoxColors.Controls.Add(this.panel_themeMenuSelectedBack);
             this.groupBoxColors.Controls.Add(this.panel_themeMenuFore);
@@ -1394,15 +1386,6 @@ namespace ExtendedControls
             this.label2.TabIndex = 6;
             this.label2.Text = "Border";
             // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(421, 414);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(40, 13);
-            this.label20.TabIndex = 6;
-            this.label20.Text = "Known";
-            // 
             // label22
             // 
             this.label22.AutoSize = true;
@@ -1462,15 +1445,6 @@ namespace ExtendedControls
             this.label28.Size = new System.Drawing.Size(62, 13);
             this.label28.TabIndex = 6;
             this.label28.Text = "Check Tick";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(408, 370);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(53, 13);
-            this.label19.TabIndex = 6;
-            this.label19.Text = "Unknown";
             // 
             // label44
             // 
@@ -2322,26 +2296,6 @@ namespace ExtendedControls
             this.panel_themeCheckBoxBack.TabIndex = 5;
             this.panel_themeCheckBoxBack.Tag = "";
             // 
-            // panel_themeKnown
-            // 
-            this.panel_themeKnown.AccessibleDescription = "";
-            this.panel_themeKnown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeKnown.Location = new System.Drawing.Point(470, 410);
-            this.panel_themeKnown.Name = "panel_themeKnown";
-            this.panel_themeKnown.Size = new System.Drawing.Size(32, 32);
-            this.panel_themeKnown.TabIndex = 5;
-            this.panel_themeKnown.Tag = "";
-            // 
-            // panel_themeUnknown
-            // 
-            this.panel_themeUnknown.AccessibleDescription = "";
-            this.panel_themeUnknown.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeUnknown.Location = new System.Drawing.Point(470, 370);
-            this.panel_themeUnknown.Name = "panel_themeUnknown";
-            this.panel_themeUnknown.Size = new System.Drawing.Size(32, 32);
-            this.panel_themeUnknown.TabIndex = 5;
-            this.panel_themeUnknown.Tag = "";
-            // 
             // panel_themeMenuSelectedText
             // 
             this.panel_themeMenuSelectedText.AccessibleDescription = "";
@@ -2867,9 +2821,7 @@ namespace ExtendedControls
         private System.Windows.Forms.GroupBox groupBoxColors;
         private System.Windows.Forms.Panel panel_themeGBFore;
         private System.Windows.Forms.TextBox textBox_Font;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
@@ -2888,8 +2840,6 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_themeGridCellFore;
         private System.Windows.Forms.Panel panel_themeLabel;
         private System.Windows.Forms.Panel panel_themeCheckBoxBack;
-        private System.Windows.Forms.Panel panel_themeKnown;
-        private System.Windows.Forms.Panel panel_themeUnknown;
         private System.Windows.Forms.Panel panel_themeMenuFore;
         private System.Windows.Forms.Panel panel_themeMenuBack;
         private System.Windows.Forms.Panel panel_themeGridCellBack;

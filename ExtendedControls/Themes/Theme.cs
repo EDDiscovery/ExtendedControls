@@ -393,13 +393,6 @@ namespace ExtendedControls
         //-----------------
 
         [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "travelgrid_visited" })]
-        public Color KnownSystemColor { get; set; } = SystemColors.MenuText;
-        [JsonCustomFormat("AltFmt", "Std")]
-        [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "travelgrid_nonvisited" })]
-        public Color UnknownSystemColor { get; set; } = Color.Blue;
-
-        [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "transparentcolorkey" })]
         public Color TransparentColorKey { get; set; } = Color.Green;
 
@@ -588,7 +581,6 @@ namespace ExtendedControls
                                     Color gridcellback, Color gridaltcellback, Color gridcelltext, Color gridaltcelltext, Color gridhighlightback,
                                     Color gridborderlines,
                                     Color gridsliderback, Color gridscrollarrow, Color gridscrollbuttonback,
-                                    Color unknownsystemcolor, Color knownsystemcolor,
                                     Color textboxbackcolor, Color textboxforecolor, Color textboxhighlightcolor, Color textboxsuccesscolor, 
                                     Color textboxbordercolor, string textboxborderstyle,
                                     Color textboxsliderback_listbox_combo, Color textboxscrollarrow_listbox_combo, Color textboxscrollbutton_listbox_combo,
@@ -650,8 +642,6 @@ namespace ExtendedControls
             ComboBoxScrollArrowBack = textboxscrollarrow_listbox_combo; ComboBoxScrollArrowBack2 = textboxscrollarrow_listbox_combo.Multiply(scalingsecondcolour);
             ComboBoxScrollButtonBack = textboxscrollbutton_listbox_combo; ComboBoxScrollButtonBack2 = textboxscrollbutton_listbox_combo.Multiply(scalingsecondcolour);
             ComboBoxScrollArrow = textboxscrollarrow_listbox_combo;
-
-            KnownSystemColor = knownsystemcolor; UnknownSystemColor = unknownsystemcolor;
 
             CheckBoxText = CheckBoxBack = checkboxtext_checkboxback; CheckBoxBack2 = CheckBoxBack.Multiply(scalingsecondcolour); 
             CheckBoxTick = checkboxtick;

@@ -168,9 +168,6 @@ namespace ExtendedControls
             InitGradient(buttonTabControlBackGradient, "Tab Control Background Gradient Direction in degrees", np[nameof(Theme.TabControlBackGradientDirection)]);
             InitGradient(buttonTabControlTabGradient, "Tab Control Tab Gradient Direction in degrees", np[nameof(Theme.TabControlTabGradientDirection)]);
 
-            InitColourPatch(panel_themeUnknown, "Visited system without known position", np[nameof(Theme.KnownSystemColor)]);
-            InitColourPatch(panel_themeKnown, "Visited system with coordinates", np[nameof(Theme.UnknownSystemColor)]);
-
             InitColourPatch(panel_themeMenuBack, "Menu Back Colour", np[nameof(Theme.MenuBack)]);
             InitColourPatch(panel_themeMenuFore, "Menu Text Colour", np[nameof(Theme.MenuFore)]);
             InitColourPatch(panel_themeMenuDropDownBack, "Tool Strip Back Colour", np[nameof(Theme.MenuDropDownBack)]);

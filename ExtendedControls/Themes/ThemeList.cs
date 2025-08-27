@@ -58,7 +58,6 @@ namespace ExtendedControls
                 Color.Black, Color.Black, Color.Orange, Color.Orange, hgb,     // back/alt text/alt
                 Color.DarkOrange, // borderlines
                 Color.Black, Color.Orange, Color.DarkOrange, // grid slider, arrow, button
-                Color.Red, Color.White, // travel
                 Color.Black, Color.Orange, Color.Red, Color.Green, Color.DarkOrange, Theme.TextboxborderstyleColor, // text box
                 Color.Black, Color.Orange, Color.DarkOrange, // text back, arrow, button
                 Color.Orange, Color.FromArgb(255, 65, 33, 33), c64, // checkbox
@@ -84,8 +83,6 @@ namespace ExtendedControls
                 Color.DarkOrange, 
                 // GridSliderBack (+2), GridScrollArrowBack and GridScrollButtonBack (2), GridArrow 
                 c32, Color.Orange, Color.DarkOrange, 
-                // KnownSystemColor, UnknownSystemColor
-                Color.Red, Color.White,
                 // TextBlockBackColor, TextBoxForeColor, TextBlockHighLightColor, TextBoxSuccessColor
                 c32, Color.Orange, Color.Red, Color.Green,
                 // TextBoxBorderColor (+2), 
@@ -133,7 +130,6 @@ namespace ExtendedControls
                 Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 79, 73, 68), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 223, 227, 238), hgb, //back/alt fore/alt
                 Color.FromArgb(255, 50, 50, 50), // borderlines
                 Color.FromArgb(255, 80, 75, 70), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 75, 75, 75), // grid sliderback, arrow, scrollbutton
-                Color.FromArgb(255, 192, 0, 0), Color.FromArgb(255, 202, 202, 255), // travelgrid_nonvisited, visited
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), Theme.TextboxborderstyleColor, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 235, 110, 20), Color.FromArgb(255, 75, 75, 75), // text sliderback, scrollarrow, scrollbutton
                 Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 235, 116, 20), c64,// checkbox, checkboxtick
@@ -152,7 +148,6 @@ namespace ExtendedControls
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 200, 200, 200), hgb, // back/alt fore/alt
                 Color.FromArgb(255, 62, 68, 77), // borderlines
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // grid sliderback, arrow, scrollbutton
-                Color.FromArgb(255, 200, 0, 0), Color.FromArgb(255, 90, 196, 222), // travelgrid_nonvisited, visited
                 
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), Theme.TextboxborderstyleColor, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // text sliderback, scrollarrow, scrollbutton
@@ -172,7 +167,6 @@ namespace ExtendedControls
                 Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 223, 227, 238), Color.FromArgb(255, 223, 227, 238), hgb,//back/alt fore/alt
                 Color.FromArgb(255, 82, 94, 164), // borderlines
                 Color.FromArgb(255, 37, 37, 38), Color.FromArgb(255, 82, 94, 164), Color.FromArgb(255, 82, 94, 164), // grid sliderback, arrow, scrollbutton
-                Color.FromArgb(255, 192, 0, 0), Color.FromArgb(255, 202, 202, 255), // travelgrid_nonvisited, visited
                 Color.FromArgb(255, 47, 49, 54), Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 82, 94, 164), Theme.TextboxborderstyleColor, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 47, 49, 54), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 75, 75, 75), // text sliderback, scrollarrow, scrollbutton
                 Color.FromArgb(255, 240, 240, 240), Color.FromArgb(255, 255, 160, 0), c64, // checkbox, checkboxtick
@@ -194,7 +188,6 @@ namespace ExtendedControls
                 Color.Black, Color.Black, r1, r1, hgb, // back/alt fore/alt
                 r2, // borderlines
                 Color.Black, r1, r2, // grid slider, arrow, button
-                Color.Red, Color.Green, // travel
                 Color.Black, r1, Color.Orange, Color.Green, r2, Theme.TextboxborderstyleColor, // text box
                 Color.Black, r1, r2, // text back, arrow, button
                 r1, Color.FromArgb(255, 65, 33, 33), c64, // checkbox
@@ -214,7 +207,6 @@ namespace ExtendedControls
                                         SystemColors.ControlLightLight, SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.MenuText, Color.FromArgb(255, 30, 192, 30), //back/alt fore/alt
                                         SystemColors.ControlDark, // borderlines
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // grid scroll
-                                        Color.Blue, SystemColors.MenuText, // travel
                                         SystemColors.Window, SystemColors.WindowText, Color.Red, Color.Green, Color.DarkGray, Theme.TextboxborderstyleColor,// text
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // text box
                                         SystemColors.MenuText, SystemColors.MenuHighlight, c64, // checkbox
@@ -234,7 +226,6 @@ namespace ExtendedControls
                                         SystemColors.ControlLightLight, SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.MenuText, Color.FromArgb(255, 30, 192, 30), //back/alt fore/alt
                                         SystemColors.ControlDark, // borderlines
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // grid scroll
-                                        Color.Blue, SystemColors.MenuText, // travel
                                         SystemColors.Window, SystemColors.WindowText, Color.Red, Color.Green, Color.DarkGray, Theme.TextboxborderstyleColor,// text
                                         SystemColors.ControlLightLight, SystemColors.MenuText, SystemColors.ControlDark, // text box
                                         SystemColors.MenuText, SystemColors.MenuHighlight, c64, // checkbox
@@ -253,7 +244,6 @@ namespace ExtendedControls
                                                Color.DarkBlue, Color.DarkBlue, Color.White, Color.White, hgb, // back/alt fore/alt
                                                Color.Blue, // borderlines
                                                Color.DarkBlue, Color.White, Color.Blue, // grid scroll
-                                               Color.Red, Color.Cyan, // travel
                                                Color.DarkBlue, Color.White, Color.Red, Color.Green, Color.White, Theme.TextboxborderstyleColor,// text box
                                                Color.DarkBlue, Color.White, Color.Blue, // text scroll
                                                Color.White, Color.Black, c64, // checkbox
@@ -273,7 +263,6 @@ namespace ExtendedControls
                                                baizegreen, baizegreen, Color.White, Color.White, Color.FromArgb(255, 30, 192, 30),//back/alt fore/alt
                                                Color.LightGreen, // borderlines
                                                baizegreen, Color.White, Color.LightGreen, // grid scroll
-                                               Color.Red, Color.FromArgb(255, 78, 190, 27), // travel
                                                baizegreen, Color.White, Color.Red, Color.Green, Color.White, Theme.TextboxborderstyleColor,// text box
                                                baizegreen, Color.White, Color.LightGreen, // text scroll
                                                Color.White, Color.Black, c64,// checkbox
@@ -303,8 +292,6 @@ namespace ExtendedControls
                             Color.FromArgb(255, 32, 32, 32), // grid_sliderback
                             Color.FromArgb(255, 98, 176, 255), // grid_scrollarrow
                             Color.FromArgb(255, 55, 155, 255), // grid_scrollbutton
-                            Color.FromArgb(255, 0, 128, 255), // travelgrid_nonvisted
-                            Color.FromArgb(255, 255, 255, 255), // travelgrid_visited
                             Color.FromArgb(255, 32, 32, 32), // textbox_back
                             Color.FromArgb(255, 91, 173, 255), // textbox_fore
                             Color.FromArgb(255, 255, 0, 0), // textbox_highlight
