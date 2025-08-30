@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils.Win32;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,7 +24,7 @@ namespace ExtendedControls
 {
     public static class PromptSingleLine
     {
-        public static string ShowDialog(Form p,
+        public static string ShowDialog(Control p,
                             string lab1, string defaultValue1, string caption, Icon ic, 
                             bool multiline = false, 
                             string tooltip = null, 
@@ -43,7 +44,7 @@ namespace ExtendedControls
     public static class PromptMultiLine
     {
         // Older interface
-        public static List<string> ShowDialog(Form p, string caption, Icon ic,
+        public static List<string> ShowDialog(Control p, string caption, Icon ic,
                      string[] labels,
                      string[] values,
                      bool multiline = false,
@@ -68,7 +69,7 @@ namespace ExtendedControls
 
 
         // lab sets the items, def can be less or null
-        public static List<string> ShowDialog(Form p, string caption, Icon ic, 
+        public static List<string> ShowDialog(Control refctl, string caption, Icon ic, 
                             string[] labels, 
                             string[] values, 
                             int[] boxheight,
@@ -80,6 +81,8 @@ namespace ExtendedControls
                             int boxspacing = 16,
                             bool requireinput = false)     // all boxes must have something for OK to be on
         {
+            System.Diagnostics.Debug.Assert(refctl != null);
+
             DraggableForm prompt = new DraggableForm()
             {
                 FormBorderStyle = FormBorderStyle.FixedDialog,
@@ -167,7 +170,7 @@ namespace ExtendedControls
             for (int i = 0; i < labels.Length; i++)
                 controlleft = Math.Max(controlleft, lbs[i].Right + 16);     // seems have to do this after sizing, confusingly
 
-            Screen scr = Screen.FromPoint(p.Location);
+            Screen scr = Screen.FromPoint(refctl.Location);
             if (heightscrollarea < 0)
                 heightscrollarea = scr.WorkingArea.Height * 14 / 16;
             else
@@ -198,7 +201,7 @@ namespace ExtendedControls
 
             contentpanel.Recalcuate();
 
-            if (prompt.ShowDialog(p) == DialogResult.OK)
+            if (prompt.ShowDialog(refctl) == DialogResult.OK)
             {
                 var r = (from t in tbs select t.Text).ToList();
                 return r;
