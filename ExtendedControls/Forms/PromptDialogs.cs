@@ -23,7 +23,7 @@ namespace ExtendedControls
 {
     public static class PromptSingleLine
     {
-        public static string ShowDialog(Form p,
+        public static string ShowDialog(Control refctrl,
                             string lab1, string defaultValue1, string caption, Icon ic, 
                             bool multiline = false, 
                             string tooltip = null, 
@@ -33,7 +33,7 @@ namespace ExtendedControls
                             int heightscrollarea = 800,
                             bool requireinput = false)
         {
-            List<string> r = PromptMultiLine.ShowDialog(p, caption, ic, new string[] { lab1 }, 
+            List<string> r = PromptMultiLine.ShowDialog(refctrl, caption, ic, new string[] { lab1 }, 
                     new string[] { defaultValue1 }, multiline, tooltip != null ? new string[] { tooltip } : null , cursoratend, widthboxes, heightboxes, heightscrollarea, requireinput);
 
             return r?[0];
@@ -43,7 +43,7 @@ namespace ExtendedControls
     public static class PromptMultiLine
     {
         // Older interface
-        public static List<string> ShowDialog(Form p, string caption, Icon ic,
+        public static List<string> ShowDialog(Control refctrl, string caption, Icon ic,
                      string[] labels,
                      string[] values,
                      bool multiline = false,
@@ -63,12 +63,14 @@ namespace ExtendedControls
                 heightboxesa[i] = heightboxes;
             }
 
-            return ShowDialog(p, caption, ic, labels, values, heightboxesa, tooltips, multiline, cursoratend, widthboxes, heightscrollarea, 20, requireinput);
+            return ShowDialog(refctrl, caption, ic, labels, values, heightboxesa, tooltips, multiline, cursoratend, widthboxes, heightscrollarea, 20, requireinput);
         }
 
 
         // lab sets the items, def can be less or null
-        public static List<string> ShowDialog(Form p, string caption, Icon ic, 
+        public static List<string> ShowDialog(Control refctl, 
+                            string caption, 
+                            Icon ic, 
                             string[] labels, 
                             string[] values, 
                             int[] boxheight,
@@ -80,6 +82,8 @@ namespace ExtendedControls
                             int boxspacing = 16,
                             bool requireinput = false)     // all boxes must have something for OK to be on
         {
+            System.Diagnostics.Debug.Assert(refctl != null);
+
             DraggableForm prompt = new DraggableForm()
             {
                 FormBorderStyle = FormBorderStyle.FixedDialog,
@@ -167,7 +171,8 @@ namespace ExtendedControls
             for (int i = 0; i < labels.Length; i++)
                 controlleft = Math.Max(controlleft, lbs[i].Right + 16);     // seems have to do this after sizing, confusingly
 
-            Screen scr = Screen.FromPoint(p.Location);
+            // find screen of reference control, to get working height
+            Screen scr = Screen.FromPoint(refctl.Location);
             if (heightscrollarea < 0)
                 heightscrollarea = scr.WorkingArea.Height * 14 / 16;
             else
@@ -198,7 +203,7 @@ namespace ExtendedControls
 
             contentpanel.Recalcuate();
 
-            if (prompt.ShowDialog(p) == DialogResult.OK)
+            if (prompt.ShowDialog(refctl) == DialogResult.OK)
             {
                 var r = (from t in tbs select t.Text).ToList();
                 return r;
