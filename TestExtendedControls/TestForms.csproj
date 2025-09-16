@@ -58,6 +58,12 @@
     <Compile Include="ConfigurableForms\TestConfigurableForms.Designer.cs">
       <DependentUpon>TestConfigurableForms.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TestDockingPads.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\TestDockingPads.Designer.cs">
+      <DependentUpon>TestDockingPads.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TestTreeView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -351,6 +357,9 @@
     </Compile>
     <EmbeddedResource Include="ConfigurableForms\TestConfigurableForms.resx">
       <DependentUpon>TestConfigurableForms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TestDockingPads.resx">
+      <DependentUpon>TestDockingPads.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TestTreeView.resx">
       <DependentUpon>TestTreeView.cs</DependentUpon>
