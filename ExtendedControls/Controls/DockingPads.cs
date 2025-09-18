@@ -23,6 +23,8 @@ namespace ExtendedControls
     // this is a coloured area, either solid (BackColor) or gradient filled
     public class DockingPads : Control, IThemeable
     {
+        #region Public
+
         public int SelectedIndex { get { return selectedIndex; } set { SetIndex(value); } }
 
         // Font selected font family (not size, its autosized)
@@ -40,6 +42,32 @@ namespace ExtendedControls
             timer.Interval =50;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
+
+        // padsize 1 to 3, 0 invalid
+        public int PadSize(int pad)
+        {
+            return pad >= 1 && pad <= 45 ? padsize[pad] : 0;
+        }
+
+        // o'clock position of the pad, 1 to 12
+        public int OClock(int pad)
+        {
+            int clock = 6;
+            foreach (var seg in segments)
+            {
+                if (pad <= seg)
+                    return clock;
+                pad -= seg;
+                clock++;
+                if (clock == 13)
+                    clock = 1;
+            }
+            return 0;
+        }
+
+        #endregion
+
+        #region Implementation
 
         private void SetIndex(int index)
         {
@@ -77,7 +105,7 @@ namespace ExtendedControls
             // and the start position will be at 90degrees, 
             // rotate the start pos by 90 anticlockwise and position so centre of pad is up
 
-            double radiantstartpos = (-90.0 - 360.0 / 24).Radians();
+            double radiantstartpos = (90.0 - 360.0 / 24).Radians();
 
             pads = new List<GraphicsPath>();
             pads.Add(null);     // 0 is empty
@@ -99,7 +127,7 @@ namespace ExtendedControls
                     Point p1r = new Point((int)(lenouter * Math.Cos(angleright)) + centrex, (int)(lenouter * Math.Sin(angleright)) + centrey);
                     Point p2r = new Point((int)(leninner * Math.Cos(angleright)) + centrex, (int)(leninner * Math.Sin(angleright)) + centrey);
 
-                    if (pads.Count == 11)     // far right, place indicators
+                    if (pads.Count == 35)     // far right, place indicators
                     {
                         indicatorsize = radius / 6;
                         indicatorradiusoffset = (int)(lenouter * Math.Cos((angleleft + angleright) / 2)) + indicatorsize/2;
@@ -178,14 +206,9 @@ namespace ExtendedControls
                         var bounds = pads[pad].GetBounds();
                         int radius = Radius;
 
-                        if ((pad >= 9 && pad <= 10) || (pad >= 39 && pad <= 40))            // nerf large pads at 2/10 oclock
-                            bounds.Offset(0, radius / 25);
-                        else if ((pad >= 31 && pad <= 34) || (pad >= 16 && pad <= 19))      // 4/8
-                            bounds.Offset(0, -radius / 40);
-                        else if ((pad >= 26 && pad <= 30) || (pad >= 41))                    // 7/11
-                            bounds.Offset(radius / 40, 0);
-                        else if ((pad >= 20 && pad <= 23) || (pad >= 5 && pad <= 8))          // 5/1
-                            bounds.Offset(-radius / 40, 0);
+                        int oclock = OClock(pad);
+
+                        bounds.Offset(fontoffsetsdivisor[oclock][0] != 0 ? radius / fontoffsetsdivisor[oclock][0] : 0, fontoffsetsdivisor[oclock][1] != 0 ? radius / fontoffsetsdivisor[oclock][1] : 0);
 
                         //   System.Diagnostics.Debug.WriteLine($"Radius {pad} Bounds {bounds}");
                         gr.DrawString($"{pad}", fnt, br, bounds, form);
@@ -236,7 +259,7 @@ namespace ExtendedControls
 
         private Font GetFont()
         {
-            return new Font(Font.FontFamily, (float)Math.Max(2, Radius / 16));
+            return new Font(Font.FontFamily, (float)Math.Max(2, Radius / 18));
         }
 
 
@@ -284,9 +307,34 @@ namespace ExtendedControls
                                          3,3,           // 39
                                          1,2,2,2,1};    // 41
 
-        static int[] segments = new int[] { 4, 4, 2, 5, 4, 4, 2, 5, 4, 4, 2, 5 };
+        // starting at 6 oclock, going clockwise around
+        static int[] segments = new int[] { 
+            4, // 6
+            4, // 7
+            2, // 8
+            5, // 9
+            4, // 10
+            4, // 11
+            2, // 12
+            5, // 1
+            4, // 2
+            4, // 3
+            2, // 4
+            5 };// 5
+
+        // radius/N offsets to nerf the font into position
+
+        static int[][] fontoffsetsdivisor = new int[13][]
+        {   new int[2] { 0, 0 },
+                            new int[2] { -80, 0 },new int[2] { -80, 40 },new int[2] { 0, 0 },       //1..
+                            new int[2] { 0, -40 }, new int[2] { -80, 0 },new int[2] { 0, 0 },         //4..
+                            new int[2] { 40, 0 },new int[2] { 0, -40 }, new int[2] { 0, 0 },           //7..
+                            new int[2] { 0, 40 },new int[2] { 80, 0 },new int[2] { 0, 0 } };          //10..
+
+
 
         private Bitmap image;
 
+        #endregion
     }
 }

@@ -80,7 +80,7 @@ namespace ExtendedConditionsForms
             g.panel.BorderStyle = BorderStyle.FixedSingle;
 
             g.var = new ExtendedControls.ExtTextBox();
-            g.var.Size = new Size(Font.ScalePixels(120), Font.ScalePixels(32));
+            g.var.Size = new Size(Font.ScalePixels(240), Font.ScalePixels(32));
             g.var.Location = new Point(panelmargin, panelmargin);
             g.var.Text = var;
             g.panel.Controls.Add(g.var);
