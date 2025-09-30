@@ -52,6 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Charts\TestChartLegend.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Charts\TestChartLegend.Designer.cs">
+      <DependentUpon>TestChartLegend.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurableForms\TestConfigurableForms.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -355,6 +361,9 @@
     <Compile Include="Translator\TestTranslation.Designer.cs">
       <DependentUpon>TestTranslation.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Charts\TestChartLegend.resx">
+      <DependentUpon>TestChartLegend.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConfigurableForms\TestConfigurableForms.resx">
       <DependentUpon>TestConfigurableForms.cs</DependentUpon>
     </EmbeddedResource>

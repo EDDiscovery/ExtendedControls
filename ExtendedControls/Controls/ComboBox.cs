@@ -75,6 +75,7 @@ namespace ExtendedControls
             this.cbsystem.Resize += (s,e)=> { this.cbsystem.DropDownWidth = Math.Max( Width * 2,100); };
             this._items = new ObjectCollection(this.cbsystem);
             this.Controls.Add(this.cbsystem);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
         }
 
 

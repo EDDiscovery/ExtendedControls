@@ -113,7 +113,7 @@ namespace TestExtendedControls
             Theme.Current.ApplyStd(this);
         }
 
-        private void MouseDownEvent(HitTestResult hittest)
+        private void MouseDownEvent(HitTestResult hittest, PointF percent, MouseEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine($"Mouse down on {hittest.ChartElementType}");
             if ( hittest.ChartElementType == ChartElementType.DataPoint)

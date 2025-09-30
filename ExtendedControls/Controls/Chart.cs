@@ -160,7 +160,7 @@ namespace ExtendedControls
                                 int textautowrap = 30, int minfontsize = 5)
         {
             CurrentLegend = Legends.Add(name);
-            
+
             CurrentLegend.LegendStyle = legendstyle;
             CurrentLegend.ForeColor = textcolor ?? RequestTheme;
             if (font != null)
@@ -260,6 +260,54 @@ namespace ExtendedControls
             }
         }
 
+        // set text to:
+        // #VALX  X value of the data point.	Data points only.
+        //#VAL, #VALY,#VALY2, #VALY3, ...  Y values of the data point.	Data points only.
+        //#SERIESNAME Series name.	Data points and series Labels. 	-
+        //#LABEL Data point label.	Data points only. 	-
+        //#AXISLABEL              	 Axis data point label. 	Data points only. 	-
+        //#INDEX Data point index.	Data points only. 	-
+        //#PERCENT  Percentage of the data point Y value.	Data points only.
+        //#TOTAL Total of all Y values in the series.	Series only.
+        //#LEGENDTEXT Legend text.	Legend only. 	-
+        //#AVG	 Average of all Y values in the series. 	Series only.
+        //#MIN	 Minimum data point of all Y values in the series. 	Series only.
+        //#MAX	 Maximum data point of all Y values in the series. 	Series only.
+        //#FIRST	 First data point of all Y values in the series. 	Series only.
+        //#LAST 	 Last data point of all Y values in the series. 	Series only.
+        //#CUSTOMPROPERTY(name)
+        // if you use the winform editor, and put a chart in, go to its legend property, cellcolumns, add one, you can see a editor showing these for the text property
+        // see also https://origin2.cdn.componentsource.com/sites/default/files/resources/dundas/538236/WinChart2005/Default%20Legend%20Items.html
+        // https://origin2.cdn.componentsource.com/sites/default/files/resources/dundas/538236/WinChart2005/Using%20Keywords-2.html
+
+        public void SetCustomLegendColumns(params LegendCellColumn[] list)
+        {
+            CurrentLegend.CellColumns.Clear();
+            foreach (var x in list)
+                CurrentLegend.CellColumns.Add(x);
+        }
+
+        // for series N, set custom property name to value
+        public void SetCustomSeriesProperty(string name, string value, int series = -1)
+        {
+            var cs = series == -1 ? CurrentSeries : Series[series];
+            cs.SetCustomProperty(name, value);
+        }
+
+        // these are fixed items, present even if series are not present. You can use them for checkboxes
+        public void SetCustomLegendItems(params LegendItem[] list)
+        {
+            CurrentLegend.CustomItems.Clear();
+            foreach (var x in list)
+                CurrentLegend.CustomItems.Add(x);
+        }
+
+        public void ChangeSetCustomLegendItemsText(string text, int item, int legend = -1)
+        {
+            var ll = legend == -1 ? CurrentLegend : Legends[legend];
+            ll.CustomItems[item].Name = text;
+        }
+
         //////////////////////////////////////////////////////////////////////////// Chart Area
 
         // make a chart area, needs a unique name
@@ -268,6 +316,7 @@ namespace ExtendedControls
             CurrentChartArea = new ChartArea();
             CurrentChartArea.Name = name;
             if (position != null)
+
                 CurrentChartArea.Position = position;
             ChartAreas.Add(CurrentChartArea);
             return CurrentChartArea;
@@ -657,6 +706,16 @@ namespace ExtendedControls
             return CurrentSeries;
         }
 
+        public bool IsSeriesEnabled(int series = -1)
+        {
+            var cs = series == -1 ? CurrentSeries : Series[series];
+            return cs.Enabled;
+        }
+        public void SetSeriesEnabled(bool enabled, int series = -1)
+        {
+            var cs = series == -1 ? CurrentSeries : Series[series];
+            cs.Enabled = enabled;
+        }
         public void SetSeriesShadowOffset(int offset)
         {
             CurrentSeries.ShadowOffset = offset;
@@ -746,10 +805,11 @@ namespace ExtendedControls
 
         // Add point to CurrentSeries
         public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
-                                    string graphtooltip = null, string legendtooltip = null, string axislabel = null)
+                                    string graphtooltip = null, string legendtooltip = null, string axislabel = null, int series = -1)
         {
-            CurrentSeries.Points.Add(d);
-            CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
+            var cs = series == -1 ? CurrentSeries : Series[series];
+            cs.Points.Add(d);
+            CurrentDataPoint = cs.Points[cs.Points.Count - 1];
             if (label != null)
                 CurrentDataPoint.Label = label;
             if (legendtext != null)
@@ -767,9 +827,10 @@ namespace ExtendedControls
         }
         // Add point to CurrentSeries
         public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
-                                    string graphtooltip = null, string legendtooltip = null, string axislabel = null)
+                                    string graphtooltip = null, string legendtooltip = null, string axislabel = null, int series = -1)
         {
-            CurrentSeries.Points.Add(d);
+            var cs = series == -1 ? CurrentSeries : Series[series];
+            cs.Points.Add(d);
             CurrentDataPoint = d;
             if (label != null)
                 CurrentDataPoint.Label = label;
@@ -790,10 +851,11 @@ namespace ExtendedControls
         // Add xy point to CurrentSeries
         // for dates, the chart uses the day count as the X enumerator.
         public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false,
-                                string graphtooltip = null, string legendtooltip = null, string axislabel = null)
+                                string graphtooltip = null, string legendtooltip = null, string axislabel = null, int series = -1)
         {
-            CurrentSeries.Points.AddXY(x, y);
-            CurrentDataPoint = CurrentSeries.Points[CurrentSeries.Points.Count - 1];
+            var cs = series == -1 ? CurrentSeries : Series[series];
+            cs.Points.AddXY(x, y);
+            CurrentDataPoint = cs.Points[cs.Points.Count - 1];
             if (label != null)
                 CurrentDataPoint.Label = label;
             if (legendtext != null)
@@ -957,14 +1019,16 @@ namespace ExtendedControls
 
         //////////////////////////////////////////////////////////////////////// Click Objects
 
-        public void ReportOnMouseDown(Action<HitTestResult> action)
+        // PointF is % in chart.
+        public void ReportOnMouseDown(Action<HitTestResult, PointF, MouseEventArgs> action)
         {
             MouseDown += (s, e) =>
             {
                 try
                 {
                     var hittest = HitTest(e.Location.X, e.Location.Y);
-                    action.Invoke(hittest);
+                    var percentage = new PointF(e.Location.X * 100F / (float)this.Width, e.Location.Y * 100F / (float)this.Height);
+                    action.Invoke(hittest,percentage,e);
                 }
                 catch (Exception ex)
                 {
@@ -972,6 +1036,17 @@ namespace ExtendedControls
                 }
             };
         }
+
+        // Is this click, given in pointf's in chart, inside the legend, and if so, what % pos is it
+        public PointF? ReportLegendClickPosition(PointF fp, int legend = -1)
+        {
+            Legend l = legend == -1 ? CurrentLegend : this.Legends[legend];
+            if (fp.X >= l.Position.X && fp.X <= l.Position.Right && fp.Y >= l.Position.Y && fp.Y <= l.Position.Bottom)
+                return new PointF((fp.X - l.Position.X) * 100F / l.Position.Width,  (fp.Y-l.Position.Y) * 100F / l.Position.Height);
+            else
+                return null;
+        }
+
 
         //////////////////////////////////////////////////////////////////////// Helpers
         public Rectangle GetArea(ElementPosition p)
@@ -982,7 +1057,6 @@ namespace ExtendedControls
             int height = (int)Math.Round(Height * (p.Height > 0 ? p.Height : p.Width) / 100.0);
             return new Rectangle(x, y, width, height);
         }
-
 
 
         #region ///////////////////////////////////////////////////////////// Private

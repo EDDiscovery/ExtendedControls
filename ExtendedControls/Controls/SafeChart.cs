@@ -158,6 +158,26 @@ namespace ExtendedControls
             chart?.SetLegendTitle(title, forecolor, backcolor, font, alignment, sep, seperatorcolor);
         }
 
+        public void SetCustomLegendColumns(params LegendCellColumn[] list)
+        {
+            chart?.SetCustomLegendColumns(list);
+        }
+
+        public void SetCustomSeriesProperty(string name, string value, int series = -1)
+        {
+            chart?.SetCustomSeriesProperty(name, value, series);
+        }
+
+        public void SetCustomLegendItems(params LegendItem[] list)
+        {
+            chart?.SetCustomLegendItems(list);
+        }
+
+        public void ChangeSetCustomLegendItemsText(string text, int item, int legend = -1)
+        {
+            chart?.ChangeSetCustomLegendItemsText(text, item, legend);
+        }
+
         //////////////////////////////////////////////////////////////////////////// Chart Area
 
         public ChartArea AddChartArea(string name, ElementPosition position = null)
@@ -407,8 +427,27 @@ namespace ExtendedControls
         {
             return chart?.SetCurrentSeries(name) ?? null;
         }
-
         public int SeriesCount { get { return chart?.Series.Count ?? 0; } }
+
+        public bool IsSeriesEnabled(int series = -1)
+        {
+            if (chart != null)
+            {
+                var cs = series == -1 ? chart.CurrentSeries : chart.Series[series];
+                return cs.Enabled;
+            }
+            else
+                return false;
+        }
+        public void SetSeriesEnabled(bool enabled, int series = -1)
+        {
+            if (chart != null)
+            {
+                var cs = series == -1 ? chart.CurrentSeries : chart.Series[series];
+                cs.Enabled = enabled;
+            }
+        }
+
 
         public void SetSeriesShadowOffset(int offset)
         {
@@ -463,18 +502,18 @@ namespace ExtendedControls
         {
             chart?.ClearAllSeriesPoints();
         }
-        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null)
+        public DataPoint AddPoint(double d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null, int series = -1)
         {
-            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel);
+            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel, series);
         }
 
-        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null)
+        public DataPoint AddPoint(DataPoint d, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null, int series = -1)
         {
-            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel);
+            return chart?.AddPoint(d, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel, series);
         }
-        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null)
+        public DataPoint AddXY(object x, object y, string label = null, string legendtext = null, Color? pointcolor = null, bool showvalue = false, string graphtooltip = null, string legendtooltip = null, string axislabel = null, int series = -1)
         {
-            return chart?.AddXY(x, y, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel);
+            return chart?.AddXY(x, y, label, legendtext, pointcolor, showvalue, graphtooltip, legendtooltip, axislabel, series);
         }
 
         public bool CompareYPoints(double[] values, int yentry = 0)
@@ -522,14 +561,22 @@ namespace ExtendedControls
             return chart?.FindIndexOfNearestPoint(target, axis) ?? -1;
         }
 
+        //////////////////////////////////////////////////////////////////////////// Other
+
+
         public void AddContextMenu(string[] text, Action<ToolStripMenuItem>[] actions, Action<ToolStripMenuItem[]> opening = null)
         {
             chart?.AddContextMenu(text, actions, opening);
         }
 
-        public void ReportOnMouseDown(Action<HitTestResult> action)
+        public void ReportOnMouseDown(Action<HitTestResult,PointF, MouseEventArgs> action)
         {
             chart?.ReportOnMouseDown(action);
+        }
+
+        public PointF? ReportLegendClickPosition(PointF fp, int legend = -1)
+        {
+            return chart?.ReportLegendClickPosition(fp, legend) ?? null;
         }
 
         public void EnableZoomMouseWheelX(bool on = true)
