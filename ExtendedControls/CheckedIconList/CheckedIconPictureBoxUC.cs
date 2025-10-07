@@ -372,9 +372,9 @@ namespace ExtendedControls
         }
 
         // add a button
-        public void AddButton(string tag, string text, Image img = null, object usertag = null, bool attop = false, Color? textcolor = null)
+        public void AddButton(string tag, string text, Image img = null, object usertag = null, bool attop = false, Color? textcolor = null, string tooltiptext = null)
         {
-            Add(tag, text, img, button: true, usertag: usertag, attop: attop, textcolor:textcolor);
+            Add(tag, text, img, button: true, usertag: usertag, attop: attop, textcolor:textcolor, icontooltiptext:tooltiptext, labeltooltiptext:tooltiptext);
         }
 
         // use a long tag (bit field, 1,2,4,8 etc).  Use SettingsStringToLong to convert back
@@ -382,16 +382,16 @@ namespace ExtendedControls
         public long LongConfigurationValue { get; private set; }
         // add a long tag item
         public void Add(long tag, string text, Image img = null, bool attop = false, string exclusivetags = null,
-                        bool disableuncheck = false, bool button = false, object usertag = null, Color? textcolor = null)
+                        bool disableuncheck = false, bool button = false, object usertag = null, Color? textcolor = null, string tooltiptext = null)
         {
             LongConfigurationValue |= tag;
-            Add(tag.ToStringInvariant(), text, img, attop, exclusivetags, disableuncheck, button, usertag, textcolor: textcolor);
+            Add(tag.ToStringInvariant(), text, img, attop, exclusivetags, disableuncheck, button, usertag, textcolor: textcolor, icontooltiptext: tooltiptext, labeltooltiptext: tooltiptext);
         }
 
-        public void AddRadio(long tag, string text, Image img = null, bool attop = false, object usertag = null, Color? textcolor = null)
+        public void AddRadio(long tag, string text, Image img = null, bool attop = false, object usertag = null, Color? textcolor = null, string tooltiptext = null)
         {
             LongConfigurationValue |= tag;
-            Add(tag.ToStringInvariant(), text, img, attop, All, true, false, usertag, textcolor: textcolor);
+            Add(tag.ToStringInvariant(), text, img, attop, All, true, false, usertag, textcolor: textcolor, icontooltiptext: tooltiptext, labeltooltiptext: tooltiptext);
         }
 
         // if using long as the tag, use this to convert the 1;2;4; value back to long
