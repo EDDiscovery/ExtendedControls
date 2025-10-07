@@ -519,6 +519,42 @@ namespace TestExtendedControls
             frm.Show(this);
 
         }
+
+        private void extButtonColourItems_Click(object sender, EventArgs e)
+        {
+            CheckedIconNewListBoxForm frm = new CheckedIconNewListBoxForm();
+
+            frm.UC.AddButton($"Elite", $"Elite Theme", Properties.Resources.CursorToTop, textcolor:Color.Green);
+
+            for (int i = 0; i < 200; i++)
+            {
+                frm.UC.AddButton($"t{i}", $"Text {i}", Properties.Resources.Addtab);
+
+            }
+
+            frm.CloseOnDeactivate = false;
+            frm.PositionBelow(extButton1);
+            frm.UC.ShowClose = true;
+            frm.UC.MultipleColumns = true;
+
+            frm.UC.CloseClicked += (xx) => { frm.Close(); };
+
+            frm.UC.ButtonPressed += (index, tag, text, usertag, butarg) => { 
+                if ( tag == "Elite")
+                {
+                    frm.UC.ItemList[1].TextColor = Color.Red;
+                    frm.UC.ItemList[2].TextColor = Color.Blue;
+                    frm.ReDraw();
+                }
+                else
+                {
+
+                }
+            };
+
+            frm.Show(this);
+
+        }
     }
 
 }

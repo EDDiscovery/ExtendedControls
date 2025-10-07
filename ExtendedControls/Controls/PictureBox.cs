@@ -409,8 +409,9 @@ namespace ExtendedControls
                         elementin = i;
                         elementin.MouseOver = true;
 
+                        //System.Diagnostics.Debug.WriteLine("Enter element " + elementin.Location + " Mouse pos " + eventargs.Location);
+
                         elementin.Enter?.Invoke(this,elementin);
-                        //System.Diagnostics.Debug.WriteLine("Enter element " + elementin.Location);
 
                         if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && !elementin.InAltImage)
                         {

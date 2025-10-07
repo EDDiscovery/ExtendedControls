@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
+using static ExtendedControls.ExtPictureBox;
 
 namespace ExtendedControls
 {
@@ -51,7 +53,7 @@ namespace ExtendedControls
         // Tag list of all non group items
         public string[] TagList() { return ItemList.Where(x => !x.Group).Select(x => x.Tag).ToArray(); }       
 
-        // back colour of picture box
+        // back color of picture box
         public override Color BackColor { get => base.BackColor; set { picturebox.FillColor = base.BackColor = value; } }
 
         // Check box control for check box
@@ -66,7 +68,7 @@ namespace ExtendedControls
         public int VerticalSpacing { get; set; } = 3;           // padding..
         public int HorizontalSpacing { get; set; } = 3;
 
-        // Colours and controls for Scroll bar
+        // colors and controls for Scroll bar
         public Color BorderColor { get { return sb.BorderColor; } set { sb.BorderColor = value; } }
         public Color SliderColor { get { return sb.SliderColor; } set { sb.SliderColor = value; } }
         public Color SliderColor2 { get { return sb.SliderColor2; } set { sb.SliderColor2 = value; } }
@@ -110,6 +112,7 @@ namespace ExtendedControls
             public bool Group { get; set; }
             public string Tag { get; set; }
             public string Text { get; set; }
+            public Color? TextColor { get; set; }
             public Image Image { get; set; }
             public object UserTag { get; set; }
 
@@ -227,9 +230,10 @@ namespace ExtendedControls
                             object usertag = null,              // user tag assigned
                             bool group = false,                 // group or normal item
                             int checkmap = 1,                   // bitmap of check columns to use (1,3,5 etc)
-                            string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)      // tooltips
+                            string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null,
+                            Color? textcolor = null)           // text color
         {
-            var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag};
+            var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag, TextColor = textcolor};
             cl.label = new ExtPictureBox.Label();
             cl.label.ToolTipText = labeltooltiptext;
             cl.label.Click += (sender, el, e) =>
@@ -311,9 +315,9 @@ namespace ExtendedControls
 
         // a Radio style button (Exclusive=All, disableuncheck=true)
         public void AddRadio(string tag, string text, Image img = null, bool attop = false, object usertag = null, 
-                                int checkmap = 1, string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null)
+                                int checkmap = 1, string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null, Color? textcolor = null)
         {
-            Add(tag, text, img, attop, All, true, false, usertag, false, checkmap, checkbuttontooltiptext,icontooltiptext,labeltooltiptext );
+            Add(tag, text, img, attop, All, true, false, usertag, false, checkmap, checkbuttontooltiptext,icontooltiptext,labeltooltiptext , textcolor:textcolor);
         }
 
         // add as a tuple
@@ -368,9 +372,9 @@ namespace ExtendedControls
         }
 
         // add a button
-        public void AddButton(string tag, string text, Image img = null, object usertag = null, bool attop = false)
+        public void AddButton(string tag, string text, Image img = null, object usertag = null, bool attop = false, Color? textcolor = null)
         {
-            Add(tag, text, img, button: true, usertag: usertag, attop: attop);
+            Add(tag, text, img, button: true, usertag: usertag, attop: attop, textcolor:textcolor);
         }
 
         // use a long tag (bit field, 1,2,4,8 etc).  Use SettingsStringToLong to convert back
@@ -378,16 +382,16 @@ namespace ExtendedControls
         public long LongConfigurationValue { get; private set; }
         // add a long tag item
         public void Add(long tag, string text, Image img = null, bool attop = false, string exclusivetags = null,
-                        bool disableuncheck = false, bool button = false, object usertag = null)
+                        bool disableuncheck = false, bool button = false, object usertag = null, Color? textcolor = null)
         {
             LongConfigurationValue |= tag;
-            Add(tag.ToStringInvariant(), text, img, attop, exclusivetags, disableuncheck, button, usertag);
+            Add(tag.ToStringInvariant(), text, img, attop, exclusivetags, disableuncheck, button, usertag, textcolor: textcolor);
         }
 
-        public void AddRadio(long tag, string text, Image img = null, bool attop = false, object usertag = null)
+        public void AddRadio(long tag, string text, Image img = null, bool attop = false, object usertag = null, Color? textcolor = null)
         {
             LongConfigurationValue |= tag;
-            Add(tag.ToStringInvariant(), text, img, attop, All, true, false, usertag);
+            Add(tag.ToStringInvariant(), text, img, attop, All, true, false, usertag, textcolor: textcolor);
         }
 
         // if using long as the tag, use this to convert the 1;2;4; value back to long
@@ -809,10 +813,11 @@ namespace ExtendedControls
                 // label is in autosize mode, setting Text and Font will size it
                 cl.label.Text = cl.Text;
                 cl.label.Font = this.Font;
-                cl.label.ForeColor = this.ForeColor;
+                cl.label.ForeColor = cl.TextColor ?? this.ForeColor;            // text color, else standard color
                 cl.label.BackColor = BackColor;
                 cl.label.MouseOverBackColor = this.MouseOverLabelColor;
                 cl.label.Tag = i;       // tags are index
+                cl.label.MouseOver = false;             // must cancel mouse down, for render. this took a while to find!
 
                 if (!cl.Button)
                 {

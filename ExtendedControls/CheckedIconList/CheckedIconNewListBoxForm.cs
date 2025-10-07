@@ -52,10 +52,16 @@ namespace ExtendedControls
             ShowInTaskbar = false;
             UC = new CheckedIconGroupUserControl();
             UC.Dock = DockStyle.Fill;
-            UC.CloseClicked += (s) => { CloseOrHide(); };   // add call back handler..
+            UC.CloseClicked += ClosedIconClick;         // by default, we handle the closed icon click to cause a close/hide
             Controls.Add(UC);
             timer.Interval = 100;
             timer.Tick += CheckMouse;
+        }
+
+        // remove the closed icon handler, and do your own via frm.UC.CloseClicked.
+        public void RemoveCloseButtonHandler()
+        {
+            UC.CloseClicked -= ClosedIconClick;
         }
 
         // Get the checked list taking into account the grouping And the AllOrNoneBack
@@ -153,24 +159,23 @@ namespace ExtendedControls
             base.Show(parent);
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            //System.Diagnostics.Debug.WriteLine($"ListBoxNewForm OnLoad draw");
-            ReDraw();
-        }
-
-
         // called to redraw and then reposition dependent on what was drawn
-        private void ReDraw()
-        { 
-            var location = SetLocation.X != int.MinValue ? SetLocation : Location;
-            var rect = UC.Render(location);             
+        public void ReDraw()
+        {
+            var location = SetLocation.X != int.MinValue ? SetLocation : Location;      // pick preferred loc
+            var rect = UC.Render(location);     // redraw, tell preferred position
             Location = rect.Location;
             ClientSize = rect.Size;
             lastbounds = rect;
             lastfont = Font;
             forceredraw = false;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            //System.Diagnostics.Debug.WriteLine($"ListBoxNewForm OnLoad draw");
+            ReDraw();
         }
 
         // called if a UC is setting up a subform or a subform is closing, to set the alpha or to perform same op as activate
@@ -356,6 +361,11 @@ namespace ExtendedControls
             }
 
             return false;
+        }
+
+        private void ClosedIconClick(object sender)
+        {
+            CloseOrHide();
         }
 
 

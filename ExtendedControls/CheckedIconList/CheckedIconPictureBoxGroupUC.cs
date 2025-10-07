@@ -22,10 +22,14 @@ namespace ExtendedControls
 
     public class CheckedIconGroupUserControl : CheckedIconUserControl
     {
+        static public Image ImageNone { get { return Properties.Resources.None; } }
+        static public Image ImageAll { get { return Properties.Resources.All; } }
+        static public Image ImageDisabled { get { return Properties.Resources.Disabled; } }
+
         public void AddAllNone(int checkmap = 1)
         {
-            AddGroupItemAtTop(None, "None".Tx(), Properties.Resources.None, checkmap: checkmap);
-            AddGroupItemAtTop(All, "All".Tx(), Properties.Resources.All, checkmap: checkmap);       // displayed, translate
+            AddGroupItemAtTop(None, "None".Tx(), ImageNone, checkmap: checkmap);
+            AddGroupItemAtTop(All, "All".Tx(), ImageAll, checkmap: checkmap);       // displayed, translate
         }
 
         // list of options which do not participate in the all/none selection. Include the separation character at the end
@@ -34,7 +38,7 @@ namespace ExtendedControls
         public const string Disabled = "Disabled";
         public void AddDisabled(string differenttext = null, int checkmap = 1)
         {
-            AddGroupItemAtTop(Disabled, differenttext.HasChars() ? differenttext : "Disabled".Tx(), Properties.Resources.Disabled, exclusive: All, checkmap:checkmap);
+            AddGroupItemAtTop(Disabled, differenttext.HasChars() ? differenttext : "Disabled".Tx(), ImageDisabled, exclusive: All, checkmap:checkmap);
         }
 
         public void AddGroupItem(string tags, string text, Image img = null, object usertag = null, string exclusive = null,
