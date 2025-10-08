@@ -1,6 +1,6 @@
 ﻿namespace TestExtendedControls
 {
-    partial class TestDockingPads
+    partial class TestOrbisDockingPads
     {
         /// <summary>
         /// Required designer variable.
@@ -33,7 +33,7 @@
             this.button13 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button0 = new System.Windows.Forms.Button();
-            this.dockingPads1 = new ExtendedControls.DockingPads();
+            this.dockingPads1 = new ExtendedControls.OrbisDockingPads();
             this.panelControl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -123,7 +123,7 @@
 
         #endregion
 
-        private ExtendedControls.DockingPads dockingPads1;
+        private ExtendedControls.OrbisDockingPads dockingPads1;
         private System.Windows.Forms.Panel panelControl;
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.Button button1;

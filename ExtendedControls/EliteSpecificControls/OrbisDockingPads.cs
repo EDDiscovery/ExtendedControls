@@ -21,7 +21,7 @@ using System.Windows.Forms;
 namespace ExtendedControls
 {
     // this is a coloured area, either solid (BackColor) or gradient filled
-    public class DockingPads : Control, IThemeable
+    public class OrbisDockingPads : Control, IThemeable
     {
         #region Public
 
@@ -35,7 +35,7 @@ namespace ExtendedControls
         public Color BorderColor { get { return borderColor; } set { borderColor = value; Invalidate(); } }
         public float NonSelectedIntensity { get { return nonselectedintensity; } set { nonselectedintensity = value; Invalidate(); } }
 
-        public DockingPads()
+        public OrbisDockingPads()
         {
             ForeColor = Color.Black;
             timer.Tick += T_Tick;
@@ -46,7 +46,7 @@ namespace ExtendedControls
         // padsize 1 to 3, 0 invalid
         public int PadSize(int pad)
         {
-            return pad >= 1 && pad <= 45 ? padsize[pad] : 0;
+            return pad >= 1 && pad < padsize.Length ? padsize[pad] : 0;
         }
 
         // o'clock position of the pad, 1 to 12
@@ -242,6 +242,8 @@ namespace ExtendedControls
                     {
                         DrawPad(selectedIndex, gr, fnt);
                     }
+
+                    fnt.Dispose();
                 }
 
             }
@@ -282,6 +284,16 @@ namespace ExtendedControls
             DrawImage();
             Invalidate();
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                timer.Stop();
+            }
+        }
+
 
         private Color largePad = Color.FromArgb(255,192,1,1), mediumPad = Color.FromArgb(255,192,192,0), smallPad = Color.FromArgb(255,0,192,192), borderColor = Color.Black;
         private int selectedIndex = 0;

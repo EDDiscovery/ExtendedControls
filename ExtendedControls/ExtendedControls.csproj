@@ -54,7 +54,10 @@
   <ItemGroup>
     <Compile Include="ConfigurableForm\ConfigurableEntriesCreate.cs" />
     <Compile Include="ConfigurableForm\ConfigurableEntriesFromString.cs" />
-    <Compile Include="Controls\DockingPads.cs">
+    <Compile Include="EliteSpecificControls\FleetCarrierDockingPads.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EliteSpecificControls\OrbisDockingPads.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Helpers\DropDownTheme.cs" />
@@ -65,10 +68,10 @@
     <Compile Include="Controls\LabelData.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Custom\MultiPipControl.cs">
+    <Compile Include="EliteSpecificControls\MultiPipControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Custom\CompositeAutoScaleButton.cs">
+    <Compile Include="Controls\CompositeAutoScaleButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DGV\DGVColumnAutoComplete.cs" />
@@ -132,10 +135,10 @@
     <Compile Include="Buttons\Button.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Custom\CompassControl.cs">
+    <Compile Include="EliteSpecificControls\CompassControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Custom\CompositeButton.cs">
+    <Compile Include="Controls\CompositeButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TextBoxes\NumberBox.cs">
@@ -177,10 +180,10 @@
     <Compile Include="Controls\ComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Custom\ImageViewer.cs">
+    <Compile Include="Controls\ImageViewer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Custom\ImageViewer.Designer.cs">
+    <Compile Include="Controls\ImageViewer.Designer.cs">
       <DependentUpon>ImageViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TreeView.cs">
@@ -292,7 +295,7 @@
     <EmbeddedResource Include="TextBoxes\TextBoxAutoComplete.resx">
       <DependentUpon>TextBoxAutoComplete.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Custom\ImageViewer.resx">
+    <EmbeddedResource Include="Controls\ImageViewer.resx">
       <DependentUpon>ImageViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\PopUpForm.resx">
@@ -426,6 +429,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Drake_carrier.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

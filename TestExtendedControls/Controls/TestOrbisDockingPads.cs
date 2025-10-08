@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace TestExtendedControls
 {
-    public partial class TestDockingPads : Form
+    public partial class TestOrbisDockingPads : Form
     {
-        public TestDockingPads()
+        public TestOrbisDockingPads()
         {
             InitializeComponent();
         }

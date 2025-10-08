@@ -64,11 +64,17 @@
     <Compile Include="ConfigurableForms\TestConfigurableForms.Designer.cs">
       <DependentUpon>TestConfigurableForms.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TestDockingPads.cs">
+    <Compile Include="Controls\TestDrakeDockingPads.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\TestDockingPads.Designer.cs">
-      <DependentUpon>TestDockingPads.cs</DependentUpon>
+    <Compile Include="Controls\TestDrakeDockingPads.Designer.cs">
+      <DependentUpon>TestDrakeDockingPads.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TestOrbisDockingPads.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\TestOrbisDockingPads.Designer.cs">
+      <DependentUpon>TestOrbisDockingPads.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\TestTreeView.cs">
       <SubType>Form</SubType>
@@ -367,8 +373,11 @@
     <EmbeddedResource Include="ConfigurableForms\TestConfigurableForms.resx">
       <DependentUpon>TestConfigurableForms.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\TestDockingPads.resx">
-      <DependentUpon>TestDockingPads.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\TestDrakeDockingPads.resx">
+      <DependentUpon>TestDrakeDockingPads.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TestOrbisDockingPads.resx">
+      <DependentUpon>TestOrbisDockingPads.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TestTreeView.resx">
       <DependentUpon>TestTreeView.cs</DependentUpon>

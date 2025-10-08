@@ -60,6 +60,10 @@ namespace ExtendedControls
         public Color PressedDropDownSliderButtonColor { get; set; } = Color.DarkCyan;
 
         public bool DropDownFitImagesToItemHeight { get; set; } = false;
+        public void SetSelectorCMS(ContextMenuStrip cms)
+        {
+            selectorStrip.ContextMenuStrip = cms;
+        }
 
         // If non null, a help icon ? appears on the right. When clicked, you get a callback.  P is the lower bottom of the ? icon in screen co-ords
 
