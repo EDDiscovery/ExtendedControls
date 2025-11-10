@@ -518,7 +518,7 @@ namespace ExtendedControls
 
         private void numericUpDownDialogFontScaling_ValueChanged(object sender, EventArgs e)
         {
-            Theme.DialogFontScaling = (float)numericUpDownDisabledScaling.Value;
+            Theme.DialogFontScaling = (float)numericUpDownDialogFontScaling.Value;
             Apply();
         }
 
