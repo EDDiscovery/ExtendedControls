@@ -355,6 +355,34 @@ namespace ExtendedControls
 
         #endregion
 
+        #region Helpers
+        static public void Reposition(List<ImageElement> pc, int xoff, int yoff)
+        {
+            foreach (ImageElement c in pc)
+            {
+                c.Translate(xoff, yoff);
+            }
+        }
+        static public Size Measure(List<ImageElement> pc)
+        {
+            int minx = int.MaxValue, miny = int.MaxValue;
+            int maxx = int.MinValue, maxy = int.MinValue;
+            foreach (ImageElement c in pc)
+            {
+                if (c.Location.X < minx)
+                    minx = c.Location.X;
+                if (c.Location.Right > maxx)
+                    maxx = c.Location.Right;
+                if (c.Location.Y < miny)
+                    miny = c.Location.Y;
+                if (c.Location.Bottom > maxy)
+                    maxy = c.Location.Bottom;
+            }
+            return new Size(maxx-minx, maxy-miny);
+        }
+
+        #endregion
+
         #region Dispose
         protected override void Dispose(bool disposing)
         {
