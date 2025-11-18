@@ -54,6 +54,9 @@
   <ItemGroup>
     <Compile Include="ConfigurableForm\ConfigurableEntriesCreate.cs" />
     <Compile Include="ConfigurableForm\ConfigurableEntriesFromString.cs" />
+    <Compile Include="Controls\PictureBoxList.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="EliteSpecificControls\FleetCarrierDockingPads.cs">
       <SubType>Component</SubType>
     </Compile>

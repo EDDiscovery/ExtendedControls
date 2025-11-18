@@ -66,6 +66,13 @@ namespace ExtendedControls
                 x.Parent = this;
         }
 
+        public void AddRange(ImageList list)
+        {
+            Elements.AddRange(list.Enumerable);
+            foreach (var x in list.Enumerable)
+                x.Parent = this;
+        }
+
         // topleft, autosized
         public ImageElement AddTextAutoSize(Point topleft, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
@@ -351,34 +358,6 @@ namespace ExtendedControls
             }
 
             return newrender;
-        }
-
-        #endregion
-
-        #region Helpers
-        static public void Reposition(List<ImageElement> pc, int xoff, int yoff)
-        {
-            foreach (ImageElement c in pc)
-            {
-                c.Translate(xoff, yoff);
-            }
-        }
-        static public Size Measure(List<ImageElement> pc)
-        {
-            int minx = int.MaxValue, miny = int.MaxValue;
-            int maxx = int.MinValue, maxy = int.MinValue;
-            foreach (ImageElement c in pc)
-            {
-                if (c.Location.X < minx)
-                    minx = c.Location.X;
-                if (c.Location.Right > maxx)
-                    maxx = c.Location.Right;
-                if (c.Location.Y < miny)
-                    miny = c.Location.Y;
-                if (c.Location.Bottom > maxy)
-                    maxy = c.Location.Bottom;
-            }
-            return new Size(maxx-minx, maxy-miny);
         }
 
         #endregion

@@ -29,6 +29,7 @@ namespace ExtendedControls
             public virtual Rectangle Location { get; set; }
             public Point Position { get { return new Point(Location.Left, Location.Top); } set { Location = new Rectangle(value.X, value.Y, Location.Width, Location.Height); } }
             public Point PositionRight { get { return new Point(Location.Left + Location.Width, Location.Top); } }
+            public Point PositionCentre { get { return new Point(Location.Left + Location.Width/2, Location.Top + Location.Height / 2); } }
             public Point PositionBottomRight { get { return new Point(Location.Right, Location.Bottom); } }
             public Size Size { get { return new Size(Location.Width, Location.Height); } set { Location = new Rectangle(Location.Left, Location.Top, value.Width, value.Height); } }
             public Image Image { get; set; }
