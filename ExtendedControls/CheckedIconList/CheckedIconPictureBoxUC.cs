@@ -181,7 +181,7 @@ namespace ExtendedControls
                         {
                             try
                             {
-                                t.Image = imgpath.LoadBitmapNoLock();       // So the file can be released
+                                t.Image = imgpath.CloneBitmapFromFileLocked();       // So the file can be released
                             }
                             catch (Exception ex)
                             {

@@ -485,7 +485,7 @@ namespace ExtendedControls
                 try
                 {
                     b.Text = "";
-                    b.Image = ent.TextValue.Substring(5).LoadBitmapNoLock();    // So the file can be released
+                    b.Image = ent.TextValue.Substring(5).CloneBitmapFromFileLocked();    // So the file can be released
                     return true;
                 }
                 catch
