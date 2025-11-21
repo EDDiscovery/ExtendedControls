@@ -84,7 +84,7 @@ namespace ExtendedControls
 
         #region Implementation
 
-        protected override void CheckChangedEvent(int checkbox, ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) // we get a chance to operate group options
+        protected override void CheckChangedEvent(int checkbox, ImageElement.CheckBox cb, ItemCheckEventArgs e) // we get a chance to operate group options
         {
             var exclusivegroupoptions = GroupOptions(checkbox).Where(y => y.ExclusiveGroupOption);      // list of exclusive group options (ie. disabled button)
             

@@ -12,7 +12,9 @@
  * governing permissions and limitations under the License.
  */
 
+using ExtendedControls.ImageElement;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -20,9 +22,9 @@ using System.Windows.Forms;
 
 namespace ExtendedControls
 {
-    public partial class ExtPictureBox : PictureBox, IThemeable
+    public partial class ExtPictureBox : PictureBox, IThemeable, IEnumerable<ImageElement.Element>
     {
-        public delegate void OnElement(object sender, MouseEventArgs eventargs, ImageElement i, object tag);
+        public delegate void OnElement(object sender, MouseEventArgs eventargs, ImageElement.Element i, object tag);
         public event OnElement EnterElement;
         public event OnElement LeaveElement;
         public event OnElement ClickElement;
@@ -33,7 +35,7 @@ namespace ExtendedControls
 
         public bool FreezeTracking { get; set; } = false;        // when set, all mouse movement tracking is turned off
 
-        public List<ImageElement> Elements { get; private set; } = new List<ImageElement>();
+        private ImageElement.List Elements = new ImageElement.List();
 
         #region Interface
 
@@ -47,44 +49,44 @@ namespace ExtendedControls
 
         public int Count { get { return Elements.Count; } }
 
-        public void Add(ImageElement i)
+        public void Add(ImageElement.Element i)
         {
-            i.Parent = this;
+            i.PictureBoxParent = this;
             Elements.Add(i);
         }
 
-        public void AddDrawFirst(ImageElement i)        // add to front of queue, draw first
+        public void AddDrawFirst(ImageElement.Element i)        // add to front of queue, draw first
         {
-            i.Parent = this;
+            i.PictureBoxParent = this;
             Elements.Insert(0, i);
         }
 
-        public void AddRange(List<ImageElement> list)
+        public void AddRange(List<ImageElement.Element> list)
         {
             Elements.AddRange(list);
             foreach (var x in list)
-                x.Parent = this;
+                x.PictureBoxParent = this;
         }
 
-        public void AddRange(ImageList list)
+        public void AddRange(ImageElement.List list)
         {
-            Elements.AddRange(list.Enumerable);
-            foreach (var x in list.Enumerable)
-                x.Parent = this;
+            Elements.AddRange(list);
+            foreach (var x in list)
+                x.PictureBoxParent = this;
         }
 
         // topleft, autosized
-        public ImageElement AddTextAutoSize(Point topleft, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
+        public ImageElement.Element AddTextAutoSize(Point topleft, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
-            ImageElement lab = new ImageElement();
+            ImageElement.Element lab = new ImageElement.Element();
             lab.TextAutoSize(topleft, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt);
             Elements.Add(lab);
             return lab;
         }
 
-        public List<ImageElement> AddTextAutoSize(Point topleft, Size max, string[] label, int linemargin, bool upwards, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
+        public List<ImageElement.Element> AddTextAutoSize(Point topleft, Size max, string[] label, int linemargin, bool upwards, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
-            List<ImageElement> elements = new List<ImageElement>();
+            List<ImageElement.Element> elements = new List<ImageElement.Element>();
             Point curpos = topleft;
             foreach (var x in label)
             {
@@ -92,7 +94,7 @@ namespace ExtendedControls
                 {
                     var ie = AddTextAutoSize(curpos, max, x, fnt, c, backcolour, backscale, tag, tiptext, frmt);
                     elements.Add(ie);
-                    curpos.Y = ie.Location.Bottom + linemargin;
+                    curpos.Y = ie.Bounds.Bottom + linemargin;
                 }
             }
 
@@ -101,40 +103,40 @@ namespace ExtendedControls
                 curpos.Y -= linemargin;                     // remove extra offset
                 int offset = curpos.Y - topleft.Y;          // and this is the total size
                 foreach (var i in elements)
-                    i.Location = new Rectangle(i.Location.Left, i.Location.Top - offset, i.Location.Width, i.Location.Height);
+                    i.Bounds = new Rectangle(i.Bounds.Left, i.Bounds.Top - offset, i.Bounds.Width, i.Bounds.Height);
             }
 
             return elements;
         }
 
          // centre pos, autosized
-        public ImageElement AddTextCentred(Point poscentrehorz, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
+        public ImageElement.Element AddTextCentred(Point poscentrehorz, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
         {
-            ImageElement lab = new ImageElement();
+            ImageElement.Element lab = new ImageElement.Element();
             lab.TextCentreAutoSize(poscentrehorz, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt);
             Elements.Add(lab);
             return lab;
         }
 
-        public ImageElement AddImage(Rectangle p, Image img, Object tag = null, string tiptext = null, bool imgowned = true)    // make sure pushes it in..
+        public ImageElement.Element AddImage(Rectangle p, Image img, Object tag = null, string tiptext = null, bool imgowned = true)    // make sure pushes it in..
         {
-            ImageElement lab = new ImageElement();
+            ImageElement.Element lab = new ImageElement.Element();
             lab.Bitmap(p, img, tag, tiptext, imgowned);
             Elements.Add(lab);
             return lab;
         }
 
-        public ImageElement AddOwnerDraw(Action<Graphics, ImageElement> callback, Rectangle p, Object tag = null, string tiptext = null)    // make sure pushes it in..
+        public ImageElement.Element AddOwnerDraw(Action<Graphics, ImageElement.Element> callback, Rectangle p, Object tag = null, string tiptext = null)    // make sure pushes it in..
         {
-            ImageElement lab = new ImageElement();
+            ImageElement.Element lab = new ImageElement.Element();
             lab.OwnerDraw(callback, p, tag, tiptext);
             Elements.Add(lab);
             return lab;
         }
 
-        public ImageElement AddHorizontalDivider(Color c, Rectangle area, float width = 1.0f, int offset = 0, Object t = null, string tt = null)
+        public ImageElement.Element AddHorizontalDivider(Color c, Rectangle area, float width = 1.0f, int offset = 0, Object t = null, string tt = null)
         {
-            ImageElement lab = new ImageElement();
+            ImageElement.Element lab = new ImageElement.Element();
             lab.HorizontalDivider(c, area, width, offset, t, tt);
             Elements.Add(lab);
             return lab;
@@ -142,62 +144,19 @@ namespace ExtendedControls
         }
         public void ClearImageList()        // clears the element list, not the image.  call render to do this
         {
-            if (Elements != null && Elements.Count >= 1)
-            {
-                foreach (var e in Elements)
-                {
-                    e.Dispose();
-                }
-
-                Elements.Clear();
-            }
+            Elements.Clear();
         }
 
         public Size DisplaySize()
         {
-            int maxh = 0, maxw = 0;
-            if (Elements != null)
-            {
-                foreach (ImageElement i in Elements)
-                {
-                    if (i.Location.X + i.Location.Width > maxw)
-                        maxw = i.Location.X + i.Location.Width;
-                    if (i.Location.Y + i.Location.Height > maxh)
-                        maxh = i.Location.Y + i.Location.Height;
-                }
-            }
-
-            return new Size(maxw, maxh);
+            return Elements.DisplaySize;
         }
 
         // taking image elements, and minimum size/margin, create a new bitmap
         // null if no elements
         public Bitmap RenderBitmap(Size? minsize = null, Size? margin = null)
         {
-            Size size = DisplaySize();
-
-            if (size.Width > 0 && size.Height > 0) // will be zero if no elements
-            {
-                elementin = null;
-
-                if (minsize.HasValue)           // minimum map size
-                {
-                    size.Width = Math.Max(size.Width, minsize.Value.Width);
-                    size.Height = Math.Max(size.Height, minsize.Value.Height);
-                }
-
-                if (margin.HasValue)            // and any margin to allow for control growth
-                {
-                    size.Width += margin.Value.Width;
-                    size.Height += margin.Value.Height;
-                }
-
-
-                Bitmap newrender = PaintBitmap(size);
-                return newrender;
-            }
-            else
-                return null;
+            return Elements.Paint(FillColor, minsize, margin);
         }
 
         // taking image elements, draw to main bitmap. set if resize control, and if we have a min size of bitmap, or a margin
@@ -232,18 +191,18 @@ namespace ExtendedControls
             if (Image == null)      // not rendered yet
                 return;
 
-            SortedList<int, ImageElement> indexes = new SortedList<int, ImageElement>();
+            SortedList<int, ImageElement.Element> indexes = new SortedList<int, ImageElement.Element>();
 
             for (int ix = 0; ix < Elements.Count;)
             {
-                ImageElement i = Elements[ix];
+                ImageElement.Element i = Elements[ix];
 
                 // if not tried before, and overlays
-                if (!indexes.ContainsKey(ix) && i.Visible && i.Location.IntersectsWith(area))
+                if (!indexes.ContainsKey(ix) && i.Visible && i.Bounds.IntersectsWith(area))
                 {
                     // System.Diagnostics.Debug.WriteLine($"ReDraw {i.Location}");
                     indexes.Add(ix, i);
-                    area.Intersect(i.Location);         // increase area
+                    area.Intersect(i.Bounds);         // increase area
                     ix = 0;
                 }
                 else
@@ -258,7 +217,7 @@ namespace ExtendedControls
                     {
                         if (kvp.Value.Image != null)    // if we have an image, repaint it
                         {
-                            PaintElement(gr, kvp.Value);
+                            kvp.Value.Paint(gr);
                         }
 
                         kvp.Value.OwnerDrawCallback?.Invoke(gr, kvp.Value);
@@ -269,95 +228,35 @@ namespace ExtendedControls
             }
         }
 
-        public void SwapToAlternateImage(ImageElement i)
+        public void SwapToAlternateImage(ImageElement.Element i)
         {
             if (i.SwapImages(Image))
                 Invalidate();
         }
 
-        public void RemoveItem(ImageElement orgimg, Color? backcolour)
+        public void RemoveItem(ImageElement.Element orgimg, Color? backcolour)
         {
-            int i = Elements.IndexOf(orgimg);
-            if (i >= 0)
+            if ( Elements.Contains(orgimg))
             {
                 if (!backcolour.HasValue)
                     backcolour = FillColor;
                 Bitmap b = Image as Bitmap;
-                BaseUtils.BitMapHelpers.ClearBitmapArea(b, orgimg.Location, backcolour.Value); // fill old element with back colour even if transparent
-                orgimg.Dispose();
-                Elements.RemoveAt(i);
+                BaseUtils.BitMapHelpers.ClearBitmapArea(b, orgimg.Bounds, backcolour.Value); // fill old element with back colour even if transparent
+                Elements.Remove(orgimg);
             }
         }
 
-        public void AddItem(ImageElement newitem)
+        public void AddItem(ImageElement.Element newitem)
         {
             using (Graphics gr = Graphics.FromImage(Image))     // paint new data
             {
                 if (newitem.Image != null)
-                    gr.DrawImage(newitem.Image, newitem.Location);
+                    gr.DrawImage(newitem.Image, newitem.Bounds);
                 newitem.OwnerDrawCallback?.Invoke(gr, newitem);
                 Elements.Add(newitem);
             }
 
             Invalidate();
-        }
-
-        #endregion
-
-        #region Painting
-
-        // paint an element, thru its ownerdraw and if it has an Image, painting it (taking into account Enabled/ShowDisabled)
-        private void PaintElement(Graphics gr, ImageElement i)
-        {
-            if (i.Visible)
-            {
-                if (i.Image != null)
-                {
-                    if (!i.Enabled || i.ShowDisabled)       // if show with disabled scaling
-                    {
-                        ColorMatrix alphaMatrix = new ColorMatrix();
-                        alphaMatrix.Matrix00 = alphaMatrix.Matrix11 = alphaMatrix.Matrix22 = alphaMatrix.Matrix44 = 1;
-                        alphaMatrix.Matrix33 = i.DisabledScaling;
-
-                        using (ImageAttributes alphaAttributes = new ImageAttributes())
-                        {
-                            alphaAttributes.SetColorMatrix(alphaMatrix);
-                            gr.DrawImage(i.Image, new Rectangle(i.Location.X, i.Location.Y, i.Size.Width, i.Size.Height), 0, 0, i.Size.Width, i.Size.Height, GraphicsUnit.Pixel, alphaAttributes);
-                        }
-                    }
-                    else
-                    {
-                        // System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location}");
-                        gr.DrawImage(i.Image, i.Location);
-                    }
-                }
-                else
-                {
-                    //   System.Diagnostics.Debug.WriteLine($"Draw {i.Tag} @ {i.Location} no image");
-                }
-
-                i.OwnerDrawCallback?.Invoke(gr, i);
-            }
-        }
-
-        // into a new Bitmap, paint the whole scene
-        private Bitmap PaintBitmap(Size size)
-        {
-            //System.Diagnostics.Debug.WriteLine($"Picture box draw {size}");
-            Bitmap newrender = new Bitmap(size.Width, size.Height);
-
-            if (!FillColor.IsFullyTransparent())
-            {
-                BaseUtils.BitMapHelpers.FillBitmap(newrender, FillColor);
-            }
-
-            using (Graphics gr = Graphics.FromImage(newrender))
-            {
-                foreach (ImageElement i in Elements)
-                    PaintElement(gr,i);
-            }
-
-            return newrender;
         }
 
         #endregion
@@ -389,13 +288,13 @@ namespace ExtendedControls
             if (FreezeTracking)
                 return;
 
-            if (elementin != null && !elementin.Location.Contains(eventargs.Location))       // go out..
+            if (elementin != null && !elementin.Bounds.Contains(eventargs.Location))       // go out..
             {
                 //System.Diagnostics.Debug.WriteLine("Leave element " + elementin.Location);
                 elementin.MouseOver = false;
 
                 LeaveElement?.Invoke(this, eventargs, elementin, elementin.Tag);
-                elementin.Leave?.Invoke(this,elementin);
+                elementin.Leave?.Invoke(this, elementin);
 
                 if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && elementin.InAltImage)
                 {
@@ -409,16 +308,16 @@ namespace ExtendedControls
             {
                 for( int ix = Elements.Count-1; ix >= 0; ix--)      // we paint in 0..N-1 order, so N-1 has priority.  So pick backwards
                 {
-                    ImageElement i = Elements[ix];
+                    ImageElement.Element i = Elements[ix];
                 
-                    if (i.Visible && i.Location.Contains(eventargs.Location))
+                    if (i.Visible && i.Bounds.Contains(eventargs.Location))
                     {
                         elementin = i;
                         elementin.MouseOver = true;
 
                         //System.Diagnostics.Debug.WriteLine("Enter element " + elementin.Location + " Mouse pos " + eventargs.Location);
 
-                        elementin.Enter?.Invoke(this,elementin);
+                        elementin.Enter?.Invoke(this, elementin);
 
                         if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && !elementin.InAltImage)
                         {
@@ -446,7 +345,7 @@ namespace ExtendedControls
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-            elementin?.MouseDown?.Invoke(this, elementin,e);
+            elementin?.MouseDown?.Invoke(this,elementin,e);
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
@@ -466,7 +365,7 @@ namespace ExtendedControls
             if (e.Button == MouseButtons.Right && elementin?.ContextMenuStrip != null)      // right click and context menu strip
             {
                 elementin.ContextMenuStrip.Tag = elementin;
-                elementin.ContextMenuStrip.Show(this.PointToScreen(elementin.PositionBottomRight));    // show right click
+                elementin.ContextMenuStrip.Show(this.PointToScreen(elementin.BottomRight));    // show right click
             }
             else
             {
@@ -513,7 +412,17 @@ namespace ExtendedControls
             return false;   // no action, no children
         }
 
-        private ImageElement elementin = null;
+        public IEnumerator<Element> GetEnumerator()
+        {
+            return Elements.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        private ImageElement.Element elementin = null;
         private Timer hovertimer = new Timer();
         private ToolTip hovertip = null;
         private Point hoverpos;

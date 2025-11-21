@@ -54,9 +54,8 @@
   <ItemGroup>
     <Compile Include="ConfigurableForm\ConfigurableEntriesCreate.cs" />
     <Compile Include="ConfigurableForm\ConfigurableEntriesFromString.cs" />
-    <Compile Include="Controls\PictureBoxList.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ImageElement\ElementControls.cs" />
+    <Compile Include="ImageElement\ElementList.cs" />
     <Compile Include="EliteSpecificControls\FleetCarrierDockingPads.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -96,9 +95,7 @@
     <Compile Include="Panels\PanelVertScroll.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\PictureBoxElement.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ImageElement\Element.cs" />
     <Compile Include="Controls\SafeChart.cs">
       <SubType>Component</SubType>
     </Compile>

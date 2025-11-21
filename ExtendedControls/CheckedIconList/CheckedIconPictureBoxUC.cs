@@ -137,10 +137,10 @@ namespace ExtendedControls
 
             // these are for internal use only
 
-            public ExtPictureBox.Label label;
-            public ExtPictureBox.CheckBox[] checkbox;
-            public ExtPictureBox.ImageElement icon;
-            public ExtPictureBox.ImageElement submenuicon;
+            public ImageElement.Label label;
+            public ImageElement.CheckBox[] checkbox;
+            public ImageElement.Element icon;
+            public ImageElement.Element submenuicon;
 
             public Item() { }
             public Item(string tag, string text, Image img = null, string exclusive = null, bool disableuncheck = false, bool button = false, object usertag = null)
@@ -234,16 +234,16 @@ namespace ExtendedControls
                             Color? textcolor = null)           // text color
         {
             var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag, TextColor = textcolor};
-            cl.label = new ExtPictureBox.Label();
+            cl.label = new ImageElement.Label();
             cl.label.ToolTipText = labeltooltiptext;
-            cl.label.Click += (sender, el, e) =>
+            cl.label.Click += (o, el, e) =>
             {
                 if (cl.label.Enabled)       // only if enabled
                 {
                     if (cl.checkbox != null && e.Button == MouseButtons.Left)
                     {
                         cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                        picturebox.Refresh(cl.checkbox[0].Location);
+                        picturebox.Refresh(cl.checkbox[0].Bounds);
                     }
                     else
                     {
@@ -254,17 +254,17 @@ namespace ExtendedControls
             if (!cl.Button)
             {
                 int lastbit = checkmap.RightMostBit();
-                cl.checkbox = new ExtPictureBox.CheckBox[lastbit+1];
+                cl.checkbox = new ImageElement.CheckBox[lastbit+1];
                 for(int i = 0; i < cl.checkbox.Length; i++)
                 {
                     if ((checkmap & (1 << i)) != 0)
                     {
-                        var x = new ExtPictureBox.CheckBox();
+                        var x = new ImageElement.CheckBox();
                         if (checkbuttontooltiptext != null)
                             x.ToolTipText = checkbuttontooltiptext[i];
                         cl.checkbox[i] = x;
                         x.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
-                        x.MouseDown += (s, el, e) =>
+                        x.MouseDown += (o, el, e) =>
                         {
                             if (e.Button == MouseButtons.Right && x.Enabled)
                                 ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
@@ -274,16 +274,16 @@ namespace ExtendedControls
             }
             if (img != null)
             {
-                cl.icon = new ExtPictureBox.ImageElement();
+                cl.icon = new ImageElement.Element();
                 cl.icon.ToolTipText = icontooltiptext;
-                cl.icon.Click += (sender, el, e) =>
+                cl.icon.Click += (o, el, e) =>
                 {
                     if (cl.icon.Enabled)    
                     {
                         if (cl.checkbox != null && e.Button == MouseButtons.Left)
                         {
                             cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                            picturebox.Refresh(cl.checkbox[0].Location);
+                            picturebox.Refresh(cl.checkbox[0].Bounds);
                         }
                         else
                         {
@@ -294,7 +294,7 @@ namespace ExtendedControls
             }
             if ( cl.IsSubmenu && cl.GetSubForm.SubmenuIcon != NoSubMenuIcon)        // if submenu, and icon set is null (default) and not NoSubMenuIcon
             {
-                cl.submenuicon = new ExtPictureBox.ImageElement();                  // add
+                cl.submenuicon = new ImageElement.Element();                  // add
             }
 
             if (group)
@@ -646,7 +646,7 @@ namespace ExtendedControls
                 return;
             }
 
-            var cinlbf = cl.label.Parent?.Parent?.Parent?.Parent as CheckedIconNewListBoxForm;      // parent form, may be null if not embedded in this
+            var cinlbf = cl.label.PictureBoxParent?.Parent?.Parent?.Parent as CheckedIconNewListBoxForm;      // parent form, may be null if not embedded in this
             SubForm sf = cl.GetSubForm;     // this is the info class
 
             //System.Diagnostics.Debug.WriteLine($"\r\nRequest OpenSubMenu for {cl.Text} {cl.Tag} set {sf.Setting}");
@@ -671,7 +671,7 @@ namespace ExtendedControls
             Subform.AllOrNoneBack = sf.AllOrNoneBack.HasValue ? sf.AllOrNoneBack.Value : cinlbf != null ? cinlbf.AllOrNoneBack : false;
             // other Form parameters (CloseOnDeactivate etc) leave on default
 
-            var pbsr = pictureboxscroll.PointToScreen(cl.submenuicon?.PositionRight ?? cl.label.PositionRight);    // previous, position right of submenuicon/positionright
+            var pbsr = pictureboxscroll.PointToScreen(cl.submenuicon?.RightTop ?? cl.label.RightTop);    // previous, position right of submenuicon/positionright
             //var pbsr = this.PointToScreen(new Point(this.Width, cl.label.Position.Y));  // position to the right of this form
                 
             Subform.SetLocation = pbsr;
@@ -981,24 +981,24 @@ namespace ExtendedControls
                     {
                         if (cl.checkbox[j] != null)
                         {
-                            cl.checkbox[j].Location = new Rectangle(post.Item1.X + colx + j * (post.Item1.Width + HorizontalSpacing), vcentre - post.Item1.Height / 2, post.Item1.Width, post.Item1.Height);
+                            cl.checkbox[j].Bounds = new Rectangle(post.Item1.X + colx + j * (post.Item1.Width + HorizontalSpacing), vcentre - post.Item1.Height / 2, post.Item1.Width, post.Item1.Height);
                             picturebox.Add(cl.checkbox[j]);
                         }
                     }
                 }
                 if (cl.icon != null)
                 {
-                    cl.icon.Location = new Rectangle(post.Item2.X + colx, vcentre - post.Item2.Height / 2, post.Item2.Width, post.Item2.Height);
+                    cl.icon.Bounds = new Rectangle(post.Item2.X + colx, vcentre - post.Item2.Height / 2, post.Item2.Width, post.Item2.Height);
                     picturebox.Add(cl.icon);
                 }
 
-                cl.label.Location = new Rectangle(post.Item3.X + colx, vcentre - post.Item3.Height / 2, post.Item3.Width, post.Item3.Height);
+                cl.label.Bounds = new Rectangle(post.Item3.X + colx, vcentre - post.Item3.Height / 2, post.Item3.Width, post.Item3.Height);
                 picturebox.Add(cl.label);
 
                 if (cl.submenuicon != null)
                 {
-                    int pos = cl.label.Location.Y + cl.label.Location.Height / 2 - firsticonsize.Height / 2;
-                    cl.submenuicon.Location = new Rectangle(colx + submenuiconposx, pos, firsticonsize.Width, firsticonsize.Height);
+                    int pos = cl.label.Bounds.Y + cl.label.Bounds.Height / 2 - firsticonsize.Height / 2;
+                    cl.submenuicon.Bounds = new Rectangle(colx + submenuiconposx, pos, firsticonsize.Width, firsticonsize.Height);
                     picturebox.Add(cl.submenuicon);
                 }
 
@@ -1027,7 +1027,7 @@ namespace ExtendedControls
 
         #region Implementation
 
-        private void CheckedIconListBoxForm_CheckedChanged(ExtPictureBox.CheckBox cb)
+        private void CheckedIconListBoxForm_CheckedChanged(ImageElement.CheckBox cb)
         {
             int index = (int)cb.Tag;
             int checkbox = (int)cb.Tag2;
@@ -1072,7 +1072,7 @@ namespace ExtendedControls
         }
 
         // operate subform popups on entering a element
-        private void Picturebox_EnterElement(object sender, MouseEventArgs eventargs, ExtPictureBox.ImageElement i, object tag)
+        private void Picturebox_EnterElement(object sender, MouseEventArgs eventargs, ImageElement.Element i, object tag)
         {
             Item cl = ItemList[(int)i.Tag];     // all elements have their tags set to index in ItemList
             //System.Diagnostics.Debug.WriteLine($"Enter element {cl.Text}");
@@ -1083,7 +1083,7 @@ namespace ExtendedControls
         }
 
         // used by group to override behaviour and work group options
-        protected virtual void CheckChangedEvent(int checkbox, ExtPictureBox.CheckBox cb, ItemCheckEventArgs e) { }
+        protected virtual void CheckChangedEvent(int checkbox, ImageElement.CheckBox cb, ItemCheckEventArgs e) { }
 
         public bool Theme(Theme t, Font fnt)
         {
