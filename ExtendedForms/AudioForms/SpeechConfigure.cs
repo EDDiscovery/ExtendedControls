@@ -187,8 +187,8 @@ namespace ExtendedAudioForms
             if (ms != null)
             {
                 AudioQueue.AudioSample a = queue.Generate(ms, new SoundEffectSettings(effects));
-                a.sampleOverEvent += SampleOver;
-                a.sampleOverTag = sfe;
+                a.EndEvent += SampleOver;
+                a.SampleEndTag = sfe;
                 queue.Submit(a, trackBarVolume.Value, AudioQueue.Priority.High);
             }
         }
@@ -239,7 +239,7 @@ namespace ExtendedAudioForms
                     if (ms != null)
                     {
                         AudioExtensions.AudioQueue.AudioSample audio = queue.Generate(ms, new SoundEffectSettings(effects));
-                        audio.sampleOverEvent += Audio_sampleOverEvent;
+                        audio.EndEvent += Audio_sampleOverEvent;
                         queue.Submit(audio, trackBarVolume.Value, AudioQueue.Priority.High);
                         buttonExtTest.Text = "Stop";
                     }
