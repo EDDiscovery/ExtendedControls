@@ -45,13 +45,13 @@ namespace ExtendedControls
             wd.ButtonStyle = Theme.ButtonstyleFlat;
             themelist.Add(wd);
 
-            Color hgb = Color.FromArgb(255, 10, 40, 10);
+            Color hgb = Color.FromArgb(255, 10, 90, 10);
             Color c55 = Color.FromArgb(255, 55, 55, 55);
             Color c64 = Color.FromArgb(255, 64, 64, 64);
             Color c48 = Color.FromArgb(255, 48,48,48);
             Color elitebutback = Color.FromArgb(255, 32, 32, 32);
             Color elitebutbackb = Color.FromArgb(255, 64, 64, 64);
-
+            
             var orangetheme = new Theme("Orange Delight", Color.Black,
                 c48, Color.Orange, Color.DarkOrange, Theme.ButtonstyleGradient, // button
                 Color.FromArgb(255, 176, 115, 0), Color.Black,  // grid border
