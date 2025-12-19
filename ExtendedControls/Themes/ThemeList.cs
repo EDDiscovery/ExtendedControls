@@ -46,7 +46,7 @@ namespace ExtendedControls
             wd.ButtonStyle = Theme.ButtonstyleFlat;
             themelist.Add(wd);
 
-            Color hgb = Color.FromArgb(255, 10, 40, 10);
+            Color hgb = Color.FromArgb(255, 10, 90, 10);
             Color c64 = Color.FromArgb(255, 64, 64, 64);
             Color c55 = Color.FromArgb(255, 55, 55, 55);
             Color c48 = Color.FromArgb(255, 48,48,48);
