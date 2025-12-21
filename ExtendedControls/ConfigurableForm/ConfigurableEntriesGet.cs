@@ -81,6 +81,8 @@ namespace ExtendedControls
                 return c.Text;
             else if (c is ExtCheckBox)
                 return (c as ExtCheckBox).Checked ? "1" : "0";
+            else if (c is ExtRadioButton)
+                return (c as ExtRadioButton).Checked ? "1" : "0";
             else if (c is ExtDateTimePicker)
                 return (c as ExtDateTimePicker).Value.ToString("yyyy/dd/MM HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             else if (c is NumberBoxLong)
@@ -223,13 +225,17 @@ namespace ExtendedControls
         // from checkbox
         public bool? GetBool(string controlname)
         {
-            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase) && x.Control is ExtCheckBox);
+            ConfigurableEntryList.Entry t = Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+
             if (t != null)
             {
-                var cn = t.Control as ExtCheckBox;
-                return cn.Checked;
+                if (t.Control is ExtRadioButton rb)
+                    return rb.Checked;
+                else if (t.Control is ExtCheckBox cb)
+                    return cb.Checked;
             }
             return null;
+
         }
         // from numberbox, Null if not valid
         public double? GetDouble(string controlname)
