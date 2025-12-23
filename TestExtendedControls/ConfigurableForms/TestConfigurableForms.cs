@@ -90,16 +90,19 @@ namespace TestExtendedControls
             Form parent = this;
 
             f.Add(new ConfigurableEntryList.Entry("L", typeof(Label), "Jump to:", new Point(10, 40), new Size(140, 24), ""));
-            f.Add(new ConfigurableEntryList.Entry("Entry", typeof(ExtendedControls.NumberBoxLong), initialvalue.ToString(), new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxDoubleMinimum = 0, NumberBoxFormat = "0" , Anchor = AnchorStyles.Right });
+
+            var el = new ConfigurableEntryList.Entry("Entry", ref initialvalue, new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxLongMinimum = 0, NumberBoxFormat = "0", Anchor = AnchorStyles.Right };
+            f.Add(el);
 
             f.Add(new ConfigurableEntryList.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept") { Anchor = AnchorStyles.Right }) ;
             f.Add(new ConfigurableEntryList.Entry("Cancel", typeof(ExtendedControls.ExtButton), "Cancel", new Point(width - 200, 70), new Size(80, 24), "Press to Cancel") { Anchor = AnchorStyles.Right }) ;
 
             f.Trigger += (dialogname, controlname, tag) =>
             {
+                System.Diagnostics.Debug.WriteLine($"Value is {initialvalue}");
                 if (controlname == "OK" || controlname == "Entry:Return")
                 {
-                    long? v3 = f.GetLong("Entry");
+                    long? v3 = f.GetInt("Entry");
                     if (v3.HasValue)
                     {
                         f.ReturnResult(DialogResult.OK);
@@ -123,7 +126,7 @@ namespace TestExtendedControls
             if (res == DialogResult.OK)
             {
                 int target = (int)f.GetLong("Entry").Value;
-
+                System.Diagnostics.Debug.WriteLine($"Value is {initialvalue}");
             }
         }
 

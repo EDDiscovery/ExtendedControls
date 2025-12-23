@@ -30,8 +30,8 @@ namespace TestExtendedControls
             extPictureBoxScroll3.ScrollBarEnabled = false;
 
             extPictureBox4.AddTextAutoSize(new Point(0, 0), new Size(2000, 2000), "Hello", Font, Color.Red, Color.White,1);
-            ExtPictureBox.CheckBox chk1 = new ExtPictureBox.CheckBox();
-            chk1.Location = new Rectangle(20, 20, 150, 32);
+            ExtendedControls.ImageElement.CheckBox chk1 = new ExtendedControls.ImageElement.CheckBox();
+            chk1.Bounds = new Rectangle(20, 20, 150, 32);
             chk1.Font = new Font("MS sans serif", 8.75f);
             chk1.Text = "tickbox";
             chk1.CheckState = CheckState.Checked;
@@ -46,12 +46,12 @@ namespace TestExtendedControls
         private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
             ContextMenuStrip t = sender as ContextMenuStrip;
-            ExtPictureBox.ImageElement i = t.Tag as ExtPictureBox.ImageElement;
+            ExtendedControls.ImageElement.Element i = t.Tag as ExtendedControls.ImageElement.Element;
             System.Diagnostics.Debug.Write($"CMS Opening {i.Tag}");
             oneToolStripMenuItem.Enabled = ((int)i.Tag != 0);
         }
 
-        private void ClickElement(object sender, MouseEventArgs eventargs, ExtPictureBox.ImageElement i, object tag)
+        private void ClickElement(object sender, MouseEventArgs eventargs, ExtendedControls.ImageElement.Element i, object tag)
         {
             System.Diagnostics.Debug.WriteLine($"Element click {eventargs.Button} {i?.Tag}");
         }
