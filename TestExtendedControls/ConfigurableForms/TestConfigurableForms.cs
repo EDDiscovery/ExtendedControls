@@ -91,7 +91,7 @@ namespace TestExtendedControls
 
             f.Add(new ConfigurableEntryList.Entry("L", typeof(Label), "Jump to:", new Point(10, 40), new Size(140, 24), ""));
 
-            var el = new ConfigurableEntryList.Entry("Entry", ref initialvalue, new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxLongMinimum = 0, NumberBoxFormat = "0", Anchor = AnchorStyles.Right };
+            var el = new ConfigurableEntryList.Entry("Entry", initialvalue, new Point(ctrlleft, 40), new Size(width - ctrlleft - 20, 24), "Enter number to jump to or near to") { NumberBoxLongMinimum = 0, NumberBoxFormat = "0", Anchor = AnchorStyles.Right };
             f.Add(el);
 
             f.Add(new ConfigurableEntryList.Entry("OK", typeof(ExtendedControls.ExtButton), "OK", new Point(width - 100, 70), new Size(80, 24), "Press to Accept") { Anchor = AnchorStyles.Right }) ;

@@ -50,7 +50,7 @@ namespace ExtendedControls.ImageElement
             Leave += (o, ie) => { ie.PictureBoxParent?.Refresh(Bounds); };
             Click += (o, ie,bt) =>
             {
-                if (bt.Button == MouseButtons.Left && Enabled)
+                if (bt.Button == MouseButtons.Left)
                 {
                     if (CheckState != CheckState.Checked)
                         CheckState = CheckState.Checked;
@@ -216,5 +216,88 @@ namespace ExtendedControls.ImageElement
 
         }
     }
+
+    public class Button : Element
+    {
+        public string Text { get { return text; } set { text = value; PictureBoxParent?.Refresh(Bounds); } }
+        public Font Font { get { return font; } set { font = value; PictureBoxParent?.Refresh(Bounds); } }
+        public Color ForeColor { get; set; } = Color.Blue;          // Normal only border area colour
+        public Color BackColor { get; set; } = Color.White;          // Normal only border area colour
+        public Color ButtonFaceColor { get; set; } = Color.Gray;
+        public Color MouseOverFaceColor { get; set; } = Color.CornflowerBlue;
+        public float BackDisabledScaling { get; set; } = 0.5F;
+        public float MousePressedHighlightScaling { get; set; } = 1.3F;
+        public float FaceColorScaling { get; set; } = 0.75F;
+        public float ForeDisabledScaling { get; set; } = 0.75F;
+        public ContentAlignment TextAlign { get; set; } = ContentAlignment.MiddleCenter;
+
+        public bool MousePressed { get; set; } = false;
+
+        private string text = "";
+        private Font font;
+
+        public Button()
+        {
+            Enter += (o, ie) => { MousePressed = false; ie.PictureBoxParent?.Refresh(Bounds); };
+            Leave += (o, ie) => { MousePressed = false; ie.PictureBoxParent?.Refresh(Bounds); };
+            MouseDown += (o, ie, ea) => { MousePressed = true; ie.PictureBoxParent?.Refresh(Bounds); };
+            MouseUp += (o, ie, ea) => { MousePressed = false; ie.PictureBoxParent?.Refresh(Bounds); };
+            OwnerDrawCallback += (gr, ie) => { Draw(gr, ie); };
+        }
+
+        private protected Color PaintButtonFaceColor()
+        {
+            Color colBack;
+
+            if (Enabled == false)
+                colBack = ButtonFaceColor.Multiply(BackDisabledScaling);
+            else if (MousePressed)
+                colBack = MouseOverFaceColor.Multiply(MousePressedHighlightScaling);
+            else if (MouseOver)
+                colBack = MouseOverFaceColor;
+            else
+                colBack = ButtonFaceColor;
+
+            return colBack;
+        }
+
+        private void Draw(Graphics dgr, Element ie)
+        {
+            var ClientRectangle = ie.Bounds;
+            if (ClientRectangle.Width < 1 || ClientRectangle.Height < 1)
+                return;
+
+            using (Brush br = new SolidBrush(this.BackColor))
+                dgr.FillRectangle(br, ClientRectangle);
+
+            var backarea = new Rectangle(ClientRectangle.Left+2, ClientRectangle.Top+2, ClientRectangle.Width - 4, ClientRectangle.Height - 4);
+
+            if (backarea.Width > 0 && backarea.Height > 0)
+            {
+                using (var b = new System.Drawing.Drawing2D.LinearGradientBrush(new Rectangle(backarea.Left, backarea.Top - 1, backarea.Width, backarea.Height + 1),
+                    PaintButtonFaceColor(), PaintButtonFaceColor().Multiply(FaceColorScaling), 90))
+                {
+                    dgr.FillRectangle(b, backarea);       // linear grad brushes do not respect smoothing mode, btw
+                }
+
+                if (!string.IsNullOrEmpty(Text))
+                {
+                    dgr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                    using (var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(TextAlign))
+                    {
+                        //System.Diagnostics.Debug.WriteLine($"Draw {Text} {Enabled} {ForeDisabledScaling}");
+                        using (Brush textb = new SolidBrush((Enabled) ? this.ForeColor : this.ForeColor.Multiply(ForeDisabledScaling)))
+                        {
+                            dgr.DrawString(this.Text, this.Font, textb, backarea, fmt);
+                        }
+                    }
+                }
+
+                dgr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+            }
+        }
+    }
+
 }
 

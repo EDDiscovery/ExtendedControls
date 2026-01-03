@@ -54,7 +54,6 @@ namespace ExtendedControls.ImageElement
         public float DisabledScaling { get; set; } = 0.5F;      // scaling if not enabled or ShowDisabled
 
         public bool MouseOver { get; set; }     // set when mouse over this
-
         public Action<Graphics, Element> OwnerDrawCallback { get; set; }
 
         public Action<object, Element> Enter { get; set; }

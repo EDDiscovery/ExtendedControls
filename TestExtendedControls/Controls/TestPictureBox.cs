@@ -30,12 +30,21 @@ namespace TestExtendedControls
             extPictureBoxScroll3.ScrollBarEnabled = false;
 
             extPictureBox4.AddTextAutoSize(new Point(0, 0), new Size(2000, 2000), "Hello", Font, Color.Red, Color.White,1);
+
             ExtendedControls.ImageElement.CheckBox chk1 = new ExtendedControls.ImageElement.CheckBox();
             chk1.Bounds = new Rectangle(20, 20, 150, 32);
             chk1.Font = new Font("MS sans serif", 8.75f);
             chk1.Text = "tickbox";
             chk1.CheckState = CheckState.Checked;
             extPictureBox4.Add(chk1);
+
+
+            ExtendedControls.ImageElement.Button but1 = new ExtendedControls.ImageElement.Button();
+            but1.Bounds = new Rectangle(20, 50, 150, 32);
+            but1.Font = new Font("MS sans serif", 8.75f);
+            but1.Text = "Button";
+            extPictureBox4.Add(but1);
+
             extPictureBox4.FillColor = Color.AliceBlue;
             extPictureBox4.Render(minsize: extPictureBox4.Size);
 

@@ -238,17 +238,14 @@ namespace ExtendedControls
             cl.label.ToolTipText = labeltooltiptext;
             cl.label.Click += (o, el, e) =>
             {
-                if (cl.label.Enabled)       // only if enabled
+                if (cl.checkbox != null && e.Button == MouseButtons.Left)
                 {
-                    if (cl.checkbox != null && e.Button == MouseButtons.Left)
-                    {
-                        cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                        picturebox.Refresh(cl.checkbox[0].Bounds);
-                    }
-                    else
-                    {
-                        ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
-                    }
+                    cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
+                    picturebox.Refresh(cl.checkbox[0].Bounds);
+                }
+                else
+                {
+                    ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
                 }
             };
             if (!cl.Button)
@@ -266,7 +263,7 @@ namespace ExtendedControls
                         x.CheckChanged += CheckedIconListBoxForm_CheckedChanged;      // only if enabled
                         x.MouseDown += (o, el, e) =>
                         {
-                            if (e.Button == MouseButtons.Right && x.Enabled)
+                            if (e.Button == MouseButtons.Right )
                                 ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
                         };
                     }
@@ -278,17 +275,14 @@ namespace ExtendedControls
                 cl.icon.ToolTipText = icontooltiptext;
                 cl.icon.Click += (o, el, e) =>
                 {
-                    if (cl.icon.Enabled)    
+                    if (cl.checkbox != null && e.Button == MouseButtons.Left)
                     {
-                        if (cl.checkbox != null && e.Button == MouseButtons.Left)
-                        {
-                            cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                            picturebox.Refresh(cl.checkbox[0].Bounds);
-                        }
-                        else
-                        {
-                            ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
-                        }
+                        cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
+                        picturebox.Refresh(cl.checkbox[0].Bounds);
+                    }
+                    else
+                    {
+                        ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
                     }
                 };
             }

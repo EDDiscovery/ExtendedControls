@@ -294,7 +294,8 @@ namespace ExtendedControls
                 elementin.MouseOver = false;
 
                 LeaveElement?.Invoke(this, eventargs, elementin, elementin.Tag);
-                elementin.Leave?.Invoke(this, elementin);
+                if ( elementin.Enabled )
+                    elementin.Leave?.Invoke(this, elementin);
 
                 if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && elementin.InAltImage)
                 {
@@ -317,7 +318,8 @@ namespace ExtendedControls
 
                         //System.Diagnostics.Debug.WriteLine("Enter element " + elementin.Location + " Mouse pos " + eventargs.Location);
 
-                        elementin.Enter?.Invoke(this, elementin);
+                        if (elementin.Enabled)
+                            elementin.Enter?.Invoke(this, elementin);
 
                         if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && !elementin.InAltImage)
                         {
@@ -345,13 +347,19 @@ namespace ExtendedControls
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
-            elementin?.MouseDown?.Invoke(this,elementin,e);
+            if (elementin?.Enabled == true)
+            {
+                elementin.MouseDown?.Invoke(this, elementin, e);
+            }
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
-            elementin?.MouseUp?.Invoke(this, elementin,e);
+            if (elementin?.Enabled == true)
+            {
+                elementin.MouseUp?.Invoke(this, elementin, e);
+            }
         }
 
         protected override void OnMouseClick(MouseEventArgs e)
@@ -362,15 +370,18 @@ namespace ExtendedControls
 
             ClearHoverTip();
 
-            if (e.Button == MouseButtons.Right && elementin?.ContextMenuStrip != null)      // right click and context menu strip
+            if (elementin?.Enabled == true)
             {
-                elementin.ContextMenuStrip.Tag = elementin;
-                elementin.ContextMenuStrip.Show(this.PointToScreen(elementin.BottomRight));    // show right click
-            }
-            else
-            {
-                elementin?.Click?.Invoke(this, elementin, e);            // tell element
-                ClickElement?.Invoke(this, e, elementin, elementin?.Tag);          // tell overall class
+                if (e.Button == MouseButtons.Right && elementin?.ContextMenuStrip != null)      // right click and context menu strip
+                {
+                    elementin.ContextMenuStrip.Tag = elementin;
+                    elementin.ContextMenuStrip.Show(this.PointToScreen(elementin.BottomRight));    // show right click
+                }
+                else
+                {
+                    elementin?.Click?.Invoke(this, elementin, e);            // tell element
+                    ClickElement?.Invoke(this, e, elementin, elementin?.Tag);          // tell overall class
+                }
             }
         }
 
