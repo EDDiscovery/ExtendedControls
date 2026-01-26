@@ -240,8 +240,7 @@ namespace ExtendedControls
             {
                 if (cl.checkbox != null && e.Button == MouseButtons.Left)
                 {
-                    cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                    picturebox.Refresh(cl.checkbox[0].Bounds);
+                    CheckedIconListBoxForm_CheckedChanged(cl.checkbox[0]);
                 }
                 else
                 {
@@ -277,8 +276,7 @@ namespace ExtendedControls
                 {
                     if (cl.checkbox != null && e.Button == MouseButtons.Left)
                     {
-                        cl.checkbox[0].CheckState = cl.checkbox[0].CheckState == CheckState.Unchecked ? CheckState.Checked : CheckState.Unchecked;
-                        picturebox.Refresh(cl.checkbox[0].Bounds);
+                        CheckedIconListBoxForm_CheckedChanged(cl.checkbox[0]);
                     }
                     else
                     {
