@@ -36,6 +36,7 @@ namespace ExtendedControls
         public bool FreezeTracking { get; set; } = false;        // when set, all mouse movement tracking is turned off
 
         private ImageElement.List Elements = new ImageElement.List();
+        public ImageElement.Element this[int x] => Elements [x];
 
         #region Interface
 
@@ -75,11 +76,12 @@ namespace ExtendedControls
                 x.PictureBoxParent = this;
         }
 
-        // topleft, autosized
-        public ImageElement.Element AddTextAutoSize(Point topleft, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
+        // See Bitmap DrawTextIntoAutoSizedBitmap
+        public ImageElement.Element AddTextAutoSize(Point topleft, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, 
+                                                    Object tag = null, string tiptext = null, StringFormat frmt = null, bool xiscentred = false, int setwidth = -1)
         {
             ImageElement.Element lab = new ImageElement.Element();
-            lab.TextAutoSize(topleft, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt);
+            lab.TextAutoSize(topleft, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt, xiscentred,setwidth);
             Elements.Add(lab);
             return lab;
         }
@@ -109,15 +111,6 @@ namespace ExtendedControls
             return elements;
         }
 
-         // centre pos, autosized
-        public ImageElement.Element AddTextCentred(Point poscentrehorz, Size max, string label, Font fnt, Color c, Color backcolour, float backscale, Object tag = null, string tiptext = null, StringFormat frmt = null)
-        {
-            ImageElement.Element lab = new ImageElement.Element();
-            lab.TextCentreAutoSize(poscentrehorz, max, label, fnt, c, backcolour, backscale, tag, tiptext, frmt);
-            Elements.Add(lab);
-            return lab;
-        }
-
         public ImageElement.Element AddImage(Rectangle p, Image img, Object tag = null, string tiptext = null, bool imgowned = true)    // make sure pushes it in..
         {
             ImageElement.Element lab = new ImageElement.Element();
@@ -134,14 +127,15 @@ namespace ExtendedControls
             return lab;
         }
 
-        public ImageElement.Element AddHorizontalDivider(Color c, Rectangle area, float width = 1.0f, int offset = 0, Object t = null, string tt = null)
-        {
-            ImageElement.Element lab = new ImageElement.Element();
-            lab.HorizontalDivider(c, area, width, offset, t, tt);
-            Elements.Add(lab);
-            return lab;
 
+        // Image is optional and is not owned by ImageElements
+        public void AddPictureTextHorzDivider(Rectangle area, Image image, Size imagesize,
+                                       string text, Font font, bool wrap, StringAlignment alignment,
+                                       bool horzdivider, Color textcolour, Color backcolour)
+        {
+            Elements.AddPictureTextHorzDivider(area, image, imagesize, text, font, wrap, alignment, horzdivider, textcolour, backcolour);
         }
+
         public void ClearImageList()        // clears the element list, not the image.  call render to do this
         {
             Elements.Clear();

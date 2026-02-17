@@ -24,10 +24,19 @@ namespace ExtendedControls.ImageElement
     {
         public virtual Rectangle Bounds { get; set; }
         public Point Location { get { return new Point(Bounds.Left, Bounds.Top); } set { Bounds = new Rectangle(value.X, value.Y, Bounds.Width, Bounds.Height); } }
-        public Point RightTop { get { return new Point(Bounds.Left + Bounds.Width, Bounds.Top); } }
-        public Point Centre { get { return new Point(Bounds.Left + Bounds.Width/2, Bounds.Top + Bounds.Height / 2); } }
-        public Point BottomRight { get { return new Point(Bounds.Right, Bounds.Bottom); } }
+        public int X { get { return Bounds.X; } set { Bounds = new Rectangle(value, Y, Width, Height); } }
+        public int Y { get { return Bounds.Y; } set { Bounds = new Rectangle(X, value, Width, Height); } }
+        public int Width { get { return Bounds.Width; } set { Bounds = new Rectangle(X, Y, value, Height); } }
+        public int Height { get { return Bounds.Height; } set { Bounds = new Rectangle(X, Y, Width, value); } }
+        public int Left => Bounds.Left;
+        public int Right => Bounds.Right;
+        public int Top => Bounds.Top;
+        public int Bottom => Bounds.Bottom;
+        public Point BottomRight => new Point(Bounds.Right, Bounds.Bottom);
+        public Point RightTop => new Point(Bounds.Left + Bounds.Width, Bounds.Top);
+        public Point Centre => new Point(Bounds.Left + Bounds.Width / 2, Bounds.Top + Bounds.Height / 2); 
         public Size Size { get { return new Size(Bounds.Width, Bounds.Height); } set { Bounds = new Rectangle(Bounds.Left, Bounds.Top, value.Width, value.Height); } }
+
         public Image Image { get; set; }
         public bool ImageOwned { get; set; }
         public bool Visible { get; set; } = true;
@@ -81,28 +90,15 @@ namespace ExtendedControls.ImageElement
             Bounds = p; Image = i; Tag = t; ToolTipText = tt; this.ImageOwned = imgowned;
         }
 
-        // centred, autosized
-        public void TextCentreAutoSize(Point poscentrehorz, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F,
-                                        Object t = null, string tt = null, StringFormat frmt = null)
-        {
-            if (ImageOwned)
-                Image?.Dispose();
-            Image = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
-            ImageOwned = true;
-            Bounds = new Rectangle(poscentrehorz.X - Image.Width / 2, poscentrehorz.Y, Image.Width, Image.Height);
-            Tag = t;
-            ToolTipText = tt;
-        }
-
-        // top left, autosized
+        // see BitMapHelpers.DrawTextIntoAutoSizedBitmap. Note change in behavious Jan 26 for centre/far - use setwidth to change it back
         public void TextAutoSize(Point topleft, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F,
-                                    Object t = null, string tt = null, StringFormat frmt = null)
+                                    Object t = null, string tt = null, StringFormat frmt = null, bool xiscentre = false, int setwidth = -1)
         {
             if (ImageOwned)
                 Image?.Dispose();
-            Image = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt);
+            Image = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt, setwidth);
             ImageOwned = true;
-            Bounds = new Rectangle(topleft.X, topleft.Y, Image.Width, Image.Height);
+            Bounds = new Rectangle(topleft.X - (xiscentre ? Image.Width / 2 : 0), topleft.Y, Image.Width, Image.Height);
             Tag = t;
             ToolTipText = tt;
         }

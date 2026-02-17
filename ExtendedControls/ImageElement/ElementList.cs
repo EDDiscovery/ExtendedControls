@@ -168,7 +168,6 @@ namespace ExtendedControls.ImageElement
             return newrender;
         }
 
-        private List<Element> elements = new List<Element>();
 
         private void Recalc()
         {
@@ -181,6 +180,75 @@ namespace ExtendedControls.ImageElement
             }
         }
 
+        // Image is optional and is not owned by ImageElements
+        public void AddPictureTextHorzDivider(Rectangle area, Image image, Size imagesize,
+                                       string text, Font font, bool wrap, StringAlignment alignment,
+                                       bool horzdivider, Color textcolour, Color backcolour, int texttoimagemargin = 8)
+        {
+            using (StringFormat frmt = new StringFormat(wrap ? 0 : StringFormatFlags.NoWrap) { Alignment = alignment })
+            {
+                int textwidthavailable = area.Width - (image != null ? imagesize.Width : 0);
+
+                var textie = new Element();
+                textie.TextAutoSize(
+                        area.Location,
+                        new Size(textwidthavailable, area.Height),      // we allow the text to be this width, but the bitmap will be the size needed
+                        text,
+                        font,
+                        textcolour,
+                        backcolour,
+                        1.0F,
+                        frmt: frmt
+                       );
+
+                var imageie = image != null ? new ImageElement.Element(new Rectangle(area.X, area.Y, imagesize.Width, imagesize.Height), image, imgowned: false) : null;
+                int totalwidth = textie.Width + (imageie!=null ? imageie.Width + texttoimagemargin : 0);
+
+                if (alignment == StringAlignment.Center)
+                {
+                    int areacentre = area.X + area.Width / 2;
+
+                    if (imageie != null)
+                    {
+                        imageie.Location = new Point(areacentre - totalwidth / 2, textie.Y);
+                        textie.Location = new Point(imageie.Right + texttoimagemargin, textie.Y);
+                    }
+                    else
+                        textie.Location = new Point(areacentre - totalwidth / 2, textie.Y);
+                }
+                else if (alignment == StringAlignment.Far)
+                {
+                    textie.Location = new Point(area.Right - textie.Width, textie.Y);
+
+                    if (imageie != null)
+                        imageie.Location = new Point(textie.Left - imageie.Width - texttoimagemargin, imageie.Y);
+                }
+                else
+                {
+                    textie.Location = new Point(area.X + (imageie!=null ? imageie.Width + texttoimagemargin : 0), textie.Y);
+                }
+
+                int vpos = Math.Max(textie.Bottom, imageie?.Bottom ?? 0);
+
+                if (imageie != null)
+                    Add(imageie);
+
+                Add(textie);
+
+                if (horzdivider)
+                    AddHorizontalDivider(textcolour.Multiply(0.4f), new Rectangle(imageie!=null ? imageie.Left : textie.Left, vpos, totalwidth, 8), 1, 4);
+            }
+        }
+
+        public ImageElement.Element AddHorizontalDivider(Color c, Rectangle area, float width = 1.0f, int offset = 0, Object t = null, string tt = null)
+        {
+            ImageElement.Element lab = new ImageElement.Element();
+            lab.HorizontalDivider(c, area, width, offset, t, tt);
+            Add(lab);
+            return lab;
+        }
+
+        private List<Element> elements = new List<Element>();
     }
 }
 
