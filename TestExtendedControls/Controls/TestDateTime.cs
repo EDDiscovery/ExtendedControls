@@ -30,7 +30,7 @@ namespace TestExtendedControls
 
 
             extDateTimePicker1.Format = DateTimePickerFormat.Custom;
-            extDateTimePicker1.CustomFormat = "yyyy/MM/dd HH:mm:ss";
+            extDateTimePicker1.CustomFormat = "yyyy/MM/dd HH:mm:ss g";
             extDateTimePicker1.BackColor = Color.Blue;
             extDateTimePicker1.SelectedColor = Color.DarkBlue;
         }

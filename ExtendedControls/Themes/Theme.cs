@@ -873,6 +873,19 @@ namespace ExtendedControls
             else if (ctrl is ToolStrip)    // WINFORM MenuStrip is a tool stip
             {
                 ctrl.Font = fnt;       // Toolstrips don't seem to inherit Forms font, so force
+
+                foreach (ToolStripItem i in ((ToolStrip)ctrl).Items)   // make sure any buttons have the button back colour set
+                {
+                    if (i is ToolStripButton || i is ToolStripDropDownButton)
+                    {           // theme the back colour, this is the way its done.. not via the tool strip renderer
+                        i.BackColor = ButtonBackColor;
+                    }
+                    else if (i is ToolStripTextBox)
+                    {
+                        i.ForeColor = TextBlockForeColor;
+                        i.BackColor = TextBlockBackColor;
+                    }
+                }
             }
             else if (ctrl is TreeView) // WINFORM
             {

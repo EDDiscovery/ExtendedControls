@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016-2025 EDDiscovery development team
+ * Copyright 2016-2026 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -90,9 +90,9 @@ namespace ExtendedControls
                 {
                     Parts p = null;
 
-                    if (fmt[0] == '\'')
+                    if (fmt[0] == '\'' || fmt[0] == '"')
                     {
-                        int index = fmt.IndexOf('\'', 1);
+                        int index = fmt.IndexOf(fmt[0], 1);
                         if (index == -1)
                             index = fmt.Length;
 
@@ -141,6 +141,33 @@ namespace ExtendedControls
                         p = Make(ref fmt, 2, PartsTypes.Year, "99");
                     else if (fmt.StartsWith("y"))
                         p = Make(ref fmt, 1, PartsTypes.Year, "99");
+                    else if (fmt.StartsWith("fffffff") || fmt.StartsWith("FFFFFFF"))
+                        p =Make(ref fmt, 7, PartsTypes.Ignore, "");      // ignore ten millionths
+                    else if (fmt.StartsWith("ffffff") || fmt.StartsWith("FFFFFF"))
+                        p =Make(ref fmt, 6, PartsTypes.Ignore, "");      // ignore millionths
+                    else if (fmt.StartsWith("fffff") || fmt.StartsWith("FFFFF"))
+                        p =Make(ref fmt, 5, PartsTypes.Ignore, "");      // ignore hundred thousands
+                    else if (fmt.StartsWith("ffff") || fmt.StartsWith("FFFF"))
+                        p =Make(ref fmt, 4, PartsTypes.Ignore, "");      // ignore ten thousands
+                    else if (fmt.StartsWith("fff") || fmt.StartsWith("FFF"))
+                        p =Make(ref fmt, 3, PartsTypes.Ignore, "");      // ignore milliseconds
+                    else if (fmt.StartsWith("ff") || fmt.StartsWith("FF"))
+                        p =Make(ref fmt, 2, PartsTypes.Ignore, "");      // ignore hundreds
+                    else if (fmt.StartsWith("f") || fmt.StartsWith("F"))
+                        p =Make(ref fmt, 1, PartsTypes.Ignore, "");      // ignore tenths
+                    else if (fmt.StartsWith("gg"))
+                        p =Make(ref fmt, 2, PartsTypes.Ignore, "");      // ignore era
+                    else if (fmt.StartsWith("g"))
+                        p =Make(ref fmt, 1, PartsTypes.Ignore, "");      // ignore era
+                    else if (fmt.StartsWith("K"))
+                        p =Make(ref fmt, 1, PartsTypes.Ignore, "");      // time zone
+                    else if (fmt.StartsWith("zzz"))
+                        p =Make(ref fmt, 3, PartsTypes.Ignore, "");      // hours utc offset
+                    else if (fmt.StartsWith("zz"))
+                        p =Make(ref fmt, 2, PartsTypes.Ignore, "");      // hours utc offset
+                    else if (fmt.StartsWith("z"))
+                        p =Make(ref fmt, 1, PartsTypes.Ignore, "");      // hours utc offset
+
                     else if (fmt[0] != ' ')
                     {
                         p = new Parts() { maxstring = fmt.Substring(0, 1), ptype = PartsTypes.Text };
@@ -149,7 +176,7 @@ namespace ExtendedControls
                     else
                         fmt = fmt.Substring(1).Trim();
 
-                    if (p != null)
+                    if (p != null && p.ptype != PartsTypes.Ignore)
                     {
                         p.xpos = xpos;
                         SizeF sz = BitMapHelpers.MeasureStringInBitmap(p.maxstring, this.Font);
@@ -539,7 +566,7 @@ namespace ExtendedControls
 
         private int xstart = 0;                             // where the text starts
 
-        enum PartsTypes { Text, DayName, Day, Month, Year, Hours, Mins, Seconds, AmPm }
+        enum PartsTypes { Text, DayName, Day, Month, Year, Hours, Mins, Seconds, AmPm, Ignore }
         class Parts
         {
             public PartsTypes ptype;

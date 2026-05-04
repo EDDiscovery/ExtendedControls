@@ -64,6 +64,12 @@
     <Compile Include="ConfigurableForms\TestConfigurableForms.Designer.cs">
       <DependentUpon>TestConfigurableForms.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TestImageViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\TestImageViewer.Designer.cs">
+      <DependentUpon>TestImageViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TestDrakeDockingPads.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -372,6 +378,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConfigurableForms\TestConfigurableForms.resx">
       <DependentUpon>TestConfigurableForms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\TestImageViewer.resx">
+      <DependentUpon>TestImageViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TestDrakeDockingPads.resx">
       <DependentUpon>TestDrakeDockingPads.cs</DependentUpon>
