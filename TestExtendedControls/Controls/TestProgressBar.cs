@@ -22,34 +22,53 @@ namespace TestExtendedControls
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
             Theme.Current.WindowsFrame = true;
+            extProgressBar.Value = 100;
+            extProgressBar.Limit = 100;
+            extProgressBar.Maximum = 110;
+            extProgressBar.Minimum = 0;
+            extProgressBar.TrackSpeed = 5;
+            extProgressBar.MarkerLineColor = Color.Yellow;
         }
 
         private void extButton1_Click(object sender, EventArgs e)
         {
-            extProgressBar1.Value = 0;
+            winprogressbar.Value = 0;
+            extProgressBar.Value = 0;
         }
 
         private void extButton2_Click(object sender, EventArgs e)
         {
-            extProgressBar1.Value = 25;
-
+            winprogressbar.Value = 25;
+            extProgressBar.Value = 25;
+            extProgressBar.Marker1 = 12;
         }
 
         private void extButton3_Click(object sender, EventArgs e)
         {
-            extProgressBar1.Value = 50;
-
+            winprogressbar.Value = 50;
+            extProgressBar.Value = 50;
+            extProgressBar.Marker1 = 25;
         }
 
         private void extButton4_Click(object sender, EventArgs e)
         {
-            extProgressBar1.Value = 75;
+            winprogressbar.Value = 75;
+            extProgressBar.Value = 75;
 
         }
 
         private void extButton5_Click(object sender, EventArgs e)
         {
-            extProgressBar1.Value = 100;
+            winprogressbar.Value = 100;
+            extProgressBar.Value = 100;
+
+        }
+
+        private void extButton6_Click(object sender, EventArgs e)
+        {
+            extProgressBar.Value = 110;
+            extProgressBar.Marker1 = 90;
+            extProgressBar.Marker2 = 50;
 
         }
     }

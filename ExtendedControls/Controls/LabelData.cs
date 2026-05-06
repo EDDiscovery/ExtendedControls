@@ -21,6 +21,11 @@ namespace ExtendedControls
     public class LabelData : Control, IThemeable
     {
         // BackColor (can be transparent), ForeColor used
+
+        // text format, such as Core {0.##|MW}{0.0|%}Weapons {0.##|MW}Deployed{0.##|MW}{0.0|%}
+        // {format|postfix} is data
+        // any text is printed, at the next tab stop (even a space causes a tab stop)
+
         [System.ComponentModel.Browsable(true)]
         public override string Text { get { return base.Text; } set { base.Text = value; Invalidate(); } }
 
@@ -28,7 +33,7 @@ namespace ExtendedControls
         public int BorderWidth { get { return borderwidth; } set { borderwidth = value; Invalidate(); } }
 
         public int InterSpacing { get { return interspacegap; } set { interspacegap = value; Invalidate(); } }
-        public int TabSpacingData { get { return tabspacing; } set { tabspacing = value; Invalidate(); } }      //0 = off
+        public int TabSpacingData { get { return tabspacingdata; } set { tabspacingdata = value; Invalidate(); } }      // 0 = off, else a multiple of the Font.Height (which gives an indication of the width)
 
         public Font DataFont { get { return datafont; } set { datafont = value; Invalidate(); } }
 
@@ -77,6 +82,7 @@ namespace ExtendedControls
                     int brace = text.IndexOf('{', pos);
 
                     string textpart = brace >= 0 ? text.Substring(pos, brace-pos) : text.Substring(pos);
+                    textpart = textpart.TrimStart();            // remove any spaces before text as they are just field spacers
 
                     pos = brace >= 0 ? brace : text.Length;     // move to brace pos or eot
 
@@ -162,18 +168,29 @@ namespace ExtendedControls
                         {
                             if (textpart.HasChars())
                             {
+                                // any text part causes tab spacing, including just spaces
+
                                 //var tsize = TextRenderer.MeasureText(textpart, Font, new Size(1920, 50));
                                 var tsize = pe.Graphics.MeasureString(textpart, Font, new Size(10000, 10000), StringFormat.GenericTypographic).ToSize();
 
-                                if (tabspacing != 0 && xpos != 0)      // try and align
+                                if (TabSpacingData != 0 && xpos != 0)      // try and align
                                 {
-                                    int nexttab = (xpos / tabspacing + 1) * tabspacing;
+                                    int tabspacinginpixels = Font.Height * TabSpacingData;
+
+                                    int nexttab = (xpos / tabspacinginpixels + 1) * tabspacinginpixels;
                                     int textpos = nexttab - tsize.Width - InterSpacing;
                                     if (textpos > xpos)     // only if we don't butt into what we have already done
+                                    {
                                         xpos = textpos;
+                                        //System.Diagnostics.Debug.WriteLine($" Tab text to {xpos}");
+                                    }
+                                    else
+                                    {
+                                      //  System.Diagnostics.Debug.WriteLine($" Don't Tab text to {xpos} because after it");
+                                    }
                                 }
 
-                                //System.Diagnostics.Debug.WriteLine($"Output text `{textpart}` at {xpos} - {xpos + tsize.Width} {tsize}");
+                             //   System.Diagnostics.Debug.WriteLine($"Output text `{textpart}` at {xpos} - {xpos + tsize.Width} {tsize}");
 
                                 pe.Graphics.DrawString(textpart, Font, brush, new Point(xpos, 1), StringFormat.GenericTypographic);
                                 //TextRenderer.DrawText(pe.Graphics, textpart, Font, new Rectangle(xpos, 1, tsize.Width, Font.Height), ForeColor);
@@ -234,7 +251,7 @@ namespace ExtendedControls
         private Color bordercolor = Color.Orange;
         private int borderwidth = 1;
         private int interspacegap = 4;
-        private int tabspacing= 0;
+        private int tabspacingdata= 0;
         private Font datafont = null;
         private DataBoxStyle boxstyle = DataBoxStyle.AllAround;
         private object[] data = null;

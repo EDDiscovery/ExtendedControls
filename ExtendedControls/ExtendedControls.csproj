@@ -54,6 +54,9 @@
   <ItemGroup>
     <Compile Include="ConfigurableForm\ConfigurableEntriesCreate.cs" />
     <Compile Include="ConfigurableForm\ConfigurableEntriesFromString.cs" />
+    <Compile Include="Controls\ProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ImageElement\ElementControls.cs" />
     <Compile Include="ImageElement\ElementList.cs" />
     <Compile Include="EliteSpecificControls\FleetCarrierDockingPads.cs">

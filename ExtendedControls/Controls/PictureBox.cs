@@ -282,13 +282,24 @@ namespace ExtendedControls
             if (FreezeTracking)
                 return;
 
-            if (elementin != null && !elementin.Bounds.Contains(eventargs.Location))       // go out..
+            Element bestmatch = null;
+
+            foreach (Element e in Elements)         // go in order, later ones surplant previous ones
             {
-                //System.Diagnostics.Debug.WriteLine("Leave element " + elementin.Location);
+                if (e.Visible && e.Bounds.Contains(eventargs.Location))     // if on and within
+                {
+                    bestmatch = e;
+                }
+            }
+
+            if (elementin != null && bestmatch != elementin)              // if we have left this element
+            {
+               // System.Diagnostics.Debug.WriteLine($"Leave element {elementin.Location} TT {elementin.ToolTipText.Replace(Environment.NewLine, " ")}");
                 elementin.MouseOver = false;
 
                 LeaveElement?.Invoke(this, eventargs, elementin, elementin.Tag);
-                if ( elementin.Enabled )
+
+                if (elementin.Enabled)
                     elementin.Leave?.Invoke(this, elementin);
 
                 if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && elementin.InAltImage)
@@ -296,34 +307,27 @@ namespace ExtendedControls
                     elementin.SwapImages(Image);
                     Invalidate();
                 }
+
                 elementin = null;
             }
 
-            if (elementin == null)      // is in?
+            if (bestmatch != null && bestmatch != elementin)            // if we are entering a new one
             {
-                for( int ix = Elements.Count-1; ix >= 0; ix--)      // we paint in 0..N-1 order, so N-1 has priority.  So pick backwards
+                elementin = bestmatch;
+                elementin.MouseOver = true;
+
+               // System.Diagnostics.Debug.WriteLine($"Enter element {elementin.Location} Mouse pos {eventargs.Location} TT {elementin.ToolTipText.Replace(Environment.NewLine, " ")}");
+
+                if (elementin.Enabled)
+                    elementin.Enter?.Invoke(this, elementin);
+
+                if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && !elementin.InAltImage)
                 {
-                    ImageElement.Element i = Elements[ix];
-                
-                    if (i.Visible && i.Bounds.Contains(eventargs.Location))
-                    {
-                        elementin = i;
-                        elementin.MouseOver = true;
-
-                        //System.Diagnostics.Debug.WriteLine("Enter element " + elementin.Location + " Mouse pos " + eventargs.Location);
-
-                        if (elementin.Enabled)
-                            elementin.Enter?.Invoke(this, elementin);
-
-                        if (elementin.AltImage != null && elementin.AlternateImageWhenMouseOver && !elementin.InAltImage)
-                        {
-                            elementin.SwapImages(Image);
-                            Invalidate();
-                        }
-
-                        EnterElement?.Invoke(this, eventargs, elementin, elementin.Tag);
-                    }
+                    elementin.SwapImages(Image);
+                    Invalidate();
                 }
+
+                EnterElement?.Invoke(this, eventargs, elementin, elementin.Tag);
             }
 
             if (Math.Abs(eventargs.X - hoverpos.X) + Math.Abs(eventargs.Y - hoverpos.Y) > 8 || elementin == null)
