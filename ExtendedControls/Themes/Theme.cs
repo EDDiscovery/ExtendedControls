@@ -553,7 +553,7 @@ namespace ExtendedControls
             else if (strikeout)
                 style |= FontStyle.Strikeout;
             // System.Diagnostics.Debug.WriteLine($"Theme Lookup font {FontName} {fsize} {style}");
-            Font fnt = BaseUtils.FontLoader.GetFont(FontName, fsize, style);        // if it does not know the font, it will substitute Sans serif
+            Font fnt = FontLoader.GetFont(FontName, fsize, style);        // if it does not know the font, it will substitute Sans serif
             return fnt;
         }
 

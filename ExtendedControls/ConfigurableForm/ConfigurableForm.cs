@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -600,7 +601,7 @@ namespace ExtendedControls
             {
                 if (e.PostThemeFontScale != 1.0f)
                 {
-                    e.Control.Font = new Font(e.Control.Font.Name, e.Control.Font.SizeInPoints * e.PostThemeFontScale);
+                    e.Control.Font = FontLoader.GetFont(e.Control.Font.Name, e.Control.Font.SizeInPoints * e.PostThemeFontScale);
                 }
             }
 

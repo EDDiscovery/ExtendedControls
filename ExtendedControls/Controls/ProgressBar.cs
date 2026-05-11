@@ -64,8 +64,6 @@ namespace ExtendedControls
             wintimer.Start();
         }
 
-        int bitmap = 0;
-
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);

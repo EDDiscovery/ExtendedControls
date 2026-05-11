@@ -176,7 +176,7 @@ namespace ExtendedControls
 
                     var bounds = pads[selindexmod].GetBounds();
 
-                    using (Font fnt = new Font(Font.FontFamily, (float)Math.Max(2, bounds.Width / 3)))
+                    using (Font fnt = BaseUtils.FontLoader.GetFont(Font.FontFamily, (float)Math.Max(2, bounds.Width / 3)))
                     {
                         using (Brush br = new SolidBrush(ForeColor))
                         {

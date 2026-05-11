@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using BaseUtils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -418,31 +419,15 @@ namespace ExtendedControls
 
         private void textBox_Font_MouseClick(object sender, MouseEventArgs e)
         {
-            using (FontDialog fd = new FontDialog())
+            var curfont = FontLoader.GetFont(Theme.FontName, Theme.FontSize);
+            Font fnt = FontLoader.FontSelection(this, curfont, 4, 36, true);
+            if ( fnt != null )
             {
-                fd.Font = BaseUtils.FontLoader.GetFont(Theme.FontName, Theme.FontSize);
-                fd.MinSize = 4;
-                fd.MaxSize = 36;
-                DialogResult result;
-
-                try
-                {
-                    result = fd.ShowDialog(this);
-                }
-                catch (ArgumentException ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    return;
-                }
-
-                if (result == DialogResult.OK)
-                {
-                    Theme.FontName = fd.Font.Name;
-                    Theme.FontSize = fd.Font.Size;
-                    Theme.FontStyle = fd.Font.Style;
-                    UpdateFontText();
-                    Apply();
-                }
+                Theme.FontName = fnt.Name;
+                Theme.FontSize = fnt.Size;
+                Theme.FontStyle = fnt.Style;
+                UpdateFontText();
+                Apply();
             }
         }
 

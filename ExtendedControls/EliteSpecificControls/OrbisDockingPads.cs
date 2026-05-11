@@ -261,7 +261,7 @@ namespace ExtendedControls
 
         private Font GetFont()
         {
-            return new Font(Font.FontFamily, (float)Math.Max(2, Radius / 18));
+            return BaseUtils.FontLoader.GetFont(Font.FontFamily, (float)Math.Max(2, Radius / 18));
         }
 
 
