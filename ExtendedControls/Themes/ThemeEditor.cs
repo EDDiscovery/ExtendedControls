@@ -419,13 +419,15 @@ namespace ExtendedControls
 
         private void textBox_Font_MouseClick(object sender, MouseEventArgs e)
         {
-            var curfont = FontLoader.GetFont(Theme.FontName, Theme.FontSize);
-            Font fnt = FontLoader.FontSelection(this, curfont, 4, 36, true);
-            if ( fnt != null )
+            var fontform = new BaseUtils.FontDialog();
+            fontform.SelectedFont = Theme.FontName;
+            fontform.SelectedSize = Theme.FontSize;
+            fontform.SelectedStyle = Theme.FontStyle;
+            if ( fontform.ShowDialog() == DialogResult.OK )
             {
-                Theme.FontName = fnt.Name;
-                Theme.FontSize = fnt.Size;
-                Theme.FontStyle = fnt.Style;
+                Theme.FontName = fontform.SelectedFont;
+                Theme.FontSize = fontform.SelectedSize;
+                Theme.FontStyle = fontform.SelectedStyle;
                 UpdateFontText();
                 Apply();
             }

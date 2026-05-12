@@ -11,7 +11,6 @@ namespace TestExtendedControls
         string imagefilename;
         DateTime imagetime;
 
-        int bearing = 0;
         public TestImageViewer()
         {
             InitializeComponent();

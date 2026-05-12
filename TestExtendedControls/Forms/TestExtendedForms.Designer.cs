@@ -62,7 +62,12 @@
             // 
             // extButton7
             // 
+            this.extButton7.BackColor2 = System.Drawing.Color.Red;
+            this.extButton7.ButtonDisabledScaling = 0.5F;
+            this.extButton7.GradientDirection = 90F;
             this.extButton7.Location = new System.Drawing.Point(426, 145);
+            this.extButton7.MouseOverScaling = 1.3F;
+            this.extButton7.MouseSelectedScaling = 1.3F;
             this.extButton7.Name = "extButton7";
             this.extButton7.Size = new System.Drawing.Size(183, 23);
             this.extButton7.TabIndex = 1;
@@ -72,7 +77,12 @@
             // 
             // extButton16
             // 
+            this.extButton16.BackColor2 = System.Drawing.Color.Red;
+            this.extButton16.ButtonDisabledScaling = 0.5F;
+            this.extButton16.GradientDirection = 90F;
             this.extButton16.Location = new System.Drawing.Point(218, 174);
+            this.extButton16.MouseOverScaling = 1.3F;
+            this.extButton16.MouseSelectedScaling = 1.3F;
             this.extButton16.Name = "extButton16";
             this.extButton16.Size = new System.Drawing.Size(183, 23);
             this.extButton16.TabIndex = 1;
@@ -82,7 +92,12 @@
             // 
             // extButton5
             // 
+            this.extButton5.BackColor2 = System.Drawing.Color.Red;
+            this.extButton5.ButtonDisabledScaling = 0.5F;
+            this.extButton5.GradientDirection = 90F;
             this.extButton5.Location = new System.Drawing.Point(218, 145);
+            this.extButton5.MouseOverScaling = 1.3F;
+            this.extButton5.MouseSelectedScaling = 1.3F;
             this.extButton5.Name = "extButton5";
             this.extButton5.Size = new System.Drawing.Size(183, 23);
             this.extButton5.TabIndex = 1;
@@ -92,7 +107,12 @@
             // 
             // extButton2
             // 
+            this.extButton2.BackColor2 = System.Drawing.Color.Red;
+            this.extButton2.ButtonDisabledScaling = 0.5F;
+            this.extButton2.GradientDirection = 90F;
             this.extButton2.Location = new System.Drawing.Point(12, 382);
+            this.extButton2.MouseOverScaling = 1.3F;
+            this.extButton2.MouseSelectedScaling = 1.3F;
             this.extButton2.Name = "extButton2";
             this.extButton2.Size = new System.Drawing.Size(183, 23);
             this.extButton2.TabIndex = 1;
@@ -102,7 +122,12 @@
             // 
             // extButton11
             // 
+            this.extButton11.BackColor2 = System.Drawing.Color.Red;
+            this.extButton11.ButtonDisabledScaling = 0.5F;
+            this.extButton11.GradientDirection = 90F;
             this.extButton11.Location = new System.Drawing.Point(12, 211);
+            this.extButton11.MouseOverScaling = 1.3F;
+            this.extButton11.MouseSelectedScaling = 1.3F;
             this.extButton11.Name = "extButton11";
             this.extButton11.Size = new System.Drawing.Size(183, 23);
             this.extButton11.TabIndex = 1;
@@ -112,7 +137,12 @@
             // 
             // extButton10
             // 
+            this.extButton10.BackColor2 = System.Drawing.Color.Red;
+            this.extButton10.ButtonDisabledScaling = 0.5F;
+            this.extButton10.GradientDirection = 90F;
             this.extButton10.Location = new System.Drawing.Point(12, 182);
+            this.extButton10.MouseOverScaling = 1.3F;
+            this.extButton10.MouseSelectedScaling = 1.3F;
             this.extButton10.Name = "extButton10";
             this.extButton10.Size = new System.Drawing.Size(183, 23);
             this.extButton10.TabIndex = 1;
@@ -122,7 +152,12 @@
             // 
             // extButton9
             // 
+            this.extButton9.BackColor2 = System.Drawing.Color.Red;
+            this.extButton9.ButtonDisabledScaling = 0.5F;
+            this.extButton9.GradientDirection = 90F;
             this.extButton9.Location = new System.Drawing.Point(12, 153);
+            this.extButton9.MouseOverScaling = 1.3F;
+            this.extButton9.MouseSelectedScaling = 1.3F;
             this.extButton9.Name = "extButton9";
             this.extButton9.Size = new System.Drawing.Size(183, 23);
             this.extButton9.TabIndex = 1;
@@ -132,7 +167,12 @@
             // 
             // extButton13
             // 
+            this.extButton13.BackColor2 = System.Drawing.Color.Red;
+            this.extButton13.ButtonDisabledScaling = 0.5F;
+            this.extButton13.GradientDirection = 90F;
             this.extButton13.Location = new System.Drawing.Point(12, 323);
+            this.extButton13.MouseOverScaling = 1.3F;
+            this.extButton13.MouseSelectedScaling = 1.3F;
             this.extButton13.Name = "extButton13";
             this.extButton13.Size = new System.Drawing.Size(183, 23);
             this.extButton13.TabIndex = 1;
@@ -142,7 +182,12 @@
             // 
             // extButton12
             // 
+            this.extButton12.BackColor2 = System.Drawing.Color.Red;
+            this.extButton12.ButtonDisabledScaling = 0.5F;
+            this.extButton12.GradientDirection = 90F;
             this.extButton12.Location = new System.Drawing.Point(12, 294);
+            this.extButton12.MouseOverScaling = 1.3F;
+            this.extButton12.MouseSelectedScaling = 1.3F;
             this.extButton12.Name = "extButton12";
             this.extButton12.Size = new System.Drawing.Size(183, 23);
             this.extButton12.TabIndex = 1;
@@ -152,7 +197,12 @@
             // 
             // extButton8
             // 
+            this.extButton8.BackColor2 = System.Drawing.Color.Red;
+            this.extButton8.ButtonDisabledScaling = 0.5F;
+            this.extButton8.GradientDirection = 90F;
             this.extButton8.Location = new System.Drawing.Point(12, 124);
+            this.extButton8.MouseOverScaling = 1.3F;
+            this.extButton8.MouseSelectedScaling = 1.3F;
             this.extButton8.Name = "extButton8";
             this.extButton8.Size = new System.Drawing.Size(183, 23);
             this.extButton8.TabIndex = 1;
@@ -162,7 +212,12 @@
             // 
             // extButton18
             // 
+            this.extButton18.BackColor2 = System.Drawing.Color.Red;
+            this.extButton18.ButtonDisabledScaling = 0.5F;
+            this.extButton18.GradientDirection = 90F;
             this.extButton18.Location = new System.Drawing.Point(426, 116);
+            this.extButton18.MouseOverScaling = 1.3F;
+            this.extButton18.MouseSelectedScaling = 1.3F;
             this.extButton18.Name = "extButton18";
             this.extButton18.Size = new System.Drawing.Size(183, 23);
             this.extButton18.TabIndex = 1;
@@ -172,7 +227,12 @@
             // 
             // extButton6
             // 
+            this.extButton6.BackColor2 = System.Drawing.Color.Red;
+            this.extButton6.ButtonDisabledScaling = 0.5F;
+            this.extButton6.GradientDirection = 90F;
             this.extButton6.Location = new System.Drawing.Point(426, 12);
+            this.extButton6.MouseOverScaling = 1.3F;
+            this.extButton6.MouseSelectedScaling = 1.3F;
             this.extButton6.Name = "extButton6";
             this.extButton6.Size = new System.Drawing.Size(183, 23);
             this.extButton6.TabIndex = 1;
@@ -182,7 +242,12 @@
             // 
             // extButton17
             // 
+            this.extButton17.BackColor2 = System.Drawing.Color.Red;
+            this.extButton17.ButtonDisabledScaling = 0.5F;
+            this.extButton17.GradientDirection = 90F;
             this.extButton17.Location = new System.Drawing.Point(626, 12);
+            this.extButton17.MouseOverScaling = 1.3F;
+            this.extButton17.MouseSelectedScaling = 1.3F;
             this.extButton17.Name = "extButton17";
             this.extButton17.Size = new System.Drawing.Size(183, 23);
             this.extButton17.TabIndex = 1;
@@ -192,7 +257,12 @@
             // 
             // extButton14
             // 
+            this.extButton14.BackColor2 = System.Drawing.Color.Red;
+            this.extButton14.ButtonDisabledScaling = 0.5F;
+            this.extButton14.GradientDirection = 90F;
             this.extButton14.Location = new System.Drawing.Point(218, 116);
+            this.extButton14.MouseOverScaling = 1.3F;
+            this.extButton14.MouseSelectedScaling = 1.3F;
             this.extButton14.Name = "extButton14";
             this.extButton14.Size = new System.Drawing.Size(183, 23);
             this.extButton14.TabIndex = 1;
@@ -202,7 +272,12 @@
             // 
             // extButton19
             // 
+            this.extButton19.BackColor2 = System.Drawing.Color.Red;
+            this.extButton19.ButtonDisabledScaling = 0.5F;
+            this.extButton19.GradientDirection = 90F;
             this.extButton19.Location = new System.Drawing.Point(218, 70);
+            this.extButton19.MouseOverScaling = 1.3F;
+            this.extButton19.MouseSelectedScaling = 1.3F;
             this.extButton19.Name = "extButton19";
             this.extButton19.Size = new System.Drawing.Size(183, 23);
             this.extButton19.TabIndex = 1;
@@ -212,7 +287,12 @@
             // 
             // extButton15
             // 
+            this.extButton15.BackColor2 = System.Drawing.Color.Red;
+            this.extButton15.ButtonDisabledScaling = 0.5F;
+            this.extButton15.GradientDirection = 90F;
             this.extButton15.Location = new System.Drawing.Point(218, 41);
+            this.extButton15.MouseOverScaling = 1.3F;
+            this.extButton15.MouseSelectedScaling = 1.3F;
             this.extButton15.Name = "extButton15";
             this.extButton15.Size = new System.Drawing.Size(183, 23);
             this.extButton15.TabIndex = 1;
@@ -222,7 +302,12 @@
             // 
             // extButton4
             // 
+            this.extButton4.BackColor2 = System.Drawing.Color.Red;
+            this.extButton4.ButtonDisabledScaling = 0.5F;
+            this.extButton4.GradientDirection = 90F;
             this.extButton4.Location = new System.Drawing.Point(218, 12);
+            this.extButton4.MouseOverScaling = 1.3F;
+            this.extButton4.MouseSelectedScaling = 1.3F;
             this.extButton4.Name = "extButton4";
             this.extButton4.Size = new System.Drawing.Size(183, 23);
             this.extButton4.TabIndex = 1;
@@ -232,7 +317,12 @@
             // 
             // extButton3
             // 
+            this.extButton3.BackColor2 = System.Drawing.Color.Red;
+            this.extButton3.ButtonDisabledScaling = 0.5F;
+            this.extButton3.GradientDirection = 90F;
             this.extButton3.Location = new System.Drawing.Point(12, 41);
+            this.extButton3.MouseOverScaling = 1.3F;
+            this.extButton3.MouseSelectedScaling = 1.3F;
             this.extButton3.Name = "extButton3";
             this.extButton3.Size = new System.Drawing.Size(183, 23);
             this.extButton3.TabIndex = 1;
@@ -242,7 +332,12 @@
             // 
             // extButton1
             // 
+            this.extButton1.BackColor2 = System.Drawing.Color.Red;
+            this.extButton1.ButtonDisabledScaling = 0.5F;
+            this.extButton1.GradientDirection = 90F;
             this.extButton1.Location = new System.Drawing.Point(12, 12);
+            this.extButton1.MouseOverScaling = 1.3F;
+            this.extButton1.MouseSelectedScaling = 1.3F;
             this.extButton1.Name = "extButton1";
             this.extButton1.Size = new System.Drawing.Size(183, 23);
             this.extButton1.TabIndex = 1;

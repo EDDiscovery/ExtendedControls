@@ -601,7 +601,7 @@ namespace ExtendedControls
             {
                 if (e.PostThemeFontScale != 1.0f)
                 {
-                    e.Control.Font = FontLoader.GetFont(e.Control.Font.Name, e.Control.Font.SizeInPoints * e.PostThemeFontScale);
+                    e.Control.Font = FontHandler.GetFont(e.Control.Font.Name, e.Control.Font.SizeInPoints * e.PostThemeFontScale);
                 }
             }
 

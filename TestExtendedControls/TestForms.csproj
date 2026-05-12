@@ -89,6 +89,12 @@
       <DependentUpon>TestTreeView.cs</DependentUpon>
     </Compile>
     <Compile Include="EDCommander.cs" />
+    <Compile Include="Forms\TestFontForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TestFontForm.Designer.cs">
+      <DependentUpon>TestFontForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TestSmartSystemForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -390,6 +396,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TestTreeView.resx">
       <DependentUpon>TestTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TestFontForm.resx">
+      <DependentUpon>TestFontForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TestSmartSystemForm.resx">
       <DependentUpon>TestSmartSystemForm.cs</DependentUpon>

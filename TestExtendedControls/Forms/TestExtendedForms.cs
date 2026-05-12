@@ -3,6 +3,7 @@ using BaseUtils;
 using ExtendedAudioForms;
 using ExtendedConditionsForms;
 using ExtendedControls;
+using ExtendedForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,12 +22,12 @@ namespace TestExtendedControls
 
         public TestExtendedForms()
         {
+            System.Globalization.CultureInfo.CurrentCulture = new System.Globalization.CultureInfo("de");
             InitializeComponent();
             theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
             Theme.Current.FontSize = 12;
-
 
         }
 
@@ -276,6 +277,5 @@ namespace TestExtendedControls
             }
 
         }
-
     }
 }

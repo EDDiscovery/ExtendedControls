@@ -327,14 +327,14 @@ namespace ExtendedControls
             // ON purpose, always show them the euro caps one to give a hint!
             themelist.Add(new Theme(orangetheme, "Elite EuroCaps", "Euro Caps", 12F, 95));
 
-            if (FontLoader.IsFontAvailable("Euro Caps"))
+            if (FontHandler.IsFontAvailable("Euro Caps"))
             {
                 themelist.Add(new Theme(orangetheme, "Elite EuroCaps High DPI", "Euro Caps", 20F, 95));
                 themelist.Add(elite);
                 themelist.Add(elitegradient);
             }
 
-            if (FontLoader.IsFontAvailable("Verdana"))
+            if (FontHandler.IsFontAvailable("Verdana"))
             {
                 themelist.Add(new Theme(elite, "Elite Verdana", "Verdana", 10F));
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant", "Verdana", 10F));
@@ -349,7 +349,7 @@ namespace ExtendedControls
                 themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Alt Grid High DPI", "Verdana", 20F) { GridCellAltBack = c55 });
             }
 
-            if (FontLoader.IsFontAvailable("Calisto MT"))
+            if (FontHandler.IsFontAvailable("Calisto MT"))
             {
                 themelist.Add(new Theme(elite, "Elite Calisto", "Calisto MT", 12F));
                 themelist.Add(new Theme(elite, "Elite Calisto Small", "Calisto MT", 8F));
@@ -363,12 +363,12 @@ namespace ExtendedControls
             themelist.Add(new Theme(edsm, "EDSM Skinny Scroll", "Arial") { SkinnyScrollBars = true});
             themelist.Add(new Theme(edsm, "EDSM High DPI", "Arial", 20F));
 
-            if (FontLoader.IsFontAvailable("Arial Narrow"))
+            if (FontHandler.IsFontAvailable("Arial Narrow"))
             {
                 themelist.Add(new Theme(edsm, "EDSM Arial Narrow", "Arial Narrow", 10.25F, 95));
                 themelist.Add(new Theme(edsm, "EDSM Arial Narrow High DPI", "Arial Narrow", 20F, 95));
             }
-            if (FontLoader.IsFontAvailable("Euro Caps"))
+            if (FontHandler.IsFontAvailable("Euro Caps"))
             {
                 themelist.Add(new Theme(edsm, "EDSM EuroCaps", "Euro Caps", 10.25F, 95));
                 themelist.Add(new Theme(edsm, "EDSM EuroCaps High DPI", "Euro Caps", 20F, 95));
@@ -379,20 +379,20 @@ namespace ExtendedControls
 
             themelist.Add(nightvision);
 
-            if (FontLoader.IsFontAvailable("Euro Caps"))
+            if (FontHandler.IsFontAvailable("Euro Caps"))
                 themelist.Add(new Theme(themelist[themelist.Count - 1], "Night Vision EuroCaps", "Euro Caps", 12F, 95));
 
-            if (FontLoader.IsFontAvailable("Euro Caps"))
+            if (FontHandler.IsFontAvailable("Euro Caps"))
                 themelist.Add(eurocapsgrey);
 
-            if (FontLoader.IsFontAvailable("Verdana"))
+            if (FontHandler.IsFontAvailable("Verdana"))
                 themelist.Add(verdanagrey);
 
             themelist.Add(bluewonder);
 
             themelist.Add(green);
 
-            if (FontLoader.IsFontAvailable("Verdana"))     
+            if (FontHandler.IsFontAvailable("Verdana"))     
             {                                                                               // exported via theme load in EDDiscovery
                 themelist.Add(deepbluesky);
                 themelist.Add(new Theme(deepbluesky, "Deep Blue Sky High DPI", "Verdana", 20));
@@ -459,7 +459,7 @@ namespace ExtendedControls
                 if (size < 1)
                     size = 9;
 
-                return FontLoader.IsFontAvailable(fontwanted, FontStyle.Regular);
+                return FontHandler.IsFontAvailable(fontwanted, FontStyle.Regular);
             }
 
             return false;

@@ -47,7 +47,7 @@ namespace ExtendedControls
 
             // here we set the font of the label to the size, either scaled by AutoScaleFontSizeToWidth, or just use inheritied font
             if (AutoScaleFontSizeToWidth > 0)
-                Label.Font = BaseUtils.FontLoader.GetFont(this.Font.Name, ClientRectangle.Width / AutoScaleFontSizeToWidth);
+                Label.Font = BaseUtils.FontHandler.GetFont(this.Font.Name, ClientRectangle.Width / AutoScaleFontSizeToWidth);
             else
                 Label.Font = null;
 

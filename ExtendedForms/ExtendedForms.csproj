@@ -166,5 +166,6 @@
     <Content Include="Explanation.txt" />
     <None Include="Resources\Paste.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
