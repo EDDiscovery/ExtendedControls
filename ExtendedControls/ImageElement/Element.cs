@@ -22,8 +22,9 @@ namespace ExtendedControls.ImageElement
     [System.Diagnostics.DebuggerDisplay("{Name} {Bounds} {Visible} {ToolTipText}")]
     public class Element : IDisposable
     {
-        public virtual Rectangle Bounds { get; set; }
-        public Point Location { get { return new Point(Bounds.Left, Bounds.Top); } set { Bounds = new Rectangle(value.X, value.Y, Bounds.Width, Bounds.Height); } }
+
+        public virtual Rectangle Bounds { get { return bounds; }  set { if (bounds != value) { bounds = value; BoundsChanged?.Invoke(this); } } }
+        public Point Location { get { return new Point(Bounds.Left, Bounds.Top); } set { Bounds = new Rectangle(value, Size); } }
         public int X { get { return Bounds.X; } set { Bounds = new Rectangle(value, Y, Width, Height); } }
         public int Y { get { return Bounds.Y; } set { Bounds = new Rectangle(X, value, Width, Height); } }
         public int Width { get { return Bounds.Width; } set { Bounds = new Rectangle(X, Y, value, Height); } }
@@ -63,8 +64,8 @@ namespace ExtendedControls.ImageElement
         public float DisabledScaling { get; set; } = 0.5F;      // scaling if not enabled or ShowDisabled
 
         public bool MouseOver { get; set; }     // set when mouse over this
+        public Action<Element> BoundsChanged { get; set; }      // called whenever x/y/width/height changes
         public Action<Graphics, Element> OwnerDrawCallback { get; set; }
-
         public Action<object, Element> Enter { get; set; }
         public Action<object, Element> Leave { get; set; }
         public Action<object, Element, MouseEventArgs> MouseDown { get; set; }
@@ -75,6 +76,7 @@ namespace ExtendedControls.ImageElement
 
         private bool enabled = true;
         private bool showdisabled = false;
+        private Rectangle bounds = Rectangle.Empty;
 
         public Element()
         {
@@ -218,6 +220,7 @@ namespace ExtendedControls.ImageElement
                         alphaMatrix.Matrix00 = alphaMatrix.Matrix11 = alphaMatrix.Matrix22 = alphaMatrix.Matrix44 = 1;
                         alphaMatrix.Matrix33 = DisabledScaling;
 
+                        System.Diagnostics.Debug.WriteLine($"Element Paint Color {Location} : {Tag}");
                         using (ImageAttributes alphaAttributes = new ImageAttributes())
                         {
                             alphaAttributes.SetColorMatrix(alphaMatrix);
@@ -226,7 +229,7 @@ namespace ExtendedControls.ImageElement
                     }
                     else
                     {
-                        // System.Diagnostics.Debug.WriteLine($"Draw {Tag} @ {Location}");
+                        System.Diagnostics.Debug.WriteLine($"Element Paint {Location} : {Tag}");
                         gr.DrawImage(Image, Bounds);
                     }
                 }
@@ -235,7 +238,12 @@ namespace ExtendedControls.ImageElement
                     //   System.Diagnostics.Debug.WriteLine($"Draw {Tag} @ {Location} no image");
                 }
 
-                OwnerDrawCallback?.Invoke(gr, this);
+                if ( OwnerDrawCallback != null )
+                {
+                    System.Diagnostics.Debug.WriteLine($"Element OwnerPaint {Location} : {Tag}");
+                    OwnerDrawCallback?.Invoke(gr, this);
+                }
+
             }
         }
     }

@@ -48,12 +48,14 @@ namespace ExtendedControls.ImageElement
         public void Add(Element e)
         {
             elements.Add(e);
+            e.BoundsChanged += Recalc;      // BUG: WHEN in a list, moving it must cause a recalc of min/max
             Min = new Point(Math.Min(Min.X, e.Bounds.X), Math.Min(Min.Y, e.Bounds.Y));
             Max = new Point(Math.Max(Max.X, e.Bounds.Right), Math.Max(Max.Y, e.Bounds.Bottom));
         }
         public void Insert(int index, Element e)
         {
             elements.Insert(index,e);
+            e.BoundsChanged += Recalc;
             Min = new Point(Math.Min(Min.X, e.Bounds.X), Math.Min(Min.Y, e.Bounds.Y));
             Max = new Point(Math.Max(Max.X, e.Bounds.Right), Math.Max(Max.Y, e.Bounds.Bottom));
         }
@@ -64,21 +66,17 @@ namespace ExtendedControls.ImageElement
                 Add(x);
         }
 
-        public void AddRange(List e)
-        {
-            foreach (var x in e)
-                Add(x);
-        }
-
         public void Remove(Element e)
         {
             int i = elements.IndexOf(e);
+            e.BoundsChanged -= Recalc;
             Remove(i);
         }
 
         public void Remove(int i)
         {
             elements.RemoveAt(i);
+            elements[i].BoundsChanged -= Recalc;
             Recalc();
         }
 
@@ -180,6 +178,11 @@ namespace ExtendedControls.ImageElement
             }
         }
 
+        private void Recalc(Element e)
+        {
+            Recalc();
+        }
+
         // Image is optional and is not owned by ImageElements
         public void AddPictureTextHorzDivider(Rectangle area, Image image, Size imagesize,
                                        string text, Font font, bool wrap, StringAlignment alignment,
@@ -198,7 +201,8 @@ namespace ExtendedControls.ImageElement
                         textcolour,
                         backcolour,
                         1.0F,
-                        frmt: frmt
+                        frmt: frmt,
+                        t:text
                        );
 
                 var imageie = image != null ? new ImageElement.Element(new Rectangle(area.X, area.Y, imagesize.Width, imagesize.Height), image, imgowned: false) : null;
