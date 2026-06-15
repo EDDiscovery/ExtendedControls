@@ -107,10 +107,15 @@ namespace ExtendedControls.ImageElement
 
         public void Shift(Point offset)
         {
+            disablerecalc = true;       // stop repeated recalcs due to element calling boundschanged
+
             foreach (Element c in elements)
             {
                 c.Translate(offset.X, offset.Y);
             }
+
+            disablerecalc = false;
+
             Min = new Point(Min.X + offset.X, Min.Y + offset.Y);
             Max = new Point(Max.X + offset.X, Max.Y + offset.Y);
         }
@@ -169,12 +174,15 @@ namespace ExtendedControls.ImageElement
 
         private void Recalc()
         {
-            Min = new Point(int.MaxValue, int.MaxValue);
-            Max = new Point(int.MinValue, int.MinValue);
-            foreach (var e in elements)
+            if (!disablerecalc)
             {
-                Min = new Point(Math.Min(Min.X, e.Bounds.X), Math.Min(Min.Y, e.Bounds.Y));
-                Max = new Point(Math.Max(Max.X, e.Bounds.Right), Math.Max(Max.Y, e.Bounds.Bottom));
+                Min = new Point(int.MaxValue, int.MaxValue);
+                Max = new Point(int.MinValue, int.MinValue);
+                foreach (var e in elements)
+                {
+                    Min = new Point(Math.Min(Min.X, e.Bounds.X), Math.Min(Min.Y, e.Bounds.Y));
+                    Max = new Point(Math.Max(Max.X, e.Bounds.Right), Math.Max(Max.Y, e.Bounds.Bottom));
+                }
             }
         }
 
@@ -253,6 +261,7 @@ namespace ExtendedControls.ImageElement
         }
 
         private List<Element> elements = new List<Element>();
+        private bool disablerecalc = false;
     }
 }
 

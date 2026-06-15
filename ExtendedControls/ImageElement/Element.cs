@@ -23,7 +23,7 @@ namespace ExtendedControls.ImageElement
     public class Element : IDisposable
     {
 
-        public virtual Rectangle Bounds { get { return bounds; }  set { if (bounds != value) { bounds = value; BoundsChanged?.Invoke(this); } } }
+        public Rectangle Bounds { get { return bounds; }  set { if (bounds != value) { bounds = value; BoundsChanged?.Invoke(this); } } }
         public Point Location { get { return new Point(Bounds.Left, Bounds.Top); } set { Bounds = new Rectangle(value, Size); } }
         public int X { get { return Bounds.X; } set { Bounds = new Rectangle(value, Y, Width, Height); } }
         public int Y { get { return Bounds.Y; } set { Bounds = new Rectangle(X, value, Width, Height); } }
@@ -220,7 +220,7 @@ namespace ExtendedControls.ImageElement
                         alphaMatrix.Matrix00 = alphaMatrix.Matrix11 = alphaMatrix.Matrix22 = alphaMatrix.Matrix44 = 1;
                         alphaMatrix.Matrix33 = DisabledScaling;
 
-                        System.Diagnostics.Debug.WriteLine($"Element Paint Color {Location} : {Tag}");
+                        //System.Diagnostics.Debug.WriteLine($"Element Paint Color {Location} : {Tag}");
                         using (ImageAttributes alphaAttributes = new ImageAttributes())
                         {
                             alphaAttributes.SetColorMatrix(alphaMatrix);
@@ -229,7 +229,7 @@ namespace ExtendedControls.ImageElement
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine($"Element Paint {Location} : {Tag}");
+                        //System.Diagnostics.Debug.WriteLine($"Element Paint {Location} : {Tag}");
                         gr.DrawImage(Image, Bounds);
                     }
                 }
@@ -240,7 +240,7 @@ namespace ExtendedControls.ImageElement
 
                 if ( OwnerDrawCallback != null )
                 {
-                    System.Diagnostics.Debug.WriteLine($"Element OwnerPaint {Location} : {Tag}");
+                    //System.Diagnostics.Debug.WriteLine($"Element OwnerPaint {Location} : {Tag}");
                     OwnerDrawCallback?.Invoke(gr, this);
                 }
 
