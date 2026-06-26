@@ -27,6 +27,8 @@ namespace ExtendedControls.ImageElement
         public Size DisplaySize => new Size(Math.Max(0,Max.X), Math.Max(0,Max.Y));           // visible size, with pixels >= 0
         public Point Min { get; private set; } = new Point(int.MaxValue, int.MaxValue);
         public Point Max { get; private set; } = new Point(int.MinValue, int.MinValue);
+        public Point MinOrDefault => new Point(Min.X == int.MaxValue ? 0 : Min.X, Min.Y == int.MaxValue ? 0 : Min.Y);       // if nothing is yet drawn, this will return 0,0. 
+        public Point MaxOrDefault => new Point(Max.X == int.MinValue ? 0 : Max.X, Max.Y == int.MinValue ? 0 : Max.Y);       // if nothing is yet drawn, this will return 0,0. 
         public Point Centre { get => new Point((Min.X+Max.X)/2,(Min.Y+Max.Y)/2); }
 
         public IEnumerator<Element> GetEnumerator()
