@@ -48,6 +48,9 @@
             this.extButton4 = new ExtendedControls.ExtButton();
             this.extButton3 = new ExtendedControls.ExtButton();
             this.extButton1 = new ExtendedControls.ExtButton();
+            this.buttonNoDel = new System.Windows.Forms.Button();
+            this.buttonNoDelAdd = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -58,7 +61,7 @@
             this.button1.TabIndex = 2;
             this.button1.Text = "Vars-T8.5";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.buttonvar1_Click);
             // 
             // extButton7
             // 
@@ -110,7 +113,7 @@
             this.extButton2.BackColor2 = System.Drawing.Color.Red;
             this.extButton2.ButtonDisabledScaling = 0.5F;
             this.extButton2.GradientDirection = 90F;
-            this.extButton2.Location = new System.Drawing.Point(12, 382);
+            this.extButton2.Location = new System.Drawing.Point(23, 398);
             this.extButton2.MouseOverScaling = 1.3F;
             this.extButton2.MouseSelectedScaling = 1.3F;
             this.extButton2.Name = "extButton2";
@@ -170,7 +173,7 @@
             this.extButton13.BackColor2 = System.Drawing.Color.Red;
             this.extButton13.ButtonDisabledScaling = 0.5F;
             this.extButton13.GradientDirection = 90F;
-            this.extButton13.Location = new System.Drawing.Point(12, 323);
+            this.extButton13.Location = new System.Drawing.Point(23, 339);
             this.extButton13.MouseOverScaling = 1.3F;
             this.extButton13.MouseSelectedScaling = 1.3F;
             this.extButton13.Name = "extButton13";
@@ -185,7 +188,7 @@
             this.extButton12.BackColor2 = System.Drawing.Color.Red;
             this.extButton12.ButtonDisabledScaling = 0.5F;
             this.extButton12.GradientDirection = 90F;
-            this.extButton12.Location = new System.Drawing.Point(12, 294);
+            this.extButton12.Location = new System.Drawing.Point(23, 310);
             this.extButton12.MouseOverScaling = 1.3F;
             this.extButton12.MouseSelectedScaling = 1.3F;
             this.extButton12.Name = "extButton12";
@@ -345,11 +348,43 @@
             this.extButton1.UseVisualStyleBackColor = true;
             this.extButton1.Click += new System.EventHandler(this.extButton1_Click);
             // 
+            // buttonNoDel
+            // 
+            this.buttonNoDel.Location = new System.Drawing.Point(12, 240);
+            this.buttonNoDel.Name = "buttonNoDel";
+            this.buttonNoDel.Size = new System.Drawing.Size(183, 23);
+            this.buttonNoDel.TabIndex = 2;
+            this.buttonNoDel.Text = "Vars-T8.5 Nodel";
+            this.buttonNoDel.UseVisualStyleBackColor = true;
+            this.buttonNoDel.Click += new System.EventHandler(this.buttonvar2_Click);
+            // 
+            // buttonNoDelAdd
+            // 
+            this.buttonNoDelAdd.Location = new System.Drawing.Point(12, 269);
+            this.buttonNoDelAdd.Name = "buttonNoDelAdd";
+            this.buttonNoDelAdd.Size = new System.Drawing.Size(183, 23);
+            this.buttonNoDelAdd.TabIndex = 2;
+            this.buttonNoDelAdd.Text = "Vars-T8.5 Nodel";
+            this.buttonNoDelAdd.UseVisualStyleBackColor = true;
+            this.buttonNoDelAdd.Click += new System.EventHandler(this.buttonNoDelAdd_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(218, 211);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 3;
+            this.button4.Text = "button4";
+            this.button4.UseVisualStyleBackColor = true;
+            // 
             // TestExtendedForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(873, 558);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.buttonNoDelAdd);
+            this.Controls.Add(this.buttonNoDel);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.extButton7);
             this.Controls.Add(this.extButton16);
@@ -397,5 +432,8 @@
         private ExtendedControls.ExtButton extButton18;
         private ExtendedControls.ExtButton extButton19;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonNoDel;
+        private System.Windows.Forms.Button buttonNoDelAdd;
+        private System.Windows.Forms.Button button4;
     }
 }

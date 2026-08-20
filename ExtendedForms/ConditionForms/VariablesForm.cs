@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017-2024 EDDiscovery development team
+ * Copyright 2017-2026 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -22,24 +22,26 @@ namespace ExtendedConditionsForms
 { 
     public partial class VariablesForm : ExtendedControls.DraggableForm
     {
-        public Variables Result;      // only on OK
-        public Dictionary<string, string> ResultAltOPs;
+        public Variables Result { get; set; }      // only on OK
+        public Dictionary<string, string> ResultAltOPs { get; set; }    // only on OK
+        public bool ShowAtLeastOneEntry { get; set; } = false;
+        public bool ShowAddSymbols { get; set; } = false;           // += =
+        public bool ShowExpandSymbols { get; set; } = false;        // $+= etc
+        public bool AllowAddingMoreEntries { get; set; } = true;    // more button
+        public bool DisableEditingVariableName { get; set; } = false;   // make the variable names read only for the ones given at the start. New ones are editable
+        public bool DisableDeletion { get; set; } = false;          // don't allow delete variables
+        public bool DisableOuterBoxBorder { get; set; } = false;   // disable the outer box border
+        public bool DisableVariableBoxBorder { get; set; } = false;     // disable the variable box border
+        public Dictionary<string, string[]> ComboBoxVariables { get; set; }     // set to give specific variables option lists which produces a combobox
 
         public VariablesForm()
         {
             groups = new List<Group>();
             InitializeComponent();
-
         }
 
-        // altops, if given, describes the operator of each variable.
-        public void Init(string title, Icon ic, Variables vbs , Dictionary<string, string> altops = null,
-                                                                bool showatleastoneentry = false ,
-                                                                bool allowadd = false, 
-                                                                bool allownoexpand = false, 
-                                                                bool allowmultipleentries = true)
+        public void Init(Variables vbs, string title, Icon ic, Dictionary<string, string> altops = null)
         {
-
             this.Icon = ic;
 
             var enumlist = new Enum[] { };
@@ -49,21 +51,17 @@ namespace ExtendedConditionsForms
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             this.Text = label_index.Text = title;
 
-            showadd = allowadd;
-            shownoexpand = allownoexpand;
-            this.allowmultiple = allowmultipleentries;
-
             extPanelVertScrollWithBar.LargeChange = extPanelVertScrollWithBar.SmallChange = 32;
 
             if (vbs != null)
             {
                 foreach (string key in vbs.NameEnumuerable)
                 {
-                    CreateEntry(key,vbs[key], (altops!= null) ? altops[key] : "=");
+                    CreateEntry(key,vbs[key], altops!= null ? altops[key] : "=");
                 }
             }
 
-            if ( groups.Count == 0 && showatleastoneentry )
+            if ( groups.Count == 0 && ShowAtLeastOneEntry )
             {
                 CreateEntry("", "", "=");
             }
@@ -72,7 +70,8 @@ namespace ExtendedConditionsForms
                 groups[0].var.Focus();
         }
 
-        private Group CreateEntry(string var, string value, string op)
+        // new entry
+        private Group CreateEntry(string var, string value, string op, bool newaddedentry = false)
         {
             Group g = new Group();
 
@@ -83,24 +82,25 @@ namespace ExtendedConditionsForms
             g.var.Size = new Size(Font.ScalePixels(240), Font.ScalePixels(32));
             g.var.Location = new Point(panelmargin, panelmargin);
             g.var.Text = var;
+            g.var.ReadOnly = newaddedentry == false && DisableEditingVariableName;
             g.panel.Controls.Add(g.var);
             toolTip1.SetToolTip(g.var, "Variable name");
 
             int nextpos = g.var.Right;
 
-            if (shownoexpand || showadd)
+            if (ShowExpandSymbols || ShowAddSymbols)
             {
                 g.op = new ExtendedControls.ExtComboBox();
                 g.op.Size = new Size(Font.ScalePixels(75), Font.ScalePixels(32));
                 g.op.Location = new Point(g.var.Right + 4, panelmargin);
 
                 string ttip="";
-                if (showadd && shownoexpand)
+                if (ShowExpandSymbols && ShowAddSymbols)
                 {
                     g.op.Items.AddRange(new string[] { "=", "$=", "+=", "$+=" });
                     ttip = "= assign, expand, $= assign, no expansion, += add, expand, $+= add, no expansion";
                 }
-                else if (showadd)
+                else if (ShowAddSymbols)
                 {
                     g.op.Items.AddRange(new string[] { "=", "+=" });
                     ttip = "= assign, expand, += add, expand";
@@ -122,30 +122,55 @@ namespace ExtendedConditionsForms
                 nextpos = g.op.Right;
             }
 
-            g.value = new ExtendedControls.ExtRichTextBox();
-            g.value.Location = new Point(nextpos + 4, panelmargin);
-            g.value.Text = value.ReplaceEscapeControlChars();
-            toolTip1.SetToolTip(g.value, "Variable value");
-            g.panel.Controls.Add(g.value);
-            g.value.TextBoxChanged += (obj, e) => {
-                if (g.value.Lines.Length > g.lines )    // grow only
-                {
-                    int scrheight = Screen.FromControl(this).WorkingArea.Height;
-                    if ( g.panel.Height < scrheight * 2 / 4 )
-                    { 
-                        g.lines = g.value.Lines.Length;
-                        PositionEntries(true, g.panel.Top + extPanelVertScroll.Value);
-                    }
-                }
-            };
+            ComboBoxVariables.TryGetValue(var, out string[] options);     // see if its a combobox option
 
-            g.del = new ExtendedControls.ExtButton();
-            g.del.Size = new Size(Font.ScalePixels(24), Font.ScalePixels(24));
-            g.del.Text = "X";
-            g.del.Tag = g;
-            g.del.Click += Del_Clicked;
-            toolTip1.SetToolTip(g.del, "Delete entry");
-            g.panel.Controls.Add(g.del);
+            if (options == null)    // normal text box
+            {
+                g.value = new ExtendedControls.ExtRichTextBox();
+                g.value.Location = new Point(nextpos + 4, panelmargin);
+                g.value.Text = value.ReplaceEscapeControlChars();
+                toolTip1.SetToolTip(g.value, "Variable value");
+                g.panel.Controls.Add(g.value);
+                g.value.TextBoxChanged += (obj, e) =>
+                {
+                    if (g.value.Lines.Length > g.lines)    // grow only
+                    {
+                        int scrheight = Screen.FromControl(this).WorkingArea.Height;
+                        if (g.panel.Height < scrheight * 2 / 4)
+                        {
+                            g.lines = g.value.Lines.Length;
+                            PositionEntries(true, g.panel.Top + extPanelVertScroll.Value);
+                        }
+                    }
+                };
+            }
+            else
+            {
+                g.valuecb = new ExtendedControls.ExtComboBox();
+                g.valuecb.Location = new Point(nextpos + 4, panelmargin);
+                int selected = -1;
+                for (int i = 0; i < options.Length - 1; i += 2)      // add in all display option text strings (+1) and find current selection
+                {
+                    g.valuecb.Items.Add(options[i + 1]);
+                    if (value.EqualsIIC(options[i]))
+                        selected = i;
+                }
+                g.valuecb.SelectedIndex = selected/2;
+                g.valuecb.Tag = options;
+                toolTip1.SetToolTip(g.valuecb, "Select option for variable value");
+                g.panel.Controls.Add(g.valuecb);
+            }
+
+            if (newaddedentry == true || !DisableDeletion)
+            {
+                g.del = new ExtendedControls.ExtButton();
+                g.del.Size = new Size(Font.ScalePixels(24), Font.ScalePixels(24));
+                g.del.Text = "X";
+                g.del.Tag = g;
+                g.del.Click += Del_Clicked;
+                toolTip1.SetToolTip(g.del, "Delete entry");
+                g.panel.Controls.Add(g.del);
+            }
 
             groups.Add(g);
 
@@ -164,29 +189,43 @@ namespace ExtendedConditionsForms
 
         private void PositionEntries(bool calminsize = true, int pos = -1)     // fixes and positions groups.
         {
+            if (DisableOuterBoxBorder)
+                panelOuter.BorderStyle = BorderStyle.None;
+
             int y = panelmargin;
-            int panelwidth = Math.Max(extPanelVertScroll.Width , 10);
+            int panelwidth = Math.Max(extPanelVertScrollWithBar.Width - extPanelVertScrollWithBar.ScrollBarWidth, 10);
             int curpos = extPanelVertScroll.BeingPosition();
 
             int scrheight = Screen.FromControl(this).WorkingArea.Height;
 
             foreach (Group g in groups)
             {
-                int texth = Math.Min(g.value.EstimateVerticalSizeFromText(),scrheight * 2 / 4);
-            //    System.Diagnostics.Debug.WriteLine($"{g.value.Font} {texth}");
+                int texth = g.value != null ? Math.Min(g.value.EstimateVerticalSizeFromText(),scrheight * 2 / 4) : 28;
+
+                //    System.Diagnostics.Debug.WriteLine($"{g.value.Font} {texth}");
+                if (DisableVariableBoxBorder)
+                    g.panel.BorderStyle = BorderStyle.None;
 
                 g.panel.Location = new Point(panelmargin, y);
                 g.panel.Size = new Size(panelwidth-panelmargin*2, Math.Max(texth,g.var.Height) + 12);
 
-                g.del.Location = new Point(g.panel.Width - g.del.Width - 8, panelmargin);
+                int left = g.panel.Width - 8;
+                if (g.del != null)
+                {
+                    g.del.Location = new Point(left - g.del.Width, panelmargin);
+                    left -= g.del.Width;
+                }
 
-                g.value.Size = new Size(g.del.Left -g.value.Left-8, g.panel.Height - 8);
+                if (g.value != null)
+                    g.value.Size = new Size(left - g.value.Left - 8, g.panel.Height - 8);
+                else
+                    g.valuecb.Size = new Size(left - g.valuecb.Left - 8, Font.ScalePixels(32));
 
                 y += g.panel.Height + 6;
             }
 
             buttonMore.Location = new Point(panelmargin, y);
-            buttonMore.Visible = groups.Count == 0 || allowmultiple;
+            buttonMore.Visible = groups.Count == 0 || AllowAddingMoreEntries;
 
             Rectangle screenRectangle = RectangleToScreen(this.ClientRectangle);
             int titleHeight = screenRectangle.Top - this.Top;
@@ -226,7 +265,23 @@ namespace ExtendedConditionsForms
             {
                 if (g.var.Text.Length > 0)      // only ones with names are considered
                 {
-                    Result[g.var.Text] = g.value.Text.EscapeControlChars();
+                    if (g.value != null)        // normal text box
+                    {
+                        Result[g.var.Text] = g.value.Text.EscapeControlChars();
+                    }
+                    else
+                    {
+                        string[] list = g.valuecb.Tag as string[];      
+
+                        for (int i = 0; i < list.Length - 1; i += 2)     // find the entry with the display value in it..
+                        {
+                            if (g.valuecb.Items[g.valuecb.SelectedIndex].Equals(list[i + 1]))
+                            {
+                                Result[g.var.Text] = list[i];           // and set.  
+                                break;
+                            }
+                        }
+                    }
 
                     if (g.op != null)
                         ResultAltOPs[g.var.Text] = g.op.Text;
@@ -256,7 +311,7 @@ namespace ExtendedConditionsForms
 
         private void buttonMore_Click(object sender, EventArgs e)
         {
-            CreateEntry("", "","=");
+            CreateEntry("", "","=",true);
             PositionEntries(true,int.MaxValue);
         }
 
@@ -281,9 +336,7 @@ namespace ExtendedConditionsForms
         }
 
         private List<Group> groups;
-        const int panelmargin = 3;
-        private bool showadd, shownoexpand;
-        private bool allowmultiple;
+        private const int panelmargin = 3;
 
         private class Group
         {
@@ -291,6 +344,7 @@ namespace ExtendedConditionsForms
             public ExtendedControls.ExtTextBox var;
             public ExtendedControls.ExtComboBox op;
             public ExtendedControls.ExtRichTextBox value;
+            public ExtendedControls.ExtComboBox valuecb;
             public ExtendedControls.ExtButton del;
             public int lines;
         }

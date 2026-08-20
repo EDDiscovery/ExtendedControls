@@ -102,25 +102,25 @@ namespace TestExtendedControls
 
                 chart.CursorPositionChanged += Chart_CursorPositionChanged;
 
-                if (false)
-                {
-                    int[] datavalues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-                    DateTime[] datevalues = new DateTime[] {
-                        new DateTime(1970,1,1),new DateTime(1981,1,1),new DateTime(1982,1,1),new DateTime(1983,1,1),
-                        new DateTime(1984,1,1),new DateTime(1985,1,1),new DateTime(1986,1,1),new DateTime(1987,1,1),
-                        new DateTime(1988,1,1),new DateTime(1989,1,1),new DateTime(1990,1,1),new DateTime(1991,1,1),
-                    };
+                //if (false)
+                //{
+                //    int[] datavalues = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+                //    DateTime[] datevalues = new DateTime[] {
+                //        new DateTime(1970,1,1),new DateTime(1981,1,1),new DateTime(1982,1,1),new DateTime(1983,1,1),
+                //        new DateTime(1984,1,1),new DateTime(1985,1,1),new DateTime(1986,1,1),new DateTime(1987,1,1),
+                //        new DateTime(1988,1,1),new DateTime(1989,1,1),new DateTime(1990,1,1),new DateTime(1991,1,1),
+                //    };
 
-                    for (int i = 0; i < datavalues.Length; i++)
-                    {
-                        chart.AddXY(datevalues[i], datavalues[i]);
-                        if (i == 2)
-                        {
-                            chart.SetPointLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 5, ChartDashStyle.Solid);
-                            chart.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
-                        }
-                    }
-                }
+                //    for (int i = 0; i < datavalues.Length; i++)
+                //    {
+                //        chart.AddXY(datevalues[i], datavalues[i]);
+                //        if (i == 2)
+                //        {
+                //            chart.SetPointLabelCustomColorBorder(Color.Blue, Color.White, Color.Red, 5, ChartDashStyle.Solid);
+                //            chart.SetPointMarkerStyle(MarkerStyle.Triangle, Color.Red, 20, Color.Blue, 3);
+                //        }
+                //    }
+                //}
 
                 if (true)
                 {

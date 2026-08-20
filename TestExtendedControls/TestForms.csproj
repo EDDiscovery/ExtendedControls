@@ -35,8 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuickJSON, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>$(SolutionDir)\packages\RJKJSoft.QuickJSON.2.9.0\lib\net48\QuickJSON.dll</HintPath>
+    <Reference Include="QuickJSON, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>$(SolutionDir)\packages\RJKJSoft.QuickJSON.3.0.1\lib\net48\QuickJSON.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -601,24 +601,6 @@
     <None Include="Resources\3x3_grid.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\BaseUtilities\Audio\Audio.csproj">
-      <Project>{59f99a05-ce16-4fb8-be99-f1a24f019cb8}</Project>
-      <Name>Audio</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj">
-      <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
-      <Name>BaseUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\ExtendedControls\ExtendedControls.csproj">
-      <Project>{2049403f-f4c7-45e6-b777-6390c78e4d2b}</Project>
-      <Name>ExtendedControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="$(SolutionDir)\ExtendedForms\ExtendedForms.csproj">
-      <Project>{298C11C9-B58F-415C-8458-1CAE3C6CAB62}</Project>
-      <Name>ExtendedForms</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Logo8bpp48.png" />
   </ItemGroup>
   <ItemGroup>
@@ -668,6 +650,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\FleetCarrier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BaseUtilities\Audio\Audio.csproj">
+      <Project>{59f99a05-ce16-4fb8-be99-f1a24f019cb8}</Project>
+      <Name>Audio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BaseUtilities\BaseUtilities\BaseUtils.csproj">
+      <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
+      <Name>BaseUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExtendedControls\ExtendedControls.csproj">
+      <Project>{2049403f-f4c7-45e6-b777-6390c78e4d2b}</Project>
+      <Name>ExtendedControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExtendedForms\ExtendedForms.csproj">
+      <Project>{298c11c9-b58f-415c-8458-1cae3c6cab62}</Project>
+      <Name>ExtendedForms</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

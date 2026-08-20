@@ -53,10 +53,10 @@ namespace ExtendedConditionsForms
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
             this.panelOuter = new System.Windows.Forms.Panel();
-            this.buttonMore = new ExtendedControls.ExtButton();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.extPanelVertScrollWithBar = new ExtendedControls.ExtPanelVertScrollWithBar();
             this.extPanelVertScroll = new ExtendedControls.ExtPanelVertScroll();
+            this.buttonMore = new ExtendedControls.ExtButton();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.panelTop.SuspendLayout();
             this.panelOK.SuspendLayout();
             this.panelOuter.SuspendLayout();
@@ -67,8 +67,13 @@ namespace ExtendedConditionsForms
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.BackColor2 = System.Drawing.Color.Red;
+            this.buttonCancel.ButtonDisabledScaling = 0.5F;
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.GradientDirection = 90F;
             this.buttonCancel.Location = new System.Drawing.Point(468, 4);
+            this.buttonCancel.MouseOverScaling = 1.3F;
+            this.buttonCancel.MouseSelectedScaling = 1.3F;
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 9;
@@ -79,7 +84,12 @@ namespace ExtendedConditionsForms
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.BackColor2 = System.Drawing.Color.Red;
+            this.buttonOK.ButtonDisabledScaling = 0.5F;
+            this.buttonOK.GradientDirection = 90F;
             this.buttonOK.Location = new System.Drawing.Point(562, 4);
+            this.buttonOK.MouseOverScaling = 1.3F;
+            this.buttonOK.MouseSelectedScaling = 1.3F;
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 10;
@@ -113,6 +123,9 @@ namespace ExtendedConditionsForms
             this.panel_close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_close.AutoEllipsis = false;
             this.panel_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_close.BorderColor = System.Drawing.Color.Orange;
+            this.panel_close.BorderWidth = 1;
+            this.panel_close.ButtonDisabledScaling = 0.25F;
             this.panel_close.Image = null;
             this.panel_close.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Close;
             this.panel_close.Location = new System.Drawing.Point(620, 0);
@@ -121,7 +134,6 @@ namespace ExtendedConditionsForms
             this.panel_close.MouseSelectedColorEnable = true;
             this.panel_close.Name = "panel_close";
             this.panel_close.Padding = new System.Windows.Forms.Padding(6);
-            this.panel_close.ButtonDisabledScaling = 0.25F;
             this.panel_close.Selectable = false;
             this.panel_close.Size = new System.Drawing.Size(24, 24);
             this.panel_close.TabIndex = 27;
@@ -135,6 +147,9 @@ namespace ExtendedConditionsForms
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel_minimize.AutoEllipsis = false;
             this.panel_minimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_minimize.BorderColor = System.Drawing.Color.Orange;
+            this.panel_minimize.BorderWidth = 1;
+            this.panel_minimize.ButtonDisabledScaling = 0.25F;
             this.panel_minimize.Image = null;
             this.panel_minimize.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(590, 0);
@@ -143,7 +158,6 @@ namespace ExtendedConditionsForms
             this.panel_minimize.MouseSelectedColorEnable = true;
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
-            this.panel_minimize.ButtonDisabledScaling = 0.25F;
             this.panel_minimize.Selectable = false;
             this.panel_minimize.Size = new System.Drawing.Size(24, 24);
             this.panel_minimize.TabIndex = 26;
@@ -183,9 +197,37 @@ namespace ExtendedConditionsForms
             this.panelOuter.Size = new System.Drawing.Size(643, 292);
             this.panelOuter.TabIndex = 32;
             // 
+            // extPanelVertScrollWithBar
+            // 
+            this.extPanelVertScrollWithBar.Controls.Add(this.extPanelVertScroll);
+            this.extPanelVertScrollWithBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extPanelVertScrollWithBar.HideScrollBar = true;
+            this.extPanelVertScrollWithBar.LargeChange = 10;
+            this.extPanelVertScrollWithBar.Location = new System.Drawing.Point(0, 0);
+            this.extPanelVertScrollWithBar.Name = "extPanelVertScrollWithBar";
+            this.extPanelVertScrollWithBar.ScrollValue = 0;
+            this.extPanelVertScrollWithBar.Size = new System.Drawing.Size(641, 290);
+            this.extPanelVertScrollWithBar.SmallChange = 1;
+            this.extPanelVertScrollWithBar.TabIndex = 6;
+            // 
+            // extPanelVertScroll
+            // 
+            this.extPanelVertScroll.Controls.Add(this.buttonMore);
+            this.extPanelVertScroll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extPanelVertScroll.Location = new System.Drawing.Point(0, 0);
+            this.extPanelVertScroll.Name = "extPanelVertScroll";
+            this.extPanelVertScroll.Size = new System.Drawing.Size(593, 290);
+            this.extPanelVertScroll.TabIndex = 1;
+            this.extPanelVertScroll.Value = 0;
+            // 
             // buttonMore
             // 
+            this.buttonMore.BackColor2 = System.Drawing.Color.Red;
+            this.buttonMore.ButtonDisabledScaling = 0.5F;
+            this.buttonMore.GradientDirection = 90F;
             this.buttonMore.Location = new System.Drawing.Point(5, 5);
+            this.buttonMore.MouseOverScaling = 1.3F;
+            this.buttonMore.MouseSelectedScaling = 1.3F;
             this.buttonMore.Name = "buttonMore";
             this.buttonMore.Size = new System.Drawing.Size(24, 24);
             this.buttonMore.TabIndex = 5;
@@ -197,25 +239,6 @@ namespace ExtendedConditionsForms
             // toolTip1
             // 
             this.toolTip1.ShowAlways = true;
-            // 
-            // extPanelVertScrollWithBar
-            // 
-            this.extPanelVertScrollWithBar.Controls.Add(this.extPanelVertScroll);
-            this.extPanelVertScrollWithBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extPanelVertScrollWithBar.Location = new System.Drawing.Point(0, 0);
-            this.extPanelVertScrollWithBar.Name = "extPanelVertScrollWithBar";
-            this.extPanelVertScrollWithBar.Size = new System.Drawing.Size(641, 290);
-            this.extPanelVertScrollWithBar.TabIndex = 6;
-            // 
-            // extPanelVertScroll
-            // 
-            this.extPanelVertScroll.Controls.Add(this.buttonMore);
-            this.extPanelVertScroll.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extPanelVertScroll.Location = new System.Drawing.Point(0, 0);
-            this.extPanelVertScroll.Name = "extPanelVertScroll";
-            this.extPanelVertScroll.Size = new System.Drawing.Size(625, 290);
-            this.extPanelVertScroll.TabIndex = 1;
-            this.extPanelVertScroll.Value = 0;
             // 
             // VariablesForm
             // 

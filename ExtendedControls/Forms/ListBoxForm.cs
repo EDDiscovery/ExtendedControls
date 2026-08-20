@@ -46,7 +46,7 @@ namespace ExtendedControls
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
         public void PositionBelow(Control c, int xoff, int yoff = 0) { SetLocation = c.PointToScreen(new Point(xoff, c.Height+yoff)); }
         public bool RightAlignedToLocation { get; set; } = false;
-        private bool CloseOnDeactivate { get; set; } = false;
+        public bool CloseOnDeactivate { get; set; } = false;
 
         public ExtListBoxForm(string name = "", bool closeondeact = true)
         {

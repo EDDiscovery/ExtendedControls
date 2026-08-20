@@ -147,11 +147,22 @@ namespace TestExtendedControls
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonvar1_Click(object sender, EventArgs e)
         {
             VAR(8.5f, true);
 
         }
+        private void buttonvar2_Click(object sender, EventArgs e)
+        {
+            VAR(8.5f, true, nodel: true, allowadding: false, disablebox: true);
+        }
+
+        private void buttonNoDelAdd_Click(object sender, EventArgs e)
+        {
+            VAR(8.5f, true, nodel: true, allowadding: true, disablebox: true);
+
+        }
+
 
         private void extButton8_Click(object sender, EventArgs e)
         {
@@ -171,7 +182,7 @@ namespace TestExtendedControls
             VAR(24, true, true);
         }
 
-        private void VAR(float s, bool populate, bool ops = false)
+        private void VAR(float s, bool populate, bool ops = false, bool nodel = false, bool allowadding = true, bool disablebox = false)
         {
             Theme.Current.FontSize = s;
             VariablesForm f = new VariablesForm();
@@ -179,15 +190,25 @@ namespace TestExtendedControls
             Variables v = new Variables();
             if (populate)
             {
-                for( int i = 0; i < 10; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     v[$"Var{i}"] = $"Value {i}";
                 }
                 v["Var1"] = "line1 wjkwkwkw\r\nLine2\r\nLine3\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n1\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n1\r\n";
             }
 
-            f.Init("Var test", this.Icon, v, allowadd:ops, allownoexpand:ops);
-            f.ShowDialog();
+            f.ShowExpandSymbols= f.ShowAddSymbols = ops;
+            f.DisableDeletion = f.DisableEditingVariableName = nodel;
+            f.AllowAddingMoreEntries = allowadding;
+            f.DisableOuterBoxBorder = f.DisableVariableBoxBorder = disablebox;
+            f.ComboBoxVariables = new Dictionary<string, string[]>() { ["Var0"] = new string[] { "Value 0", "false", "1", "true" } };
+
+            f.Init("Var test", this.Icon, v);
+            if ( f.ShowDialog() == DialogResult.OK )
+            {
+                foreach (var x in f.Result.NameEnumuerable)
+                    System.Diagnostics.Debug.WriteLine($"{x} = {f.Result[x]}");
+            }
         }
 
 
@@ -277,5 +298,6 @@ namespace TestExtendedControls
             }
 
         }
+
     }
 }
