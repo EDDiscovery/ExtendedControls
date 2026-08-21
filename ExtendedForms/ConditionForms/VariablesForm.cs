@@ -122,7 +122,8 @@ namespace ExtendedConditionsForms
                 nextpos = g.op.Right;
             }
 
-            ComboBoxVariables.TryGetValue(var, out string[] options);     // see if its a combobox option
+            string[] options = null;
+            ComboBoxVariables?.TryGetValue(var, out options);     // see if its a combobox option may not be defined
 
             if (options == null)    // normal text box
             {
