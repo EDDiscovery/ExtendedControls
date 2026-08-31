@@ -203,6 +203,10 @@ namespace ExtendedControls
 
             contentpanel.Recalcuate();
 
+
+            prompt.Shown += (s, e) => { tbs[0].Focus(); };
+            
+
             if (prompt.ShowDialog(refctl) == DialogResult.OK)
             {
                 var r = (from t in tbs select t.Text).ToList();

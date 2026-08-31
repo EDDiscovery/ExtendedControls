@@ -48,6 +48,7 @@ namespace ExtendedConditionsForms
             BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             bool winborder = ExtendedControls.Theme.Current?.ApplyDialog(this) ?? true;
+            panelBox.BorderStyle = winborder? BorderStyle.None : BorderStyle.FixedSingle;
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             this.Text = label_index.Text = title;
 

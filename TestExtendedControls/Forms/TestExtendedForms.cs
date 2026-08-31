@@ -203,7 +203,7 @@ namespace TestExtendedControls
             f.DisableOuterBoxBorder = f.DisableVariableBoxBorder = disablebox;
             f.ComboBoxVariables = new Dictionary<string, string[]>() { ["Var0"] = new string[] { "Value 0", "false", "1", "true" } };
 
-            f.Init("Var test", this.Icon, v);
+            f.Init(v,"Var test", this.Icon);
             if ( f.ShowDialog() == DialogResult.OK )
             {
                 foreach (var x in f.Result.NameEnumuerable)
