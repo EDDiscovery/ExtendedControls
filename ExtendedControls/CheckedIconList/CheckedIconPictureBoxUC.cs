@@ -593,14 +593,23 @@ namespace ExtendedControls
             {
                 for (int i = 0; i < ItemList.Count; i++)
                 {
-                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].CheckBoxExists(checkbox) && ItemList[i].checkbox?[checkbox].Checked == true )
+                    if (taglist.Contains(ItemList[i].Tag) && ItemList[i].CheckBoxExists(checkbox) && ItemList[i].checkbox?[checkbox].Checked == true)
                     {
                         return true;
                     }
                 }
             }
-            
+
             return false;
+        }
+
+        // null if not a valid checkbox
+        public bool? IsChecked(string tag, int checkbox = 0)    
+        {
+            int i = ItemList.FindIndex(x => x.Tag == tag);
+            if (i >= 0 && ItemList[i].CheckBoxExists(checkbox))
+                return ItemList[i].checkbox[checkbox].Checked;
+            return null;
         }
 
         // List of options separated by SettingsSplittingChar with  SettingsSplittingChar at end, or
