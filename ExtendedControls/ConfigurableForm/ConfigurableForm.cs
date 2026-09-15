@@ -358,6 +358,17 @@ namespace ExtendedControls
         {
             return Entries.Set(controlname, img);
         }
+        public bool SetToolTip(string controlname, string tip)
+        {
+            var ent = Entries.Find(controlname);
+            if (ent != null)
+            {
+                ent.ToolTip = tip;
+                tooltipcontrol.SetToolTip(ent.Control, tip);
+                return true;
+            }
+            return false;
+        }
 
         // from controls starting with this name, set the names of the ones checked
         public void SetCheckedList(IEnumerable<string> controlnames,bool state)
