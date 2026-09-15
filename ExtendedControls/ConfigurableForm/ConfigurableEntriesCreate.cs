@@ -111,7 +111,9 @@ namespace ExtendedControls
                 {
                     ExtButton b = c as ExtButton;
 
-                    if (ent.TextValue != null)     // it may be an external button which has set up text/image, if so, ent.TextValue = null
+                    if ( ent.ButtonImage != null)
+                        b.Image = ent.ButtonImage;
+                    else if (ent.TextValue != null)     // it may be an external button which has set up text/image, if so, ent.TextValue = null
                         SetTextOrImage(ent, b);
 
                     if (ent.TextAlign.HasValue)
@@ -132,14 +134,14 @@ namespace ExtendedControls
                                     ent.MultiColumns,
                                     null, // group, not needed
                                     ent.SortItems,
-                                    (s, eb1) => { SendTrigger(ent.Name, "DropDownButtonPressed:" + s, s); });
+                                    (s, eb1) => { SendTrigger(ent.Name, "DropDownButtonPressed:" + s, s, ent); });
                         }
                     }
                     else
                     {
                         b.Click += (sender, ev) =>
                         {
-                            SendTrigger(ent.Name);
+                            SendTrigger(ent.Name,null,ent);
                         };
                     }
                 }

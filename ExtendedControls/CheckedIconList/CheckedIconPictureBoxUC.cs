@@ -40,7 +40,7 @@ namespace ExtendedControls
         // maximum number of check boxes across
         public int MaxRadioColumns()
         {
-            var checkboxes = ItemList.Where(x => x.Button == false);
+            var checkboxes = ItemList.Where(x => x.Button == false && x.Separator == false);
             int maxcheckboxes = checkboxes.Count() > 0 ? checkboxes.Select(x => x.checkbox.Length).Max() : 0;
             return maxcheckboxes;
         }
@@ -62,6 +62,7 @@ namespace ExtendedControls
         public Color CheckColor { get; set; } = Color.DarkBlue;
         public Color MouseOverCheckboxColor { get; set; } = Color.CornflowerBlue;
         public Color MouseOverLabelColor { get; set; } = Color.CornflowerBlue;
+        public Color SeperatorColor { get; set; } = Color.Orange;
         public Size CheckBoxSize { get; set; } = Size.Empty;                  // if not set, ImageSize sets the size, or first image, else 24/24
         public float TickBoxReductionRatio { get; set; } = 0.75f;                        // After working out size, reduce by this amount
         public Size ImageSize { get; set; } = Size.Empty;                     // if not set, each image sets its size. 
@@ -130,10 +131,13 @@ namespace ExtendedControls
             // Don't allow this item to become unchecked. Radio Button use mostly
             public bool DisableUncheck { get; set; }
             // Exclusive list, which determines others to turn off
-            public string Exclusive { get; set; }       
-            
+            public string Exclusive { get; set; }
+
             // Its a button not a check box but a button type label
             public bool Button { get; set; }
+
+            // Its a separator line
+            public bool Separator { get; set; }
 
             // these are for internal use only
 
@@ -219,6 +223,7 @@ namespace ExtendedControls
             }
         }
 
+
         // the main add with many options
         public void Add(    string tag,                         // logical tag of item
                             string text,                        // text for label
@@ -233,20 +238,23 @@ namespace ExtendedControls
                             string[] checkbuttontooltiptext = null, string icontooltiptext = null, string labeltooltiptext = null,
                             Color? textcolor = null)           // text color
         {
-            var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag, TextColor = textcolor};
-            cl.label = new ImageElement.Label();
-            cl.label.ToolTipText = labeltooltiptext;
-            cl.label.Click += (o, el, e) =>
+            var cl = new Item() { Tag = tag, Text = text, Image = img, Exclusive = exclusivetags, DisableUncheck = disableuncheck, Button = button, Group = group, UserTag = usertag, TextColor = textcolor };
+
             {
-                if (cl.checkbox != null && e.Button == MouseButtons.Left)
+                cl.label = new ImageElement.Label();
+                cl.label.ToolTipText = labeltooltiptext;
+                cl.label.Click += (o, el, e) =>
                 {
-                    CheckedIconListBoxForm_CheckedChanged(cl.checkbox[0]);
-                }
-                else
-                {
-                    ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
-                }
-            };
+                    if (cl.checkbox != null && e.Button == MouseButtons.Left)
+                    {
+                        CheckedIconListBoxForm_CheckedChanged(cl.checkbox[0]);
+                    }
+                    else
+                    {
+                        ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                    }
+                };
+            }
             if (!cl.Button)
             {
                 int lastbit = checkmap.RightMostBit();
@@ -367,6 +375,23 @@ namespace ExtendedControls
         public void AddButton(string tag, string text, Image img = null, object usertag = null, bool attop = false, Color? textcolor = null, string tooltiptext = null)
         {
             Add(tag, text, img, button: true, usertag: usertag, attop: attop, textcolor:textcolor, icontooltiptext:tooltiptext, labeltooltiptext:tooltiptext);
+        }
+
+        // add a separator
+        public void AddSeparator()
+        {
+            var cl = new Item() { Separator = true };
+            cl.icon = new ImageElement.Element();           // we use icon as the drawing tool for the separator with an owner call back
+            cl.icon.OwnerDrawCallback += (gr,el) => 
+            {
+                //System.Diagnostics.Debug.WriteLine($"Draw separator at {el.Bounds}");
+                using (Pen p = new Pen(SeperatorColor,1))
+                {
+                    gr.DrawLine(p, el.Bounds.Location, new Point(el.Bounds.X+el.Size.Width,el.Bounds.Y));
+
+                }
+            };
+            ItemList.Add(cl);                               // at the end
         }
 
         // use a long tag (bit field, 1,2,4,8 etc).  Use SettingsStringToLong to convert back
@@ -798,67 +823,81 @@ namespace ExtendedControls
                 int vspacing = Math.Max(fonth, iconsize.Height);
                 vspacing = Math.Max(vspacing, chkboxsize.Height);       // vspacing is the max of label, icon and checkbox
 
-                int chkx = HorizontalSpacing;                                                               // position of check box
-                int imgx = maxcheckboxes>0 ? chkx + (chkboxsize.Width + HorizontalSpacing)*maxcheckboxes : chkx;               // position of image
-                int labx = cl.Image != null ? imgx + iconsize.Width + HorizontalSpacing : imgx;             // position of label
+                Tuple<Rectangle, Rectangle, Rectangle> pos = null;
 
-                // label is in autosize mode, setting Text and Font will size it
-                cl.label.Text = cl.Text;
-                cl.label.Font = this.Font;
-                cl.label.ForeColor = cl.TextColor ?? this.ForeColor;            // text color, else standard color
-                cl.label.BackColor = BackColor;
-                cl.label.MouseOverBackColor = this.MouseOverLabelColor;
-                cl.label.Tag = i;       // tags are index
-                cl.label.MouseOver = false;             // must cancel mouse down, for render. this took a while to find!
-
-                if (!cl.Button)
+                if (cl.Separator)
                 {
-                    for( int j = 0; j < cl.checkbox.Length; j++)
+                    pos = Tuple.Create(
+                       new Rectangle(HorizontalSpacing, vspacing, 0,0),
+                       new Rectangle(0, 0, 0,0),
+                       new Rectangle(0, 0, 0,0)
+                       );
+                    cl.icon.Tag = i;       // tags are index
+                }
+                else
+                {
+                    int chkx = HorizontalSpacing;                                                               // position of check box
+                    int imgx = maxcheckboxes > 0 ? chkx + (chkboxsize.Width + HorizontalSpacing) * maxcheckboxes : chkx;               // position of image
+                    int labx = cl.Image != null ? imgx + iconsize.Width + HorizontalSpacing : imgx;             // position of label
+
+                    // label is in autosize mode, setting Text and Font will size it
+                    cl.label.Text = cl.Text;
+                    cl.label.Font = this.Font;
+                    cl.label.ForeColor = cl.TextColor ?? this.ForeColor;            // text color, else standard color
+                    cl.label.BackColor = BackColor;
+                    cl.label.MouseOverBackColor = this.MouseOverLabelColor;
+                    cl.label.Tag = i;       // tags are index
+                    cl.label.MouseOver = false;             // must cancel mouse down, for render. this took a while to find!
+
+                    if (!cl.Button)
                     {
-                        var x = cl.checkbox[j];
-                        if (x != null)
+                        for (int j = 0; j < cl.checkbox.Length; j++)
                         {
-                            x.BackColor = this.BackColor;
-                            x.CheckBoxColor = this.CheckBoxColor;
-                            x.CheckBoxInnerColor = this.CheckBoxInnerColor;
-                            x.CheckColor = this.CheckColor;
-                            x.MouseOverColor = this.MouseOverCheckboxColor;
-                            x.TickBoxReductionRatio = TickBoxReductionRatio;
-                            x.Font = Font;
-                            x.Tag = i;        // store index of item in tag
-                            x.Tag2 = j;     // and the button index
+                            var x = cl.checkbox[j];
+                            if (x != null)
+                            {
+                                x.BackColor = this.BackColor;
+                                x.CheckBoxColor = this.CheckBoxColor;
+                                x.CheckBoxInnerColor = this.CheckBoxInnerColor;
+                                x.CheckColor = this.CheckColor;
+                                x.MouseOverColor = this.MouseOverCheckboxColor;
+                                x.TickBoxReductionRatio = TickBoxReductionRatio;
+                                x.Font = Font;
+                                x.Tag = i;        // store index of item in tag
+                                x.Tag2 = j;     // and the button index
+                            }
                         }
                     }
+
+                    if (cl.Image != null)
+                    {
+                        cl.icon.Image = cl.Image;
+                        cl.icon.Tag = i;        // tags are index
+                    }
+
+                    if (cl.submenuicon != null)
+                    {
+                        cl.submenuicon.Image = cl.GetSubForm.SubmenuIcon ?? Properties.Resources.ArrowRightSmall;
+                        cl.submenuicon.Tag = i;        // store index of control when displayed
+                        hassubmenuicons = true;
+                    }
+
+                    // Y is not holding Y position. Only use for Y is to record vspacing on first entry only, see below for vpositioning
+                    // Item1 holds checkbox left, vspacing, and checkbox size
+                    // Item2 holds image left, icon size
+                    // Item3 holds label left, label size
+                    pos = Tuple.Create(
+                                    new Rectangle(chkx, vspacing, chkboxsize.Width, chkboxsize.Height),
+                                    new Rectangle(imgx, 0, iconsize.Width, iconsize.Height),
+                                    new Rectangle(labx, 0, cl.label.Size.Width, cl.label.Size.Height)
+                                    );
+
+                    maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Size.Width);        // this is the width excluding the sub menu icon
                 }
-
-                if (cl.Image != null)
-                {
-                    cl.icon.Image = cl.Image;
-                    cl.icon.Tag = i;        // tags are index
-                }
-
-                if (cl.submenuicon != null)
-                {
-                    cl.submenuicon.Image = cl.GetSubForm.SubmenuIcon ?? Properties.Resources.ArrowRightSmall;
-                    cl.submenuicon.Tag = i;        // store index of control when displayed
-                    hassubmenuicons = true;
-                }
-
-                // Y is not holding Y position. Only use for Y is to record vspacing on first entry only, see below for vpositioning
-                // Item1 holds checkbox left, vspacing, and checkbox size
-                // Item2 holds image left, icon size
-                // Item3 holds label left, label size
-                var pos = new Tuple<Rectangle, Rectangle, Rectangle>(
-                                new Rectangle(chkx, vspacing, chkboxsize.Width, chkboxsize.Height),
-                                new Rectangle(imgx, 0, iconsize.Width, iconsize.Height),
-                                new Rectangle(labx, 0, cl.label.Size.Width, cl.label.Size.Height));
-
 
                 positions.Add(pos);
 
                 vheightsinglecol += vspacing + VerticalSpacing;     // item spacing and space between/extra space at bottom
-
-                maxwidthsinglecol = Math.Max(maxwidthsinglecol, labx + cl.label.Size.Width);        // this is the width excluding the sub menu icon
             }
 
             int submenuiconposx = maxwidthsinglecol;      // position after max label of submenu icon
@@ -965,33 +1004,41 @@ namespace ExtendedControls
                 int vcentre = vpos + vspacing / 2;
                 int colx = (colused - 1) * maxwidthsinglecol;           // column offset position.. given max width of single column including subform indicator
 
-                //System.Diagnostics.Debug.WriteLine($" {cl.label.Text} = {post.Item1} : {post.Item2} : {post.Item3} @ {colx} {vpos}");
-
-                if (cl.checkbox != null)
+                if (cl.Separator)
                 {
-                    for( int j = 0; j < cl.checkbox.Length; j++)
-                    {
-                        if (cl.checkbox[j] != null)
-                        {
-                            cl.checkbox[j].Bounds = new Rectangle(post.Item1.X + colx + j * (post.Item1.Width + HorizontalSpacing), vcentre - post.Item1.Height / 2, post.Item1.Width, post.Item1.Height);
-                            picturebox.Add(cl.checkbox[j]);
-                        }
-                    }
-                }
-                if (cl.icon != null)
-                {
-                    cl.icon.Bounds = new Rectangle(post.Item2.X + colx, vcentre - post.Item2.Height / 2, post.Item2.Width, post.Item2.Height);
+                    cl.icon.Bounds = new Rectangle(colx +post.Item1.X, vcentre, maxwidthsinglecol - post.Item1.X, 2);
                     picturebox.Add(cl.icon);
                 }
-
-                cl.label.Bounds = new Rectangle(post.Item3.X + colx, vcentre - post.Item3.Height / 2, post.Item3.Width, post.Item3.Height);
-                picturebox.Add(cl.label);
-
-                if (cl.submenuicon != null)
+                else
                 {
-                    int pos = cl.label.Bounds.Y + cl.label.Bounds.Height / 2 - firsticonsize.Height / 2;
-                    cl.submenuicon.Bounds = new Rectangle(colx + submenuiconposx, pos, firsticonsize.Width, firsticonsize.Height);
-                    picturebox.Add(cl.submenuicon);
+                    //System.Diagnostics.Debug.WriteLine($" {cl.label.Text} = {post.Item1} : {post.Item2} : {post.Item3} @ {colx} {vpos}");
+
+                    if (cl.checkbox != null)
+                    {
+                        for (int j = 0; j < cl.checkbox.Length; j++)
+                        {
+                            if (cl.checkbox[j] != null)
+                            {
+                                cl.checkbox[j].Bounds = new Rectangle(post.Item1.X + colx + j * (post.Item1.Width + HorizontalSpacing), vcentre - post.Item1.Height / 2, post.Item1.Width, post.Item1.Height);
+                                picturebox.Add(cl.checkbox[j]);
+                            }
+                        }
+                    }
+                    if (cl.icon != null)
+                    {
+                        cl.icon.Bounds = new Rectangle(post.Item2.X + colx, vcentre - post.Item2.Height / 2, post.Item2.Width, post.Item2.Height);
+                        picturebox.Add(cl.icon);
+                    }
+
+                    cl.label.Bounds = new Rectangle(post.Item3.X + colx, vcentre - post.Item3.Height / 2, post.Item3.Width, post.Item3.Height);
+                    picturebox.Add(cl.label);
+
+                    if (cl.submenuicon != null)
+                    {
+                        int pos = cl.label.Bounds.Y + cl.label.Bounds.Height / 2 - firsticonsize.Height / 2;
+                        cl.submenuicon.Bounds = new Rectangle(colx + submenuiconposx, pos, firsticonsize.Width, firsticonsize.Height);
+                        picturebox.Add(cl.submenuicon);
+                    }
                 }
 
                 vpos += vspacing + VerticalSpacing; 

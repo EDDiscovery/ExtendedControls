@@ -76,10 +76,13 @@ namespace ExtendedControls
                                                                         // For number boxes, the invariant value, or Null and it will use the DoubleValue or LongValue
                                                                         // for Dates, the invariant culture assumed local
                                                                         // Can be NULL if you've passed your control in manually
+            public Image ButtonImage { get; set; }                      // if set, overrides TextValue for buttons and draws this
+
             public double? DoubleValue { get; set; }                    // if its a number box double and you want it set (overrides Text)
                                                                         // Also used for splitter container as % (0-100) for top. Null will mean splitter is left as default
             public long? LongValue { get; set; }                        // if its a number box long, number box int or numeric up/down, and you want it set, use this with Text=null
             public DateTime? DateTimeValue { get; set; } = DateTime.MinValue;   // backup value of datetime, set to null to set in an external control
+
 
             public ContentAlignment? TextAlign { get; set; }            // label,button. Null its not applied
             public ContentAlignment ContentAlign { get; set; } = ContentAlignment.MiddleLeft;  // align for checkbox
@@ -138,6 +141,11 @@ namespace ExtendedControls
             {
                 ControlType = typeof(NumberBoxInt); LongValue = t; Location = p; Size = s; ToolTip = tt; Name = nam;
             }
+            // text box
+            public Entry(string nam, string t, Point p, Size s, string tt)
+            {
+                ControlType = typeof(ExtTextBox); TextValue = t; Location = p; Size = s; ToolTip = tt; Name = nam;
+            }
             public Entry(string nam, long t, Point p, Size s, string tt)
             {
                 ControlType = typeof(NumberBoxLong); LongValue = t; Location = p; Size = s; ToolTip = tt; Name = nam;
@@ -155,6 +163,20 @@ namespace ExtendedControls
             public Entry(string nam, DateTime t, Point p, Size s, string tt)
             {
                 ControlType = typeof(ExtDateTimePicker); DateTimeValue = t; Location = p; Size = s; ToolTip = tt; Name = nam; CustomDateFormat = "long";
+            }
+            // either text, or buttonImage (overrides)
+            public Entry(string nam, string text , Point p, Size s, string tt, List<CheckedIconUserControl.Item> items, Image buttonImage)
+            {
+                ControlType = typeof(ExtButtonWithNewCheckedListBox); TextValue = text; Location = p; Size = s; ToolTip = tt; Name = nam; DropDownButtonList = items;
+                ButtonImage = buttonImage;
+            }
+
+            // image
+            public Entry(string nam, Image i, Point p, Size s, string tt)
+            {
+                var c = new ExtButton() { Image = i, Name = nam };
+                Control = c;
+                Location = p; Size = s; ToolTip = tt; Name = nam; 
             }
 
             // ComboBoxCustom
@@ -214,13 +236,17 @@ namespace ExtendedControls
             Add(e);
         }
 
-        // vpos sets the vertical position. Entry.pos sets the X and offset Y from vpos
-        public void AddLabelAndEntry(string labeltext, Point labelxvoff, ref int vpos, int vspacing, Size labelsize, Entry e)
+        // vpos sets the vertical position.
+        // Entry.pos sets the X (or if int.MinValue after the label) and offset Y from vpos
+        // returns rightmost pixel used
+        public int AddLabelAndEntry(string labeltext, Point labelxvoff, ref int vpos, int vspacing, Size labelsize, Entry e)
         {
-            Add(new Entry("L" + e.Name, typeof(Label), labeltext, new Point(labelxvoff.X, vpos + labelxvoff.Y), labelsize, null) { PlacedInPanel = e.PlacedInPanel });
-            e.Location = new Point(e.Location.X, e.Location.Y + vpos);
+            var lab = new Entry("L" + e.Name, typeof(Label), labeltext, new Point(labelxvoff.X, vpos + labelxvoff.Y), labelsize, null) { PlacedInPanel = e.PlacedInPanel };
+            Add(lab);
+            e.Location = new Point(e.Location.X == int.MinValue ? lab.Location.X + lab.Size.Width : e.Location.X, e.Location.Y + vpos);      // move location of e
             Add(e);
             vpos += vspacing;
+            return e.Location.X + e.Size.Width;                             // rightmost pixel
         }
 
         // add bool array of names and tags to scroll panel

@@ -88,9 +88,10 @@ namespace ExtendedControls
         }
 
         // vpos sets the vertical position. Entry.pos sets the X and offset Y from vpos
-        public void AddLabelAndEntry(string labeltext, Point labelxvoff, ref int vpos, int vspacing, Size labelsize, ConfigurableEntryList.Entry e)
+        // returns rightmost pixel used
+        public int AddLabelAndEntry(string labeltext, Point labelxvoff, ref int vpos, int vspacing, Size labelsize, ConfigurableEntryList.Entry e)
         {
-            Entries.AddLabelAndEntry(labeltext, labelxvoff, ref vpos, vspacing, labelsize, e);
+            return Entries.AddLabelAndEntry(labeltext, labelxvoff, ref vpos, vspacing, labelsize, e);
         }
 
         // add bool array of names and tags to scroll panel
@@ -235,6 +236,11 @@ namespace ExtendedControls
         }
 
         // get control of name as type
+        public ConfigurableEntryList.Entry GetEntry(string controlname)
+        {
+            return Entries.Find(x => x.Name == controlname);
+        }
+
         public T GetControl<T>(string controlname) where T : Control      // return value of dialog control
         {
             return Entries.GetControl<T>(controlname);
@@ -346,6 +352,11 @@ namespace ExtendedControls
         public bool Set(string controlname, string value, bool replaceescapes)
         {
             return Entries.Set(controlname, value, replaceescapes);
+        }
+        // Set value of control image
+        public bool Set(string controlname, Image img)
+        {
+            return Entries.Set(controlname, img);
         }
 
         // from controls starting with this name, set the names of the ones checked

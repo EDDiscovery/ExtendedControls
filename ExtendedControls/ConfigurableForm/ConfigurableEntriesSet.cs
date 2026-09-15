@@ -139,6 +139,19 @@ namespace ExtendedControls
             return false;
         }
 
+        public bool Set(string controlname, Image img)
+        {
+            ConfigurableEntryList.Entry t = Entries.Find(x => x.Name.Equals(controlname, StringComparison.InvariantCultureIgnoreCase));
+            if (t?.Control is ExtButton eb)
+            {
+                t.ButtonImage = img;
+                eb.Image = img;
+                return true;
+            }
+
+            return false;
+        }
+
         // add text to rich text box at bottom and scroll
         public bool AddText(string controlname, string text)
         {

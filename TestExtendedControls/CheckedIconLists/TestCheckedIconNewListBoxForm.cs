@@ -336,6 +336,8 @@ namespace TestExtendedControls
             for (int i = 0; i < 400; i++)
             {
                 frm.UC.AddButton($"t{i}", $"Text {i}", Properties.Resources.CursorToTop);
+                if (i % 20 == 0)
+                    frm.UC.AddSeparator();
             }
 
             frm.UC.MultipleColumns = true;
@@ -506,6 +508,7 @@ namespace TestExtendedControls
             frm.UC.AddDisabled();
             frm.UC.AddGroupItem("I2;I3", "2-3");
             frm.UC.Add($"I1", $"Item 1", Properties.Resources.Addtab);
+            frm.UC.AddSeparator();
             frm.UC.Add($"I2", $"Item 2", Properties.Resources.Addtab);
             frm.UC.Add($"I3", $"Item 3", Properties.Resources.Addtab);
             frm.UC.Add($"I4", $"Item 4", Properties.Resources.Addtab);
