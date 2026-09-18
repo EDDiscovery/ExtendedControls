@@ -39,6 +39,8 @@ namespace ExtendedControls
         public DropDownTheme DropDownTheme { get; set; } = new DropDownTheme();
         public bool DisableBackgroundDisabledShadingGradient { get; set; } = false;     // set, non system only, stop scaling for disabled state (useful for transparency)
         public float DisabledScaling { get; set; } = 0.5F;      // when disabled, scale down colours
+        public int DropDownMinimumItemWidth { get; set; } = -1;     // set in for minimum width (not for system mode, only for user draw mode)
+        public int[] ItemSeperators = null;             // set for item seperators (not for system mode)
         public FlatStyle FlatStyle { get; set; } = FlatStyle.System;
         
         public int SelectedIndex { get { return cbsystem.SelectedIndex; } set { cbsystem.SelectedIndex = value; base.Text = cbsystem.Text; Invalidate(); } }
@@ -330,6 +332,9 @@ namespace ExtendedControls
                 return;
 
             dropdown = new ExtListBoxForm(this.Name + "_Listbox");
+
+            dropdown.MinimumItemWidth = DropDownMinimumItemWidth;
+            dropdown.ItemSeperators = ItemSeperators;
 
             DropDownTheme.Theme(dropdown.ListBox, ForeColor, BackColor, BorderColor);
             DropDownTheme.Theme(dropdown.ListBox.ScrollBar, BorderColor, this.Font);

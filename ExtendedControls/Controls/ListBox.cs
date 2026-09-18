@@ -130,7 +130,8 @@ namespace ExtendedControls
 
             fontusedforestimate = Font;
 
-            itemheight = (int)Font.GetHeight() + 2;
+            var seppixels = Font.ScalePixels(4);
+            itemheight = (int)Font.GetHeight() + seppixels + (ItemSeperators!=null ? seppixels : 0);
             lbsys.ItemHeight = itemheight;
 
             displayableitems = (ClientRectangle.Height-bordersize*2) / itemheight;            // number of items to display

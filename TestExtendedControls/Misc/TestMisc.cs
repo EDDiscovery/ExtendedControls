@@ -25,6 +25,9 @@ namespace TestExtendedControls
             for (int i = 0; i < 100; i++)
                 extComboBox1.Items.Add("Item " + i);
 
+            extComboBox1.DropDownMinimumItemWidth = 200;
+            extComboBox1.ItemSeperators = new int[] { 4, 10 };
+
             extPanelDropDown1.Items = new List<string>() { "One", "two", "three" };
 
             extTextBoxAutoComplete1.SetAutoCompletor(AutoList);
@@ -42,6 +45,9 @@ namespace TestExtendedControls
                 else if (c is ExtendedControls.ExtButton)
                     (c as ExtendedControls.ExtButton).SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap, colormap2 });
             }
+
+            Theme.Current.FontSize = 10;
+            Theme.Current.ApplyStd(this);
         }
 
         private void extButton1_Click(object sender, EventArgs e)

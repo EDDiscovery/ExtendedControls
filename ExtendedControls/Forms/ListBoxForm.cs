@@ -41,6 +41,7 @@ namespace ExtendedControls
         public new Font Font { get { return base.Font; } set { base.Font = value; ListBox.Font = value; } }
         public bool FitToItemsHeight { get { return ListBox.FitToItemsHeight; } set { ListBox.FitToItemsHeight = value; } }
         public bool FitImagesToItemHeight { get { return ListBox.FitImagesToItemHeight; } set { ListBox.FitImagesToItemHeight = value; } }                    // if set images need to fit within item height
+        public int MinimumItemWidth { get; set; } = -1;        // use before show, minimum width
 
         public Point SetLocation { get; set; } = new Point(int.MinValue, -1);     // force to this location.
         public void PositionBelow(Control c) { SetLocation = c.PointToScreen(new Point(0, c.Height)); }
@@ -86,7 +87,7 @@ namespace ExtendedControls
             using (Graphics g = this.CreateGraphics())
             {
                 Size max = ListBox.MeasureItems(g);
-                this.PositionSizeWithinScreen(max.Width + 4 + ListBox.ScrollBar.Width, hw, true, new Size(64,64));    // keep it on the screen. 
+                this.PositionSizeWithinScreen(Math.Max(max.Width,MinimumItemWidth) + 4 + ListBox.ScrollBar.Width, hw, true, new Size(64,64));    // keep it on the screen. 
             }
 
             //            System.Diagnostics.Debug.WriteLine(".. now " + Location + " " + Size + " Items " + Items.Count + " ih "  + ih + " hw" + hw);

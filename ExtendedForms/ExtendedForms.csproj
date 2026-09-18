@@ -153,11 +153,11 @@
     <None Include="Resources\Paste.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\BaseUtilities\Audio\Audio.csproj">
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\Audio\Audio.csproj">
       <Project>{59f99a05-ce16-4fb8-be99-f1a24f019cb8}</Project>
       <Name>Audio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\BaseUtilities\BaseUtilities\BaseUtils.csproj">
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj">
       <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
       <Name>BaseUtils</Name>
     </ProjectReference>

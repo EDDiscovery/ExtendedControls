@@ -56,6 +56,7 @@ namespace ExtendedControls
             lb.SelectionColor = this.ListBoxSelectionColor;
             lb.BackGradientDirection = this.ListBoxGradientDirection;
             lb.SelectionColor = this.ListBoxSelectionColor;
+            lb.ItemSeperatorColor = ForeColor.MultiplyBrightness(0.7f);
         }
 
         public void Theme(ExtScrollBar ScrollBar, Color BorderColor, Font f)
