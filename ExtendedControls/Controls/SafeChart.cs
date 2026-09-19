@@ -236,6 +236,10 @@ namespace ExtendedControls
         {
             chart?.SetXAxisMaxMin(min, max);
         }
+        public void SetXAxisScaleViewMin(double min)
+        {
+            chart?.SetXAxisScaleViewMin(min);
+        }
 
         public void SetXAxisLabelColorFont(Color r, Font f = null)
         {
@@ -328,6 +332,10 @@ namespace ExtendedControls
             chart?.SetYAxisMaxMin(min, max);
         }
 
+        public void SetYAxisScaleViewMin(double min)
+        {
+            chart?.SetYAxisScaleViewMin(min);
+        }
         public void SetYAxisLabelColorFont(Color r, Font f = null)
         {
             chart?.SetYAxisLabelColorFont(r, f);
@@ -584,7 +592,6 @@ namespace ExtendedControls
             chart?.EnableZoomMouseWheelX(on);
         }
 
-        public double ZoomMouseWheelXMinimumInterval { get { return chart?.ZoomMouseWheelXMinimumInterval ?? 0; } set { if (chart != null) chart.ZoomMouseWheelXMinimumInterval = value; } }
         public double ZoomMouseWheelXZoomFactor { get { return chart?.ZoomMouseWheelXZoomFactor ?? 0; } set { if (chart != null) chart.ZoomMouseWheelXZoomFactor = value; } }
 
 
