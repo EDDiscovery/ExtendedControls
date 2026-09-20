@@ -176,7 +176,7 @@ namespace ExtendedControls
                     if (!(grapharea || (hitres.ChartElementType == ChartElementType.AxisLabels && hitres.Axis == ch.AxisX)))
                         return;
                 }
-                catch (Exception ex)
+                catch
                 {
                    //System.Diagnostics.Debug.WriteLine($"********Exception in chart mouse wheel {ex}");
                 }
