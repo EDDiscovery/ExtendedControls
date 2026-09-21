@@ -24,17 +24,17 @@ namespace ExtendedControls
     {
         // Back used as background of whole control. Fore is not used
         public Color[] SegmentColors { get; set; }
-        public int[] SegmentValues { get; set; }
+        public double[] SegmentValues { get; set; }
         public void ChangeValue(int i, int value) { SegmentValues[i] = value; Invalidate(); }
-        public int Maximum { get { return max; } set { max = value; Invalidate(); } }
-        public int Limit { get { return limit; } set { limit = value; Invalidate();} }
+        public double Maximum { get { return max; } set { max = value; Invalidate(); } }
+        public double Limit { get { return limit; } set { limit = value; Invalidate();} }
         public Color LimitLineColor { get { return limitlinecolor; } set { limitlinecolor = value; Invalidate(); } }
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; Invalidate(); } }
         public Color BarBackColor { get { return barbackcolor; } set { barbackcolor = value; Invalidate(); } }
         public Color HighlightColor1 { get { return highlightwashcolor1; } set { highlightwashcolor1 = value; Invalidate(); } }
         public Color HighlightColor2 { get { return highlightwashcolor2; } set { highlightwashcolor2 = value; Invalidate(); } }
-        public int Marker1 { get { return markers[0]; } set { markers[0] = value; Invalidate(); } }
-        public int Marker2 { get { return markers[1]; } set { markers[1] = value; Invalidate(); } }
+        public double Marker1 { get { return markers[0]; } set { markers[0] = value; Invalidate(); } }
+        public double Marker2 { get { return markers[1]; } set { markers[1] = value; Invalidate(); } }
         public Color MarkerLineColor { get { return markerlinecolor; } set { markerlinecolor = value; Invalidate(); } }
         public double BarHeightReserve { get; set; } = 25;  // %
         public int BarWidthMargin { get; set; } = 4;        // Pixel
@@ -90,7 +90,7 @@ namespace ExtendedControls
 
             // if we have no displayedsegmentvalues, its the first time, lets build to it
             if ( displayedsegmentvalues == null && SegmentValues != null)
-                displayedsegmentvalues = new int[SegmentValues.Length];
+                displayedsegmentvalues = new double[SegmentValues.Length];
 
             if ( bararea.Width>0 ) // ensure not minimised away
             { 
@@ -172,19 +172,19 @@ namespace ExtendedControls
                     // if limit is set other than max, show it
                     if (limit >= 0 && limit < max)
                     {
-                        int pos = bararea.X + (int)(((double)limit / max) * bararea.Width);
+                        int pos = bararea.X + (int)((limit / max) * bararea.Width);
                         // System.Diagnostics.Debug.WriteLine($"LimitMS {limit} max {max} {bararea.Width} {pos}");
                         using (Pen pc1 = new Pen(LimitLineColor, MarkerWidth))
                             e.Graphics.DrawLine(pc1, new Point(pos, area.Y), new Point(pos, area.Y + area.Height));     // 1 more pixel due to it not drawing last
                     }
 
-                    int total = displayedsegmentvalues.Sum();
-                    foreach (int marker in markers)
+                    double total = displayedsegmentvalues.Sum();
+                    foreach (double marker in markers)
                     {
                         // only show if up to trackto
                         if (marker >= 0 && marker <= total)
                         {
-                            int pos = bararea.X + (int)(((double)marker / max) * bararea.Width);
+                            int pos = bararea.X + (int)((marker / max) * bararea.Width);
                             using (Pen pc1 = new Pen(MarkerLineColor, MarkerWidth))
                                 e.Graphics.DrawLine(pc1, new Point(pos, bararea.Y), new Point(pos, bararea.Y + bararea.Height + 1));     // 1 more pixel due to it not drawing last
                         }
@@ -198,12 +198,12 @@ namespace ExtendedControls
             if (SegmentValues != null)       // must protect for designer
             {
                 if (displayedsegmentvalues == null )            // paranoia defense for tick before display
-                    displayedsegmentvalues = new int[SegmentValues.Length];
+                    displayedsegmentvalues = new double[SegmentValues.Length];
 
                 // we move across and move the displayedsegment values up to the selected values
                 for (int i = 0; i < SegmentValues.Length; i++)
                 {
-                    if (SegmentValues[i] != displayedsegmentvalues[i])
+                    if (!SegmentValues[i].ApproxEquals(displayedsegmentvalues[i]))
                     {
                         if (displayedsegmentvalues[i] < SegmentValues[i])
                         {
@@ -248,12 +248,12 @@ namespace ExtendedControls
 
         #endregion
 
-        int max = 110;
-        private int limit = 100;
+        double max = 110;
+        private double limit = 100;
         private int highlightsweeppercent = 0;     // 0-100
-        private int[] markers = new int[2] { -1, -1 };
+        private double[] markers = new double[2] { -1, -1 };
 
-        private int[] displayedsegmentvalues = null;
+        private double[] displayedsegmentvalues = null;
         private static readonly object EVENT_VALUECHANGED = new object();
 
         Color bordercolor = Color.Black;

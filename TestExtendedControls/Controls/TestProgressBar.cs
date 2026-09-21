@@ -29,13 +29,13 @@ namespace TestExtendedControls
             extProgressBar.TrackSpeed = 5;
             extProgressBar.MarkerLineColor = Color.Yellow;
 
-            extProgressBarMultiSegment1.SegmentValues = new int[] { 10, 20, 30 };
+            extProgressBarMultiSegment1.SegmentValues = new double[] { 10, 20, 30 };
             extProgressBarMultiSegment1.SegmentColors = new Color[] { Color.Red, Color.Green, Color.Blue, Color.Cyan, Color.Magenta };
             extProgressBarMultiSegment1.Limit = 100;
 
-            extNumericUpDownSeg0.Value = extProgressBarMultiSegment1.SegmentValues[0];
-            extNumericUpDownSeg1.Value = extProgressBarMultiSegment1.SegmentValues[1];
-            extNumericUpDownSeg2.Value = extProgressBarMultiSegment1.SegmentValues[2];
+            extNumericUpDownSeg0.Value = (int)extProgressBarMultiSegment1.SegmentValues[0];
+            extNumericUpDownSeg1.Value = (int)extProgressBarMultiSegment1.SegmentValues[1];
+            extNumericUpDownSeg2.Value = (int)extProgressBarMultiSegment1.SegmentValues[2];
             this.extNumericUpDownSeg0.ValueChanged += new System.EventHandler(this.extNumericUpDownSeg0_ValueChanged);
             this.extNumericUpDownSeg1.ValueChanged += new System.EventHandler(this.extNumericUpDownSeg1_ValueChanged);
             this.extNumericUpDownSeg2.ValueChanged += new System.EventHandler(this.extNumericUpDownSeg2_ValueChanged);
