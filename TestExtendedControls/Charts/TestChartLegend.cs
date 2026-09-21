@@ -67,7 +67,6 @@ namespace TestExtendedControls
 
                 chart.YAutoScale();
                 chart.EnableZoomMouseWheelX();
-                chart.ZoomMouseWheelXMinimumInterval = 12.0 / 24;          // date displays are in days, allow down to hours
 
                 chart.SetYCursorColors(Color.IndianRed, Color.Yellow, 5);
                 chart.SetYCursorScrollBarColors(Color.Red, Color.Yellow);

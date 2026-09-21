@@ -94,15 +94,15 @@ namespace ExtendedControls.ImageElement
 
         // see BitMapHelpers.DrawTextIntoAutoSizedBitmap. Note change in behavious Jan 26 for centre/far - use setwidth to change it back
         public void TextAutoSize(Point topleft, Size max, string text, Font dp, Color c, Color backcolour, float backscale = 1.0F,
-                                    Object t = null, string tt = null, StringFormat frmt = null, bool xiscentre = false, int setwidth = -1)
+                                    Object tag = null, string tooltip = null, StringFormat frmt = null, bool xiscentre = false, int setwidth = -1)
         {
             if (ImageOwned)
                 Image?.Dispose();
             Image = BaseUtils.BitMapHelpers.DrawTextIntoAutoSizedBitmap(text, max, dp, c, backcolour, backscale, frmt, setwidth);
             ImageOwned = true;
             Bounds = new Rectangle(topleft.X - (xiscentre ? Image.Width / 2 : 0), topleft.Y, Image.Width, Image.Height);
-            Tag = t;
-            ToolTipText = tt;
+            Tag = tag;
+            ToolTipText = tooltip;
         }
 
  

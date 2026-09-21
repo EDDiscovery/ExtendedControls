@@ -212,7 +212,7 @@ namespace ExtendedControls.ImageElement
                         backcolour,
                         1.0F,
                         frmt: frmt,
-                        t:text
+                        tag:text
                        );
 
                 var imageie = image != null ? new ImageElement.Element(new Rectangle(area.X, area.Y, imagesize.Width, imagesize.Height), image, imgowned: false) : null;

@@ -57,6 +57,9 @@
     <Compile Include="Controls\ChartUI.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ProgressBarMultiSegment.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>

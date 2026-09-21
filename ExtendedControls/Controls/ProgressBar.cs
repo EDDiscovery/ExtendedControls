@@ -28,6 +28,7 @@ namespace ExtendedControls
         public Color LimitHighlightColor { get { return limithighlightcolor; } set { limithighlightcolor = value; Invalidate(); } }
         public Color LimitLineColor { get { return limitlinecolor; } set { limitlinecolor = value; Invalidate(); } }
         public Color BorderColor { get { return bordercolor; } set { bordercolor = value; Invalidate(); } }
+        public Color BarBackColor { get { return barbackcolor; } set { barbackcolor = value; Invalidate(); } }
         public int Maximum { get { return max; } set { Set(curvalue, value, min, limit); } }
         public int Limit { get { return limit; } set { Set(curvalue, max, min, value); } }
         public int Minimum { get { return min; } set { Set(curvalue, max, value, limit); } }
@@ -83,74 +84,71 @@ namespace ExtendedControls
                 area.Inflate(-2, -2);
             }
 
-            int hres = (int)(BarHeightReserve * area.Height / 100.0);
+            int heightreserved = (int)(BarHeightReserve * area.Height / 100.0);
 
-            Rectangle bararea = new Rectangle(area.X + BarWidthMargin, area.Y + hres, area.Width - BarWidthMargin*2, area.Height - hres*2);
+            Rectangle bararea = new Rectangle(area.X + BarWidthMargin, area.Y + heightreserved, area.Width - BarWidthMargin*2, area.Height - heightreserved*2);
 
-            int barwidth = (int)(((double)trackto / max) * bararea.Width);
-
-            if (barwidth > 0)
+            if (bararea.Width > 0)
             {
-                Color one = trackto > limit ? LimitColor : BarColor;
-                Color two = trackto > limit ? LimitHighlightColor : BarHighlightColor;
-
-                int highlightpos = (int)((double)barwidth * highlightsweep / 100.0);
-
-                // best order to prevent artifacts, right first, then left
-                
-                var rr = new Rectangle(bararea.X + highlightpos -1, bararea.Y, barwidth - highlightpos+1, bararea.Height);
-                if (rr.Width > 0)
+                using (Brush br = new SolidBrush(barbackcolor))
                 {
-                    using (Brush br1 = new LinearGradientBrush(rr, two, one, 0.0))
-                        e.Graphics.FillRectangle(br1, rr);
+                    e.Graphics.FillRectangle(br, bararea);
                 }
 
-                // the -1 is to force the first left pixel, which appears to error (https://stackoverflow.com/questions/110081/lineargradientbrush-artifact-workaround) off screen
+                int barwidthpixels = (int)(((double)currentshownvalue / max) * bararea.Width);
 
-                var rl = new Rectangle(bararea.X-1, bararea.Y, highlightpos+1, bararea.Height);
-
-                var rll = new Rectangle(bararea.X, bararea.Y, Math.Min(highlightpos,barwidth), bararea.Height);
-                if (rll.Width>0)
+                if (barwidthpixels > 0)
                 {
-                    using (Brush br1 = new LinearGradientBrush(rl, one, two, 0.0))
+                    int highlightpos = (int)((double)barwidthpixels * highlightsweeppercent / 100.0);
+
+                    Color one = currentshownvalue > limit ? LimitColor : BarColor;
+                    Color two = currentshownvalue > limit ? LimitHighlightColor : BarHighlightColor;
+
+                    // right highlight area, from the highlight to normal
+                    // best order to prevent artifacts, right first, then left
+
+                    var rr = new Rectangle(bararea.X + highlightpos - 1, bararea.Y, barwidthpixels - highlightpos + 1, bararea.Height);
+                    if (rr.Width > 0)
                     {
-                        e.Graphics.FillRectangle(br1, rll);
+                        using (Brush br1 = new LinearGradientBrush(rr, two, one, 0.0))
+                            e.Graphics.FillRectangle(br1, rr);
+                    }
 
-                        //if (bitmap < 100)     // keep test code
-                        //{
-                        //    Bitmap bmp = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
-                        //    using (Graphics gg = Graphics.FromImage(bmp))
-                        //    {
-                        //        gg.FillRectangle(br1, rll);
-                        //    }
+                    // left higlight area, from the normal to highlight
 
-                        //    System.Diagnostics.Debug.WriteLine($"Draw {bitmap} brush {rl} -> into {rll}");
-                        //    bmp.Save($"c:\\code\\AA\\{bitmap}.bmp");
+                    // the -1 is to force the first left pixel, which appears to error (https://stackoverflow.com/questions/110081/lineargradientbrush-artifact-workaround) off screen
 
-                        //    bmp.Dispose();
+                    var rl = new Rectangle(bararea.X - 1, bararea.Y, highlightpos + 1, bararea.Height);
 
-                        //    bitmap++;
-                        //}
+                    var rll = new Rectangle(bararea.X, bararea.Y, Math.Min(highlightpos, barwidthpixels), bararea.Height);
+                    if (rll.Width > 0 && rl.Width > 0)
+                    {
+                        using (Brush br1 = new LinearGradientBrush(rl, one, two, 0.0))
+                        {
+                            e.Graphics.FillRectangle(br1, rll);
+                        }
                     }
                 }
-            }
 
-            // if limit is set other than max, show it
-            if (limit >= 0 && limit < max)
-            {
-                int pos = bararea.X + (int)(((double)limit / max) * bararea.Width);
-                using (Pen pc1 = new Pen(LimitLineColor, MarkerWidth))
-                    e.Graphics.DrawLine(pc1, new Point(pos, area.Y), new Point(pos, area.Y + area.Height));     // 1 more pixel due to it not drawing last
-            }
-
-            foreach (int marker in markers)
-            {
-                // only show if up to trackto
-                if (marker >= 0 && marker <= trackto)
+                // if limit is set other than max, show it
+                if (limit >= 0 && limit < max)
                 {
-                    int pos = bararea.X + (int)(((double)marker / max) * bararea.Width);
-                    using (Pen pc1 = new Pen(MarkerLineColor, MarkerWidth))
-                        e.Graphics.DrawLine(pc1, new Point(pos, bararea.Y), new Point(pos, bararea.Y + bararea.Height + 1));     // 1 more pixel due to it not drawing last
+                    int pos = bararea.X + (int)(((double)limit / max) * bararea.Width);
+                    // System.Diagnostics.Debug.WriteLine($"Limit {limit} max {max} {bararea.Width} {pos}");
+
+                    using (Pen pc1 = new Pen(LimitLineColor, MarkerWidth))
+                        e.Graphics.DrawLine(pc1, new Point(pos, area.Y), new Point(pos, area.Y + area.Height));     // 1 more pixel due to it not drawing last
+                }
+
+                foreach (int marker in markers)
+                {
+                    // only show if up to trackto
+                    if (marker >= 0 && marker <= currentshownvalue)
+                    {
+                        int pos = bararea.X + (int)(((double)marker / max) * bararea.Width);
+                        using (Pen pc1 = new Pen(MarkerLineColor, MarkerWidth))
+                            e.Graphics.DrawLine(pc1, new Point(pos, bararea.Y), new Point(pos, bararea.Y + bararea.Height + 1));     // 1 more pixel due to it not drawing last
+                    }
                 }
             }
         }
@@ -166,29 +164,32 @@ namespace ExtendedControls
             if (oldvalue != curvalue)
                 OnValueChanged(new EventArgs());
 
+            if (!wintimer.Enabled)
+                currentshownvalue = curvalue;
+
             Invalidate();
         }
 
         private void T_Tick(object sender, EventArgs e)
         {
-            if ( trackto != curvalue)
+            if ( currentshownvalue != curvalue)
             {
-                if (trackto < curvalue)
-                    trackto = Math.Min(curvalue, trackto + TrackSpeed);
+                if (currentshownvalue < curvalue)
+                    currentshownvalue = Math.Min(curvalue, currentshownvalue + TrackSpeed);
                 else
-                    trackto = Math.Max(curvalue, trackto - TrackSpeed);
+                    currentshownvalue = Math.Max(curvalue, currentshownvalue - TrackSpeed);
                 Invalidate();
             }
 
-            if (highlightsweep < BarMaximumPercent)
+            if (highlightsweeppercent < BarMaximumPercent)
             {
-                highlightsweep += 5;
-                if (highlightsweep < BarMaximumPercentNoUpdate)
+                highlightsweeppercent += 5;
+                if (highlightsweeppercent < BarMaximumPercentNoUpdate)
                     Invalidate();
             }
             else
             {
-                highlightsweep = 0;
+                highlightsweeppercent = 0;
                 Invalidate();
             }
         }
@@ -206,14 +207,14 @@ namespace ExtendedControls
             return false;
         }
 
-        #endregion
+#endregion
 
         private int max = 100;
         private int limit = 90;
         private int min = 0;
         private int curvalue = 0;
-        private int trackto = 0;
-        private int highlightsweep = 0;     // 0-100
+        private int currentshownvalue = 0;
+        private int highlightsweeppercent = 0;     // 0-100
         private int[] markers = new int[2] { -1, -1 };
 
         private static readonly object EVENT_VALUECHANGED = new object();
@@ -225,7 +226,24 @@ namespace ExtendedControls
         Color bordercolor = Color.Black;
         Color limitlinecolor = Color.Cyan;
         Color markerlinecolor = Color.Cyan;
+        Color barbackcolor = Color.FromArgb(100, 200, 200, 200);
 
         Timer wintimer = new Timer() { Interval = 50 };
     }
 }
+
+                                        //if (bitmap < 100)     // keep test code
+                        //{
+                        //    Bitmap bmp = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
+                        //    using (Graphics gg = Graphics.FromImage(bmp))
+                        //    {
+                        //        gg.FillRectangle(br1, rll);
+                        //    }
+
+                        //    System.Diagnostics.Debug.WriteLine($"Draw {bitmap} brush {rl} -> into {rll}");
+                        //    bmp.Save($"c:\\code\\AA\\{bitmap}.bmp");
+
+                        //    bmp.Dispose();
+
+                        //    bitmap++;
+                        //}
