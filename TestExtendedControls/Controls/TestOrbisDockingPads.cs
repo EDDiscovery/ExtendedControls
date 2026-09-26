@@ -16,6 +16,7 @@ namespace TestExtendedControls
         public TestOrbisDockingPads()
         {
             InitializeComponent();
+            TransparencyKey = Color.Green;
         }
 
         private void button13_Click(object sender, EventArgs e)

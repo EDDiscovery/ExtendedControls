@@ -295,7 +295,10 @@ namespace ExtendedControls
         }
 
 
-        private Color largePad = Color.FromArgb(255,192,1,1), mediumPad = Color.FromArgb(255,192,192,0), smallPad = Color.FromArgb(255,0,192,192), borderColor = Color.Black;
+        private Color largePad = Color.FromArgb(255, 192, 1, 1);
+        private Color mediumPad = Color.FromArgb(255, 192, 192, 0);
+        private Color smallPad = Color.FromArgb(255, 0, 192, 192);
+        private Color borderColor = Color.Black;
         private int selectedIndex = 0;
         private List<GraphicsPath> pads = new List<GraphicsPath>();
         private Timer timer = new Timer();
@@ -303,7 +306,7 @@ namespace ExtendedControls
         private float selectedintensity = 1.0f;
         private int indicatorsize = 8;
         private int indicatorradiusoffset = 8;
-        private float nonselectedintensity = 0.4f;
+        private float nonselectedintensity = 0.3f;
 
         private static int[] padsize = new int[] {0,    // entry 0 unused
                                          1,3,2,1,       // 1

@@ -24,7 +24,7 @@ namespace ExtendedControls
     {
         // Back used as background of whole control. Fore is not used
         public Color[] SegmentColors { get; set; }
-        public double[] SegmentValues { get; set; }
+        public double[] SegmentValues { get { return segmentvalues; } set { segmentvalues = value; displayedsegmentvalues = segmentvalues != null ? new double[segmentvalues.Length] : null; } }
         public void ChangeValue(int i, int value) { SegmentValues[i] = value; Invalidate(); }
         public double Maximum { get { return max; } set { max = value; Invalidate(); } }
         public double Limit { get { return limit; } set { limit = value; Invalidate();} }
@@ -87,10 +87,6 @@ namespace ExtendedControls
             int heightreserved = (int)(BarHeightReserve * area.Height / 100.0);
 
             Rectangle bararea = new Rectangle(area.X + BarWidthMargin, area.Y + heightreserved, area.Width - BarWidthMargin*2, area.Height - heightreserved*2);
-
-            // if we have no displayedsegmentvalues, its the first time, lets build to it
-            if ( displayedsegmentvalues == null && SegmentValues != null)
-                displayedsegmentvalues = new double[SegmentValues.Length];
 
             if ( bararea.Width>0 ) // ensure not minimised away
             { 
@@ -197,9 +193,6 @@ namespace ExtendedControls
         {
             if (SegmentValues != null)       // must protect for designer
             {
-                if (displayedsegmentvalues == null )            // paranoia defense for tick before display
-                    displayedsegmentvalues = new double[SegmentValues.Length];
-
                 // we move across and move the displayedsegment values up to the selected values
                 for (int i = 0; i < SegmentValues.Length; i++)
                 {
@@ -265,6 +258,7 @@ namespace ExtendedControls
         Color highlightwashcolor2 = Color.FromArgb(220, 255, 255, 255);
 
         Timer wintimer = new Timer() { Interval = 50 };
+        private double[] segmentvalues;
     }
 }
 

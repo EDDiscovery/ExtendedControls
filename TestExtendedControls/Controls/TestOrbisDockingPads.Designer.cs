@@ -1,4 +1,6 @@
-﻿namespace TestExtendedControls
+﻿using System.Drawing;
+
+namespace TestExtendedControls
 {
     partial class TestOrbisDockingPads
     {
@@ -48,6 +50,7 @@
             this.panelControl.Name = "panelControl";
             this.panelControl.Size = new System.Drawing.Size(1085, 100);
             this.panelControl.TabIndex = 1;
+            this.panelControl.BackColor = Color.Green;
             // 
             // button11
             // 
@@ -91,21 +94,19 @@
             // 
             // dockingPads1
             // 
+            this.dockingPads1.BackColor = System.Drawing.Color.Green;
             this.dockingPads1.BorderColor = System.Drawing.Color.Black;
             this.dockingPads1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dockingPads1.ForeColor = System.Drawing.Color.Black;
-            this.dockingPads1.LargePad = System.Drawing.Color.Red;
             this.dockingPads1.Location = new System.Drawing.Point(0, 100);
-            this.dockingPads1.MediumPad = System.Drawing.Color.Yellow;
             this.dockingPads1.Name = "dockingPads1";
             this.dockingPads1.NonSelectedIntensity = 0.4F;
             this.dockingPads1.SelectedIndex = 0;
             this.dockingPads1.Size = new System.Drawing.Size(1085, 764);
-            this.dockingPads1.SmallPad = System.Drawing.Color.Blue;
             this.dockingPads1.TabIndex = 0;
             this.dockingPads1.Text = "dockingPads1";
             // 
-            // TestDockingPads
+            // TestOrbisDockingPads
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -114,7 +115,7 @@
             this.Controls.Add(this.panelControl);
             this.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.Name = "TestDockingPads";
+            this.Name = "TestOrbisDockingPads";
             this.Text = "Docking Pads";
             this.panelControl.ResumeLayout(false);
             this.ResumeLayout(false);
