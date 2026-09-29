@@ -118,6 +118,13 @@ namespace ExtendedControls
             }
         }
 
+        public int CalcItemHeight()
+        {
+            var seppixels = Font.ScalePixels(4);
+            itemheight = (int)Font.GetHeight() + seppixels + (ItemSeperators != null ? seppixels : 0);
+            return itemheight;
+        }
+
         private void CalculateLayout()
         {
             bordersize = 0;
@@ -125,13 +132,12 @@ namespace ExtendedControls
             if (FlatStyle != FlatStyle.System && !BorderColor.IsFullyTransparent())
                 bordersize = 2;
 
-            int items = (Items != null) ? Items.Count() : 0;
+            int items = Items?.Count() ?? 0;
             itemslayoutestimatedon = items;
 
             fontusedforestimate = Font;
 
-            var seppixels = Font.ScalePixels(4);
-            itemheight = (int)Font.GetHeight() + seppixels + (ItemSeperators!=null ? seppixels : 0);
+            CalcItemHeight();
             lbsys.ItemHeight = itemheight;
 
             displayableitems = (ClientRectangle.Height-bordersize*2) / itemheight;            // number of items to display

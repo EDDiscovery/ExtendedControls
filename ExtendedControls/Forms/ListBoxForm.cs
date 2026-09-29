@@ -78,16 +78,14 @@ namespace ExtendedControls
             }
 
             int border = Bounds.Height - ClientRectangle.Height;        // any windows border..
-
-            int ih = (int)Font.GetHeight() + 2;
-            int hw = ih * Items.Count + 4 + border;
-
-          //  System.Diagnostics.Debug.WriteLine("Set LBF loc " + Location + " Font " + Font + " ih " + ih + " hw " + hw);
+            int ih = ListBox.CalcItemHeight();
+            int heightwanted = ih * Items.Count + 4 + border;
+           // System.Diagnostics.Debug.WriteLine("Set LBF loc " + Location + " Font " + Font + " ih " + ih + " hw " + heightwanted);
 
             using (Graphics g = this.CreateGraphics())
             {
                 Size max = ListBox.MeasureItems(g);
-                this.PositionSizeWithinScreen(Math.Max(max.Width,MinimumItemWidth) + 4 + ListBox.ScrollBar.Width, hw, true, new Size(64,64));    // keep it on the screen. 
+                this.PositionSizeWithinScreen(Math.Max(max.Width,MinimumItemWidth) + 4 + ListBox.ScrollBar.Width, heightwanted, true, new Size(64,64));    // keep it on the screen. 
             }
 
             //            System.Diagnostics.Debug.WriteLine(".. now " + Location + " " + Size + " Items " + Items.Count + " ih "  + ih + " hw" + hw);

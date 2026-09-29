@@ -55,7 +55,7 @@ namespace TestExtendedControls
                 dataGridView.Rows.Add(new object[] { $"{i}", "two", "three"});
             }
 
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 5; i++)
             {
                 extComboBox1.Items.Add($"Item {i}");
             }
