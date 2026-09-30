@@ -62,7 +62,6 @@ namespace ExtendedAudioForms
             queue = qu;
             synth = syn;
 
-            var enumlist = new Enum[] { CFIDs.SpeechConfigure, CFIDs.SpeechConfigure_buttonExtTest, CFIDs.SpeechConfigure_buttonExtDevice, CFIDs.SpeechConfigure_buttonExtEffects, CFIDs.SpeechConfigure_checkBoxCustomLiteral, CFIDs.SpeechConfigure_checkBoxCustomComplete, CFIDs.SpeechConfigure_labelEndTrigger, CFIDs.SpeechConfigure_labelStartTrigger, CFIDs.SpeechConfigure_labelRate, CFIDs.SpeechConfigure_labelVoice, CFIDs.SpeechConfigure_labelVolume, CFIDs.SpeechConfigure_checkBoxCustomR, CFIDs.SpeechConfigure_checkBoxCustomV, CFIDs.SpeechConfigure_Title };
             BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             if (caption != null)

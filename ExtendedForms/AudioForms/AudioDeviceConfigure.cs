@@ -34,7 +34,6 @@ namespace ExtendedAudioForms
             comboBoxCustomDevice.Items.AddRange(dr.GetAudioEndpoints().ToArray());
             comboBoxCustomDevice.SelectedItem = dr.GetAudioEndpoint();
 
-            var enumlist = new Enum[] { CFIDs.AudioDeviceConfigure, CFIDs.AudioDeviceConfigure_labelText };
             BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
             bool border = ExtendedControls.Theme.Current?.ApplyDialog(this) ?? true;
