@@ -227,12 +227,6 @@
     <Compile Include="Controls\TestImageControl.Designer.cs">
       <DependentUpon>TestImageControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Misc\TestTerminal2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Misc\TestTerminal2.Designer.cs">
-      <DependentUpon>TestTerminal2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Theme\TestThemeSpeed.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -466,9 +460,6 @@
     <EmbeddedResource Include="Controls\TestImageControl.resx">
       <DependentUpon>TestImageControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Misc\TestTerminal2.resx">
-      <DependentUpon>TestTerminal2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Theme\TestThemeSpeed.resx">
       <DependentUpon>TestThemeSpeed.cs</DependentUpon>
     </EmbeddedResource>
@@ -652,6 +643,10 @@
     <None Include="Resources\FleetCarrier.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AudioForms\AudioForms.csproj">
+      <Project>{044e2adf-3dfc-492e-8d77-eef70ab218c1}</Project>
+      <Name>AudioForms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BaseUtilities\Audio\Audio.csproj">
       <Project>{59f99a05-ce16-4fb8-be99-f1a24f019cb8}</Project>
       <Name>Audio</Name>

@@ -13,8 +13,8 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+using AudioForms;
 using ExtendedControls;
-using ExtendedForms;
 using System;
 using System.Windows.Forms;
 
@@ -29,7 +29,7 @@ namespace ExtendedAudioForms
             InitializeComponent();
         }
 
-        public void Init( AudioExtensions.IAudioDriver dr )
+        public void Init(AudioExtensions.IAudioDriver dr)
         {
             comboBoxCustomDevice.Items.AddRange(dr.GetAudioEndpoints().ToArray());
             comboBoxCustomDevice.SelectedItem = dr.GetAudioEndpoint();

@@ -13,13 +13,13 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+using AudioExtensions;
+using AudioForms;
+using BaseUtils;
+using ExtendedControls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using AudioExtensions;
-using BaseUtils;
-using ExtendedControls;
-using ExtendedForms;
 
 namespace ExtendedAudioForms
 {
@@ -49,7 +49,7 @@ namespace ExtendedAudioForms
         }
 
         void Set(Variables cv)
-        { 
+        {
             SoundEffectSettings ap = new SoundEffectSettings(cv);
 
             // we have no control over values, user could have messed them up, and it excepts if out of range
@@ -60,7 +60,8 @@ namespace ExtendedAudioForms
                 trackBarEM.Value = ap.echomix;
                 trackBarEF.Value = ap.echofeedback;
                 trackBarED.Value = ap.echodelay;
-            } catch { }
+            }
+            catch { }
 
             trackBarCM.Enabled = trackBarCF.Enabled = trackBarCD.Enabled = trackBarCDp.Enabled = checkBoxC.Checked = ap.chorusenabled;
             try
@@ -69,7 +70,8 @@ namespace ExtendedAudioForms
                 trackBarCF.Value = ap.chorusfeedback;
                 trackBarCD.Value = ap.chorusdelay;
                 trackBarCDp.Value = ap.chorusdepth;
-            } catch { }
+            }
+            catch { }
 
             trackBarRM.Enabled = trackBarRT.Enabled = trackBarRH.Enabled = checkBoxR.Checked = ap.reverbenabled;
             try
@@ -77,7 +79,8 @@ namespace ExtendedAudioForms
                 trackBarRM.Value = ap.reverbmix;
                 trackBarRT.Value = ap.reverbtime;
                 trackBarRH.Value = ap.reverbhfratio;
-            } catch { }
+            }
+            catch { }
 
             trackBarDG.Enabled = trackBarDE.Enabled = trackBarDC.Enabled = trackBarDW.Enabled = checkBoxD.Checked = ap.distortionenabled;
             try
@@ -86,7 +89,8 @@ namespace ExtendedAudioForms
                 trackBarDE.Value = ap.distortionedge;
                 trackBarDC.Value = ap.distortioncentrefreq;
                 trackBarDW.Value = ap.distortionfreqwidth;
-            } catch { }
+            }
+            catch { }
 
             trackBarGF.Enabled = checkBoxG.Checked = ap.gargleenabled;
             try
@@ -221,7 +225,7 @@ namespace ExtendedAudioForms
 
         private void checkBoxCustomNone_CheckedChanged(object sender, EventArgs e)
         {
-            if ( checkBoxCustomNone.Enabled )
+            if (checkBoxCustomNone.Enabled)
                 checkBoxE.Checked = checkBoxC.Checked = checkBoxR.Checked = checkBoxD.Checked = checkBoxG.Checked = false;
         }
 
@@ -238,7 +242,7 @@ namespace ExtendedAudioForms
                 toolTip1.SetToolTip(buttonExtTest, c.ToString(separ: Environment.NewLine));
                 if (TestSettingEvent != null)
                 {
-                    TestSettingEvent(this, GetEffects() );
+                    TestSettingEvent(this, GetEffects());
                     buttonExtTest.Text = "Stop";
                 }
             }
@@ -263,7 +267,7 @@ namespace ExtendedAudioForms
 
         private void comboBoxCustomDefaults_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Variables vs = new Variables(defaulteffectsconfig[comboBoxCustomVoices.SelectedIndex],Variables.FromMode.MultiEntryComma);
+            Variables vs = new Variables(defaulteffectsconfig[comboBoxCustomVoices.SelectedIndex], Variables.FromMode.MultiEntryComma);
             Set(vs);
         }
 

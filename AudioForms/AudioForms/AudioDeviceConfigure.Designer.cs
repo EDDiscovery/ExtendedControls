@@ -1,5 +1,5 @@
 ﻿namespace ExtendedAudioForms
-{ 
+{
     partial class AudioDeviceConfigure
     {
         /// <summary>

@@ -13,13 +13,13 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+using AudioExtensions;
+using AudioForms;
+using BaseUtils;
+using ExtendedControls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using AudioExtensions;
-using BaseUtils;
-using ExtendedControls;
-using ExtendedForms;
 
 namespace ExtendedAudioForms
 {
@@ -34,7 +34,7 @@ namespace ExtendedAudioForms
         public string VoiceName { get { return comboBoxCustomVoice.Text; } }
         public string Volume { get { return (checkBoxCustomV.Checked) ? trackBarVolume.Value.ToString() : "Default"; } }
         public string Rate { get { return (checkBoxCustomR.Checked) ? trackBarRate.Value.ToString() : "Default"; } }
-        public Variables Effects { get { return effects;  } }
+        public Variables Effects { get { return effects; } }
 
         AudioQueue queue;
         SpeechSynthesizer synth;
@@ -45,7 +45,7 @@ namespace ExtendedAudioForms
             InitializeComponent();
         }
 
-        public void Init(bool nospeechinputbox , bool nodevice, bool novoicename,  bool norate,
+        public void Init(bool nospeechinputbox, bool nodevice, bool novoicename, bool norate,
                             AudioQueue qu, SpeechSynthesizer syn,
                             string caption, Icon ic,
                             string text,                            // when speech input box
@@ -94,9 +94,9 @@ namespace ExtendedAudioForms
                 textBoxBorderEndTrigger.Text = endname;
             }
 
-            if ( novoicename )
+            if (novoicename)
             {
-                labelVoice.Visible =  comboBoxCustomVoice.Visible = false;
+                labelVoice.Visible = comboBoxCustomVoice.Visible = false;
 
                 int offset = trackBarVolume.Top - comboBoxCustomVoice.Top;
                 foreach (Control c in panelOuter.Controls)
@@ -108,7 +108,7 @@ namespace ExtendedAudioForms
                 this.Height -= offset;
             }
 
-            if ( norate )
+            if (norate)
             {
                 labelRate.Visible = trackBarRate.Visible = false;
                 int offset = textBoxBorderTest.Top - trackBarRate.Top;
@@ -133,7 +133,7 @@ namespace ExtendedAudioForms
                 comboBoxCustomVoice.SelectedIndex = 0;
 
             int i;
-            if (!nospeechinputbox && volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase))  
+            if (!nospeechinputbox && volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase))
             {
                 checkBoxCustomV.Checked = false;
                 trackBarVolume.Enabled = false;
@@ -174,7 +174,7 @@ namespace ExtendedAudioForms
             sfe.Init(this.Icon, effects, textBoxBorderText.Visible);           // give them the none option ONLY if we are allowing text
             sfe.TestSettingEvent += Sfe_TestSettingEvent;           // callback to say test
             sfe.StopTestSettingEvent += Sfe_StopTestSettingEvent;   // callback to say stop
-            if ( sfe.ShowDialog(this) == DialogResult.OK )
+            if (sfe.ShowDialog(this) == DialogResult.OK)
             {
                 effects = sfe.GetEffects();
             }
@@ -217,7 +217,7 @@ namespace ExtendedAudioForms
         {
             AudioDeviceConfigure adc = new AudioDeviceConfigure();
             adc.Init(queue.Driver);
-            if ( adc.ShowDialog(this) == DialogResult.OK )
+            if (adc.ShowDialog(this) == DialogResult.OK)
             {
                 if (!queue.SetAudioEndpoint(adc.Selected))
                     ExtendedControls.MessageBoxTheme.Show(this, "Audio Device Selection failed", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -245,7 +245,7 @@ namespace ExtendedAudioForms
                 }
                 catch
                 {
-                    ExtendedControls.MessageBoxTheme.Show(this,"Unable to play " + textBoxBorderText.Text);
+                    ExtendedControls.MessageBoxTheme.Show(this, "Unable to play " + textBoxBorderText.Text);
                 }
             }
         }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{298C11C9-B58F-415C-8458-1CAE3C6CAB62}</ProjectGuid>
+    <ProjectGuid>{044E2ADF-3DFC-492E-8D77-EEF70AB218C1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExtendedForms</RootNamespace>
-    <AssemblyName>ExtendedForms</AssemblyName>
+    <RootNamespace>AudioForms</RootNamespace>
+    <AssemblyName>AudioForms</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -43,69 +43,61 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConditionForms\ConditionFilterForm.cs">
+    <Compile Include="AudioForms\AudioDeviceConfigure.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConditionForms\ConditionFilterForm.Designer.cs">
-      <DependentUpon>ConditionFilterForm.cs</DependentUpon>
+    <Compile Include="AudioForms\AudioDeviceConfigure.Designer.cs">
+      <DependentUpon>AudioDeviceConfigure.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConditionForms\ConditionFilterUC.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ConditionForms\ConditionFilterUC.Designer.cs">
-      <DependentUpon>ConditionFilterUC.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ImportExport\ImportExportForm.cs">
+    <Compile Include="AudioForms\SoundEffectDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ImportExport\ImportExportForm.Designer.cs">
-      <DependentUpon>ImportExportForm.cs</DependentUpon>
+    <Compile Include="AudioForms\SoundEffectDialog.Designer.cs">
+      <DependentUpon>SoundEffectDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Keys\KeyForm.cs">
+    <Compile Include="AudioForms\SpeechConfigure.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Keys\KeyForm.Designer.cs">
-      <DependentUpon>KeyForm.cs</DependentUpon>
+    <Compile Include="AudioForms\SpeechConfigure.Designer.cs">
+      <DependentUpon>SpeechConfigure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AudioForms\WaveConfigureDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AudioForms\WaveConfigureDialog.Designer.cs">
+      <DependentUpon>WaveConfigureDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ConditionForms\VariablesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConditionForms\VariablesForm.Designer.cs">
-      <DependentUpon>VariablesForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ConditionForms\ConditionFilterForm.resx">
-      <DependentUpon>ConditionFilterForm.cs</DependentUpon>
+    <EmbeddedResource Include="AudioForms\AudioDeviceConfigure.resx">
+      <DependentUpon>AudioDeviceConfigure.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConditionForms\ConditionFilterUC.resx">
-      <DependentUpon>ConditionFilterUC.cs</DependentUpon>
+    <EmbeddedResource Include="AudioForms\SoundEffectDialog.resx">
+      <DependentUpon>SoundEffectDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConditionForms\VariablesForm.resx">
-      <DependentUpon>VariablesForm.cs</DependentUpon>
+    <EmbeddedResource Include="AudioForms\SpeechConfigure.resx">
+      <DependentUpon>SpeechConfigure.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImportExport\ImportExportForm.resx">
-      <DependentUpon>ImportExportForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Keys\KeyForm.resx">
-      <DependentUpon>KeyForm.cs</DependentUpon>
+    <EmbeddedResource Include="AudioForms\WaveConfigureDialog.resx">
+      <DependentUpon>WaveConfigureDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Explanation.txt" />
-    <None Include="Resources\Paste.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\Audio\Audio.csproj">
+      <Project>{59f99a05-ce16-4fb8-be99-f1a24f019cb8}</Project>
+      <Name>Audio</Name>
+    </ProjectReference>
     <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj">
       <Project>{c657c881-f3e1-45ba-aca5-966348010414}</Project>
       <Name>BaseUtils</Name>
@@ -114,6 +106,9 @@
       <Project>{2049403f-f4c7-45e6-b777-6390c78e4d2b}</Project>
       <Name>ExtendedControls</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

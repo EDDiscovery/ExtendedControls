@@ -13,19 +13,19 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
+using AudioExtensions;
+using AudioForms;
+using BaseUtils;
+using ExtendedControls;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using BaseUtils;
-using AudioExtensions;
-using ExtendedControls;
-using ExtendedForms;
 
 namespace ExtendedAudioForms
 {
     public partial class WaveConfigureDialog : DraggableForm
     {
-        public string Path {  get { return textBoxBorderText.Text; } }
+        public string Path { get { return textBoxBorderText.Text; } }
         public bool Wait { get { return checkBoxCustomComplete.Checked; } }
         public AudioQueue.Priority Priority { get { return (AudioQueue.Priority)Enum.Parse(typeof(AudioQueue.Priority), comboBoxCustomPriority.Text); } }
         public string StartEvent { get { return textBoxBorderStartTrigger.Text; } }
@@ -41,7 +41,7 @@ namespace ExtendedAudioForms
             InitializeComponent();
         }
 
-        public void Init(bool nostartendtriggers, bool nodevice, AudioQueue qu, 
+        public void Init(bool nostartendtriggers, bool nodevice, AudioQueue qu,
                           string caption, Icon ic,
                           string defpath,
                           bool waitcomplete,
@@ -56,7 +56,7 @@ namespace ExtendedAudioForms
 
             BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
 
-            if ( caption != null )
+            if (caption != null)
                 this.Text = caption;
 
             this.Icon = ic;
@@ -122,7 +122,7 @@ namespace ExtendedAudioForms
                 }
                 catch
                 {
-                    ExtendedControls.MessageBoxTheme.Show(this,"Unable to play " + textBoxBorderText.Text);
+                    ExtendedControls.MessageBoxTheme.Show(this, "Unable to play " + textBoxBorderText.Text);
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace ExtendedAudioForms
         private void buttonExtEffects_Click(object sender, EventArgs e)
         {
             SoundEffectsDialog sfe = new SoundEffectsDialog();
-            sfe.Init(this.Icon, effects,true);
+            sfe.Init(this.Icon, effects, true);
             sfe.TestSettingEvent += Sfe_TestSettingEvent;           // callback to say test
             sfe.StopTestSettingEvent += Sfe_StopTestSettingEvent;   // callback to say stop
             if (sfe.ShowDialog(this) == DialogResult.OK)
@@ -161,7 +161,7 @@ namespace ExtendedAudioForms
             }
             catch
             {
-                ExtendedControls.MessageBoxTheme.Show(this,"Unable to play " + textBoxBorderText.Text);
+                ExtendedControls.MessageBoxTheme.Show(this, "Unable to play " + textBoxBorderText.Text);
             }
 
         }
