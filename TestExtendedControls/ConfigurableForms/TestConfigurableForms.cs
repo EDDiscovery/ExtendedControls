@@ -38,11 +38,9 @@ namespace TestExtendedControls
             int width = 400;
 
             var butl = new ExtendedControls.ExtButton();
-            butl.Image = Properties.Resources.LeftArrow;
-            f.Add(new ConfigurableEntryList.Entry(butl, "left", "", new Point(20, 64), new Size(32, 32), null));
+            f.Add(new ConfigurableEntryList.Entry(butl, "left", "", new Point(20, 64), new Size(32, 32), null) { ButtonImage = Properties.Resources.LeftArrow });
             var butr = new ExtendedControls.ExtButton();
-            butr.Image = Properties.Resources.RightArrow;
-            f.Add(new ConfigurableEntryList.Entry(butr, "right", "", new Point(width - 20 - 32, 64), new Size(32, 32), null));
+            f.Add(new ConfigurableEntryList.Entry(butr, "right", "", new Point(width - 20 - 32, 64), new Size(32, 32), null) {  ButtonImage = Properties.Resources.RightArrow });
 
             f.Add(new ConfigurableEntryList.Entry("olabel", typeof(Label), "Offer", new Point(20, 30), new Size(width - 40, 20), null, 1.5f, ContentAlignment.MiddleCenter));
 
