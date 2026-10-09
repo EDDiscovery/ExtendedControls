@@ -1,4 +1,5 @@
-﻿using ExtendedControls;
+﻿using BaseUtils;
+using ExtendedControls;
 using ExtendedForms;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,18 @@ namespace TestExtendedControls
             theme.SetThemeByName("EDSM");
             Theme.Current.FontSize = 12;
 
-           // extButton1_Click(null, null);
+            BaseUtils.TranslatorMkII.Instance.LoadTranslation("example-ex",
+                    System.Globalization.CultureInfo.CurrentUICulture,
+                    new string[] { @"C:\Code\EDDiscovery\EDDiscovery\Translations" },
+                    2
+                    );
+
+
+            if ( TranslatorMkII.Instance == null)
+            {
+
+            }
+            // extButton1_Click(null, null);
         }
 
 

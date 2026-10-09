@@ -103,19 +103,19 @@ namespace ExtendedControls
             this.toolStripMenuItemCopy,
             this.copyAllToolStripMenuItem});
             this.contextMenuStrip.Name = "contextMenuStrip";
-            this.contextMenuStrip.Size = new System.Drawing.Size(120, 48);
+            this.contextMenuStrip.Size = new System.Drawing.Size(181, 70);
             // 
             // toolStripMenuItemCopy
             // 
             this.toolStripMenuItemCopy.Name = "toolStripMenuItemCopy";
-            this.toolStripMenuItemCopy.Size = new System.Drawing.Size(119, 22);
+            this.toolStripMenuItemCopy.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemCopy.Text = "Copy";
             this.toolStripMenuItemCopy.Click += new System.EventHandler(this.toolStripMenuItemCopy_Click);
             // 
             // copyAllToolStripMenuItem
             // 
             this.copyAllToolStripMenuItem.Name = "copyAllToolStripMenuItem";
-            this.copyAllToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
+            this.copyAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyAllToolStripMenuItem.Text = "Copy All";
             this.copyAllToolStripMenuItem.Click += new System.EventHandler(this.copyAllToolStripMenuItem_Click);
             // 
@@ -223,7 +223,7 @@ namespace ExtendedControls
             this.statusStripBottom.Name = "statusStripBottom";
             this.statusStripBottom.Size = new System.Drawing.Size(824, 22);
             this.statusStripBottom.TabIndex = 27;
-            this.statusStripBottom.Text = "statusStripCustom1";
+            this.statusStripBottom.Text = "<code>";
             // 
             // InfoForm
             // 

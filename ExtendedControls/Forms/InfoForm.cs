@@ -33,6 +33,7 @@ namespace ExtendedControls
             Icon = ic;
 
             BaseUtils.TranslatorMkII.Instance.TranslateControls(this);
+            BaseUtils.TranslatorMkII.Instance.TranslateToolstrip(contextMenuStrip);
 
             textBoxInfo.SetTabs(array ?? new int[] { 0, 100, 200, 300, 400, 500, 600, 800,900,1000,1100,1200 });
             textBoxInfo.ReadOnly = true;
