@@ -552,7 +552,7 @@ namespace ExtendedControls
                 style |= FontStyle.Underline;
             else if (strikeout)
                 style |= FontStyle.Strikeout;
-            System.Diagnostics.Debug.WriteLine($"Theme Lookup font {FontName} {fsize} {style}");
+            //System.Diagnostics.Debug.WriteLine($"Theme Lookup font {FontName} {fsize} {style}");
             Font fnt = FontHandler.GetFont(FontName, fsize, style);        // if it does not know the font, it will substitute Sans serif
             if ( fnt.Name != FontName)
                 System.Diagnostics.Debug.WriteLine($"*** Cannot find font {FontName}");
