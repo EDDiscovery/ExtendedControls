@@ -105,7 +105,7 @@ namespace ExtendedConditionsForms
             this.statusStripCustom.Name = "statusStripCustom";
             this.statusStripCustom.Size = new System.Drawing.Size(940, 22);
             this.statusStripCustom.TabIndex = 28;
-            this.statusStripCustom.Text = "statusStripCustom1";
+            this.statusStripCustom.Text = "";
             // 
             // panelTop
             // 
@@ -234,7 +234,6 @@ namespace ExtendedConditionsForms
             this.buttonMore.Size = new System.Drawing.Size(24, 24);
             this.buttonMore.TabIndex = 5;
             this.buttonMore.Text = "+";
-            this.toolTip1.SetToolTip(this.buttonMore, "Add more variables");
             this.buttonMore.UseVisualStyleBackColor = true;
             this.buttonMore.Click += new System.EventHandler(this.buttonMore_Click);
             // 

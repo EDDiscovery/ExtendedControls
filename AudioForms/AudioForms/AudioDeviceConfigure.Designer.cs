@@ -51,7 +51,7 @@
             this.comboBoxCustomDevice.SelectedValue = null;
             this.comboBoxCustomDevice.Size = new System.Drawing.Size(428, 21);
             this.comboBoxCustomDevice.TabIndex = 0;
-            this.comboBoxCustomDevice.Text = "comboBoxCustom1";
+            this.comboBoxCustomDevice.Text = "";
             this.comboBoxCustomDevice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomDevice.ValueMember = "";
             // 

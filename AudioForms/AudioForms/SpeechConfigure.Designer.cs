@@ -245,7 +245,7 @@ namespace ExtendedAudioForms
             this.comboBoxCustomPriority.SelectedValue = null;
             this.comboBoxCustomPriority.Size = new System.Drawing.Size(110, 21);
             this.comboBoxCustomPriority.TabIndex = 11;
-            this.comboBoxCustomPriority.Text = "comboBoxCustom1";
+            this.comboBoxCustomPriority.Text = "";
             this.comboBoxCustomPriority.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomPriority.ValueMember = "";
             // 
@@ -324,7 +324,7 @@ namespace ExtendedAudioForms
             this.comboBoxCustomVoice.SelectedValue = null;
             this.comboBoxCustomVoice.Size = new System.Drawing.Size(356, 21);
             this.comboBoxCustomVoice.TabIndex = 3;
-            this.comboBoxCustomVoice.Text = "comboBoxCustom1";
+            this.comboBoxCustomVoice.Text = "";
             this.comboBoxCustomVoice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomVoice.ValueMember = "";
             // 

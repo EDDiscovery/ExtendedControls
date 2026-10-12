@@ -162,7 +162,7 @@ namespace ExtendedConditionsForms
             this.statusStripCustom.Name = "statusStripCustom";
             this.statusStripCustom.Size = new System.Drawing.Size(1098, 22);
             this.statusStripCustom.TabIndex = 27;
-            this.statusStripCustom.Text = "statusStripCustom1";
+            this.statusStripCustom.Text = "";
             // 
             // conditionFilterUC
             // 

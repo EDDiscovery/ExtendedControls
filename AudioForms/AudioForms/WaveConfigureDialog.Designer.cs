@@ -313,7 +313,7 @@ namespace ExtendedAudioForms
             this.comboBoxCustomPriority.SelectedValue = null;
             this.comboBoxCustomPriority.Size = new System.Drawing.Size(110, 21);
             this.comboBoxCustomPriority.TabIndex = 46;
-            this.comboBoxCustomPriority.Text = "comboBoxCustom1";
+            this.comboBoxCustomPriority.Text = "";
             this.comboBoxCustomPriority.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.comboBoxCustomPriority.ValueMember = "";
             // 
