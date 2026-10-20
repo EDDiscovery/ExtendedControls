@@ -271,7 +271,7 @@ namespace ExtendedControls
                         x.MouseDown += (o, el, e) =>
                         {
                             if (e.Button == MouseButtons.Right )
-                                ButtonPressed.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
+                                ButtonPressed?.Invoke(ItemList.IndexOf(cl), cl.Tag, cl.Text, cl.UserTag, e);
                         };
                     }
                 }
