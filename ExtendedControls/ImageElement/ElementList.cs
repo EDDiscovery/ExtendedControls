@@ -77,8 +77,8 @@ namespace ExtendedControls.ImageElement
 
         public void Remove(int i)
         {
-            elements.RemoveAt(i);
             elements[i].BoundsChanged -= Recalc;
+            elements.RemoveAt(i);
             Recalc();
         }
 
