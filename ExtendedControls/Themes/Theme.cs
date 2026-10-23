@@ -741,7 +741,7 @@ namespace ExtendedControls
 
         public bool ApplyStd(Control ctrl, bool nowindowsborderoverride = false)      // normally a form, but can be a control, applies to this and ones below
         {
-             System.Diagnostics.Debug.WriteLine($"Themer apply standard {ctrl.Name} {ctrl.GetType().Name} Font {GetFont}");
+            //System.Diagnostics.Debug.WriteLine($"Themer apply standard {ctrl.Name} {ctrl.GetType().Name} Font {GetFont}");
             var ret = Apply(ctrl, GetFont, nowindowsborderoverride);
             System.Diagnostics.Debug.WriteLine($"Finish standard themeing to {ctrl.Name}");
             return ret;
