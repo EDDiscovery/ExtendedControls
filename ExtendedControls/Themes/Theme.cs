@@ -1070,15 +1070,18 @@ namespace ExtendedControls
                 {
                     ThemeList tl = new ThemeList();
                     tl.LoadBaseThemes();
-                    Theme r = tl.FindTheme("Elite Verdana Gradiant");       // load a set with gradients
-                    for (int i = 2; i <= PanelsSets; i++)
+                    Theme r = tl.FindTheme("Windows Default");       // load a set with gradients (there on linux as well)
+                    if (r != null)
                     {
-                        var ps = ret.GetPanelSet(i);
-                        var ss = r.GetPanelSet(i);
-                        ps[0] = ss[0];
-                        ps[1] = ss[1];
-                        ps[2] = ss[2];
-                        ps[3] = ss[3];
+                        for (int i = 2; i <= PanelsSets; i++)
+                        {
+                            var ps = ret.GetPanelSet(i);
+                            var ss = r.GetPanelSet(i);
+                            ps[0] = ss[0];
+                            ps[1] = ss[1];
+                            ps[2] = ss[2];
+                            ps[3] = ss[3];
+                        }
                     }
                 }
 
