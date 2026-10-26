@@ -571,9 +571,10 @@ namespace ExtendedControls
         }
 
         // windows default colours as set up above, with new apr 25 colours filled in by fillinnewoptions
-        public Theme(string name)         
+        public Theme(string name, string font)         
         {
             this.Name = name;
+            this.FontName = font;
             FillInNewOptions(false);         // Fill in any missing transparent entries from other info
         }
 

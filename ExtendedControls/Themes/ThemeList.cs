@@ -35,22 +35,33 @@ namespace ExtendedControls
 
         public void LoadBaseThemes()                                    // base themes load
         {
+            bool windows = Environment.OSVersion.Platform == PlatformID.Win32NT;
+
             themelist.Clear();
 
-            themelist.Add(new Theme("Windows Default"));         // windows default..
+            string stdfont = windows ? "Microsoft Sans Serif" : "Ubuntu Sans";
+            if (!FontHandler.IsFontAvailable(stdfont))
+                stdfont = "DejaVu Sans";
+            string Arial = windows ? "Arial" : "Liberation Sans";
+            string Verdana = windows ? "Verdana" : "DejaVu Sans";
+            string EuroCaps = "Euro Caps";
+            string CalistoMT = windows ? "Calisto MT" : "FreeSerif";
+            string ArialNarrow = windows ? "Arial Narrow" : "Liberation Sans Narrow";
 
-            var wd = new Theme("Windows Default Gradient Buttons");
+            themelist.Add(new Theme("Windows Default", stdfont));         // windows default..
+
+            var wd = new Theme("Windows Default Gradient Buttons", stdfont);
             wd.ButtonStyle = Theme.ButtonstyleGradient;
             themelist.Add(wd);
 
-            wd = new Theme("Windows Default Flat Buttons");
+            wd = new Theme("Windows Default Flat Buttons", stdfont);
             wd.ButtonStyle = Theme.ButtonstyleFlat;
             themelist.Add(wd);
 
             Color hgb = Color.FromArgb(255, 10, 90, 10);
             Color c64 = Color.FromArgb(255, 64, 64, 64);
             Color c55 = Color.FromArgb(255, 55, 55, 55);
-            Color c48 = Color.FromArgb(255, 48,48,48);
+            Color c48 = Color.FromArgb(255, 48, 48, 48);
             Color c32 = Color.FromArgb(255, 32, 32, 32);
 
             var orangetheme = new Theme("Orange Delight", Color.Black,
@@ -66,51 +77,51 @@ namespace ExtendedControls
                 Color.Orange,  // label
                 Color.FromArgb(255, 32, 32, 32), Color.Orange, Color.FromArgb(255, 130, 71, 0), // group back, text, border
                 Color.DarkOrange, // tab control
-                Color.Black, Color.DarkOrange, 
+                Color.Black, Color.DarkOrange,
                 Color.Orange, // spanel
                 Color.Green, // overlay
-                false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular);
+                false, 95, stdfont, 8.25F, FontStyle.Regular);
 
-            var elite = new Theme("Elite EuroCaps Less Border",
+            var elite = new Theme("Elite " + EuroCaps + " Less Border",
                 // Form
-                Color.Black, 
+                Color.Black,
                 // ButtonBackColor (+2)/CheckBoxBorderColor, ButtonTextColor, ButtonBorderColor, ButtonStyle
-                c64, Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient, 
+                c64, Color.Orange, Color.FromArgb(255, 96, 96, 96), Theme.ButtonstyleGradient,
                 // GridBorderBack, GridBorderText
-                Color.FromArgb(255, 176, 115, 0), Color.Black,  
+                Color.FromArgb(255, 176, 115, 0), Color.Black,
                 // GridCellBack, GridCellAltBack, GridCellText, GridCellAltText, GridHightLightBack
-                c32, c32, Color.Orange, Color.Orange, hgb, 
+                c32, c32, Color.Orange, Color.Orange, hgb,
                 // GridBorderLines
-                Color.DarkOrange, 
+                Color.DarkOrange,
                 // GridSliderBack (+2), GridScrollArrowBack and GridScrollButtonBack (2), GridArrow 
-                c32, Color.Orange, Color.DarkOrange, 
+                c32, Color.Orange, Color.DarkOrange,
                 // TextBlockBackColor, TextBoxForeColor, TextBlockHighLightColor, TextBoxSuccessColor
                 c32, Color.Orange, Color.Red, Color.Green,
                 // TextBoxBorderColor (+2), 
                 c64, Theme.TextboxborderstyleColor,
                 // TextBoxSliderBack (+2), TextBoxScrollArrow/ComboBoxScrollArrow, TextBoxScrollArrowBack (+2) and TextBoxScrollButtonBack (+2)
-                c32, Color.Orange, Color.DarkOrange, 
+                c32, Color.Orange, Color.DarkOrange,
                 // CheckBoxText/CheckBoxBack (+2), CheckBoxTick, CheckBoxButtonTickedBack (+2)
                 Color.Orange, Color.FromArgb(255, 65, 33, 33), c64,
                 // MenuBack, MenuFore, MenuSelectedBack, MenuSelectedText
-                Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,  
+                Color.Black, Color.Orange, Color.DarkOrange, Color.Yellow,
                 // LabelColor
-                Color.Orange, 
+                Color.Orange,
                 // GroupBack[], GroupFore, GroupBorder (+2)
-                Color.Black, Color.Orange, Color.FromArgb(255, 130, 71, 0), 
+                Color.Black, Color.Orange, Color.FromArgb(255, 130, 71, 0),
                 // TabControlBorder (+2)
-                Color.DarkOrange, 
+                Color.DarkOrange,
                 // MenuDropDownBack, MenuBorder
-                Color.Black, Color.DarkOrange, 
+                Color.Black, Color.DarkOrange,
                 // SPanelColor, TransparentColorKey
-                Color.Orange, Color.Green, 
+                Color.Orange, Color.Green,
                 // WindowsFrame, Opacity
-                false, 100, 
+                false, 100,
                 // FontName, FontSize, FontStyle
-                "Euro Caps", 12F, FontStyle.Regular);
+                EuroCaps, 12F, FontStyle.Regular);
 
 
-            var elitegradient = new Theme(elite, "Elite EuroCaps Gradient");
+            var elitegradient = new Theme(elite, "Elite " + EuroCaps + " Gradient");
             elitegradient.Panel1[0] = elitegradient.TabControlBack[0] = elitegradient.TabStripBack[0] = c32;
             elitegradient.Panel1[1] = elitegradient.TabControlBack[1] = elitegradient.TabStripBack[1] = Color.Red.Multiply(0.4f);
             elitegradient.Panel1[2] = elitegradient.TabControlBack[2] = elitegradient.TabStripBack[2] = Color.Magenta.Multiply(0.4f);
@@ -138,10 +149,10 @@ namespace ExtendedControls
                 Color.FromArgb(255, 240, 240, 240),  // label
                 Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 235, 110, 20), Color.FromArgb(255, 60, 55, 50), // group back, text, border
                 Color.FromArgb(255, 40, 45, 50), // tab control borderlines
-                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), 
+                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55),
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 Color.Green, // overlay
-                false, 100, "Arial", 9.75F, FontStyle.Regular);
+                false, 100, Arial, 9.75F, FontStyle.Regular);
 
             var edsm = new Theme("EDSM", Color.FromArgb(255, 39, 43, 48), // form
                 Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 245, 245, 245), Color.FromArgb(255, 41, 46, 51), Theme.ButtonstyleFlat, // button back, text, border
@@ -149,7 +160,7 @@ namespace ExtendedControls
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 200, 200, 200), hgb, // back/alt fore/alt
                 Color.FromArgb(255, 62, 68, 77), // borderlines
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // grid sliderback, arrow, scrollbutton
-                
+
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 248, 148, 6), Color.FromArgb(255, 90, 196, 90), Color.FromArgb(255, 46, 51, 56), Theme.TextboxborderstyleColor, // textbox back, fore, highlight, success, border
                 Color.FromArgb(255, 28, 30, 34), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 72, 78, 85), // text sliderback, scrollarrow, scrollbutton
                 Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 0, 129, 0), c64, // checkbox, checkboxtick
@@ -157,10 +168,10 @@ namespace ExtendedControls
                 Color.FromArgb(255, 200, 200, 200),  // label
                 Color.FromArgb(255, 46, 51, 56), Color.FromArgb(255, 200, 200, 200), Color.FromArgb(255, 41, 46, 51), // group back, text, border
                 Color.FromArgb(255, 41, 46, 51), // tab control borderlines
-                Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56), 
+                Color.FromArgb(255, 71, 77, 84), Color.FromArgb(255, 46, 51, 56),
                 Color.FromArgb(255, 255, 0, 0), // spanel
                 Color.Green, // overlay
-                false, 100, "Arial", 10.25F, FontStyle.Regular);
+                false, 100, Arial, 10.25F, FontStyle.Regular);
 
             var materialdark = new Theme("Material Dark", Color.FromArgb(255, 54, 57, 63), // form
                 Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 41, 46, 51), Theme.ButtonstyleFlat, // button back, text, border
@@ -175,10 +186,10 @@ namespace ExtendedControls
                 Color.FromArgb(255, 240, 240, 240),  // label
                 Color.FromArgb(255, 45, 50, 55), Color.FromArgb(255, 255, 160, 0), Color.FromArgb(255, 129, 138, 192), // group back, text, border
                 Color.FromArgb(255, 40, 45, 50), // tab control borderlines
-                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55), 
+                Color.FromArgb(255, 75, 75, 75), Color.FromArgb(255, 45, 50, 55),
                 Color.FromArgb(255, 250, 150, 8), // spanel
                 Color.Green, // overlay
-                false, 100, "Microsoft Sans Serif", 9.75F, FontStyle.Regular);
+                false, 100, stdfont, 9.75F, FontStyle.Regular);
 
             Color r1 = Color.FromArgb(255, 160, 0, 0);
             Color r2 = Color.FromArgb(255, 64, 0, 0);
@@ -196,12 +207,12 @@ namespace ExtendedControls
                 r1,  // label
                 Color.FromArgb(255, 8, 8, 8), r1, Color.FromArgb(255, 130, 71, 0), // group
                 r2, // tab control
-                Color.Black, r2, 
+                Color.Black, r2,
                 r1, // spanel
                 Color.Green, // overlay
-                false, 95, "Microsoft Sans Serif", 10F, FontStyle.Regular);
+                false, 95, stdfont, 10F, FontStyle.Regular);
 
-            var eurocapsgrey = new Theme("EuroCaps Grey",
+            var eurocapsgrey = new Theme(EuroCaps + " Grey",
                                         SystemColors.Menu,
                                         SystemColors.Control, SystemColors.ControlText, Color.DarkGray, Theme.ButtonstyleGradient,// button
                                         SystemColors.Menu, SystemColors.MenuText,  // grid border
@@ -215,12 +226,12 @@ namespace ExtendedControls
                                         SystemColors.MenuText,  // label
                                         SystemColors.Menu, SystemColors.MenuText, SystemColors.ControlDark, // group
                                         SystemColors.ControlDark, // tab control
-                                        SystemColors.Menu, SystemColors.Menu, 
+                                        SystemColors.Menu, SystemColors.Menu,
                                         SystemColors.ControlLightLight, // spanel
                                         Color.Green, // overlay
-                                        false, 95, "Euro Caps", 12F, FontStyle.Regular);
+                                        false, 95, EuroCaps, 12F, FontStyle.Regular);
 
-            var verdanagrey = new Theme("Verdana Grey",
+            var verdanagrey = new Theme(Verdana + " Grey",
                                         SystemColors.Menu,
                                         SystemColors.Control, SystemColors.ControlText, Color.DarkGray, Theme.ButtonstyleGradient,// button
                                         SystemColors.Menu, SystemColors.MenuText,  // grid border
@@ -234,10 +245,10 @@ namespace ExtendedControls
                                         SystemColors.MenuText,  // label
                                         SystemColors.Menu, SystemColors.MenuText, SystemColors.ControlDark, // group
                                         SystemColors.ControlDark, // tab control
-                                        SystemColors.Menu, SystemColors.Menu, 
+                                        SystemColors.Menu, SystemColors.Menu,
                                         SystemColors.ControlLightLight, // spanel
                                         Color.Green, // overlay
-                                        false, 95, "Verdana", 8F, FontStyle.Regular);
+                                        false, 95, Verdana, 8F, FontStyle.Regular);
 
             var bluewonder = new Theme("Blue Wonder", Color.DarkBlue,
                                                Color.Blue, Color.White, Color.White, Theme.ButtonstyleGradient,// button
@@ -252,10 +263,10 @@ namespace ExtendedControls
                                                Color.White,  // label
                                                Color.DarkBlue, Color.White, Color.Blue, // group
                                                Color.Blue,
-                                               Color.DarkBlue, Color.White, 
+                                               Color.DarkBlue, Color.White,
                                                Color.LightBlue, // spanel
                                                Color.Green, // overlay
-                                               false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular);
+                                               false, 95, stdfont, 8.25F, FontStyle.Regular);
 
             Color baizegreen = Color.FromArgb(255, 13, 68, 13);
             var green = new Theme("Green Baize", baizegreen,
@@ -274,7 +285,7 @@ namespace ExtendedControls
                                                baizegreen, Color.White,
                                                baizegreen,  // spanel
                                                Color.Green, // overlay
-                                               false, 95, "Microsoft Sans Serif", 8.25F, FontStyle.Regular);
+                                               false, 95, stdfont, 8.25F, FontStyle.Regular);
 
             var deepbluesky = new Theme("Deep Blue Sky",
                             Color.FromArgb(255, 0, 0, 0), // form
@@ -318,84 +329,84 @@ namespace ExtendedControls
                             Color.FromArgb(255, 0, 50, 100), // toolstrip_border
                             Color.FromArgb(255, 0, 128, 255), // s_panel
                             Color.FromArgb(255, 0, 128, 0), // transparentcolorkey
-                            false, 100, "Verdana", 8, FontStyle.Regular);
+                            false, 100, Verdana, 8, FontStyle.Regular);
 
             // Now form the theme list up from the above basic sets
 
             themelist.Add(orangetheme);
 
             // ON purpose, always show them the euro caps one to give a hint!
-            themelist.Add(new Theme(orangetheme, "Elite EuroCaps", "Euro Caps", 12F, 95));
+            themelist.Add(new Theme(orangetheme, "Elite " + EuroCaps, EuroCaps, 12F, 95));
 
-            if (FontHandler.IsFontAvailable("Euro Caps"))
+            if (FontHandler.IsFontAvailable(EuroCaps))
             {
-                themelist.Add(new Theme(orangetheme, "Elite EuroCaps High DPI", "Euro Caps", 20F, 95));
+                themelist.Add(new Theme(orangetheme, "Elite " + EuroCaps + " High DPI", EuroCaps, 20F, 95));
                 themelist.Add(elite);
                 themelist.Add(elitegradient);
             }
 
-            if (FontHandler.IsFontAvailable("Verdana"))
+            if (FontHandler.IsFontAvailable(Verdana))
             {
-                themelist.Add(new Theme(elite, "Elite Verdana", "Verdana", 10F));
-                themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant", "Verdana", 10F));
-                themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Skinny Scroll", "Verdana", 10F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
-                themelist.Add(new Theme(elite, "Elite Verdana Small", "Verdana", 8F));
-                themelist.Add(new Theme(elite, "Elite Verdana Small Skinny Scroll", "Verdana", 8F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
-                themelist.Add(new Theme(elitegradient, "Elite Verdana Small Gradiant Skinny Scroll", "Verdana", 8F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
-                themelist.Add(new Theme(elite, "Elite Verdana High DPI", "Verdana", 20F));
-                themelist.Add(new Theme(elite, "Elite Verdana Alt Grid", "Verdana", 10F) { GridCellAltBack = c55 });
-                themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Alt Grid", "Verdana", 10F) { GridCellAltBack = c55 });
-                themelist.Add(new Theme(elite, "Elite Verdana Alt Grid High DPI", "Verdana", 20F) { GridCellAltBack = c55 });
-                themelist.Add(new Theme(elitegradient, "Elite Verdana Gradiant Alt Grid High DPI", "Verdana", 20F) { GridCellAltBack = c55 });
+                themelist.Add(new Theme(elite, "Elite " + Verdana + "", Verdana, 10F));
+                themelist.Add(new Theme(elitegradient, "Elite " + Verdana + " Gradiant", Verdana, 10F));
+                themelist.Add(new Theme(elitegradient, "Elite " + Verdana + " Gradiant Skinny Scroll", Verdana, 10F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
+                themelist.Add(new Theme(elite, "Elite " + Verdana + " Small", Verdana, 8F));
+                themelist.Add(new Theme(elite, "Elite " + Verdana + " Small Skinny Scroll", Verdana, 8F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
+                themelist.Add(new Theme(elitegradient, "Elite " + Verdana + " Small Gradiant Skinny Scroll", Verdana, 8F) { SkinnyScrollBars = true, SkinnyScrollBarsHaveButtons = true });
+                themelist.Add(new Theme(elite, "Elite " + Verdana + " High DPI", Verdana, 20F));
+                themelist.Add(new Theme(elite, "Elite " + Verdana + " Alt Grid", Verdana, 10F) { GridCellAltBack = c55 });
+                themelist.Add(new Theme(elitegradient, "Elite " + Verdana + " Gradiant Alt Grid", Verdana, 10F) { GridCellAltBack = c55 });
+                themelist.Add(new Theme(elite, "Elite " + Verdana + " Alt Grid High DPI", Verdana, 20F) { GridCellAltBack = c55 });
+                themelist.Add(new Theme(elitegradient, "Elite " + Verdana + " Gradiant Alt Grid High DPI", Verdana, 20F) { GridCellAltBack = c55 });
             }
 
-            if (FontHandler.IsFontAvailable("Calisto MT"))
+            if (FontHandler.IsFontAvailable(CalistoMT))
             {
-                themelist.Add(new Theme(elite, "Elite Calisto", "Calisto MT", 12F));
-                themelist.Add(new Theme(elite, "Elite Calisto Small", "Calisto MT", 8F));
-                themelist.Add(new Theme(elite, "Elite Calisto High DPI", "Calisto MT", 20F));
+                themelist.Add(new Theme(elite, "Elite " + CalistoMT + "", CalistoMT, 12F));
+                themelist.Add(new Theme(elite, "Elite " + CalistoMT + " Small", CalistoMT, 8F));
+                themelist.Add(new Theme(elite, "Elite " + CalistoMT + " High DPI", CalistoMT, 20F));
             }
 
             themelist.Add(easydark);
-            themelist.Add(new Theme(easydark, "Easy Dark High DPI", "Arial", 20F));
+            themelist.Add(new Theme(easydark, "Easy Dark High DPI", Arial, 20F));
 
             themelist.Add(edsm);
-            themelist.Add(new Theme(edsm, "EDSM Skinny Scroll", "Arial") { SkinnyScrollBars = true});
-            themelist.Add(new Theme(edsm, "EDSM High DPI", "Arial", 20F));
+            themelist.Add(new Theme(edsm, "EDSM Skinny Scroll", Arial) { SkinnyScrollBars = true });
+            themelist.Add(new Theme(edsm, "EDSM High DPI", Arial, 20F));
 
-            if (FontHandler.IsFontAvailable("Arial Narrow"))
+            if (FontHandler.IsFontAvailable(ArialNarrow))
             {
-                themelist.Add(new Theme(edsm, "EDSM Arial Narrow", "Arial Narrow", 10.25F, 95));
-                themelist.Add(new Theme(edsm, "EDSM Arial Narrow High DPI", "Arial Narrow", 20F, 95));
+                themelist.Add(new Theme(edsm, "EDSM " + ArialNarrow, ArialNarrow, 10.25F, 95));
+                themelist.Add(new Theme(edsm, "EDSM " + ArialNarrow + " High DPI", ArialNarrow, 20F, 95));
             }
-            if (FontHandler.IsFontAvailable("Euro Caps"))
+            if (FontHandler.IsFontAvailable(EuroCaps))
             {
-                themelist.Add(new Theme(edsm, "EDSM EuroCaps", "Euro Caps", 10.25F, 95));
-                themelist.Add(new Theme(edsm, "EDSM EuroCaps High DPI", "Euro Caps", 20F, 95));
+                themelist.Add(new Theme(edsm, "EDSM " + EuroCaps, EuroCaps, 10.25F, 95));
+                themelist.Add(new Theme(edsm, "EDSM " + EuroCaps + " High DPI", EuroCaps, 20F, 95));
             }
 
             themelist.Add(materialdark);
-            themelist.Add(new Theme(materialdark, "Material Dark High DPI", "Microsoft Sans Serif", 20F));
+            themelist.Add(new Theme(materialdark, "Material Dark High DPI", stdfont, 20F));
 
             themelist.Add(nightvision);
 
-            if (FontHandler.IsFontAvailable("Euro Caps"))
-                themelist.Add(new Theme(themelist[themelist.Count - 1], "Night Vision EuroCaps", "Euro Caps", 12F, 95));
+            if (FontHandler.IsFontAvailable(EuroCaps))
+                themelist.Add(new Theme(themelist[themelist.Count - 1], "Night Vision " + EuroCaps, EuroCaps, 12F, 95));
 
-            if (FontHandler.IsFontAvailable("Euro Caps"))
+            if (FontHandler.IsFontAvailable(EuroCaps))
                 themelist.Add(eurocapsgrey);
 
-            if (FontHandler.IsFontAvailable("Verdana"))
+            if (FontHandler.IsFontAvailable(Verdana))
                 themelist.Add(verdanagrey);
 
             themelist.Add(bluewonder);
 
             themelist.Add(green);
 
-            if (FontHandler.IsFontAvailable("Verdana"))     
+            if (FontHandler.IsFontAvailable(Verdana))
             {                                                                               // exported via theme load in EDDiscovery
                 themelist.Add(deepbluesky);
-                themelist.Add(new Theme(deepbluesky, "Deep Blue Sky High DPI", "Verdana", 20));
+                themelist.Add(new Theme(deepbluesky, "Deep Blue Sky High DPI", Verdana, 20));
             }
         }
 
@@ -413,7 +424,7 @@ namespace ExtendedControls
 
                     Theme set = Theme.LoadFile(fi.FullName, name);
 
-                    if ( set != null)
+                    if (set != null)
                     {
                         int cur = FindThemeIndex(name);
                         if (cur >= 0)
@@ -424,7 +435,7 @@ namespace ExtendedControls
 
                 return true;
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Theme load file error {ex}");
                 return false;
