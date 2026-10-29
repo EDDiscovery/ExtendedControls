@@ -243,6 +243,9 @@ namespace ExtendedControls
             numericUpDownMouseSelectedScaling.Value = (decimal)Theme.MouseSelectedScaling;
             numericUpDownDisabledScaling.Value = (decimal)Theme.DisabledScaling;
 
+            checkBoxButtonImageBackground.Checked = Theme.ImageButtonsHaveBackground;
+            checkBoxButtonImageBorder.Checked = Theme.ImageButtonsHaveBorders;
+
             this.checkBox_theme_windowframe.CheckedChanged += new System.EventHandler(this.checkBox_theme_windowframe_CheckedChanged);
             this.comboBoxSkinnyStyle.SelectedIndex = Theme.SkinnyScrollBars ? (Theme.SkinnyScrollBarsHaveButtons ? 2 : 1) : 0;
             this.comboBoxSkinnyStyle.SelectedIndexChanged += ComboBoxSkinnyStyle_SelectedIndexChanged;
@@ -251,6 +254,8 @@ namespace ExtendedControls
             this.numericUpDownMouseSelectedScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseSelectedScaling_ValueChanged);
             this.numericUpDownMouseOverScaling.ValueChanged += new System.EventHandler(this.numericUpDownMouseOverScaling_ValueChanged);
             this.numericUpDownDialogFontScaling.ValueChanged += new System.EventHandler(this.numericUpDownDialogFontScaling_ValueChanged);
+            this.checkBoxButtonImageBackground.CheckedChanged += CheckBoxButtonImageBackground_CheckedChanged;
+            this.checkBoxButtonImageBorder.CheckedChanged += CheckBoxButtonImageBorder_CheckedChanged;
         }
 
         // all call this to change 
@@ -270,7 +275,7 @@ namespace ExtendedControls
         // Colour patch, can handle indexes.
         private void InitColourPatch(Panel pn, string tooltip, PropertyInfo pi, int index = 0)
         {
-            toolTip1.SetToolTip(pn, tooltip);        // assign tool tips and indicate which color to edit
+            toolTip.SetToolTip(pn, tooltip);        // assign tool tips and indicate which color to edit
             Array a = null;
             if (pi.PropertyType.IsArray)
             {
@@ -319,7 +324,7 @@ namespace ExtendedControls
 
         private void InitFloat(NumericUpDown c, string tooltip, PropertyInfo pi)
         {
-            toolTip1.SetToolTip(c, tooltip);        // assign tool tips and indicate which color to edit
+            toolTip.SetToolTip(c, tooltip);        // assign tool tips and indicate which color to edit
             c.Tag = pi;
             c.Value = (decimal)(float)pi.GetValue(Theme);
             c.ValueChanged += (s, e) => {
@@ -332,7 +337,7 @@ namespace ExtendedControls
         // Gradient, can handle indexes.
         private void InitGradient( ButtonAngle c, string tooltip, PropertyInfo pi, int index = 0)
         {
-            toolTip1.SetToolTip(c, tooltip);        // assign tool tips and indicate which color to edit
+            toolTip.SetToolTip(c, tooltip);        // assign tool tips and indicate which color to edit
             Array a = null;
 
             if (pi.PropertyType.IsArray)
@@ -398,6 +403,18 @@ namespace ExtendedControls
             Theme.WindowsFrame = checkBox_theme_windowframe.Checked;
             Apply();
         }
+        private void CheckBoxButtonImageBorder_CheckedChanged(object sender, EventArgs e)
+        {
+            Theme.ImageButtonsHaveBorders = checkBoxButtonImageBorder.Checked;
+            Apply();
+        }
+
+        private void CheckBoxButtonImageBackground_CheckedChanged(object sender, EventArgs e)
+        {
+            Theme.ImageButtonsHaveBackground= checkBoxButtonImageBackground.Checked;
+            Apply();
+        }
+
 
         private void ComboBoxSkinnyStyle_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -555,6 +572,10 @@ namespace ExtendedControls
             }
         }
 
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 
     public class ButtonAngle : Button

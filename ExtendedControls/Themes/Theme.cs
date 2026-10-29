@@ -40,7 +40,7 @@ namespace ExtendedControls
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "form" })]                     //existing
         public Color Form { get; set; } = SystemColors.Menu;
 
-        //-------------
+        //------------- BUTTONS
 
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_back" })]      //existing
@@ -56,6 +56,11 @@ namespace ExtendedControls
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_text" })]      //existing
         public Color ButtonTextColor { get; set; } = SystemColors.ControlText;
+
+        [JsonCustomFormat("AltFmt", "Std")]
+        public bool ImageButtonsHaveBorders { get; set; } = false;
+        [JsonCustomFormat("AltFmt", "Std")]
+        public bool ImageButtonsHaveBackground { get; set; } = false;
 
         //-------------
 
@@ -1030,8 +1035,10 @@ namespace ExtendedControls
 
             var jo = JToken.FromObject(this, false, membersearchflags: System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public,
                                         setname: altnames ? "AltFmt" : "Std",
-                                        customconverter: (mi,o) => {
-                                            return JToken.CreateToken(System.Drawing.ColorTranslator.ToHtml((Color)o)); }).Object();
+                                        customconverter: (mi,o) => 
+                                        {
+                                            return o is bool ? JToken.CreateToken(o) : JToken.CreateToken(System.Drawing.ColorTranslator.ToHtml((Color)o)); 
+                                        }).Object();
             return jo;
         }
 

@@ -218,7 +218,7 @@ namespace ExtendedControls
                     }
                 }
 
-                //System.Diagnostics.Debug.WriteLine($"\r\nControl Button {Name} {ClientRectangle}, {FlatStyle}, ba {buttonarea} back {colBack}-{colBack2} border {colBorder}");
+                //System.Diagnostics.Debug.WriteLine($"\r\nControl Button {Name} {ClientRectangle}, {FlatStyle}, ba {buttonarea} back {colBack}-{colBack2} border {colBorder}:{FlatAppearance.BorderSize}");
 
                 if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
                 {
@@ -366,21 +366,36 @@ namespace ExtendedControls
                         ctrl.BackColor = ctrl.BackColor2 = ctrl.Parent.BackColor;
                         ctrl.ButtonDisabledScaling = 1.0F;          
                     }
-                    else
+                    else 
                     {
-                        ctrl.BackColor = ctrl.BackColor2 = t.Form;
+                        if (t.ImageButtonsHaveBackground)
+                        {
+                            ctrl.BackColor = t.ButtonBackColor;
+                            ctrl.BackColor2 = t.IsButtonGradientStyle ? t.ButtonBackColor2 : t.ButtonBackColor;
+                        }
+                        else
+                        {
+                            ctrl.BackColor = ctrl.BackColor2 = t.Form;
+                        }
                     }
 
-                    ctrl.FlatAppearance.BorderColor = t.Form;
-                    ctrl.FlatAppearance.BorderSize = 0;
-                    // oct 26 decided still like no border ctrl.FlatAppearance.BorderColor = t.ButtonBorderColor;  ctrl.FlatAppearance.BorderSize = 1;
+                    if (t.ImageButtonsHaveBorders)
+                    {
+                        ctrl.FlatAppearance.BorderColor = t.ButtonBorderColor; 
+                        ctrl.FlatAppearance.BorderSize = 1;
+                    }
+                    else
+                    {
+                        ctrl.FlatAppearance.BorderColor = t.Form;
+                        ctrl.FlatAppearance.BorderSize = 0;
+                    }
                 }
                 else
                 {
                     // no image, gradient only uses back color 2
 
-                    ctrl.BackColor = t.ButtonBackColor;       
-                    ctrl.BackColor2 = t.IsButtonGradientStyle ? t.ButtonBackColor2 : t.ButtonBackColor;       
+                    ctrl.BackColor = t.ButtonBackColor;
+                    ctrl.BackColor2 = t.IsButtonGradientStyle ? t.ButtonBackColor2 : t.ButtonBackColor;
                     ctrl.FlatAppearance.BorderColor = t.ButtonBorderColor;
                     ctrl.FlatAppearance.BorderSize = 1;
                 }

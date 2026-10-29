@@ -29,11 +29,10 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.buttonStd = new System.Windows.Forms.Button();
-            this.extButtonText = new ExtendedControls.ExtButton();
+            this.extButtonImage = new ExtendedControls.ExtButton();
+            this.extButtonEditTheme = new ExtendedControls.ExtButton();
             this.buttonExt1 = new ExtendedControls.ExtButton();
             this.buttonExt2 = new ExtendedControls.ExtButton();
-            this.extButton1 = new ExtendedControls.ExtButton();
             this.SuspendLayout();
             // 
             // panel1
@@ -44,29 +43,36 @@
             this.panel1.Size = new System.Drawing.Size(48, 48);
             this.panel1.TabIndex = 0;
             // 
-            // buttonStd
+            // extButtonImage
             // 
-            this.buttonStd.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.buttonStd.Image = global::TestExtendedControls.Properties.Resources.CaptainsLog;
-            this.buttonStd.Location = new System.Drawing.Point(242, 68);
-            this.buttonStd.Name = "buttonStd";
-            this.buttonStd.Size = new System.Drawing.Size(100, 100);
-            this.buttonStd.TabIndex = 1;
-            this.buttonStd.UseVisualStyleBackColor = true;
+            this.extButtonImage.BackColor = System.Drawing.Color.Cyan;
+            this.extButtonImage.BackColor2 = System.Drawing.Color.Red;
+            this.extButtonImage.ButtonDisabledScaling = 0.5F;
+            this.extButtonImage.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.extButtonImage.GradientDirection = 90F;
+            this.extButtonImage.Image = global::TestExtendedControls.Properties.Resources.CaptainsLog;
+            this.extButtonImage.Location = new System.Drawing.Point(48, 68);
+            this.extButtonImage.MouseOverScaling = 1.3F;
+            this.extButtonImage.MouseSelectedScaling = 1.3F;
+            this.extButtonImage.Name = "extButtonImage";
+            this.extButtonImage.Size = new System.Drawing.Size(96, 110);
+            this.extButtonImage.TabIndex = 2;
+            this.extButtonImage.UseVisualStyleBackColor = false;
             // 
-            // extButtonText
+            // extButtonEditTheme
             // 
-            this.extButtonText.BackColor2 = System.Drawing.Color.Red;
-            this.extButtonText.ButtonDisabledScaling = 0.5F;
-            this.extButtonText.GradientDirection = 90F;
-            this.extButtonText.Location = new System.Drawing.Point(35, 13);
-            this.extButtonText.MouseOverScaling = 1.3F;
-            this.extButtonText.MouseSelectedScaling = 1.3F;
-            this.extButtonText.Name = "extButtonText";
-            this.extButtonText.Size = new System.Drawing.Size(145, 23);
-            this.extButtonText.TabIndex = 0;
-            this.extButtonText.Text = "Text";
-            this.extButtonText.UseVisualStyleBackColor = true;
+            this.extButtonEditTheme.BackColor2 = System.Drawing.Color.Red;
+            this.extButtonEditTheme.ButtonDisabledScaling = 0.5F;
+            this.extButtonEditTheme.GradientDirection = 90F;
+            this.extButtonEditTheme.Location = new System.Drawing.Point(35, 13);
+            this.extButtonEditTheme.MouseOverScaling = 1.3F;
+            this.extButtonEditTheme.MouseSelectedScaling = 1.3F;
+            this.extButtonEditTheme.Name = "extButtonEditTheme";
+            this.extButtonEditTheme.Size = new System.Drawing.Size(145, 23);
+            this.extButtonEditTheme.TabIndex = 0;
+            this.extButtonEditTheme.Text = "Edit Theme";
+            this.extButtonEditTheme.UseVisualStyleBackColor = true;
+            this.extButtonEditTheme.Click += new System.EventHandler(this.extButtonText_Click);
             // 
             // buttonExt1
             // 
@@ -108,31 +114,14 @@
             this.buttonExt2.Text = "Hello";
             this.buttonExt2.UseVisualStyleBackColor = false;
             // 
-            // extButton1
-            // 
-            this.extButton1.BackColor = System.Drawing.Color.Cyan;
-            this.extButton1.BackColor2 = System.Drawing.Color.Red;
-            this.extButton1.ButtonDisabledScaling = 0.5F;
-            this.extButton1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.extButton1.GradientDirection = 90F;
-            this.extButton1.Image = global::TestExtendedControls.Properties.Resources.CaptainsLog;
-            this.extButton1.Location = new System.Drawing.Point(48, 68);
-            this.extButton1.MouseOverScaling = 1.3F;
-            this.extButton1.MouseSelectedScaling = 1.3F;
-            this.extButton1.Name = "extButton1";
-            this.extButton1.Size = new System.Drawing.Size(96, 110);
-            this.extButton1.TabIndex = 2;
-            this.extButton1.UseVisualStyleBackColor = false;
-            // 
             // TestButtons2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(736, 664);
-            this.Controls.Add(this.extButton1);
-            this.Controls.Add(this.buttonStd);
-            this.Controls.Add(this.extButtonText);
+            this.Controls.Add(this.extButtonImage);
+            this.Controls.Add(this.extButtonEditTheme);
             this.Name = "TestButtons2";
             this.Text = "TestImageButtons";
             this.ResumeLayout(false);
@@ -143,8 +132,7 @@
         private ExtendedControls.ExtButton buttonExt1;
         private ExtendedControls.ExtButton buttonExt2;
         private System.Windows.Forms.Panel panel1;
-        private ExtendedControls.ExtButton extButtonText;
-        private System.Windows.Forms.Button buttonStd;
-        private ExtendedControls.ExtButton extButton1;
+        private ExtendedControls.ExtButton extButtonEditTheme;
+        private ExtendedControls.ExtButton extButtonImage;
     }
 }

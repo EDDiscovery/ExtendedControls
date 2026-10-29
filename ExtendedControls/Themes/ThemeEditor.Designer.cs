@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright © 2016-2019 EDDiscovery development team
+ * Copyright 2016-2026 EDDiscovery development team
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
  * file except in compliance with the License. You may obtain a copy of the License at
@@ -47,6 +47,8 @@ namespace ExtendedControls
             this.components = new System.ComponentModel.Container();
             this.buttonOK = new System.Windows.Forms.Button();
             this.groupBoxColors = new System.Windows.Forms.GroupBox();
+            this.checkBoxButtonImageBackground = new System.Windows.Forms.CheckBox();
+            this.checkBoxButtonImageBorder = new System.Windows.Forms.CheckBox();
             this.buttonPanelGradient8 = new ExtendedControls.ButtonAngle();
             this.buttonPanelGradient7 = new ExtendedControls.ButtonAngle();
             this.buttonPanelGradient6 = new ExtendedControls.ButtonAngle();
@@ -252,7 +254,7 @@ namespace ExtendedControls
             this.label_opacity = new System.Windows.Forms.Label();
             this.trackBar_theme_opacity = new System.Windows.Forms.TrackBar();
             this.checkBox_theme_windowframe = new System.Windows.Forms.CheckBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.numericUpDownDisabledScaling = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownMouseSelectedScaling = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownMouseOverScaling = new System.Windows.Forms.NumericUpDown();
@@ -298,6 +300,8 @@ namespace ExtendedControls
             // 
             // groupBoxColors
             // 
+            this.groupBoxColors.Controls.Add(this.checkBoxButtonImageBackground);
+            this.groupBoxColors.Controls.Add(this.checkBoxButtonImageBorder);
             this.groupBoxColors.Controls.Add(this.buttonPanelGradient8);
             this.groupBoxColors.Controls.Add(this.buttonPanelGradient7);
             this.groupBoxColors.Controls.Add(this.buttonPanelGradient6);
@@ -506,6 +510,28 @@ namespace ExtendedControls
             this.groupBoxColors.TabStop = false;
             this.groupBoxColors.Text = "Colours";
             // 
+            // checkBoxButtonImageBackground
+            // 
+            this.checkBoxButtonImageBackground.AutoSize = true;
+            this.checkBoxButtonImageBackground.Location = new System.Drawing.Point(549, 191);
+            this.checkBoxButtonImageBackground.Name = "checkBoxButtonImageBackground";
+            this.checkBoxButtonImageBackground.Size = new System.Drawing.Size(71, 17);
+            this.checkBoxButtonImageBackground.TabIndex = 19;
+            this.checkBoxButtonImageBackground.Text = "Img Back";
+            this.toolTip.SetToolTip(this.checkBoxButtonImageBackground, "Buttons with just images do they have background?");
+            this.checkBoxButtonImageBackground.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxButtonImageBorder
+            // 
+            this.checkBoxButtonImageBorder.AutoSize = true;
+            this.checkBoxButtonImageBorder.Location = new System.Drawing.Point(549, 169);
+            this.checkBoxButtonImageBorder.Name = "checkBoxButtonImageBorder";
+            this.checkBoxButtonImageBorder.Size = new System.Drawing.Size(77, 17);
+            this.checkBoxButtonImageBorder.TabIndex = 19;
+            this.checkBoxButtonImageBorder.Text = "Img Border";
+            this.toolTip.SetToolTip(this.checkBoxButtonImageBorder, "Buttons with just images do they have border?");
+            this.checkBoxButtonImageBorder.UseVisualStyleBackColor = true;
+            // 
             // buttonPanelGradient8
             // 
             this.buttonPanelGradient8.Image = global::ExtendedControls.Properties.Resources.clock;
@@ -657,7 +683,7 @@ namespace ExtendedControls
             // buttonCheckBoxButtonGradient
             // 
             this.buttonCheckBoxButtonGradient.Image = global::ExtendedControls.Properties.Resources.clock;
-            this.buttonCheckBoxButtonGradient.Location = new System.Drawing.Point(669, 251);
+            this.buttonCheckBoxButtonGradient.Location = new System.Drawing.Point(669, 331);
             this.buttonCheckBoxButtonGradient.Name = "buttonCheckBoxButtonGradient";
             this.buttonCheckBoxButtonGradient.Size = new System.Drawing.Size(32, 32);
             this.buttonCheckBoxButtonGradient.TabIndex = 13;
@@ -806,7 +832,7 @@ namespace ExtendedControls
             0,
             0,
             65536});
-            this.numericUpDownCBTickStyleTickSize.Location = new System.Drawing.Point(630, 208);
+            this.numericUpDownCBTickStyleTickSize.Location = new System.Drawing.Point(630, 288);
             this.numericUpDownCBTickStyleTickSize.Maximum = new decimal(new int[] {
             1,
             0,
@@ -847,7 +873,6 @@ namespace ExtendedControls
             this.comboBox_ButtonStyle.Name = "comboBox_ButtonStyle";
             this.comboBox_ButtonStyle.Size = new System.Drawing.Size(121, 21);
             this.comboBox_ButtonStyle.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.comboBox_ButtonStyle, "Applies to Button, Checkbox, RadioBox, ComboBox etc");
             this.comboBox_ButtonStyle.SelectionChangeCommitted += new System.EventHandler(this.comboBox_ButtonStyle_SelectionChangeCommitted);
             // 
             // comboBox_TextBorder
@@ -862,7 +887,6 @@ namespace ExtendedControls
             this.comboBox_TextBorder.Name = "comboBox_TextBorder";
             this.comboBox_TextBorder.Size = new System.Drawing.Size(121, 21);
             this.comboBox_TextBorder.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.comboBox_TextBorder, "Border style to apply to textbox");
             this.comboBox_TextBorder.SelectionChangeCommitted += new System.EventHandler(this.comboBox_TextBorder_SelectionChangeCommitted);
             // 
             // panel_themeTabStripSelected
@@ -1318,7 +1342,7 @@ namespace ExtendedControls
             // label39
             // 
             this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(562, 208);
+            this.label39.Location = new System.Drawing.Point(562, 288);
             this.label39.Name = "label39";
             this.label39.Size = new System.Drawing.Size(65, 26);
             this.label39.TabIndex = 6;
@@ -1431,7 +1455,7 @@ namespace ExtendedControls
             // 
             this.label21.AutoSize = true;
             this.label21.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label21.Location = new System.Drawing.Point(562, 250);
+            this.label21.Location = new System.Drawing.Point(562, 330);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(64, 26);
             this.label21.TabIndex = 6;
@@ -1441,7 +1465,7 @@ namespace ExtendedControls
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(562, 170);
+            this.label28.Location = new System.Drawing.Point(562, 250);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(62, 13);
             this.label28.TabIndex = 6;
@@ -2221,7 +2245,7 @@ namespace ExtendedControls
             // 
             this.panel_themeCheckBoxButtonApp2.AccessibleDescription = "";
             this.panel_themeCheckBoxButtonApp2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeCheckBoxButtonApp2.Location = new System.Drawing.Point(649, 250);
+            this.panel_themeCheckBoxButtonApp2.Location = new System.Drawing.Point(649, 330);
             this.panel_themeCheckBoxButtonApp2.Name = "panel_themeCheckBoxButtonApp2";
             this.panel_themeCheckBoxButtonApp2.Size = new System.Drawing.Size(20, 32);
             this.panel_themeCheckBoxButtonApp2.TabIndex = 5;
@@ -2231,7 +2255,7 @@ namespace ExtendedControls
             // 
             this.panel_themeCheckBoxButtonApp.AccessibleDescription = "";
             this.panel_themeCheckBoxButtonApp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeCheckBoxButtonApp.Location = new System.Drawing.Point(630, 250);
+            this.panel_themeCheckBoxButtonApp.Location = new System.Drawing.Point(630, 330);
             this.panel_themeCheckBoxButtonApp.Name = "panel_themeCheckBoxButtonApp";
             this.panel_themeCheckBoxButtonApp.Size = new System.Drawing.Size(20, 32);
             this.panel_themeCheckBoxButtonApp.TabIndex = 5;
@@ -2251,7 +2275,7 @@ namespace ExtendedControls
             // 
             this.panel_themeCheckBoxTick.AccessibleDescription = "";
             this.panel_themeCheckBoxTick.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel_themeCheckBoxTick.Location = new System.Drawing.Point(630, 170);
+            this.panel_themeCheckBoxTick.Location = new System.Drawing.Point(630, 250);
             this.panel_themeCheckBoxTick.Name = "panel_themeCheckBoxTick";
             this.panel_themeCheckBoxTick.Size = new System.Drawing.Size(32, 32);
             this.panel_themeCheckBoxTick.TabIndex = 5;
@@ -2534,7 +2558,7 @@ namespace ExtendedControls
             this.numericUpDownDisabledScaling.Name = "numericUpDownDisabledScaling";
             this.numericUpDownDisabledScaling.Size = new System.Drawing.Size(56, 20);
             this.numericUpDownDisabledScaling.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.numericUpDownDisabledScaling, "Colour brightness change when item is disabled");
+            this.toolTip.SetToolTip(this.numericUpDownDisabledScaling, "Colour brightness change when item is disabled");
             // 
             // numericUpDownMouseSelectedScaling
             // 
@@ -2554,7 +2578,7 @@ namespace ExtendedControls
             this.numericUpDownMouseSelectedScaling.Name = "numericUpDownMouseSelectedScaling";
             this.numericUpDownMouseSelectedScaling.Size = new System.Drawing.Size(56, 20);
             this.numericUpDownMouseSelectedScaling.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.numericUpDownMouseSelectedScaling, "Colour brightness change when mouse is pressed on control");
+            this.toolTip.SetToolTip(this.numericUpDownMouseSelectedScaling, "Colour brightness change when mouse is pressed on control");
             // 
             // numericUpDownMouseOverScaling
             // 
@@ -2574,7 +2598,7 @@ namespace ExtendedControls
             this.numericUpDownMouseOverScaling.Name = "numericUpDownMouseOverScaling";
             this.numericUpDownMouseOverScaling.Size = new System.Drawing.Size(56, 20);
             this.numericUpDownMouseOverScaling.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.numericUpDownMouseOverScaling, "Colour brightness change when mouse goes over control");
+            this.toolTip.SetToolTip(this.numericUpDownMouseOverScaling, "Colour brightness change when mouse goes over control");
             // 
             // numericUpDownDialogFontScaling
             // 
@@ -2594,7 +2618,7 @@ namespace ExtendedControls
             this.numericUpDownDialogFontScaling.Name = "numericUpDownDialogFontScaling";
             this.numericUpDownDialogFontScaling.Size = new System.Drawing.Size(56, 20);
             this.numericUpDownDialogFontScaling.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.numericUpDownDialogFontScaling, "Pop up dialogs can have a different font size applied");
+            this.toolTip.SetToolTip(this.numericUpDownDialogFontScaling, "Pop up dialogs can have a different font size applied");
             // 
             // groupBox1
             // 
@@ -2622,6 +2646,7 @@ namespace ExtendedControls
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Other Controls";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // label27
             // 
@@ -2852,7 +2877,7 @@ namespace ExtendedControls
         private System.Windows.Forms.Label label_opacity;
         private System.Windows.Forms.TrackBar trackBar_theme_opacity;
         private System.Windows.Forms.CheckBox checkBox_theme_windowframe;
-        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Panel panel_themeTBBorder;
         private System.Windows.Forms.ComboBox comboBox_TextBorder;
         private System.Windows.Forms.ComboBox comboBox_ButtonStyle;
@@ -3047,5 +3072,7 @@ namespace ExtendedControls
         private System.Windows.Forms.Panel panel_themePanel72;
         private System.Windows.Forms.Panel panel_themePanel62;
         private System.Windows.Forms.Panel panel_themePanel52;
+        private System.Windows.Forms.CheckBox checkBoxButtonImageBackground;
+        private System.Windows.Forms.CheckBox checkBoxButtonImageBorder;
     }
 }

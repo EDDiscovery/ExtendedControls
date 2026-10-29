@@ -26,18 +26,32 @@ namespace TestExtendedControls
             theme = new ThemeList();
             theme.LoadBaseThemes();
             theme.SetThemeByName("Elite Verdana");
-            theme.SetThemeByName("EDSM");
+        //    theme.SetThemeByName("EDSM");
             Theme.Current.FontSize = 8.5f;
             Theme.Current.WindowsFrame = true;
 
 
-          //  Theme.Current.ButtonStyle = Theme.ButtonstyleGradient;
-            //Theme.Current.ButtonStyle = Theme.ButtonstyleFlat;
-            Theme.Current.ButtonStyle = Theme.ButtonstyleSystem;
-//
+            //  Theme.Current.ButtonStyle = Theme.ButtonstyleGradient;
+            Theme.Current.ButtonStyle = Theme.ButtonstyleFlat;
+            //   Theme.Current.ButtonStyle = Theme.ButtonstyleSystem;
+
+          //  Theme.Current.ImageButtonsHaveBorders = true;
+          //  Theme.Current.ImageButtonsHaveBackground = true;
+
             Theme.Current.ApplyStd(this);
 
         }
 
+        private void extButtonText_Click(object sender, EventArgs e)
+        {
+            ThemeEditor edit = new ThemeEditor();
+            edit.InitForm(Theme.Current);
+            if ( edit.ShowDialog(this) == DialogResult.OK)
+            {
+                Theme.Current = edit.Theme;
+                Theme.Current.ApplyStd(this);
+
+            }
+        }
     }
 }
