@@ -171,13 +171,11 @@ namespace ExtendedControls
             base.OnMouseUp(mevent);
         }
 
-        /// <summary>
-        /// Raises the <see cref="ExtButton.Paint"/> event.
-        /// </summary>
-        /// <param name="pe">A <see cref="PaintEventArgs"/> that contains the event data.</param>
+        // implements Flat and Gradient from Oct 26.
+        // System should not call it but there for protection
         protected override void OnPaint(PaintEventArgs pe)
         {
-            if (FlatStyle != FlatStyle.Popup)      // popup style uses custom painting.
+            if (FlatStyle == FlatStyle.System)      
             {
                 base.OnPaint(pe);
             }
@@ -220,11 +218,11 @@ namespace ExtendedControls
                     }
                 }
 
-                //System.Diagnostics.Debug.WriteLine($"But Paint {Name} {ClientRectangle}, ba {buttonarea} back {colBack}-{colBack2} border {colBorder}");
+                //System.Diagnostics.Debug.WriteLine($"\r\nControl Button {Name} {ClientRectangle}, {FlatStyle}, ba {buttonarea} back {colBack}-{colBack2} border {colBorder}");
 
                 if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
                 {
-                    //System.Diagnostics.Debug.WriteLine($"{Name} {colBack} { buttonColorScaling}");
+                    //System.Diagnostics.Debug.WriteLine($"Control Button Background {Name} {colBack} {GradientDirection}");
                     using (var b = new LinearGradientBrush(buttonarea, colBack, colBack2, GradientDirection))
                         pe.Graphics.FillRectangle(b, buttonarea);       // linear grad brushes do not respect smoothing mode, btw
                 }
@@ -244,15 +242,15 @@ namespace ExtendedControls
                 {
                     // if we are in the centre, we use the whole of the buttonarea, else we use the button height.
                     Size isize = (ImageAlign == ContentAlignment.MiddleCenter) ? new Size(buttonarea.Width, buttonarea.Height) : new Size(buttonarea.Height, buttonarea.Height);
+
                     var destrect = ImageAlign.ImagePositionFromContentAlignment(buttonarea, isize);
 
-                   // System.Diagnostics.Debug.WriteLine($"ButtonExt {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height} {ImageAlign}");
+                    // System.Diagnostics.Debug.WriteLine($"Control Button Image {this.Name} {buttonarea} {destrect} {Image.Width}x {Image.Height} {ImageAlign}");
 
                     if ((Enabled && drawnImageAttributesEnabled != null) || (!Enabled && drawnImageAttributesDisabled != null))
                     {
                         //using (var b = new SolidBrush(Color.FromArgb(128, 64, 0, 0))) pe.Graphics.FillRectangle(b, destrect);       // linear grad brushes do not respect smoothing mode, btw
-                        pe.Graphics.DrawImage(Image, destrect,
-                                    0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel, (Enabled) ? drawnImageAttributesEnabled : drawnImageAttributesDisabled);
+                        pe.Graphics.DrawImage(Image, destrect, 0, 0, Image.Width, Image.Height, GraphicsUnit.Pixel, (Enabled) ? drawnImageAttributesEnabled : drawnImageAttributesDisabled);
                     }
                     else
                     {
@@ -303,6 +301,7 @@ namespace ExtendedControls
             }
         }
 
+
         // Change the current DrawState, and invalidate as needed.
         private void SetDrawState(DrawState state)
         {
@@ -316,22 +315,29 @@ namespace ExtendedControls
 
         public bool Theme(Theme t, Font fnt)
         {
-            //System.Diagnostics.Debug.WriteLine($"But Theme {Name}");
             ExtButton ctrl = this;
             ctrl.ForeColor = t.ButtonTextColor;
 
             if (ctrl.Text.HasChars())      // we autosize text to make it fit.. we do not autosize image buttons
                 ctrl.AutoSize = true;
 
-            if (t.IsButtonSystemStyle) // system
+            //System.Diagnostics.Debug.WriteLine($"Control Theme {ctrl.Name} size {Size} {ctrl.FlatStyle}");
+
+            // if in system mode, and no image, we can use the system theme
+
+            if (t.IsButtonSystemStyle && Image == null)
             {
-                ctrl.FlatStyle = (ctrl.Image != null) ? FlatStyle.Standard : FlatStyle.System;
-                ctrl.UseVisualStyleBackColor = true;           // this makes it system..
+                ctrl.UseVisualStyleBackColor = true;
+                ctrl.FlatStyle = FlatStyle.System;
             }
             else
             {
+                // flatstyle, gradient, system when image
+
                 ctrl.ButtonDisabledScaling = t.DisabledScaling;
                 ctrl.GradientDirection = t.ButtonBackGradientDirection;
+                ctrl.MouseOverScaling = t.MouseOverScaling;
+                ctrl.MouseSelectedScaling = t.MouseSelectedScaling;
 
                 if (ctrl.Image != null)     // any images, White and a gray (for historic reasons) gets replaced.
                 {
@@ -348,32 +354,40 @@ namespace ExtendedControls
                     ctrl.SetDrawnBitmapRemapTable(new System.Drawing.Imaging.ColorMap[] { colormap1, colormap2 });     // used ButtonDisabledScaling note!
                 }
 
-                // if image, and no text or text over image centred (so over the image), background is form to make the back disappear
+                // if image, and no text or text over image centred (so over the image),
+                // set background to form to make the back disappear
+
                 if (ctrl.Image != null && (ctrl.Text.Length == 0 || (ctrl.TextAlign == ContentAlignment.MiddleCenter && ctrl.ImageAlign == ContentAlignment.MiddleCenter)))
                 {
-                    if (ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton)       // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
+                    // composite auto scale buttons inherit parent back colour and have disabled scaling turned off
+
+                    if (ctrl.Parent != null && ctrl.Parent is CompositeAutoScaleButton)       
                     {
                         ctrl.BackColor = ctrl.BackColor2 = ctrl.Parent.BackColor;
-                        ctrl.ButtonDisabledScaling = 1.0F;
+                        ctrl.ButtonDisabledScaling = 1.0F;          
                     }
                     else
                     {
                         ctrl.BackColor = ctrl.BackColor2 = t.Form;
                     }
+
                     ctrl.FlatAppearance.BorderColor = t.Form;
                     ctrl.FlatAppearance.BorderSize = 0;
+                    // oct 26 decided still like no border ctrl.FlatAppearance.BorderColor = t.ButtonBorderColor;  ctrl.FlatAppearance.BorderSize = 1;
                 }
                 else
                 {
-                    ctrl.BackColor = t.ButtonBackColor;       // else its a graduated back
-                    ctrl.BackColor2 = t.ButtonBackColor2;       // else its a graduated back
+                    // no image, gradient only uses back color 2
+
+                    ctrl.BackColor = t.ButtonBackColor;       
+                    ctrl.BackColor2 = t.IsButtonGradientStyle ? t.ButtonBackColor2 : t.ButtonBackColor;       
                     ctrl.FlatAppearance.BorderColor = t.ButtonBorderColor;
                     ctrl.FlatAppearance.BorderSize = 1;
                 }
 
-                ctrl.MouseOverScaling = t.MouseOverScaling;
-                ctrl.MouseSelectedScaling = t.MouseSelectedScaling;
-                ctrl.FlatStyle = t.ButtonFlatStyle;
+                // if we are here in system, then it had an image, and we use flat, else we use the style
+
+                ctrl.FlatStyle = t.IsButtonSystemStyle ? FlatStyle.Flat :  t.ButtonFlatStyle;
             }
 
             return false;

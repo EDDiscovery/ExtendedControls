@@ -41,11 +41,11 @@ namespace TestExtendedControls
                 Theme.Current = themelist.FindTheme("Elite Verdana Gradiant Skinny Scroll");
             }
 
-           //themelist.SetThemeByName("Windows Default");
+            //themelist.SetThemeByName("Windows Default");
             // themelist.SetThemeByName("Verdana Grey");
 
             Theme.Current.WindowsFrame = true;
-           Theme.Current.ApplyStd(this);
+            Theme.Current.ApplyStd(this);
             labelName.Text = Theme.Current.Name;
 
             extComboBoxTheme.Items.AddRange(themelist.GetThemeNames());
@@ -370,7 +370,7 @@ namespace TestExtendedControls
 
         private void extButton9_Click(object sender, EventArgs e)
         {
-            extButton10.Visible = !extButton10.Visible;     // flick a flow button on/off
+            extButtonFlowBut2.Visible = !extButtonFlowBut2.Visible;     // flick a flow button on/off
         }
 
         private void extTabControl1_MouseDown(object sender, MouseEventArgs e)

@@ -44,7 +44,7 @@ namespace ExtendedControls
 
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_back" })]      //existing
-        public Color ButtonBackColor { get; set; } = Color.FromArgb(255, 225, 225, 225);
+        public Color ButtonBackColor { get; set; } = Color.FromArgb(255, 255, 255, 255);
         [JsonCustomFormat("AltFmt", "Std")]
         [JsonNameAttribute(new string[] { "AltFmt" }, new string[] { "button_back2" })]
         public Color ButtonBackColor2 { get; set; } = Color.Transparent;
