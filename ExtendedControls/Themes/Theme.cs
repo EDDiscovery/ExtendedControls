@@ -1067,7 +1067,13 @@ namespace ExtendedControls
 
             Object jconv = jo.ToObjectProtected(typeof(Theme), false, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance, new Theme(),
                                     null, altnames ? "AltFmt" : "Std", 
-                                    (tt, o) => { if (o is string) return System.Drawing.ColorTranslator.FromHtml((string)o); else return Color.Orange; 
+                                    (mi, o) => {
+                                        if (o is bool)
+                                            return (bool)o;
+                                        else if ( o is string )
+                                            return System.Drawing.ColorTranslator.FromHtml((string)o); 
+                                        else 
+                                            return Color.Orange; 
                                     });
 
             if (jconv is Theme)
