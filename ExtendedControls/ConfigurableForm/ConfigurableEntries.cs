@@ -52,7 +52,10 @@ namespace ExtendedControls
         public class Entry
         {
             public string Name { get; set; }                            // logical name of control
+            
+            [JsonIgnore]                                                // NOTE this is serialised out in ZMQ panel when a button is pressed. Protect
             public Type ControlType { get; set; }                       // if non null, activate this type.  Else if null, Control should be filled up with your specific type
+
             [JsonIgnore]
             public Control Control { get; set; }                        // if controltype is set, don't set.  If controltype=null, pass your control type.
 
