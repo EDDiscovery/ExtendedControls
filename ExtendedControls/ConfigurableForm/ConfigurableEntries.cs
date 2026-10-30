@@ -12,6 +12,7 @@
  * governing permissions and limitations under the License.
  */
 
+using QuickJSON;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -52,6 +53,7 @@ namespace ExtendedControls
         {
             public string Name { get; set; }                            // logical name of control
             public Type ControlType { get; set; }                       // if non null, activate this type.  Else if null, Control should be filled up with your specific type
+            [JsonIgnore]
             public Control Control { get; set; }                        // if controltype is set, don't set.  If controltype=null, pass your control type.
 
             public bool Created { get; set; }                           // has the control been created by CreateEntries
@@ -76,6 +78,7 @@ namespace ExtendedControls
                                                                         // For number boxes, the invariant value, or Null and it will use the DoubleValue or LongValue
                                                                         // for Dates, the invariant culture assumed local
                                                                         // Can be NULL if you've passed your control in manually
+            [JsonIgnore]
             public Image ButtonImage { get; set; }                      // if set, overrides TextValue for buttons and draws this
 
             public double? DoubleValue { get; set; }                    // if its a number box double and you want it set (overrides Text)
@@ -109,6 +112,7 @@ namespace ExtendedControls
 
             public Color? BackColor { get; set; } = null;               // panel, back colour to reapply after themeing
 
+            [JsonIgnore]
             public List<DataGridViewColumn> DGVColumns { get; set; } = null;       // for DGV. Set to null for external control, else set up
             public List<string> DGVSortMode { get; set; } = null;       // for DGV, sort mode control. May be left null for default sorting
             public int? DGVRowHeaderWidth { get; set; } = 0;             // for DGV. Set to null for don't change if created externally.
@@ -308,7 +312,7 @@ namespace ExtendedControls
 
         #endregion
 
-  
+
         #region Triggering
 
         // send trigger, if not disabled
@@ -319,6 +323,28 @@ namespace ExtendedControls
                 UITrigger?.Invoke(Name, actionorcontrolname + (value != null ? ":" + value : ""), advvalue, advvalue2, CallerTag);
             }
         }
+
+        //public void SendTrigger(string actionorcontrolname, string eventanddataname, string data)
+        //{
+        //    if (!DisableTriggers)
+        //    {
+        //        UITrigger?.Invoke(Name, actionorcontrolname + ":" + eventanddataname, data, null, CallerTag);
+        //    }
+        //}
+        //public void SendTrigger(string actionorcontrolname, string eventanddataname, string data, Entry entry)
+        //{
+        //    if (!DisableTriggers)
+        //    {
+        //        UITrigger?.Invoke(Name, actionorcontrolname + (eventanddataname != null ? ":" + eventanddataname : ""), data, entry, CallerTag);
+        //    }
+        //}
+        //public void SendTrigger(string actionorcontrolname, string eventanddataname, double data)
+        //{
+        //    if (!DisableTriggers)
+        //    {
+        //        UITrigger?.Invoke(Name, actionorcontrolname + (eventanddataname != null ? ":" + eventanddataname : ""), data, null, CallerTag);
+        //    }
+        //}
 
 
 
