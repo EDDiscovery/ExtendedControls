@@ -25,20 +25,21 @@ namespace TestExtendedControls
 
             theme = new ThemeList();
             theme.LoadBaseThemes();
-            theme.SetThemeByName("Elite Verdana");
-        //    theme.SetThemeByName("EDSM");
-            Theme.Current.FontSize = 8.5f;
-            Theme.Current.WindowsFrame = true;
+
+           // theme.SetThemeByName("Elite Verdana");
+            theme.SetThemeByName("EDSM");
+            //Theme.Current.FontSize = 8.5f;
+            //Theme.Current.WindowsFrame = true;
 
 
             //  Theme.Current.ButtonStyle = Theme.ButtonstyleGradient;
-            Theme.Current.ButtonStyle = Theme.ButtonstyleFlat;
+            //Theme.Current.ButtonStyle = Theme.ButtonstyleFlat;
             //   Theme.Current.ButtonStyle = Theme.ButtonstyleSystem;
 
           //  Theme.Current.ImageButtonsHaveBorders = true;
           //  Theme.Current.ImageButtonsHaveBackground = true;
 
-            Theme.Current.ApplyStd(this);
+           // Theme.Current.ApplyStd(this);
 
         }
 
@@ -52,6 +53,11 @@ namespace TestExtendedControls
                 Theme.Current.ApplyStd(this);
 
             }
+        }
+
+        private void extButtonWarning_Click(object sender, EventArgs e)
+        {
+            MessageBoxTheme.Show("Hello","Oh dear",MessageBoxButtons.AbortRetryIgnore,MessageBoxIcon.Warning);
         }
     }
 }

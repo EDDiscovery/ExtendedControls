@@ -144,8 +144,9 @@ namespace ExtendedControls
             // buttonExt1
             // 
             this.buttonExt1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt1.BackColor2 = System.Drawing.Color.Red;
+            this.buttonExt1.BackColor2 = System.Drawing.Color.White;
             this.buttonExt1.ButtonDisabledScaling = 0.5F;
+            this.buttonExt1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.buttonExt1.GradientDirection = 90F;
             this.buttonExt1.Location = new System.Drawing.Point(567, 12);
             this.buttonExt1.MouseOverScaling = 1.3F;
@@ -160,8 +161,9 @@ namespace ExtendedControls
             // buttonExt2
             // 
             this.buttonExt2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt2.BackColor2 = System.Drawing.Color.Red;
+            this.buttonExt2.BackColor2 = System.Drawing.Color.White;
             this.buttonExt2.ButtonDisabledScaling = 0.5F;
+            this.buttonExt2.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.buttonExt2.GradientDirection = 90F;
             this.buttonExt2.Location = new System.Drawing.Point(467, 12);
             this.buttonExt2.MouseOverScaling = 1.3F;
@@ -176,8 +178,9 @@ namespace ExtendedControls
             // buttonExt3
             // 
             this.buttonExt3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExt3.BackColor2 = System.Drawing.Color.Red;
+            this.buttonExt3.BackColor2 = System.Drawing.Color.White;
             this.buttonExt3.ButtonDisabledScaling = 0.5F;
+            this.buttonExt3.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.buttonExt3.GradientDirection = 90F;
             this.buttonExt3.Location = new System.Drawing.Point(367, 12);
             this.buttonExt3.MouseOverScaling = 1.3F;

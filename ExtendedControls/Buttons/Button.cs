@@ -181,11 +181,13 @@ namespace ExtendedControls
             }
             else
             {
-                Rectangle border = ClientRectangle;
-                border.Width--; border.Height--;
+                // we use BorderSize for the outline, and we want something left inside that, a minimum of 3 pixels are needed (2 for border)
 
-                Rectangle buttonarea = ClientRectangle;
-                buttonarea.Inflate(-1, -1);                     // inside it.
+                var cr = ClientRectangle;
+                // debugcr = new Rectangle(0, 0, 3, 3);
+
+                if (cr.Width<= 1+FlatAppearance.BorderSize || cr.Height<= 1+FlatAppearance.BorderSize)
+                    return;
 
                 Color colBack = BackColor;
                 Color colBack2 = BackColor2;
@@ -218,24 +220,26 @@ namespace ExtendedControls
                     }
                 }
 
-                //System.Diagnostics.Debug.WriteLine($"\r\nControl Button {Name} {ClientRectangle}, {FlatStyle}, ba {buttonarea} back {colBack}-{colBack2} border {colBorder}:{FlatAppearance.BorderSize}");
+                Rectangle border = new Rectangle(0, 0, cr.Width - FlatAppearance.BorderSize, cr.Height - FlatAppearance.BorderSize);
 
-                if (buttonarea.Width >= 1 && buttonarea.Height >= 1)  // ensure size
-                {
-                    //System.Diagnostics.Debug.WriteLine($"Control Button Background {Name} {colBack} {GradientDirection}");
-                    using (var b = new LinearGradientBrush(buttonarea, colBack, colBack2, GradientDirection))
-                        pe.Graphics.FillRectangle(b, buttonarea);       // linear grad brushes do not respect smoothing mode, btw
-                }
+               // System.Diagnostics.Debug.WriteLine($"\r\nControl Button {Name} {cr}, {FlatStyle}, brd {border} back {colBack}-{colBack2} border {colBorder}:{FlatAppearance.BorderSize}");
+
+                //System.Diagnostics.Debug.WriteLine($"Control Button Background {Name} {colBack} {GradientDirection}");
+                using (var b = new LinearGradientBrush(cr, colBack, colBack2, GradientDirection))
+                    pe.Graphics.FillRectangle(b, cr);       // linear grad brushes do not respect smoothing mode, btw
 
                 pe.Graphics.SmoothingMode = SmoothingMode.None;
 
-                if (border.Width >= 1 && border.Height >= 1)        // ensure it does not except
+                if (FlatAppearance.BorderSize>0)        // do we want a border to our button
                 {
-                    using (var p = new Pen(colBorder))
+                    //colBorder = Color.Purple;
+                    using (var p = new Pen(colBorder,FlatAppearance.BorderSize))
                         pe.Graphics.DrawRectangle(p, border);
                 }
 
-                if (buttonarea.Width < 1 || buttonarea.Height < 1)  // and no point drawing any more in the button area if its too small, it will except
+                Rectangle buttonarea = new Rectangle(FlatAppearance.BorderSize, FlatAppearance.BorderSize, cr.Width - FlatAppearance.BorderSize * 2, cr.Height - FlatAppearance.BorderSize * 2);
+
+                if (buttonarea.Width < 1 || buttonarea.Height < 1)  // triage for crashing and no point drawing any more in the button area if its too small, it will except
                     return;
 
                 if (Image != null )
@@ -427,7 +431,7 @@ namespace ExtendedControls
 
         private float gradientdirection = 90F;
         private float buttonDisabledScaling = 0.5F;
-        private Color backColor2 = Color.Red;
+        private Color backColor2 = Color.White;
 
     }
 }

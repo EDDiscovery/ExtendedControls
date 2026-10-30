@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.extButtonWarning = new ExtendedControls.ExtButton();
             this.extButtonImage = new ExtendedControls.ExtButton();
             this.extButtonEditTheme = new ExtendedControls.ExtButton();
             this.buttonExt1 = new ExtendedControls.ExtButton();
@@ -43,6 +44,23 @@
             this.panel1.Size = new System.Drawing.Size(48, 48);
             this.panel1.TabIndex = 0;
             // 
+            // extButtonWarning
+            // 
+            this.extButtonWarning.BackColor = System.Drawing.Color.DarkTurquoise;
+            this.extButtonWarning.BackColor2 = System.Drawing.Color.White;
+            this.extButtonWarning.ButtonDisabledScaling = 0.5F;
+            this.extButtonWarning.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.extButtonWarning.GradientDirection = 90F;
+            this.extButtonWarning.Location = new System.Drawing.Point(254, 13);
+            this.extButtonWarning.MouseOverScaling = 1.3F;
+            this.extButtonWarning.MouseSelectedScaling = 1.3F;
+            this.extButtonWarning.Name = "extButtonWarning";
+            this.extButtonWarning.Size = new System.Drawing.Size(150, 24);
+            this.extButtonWarning.TabIndex = 3;
+            this.extButtonWarning.Text = "Warning";
+            this.extButtonWarning.UseVisualStyleBackColor = false;
+            this.extButtonWarning.Click += new System.EventHandler(this.extButtonWarning_Click);
+            // 
             // extButtonImage
             // 
             this.extButtonImage.BackColor = System.Drawing.Color.Cyan;
@@ -55,20 +73,21 @@
             this.extButtonImage.MouseOverScaling = 1.3F;
             this.extButtonImage.MouseSelectedScaling = 1.3F;
             this.extButtonImage.Name = "extButtonImage";
-            this.extButtonImage.Size = new System.Drawing.Size(96, 110);
+            this.extButtonImage.Size = new System.Drawing.Size(100, 100);
             this.extButtonImage.TabIndex = 2;
             this.extButtonImage.UseVisualStyleBackColor = false;
             // 
             // extButtonEditTheme
             // 
-            this.extButtonEditTheme.BackColor2 = System.Drawing.Color.Red;
+            this.extButtonEditTheme.BackColor2 = System.Drawing.Color.RosyBrown;
             this.extButtonEditTheme.ButtonDisabledScaling = 0.5F;
+            this.extButtonEditTheme.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.extButtonEditTheme.GradientDirection = 90F;
             this.extButtonEditTheme.Location = new System.Drawing.Point(35, 13);
             this.extButtonEditTheme.MouseOverScaling = 1.3F;
             this.extButtonEditTheme.MouseSelectedScaling = 1.3F;
             this.extButtonEditTheme.Name = "extButtonEditTheme";
-            this.extButtonEditTheme.Size = new System.Drawing.Size(145, 23);
+            this.extButtonEditTheme.Size = new System.Drawing.Size(113, 24);
             this.extButtonEditTheme.TabIndex = 0;
             this.extButtonEditTheme.Text = "Edit Theme";
             this.extButtonEditTheme.UseVisualStyleBackColor = true;
@@ -120,6 +139,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.AliceBlue;
             this.ClientSize = new System.Drawing.Size(736, 664);
+            this.Controls.Add(this.extButtonWarning);
             this.Controls.Add(this.extButtonImage);
             this.Controls.Add(this.extButtonEditTheme);
             this.Name = "TestButtons2";
@@ -134,5 +154,6 @@
         private System.Windows.Forms.Panel panel1;
         private ExtendedControls.ExtButton extButtonEditTheme;
         private ExtendedControls.ExtButton extButtonImage;
+        private ExtendedControls.ExtButton extButtonWarning;
     }
 }

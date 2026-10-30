@@ -33,6 +33,7 @@ namespace ExtendedControls
 
         public float MouseOverScalingColor { get; set; } = 1.3F;
         public Color BorderColor { get; set; } = Color.White;
+        public int BorderSize { get; set; } = 1;
         public float GradientDirection { get; set; } = 90F;
         [System.ComponentModel.BrowsableAttribute(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -112,53 +113,27 @@ namespace ExtendedControls
 
             if (this.FlatStyle != FlatStyle.System)
             {
-                int extraborder = 1;
-                int texthorzspacing = 1;
-
-                int arrowwidth = Font.ScalePixels(20);
-
-                textBoxBackArea = new Rectangle(ClientRectangle.X + extraborder, ClientRectangle.Y + extraborder,
-                                                            ClientRectangle.Width - 2 * extraborder, ClientRectangle.Height - 2 * extraborder);
-
-                topBoxTextArea = new Rectangle(ClientRectangle.X + extraborder + texthorzspacing, ClientRectangle.Y + extraborder,
-                                        ClientRectangle.Width - 2 * extraborder - 2 * texthorzspacing - arrowwidth, ClientRectangle.Height - 2 * extraborder);
-
-                arrowRectangleArea = new Rectangle(ClientRectangle.Width - arrowwidth - extraborder, ClientRectangle.Y + extraborder,
-                                                    arrowwidth, ClientRectangle.Height - 2 * extraborder);
-
-                topBoxOutline = new Rectangle(ClientRectangle.X, ClientRectangle.Y,
-                                                ClientRectangle.Width - 1, ClientRectangle.Height - 1);
-
-                int hoffset = arrowRectangleArea.Width/12 + 2;
-                int voffset = arrowRectangleArea.Height / 4;
-                arrowpt1 = new Point(arrowRectangleArea.Left + hoffset, arrowRectangleArea.Y + voffset);
-                arrowpt2 = new Point(arrowRectangleArea.XCenter(), arrowRectangleArea.Bottom - voffset);
-                arrowpt3 = new Point(arrowRectangleArea.Right - hoffset, arrowpt1.Y);
-
-                arrowpt1c = new Point(arrowpt1.X, arrowpt2.Y);
-                arrowpt2c = new Point(arrowpt2.X, arrowpt1.Y);
-                arrowpt3c = new Point(arrowpt3.X, arrowpt2.Y);
 
                 Brush textb;
-                Pen p, p2;
+                Pen borderpen, arrowpen;
 
                 bool isenabled = Enabled && Items.Count > 0;
 
                 if (isenabled)
                 {
                     textb = new SolidBrush(this.ForeColor);
-                    p = new Pen(BorderColor);
-                    p2 = new Pen(ForeColor);
-                    p2.Width = Font.ScaleSize(1.5f);
+                    borderpen = new Pen(BorderColor,BorderSize);
+                    arrowpen = new Pen(ForeColor,1.5f);
                 }
                 else
                 {
                     textb = new SolidBrush(ForeColor.Multiply(DisabledScaling));
-                    p = new Pen(BorderColor.Multiply(DisabledScaling));
-                    p2 = null;
+                    borderpen = new Pen(BorderColor.Multiply(DisabledScaling), BorderSize);
+                    arrowpen = null;
                 }
 
-                e.Graphics.DrawRectangle(p, topBoxOutline);
+                Rectangle borderoutline = new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - BorderSize, ClientRectangle.Height - BorderSize);
+                e.Graphics.DrawRectangle(borderpen, borderoutline);     // border
 
                 Color bck1,bck2;
 
@@ -172,6 +147,11 @@ namespace ExtendedControls
                     bck1 = DisableBackgroundDisabledShadingGradient ? BackColor : BackColor.Multiply(DisabledScaling);
                     bck2 = DisableBackgroundDisabledShadingGradient ? BackColor2 : BackColor2.Multiply(DisabledScaling);
                 }
+
+                int extraborder = BorderSize;
+
+                Rectangle textBoxBackArea = new Rectangle(ClientRectangle.X + extraborder, ClientRectangle.Y + extraborder,
+                                                            ClientRectangle.Width - 2 * extraborder, ClientRectangle.Height - 2 * extraborder);
 
                 Brush bbck;
 
@@ -190,17 +170,33 @@ namespace ExtendedControls
 
                 e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-                if (p2 != null )
+                int arrowwidth = Font.ScalePixels(20);
+
+                if (arrowpen != null )
                 {
+                    Rectangle arrowRectangleArea = new Rectangle(ClientRectangle.Width - arrowwidth - extraborder, ClientRectangle.Y + extraborder,
+                                                        arrowwidth, ClientRectangle.Height - 2 * extraborder);
+
+
+                    int hoffset = arrowRectangleArea.Width / 12 + 2;
+                    int voffset = arrowRectangleArea.Height / 4;
+                    Point arrowpt1 = new Point(arrowRectangleArea.Left + hoffset, arrowRectangleArea.Y + voffset);
+                    Point arrowpt2 = new Point(arrowRectangleArea.XCenter(), arrowRectangleArea.Bottom - voffset);
+                    Point arrowpt3 = new Point(arrowRectangleArea.Right - hoffset, arrowpt1.Y);
+
+                    Point arrowpt1c = new Point(arrowpt1.X, arrowpt2.Y);
+                    Point arrowpt2c = new Point(arrowpt2.X, arrowpt1.Y);
+                    Point arrowpt3c = new Point(arrowpt3.X, arrowpt2.Y);
+
                     if (isActivated)
                     {
-                        e.Graphics.DrawLine(p2, arrowpt1c, arrowpt2c);            // the arrow!
-                        e.Graphics.DrawLine(p2, arrowpt2c, arrowpt3c);
+                        e.Graphics.DrawLine(arrowpen, arrowpt1c, arrowpt2c);            // the arrow!
+                        e.Graphics.DrawLine(arrowpen, arrowpt2c, arrowpt3c);
                     }
                     else
                     {
-                        e.Graphics.DrawLine(p2, arrowpt1, arrowpt2);            // the arrow!
-                        e.Graphics.DrawLine(p2, arrowpt2, arrowpt3);
+                        e.Graphics.DrawLine(arrowpen, arrowpt1, arrowpt2);            // the arrow!
+                        e.Graphics.DrawLine(arrowpen, arrowpt2, arrowpt3);
                     }
                 }
 
@@ -208,6 +204,11 @@ namespace ExtendedControls
 
                 using (var fmt = DrawingHelpersStaticFunc.StringFormatFromContentAlignment(txalign))
                 {
+                    int texthorzspacing = 1;
+
+                    Rectangle topBoxTextArea = new Rectangle(ClientRectangle.X + extraborder + texthorzspacing, ClientRectangle.Y + extraborder,
+                                            ClientRectangle.Width - 2 * extraborder - 2 * texthorzspacing - arrowwidth, ClientRectangle.Height - 2 * extraborder);
+
                     fmt.FormatFlags = StringFormatFlags.NoWrap;
                     e.Graphics.DrawString(this.Text, this.Font, textb, topBoxTextArea, fmt);
                 }
@@ -217,10 +218,10 @@ namespace ExtendedControls
                 bbck.Dispose();
 
                 textb.Dispose();
-                p.Dispose();
+                borderpen.Dispose();
 
-                if (p2 != null)
-                    p2.Dispose();
+                if (arrowpen != null)
+                    arrowpen.Dispose();
             }
         }
 
@@ -424,6 +425,7 @@ namespace ExtendedControls
 
                 DropDownTheme.SetFromCombo(t);
                 FlatStyle = t.ButtonFlatStyle;
+                BorderSize = 1;
             }
 
             Repaint();            // force a repaint as the individual settings do not by design.
@@ -586,9 +588,6 @@ namespace ExtendedControls
         protected ObjectCollection _items;
 
         private ComboBox cbsystem;
-        private Rectangle topBoxTextArea, arrowRectangleArea, topBoxOutline, textBoxBackArea;
-        private Point arrowpt1, arrowpt2, arrowpt3;
-        private Point arrowpt1c, arrowpt2c, arrowpt3c;
         private bool isActivated = false;
         private bool mouseover = false;
         private ExtListBoxForm dropdown;
